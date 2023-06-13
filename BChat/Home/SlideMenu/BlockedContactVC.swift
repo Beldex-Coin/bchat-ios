@@ -1,0 +1,130 @@
+// Copyright © 2022 Rangeproof Pty Ltd. All rights reserved.
+
+import UIKit
+import BChatUIKit
+import BChatMessagingKit
+
+
+class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!{
+        didSet {
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.register(UINib(nibName: "BlockedXibCell", bundle: nil), forCellReuseIdentifier: "BlockedXibCell")
+        }
+    }
+    
+    var contacts = ContactUtilities.getAllContacts()
+    var ArrayName = [String]()
+    var AllitemsName = [String]()
+    var ArrayPublicKey = [String]()
+    var AllitemsPublicKey = [String]()
+    var AllitemsName22 = [String]()
+    var AllitemsPublicKey22 = [String]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Do any additional setup after loading the view.
+        setUpGradientBackground()
+        setUpNavBarStyle()
+        
+        self.title = "Blocked Contacts"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = UIColor.systemGray
+        tableView.tableFooterView = UIView()
+        tableView.backgroundColor = .clear
+        
+        for publicKey in contacts {
+            let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+            if blockedflag == true {
+                let Aname = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+                ArrayName.append(Aname)
+                let pukey = Storage.shared.getContact(with: publicKey)
+                ArrayPublicKey.append(pukey!.bchatuser_ID)
+            }
+            tableView.reloadData()
+        }
+        let joinListValue = ArrayName.joined(separator: ",")
+        AllitemsName = joinListValue.components(separatedBy: ",")
+        let joinListValue2 = ArrayPublicKey.joined(separator: ",")
+        AllitemsPublicKey = joinListValue2.components(separatedBy: ",")
+        AllitemsName22 = AllitemsName.filter({ $0 != ""})
+        AllitemsPublicKey22 = AllitemsPublicKey.filter({ $0 != ""})
+
+    }
+
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return AllitemsName22.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BlockedXibCell", for: indexPath) as! BlockedXibCell
+
+        cell.lblname.text = AllitemsName22[indexPath.row]
+        cell.lblname.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        cell.selectionStyle = .none
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+           
+           let publicKey = AllitemsPublicKey22[indexPath.row]
+           let pubname = AllitemsName22[indexPath.row]
+           
+           let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: {(action, view, success) in
+    
+               let alert = UIAlertController(title: "Unblock", message: "Are you sure you want to Unblock \(pubname)", preferredStyle: .alert)
+                   
+                    let ok = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                        
+                    })
+                    alert.addAction(ok)
+                    let cancel = UIAlertAction(title: "Ok", style: .default, handler: { action in
+                        
+                        Storage.shared.write(
+                            with: { transaction in
+                                guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
+                                    return
+                                }
+                                contact.isBlocked = false
+                                Storage.shared.setContact(contact, using: transaction as Any)
+                            },
+                            completion: {
+                                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                                DispatchQueue.main.async {
+                                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                            }
+                        )
+                    })
+                    alert.addAction(cancel)
+                    DispatchQueue.main.async(execute: {
+                       self.present(alert, animated: true)
+               })
+           })
+           unblock.backgroundColor = Colors.unimportant
+           unblock.image = UIImage(named: "unblock_big")
+           return UISwipeActionsConfiguration(actions: [ unblock ])
+       }
+       
+}
+

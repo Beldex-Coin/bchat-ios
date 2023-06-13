@@ -1,0 +1,8 @@
+{
+    "urls": ["turn:turn.call.beldex.io",
+             "turn:turn.call1.beldex.io",
+             "turn:turn.call2.beldex.io",
+             "turn:turn.call3.beldex.io"],
+    "username": "test",
+    "password": "test@123"
+}
