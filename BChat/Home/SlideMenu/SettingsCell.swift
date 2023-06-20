@@ -2,7 +2,7 @@
 //  SettingsCell.swift
 //  KMCA
 //
-//  Created by Blockhash on 23/02/22.
+//  Created by Beldex International Limited OU on 23/02/22.
 //
 
 import UIKit

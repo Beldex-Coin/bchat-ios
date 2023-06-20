@@ -28,7 +28,6 @@
 #import <BChatMessagingKit/TSDatabaseView.h>
 #import <YapDatabase/YapDatabaseCryptoUtils.h>
 #import <sys/utsname.h>
-
 @import Intents;
 
 NSString *const AppDelegateStoryboardMain = @"Main";
@@ -140,8 +139,7 @@ static NSTimeInterval launchStartedAt;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-   
+    
     // This should be the first thing we do
     SetCurrentAppContext([MainAppContext new]);
 
@@ -618,15 +616,14 @@ static NSTimeInterval launchStartedAt;
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     OWSAssertIsOnMainThread();
-
     if (self.didAppLaunchFail) {
         OWSFailDebug(@"App launch failed");
         return;
     }
-
     [self.pushRegistrationManager didReceiveVanillaPushToken:deviceToken];
-
     OWSLogInfo(@"Registering for push notifications with token: %@.", deviceToken);
+    NSString *deviceTokenString = [deviceToken hexadecimalString];
+    NSLog(@"deviceToken String: %@", deviceTokenString);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error

@@ -1,4 +1,4 @@
-// Copyright © 2022 Rangeproof Pty Ltd. All rights reserved.
+// Copyright © 2022 Beldex International Limited OU. All rights reserved.
 
 import UIKit
 

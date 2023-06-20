@@ -2,7 +2,7 @@
 //  SlideMenuVC.swift
 //  Partea
 //
-//  Created by Blockhash on 30/08/21.
+//  Created by Beldex International Limited OU on 30/08/21.
 //
 
 import UIKit
@@ -27,6 +27,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var tableViewhightConst: NSLayoutConstraint!
     @IBOutlet weak var sampleSwitch: UISwitch!
     var array = ["My Account","Notification","Message Requests","Privacy","Recovery Seed","Report Issue","Help","Invite","About"]
+    
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var lblversion: UILabel!
     private var hasTappableProfilePicture: Bool = false
@@ -132,15 +133,14 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 cell.scanRef.setImage(tintedImage, for: .normal)
                 cell.scanRef.tintColor = .white
             }
-            
             cell.scanRef.tag = indexPath.row
             cell.scanRef.addTarget(self, action: #selector(didSelectViewAll), for: .touchUpInside)
-            
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SlideMenuCell", for: indexPath) as! SlideMenuCell
             cell.selectionStyle = .none
             cell.lblname.text = array[indexPath.row]
+            cell.lblbeta.isHidden = true
             
             if indexPath.row == 0 {
                 let logoName = isLightMode ? "my_account" : "round-account-button-with-user-inside"
@@ -158,7 +158,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let logoName = isLightMode ? "recovery_seed" : "recovery_seed-1"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 5 {
-                let logoName = isLightMode ? "1X" : "1X1"
+                let logoName = isLightMode ? "ic_ReportDark" : "ic_ReportWhite"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 6 {
                 let logoName = isLightMode ? "icons8-help" : "help-web-button"
@@ -191,7 +191,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let privacySettingsVC = PrivacySettingsTableViewController()
                 navigationController!.pushViewController(privacySettingsVC, animated: true)
             }else if indexPath.row == 4 {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedMenuVC") as! RecoverySeedMenuVC
+                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImportantAlertVC") as! ImportantAlertVC
                 self.navigationController?.pushViewController(vc, animated: true)
             }else if indexPath.row == 5 {
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: "\(bchat_report_IssueID)")
@@ -204,7 +204,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let invitation = "\(bchat_Invite_Message)" + "\(getUserHexEncodedPublicKey()) !"
                 let shareVC = UIActivityViewController(activityItems: [ invitation ], applicationActivities: nil)
                 navigationController!.present(shareVC, animated: true, completion: nil)
-            }else {
+            }else if indexPath.row == 8{
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AboutUs") as! AboutUs
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -215,7 +215,6 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "QRCodeScanVC") as! QRCodeScanVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {

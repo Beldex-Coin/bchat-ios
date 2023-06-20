@@ -126,7 +126,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
                 
             })
         }
-        if UserDefaultsData.BChatPassword == oldPintxt.text! {
+        if SaveUserDefaultsData.BChatPassword == oldPintxt.text! {
             a = true
         }
         else{
@@ -142,7 +142,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
                 
             })
         }
-        if UserDefaultsData.BChatPassword == newPintxt.text! {
+        if SaveUserDefaultsData.BChatPassword == newPintxt.text! {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message5) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                 
             })
@@ -152,7 +152,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         if a == true && b == true && c == true {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Password_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                 
-                UserDefaultsData.BChatPassword = self.newPintxt.text!
+                SaveUserDefaultsData.BChatPassword = self.newPintxt.text!
                 self.navigationController?.popViewController(animated: true)
                 
             })

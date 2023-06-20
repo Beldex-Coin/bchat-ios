@@ -105,7 +105,6 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         else {
             // MARK:- Beldex Wallet
             data.name = userNametxt.text!
-            // data.pwd = pwd.text!
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in
                 switch result {
                 case .success(let wallet):
@@ -114,8 +113,9 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
                     print("in case failyre")
                 }
             }
-            let WalletpublicAddress = UserDefaultsData.WalletpublicAddress
-            let WalletSeed = UserDefaultsData.WalletSeed
+            let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
+            let WalletSeed = SaveUserDefaultsData.WalletSeed
+            SaveUserDefaultsData.NameForWallet = data.name
             let mnemonic = WalletSeed
             do {
                 let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)

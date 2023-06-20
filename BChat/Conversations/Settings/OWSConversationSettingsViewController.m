@@ -290,7 +290,7 @@ CGFloat kIconViewLength = 24;
             return [weakSelf
                 disclosureCellWithName:NSLocalizedString(@"vc_conversation_settings_copy_bchat_id_button_title", "")
                               iconName:@"ic_copy"
-               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"copy_session_id")];
+               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"copy_bchat_id")];
         }
         actionBlock:^{
             [weakSelf copyBChatID];

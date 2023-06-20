@@ -10,22 +10,23 @@ public final class OpenGroupAPIV2 : NSObject {
     public static var moderators: [String:[String:Set<String>]] = [:] // Server URL to room ID to set of moderator IDs
     public static var defaultRoomsPromise: Promise<[Info]>?
     public static var groupImagePromises: [String:Promise<Data>] = [:]
-
+    
     private static let timeSinceLastOpen: TimeInterval = {
         guard let lastOpen = UserDefaults.standard[.lastOpen] else { return .greatestFiniteMagnitude }
         let now = Date()
         return now.timeIntervalSince(lastOpen)
     }()
-
-    // MARK: Settings
-//    public static let legacyDefaultServerDNS = ""
-//    public static let defaultServer = "http://116.203.70.33"
-//    public static let defaultServerPublicKey = "a03c383cf63c3c4efe67acc52112a6dd734b3a946b9545f488aaa93da7991238"
     
-        public static let legacyDefaultServerDNS = "190.2.147.31"
-        public static let defaultServer = "http://social.beldex.io"
-        public static let defaultServerPublicKey = "0cfdbcc8bba5989a6787019c6635c08415c103174609360f9c3e4e764ef48073"
-
+    // MARK: TESTNET
+    public static let legacyDefaultServerDNS = "190.2.147.31"
+    public static let defaultServer = "http://social.rpcnode.stream:8080"
+    public static let defaultServerPublicKey = "7c4dc4a0d6eddcdbbed85487f6ccc3425284ad03bbcd33de2c4ce8cbb303a946"
+    
+    // MARK: MAINNET
+//    public static let legacyDefaultServerDNS = "190.2.147.31"
+//    public static let defaultServer = "http://social.beldex.io"
+//    public static let defaultServerPublicKey = "0cfdbcc8bba5989a6787019c6635c08415c103174609360f9c3e4e764ef48073"
+    
     
     // MARK: Error
     public enum Error : LocalizedError {
@@ -47,7 +48,7 @@ public final class OpenGroupAPIV2 : NSObject {
             }
         }
     }
-
+    
     // MARK: Request
     private struct Request {
         let verb: HTTP.Verb
@@ -61,9 +62,9 @@ public final class OpenGroupAPIV2 : NSObject {
         /// Always `true` under normal circumstances. You might want to disable
         /// this when running over Beldexnet.
         let useOnionRouting: Bool
-
+        
         init(verb: HTTP.Verb, room: String?, server: String, endpoint: String, queryParameters: [String:String] = [:],
-            parameters: JSON = [:], headers: [String:String] = [:], isAuthRequired: Bool = true, useOnionRouting: Bool = true) {
+             parameters: JSON = [:], headers: [String:String] = [:], isAuthRequired: Bool = true, useOnionRouting: Bool = true) {
             self.verb = verb
             self.room = room
             self.server = server
@@ -106,7 +107,7 @@ public final class OpenGroupAPIV2 : NSObject {
             return Deletion(id: id, deletedMessageID: deletedMessageID)
         }
     }
-
+    
     // MARK: Convenience
     private static func send(_ request: Request) -> Promise<JSON> {
         let tsRequest: TSRequest
@@ -219,16 +220,16 @@ public final class OpenGroupAPIV2 : NSObject {
                 return authTokenPromise
             } else {
                 let promise = requestNewAuthToken(for: room, on: server)
-                .then(on: OpenGroupAPIV2.workQueue) { claimAuthToken($0, for: room, on: server) }
-                .then(on: OpenGroupAPIV2.workQueue) { authToken -> Promise<String> in
-                    let (promise, seal) = Promise<String>.pending()
-                    storage.write(with: { transaction in
-                        storage.setAuthToken(for: room, on: server, to: authToken, using: transaction)
-                    }, completion: {
-                        seal.fulfill(authToken)
-                    })
-                    return promise
-                }
+                    .then(on: OpenGroupAPIV2.workQueue) { claimAuthToken($0, for: room, on: server) }
+                    .then(on: OpenGroupAPIV2.workQueue) { authToken -> Promise<String> in
+                        let (promise, seal) = Promise<String>.pending()
+                        storage.write(with: { transaction in
+                            storage.setAuthToken(for: room, on: server, to: authToken, using: transaction)
+                        }, completion: {
+                            seal.fulfill(authToken)
+                        })
+                        return promise
+                    }
                 promise.done(on: OpenGroupAPIV2.workQueue) { _ in
                     authTokenPromises.mutate{ $0["\(server).\(room)"] = nil }
                 }.catch(on: OpenGroupAPIV2.workQueue) { _ in
@@ -239,7 +240,7 @@ public final class OpenGroupAPIV2 : NSObject {
             }
         }
     }
-
+    
     public static func requestNewAuthToken(for room: String, on server: String) -> Promise<String> {
         SNLog("Requesting auth token for server: \(server).")
         guard let userKeyPair = SNMessagingKitConfiguration.shared.storage.getUserKeyPair() else { return Promise(error: Error.generic) }
@@ -247,8 +248,8 @@ public final class OpenGroupAPIV2 : NSObject {
         let request = Request(verb: .get, room: room, server: server, endpoint: "auth_token_challenge", queryParameters: queryParameters, isAuthRequired: false)
         return send(request).map(on: OpenGroupAPIV2.workQueue) { json in
             guard let challenge = json["challenge"] as? JSON, let base64EncodedCiphertext = challenge["ciphertext"] as? String,
-                let base64EncodedEphemeralPublicKey = challenge["ephemeral_public_key"] as? String, let ciphertext = Data(base64Encoded: base64EncodedCiphertext),
-                let ephemeralPublicKey = Data(base64Encoded: base64EncodedEphemeralPublicKey) else {
+                  let base64EncodedEphemeralPublicKey = challenge["ephemeral_public_key"] as? String, let ciphertext = Data(base64Encoded: base64EncodedCiphertext),
+                  let ephemeralPublicKey = Data(base64Encoded: base64EncodedEphemeralPublicKey) else {
                 throw Error.parsingFailed
             }
             let symmetricKey = try AESGCM.generateSymmetricKey(x25519PublicKey: ephemeralPublicKey, x25519PrivateKey: userKeyPair.privateKey)
@@ -261,7 +262,7 @@ public final class OpenGroupAPIV2 : NSObject {
         let parameters = [ "public_key" : getUserHexEncodedPublicKey() ]
         let headers = [ "Authorization" : authToken ] // Set explicitly here because is isn't in the database yet at this point
         let request = Request(verb: .post, room: room, server: server, endpoint: "claim_auth_token",
-            parameters: parameters, headers: headers, isAuthRequired: false)
+                              parameters: parameters, headers: headers, isAuthRequired: false)
         return send(request).map(on: OpenGroupAPIV2.workQueue) { _ in authToken }
     }
     
@@ -326,7 +327,7 @@ public final class OpenGroupAPIV2 : NSObject {
         guard let rawMessages = json["messages"] as? [JSON] else { throw Error.parsingFailed }
         let messages: [OpenGroupMessageV2] = rawMessages.compactMap { json in
             guard let message = OpenGroupMessageV2.fromJSON(json), message.serverID != nil, let sender = message.sender, let data = Data(base64Encoded: message.base64EncodedData),
-                let base64EncodedSignature = message.base64EncodedSignature, let signature = Data(base64Encoded: base64EncodedSignature) else {
+                  let base64EncodedSignature = message.base64EncodedSignature, let signature = Data(base64Encoded: base64EncodedSignature) else {
                 SNLog("Couldn't parse open group message from JSON: \(json).")
                 return nil
             }
@@ -422,7 +423,7 @@ public final class OpenGroupAPIV2 : NSObject {
         let request = Request(verb: .delete, room: room, server: server, endpoint: "block_list/\(publicKey)")
         return send(request).map(on: OpenGroupAPIV2.workQueue) { _ in }
     }
-
+    
     public static func isUserModerator(_ publicKey: String, for room: String, on server: String) -> Bool {
         return moderators[server]?[room]?.contains(publicKey) ?? false
     }

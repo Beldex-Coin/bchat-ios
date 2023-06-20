@@ -104,7 +104,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
                 return present(alert, animated: true, completion: nil)
             }
-            UserDefaults.standard[.isUsingFullAPNs] = (selectedOptionView == apnsOptionView)
+            UserDefaults.standard[.isUsingFullAPNs] = true//(selectedOptionView == apnsOptionView)
             TSAccountManager.sharedInstance().didRegister()
             let homeVC = HomeVC()
             navigationController!.setViewControllers([ homeVC ], animated: true)

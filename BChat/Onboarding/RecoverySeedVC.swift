@@ -41,6 +41,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
         
+        txtview.textAlignment = .left
         txtview.delegate = self
         placeholderLabel = UILabel()
         placeholderLabel.text = "Enter your recovery seed to restore\n your account."
@@ -71,17 +72,8 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         txtview.resignFirstResponder()
     }
     
-    //    func textViewDidChange(_ textView: UITextView) {
-    //        let str = txtview.text
-    //        let components = str!.components(separatedBy: .whitespacesAndNewlines)
-    //        let words = components.filter { !$0.isEmpty }
-    //        self.lblcount.text = "\(words.count)/25"
-    //        WordCount = words.count
-    //        placeholderLabel.isHidden = !textView.text.isEmpty
-    //    }
-    
     func textViewDidChange(_ textView: UITextView) {
-        let strings : String! = txtview.text
+        let strings : String! = txtview.text.lowercased()
         let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
         let words = strings.components(separatedBy: spaces)
         
@@ -90,12 +82,15 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         }else {
             Seedflag = false
         }
+        if words.count == 25 {
+            Seedflag = true
+        }
         lblcount.text = "\(words.count)/25"
         if words.count > 25 {
             lblcount.text = "25/25"
             txtview.text = txtviewstr
         }else{
-            txtviewstr = txtview.text
+            txtviewstr = txtview.text.lowercased()
             placeholderLabel.isHidden = !textView.text.isEmpty
         }
     }
@@ -117,13 +112,12 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         if Seedflag == false {
             self.showToast22(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
         }else {
-            let strings : String! = txtview.text
+            let strings : String! = txtview.text.lowercased()
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
                 self.showToast22(message: "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.", seconds: 2.0)
-                
             }else {
                 func showError(title: String, message: String = "") {
                     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

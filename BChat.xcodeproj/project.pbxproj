@@ -83,7 +83,6 @@
 		4CC1ECFB211A553000CC13BE /* AppUpdateNag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC1ECFA211A553000CC13BE /* AppUpdateNag.swift */; };
 		4CC613362227A00400E21A3A /* ConversationSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC613352227A00400E21A3A /* ConversationSearch.swift */; };
 		5BCD6C8A5D825112EE431F34 /* Pods_GlobalDependencies_BChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A81AD6464918AD3286D6F691 /* Pods_GlobalDependencies_BChat.framework */; };
-		6007B5AF28A4D7220004BD61 /* BChatWalletWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5AE28A4D7220004BD61 /* BChatWalletWrapper.mm */; };
 		6007B5B228A4D7400004BD61 /* Seed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B128A4D7400004BD61 /* Seed.swift */; };
 		6007B5B528A4D75F0004BD61 /* BChatWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B328A4D75E0004BD61 /* BChatWallet.swift */; };
 		6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */; };
@@ -116,7 +115,7 @@
 		600A272828B36B44001F9FFE /* Groupcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 600A272628B36B44001F9FFE /* Groupcell.swift */; };
 		6010E9F428C86A0F00600D1A /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F328C86A0F00600D1A /* Section.swift */; };
 		6010E9F628C86A1700600D1A /* ExpandableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F528C86A1700600D1A /* ExpandableHeaderView.swift */; };
-		6010E9F828C86A5800600D1A /* ChnageLogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F728C86A5800600D1A /* ChnageLogVC.swift */; };
+		6010E9F828C86A5800600D1A /* ChangeLogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F728C86A5800600D1A /* ChangeLogVC.swift */; };
 		6036B3FF28E32C7100ABA398 /* MyAccountXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */; };
 		6036B40028E32C7100ABA398 /* MyAccountXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */; };
 		6040691028B4A8340094E74D /* SlideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040690828B4A8330094E74D /* SlideMenuCell.swift */; };
@@ -128,9 +127,9 @@
 		6040691628B4A8340094E74D /* SlideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040690E28B4A8340094E74D /* SlideMenuVC.swift */; };
 		6040691728B4A8340094E74D /* ProfileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6040690F28B4A8340094E74D /* ProfileCell.xib */; };
 		6040691B28B4ACCD0094E74D /* MyAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040691A28B4ACCC0094E74D /* MyAccountVC.swift */; };
-		6040691D28B4AD7C0094E74D /* RecoverySeedMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040691C28B4AD7C0094E74D /* RecoverySeedMenuVC.swift */; };
+		6040691D28B4AD7C0094E74D /* ImportantAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040691C28B4AD7C0094E74D /* ImportantAlertVC.swift */; };
 		6040691F28B4AE1B0094E74D /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040691E28B4AE1B0094E74D /* AboutUs.swift */; };
-		6040692328B4AEEB0094E74D /* RecoverySeedMenuVC2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040692228B4AEEB0094E74D /* RecoverySeedMenuVC2.swift */; };
+		6040692328B4AEEB0094E74D /* RecoverySeedMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040692228B4AEEB0094E74D /* RecoverySeedMenuVC.swift */; };
 		6040692728B4B28D0094E74D /* ChangepasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040692628B4B28D0094E74D /* ChangepasswordVC.swift */; };
 		6040692928B4BD790094E74D /* DeleteAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040692828B4BD790094E74D /* DeleteAccountModel.swift */; };
 		6042B0E729EE46D3005FC06B /* MediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042B0E629EE46D3005FC06B /* MediaPageViewController.swift */; };
@@ -177,10 +176,8 @@
 		604BA2DE29F7974900C9A7A4 /* CustomAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604BA2DD29F7974900C9A7A4 /* CustomAlertController.swift */; };
 		604BA2E029F79A0800C9A7A4 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604BA2DF29F79A0800C9A7A4 /* Alert.swift */; };
 		60505E8529F7CB1F00B0C4E5 /* SwiftAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60505E8429F7CB1F00B0C4E5 /* SwiftAlertView.swift */; };
+		605ED5172A402DF500C2B5A9 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 605ED5162A402DF500C2B5A9 /* libwallet_api.a */; };
 		6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */ = {isa = PBXBuildFile; fileRef = 6061624629BEFE7B00B20546 /* BChat-Turn-Server */; };
-		607021D628D8429500D5F4D4 /* MyWalletHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607021D528D8429500D5F4D4 /* MyWalletHomeVC.swift */; };
-		607021D928D870CE00D5F4D4 /* WalletHomeXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607021D728D870CE00D5F4D4 /* WalletHomeXibCell.swift */; };
-		607021DA28D870CE00D5F4D4 /* WalletHomeXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607021D828D870CE00D5F4D4 /* WalletHomeXibCell.xib */; };
 		607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607DCE2E28AE2511003F9288 /* Main.storyboard */; };
 		607DCE3128AE2578003F9288 /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCE3028AE2578003F9288 /* LandingVC.swift */; };
 		607DCE3328AE3412003F9288 /* DisplayNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCE3228AE3412003F9288 /* DisplayNameVC.swift */; };
@@ -191,6 +188,30 @@
 		607DCE3D28AE4258003F9288 /* RecoverySeedNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCE3C28AE4258003F9288 /* RecoverySeedNameVC.swift */; };
 		6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6086250629DA89B200CBF0D2 /* PaymentView.swift */; };
 		6086250929DA8F0900CBF0D2 /* VisibleMessage+Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6086250829DA8F0800CBF0D2 /* VisibleMessage+Payment.swift */; };
+		6098CA462A1DCAD0005A5502 /* DispatchQueuePool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA432A1DCAD0005A5502 /* DispatchQueuePool.swift */; };
+		6098CA472A1DCAD0005A5502 /* RSA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA442A1DCAD0005A5502 /* RSA.swift */; };
+		6098CA482A1DCAD0005A5502 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA452A1DCAD0005A5502 /* Helper.swift */; };
+		6098CA4D2A1DCB68005A5502 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA492A1DCB67005A5502 /* Observable.swift */; };
+		6098CA4E2A1DCB68005A5502 /* AppLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA4A2A1DCB67005A5502 /* AppLanguage.swift */; };
+		6098CA4F2A1DCB68005A5502 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA4B2A1DCB67005A5502 /* Observer.swift */; };
+		6098CA502A1DCB68005A5502 /* Postable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA4C2A1DCB68005A5502 /* Postable.swift */; };
+		6098CA672A1DCC42005A5502 /* BeldexSubAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA5E2A1DCC41005A5502 /* BeldexSubAddress.m */; };
+		6098CA682A1DCC42005A5502 /* BeldexWalletListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA632A1DCC42005A5502 /* BeldexWalletListener.m */; };
+		6098CA692A1DCC42005A5502 /* BeldexTrxHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA642A1DCC42005A5502 /* BeldexTrxHistory.m */; };
+		6098CA6A2A1DCC42005A5502 /* BChatWalletWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA652A1DCC42005A5502 /* BChatWalletWrapper.mm */; };
+		6098CA702A1DCC9C005A5502 /* Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA6B2A1DCC9B005A5502 /* Keys.swift */; };
+		6098CA712A1DCC9C005A5502 /* TransactionDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA6C2A1DCC9B005A5502 /* TransactionDirection.swift */; };
+		6098CA722A1DCC9C005A5502 /* TransactionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA6D2A1DCC9C005A5502 /* TransactionHistory.swift */; };
+		6098CA732A1DCC9C005A5502 /* SubAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA6E2A1DCC9C005A5502 /* SubAddress.swift */; };
+		6098CA742A1DCC9C005A5502 /* InteropConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA6F2A1DCC9C005A5502 /* InteropConverter.swift */; };
+		6098CA772A1DCD0B005A5502 /* LocalAuthOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA762A1DCD0B005A5502 /* LocalAuthOptions.swift */; };
+		6098CA7E2A1DCD44005A5502 /* Decimal + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA782A1DCD44005A5502 /* Decimal + Ext.swift */; };
+		6098CA7F2A1DCD44005A5502 /* UIView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA792A1DCD44005A5502 /* UIView + Extension.swift */; };
+		6098CA802A1DCD44005A5502 /* WKActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA7A2A1DCD44005A5502 /* WKActivityIndicatorView.swift */; };
+		6098CA812A1DCD44005A5502 /* String + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA7B2A1DCD44005A5502 /* String + Ext.swift */; };
+		6098CA822A1DCD44005A5502 /* LocalRecipientDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA7C2A1DCD44005A5502 /* LocalRecipientDB.swift */; };
+		6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6098CA7D2A1DCD44005A5502 /* UIButton + Ext.swift */; };
+		6098CA852A1DFDF5005A5502 /* webrtc_call_end.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6098CA842A1DFDF4005A5502 /* webrtc_call_end.mp3 */; };
 		60BE188829FA3B2F00048350 /* BChatUIKitInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 60BE188729FA3B2F00048350 /* BChatUIKitInfo.plist */; };
 		60BE188F29FA3C7E00048350 /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE188929FA3C7200048350 /* TextField.swift */; };
 		60BE189029FA3C7E00048350 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE188A29FA3C7500048350 /* TabBar.swift */; };
@@ -212,7 +233,6 @@
 		60BE18AE29FA782100048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60BE18AF29FA782700048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60D33B6329F7D9E7003CAE13 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
-		60D33B6729F8DD73003CAE13 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60D33B6629F8DD73003CAE13 /* libwallet_api.a */; };
 		60E6122128BE1BFD00EEE73B /* BlockedContactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E6122028BE1BFD00EEE73B /* BlockedContactVC.swift */; };
 		60E6122428BE1E3A00EEE73B /* BlockedXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E6122228BE1E3A00EEE73B /* BlockedXibCell.swift */; };
 		60E6122528BE1E3A00EEE73B /* BlockedXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E6122328BE1E3A00EEE73B /* BlockedXibCell.xib */; };
@@ -274,6 +294,15 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		81423AA32A29E2B6001BBBFA /* BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A6F025539DE700C340D1 /* BChatMessagingKit.framework */; };
+		81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A59F255385C100C340D1 /* BChatSnodeKit.framework */; };
+		81423AB02A29E2C4001BBBFA /* BChatUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A679255388CC00C340D1 /* BChatUtilitiesKit.framework */; };
+		81423AB42A29E2C8001BBBFA /* SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33FD9AB255A548A00E217F9 /* SignalUtilitiesKit.framework */; };
+		815A7BF12A2F2BC400A430F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
+		819AE3982A29EB4800F15166 /* NotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC01A3D241F40AB00BC7C55 /* NotificationServiceExtension.swift */; };
+		819AE3992A29EB4800F15166 /* NSENotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1D74A927BCC16E0030B423 /* NSENotificationPresenter.swift */; };
+		819AE39A2A29EB4800F15166 /* NotificationServiceExtensionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDCFC07242186E700641C39 /* NotificationServiceExtensionContext.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A13FC3642BE5D37A004D0EC8 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19942D14DEF67D588752ADB2 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework */; };
@@ -284,6 +313,7 @@
 		B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B226961BE4B7D200860F4D /* ContactsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B6F509971AA53F760068F56A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
 		B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6FE7EB61ADD62FA00A6D22F /* PushKit.framework */; };
+		B7316AB94B6BF859A1D34372 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E41C68B2D65001F7E61193 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework */; };
 		B8041A9525C8FA1D003C2166 /* MediaLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8041A9425C8FA1D003C2166 /* MediaLoaderView.swift */; };
 		B8041AA725C90927003C2166 /* TypingIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8041AA625C90927003C2166 /* TypingIndicatorCell.swift */; };
 		B806ECA126C4A7E4008BDA44 /* WebRTCBChat+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B806ECA026C4A7E4008BDA44 /* WebRTCBChat+UI.swift */; };
@@ -869,6 +899,41 @@
 			remoteGlobalIDString = C3C2A678255388CC00C340D1;
 			remoteInfo = SessionUtilitiesKit;
 		};
+		81423A9C2A29DEC7001BBBFA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81423A962A29DEC5001BBBFA;
+			remoteInfo = BChatNotificationServiceExtension;
+		};
+		81423AA52A29E2B7001BBBFA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3C2A6EF25539DE700C340D1;
+			remoteInfo = BChatMessagingKit;
+		};
+		81423AAA2A29E2BC001BBBFA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3C2A59E255385C100C340D1;
+			remoteInfo = BChatSnodeKit;
+		};
+		81423AB22A29E2C5001BBBFA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C3C2A678255388CC00C340D1;
+			remoteInfo = BChatUtilitiesKit;
+		};
+		81423AB62A29E2C9001BBBFA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C33FD9AA255A548A00E217F9;
+			remoteInfo = SignalUtilitiesKit;
+		};
 		B8D64FBF25BA784A0029CFC0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D221A080169C9E5E00537ABF /* Project object */;
@@ -930,10 +995,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		453518771FC635DD00210559 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */,
 				453518721FC635DD00210559 /* BChatShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -957,11 +1023,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		068B2D5E72489EA4AD9F9050 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-BChat.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat.app store release.xcconfig"; sourceTree = "<group>"; };
+		0403B6AF17DFAD629A3AF862 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.app store release.xcconfig"; sourceTree = "<group>"; };
+		084AFF62D4E24B6292AF2644 /* Pods-GlobalDependencies-BChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-BChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat.debug.xcconfig"; sourceTree = "<group>"; };
+		08EF72D6EB5CDC49C863781E /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.app store release.xcconfig"; sourceTree = "<group>"; };
+		0F1A8805563934A3324676D1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		10CA720B4EDA70617FD96D89 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.app store release.xcconfig"; sourceTree = "<group>"; };
+		174BD0AE74771D02DAC2B7A9 /* Pods-SessionProtocolKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionProtocolKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionProtocolKit/Pods-SessionProtocolKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		1758FCA85C98360EBA3949CF /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		18D19142FD6E60FD0A5D89F7 /* Pods-LokiPushNotificationService.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LokiPushNotificationService.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-LokiPushNotificationService/Pods-LokiPushNotificationService.app store release.xcconfig"; sourceTree = "<group>"; };
 		19942D14DEF67D588752ADB2 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		19FDF2261A6F95EF34AB6211 /* Pods-BChatUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BChatUIKit.debug.xcconfig"; path = "Target Support Files/Pods-BChatUIKit/Pods-BChatUIKit.debug.xcconfig"; sourceTree = "<group>"; };
+		1C93CF3971B64E8B6C1F9AC1 /* Pods-SignalShareExtension.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalShareExtension.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalShareExtension/Pods-SignalShareExtension.test.xcconfig"; sourceTree = "<group>"; };
+		1CE3CD5C23334683BDD3D78C /* Pods-Signal.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Signal.test.xcconfig"; path = "Pods/Target Support Files/Pods-Signal/Pods-Signal.test.xcconfig"; sourceTree = "<group>"; };
 		2183DCA28E0620BC73FCC554 /* Pods_SessionProtocolKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SessionProtocolKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		264033E641846B67E0CB21B0 /* Pods-SessionUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		264242150E87D10A357DB07B /* Pods_SignalMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SignalMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		292F8FB4C82D8FF94571D837 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.debug.xcconfig"; sourceTree = "<group>"; };
+		3303495F6651CE2F3CC9693B /* Pods-SessionUtilities.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilities.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilities/Pods-SessionUtilities.app store release.xcconfig"; sourceTree = "<group>"; };
 		340FC87B204DAC8C007AEB0F /* NotificationSettingsOptionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsOptionsViewController.m; sourceTree = "<group>"; };
 		340FC87C204DAC8C007AEB0F /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsViewController.m; sourceTree = "<group>"; };
 		340FC87E204DAC8C007AEB0F /* PrivacySettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivacySettingsTableViewController.m; sourceTree = "<group>"; };
@@ -989,7 +1066,6 @@
 		346129981FD1E4DA00532771 /* SignalApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalApp.h; sourceTree = "<group>"; };
 		346B66301F4E29B200E5122F /* CropScaleImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CropScaleImageViewController.swift; sourceTree = "<group>"; };
 		3488F9352191CC4000E524CC /* MediaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
-		3494A0AD135BF2B42F222883 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		3496744E2076ACCE00080B5F /* LongTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongTextViewController.swift; sourceTree = "<group>"; };
 		34969559219B605E00DCFE74 /* ImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerController.swift; sourceTree = "<group>"; };
 		3496955A219B605E00DCFE74 /* PhotoCollectionPickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionPickerController.swift; sourceTree = "<group>"; };
@@ -1018,6 +1094,10 @@
 		34E3E5671EC4B19400495BAC /* AudioProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioProgressView.swift; sourceTree = "<group>"; };
 		34F308A01ECB469700BB7697 /* OWSBezierPathView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OWSBezierPathView.h; sourceTree = "<group>"; };
 		34F308A11ECB469700BB7697 /* OWSBezierPathView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OWSBezierPathView.m; sourceTree = "<group>"; };
+		36098A00B2C7DB91D85A4AE3 /* Pods-Session.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Session.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Session/Pods-Session.debug.xcconfig"; sourceTree = "<group>"; };
+		37C61C4A1D3A11D3FC03FE22 /* Pods-GlobalDependencies-Session.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-Session.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-Session/Pods-GlobalDependencies-Session.debug.xcconfig"; sourceTree = "<group>"; };
+		40E4C5D2ABFC1940BEB88BB9 /* Pods-Session.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Session.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Session/Pods-Session.app store release.xcconfig"; sourceTree = "<group>"; };
+		435EAC2E5E22D3F087EB3192 /* Pods-SignalShareExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalShareExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalShareExtension/Pods-SignalShareExtension.app store release.xcconfig"; sourceTree = "<group>"; };
 		4509E7991DD653700025A59F /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = ThirdParty/WebRTC/Build/WebRTC.framework; sourceTree = "<group>"; };
 		450DF2081E0DD2C6003D14BE /* UserNotificationsAdaptee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserNotificationsAdaptee.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		451166BF1FD86B98000739BA /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
@@ -1044,8 +1124,10 @@
 		45C0DC1D1E69011F00E04C47 /* UIStoryboard+OWS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+OWS.swift"; sourceTree = "<group>"; };
 		45CD81EE1DC030E7004C9430 /* SyncPushTokensJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncPushTokensJob.swift; sourceTree = "<group>"; };
 		45E5A6981F61E6DD001E4A8A /* MarqueeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
+		4AA83A384314E9A846A878B3 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		4C090A1A210FD9C7001FD7F9 /* HapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
 		4C1885D1218F8E1C00B67051 /* PhotoGridViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGridViewCell.swift; sourceTree = "<group>"; };
+		4C1B5E0CB1A44AA514368CE1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		4C21D5D5223A9DC500EF8A77 /* UIAlerts+iOS9.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIAlerts+iOS9.m"; sourceTree = "<group>"; };
 		4C21D5D7223AC60F00EF8A77 /* PhotoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCapture.swift; sourceTree = "<group>"; };
 		4C4AE69F224AF21900D4AF6F /* SendMediaNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMediaNavigationController.swift; sourceTree = "<group>"; };
@@ -1059,11 +1141,9 @@
 		4CA485BA2232339F004B9E7D /* PhotoCaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureViewController.swift; sourceTree = "<group>"; };
 		4CC1ECFA211A553000CC13BE /* AppUpdateNag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateNag.swift; sourceTree = "<group>"; };
 		4CC613352227A00400E21A3A /* ConversationSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationSearch.swift; sourceTree = "<group>"; };
-		5C644E4688174C6B658C3DF2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		56298B3B5A12567B30355B67 /* Pods-GlobalDependencies-Session.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-Session.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-Session/Pods-GlobalDependencies-Session.app store release.xcconfig"; sourceTree = "<group>"; };
+		5F3070F3395081DD0EB4F933 /* Pods-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SignalUtilitiesKit/Pods-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		6007B5AC28A4D6EA0004BD61 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
-		6007B5AD28A4D7210004BD61 /* BChatWalletWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BChatWalletWrapper.h; sourceTree = "<group>"; };
-		6007B5AE28A4D7220004BD61 /* BChatWalletWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BChatWalletWrapper.mm; sourceTree = "<group>"; };
-		6007B5B028A4D72F0004BD61 /* BChatConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BChatConfig.h; sourceTree = "<group>"; };
 		6007B5B128A4D7400004BD61 /* Seed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Seed.swift; sourceTree = "<group>"; };
 		6007B5B328A4D75E0004BD61 /* BChatWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BChatWallet.swift; sourceTree = "<group>"; };
 		6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BChatWalletBuilder.swift; sourceTree = "<group>"; };
@@ -1096,7 +1176,7 @@
 		600A272628B36B44001F9FFE /* Groupcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Groupcell.swift; sourceTree = "<group>"; };
 		6010E9F328C86A0F00600D1A /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		6010E9F528C86A1700600D1A /* ExpandableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableHeaderView.swift; sourceTree = "<group>"; };
-		6010E9F728C86A5800600D1A /* ChnageLogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChnageLogVC.swift; sourceTree = "<group>"; };
+		6010E9F728C86A5800600D1A /* ChangeLogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLogVC.swift; sourceTree = "<group>"; };
 		6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountXibCell.swift; sourceTree = "<group>"; };
 		6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyAccountXibCell.xib; sourceTree = "<group>"; };
 		6040690828B4A8330094E74D /* SlideMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideMenuCell.swift; sourceTree = "<group>"; };
@@ -1108,9 +1188,9 @@
 		6040690E28B4A8340094E74D /* SlideMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideMenuVC.swift; sourceTree = "<group>"; };
 		6040690F28B4A8340094E74D /* ProfileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCell.xib; sourceTree = "<group>"; };
 		6040691A28B4ACCC0094E74D /* MyAccountVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAccountVC.swift; sourceTree = "<group>"; };
-		6040691C28B4AD7C0094E74D /* RecoverySeedMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverySeedMenuVC.swift; sourceTree = "<group>"; };
+		6040691C28B4AD7C0094E74D /* ImportantAlertVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportantAlertVC.swift; sourceTree = "<group>"; };
 		6040691E28B4AE1B0094E74D /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
-		6040692228B4AEEB0094E74D /* RecoverySeedMenuVC2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverySeedMenuVC2.swift; sourceTree = "<group>"; };
+		6040692228B4AEEB0094E74D /* RecoverySeedMenuVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverySeedMenuVC.swift; sourceTree = "<group>"; };
 		6040692628B4B28D0094E74D /* ChangepasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangepasswordVC.swift; sourceTree = "<group>"; };
 		6040692828B4BD790094E74D /* DeleteAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountModel.swift; sourceTree = "<group>"; };
 		6042B0E629EE46D3005FC06B /* MediaPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPageViewController.swift; sourceTree = "<group>"; };
@@ -1157,10 +1237,8 @@
 		604BA2DD29F7974900C9A7A4 /* CustomAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAlertController.swift; sourceTree = "<group>"; };
 		604BA2DF29F79A0800C9A7A4 /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		60505E8429F7CB1F00B0C4E5 /* SwiftAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftAlertView.swift; sourceTree = "<group>"; };
+		605ED5162A402DF500C2B5A9 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		6061624629BEFE7B00B20546 /* BChat-Turn-Server */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BChat-Turn-Server"; sourceTree = "<group>"; };
-		607021D528D8429500D5F4D4 /* MyWalletHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyWalletHomeVC.swift; sourceTree = "<group>"; };
-		607021D728D870CE00D5F4D4 /* WalletHomeXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHomeXibCell.swift; sourceTree = "<group>"; };
-		607021D828D870CE00D5F4D4 /* WalletHomeXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletHomeXibCell.xib; sourceTree = "<group>"; };
 		607DCE2E28AE2511003F9288 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		607DCE3028AE2578003F9288 /* LandingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
 		607DCE3228AE3412003F9288 /* DisplayNameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayNameVC.swift; sourceTree = "<group>"; };
@@ -1171,6 +1249,35 @@
 		607DCE3C28AE4258003F9288 /* RecoverySeedNameVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverySeedNameVC.swift; sourceTree = "<group>"; };
 		6086250629DA89B200CBF0D2 /* PaymentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
 		6086250829DA8F0800CBF0D2 /* VisibleMessage+Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+Payment.swift"; sourceTree = "<group>"; };
+		6098CA432A1DCAD0005A5502 /* DispatchQueuePool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueuePool.swift; sourceTree = "<group>"; };
+		6098CA442A1DCAD0005A5502 /* RSA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSA.swift; sourceTree = "<group>"; };
+		6098CA452A1DCAD0005A5502 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		6098CA492A1DCB67005A5502 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		6098CA4A2A1DCB67005A5502 /* AppLanguage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLanguage.swift; sourceTree = "<group>"; };
+		6098CA4B2A1DCB67005A5502 /* Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		6098CA4C2A1DCB68005A5502 /* Postable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Postable.swift; sourceTree = "<group>"; };
+		6098CA5E2A1DCC41005A5502 /* BeldexSubAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeldexSubAddress.m; sourceTree = "<group>"; };
+		6098CA5F2A1DCC41005A5502 /* BeldexWalletListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeldexWalletListener.h; sourceTree = "<group>"; };
+		6098CA602A1DCC41005A5502 /* BeldexTrxHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeldexTrxHistory.h; sourceTree = "<group>"; };
+		6098CA612A1DCC41005A5502 /* BeldexSubAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeldexSubAddress.h; sourceTree = "<group>"; };
+		6098CA622A1DCC41005A5502 /* BChatConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BChatConfig.h; sourceTree = "<group>"; };
+		6098CA632A1DCC42005A5502 /* BeldexWalletListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeldexWalletListener.m; sourceTree = "<group>"; };
+		6098CA642A1DCC42005A5502 /* BeldexTrxHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeldexTrxHistory.m; sourceTree = "<group>"; };
+		6098CA652A1DCC42005A5502 /* BChatWalletWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BChatWalletWrapper.mm; sourceTree = "<group>"; };
+		6098CA662A1DCC42005A5502 /* BChatWalletWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BChatWalletWrapper.h; sourceTree = "<group>"; };
+		6098CA6B2A1DCC9B005A5502 /* Keys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keys.swift; sourceTree = "<group>"; };
+		6098CA6C2A1DCC9B005A5502 /* TransactionDirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDirection.swift; sourceTree = "<group>"; };
+		6098CA6D2A1DCC9C005A5502 /* TransactionHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionHistory.swift; sourceTree = "<group>"; };
+		6098CA6E2A1DCC9C005A5502 /* SubAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubAddress.swift; sourceTree = "<group>"; };
+		6098CA6F2A1DCC9C005A5502 /* InteropConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteropConverter.swift; sourceTree = "<group>"; };
+		6098CA762A1DCD0B005A5502 /* LocalAuthOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalAuthOptions.swift; sourceTree = "<group>"; };
+		6098CA782A1DCD44005A5502 /* Decimal + Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Decimal + Ext.swift"; sourceTree = "<group>"; };
+		6098CA792A1DCD44005A5502 /* UIView + Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView + Extension.swift"; sourceTree = "<group>"; };
+		6098CA7A2A1DCD44005A5502 /* WKActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKActivityIndicatorView.swift; sourceTree = "<group>"; };
+		6098CA7B2A1DCD44005A5502 /* String + Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String + Ext.swift"; sourceTree = "<group>"; };
+		6098CA7C2A1DCD44005A5502 /* LocalRecipientDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalRecipientDB.swift; sourceTree = "<group>"; };
+		6098CA7D2A1DCD44005A5502 /* UIButton + Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton + Ext.swift"; sourceTree = "<group>"; };
+		6098CA842A1DFDF4005A5502 /* webrtc_call_end.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = webrtc_call_end.mp3; sourceTree = "<group>"; };
 		60BE188729FA3B2F00048350 /* BChatUIKitInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BChatUIKitInfo.plist; sourceTree = "<group>"; };
 		60BE188929FA3C7200048350 /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		60BE188A29FA3C7500048350 /* TabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
@@ -1190,22 +1297,25 @@
 		60BE18A529FA3CC900048350 /* UIView+Constraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tinting.swift"; sourceTree = "<group>"; };
 		60D33B6229F7D9E7003CAE13 /* StringConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
-		60D33B6629F8DD73003CAE13 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		60E6122028BE1BFD00EEE73B /* BlockedContactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedContactVC.swift; sourceTree = "<group>"; };
 		60E6122228BE1E3A00EEE73B /* BlockedXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedXibCell.swift; sourceTree = "<group>"; };
 		60E6122328BE1E3A00EEE73B /* BlockedXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockedXibCell.xib; sourceTree = "<group>"; };
 		60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BChatUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60F0F17F29FA3513000BEF3F /* BChatUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BChatUIKit.h; sourceTree = "<group>"; };
-		6D807D8D0C3D25AC16AD61BC /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		61E41C68B2D65001F7E61193 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		69349DE607F5BA6036C9AC60 /* Pods-SignalShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SignalShareExtension/Pods-SignalShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		698ED62BE96164824CE7CC18 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		69ED39F18BDEC3C861B8044F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		6A26D6558DE69AF455E571C1 /* Pods-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionMessagingKit/Pods-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
+		6AD66810558DCCC8D6FD14C6 /* Pods-SessionPushNotificationExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionPushNotificationExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionPushNotificationExtension/Pods-SessionPushNotificationExtension.app store release.xcconfig"; sourceTree = "<group>"; };
 		70377AAA1918450100CAF501 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		7038EEE0E0E3A19404379088 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; sourceTree = "<group>"; };
 		71CFEDD2D3C54277731012DF /* Pods_SessionUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SessionUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		745D551FF92B7DC24920F2F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		748A5CAEDD7C919FC64C6807 /* Pods_SignalTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SignalTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		768A1A2A17FC9CD300E00ED8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		76C87F18181EFCE600C4ACAB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		76EB03C218170B33006006FC /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		76EB03C318170B33006006FC /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7851D29D5B5FD23A87F2C517 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		7B0EFDED274F598600FFAAE7 /* TimestampUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampUtils.swift; sourceTree = "<group>"; };
 		7B0EFDEF275084AA00FFAAE7 /* CallMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallMessageCell.swift; sourceTree = "<group>"; };
 		7B0EFDF1275449AA00FFAAE7 /* TSInfoMessage+Calls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TSInfoMessage+Calls.swift"; sourceTree = "<group>"; };
@@ -1261,18 +1371,31 @@
 		7BFD1A892745C4F000FB91B9 /* Permissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permissions.swift; sourceTree = "<group>"; };
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
-		83708FD59B525FA9731540F8 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig"; sourceTree = "<group>"; };
+		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		81934DA42A304A2C00505F24 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		81934DA82A304C9400505F24 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
+		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
+		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
+		8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.app store release.xcconfig"; sourceTree = "<group>"; };
+		948239851C08032C842937CC /* Pods-SignalMessaging.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.test.xcconfig"; sourceTree = "<group>"; };
+		957AF4803F564499A352497A /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; sourceTree = "<group>"; };
 		969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B533A9FA46206D3D99C9ADA /* Pods-SignalMessaging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.debug.xcconfig"; sourceTree = "<group>"; };
+		9C0469AC557930C01552CC83 /* Pods-SignalUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalUtilitiesKit/Pods-SignalUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A163E8AA16F3F6A90094D68B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A1C32D4D17A0652C000A904E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		A1C32D4F17A06537000A904E /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		A1FDCBEE16DAA6C300868894 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A33198C9DCA8A32D80FD3E33 /* Pods_BChatUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BChatUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6344D429FFAC3B44E6A06FA /* Pods-SessionSnodeKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionSnodeKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionSnodeKit/Pods-SessionSnodeKit.debug.xcconfig"; sourceTree = "<group>"; };
+		A75A509D36103409955AF485 /* Pods-BChatUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BChatUIKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BChatUIKit/Pods-BChatUIKit.debug.xcconfig"; sourceTree = "<group>"; };
 		A81AD6464918AD3286D6F691 /* Pods_GlobalDependencies_BChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_BChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9AC40F2BFA260B44AED69F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig"; sourceTree = "<group>"; };
-		AA30E3E9D2718CF78A79807F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
-		B1557DAD4506298767C3DE74 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AEA8083C060FF9BAFF6E0C9F /* Pods-SessionProtocolKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionProtocolKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionProtocolKit/Pods-SessionProtocolKit.debug.xcconfig"; sourceTree = "<group>"; };
+		B27A64C349BBE85670300948 /* Pods-SessionShareExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionShareExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionShareExtension/Pods-SessionShareExtension.app store release.xcconfig"; sourceTree = "<group>"; };
 		B60EDE031A05A01700D73516 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B657DDC91911A40500F45B0C /* Signal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Signal.entitlements; sourceTree = "<group>"; };
 		B66DBF4919D5BBC8006EA940 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -1381,7 +1504,9 @@
 		B90418E4183E9DD40038554A /* DateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtil.h; sourceTree = "<group>"; };
 		B90418E5183E9DD40038554A /* DateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtil.m; sourceTree = "<group>"; };
 		B9EB5ABC1884C002007CBB57 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		BEF7977075AB5D4EF0D734C7 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
+		C022DD8E076866C6241610BF /* Pods-SessionSnodeKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionSnodeKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionSnodeKit/Pods-SessionSnodeKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		C1A746BC424B531D8ED478F6 /* Pods-SessionUIKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUIKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUIKit/Pods-SessionUIKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		C262EDE8A5EE32236170511F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		C300A5B12554AF9800555489 /* VisibleMessage+Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+Profile.swift"; sourceTree = "<group>"; };
 		C300A5BC2554B00D00555489 /* ReadReceipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadReceipt.swift; sourceTree = "<group>"; };
 		C300A5D22554B05A00555489 /* TypingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypingIndicator.swift; sourceTree = "<group>"; };
@@ -1824,6 +1949,12 @@
 		C3F0A5EB255C970D007BE2A3 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C3F0A5FD255C988A007BE2A3 /* Storage+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Shared.swift"; sourceTree = "<group>"; };
 		C3F0A607255C98A6007BE2A3 /* Storage+SnodeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+SnodeAPI.swift"; sourceTree = "<group>"; };
+		C71D29C645B60C56E8429F81 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig"; sourceTree = "<group>"; };
+		C88965DE4F4EC4FC919BEC4E /* Pods-SessionUIKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUIKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUIKit/Pods-SessionUIKit.debug.xcconfig"; sourceTree = "<group>"; };
+		C98441E849C3CA7FE8220D33 /* Pods-SessionNotificationServiceExtension.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionNotificationServiceExtension.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionNotificationServiceExtension/Pods-SessionNotificationServiceExtension.app store release.xcconfig"; sourceTree = "<group>"; };
+		CA4942875292B7BD5C0C02A6 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		CD8BED7E0AD59216282FD496 /* Pods-BChatUIKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BChatUIKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-BChatUIKit/Pods-BChatUIKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		CDF3B5D78FEA7EE52F4982F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig"; sourceTree = "<group>"; };
 		D2179CFB16BB0B3A0006F3AB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		D2179CFD16BB0B480006F3AB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		D221A089169C9E5E00537ABF /* BChat Messenger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BChat Messenger.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1836,17 +1967,29 @@
 		D221A0E7169DFFC500537ABF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = ../../../../../../System/Library/Frameworks/AVFoundation.framework; sourceTree = "<group>"; };
 		D24B5BD4169F568C00681372 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = ../../../../../../System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<group>"; };
 		D2AEACDB16C426DA00C364C0 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		D640D224F651AB75DF40AA0C /* Pods-GlobalDependencies-BChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-BChat.debug.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat.debug.xcconfig"; sourceTree = "<group>"; };
+		D76E97ABB075F62BC2C45F73 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		DE2DD605305BC6EFAD731723 /* Pods-Signal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Signal.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Signal/Pods-Signal.debug.xcconfig"; sourceTree = "<group>"; };
+		DF728B4B438716EAF95CEC18 /* Pods-Signal.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Signal.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-Signal/Pods-Signal.app store release.xcconfig"; sourceTree = "<group>"; };
 		E1A0AD8B16E13FDD0071E604 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		E606B90AC44E6DC747F2678B /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E631A7167783FA9D1FFBC453 /* Pods-SessionNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionNotificationServiceExtension/Pods-SessionNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		E7E2FBF1546840C91B7E4879 /* Pods-SessionUtilities.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilities.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilities/Pods-SessionUtilities.debug.xcconfig"; sourceTree = "<group>"; };
 		E846754C7958ED01F5699EA3 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatUtilitiesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatUtilitiesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.app store release.xcconfig"; sourceTree = "<group>"; };
 		E8B3E83E635D96DC8F4EFD9E /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_SessionNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_SessionNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF764C331DB67CC5000D9A87 /* UIViewController+Permissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Permissions.h"; sourceTree = "<group>"; };
 		EF764C341DB67CC5000D9A87 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
-		F1D9CE10D9634C2DC1923FAD /* Pods-BChatUIKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BChatUIKit.app store release.xcconfig"; path = "Target Support Files/Pods-BChatUIKit/Pods-BChatUIKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		F04906EA72326B6CF4FF859E /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
+		F08E832B3C79F5AE5A0BBAE5 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		F121FB43E2A1C1CF7F2AFC23 /* Pods-SessionPushNotificationExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionPushNotificationExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionPushNotificationExtension/Pods-SessionPushNotificationExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		F62ECF7B8AF4F8089AA705B3 /* Pods-LokiPushNotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LokiPushNotificationService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LokiPushNotificationService/Pods-LokiPushNotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		F7A2E3D105D13A663129EA2C /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		F9BBF530D71905BA9007675F /* Pods-SessionShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SessionShareExtension/Pods-SessionShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FBD78936C1CFA8EA37884A5A /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatSnodeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatSnodeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC3BD9871A30A790005B96BB /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		FCB11D8B1A129A76002F93FB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		FF4DF414F04404AD125126A7 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-BChat.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat.app store release.xcconfig"; sourceTree = "<group>"; };
+		FF9BA33D021B115B1F5B4E46 /* Pods-SessionMessagingKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionMessagingKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionMessagingKit/Pods-SessionMessagingKit.app store release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1867,6 +2010,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A314AD03D8C6BCA8D6BF80A /* Pods_BChatUIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81423A942A29DEC5001BBBFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */,
+				81423AB02A29E2C4001BBBFA /* BChatUtilitiesKit.framework in Frameworks */,
+				81423AB42A29E2C8001BBBFA /* SignalUtilitiesKit.framework in Frameworks */,
+				81423AA32A29E2B6001BBBFA /* BChatMessagingKit.framework in Frameworks */,
+				B7316AB94B6BF859A1D34372 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1930,7 +2085,7 @@
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				60D33B6729F8DD73003CAE13 /* libwallet_api.a in Frameworks */,
+				605ED5172A402DF500C2B5A9 /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -1951,30 +2106,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		24D268F795400158BE0D9973 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				19FDF2261A6F95EF34AB6211 /* Pods-BChatUIKit.debug.xcconfig */,
-				F1D9CE10D9634C2DC1923FAD /* Pods-BChatUIKit.app store release.xcconfig */,
-				D640D224F651AB75DF40AA0C /* Pods-GlobalDependencies-BChat.debug.xcconfig */,
-				068B2D5E72489EA4AD9F9050 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */,
-				83708FD59B525FA9731540F8 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */,
-				7038EEE0E0E3A19404379088 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */,
-				BEF7977075AB5D4EF0D734C7 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */,
-				B1557DAD4506298767C3DE74 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */,
-				3494A0AD135BF2B42F222883 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */,
-				A9AC40F2BFA260B44AED69F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */,
-				AA30E3E9D2718CF78A79807F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */,
-				6D807D8D0C3D25AC16AD61BC /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */,
-				745D551FF92B7DC24920F2F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */,
-				5C644E4688174C6B658C3DF2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		34074F54203D0722004596AE /* BChatSounds */ = {
 			isa = PBXGroup;
 			children = (
+				6098CA842A1DFDF4005A5502 /* webrtc_call_end.mp3 */,
 				6042B18F29EE57E4005FC06B /* sonarping_ring.mp3 */,
 				6042B18D29EE578B005FC06B /* ringback_tone_ansi_ring.caf */,
 				6042B18B29EE5713005FC06B /* NewMessage_ring.aifc */,
@@ -2044,6 +2179,8 @@
 		6007B59D28A4D5480004BD61 /* BeldexWallet */ = {
 			isa = PBXGroup;
 			children = (
+				6098CA3C2A1DC9FA005A5502 /* Application */,
+				6098CA3B2A1DC9ED005A5502 /* Helper */,
 				6007B5A028A4D5730004BD61 /* WalletLibs */,
 				6007B59F28A4D5670004BD61 /* Modules */,
 				6007B59E28A4D55A0004BD61 /* Extension */,
@@ -2055,6 +2192,12 @@
 			isa = PBXGroup;
 			children = (
 				6007B5BB28A4D79F0004BD61 /* Date + Ext.swift */,
+				6098CA782A1DCD44005A5502 /* Decimal + Ext.swift */,
+				6098CA7C2A1DCD44005A5502 /* LocalRecipientDB.swift */,
+				6098CA7B2A1DCD44005A5502 /* String + Ext.swift */,
+				6098CA7D2A1DCD44005A5502 /* UIButton + Ext.swift */,
+				6098CA792A1DCD44005A5502 /* UIView + Extension.swift */,
+				6098CA7A2A1DCD44005A5502 /* WKActivityIndicatorView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2062,6 +2205,7 @@
 		6007B59F28A4D5670004BD61 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				6098CA752A1DCCF3005A5502 /* LocalAuth */,
 				6007B5A828A4D5F00004BD61 /* Add Wallet */,
 				6007B5A728A4D5E40004BD61 /* Services */,
 			);
@@ -2091,9 +2235,15 @@
 		6007B5A228A4D5920004BD61 /* cppbridge */ = {
 			isa = PBXGroup;
 			children = (
-				6007B5B028A4D72F0004BD61 /* BChatConfig.h */,
-				6007B5AD28A4D7210004BD61 /* BChatWalletWrapper.h */,
-				6007B5AE28A4D7220004BD61 /* BChatWalletWrapper.mm */,
+				6098CA622A1DCC41005A5502 /* BChatConfig.h */,
+				6098CA662A1DCC42005A5502 /* BChatWalletWrapper.h */,
+				6098CA652A1DCC42005A5502 /* BChatWalletWrapper.mm */,
+				6098CA612A1DCC41005A5502 /* BeldexSubAddress.h */,
+				6098CA5E2A1DCC41005A5502 /* BeldexSubAddress.m */,
+				6098CA602A1DCC41005A5502 /* BeldexTrxHistory.h */,
+				6098CA642A1DCC42005A5502 /* BeldexTrxHistory.m */,
+				6098CA5F2A1DCC41005A5502 /* BeldexWalletListener.h */,
+				6098CA632A1DCC42005A5502 /* BeldexWalletListener.m */,
 			);
 			path = cppbridge;
 			sourceTree = "<group>";
@@ -2118,6 +2268,11 @@
 		6007B5A628A4D5D40004BD61 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				6098CA6F2A1DCC9C005A5502 /* InteropConverter.swift */,
+				6098CA6B2A1DCC9B005A5502 /* Keys.swift */,
+				6098CA6E2A1DCC9C005A5502 /* SubAddress.swift */,
+				6098CA6C2A1DCC9B005A5502 /* TransactionDirection.swift */,
+				6098CA6D2A1DCC9C005A5502 /* TransactionHistory.swift */,
 				6007B5B128A4D7400004BD61 /* Seed.swift */,
 			);
 			path = Utils;
@@ -2207,15 +2362,15 @@
 			isa = PBXGroup;
 			children = (
 				6010E9F228C869E000600D1A /* ExpandableHeaderView */,
-				6010E9F728C86A5800600D1A /* ChnageLogVC.swift */,
+				6010E9F728C86A5800600D1A /* ChangeLogVC.swift */,
 				60E6122028BE1BFD00EEE73B /* BlockedContactVC.swift */,
 				60E6122228BE1E3A00EEE73B /* BlockedXibCell.swift */,
 				60E6122328BE1E3A00EEE73B /* BlockedXibCell.xib */,
 				6040692828B4BD790094E74D /* DeleteAccountModel.swift */,
 				6040692628B4B28D0094E74D /* ChangepasswordVC.swift */,
-				6040692228B4AEEB0094E74D /* RecoverySeedMenuVC2.swift */,
+				6040692228B4AEEB0094E74D /* RecoverySeedMenuVC.swift */,
 				6040691E28B4AE1B0094E74D /* AboutUs.swift */,
-				6040691C28B4AD7C0094E74D /* RecoverySeedMenuVC.swift */,
+				6040691C28B4AD7C0094E74D /* ImportantAlertVC.swift */,
 				6040691A28B4ACCC0094E74D /* MyAccountVC.swift */,
 				6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */,
 				6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */,
@@ -2257,14 +2412,33 @@
 			path = BChat;
 			sourceTree = "<group>";
 		};
-		607021D428D8426F00D5F4D4 /* MyWallet */ = {
+		6098CA3B2A1DC9ED005A5502 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				607021D528D8429500D5F4D4 /* MyWalletHomeVC.swift */,
-				607021D728D870CE00D5F4D4 /* WalletHomeXibCell.swift */,
-				607021D828D870CE00D5F4D4 /* WalletHomeXibCell.xib */,
+				6098CA432A1DCAD0005A5502 /* DispatchQueuePool.swift */,
+				6098CA452A1DCAD0005A5502 /* Helper.swift */,
+				6098CA442A1DCAD0005A5502 /* RSA.swift */,
 			);
-			path = MyWallet;
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		6098CA3C2A1DC9FA005A5502 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				6098CA4A2A1DCB67005A5502 /* AppLanguage.swift */,
+				6098CA492A1DCB67005A5502 /* Observable.swift */,
+				6098CA4B2A1DCB67005A5502 /* Observer.swift */,
+				6098CA4C2A1DCB68005A5502 /* Postable.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		6098CA752A1DCCF3005A5502 /* LocalAuth */ = {
+			isa = PBXGroup;
+			children = (
+				6098CA762A1DCD0B005A5502 /* LocalAuthOptions.swift */,
+			);
+			path = LocalAuth;
 			sourceTree = "<group>";
 		};
 		60BE18AB29FA75A300048350 /* Components */ = {
@@ -2308,7 +2482,7 @@
 		60D3A49A29ED312D0059472A /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				60D33B6629F8DD73003CAE13 /* libwallet_api.a */,
+				605ED5162A402DF500C2B5A9 /* libwallet_api.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -2431,6 +2605,77 @@
 				6061624629BEFE7B00B20546 /* BChat-Turn-Server */,
 			);
 			path = TurnServers;
+			sourceTree = "<group>";
+		};
+		9404664EC513585B05DF1350 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DE2DD605305BC6EFAD731723 /* Pods-Signal.debug.xcconfig */,
+				DF728B4B438716EAF95CEC18 /* Pods-Signal.app store release.xcconfig */,
+				AD2AB1207E8888E4262D781B /* Pods-SignalTests.debug.xcconfig */,
+				E85DB184824BA9DC302EC8B3 /* Pods-SignalTests.app store release.xcconfig */,
+				1CE3CD5C23334683BDD3D78C /* Pods-Signal.test.xcconfig */,
+				8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */,
+				69349DE607F5BA6036C9AC60 /* Pods-SignalShareExtension.debug.xcconfig */,
+				1C93CF3971B64E8B6C1F9AC1 /* Pods-SignalShareExtension.test.xcconfig */,
+				435EAC2E5E22D3F087EB3192 /* Pods-SignalShareExtension.app store release.xcconfig */,
+				9B533A9FA46206D3D99C9ADA /* Pods-SignalMessaging.debug.xcconfig */,
+				948239851C08032C842937CC /* Pods-SignalMessaging.test.xcconfig */,
+				8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */,
+				F62ECF7B8AF4F8089AA705B3 /* Pods-LokiPushNotificationService.debug.xcconfig */,
+				18D19142FD6E60FD0A5D89F7 /* Pods-LokiPushNotificationService.app store release.xcconfig */,
+				A6344D429FFAC3B44E6A06FA /* Pods-SessionSnodeKit.debug.xcconfig */,
+				C022DD8E076866C6241610BF /* Pods-SessionSnodeKit.app store release.xcconfig */,
+				E7E2FBF1546840C91B7E4879 /* Pods-SessionUtilities.debug.xcconfig */,
+				3303495F6651CE2F3CC9693B /* Pods-SessionUtilities.app store release.xcconfig */,
+				6A26D6558DE69AF455E571C1 /* Pods-SessionMessagingKit.debug.xcconfig */,
+				FF9BA33D021B115B1F5B4E46 /* Pods-SessionMessagingKit.app store release.xcconfig */,
+				AEA8083C060FF9BAFF6E0C9F /* Pods-SessionProtocolKit.debug.xcconfig */,
+				174BD0AE74771D02DAC2B7A9 /* Pods-SessionProtocolKit.app store release.xcconfig */,
+				264033E641846B67E0CB21B0 /* Pods-SessionUtilitiesKit.debug.xcconfig */,
+				7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */,
+				C88965DE4F4EC4FC919BEC4E /* Pods-SessionUIKit.debug.xcconfig */,
+				C1A746BC424B531D8ED478F6 /* Pods-SessionUIKit.app store release.xcconfig */,
+				5F3070F3395081DD0EB4F933 /* Pods-SignalUtilitiesKit.debug.xcconfig */,
+				9C0469AC557930C01552CC83 /* Pods-SignalUtilitiesKit.app store release.xcconfig */,
+				36098A00B2C7DB91D85A4AE3 /* Pods-Session.debug.xcconfig */,
+				40E4C5D2ABFC1940BEB88BB9 /* Pods-Session.app store release.xcconfig */,
+				F121FB43E2A1C1CF7F2AFC23 /* Pods-SessionPushNotificationExtension.debug.xcconfig */,
+				6AD66810558DCCC8D6FD14C6 /* Pods-SessionPushNotificationExtension.app store release.xcconfig */,
+				F9BBF530D71905BA9007675F /* Pods-SessionShareExtension.debug.xcconfig */,
+				B27A64C349BBE85670300948 /* Pods-SessionShareExtension.app store release.xcconfig */,
+				E631A7167783FA9D1FFBC453 /* Pods-SessionNotificationServiceExtension.debug.xcconfig */,
+				C98441E849C3CA7FE8220D33 /* Pods-SessionNotificationServiceExtension.app store release.xcconfig */,
+				848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */,
+				1758FCA85C98360EBA3949CF /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.app store release.xcconfig */,
+				0F1A8805563934A3324676D1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.debug.xcconfig */,
+				0403B6AF17DFAD629A3AF862 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionShareExtension.app store release.xcconfig */,
+				F04906EA72326B6CF4FF859E /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.debug.xcconfig */,
+				698ED62BE96164824CE7CC18 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionUtilitiesKit.app store release.xcconfig */,
+				826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */,
+				69ED39F18BDEC3C861B8044F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */,
+				F7A2E3D105D13A663129EA2C /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.debug.xcconfig */,
+				08EF72D6EB5CDC49C863781E /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionNotificationServiceExtension.app store release.xcconfig */,
+				292F8FB4C82D8FF94571D837 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.debug.xcconfig */,
+				CA4942875292B7BD5C0C02A6 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-SessionSnodeKit.app store release.xcconfig */,
+				37C61C4A1D3A11D3FC03FE22 /* Pods-GlobalDependencies-Session.debug.xcconfig */,
+				56298B3B5A12567B30355B67 /* Pods-GlobalDependencies-Session.app store release.xcconfig */,
+				084AFF62D4E24B6292AF2644 /* Pods-GlobalDependencies-BChat.debug.xcconfig */,
+				FF4DF414F04404AD125126A7 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */,
+				4AA83A384314E9A846A878B3 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */,
+				C71D29C645B60C56E8429F81 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */,
+				A75A509D36103409955AF485 /* Pods-BChatUIKit.debug.xcconfig */,
+				CD8BED7E0AD59216282FD496 /* Pods-BChatUIKit.app store release.xcconfig */,
+				CDF3B5D78FEA7EE52F4982F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */,
+				957AF4803F564499A352497A /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */,
+				7851D29D5B5FD23A87F2C517 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */,
+				F08E832B3C79F5AE5A0BBAE5 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */,
+				4C1B5E0CB1A44AA514368CE1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */,
+				D76E97ABB075F62BC2C45F73 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */,
+				C262EDE8A5EE32236170511F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.debug.xcconfig */,
+				10CA720B4EDA70617FD96D89 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.app store release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		B6B6C3C419193F5B00C0B76B /* Translations */ = {
@@ -3095,7 +3340,6 @@
 		C360968E25AD16E8008B62B2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				607021D428D8426F00D5F4D4 /* MyWallet */,
 				6040690728B4A7CB0094E74D /* SlideMenu */,
 				7B93D06B27CF175800811CB6 /* Views */,
 				7B93D06827CF173D00811CB6 /* Message Requests */,
@@ -3745,7 +3989,7 @@
 				60F0F17E29FA3513000BEF3F /* BChatUIKit */,
 				D221A08C169C9E5E00537ABF /* Frameworks */,
 				D221A08A169C9E5E00537ABF /* Products */,
-				24D268F795400158BE0D9973 /* Pods */,
+				9404664EC513585B05DF1350 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3759,6 +4003,7 @@
 				C3C2A6F025539DE700C340D1 /* BChatMessagingKit.framework */,
 				C33FD9AB255A548A00E217F9 /* SignalUtilitiesKit.framework */,
 				60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */,
+				81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3766,6 +4011,8 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				81934DA82A304C9400505F24 /* FirebaseCore.framework */,
+				81934DA42A304A2C00505F24 /* FirebaseMessaging.framework */,
 				B8DE1FAF26C228780079C9CE /* SignalRingRTC.framework */,
 				C35E8AA22485C72300ACB629 /* SwiftCSV.framework */,
 				B847570023D568EB00759540 /* SignalServiceKit.framework */,
@@ -3813,6 +4060,7 @@
 				FBD78936C1CFA8EA37884A5A /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatSnodeKit.framework */,
 				969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */,
 				E846754C7958ED01F5699EA3 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatUtilitiesKit.framework */,
+				61E41C68B2D65001F7E61193 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4011,6 +4259,28 @@
 			productReference = 60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		81423A962A29DEC5001BBBFA /* BChatNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81423A9F2A29DECA001BBBFA /* Build configuration list for PBXNativeTarget "BChatNotificationServiceExtension" */;
+			buildPhases = (
+				C55E9B59E67E823E36F8D857 /* [CP] Check Pods Manifest.lock */,
+				81423A932A29DEC5001BBBFA /* Sources */,
+				81423A942A29DEC5001BBBFA /* Frameworks */,
+				81423A952A29DEC5001BBBFA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81423AA62A29E2B7001BBBFA /* PBXTargetDependency */,
+				81423AAB2A29E2BC001BBBFA /* PBXTargetDependency */,
+				81423AB32A29E2C5001BBBFA /* PBXTargetDependency */,
+				81423AB72A29E2C9001BBBFA /* PBXTargetDependency */,
+			);
+			name = BChatNotificationServiceExtension;
+			productName = BChatNotificationServiceExtension;
+			productReference = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C33FD9AA255A548A00E217F9 /* SignalUtilitiesKit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C33FD9B6255A548A00E217F9 /* Build configuration list for PBXNativeTarget "SignalUtilitiesKit" */;
@@ -4109,6 +4379,7 @@
 				C3C2A6F625539DE700C340D1 /* PBXTargetDependency */,
 				C33FD9B1255A548A00E217F9 /* PBXTargetDependency */,
 				60F0F18229FA3513000BEF3F /* PBXTargetDependency */,
+				81423A9D2A29DEC7001BBBFA /* PBXTargetDependency */,
 			);
 			name = BChat;
 			productName = RedPhone;
@@ -4122,10 +4393,10 @@
 			isa = PBXProject;
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Original;
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1420;
 				LastTestingUpgradeCheck = 0600;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Rangeproof Pty Ltd";
+				ORGANIZATIONNAME = "Beldex International Limited OU";
 				TargetAttributes = {
 					453518671FC635DD00210559 = {
 						CreatedOnToolsVersion = 9.2;
@@ -4148,6 +4419,9 @@
 					60F0F17C29FA3513000BEF3F = {
 						CreatedOnToolsVersion = 14.1;
 						LastSwiftMigration = 1410;
+					};
+					81423A962A29DEC5001BBBFA = {
+						CreatedOnToolsVersion = 14.2;
 					};
 					C33FD9AA255A548A00E217F9 = {
 						CreatedOnToolsVersion = 12.1;
@@ -4215,6 +4489,7 @@
 			targets = (
 				D221A088169C9E5E00537ABF /* BChat */,
 				453518671FC635DD00210559 /* BChatShareExtension */,
+				81423A962A29DEC5001BBBFA /* BChatNotificationServiceExtension */,
 				C33FD9AA255A548A00E217F9 /* SignalUtilitiesKit */,
 				C3C2A6EF25539DE700C340D1 /* BChatMessagingKit */,
 				C3C2A59E255385C100C340D1 /* BChatSnodeKit */,
@@ -4243,6 +4518,14 @@
 			files = (
 				60BE188829FA3B2F00048350 /* BChatUIKitInfo.plist in Resources */,
 				60BE189F29FA3CA300048350 /* Colors.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81423A952A29DEC5001BBBFA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				815A7BF12A2F2BC400A430F9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4287,7 +4570,6 @@
 				6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */,
 				6042B16C29EE548C005FC06B /* circles-quiet.aifc in Resources */,
 				60BE18AE29FA782100048350 /* Colors.xcassets in Resources */,
-				607021DA28D870CE00D5F4D4 /* WalletHomeXibCell.xib in Resources */,
 				C3CA3AA2255CDADA00F4C6D4 /* english.txt in Resources */,
 				6042B16A29EE548C005FC06B /* chord-quiet.aifc in Resources */,
 				6042B18A29EE56D4005FC06B /* message_sent_ring.aiff in Resources */,
@@ -4305,6 +4587,7 @@
 				6042B18029EE548C005FC06B /* pulse-quiet.aifc in Resources */,
 				6042B16829EE548C005FC06B /* input.aifc in Resources */,
 				6007B5CD28ABC5C80004BD61 /* svg_light.svg in Resources */,
+				6098CA852A1DFDF5005A5502 /* webrtc_call_end.mp3 in Resources */,
 				6007B5DC28ABC75B0004BD61 /* gifAnimation_dark.gif in Resources */,
 				6042B17929EE548C005FC06B /* bamboo-quiet.aifc in Resources */,
 				607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */,
@@ -4498,6 +4781,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C55E9B59E67E823E36F8D857 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E6E3E4B5630C6983A91CAC58 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4555,6 +4860,16 @@
 				60BE18A929FA3CCB00048350 /* UIView+Constraints.swift in Sources */,
 				60BE189129FA3C7E00048350 /* Separator.swift in Sources */,
 				60BE189229FA3C7E00048350 /* Button.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81423A932A29DEC5001BBBFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				819AE3992A29EB4800F15166 /* NSENotificationPresenter.swift in Sources */,
+				819AE39A2A29EB4800F15166 /* NotificationServiceExtensionContext.swift in Sources */,
+				819AE3982A29EB4800F15166 /* NotificationServiceExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4939,6 +5254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8041AA725C90927003C2166 /* TypingIndicatorCell.swift in Sources */,
+				6098CA692A1DCC42005A5502 /* BeldexTrxHistory.m in Sources */,
 				B8CCF63723961D6D0091D419 /* NewDMVC.swift in Sources */,
 				452EC6DF205E9E30000E787C /* MediaGalleryViewController.swift in Sources */,
 				4C1885D2218F8E1C00B67051 /* PhotoGridViewCell.swift in Sources */,
@@ -4954,9 +5270,11 @@
 				454A84042059C787008B8C75 /* MediaTileViewController.swift in Sources */,
 				34D1F0871F8678AA0066283D /* ConversationViewItem.m in Sources */,
 				451A13B11E13DED2000A50FD /* AppNotifications.swift in Sources */,
+				6098CA802A1DCD44005A5502 /* WKActivityIndicatorView.swift in Sources */,
 				34D99CE4217509C2000AFB39 /* AppEnvironment.swift in Sources */,
 				607DCE3D28AE4258003F9288 /* RecoverySeedNameVC.swift in Sources */,
 				C328255225CA64470062D0A7 /* ContextMenuVC+ActionView.swift in Sources */,
+				6098CA772A1DCD0B005A5502 /* LocalAuthOptions.swift in Sources */,
 				6010E9F628C86A1700600D1A /* ExpandableHeaderView.swift in Sources */,
 				450DF2091E0DD2C6003D14BE /* UserNotificationsAdaptee.swift in Sources */,
 				C3548F0824456AB6009433A8 /* UIView+Wrapping.swift in Sources */,
@@ -4978,12 +5296,16 @@
 				340FC8AA204DAC8D007AEB0F /* NotificationSettingsViewController.m in Sources */,
 				607DCE3528AE356D003F9288 /* DisplayBChatIDsVC.swift in Sources */,
 				7BAF54CE27ACCEEC003D12F8 /* Storage+RecentSearchResults.swift in Sources */,
+				6098CA4F2A1DCB68005A5502 /* Observer.swift in Sources */,
 				4C090A1B210FD9C7001FD7F9 /* HapticFeedback.swift in Sources */,
+				6098CA702A1DCC9C005A5502 /* Keys.swift in Sources */,
 				6007B5EC28ABC9DF0004BD61 /* UIViewController+Alert.swift in Sources */,
 				3496744F2076ACD000080B5F /* LongTextViewController.swift in Sources */,
 				34F308A21ECB469700BB7697 /* OWSBezierPathView.m in Sources */,
+				6098CA822A1DCD44005A5502 /* LocalRecipientDB.swift in Sources */,
 				B886B4A92398BA1500211ABE /* QRCode.swift in Sources */,
 				3496955D219B605E00DCFE74 /* PhotoCollectionPickerController.swift in Sources */,
+				6098CA502A1DCB68005A5502 /* Postable.swift in Sources */,
 				34B0796D1FCF46B100E248C2 /* MainAppContext.m in Sources */,
 				6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */,
 				34A8B3512190A40E00218A25 /* MediaAlbumView.swift in Sources */,
@@ -4996,13 +5318,14 @@
 				60E6122128BE1BFD00EEE73B /* BlockedContactVC.swift in Sources */,
 				6007B5EA28ABC9DF0004BD61 /* QRScannerView.swift in Sources */,
 				340FC8A9204DAC8D007AEB0F /* NotificationSettingsOptionsViewController.m in Sources */,
+				6098CA712A1DCC9C005A5502 /* TransactionDirection.swift in Sources */,
 				B849789625D4A2F500D0D0B3 /* LinkPreviewView.swift in Sources */,
 				C3D0972B2510499C00F6E3E4 /* BackgroundPoller.swift in Sources */,
 				C3548F0624456447009433A8 /* PNModeVC.swift in Sources */,
 				B80A579F23DFF1F300876683 /* NewSecretGroupVC.swift in Sources */,
 				604BA2E029F79A0800C9A7A4 /* Alert.swift in Sources */,
 				D221A09A169C9E5E00537ABF /* main.m in Sources */,
-				6010E9F828C86A5800600D1A /* ChnageLogVC.swift in Sources */,
+				6010E9F828C86A5800600D1A /* ChangeLogVC.swift in Sources */,
 				7BA68909272A27BE00EFC32F /* BChatCall.swift in Sources */,
 				B835247925C38D880089A44F /* MessageCell.swift in Sources */,
 				B86BD08623399CEF000F5AE3 /* SeedModal.swift in Sources */,
@@ -5011,22 +5334,25 @@
 				34D1F0521F7E8EA30066283D /* GiphyDownloader.swift in Sources */,
 				4CC613362227A00400E21A3A /* ConversationSearch.swift in Sources */,
 				6007B5B528A4D75F0004BD61 /* BChatWallet.swift in Sources */,
+				6098CA672A1DCC42005A5502 /* BeldexSubAddress.m in Sources */,
+				6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */,
+				6098CA4E2A1DCB68005A5502 /* AppLanguage.swift in Sources */,
 				B82149B825D60393009C0F2A /* BlockedModal.swift in Sources */,
 				6007B5BC28A4D79F0004BD61 /* Date + Ext.swift in Sources */,
-				607021D928D870CE00D5F4D4 /* WalletHomeXibCell.swift in Sources */,
 				346129991FD1E4DA00532771 /* SignalApp.m in Sources */,
 				7BA6890F27325CE300EFC32F /* BChatCallManager+CXProvider.swift in Sources */,
 				34BECE301F7ABCF800D7438D /* GifPickerLayout.swift in Sources */,
 				C331FFFE2558FF3B00070591 /* ConversationCell.swift in Sources */,
 				6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */,
+				6098CA812A1DCD44005A5502 /* String + Ext.swift in Sources */,
 				B8F5F72325F1B4CA003BF8D4 /* DownloadAttachmentModal.swift in Sources */,
 				C3DFFAC623E96F0D0058DAF8 /* Sheet.swift in Sources */,
 				C31FFE57254A5FFE00F19441 /* KeyPairUtilities.swift in Sources */,
 				6007B5D128ABC6420004BD61 /* UserDefaultsData.swift in Sources */,
 				6040692928B4BD790094E74D /* DeleteAccountModel.swift in Sources */,
-				6007B5AF28A4D7220004BD61 /* BChatWalletWrapper.mm in Sources */,
 				B8D84EA325DF745A005A043E /* LinkPreviewState.swift in Sources */,
 				45C0DC1E1E69011F00E04C47 /* UIStoryboard+OWS.swift in Sources */,
+				6098CA472A1DCAD0005A5502 /* RSA.swift in Sources */,
 				45A6DAD61EBBF85500893231 /* ReminderView.swift in Sources */,
 				B8214A2B25D63EB9009C0F2A /* MessagesTableView.swift in Sources */,
 				B835246E25C38ABF0089A44F /* ConversationVC.swift in Sources */,
@@ -5040,16 +5366,18 @@
 				C374EEEB25DA3CA70073A857 /* ConversationTitleView.swift in Sources */,
 				B88FA7F2260C3EB10049422F /* OpenGroupSuggestionGrid.swift in Sources */,
 				604BA2DE29F7974900C9A7A4 /* CustomAlertController.swift in Sources */,
+				6098CA682A1DCC42005A5502 /* BeldexWalletListener.m in Sources */,
 				4CA485BB2232339F004B9E7D /* PhotoCaptureViewController.swift in Sources */,
 				34330AA31E79686200DF2FB9 /* OWSProgressView.m in Sources */,
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
-				6040692328B4AEEB0094E74D /* RecoverySeedMenuVC2.swift in Sources */,
+				6040692328B4AEEB0094E74D /* RecoverySeedMenuVC.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
 				B8F5F71A25F1B35C003BF8D4 /* MediaPlaceholderView.swift in Sources */,
 				341341EF2187467A00192D59 /* ConversationViewModel.m in Sources */,
 				4C21D5D8223AC60F00EF8A77 /* PhotoCapture.swift in Sources */,
+				6098CA7E2A1DCD44005A5502 /* Decimal + Ext.swift in Sources */,
 				C331FFF32558FF0300070591 /* PathStatusView.swift in Sources */,
 				7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */,
 				4CC1ECFB211A553000CC13BE /* AppUpdateNag.swift in Sources */,
@@ -5067,6 +5395,10 @@
 				B82149C125D605C6009C0F2A /* InfoBanner.swift in Sources */,
 				C3DAB3242480CB2B00725F25 /* SRCopyableLabel.swift in Sources */,
 				7BAADFCC27B0EF23007BCF92 /* CallVideoView.swift in Sources */,
+				6098CA462A1DCAD0005A5502 /* DispatchQueuePool.swift in Sources */,
+				6098CA6A2A1DCC42005A5502 /* BChatWalletWrapper.mm in Sources */,
+				6098CA482A1DCAD0005A5502 /* Helper.swift in Sources */,
+				6098CA7F2A1DCD44005A5502 /* UIView + Extension.swift in Sources */,
 				B8CCF63F23975CFB0091D419 /* JoinOpenGroupVC.swift in Sources */,
 				34ABC0E421DD20C500ED9469 /* ConversationMessageMapping.swift in Sources */,
 				B85357C323A1BD1200AAF6CD /* SeedVC.swift in Sources */,
@@ -5075,6 +5407,7 @@
 				6036B3FF28E32C7100ABA398 /* MyAccountXibCell.swift in Sources */,
 				600A272428B36A99001F9FFE /* SocialGroupVC.swift in Sources */,
 				6040691028B4A8340094E74D /* SlideMenuCell.swift in Sources */,
+				6098CA742A1DCC9C005A5502 /* InteropConverter.swift in Sources */,
 				B8D84ECF25E3108A005A043E /* ExpandingAttachmentsButton.swift in Sources */,
 				7B7CB190270FB2150079FF93 /* MiniCallView.swift in Sources */,
 				B875885A264503A6000E60D0 /* JoinOpenGroupModal.swift in Sources */,
@@ -5091,13 +5424,14 @@
 				45C0DC1B1E68FE9000E04C47 /* UIApplication+OWS.swift in Sources */,
 				4539B5861F79348F007141FF /* PushRegistrationManager.swift in Sources */,
 				B8041A9525C8FA1D003C2166 /* MediaLoaderView.swift in Sources */,
-				6040691D28B4AD7C0094E74D /* RecoverySeedMenuVC.swift in Sources */,
+				6040691D28B4AD7C0094E74D /* ImportantAlertVC.swift in Sources */,
 				6040691128B4A8340094E74D /* ProfileCell.swift in Sources */,
 				34D2CCDA2062E7D000CB1A14 /* OWSScreenLockUI.m in Sources */,
 				4CA46F4C219CCC630038ABDE /* CaptionView.swift in Sources */,
 				C328253025CA55370062D0A7 /* ContextMenuWindow.swift in Sources */,
 				340FC8B7204DAC8D007AEB0F /* OWSConversationSettingsViewController.m in Sources */,
 				7B1581E4271FC59D00848B49 /* CallModal.swift in Sources */,
+				6098CA722A1DCC9C005A5502 /* TransactionHistory.swift in Sources */,
 				34BECE2E1F7ABCE000D7438D /* GifPickerViewController.swift in Sources */,
 				B84664F5235022F30083A1CD /* MentionUtilities.swift in Sources */,
 				6007B5F028ABC9DF0004BD61 /* DatePickerDialog.swift in Sources */,
@@ -5110,6 +5444,7 @@
 				3496955C219B605E00DCFE74 /* ImagePickerController.swift in Sources */,
 				C31D1DE32521718E005D4DA8 /* UserSelectionVC.swift in Sources */,
 				34A6C28021E503E700B5B12E /* OWSImagePickerController.swift in Sources */,
+				6098CA4D2A1DCB68005A5502 /* Observable.swift in Sources */,
 				C31A6C5C247F2CF3001123EF /* CGRect+Utilities.swift in Sources */,
 				4C21D5D6223A9DC500EF8A77 /* UIAlerts+iOS9.m in Sources */,
 				6007B5ED28ABC9DF0004BD61 /* CopyLabel.swift in Sources */,
@@ -5123,7 +5458,6 @@
 				C3AAFFF225AE99710089E6DD /* AppDelegate.swift in Sources */,
 				B8BB82A5238F627000BA5194 /* HomeVC.swift in Sources */,
 				6040691628B4A8340094E74D /* SlideMenuVC.swift in Sources */,
-				607021D628D8429500D5F4D4 /* MyWalletHomeVC.swift in Sources */,
 				C31A6C5A247F214E001123EF /* UIView+Glow.swift in Sources */,
 				C31D1DE9252172D4005D4DA8 /* ContactUtilities.swift in Sources */,
 				6010E9F428C86A0F00600D1A /* Section.swift in Sources */,
@@ -5159,6 +5493,7 @@
 				3427C64320F500E000EEC730 /* OWSMessageTimerView.m in Sources */,
 				B90418E6183E9DD40038554A /* DateUtil.m in Sources */,
 				C33100092558FF6D00070591 /* UserCell.swift in Sources */,
+				6098CA732A1DCC9C005A5502 /* SubAddress.swift in Sources */,
 				B8269D2925C7A4B400488AB4 /* InputView.swift in Sources */,
 				C374EEE225DA26740073A857 /* LinkPreviewModal.swift in Sources */,
 			);
@@ -5181,6 +5516,31 @@
 			isa = PBXTargetDependency;
 			target = C3C2A678255388CC00C340D1 /* BChatUtilitiesKit */;
 			targetProxy = 7B251C3827D82D9E001A6284 /* PBXContainerItemProxy */;
+		};
+		81423A9D2A29DEC7001BBBFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81423A962A29DEC5001BBBFA /* BChatNotificationServiceExtension */;
+			targetProxy = 81423A9C2A29DEC7001BBBFA /* PBXContainerItemProxy */;
+		};
+		81423AA62A29E2B7001BBBFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3C2A6EF25539DE700C340D1 /* BChatMessagingKit */;
+			targetProxy = 81423AA52A29E2B7001BBBFA /* PBXContainerItemProxy */;
+		};
+		81423AAB2A29E2BC001BBBFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3C2A59E255385C100C340D1 /* BChatSnodeKit */;
+			targetProxy = 81423AAA2A29E2BC001BBBFA /* PBXContainerItemProxy */;
+		};
+		81423AB32A29E2C5001BBBFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C3C2A678255388CC00C340D1 /* BChatUtilitiesKit */;
+			targetProxy = 81423AB22A29E2C5001BBBFA /* PBXContainerItemProxy */;
+		};
+		81423AB72A29E2C9001BBBFA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C33FD9AA255A548A00E217F9 /* SignalUtilitiesKit */;
+			targetProxy = 81423AB62A29E2C9001BBBFA /* PBXContainerItemProxy */;
 		};
 		B8D64FC025BA784A0029CFC0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -5247,7 +5607,7 @@
 /* Begin XCBuildConfiguration section */
 		453518731FC635DD00210559 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3494A0AD135BF2B42F222883 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */;
+			baseConfigurationReference = 4AA83A384314E9A846A878B3 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5263,13 +5623,11 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = BChatShareExtension/Meta/SignalShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 121;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
+				DEVELOPMENT_TEAM = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5294,11 +5652,9 @@
 				);
 				MARKETING_VERSION = 1.2.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_ShareExtancen_Certificate;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChatShareExtension/Meta/SignalShareExtension-Bridging-Header.h";
@@ -5310,7 +5666,7 @@
 		};
 		453518751FC635DD00210559 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9AC40F2BFA260B44AED69F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */;
+			baseConfigurationReference = C71D29C645B60C56E8429F81 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatShareExtension.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5340,13 +5696,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = BChatShareExtension/Meta/SignalShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 106;
+				CURRENT_PROJECT_VERSION = 121;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
+				DEVELOPMENT_TEAM = 3X33AB44S7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -5376,11 +5730,9 @@
 				);
 				MARKETING_VERSION = 1.2.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_ShareExtancen_Certificate;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -5394,7 +5746,7 @@
 		};
 		60F0F18529FA3514000BEF3F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19FDF2261A6F95EF34AB6211 /* Pods-BChatUIKit.debug.xcconfig */;
+			baseConfigurationReference = A75A509D36103409955AF485 /* Pods-BChatUIKit.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -5425,7 +5777,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Rangeproof Pty Ltd. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5436,7 +5788,6 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5455,7 +5806,7 @@
 		};
 		60F0F18629FA3514000BEF3F /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F1D9CE10D9634C2DC1923FAD /* Pods-BChatUIKit.app store release.xcconfig */;
+			baseConfigurationReference = CD8BED7E0AD59216282FD496 /* Pods-BChatUIKit.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5507,7 +5858,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Rangeproof Pty Ltd. All rights reserved.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5518,7 +5869,6 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatUIKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
@@ -5537,9 +5887,139 @@
 			};
 			name = "App Store Release";
 		};
+		81423AA02A29DECA001BBBFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C262EDE8A5EE32236170511F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = BChatNotificationServiceExtension/Meta/BChatNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 121;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 3X33AB44S7;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BChatNotificationServiceExtension/Meta/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BChatNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		81423AA12A29DECA001BBBFA /* App Store Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 10CA720B4EDA70617FD96D89 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatNotificationServiceExtension.app store release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = BChatNotificationServiceExtension/Meta/BChatNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 121;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 3X33AB44S7;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BChatNotificationServiceExtension/Meta/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BChatNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "App Store Release";
+		};
 		C33FD9B4255A548A00E217F9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 745D551FF92B7DC24920F2F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */;
+			baseConfigurationReference = 826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5590,7 +6070,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.SignalUtilitiesKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5606,7 +6085,7 @@
 		};
 		C33FD9B5255A548A00E217F9 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C644E4688174C6B658C3DF2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */;
+			baseConfigurationReference = 69ED39F18BDEC3C861B8044F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -5678,7 +6157,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.SignalUtilitiesKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
@@ -5696,7 +6174,7 @@
 		};
 		C3C2A5A8255385C100C340D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 83708FD59B525FA9731540F8 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */;
+			baseConfigurationReference = CDF3B5D78FEA7EE52F4982F2 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5739,7 +6217,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatSnodeKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5755,7 +6232,7 @@
 		};
 		C3C2A5A9255385C100C340D1 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7038EEE0E0E3A19404379088 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */;
+			baseConfigurationReference = 957AF4803F564499A352497A /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -5819,7 +6296,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatSnodeKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
@@ -5837,7 +6313,7 @@
 		};
 		C3C2A682255388CC00C340D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AA30E3E9D2718CF78A79807F /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */;
+			baseConfigurationReference = 4C1B5E0CB1A44AA514368CE1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5880,7 +6356,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -5905,7 +6380,7 @@
 		};
 		C3C2A683255388CC00C340D1 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D807D8D0C3D25AC16AD61BC /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */;
+			baseConfigurationReference = D76E97ABB075F62BC2C45F73 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -5969,7 +6444,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-framework",
@@ -5996,7 +6470,7 @@
 		};
 		C3C2A6FA25539DE700C340D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BEF7977075AB5D4EF0D734C7 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */;
+			baseConfigurationReference = 7851D29D5B5FD23A87F2C517 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -6039,7 +6513,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatMessagingKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6055,7 +6528,7 @@
 		};
 		C3C2A6FB25539DE700C340D1 /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B1557DAD4506298767C3DE74 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */;
+			baseConfigurationReference = F08E832B3C79F5AE5A0BBAE5 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -6119,7 +6592,6 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatMessagingKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
@@ -6286,7 +6758,7 @@
 		};
 		D221A0BD169C9E5F00537ABF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D640D224F651AB75DF40AA0C /* Pods-GlobalDependencies-BChat.debug.xcconfig */;
+			baseConfigurationReference = 084AFF62D4E24B6292AF2644 /* Pods-GlobalDependencies-BChat.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -6300,11 +6772,9 @@
 				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 121;
+				DEVELOPMENT_TEAM = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6351,14 +6821,12 @@
 				MARKETING_VERSION = 1.2.2;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat;
 				PRODUCT_NAME = "BChat Messenger";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Dist_Certificate_New;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChat/Meta/Signal-Bridging-Header.h";
@@ -6373,7 +6841,7 @@
 		};
 		D221A0BE169C9E5F00537ABF /* App Store Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 068B2D5E72489EA4AD9F9050 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */;
+			baseConfigurationReference = FF4DF414F04404AD125126A7 /* Pods-GlobalDependencies-BChat.app store release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -6385,11 +6853,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 106;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 121;
+				DEVELOPMENT_TEAM = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6436,13 +6902,11 @@
 				MARKETING_VERSION = 1.2.2;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat;
 				PRODUCT_NAME = "BChat Messenger";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Dist_Certificate_New;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChat/Meta/Signal-Bridging-Header.h";
@@ -6471,6 +6935,15 @@
 			buildConfigurations = (
 				60F0F18529FA3514000BEF3F /* Debug */,
 				60F0F18629FA3514000BEF3F /* App Store Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "App Store Release";
+		};
+		81423A9F2A29DECA001BBBFA /* Build configuration list for PBXNativeTarget "BChatNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81423AA02A29DECA001BBBFA /* Debug */,
+				81423AA12A29DECA001BBBFA /* App Store Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "App Store Release";

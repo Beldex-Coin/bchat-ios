@@ -1,4 +1,4 @@
-// Copyright © 2023 Rangeproof Pty Ltd. All rights reserved.
+// Copyright © 2023 Beldex International Limited OU. All rights reserved.
 
 #import <Foundation/Foundation.h>
 

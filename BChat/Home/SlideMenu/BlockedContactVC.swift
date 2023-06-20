@@ -1,4 +1,4 @@
-// Copyright © 2022 Rangeproof Pty Ltd. All rights reserved.
+// Copyright © 2022 Beldex International Limited OU. All rights reserved.
 
 import UIKit
 import BChatUIKit
@@ -16,12 +16,10 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
     }
     
     var contacts = ContactUtilities.getAllContacts()
-    var ArrayName = [String]()
-    var AllitemsName = [String]()
-    var ArrayPublicKey = [String]()
-    var AllitemsPublicKey = [String]()
-    var AllitemsName22 = [String]()
-    var AllitemsPublicKey22 = [String]()
+    var names = [String]()
+    var publicKeys = [String]()
+    var arrayNames = [String]()
+    var arrayPublicKey = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,18 +40,20 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
             let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
             if blockedflag == true {
                 let Aname = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-                ArrayName.append(Aname)
+                names.append(Aname)
                 let pukey = Storage.shared.getContact(with: publicKey)
-                ArrayPublicKey.append(pukey!.bchatuser_ID)
+                publicKeys.append(pukey!.bchatuser_ID)
             }
             tableView.reloadData()
         }
-        let joinListValue = ArrayName.joined(separator: ",")
-        AllitemsName = joinListValue.components(separatedBy: ",")
-        let joinListValue2 = ArrayPublicKey.joined(separator: ",")
-        AllitemsPublicKey = joinListValue2.components(separatedBy: ",")
-        AllitemsName22 = AllitemsName.filter({ $0 != ""})
-        AllitemsPublicKey22 = AllitemsPublicKey.filter({ $0 != ""})
+        let names = names.joined(separator: ",")
+        var allNames = [String]()
+        allNames = names.components(separatedBy: ",")
+        let publicKeys = publicKeys.joined(separator: ",")
+        var allpublicKeys = [String]()
+        allpublicKeys = publicKeys.components(separatedBy: ",")
+        arrayNames = allNames.filter({ $0 != ""})
+        arrayPublicKey = allpublicKeys.filter({ $0 != ""})
 
     }
 
@@ -63,7 +63,7 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AllitemsName22.count
+        return arrayNames.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -73,7 +73,7 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BlockedXibCell", for: indexPath) as! BlockedXibCell
 
-        cell.lblname.text = AllitemsName22[indexPath.row]
+        cell.lblname.text = arrayNames[indexPath.row]
         cell.lblname.font = .boldSystemFont(ofSize: Values.mediumFontSize)
         cell.selectionStyle = .none
         
@@ -86,13 +86,11 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
            
-           let publicKey = AllitemsPublicKey22[indexPath.row]
-           let pubname = AllitemsName22[indexPath.row]
+           let publicKey = arrayPublicKey[indexPath.row]
+           let pubname = arrayNames[indexPath.row]
            
            let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: {(action, view, success) in
-    
                let alert = UIAlertController(title: "Unblock", message: "Are you sure you want to Unblock \(pubname)", preferredStyle: .alert)
-                   
                     let ok = UIAlertAction(title: "Cancel", style: .default, handler: { action in
                         
                     })

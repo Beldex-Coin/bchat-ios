@@ -48,25 +48,25 @@ public struct RecoverWallet {
         }
     }
     
-//    func getKeys() -> Keys? {
-//        guard
-//            let addr = address,
-//            addr.count > 0,
-//            let viewKey = viewKey,
-//            viewKey.count > 0,
-//            let spendKey = spendKey,
-//            spendKey.count > 0
-//        else {
-//            return nil
-//        }
-//        var restoreHeight: UInt64 = 0
-//        if let block = block {
-//            restoreHeight = UInt64(block) ?? 0
-//        } else if let date = date {
-//            restoreHeight = date.getBlockHeight()
-//        }
-//        return Keys.init(restoreHeight: restoreHeight, addressString: addr, viewKeyString: viewKey, spendKeyString: spendKey)
-//    }
+    func getKeys() -> Keys? {
+        guard
+            let addr = address,
+            addr.count > 0,
+            let viewKey = viewKey,
+            viewKey.count > 0,
+            let spendKey = spendKey,
+            spendKey.count > 0
+        else {
+            return nil
+        }
+        var restoreHeight: UInt64 = 0
+        if let block = block {
+            restoreHeight = UInt64(block) ?? 0
+        } else if let date = date {
+            restoreHeight = date.getBlockHeight()
+        }
+        return Keys.init(restoreHeight: restoreHeight, addressString: addr, viewKeyString: viewKey, spendKeyString: spendKey)
+    }
     
     static var empty: RecoverWallet {
         return RecoverWallet(from: .seed)

@@ -165,7 +165,6 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
             })
         }
-        
         if enterPintxt.text! == reEnterPintxt.text! {
             a = true
         } else {
@@ -179,12 +178,12 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
             b = true
         }
         if a == true && b == true && c == true {
-            UserDefaultsData.BChatPassword = reEnterPintxt.text!
+            SaveUserDefaultsData.BChatPassword = reEnterPintxt.text!
             if navigationflowTag == false {
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoveryVC") as! RecoveryVC
                 self.navigationController?.pushViewController(vc, animated: true)
             }else{
-                UserDefaults.standard[.isUsingFullAPNs] = (selectedOptionView == apnsOptionView)
+                UserDefaults.standard[.isUsingFullAPNs] = true//(selectedOptionView == apnsOptionView)
                 TSAccountManager.sharedInstance().didRegister()
                 let homeVC = HomeVC()
                 navigationController!.setViewControllers([ homeVC ], animated: true)

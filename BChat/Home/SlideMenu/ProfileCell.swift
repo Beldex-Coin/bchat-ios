@@ -2,7 +2,7 @@
 //  ProfileCell.swift
 //  Partea
 //
-//  Created by Blockhash on 18/09/21.
+//  Created by Beldex International Limited OU on 18/09/21.
 //
 
 import UIKit

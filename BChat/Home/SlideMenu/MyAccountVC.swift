@@ -118,7 +118,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         beldexaddressLabel.backgroundColor = Colors.myaccountclrs
         beldexaddressLabel?.layer.masksToBounds = true
         beldexaddressLabel.layer.cornerRadius = 6
-        beldexaddressLabel.text = " \(UserDefaultsData.WalletpublicAddress)"
+        beldexaddressLabel.text = " \(SaveUserDefaultsData.WalletpublicAddress)"
         
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(MyAccountVC.tapFunction2))
         beldexaddressLabel.isUserInteractionEnabled = true
@@ -147,7 +147,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     }
     
     @objc func tapFunction2(sender:UITapGestureRecognizer) {
-        UIPasteboard.general.string = UserDefaultsData.WalletpublicAddress
+        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexaddressLabel.isUserInteractionEnabled = false
         self.showToast22(message: "Your Beldex Address is copied to clipboard", seconds: 1.0)
     }
@@ -529,7 +529,7 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }else {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChnageLogVC") as! ChnageLogVC
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangeLogVC") as! ChangeLogVC
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

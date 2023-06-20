@@ -4,7 +4,7 @@ import BChatMessagingKit
 import BChatUtilitiesKit
 import UIKit
 import MediaPlayer
-
+import AVFoundation
 final class CallVC : UIViewController, VideoPreviewDelegate {
     let call: BChatCall
     var latestKnownAudioOutputDeviceName: String?
@@ -12,7 +12,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     var duration: Int = 0
     var shouldRestartCamera = true
     weak var conversationVC: ConversationVC? = nil
-    
+    var player: AVAudioPlayer?;
     lazy var cameraManager: CameraManager = {
         let result = CameraManager()
         result.delegate = self
@@ -412,6 +412,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.callInfoLabel.isHidden = false
         self.callDurationLabel.isHidden = true
         callInfoLabel.text = "Call Ended"
+        self.alertOnCallEnding()
         UIView.animate(withDuration: 0.25) {
             self.remoteVideoView.alpha = 0
             self.operationPanel.alpha = 1
@@ -437,6 +438,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     
     @objc private func endCall() {
         AppEnvironment.shared.callManager.endCall(call) { error in
+          //  self.alertOnCallEnding()
             if let _ = error {
                 self.call.endBChatCall()
                 AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
@@ -445,6 +447,24 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 self.conversationVC?.showInputAccessoryView()
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
+        }
+    }
+    
+    func alertOnCallEnding(){
+        guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
+            print("error");
+            return;
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: AVAudioSession.CategoryOptions.mixWithOthers);
+            player = try AVAudioPlayer(contentsOf: url);
+            guard let player = player else {
+                print("error");
+                return;
+            }
+            player.play();
+        } catch let error {
+            print(error.localizedDescription);
         }
     }
     
@@ -510,8 +530,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func audioRouteDidChange() {
-        let currentBChat = AVAudioSession.sharedInstance()
-        let currentRoute = currentBChat.currentRoute
+        let currentSession = AVAudioSession.sharedInstance()
+        let currentRoute = currentSession.currentRoute
         if let currentOutput = currentRoute.outputs.first {
             if let latestKnownAudioOutputDeviceName = latestKnownAudioOutputDeviceName, currentOutput.portName == latestKnownAudioOutputDeviceName { return }
             latestKnownAudioOutputDeviceName = currentOutput.portName
