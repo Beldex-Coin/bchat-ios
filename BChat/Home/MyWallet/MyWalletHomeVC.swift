@@ -18,8 +18,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     @IBOutlet var progressLabel: UILabel!
     @IBOutlet weak var NotransationImg: UIImageView!
     @IBOutlet weak var imgBeldexlogo: UIImageView!
-    @IBOutlet var NotransationLabel: UILabel!
-    @IBOutlet var NotransationLabel2: UILabel!
+    @IBOutlet var notransationLabel: UILabel!
+    @IBOutlet var notransationLabel2: UILabel!
     @IBOutlet var lblMainblns: UILabel!
     @IBOutlet var lblOtherCurrencyblns: UILabel!
     @IBOutlet weak var rightview: UIView!
@@ -43,9 +43,9 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     @IBOutlet weak var syncedIconRefbtn: UIButton!
     var iconClick = true
     var BackAPI = false
-    var BackAPIRescanVC = false
-    var BackAPISelectedCurrency = false
-    var BackAPISelectedDecimal = false
+    var backAPIRescanVC = false
+    var backAPISelectedCurrency = false
+    var backAPISelectedDecimal = false
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet weak var imgScanRef: UIImageView!
     @IBOutlet weak var btnBydateRef: UIButton!
@@ -61,18 +61,18 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     //MARK:- Wallet References
     //========================================================================================
-    var NodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
     var randomNodeValue = ""
     var filteredAllTransactionarray : [TransactionItem] = []
     var filteredOutgoingTransactionarray : [TransactionItem] = []
     var filteredIncomingTransactionarray : [TransactionItem] = []
-    var TransactionAllarray = [TransactionItem]()
-    var TransactionSendarray = [TransactionItem]()
-    var TransactionReceivearray = [TransactionItem]()
+    var transactionAllarray = [TransactionItem]()
+    var transactionSendarray = [TransactionItem]()
+    var transactionReceivearray = [TransactionItem]()
     lazy var statusTextState = { return Observable<String>("") }()
     lazy var conncetingState = { return Observable<Bool>(false) }()
     lazy var refreshState = { return Observable<Bool>(false) }()
-    var Syncedflag = false
+    var syncedflag = false
     private var connecting: Bool { return conncetingState.value}
     private var currentBlockChainHeight: UInt64 = 0
     private var daemonBlockChainHeight: UInt64 = 0
@@ -193,7 +193,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         init_syncing_wallet()
         
         // Selected Currency Code Implement
-        if BackAPISelectedCurrency == true {
+        if backAPISelectedCurrency == true {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             if mainbalance.isEmpty {
                 let fullblnce = "0.00"
@@ -223,7 +223,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
             randomNodeValue = SaveUserDefaultsData.SelectedNode
         }else {
-            randomNodeValue = NodeArray.randomElement()!
+            randomNodeValue = nodeArray.randomElement()!
         }
         SaveUserDefaultsData.FinalWallet_node = randomNodeValue
         
@@ -241,9 +241,9 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             hashArray2 = UserDefaults.standard.domainSchemas
         }
         
-        isExpanded = Array(repeating: false, count: TransactionAllarray.count)
+        isExpanded = Array(repeating: false, count: transactionAllarray.count)
         
-        if self.TransactionAllarray.count == 0 {
+        if self.transactionAllarray.count == 0 {
             self.showNoTransactionView()
         }else {
             self.hideNoTransactionView()
@@ -433,12 +433,12 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
             randomNodeValue = SaveUserDefaultsData.SelectedNode
         }else {
-            randomNodeValue = NodeArray.randomElement()!
+            randomNodeValue = nodeArray.randomElement()!
         }
         SaveUserDefaultsData.FinalWallet_node = randomNodeValue
         
         // Selected Currency Code Implement
-        if BackAPISelectedCurrency == true {
+        if backAPISelectedCurrency == true {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency.uppercased()
             if mainbalance.isEmpty {
                 let fullblnce = "0.00"
@@ -465,7 +465,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         }
         
         // Rescan Height Update in userdefaults work
-        if BackAPIRescanVC == true {
+        if backAPIRescanVC == true {
             init_syncing_wallet()
         }
         filteredAllTransactionarray = []
@@ -510,7 +510,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     func init_syncing_wallet() {
         lblMainblns.text = "0.00"
         lblOtherCurrencyblns.text = "0.00"
-        self.Syncedflag = false
+        self.syncedflag = false
         conncetingState.value = true
         syncedIconRef.isHidden = true
         progressLabel.text = "Loading Wallet ..."
@@ -527,7 +527,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                     strongSelf.conncetingState.value = false
                     strongSelf.progressLabel.textColor = .red
                     strongSelf.progressLabel.text = "Failed to Connect"
-                    self!.Syncedflag = true
+                    self!.syncedflag = true
                     self!.syncedIconRef.isHidden = true
                 }
             }
@@ -536,7 +536,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     func connect(wallet: BDXWallet) {
         if !connecting {
-            self.Syncedflag = false
+            self.syncedflag = false
             self.conncetingState.value = true
             syncedIconRef.isHidden = true
             progressLabel.text = "Connecting ..."
@@ -591,7 +591,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                 if self.conncetingState.value {
                     self.conncetingState.value = false
                 }
-                self.Syncedflag = false
+                self.syncedflag = false
                 self.progressView.progress = Float(progress)
                 self.progressLabel.text = statusText
             }
@@ -605,7 +605,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     private func synchronizedUI() {
         progressView.progress = 1
-        Syncedflag = true
+        syncedflag = true
         btnHomeScan.isUserInteractionEnabled = true
         btnHomeSend.isUserInteractionEnabled = true
         let logoName = isLightMode ? "ic_Scan_QR" : "ic_Scan_QR"
@@ -651,7 +651,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // MARK: - BackScreen Func
     @objc func backHomeScreen(sender: UIBarButtonItem) {
-        if Syncedflag == false {
+        if syncedflag == false {
             let alert = UIAlertController(title: "Wallet is syncing...", message: "If you close the wallet, synchronization will be paused.Are you sure you want to exit the wallet?", preferredStyle: .alert)
             let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
                 
@@ -689,11 +689,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     // MARK: - Navigation
     
     func topButtonTouched(indexPath: IndexPath) {
-        //        if isCellExpanded == false {
-        //            isCellExpanded = true
-        //        } else {
-        //            isCellExpanded = false
-        //        }
         isExpanded[indexPath.row] = !isExpanded[indexPath.row]
         UIView.animate(withDuration: 0.8, delay: 0.0, usingSpringWithDamping: 0.9, initialSpringVelocity: 0.9, options: UIView.AnimationOptions.curveEaseInOut, animations: {
             self.collectionView.reloadItems(at: [indexPath])
@@ -733,16 +728,16 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     }
     
     // MARK: - Button Action
-    @IBAction func Send_Action(_ sender: UIButton) {
+    @IBAction func sendAction(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletSendVC") as! MyWalletSendVC
         vc.wallet = self.wallet
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    @IBAction func Receive_Action(_ sender: UIButton) {
+    @IBAction func receiveAction(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletReceiveVC") as! MyWalletReceiveVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    @IBAction func Scan_Action(_ sender: UIButton) {
+    @IBAction func scanAction(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletScannerVC") as! MyWalletScannerVC
         vc.wallet = self.wallet
         vc.isFromWallet = true
@@ -885,18 +880,18 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     func hideNoTransactionView() {
         self.NotransationImg.isHidden = true
-        self.NotransationLabel.isHidden = true
-        self.NotransationLabel2.isHidden = true
+        self.notransationLabel.isHidden = true
+        self.notransationLabel2.isHidden = true
     }
     
     func showNoTransactionView() {
         self.NotransationImg.isHidden = false
-        self.NotransationLabel.isHidden = false
-        self.NotransationLabel2.isHidden = false
+        self.notransationLabel.isHidden = false
+        self.notransationLabel2.isHidden = false
     }
     
-    // Date Range References Sree
-    @IBAction func Canceldate_Action(_ sender: UIButton) {
+    // Date Range References
+    @IBAction func cancelDateAction(_ sender: UIButton) {
         viewdateRangeRef.isHidden = true
         bottomview.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true
@@ -916,7 +911,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         }
         collectionView.reloadData()
     }
-    @IBAction func Okeydate_Action(_ sender: UIButton) {
+    @IBAction func okeyDateAction(_ sender: UIButton) {
         viewdateRangeRef.isHidden = true
         bottomview.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true
@@ -934,7 +929,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.isFilter = true
             if UserDefaults.standard.value(forKey: "btnclicked") != nil {
                 if UserDefaults.standard.value(forKey: "btnclicked")as! String == "outgoing" { // outgoing filter
-                    for element in TransactionSendarray {
+                    for element in transactionSendarray {
                         let timeInterval = element.timestamp
                         let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                         let dateFormatter = DateFormatter()
@@ -982,7 +977,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         }
                     }
                 } else  if UserDefaults.standard.value(forKey: "btnclicked")as! String == "incoming" { // income filetr
-                    for element in TransactionReceivearray {
+                    for element in transactionReceivearray {
                         let timeInterval = element.timestamp
                         let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                         let dateFormatter = DateFormatter()
@@ -1033,7 +1028,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                     
                 }
             } else { // all filter
-                for element in TransactionAllarray {
+                for element in transactionAllarray {
                     let timeInterval = element.timestamp
                     let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                     let dateFormatter = DateFormatter()
@@ -1094,15 +1089,15 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     }
     
     // Recycle perpose code
-    @IBAction func Reconnect_Action(_ sender: UIButton) {
+    @IBAction func reconnectAction(_ sender: UIButton) {
         viewSyncing.isHidden = true
         bottomview.isUserInteractionEnabled = false
         scrollView.isUserInteractionEnabled = false
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         init_syncing_wallet()
     }
-    @IBAction func Rescan_Action(_ sender: UIButton) {
-        if Syncedflag == true {
+    @IBAction func rescanAction(_ sender: UIButton) {
+        if syncedflag == true {
             viewSyncing.isHidden = true
             bottomview.isUserInteractionEnabled = true
             scrollView.isUserInteractionEnabled = true
@@ -1132,10 +1127,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }
                 return filteredAllTransactionarray.count
             } else {
-                if TransactionAllarray.count == 0 {
+                if transactionAllarray.count == 0 {
                     self.showNoTransactionView()
                 }
-                return TransactionAllarray.count
+                return transactionAllarray.count
             }
         }else if btnSendRef2 == true {
             if self.isFilter {
@@ -1144,10 +1139,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }
                 return filteredOutgoingTransactionarray.count
             } else {
-                if TransactionSendarray.count == 0 {
+                if transactionSendarray.count == 0 {
                     self.showNoTransactionView()
                 }
-                return TransactionSendarray.count
+                return transactionSendarray.count
             }
         }else {
             if self.isFilter {
@@ -1156,10 +1151,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }
                 return filteredIncomingTransactionarray.count
             } else {
-                if TransactionReceivearray.count == 0 {
+                if transactionReceivearray.count == 0 {
                     self.showNoTransactionView()
                 }
-                return TransactionReceivearray.count
+                return transactionReceivearray.count
             }
         }
     }
@@ -1229,7 +1224,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                     cell.lblReceipentAddressTitle.isHidden = true
                 }
             } else {
-                let responceData = TransactionAllarray[indexPath.row]
+                let responceData = transactionAllarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateFormatter = DateFormatter()
@@ -1319,7 +1314,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                     cell.lblReceipentAddressTitle.isHidden = false
                 }
             } else {
-                let responceData = TransactionSendarray[indexPath.row]
+                let responceData = transactionSendarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateFormatter = DateFormatter()
@@ -1411,7 +1406,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }
             } else {
                 //TimeStamp
-                let responceData = TransactionReceivearray[indexPath.row]
+                let responceData = transactionReceivearray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateFormatter = DateFormatter()
@@ -1477,10 +1472,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                     }
                     
                 } else {
-                    if TransactionAllarray.count == 0 {
+                    if transactionAllarray.count == 0 {
                         self.showNoTransactionView()
                     }
-                    let responceData = TransactionAllarray[indexPath.row]
+                    let responceData = transactionAllarray[indexPath.row]
                     if responceData.direction == BChat_Messenger.TransactionDirection.received {
                         return CGSize(width: collectionView.frame.size.width, height: 250)
                     } else {
@@ -1499,10 +1494,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                         return CGSize(width: collectionView.frame.size.width, height: 345)
                     }
                 } else {
-                    if TransactionSendarray.count == 0 {
+                    if transactionSendarray.count == 0 {
                         self.showNoTransactionView()
                     }
-                    let responceData = TransactionSendarray[indexPath.row]
+                    let responceData = transactionSendarray[indexPath.row]
                     if responceData.direction == BChat_Messenger.TransactionDirection.received {
                         return CGSize(width: collectionView.frame.size.width, height: 250)
                     } else {
@@ -1521,10 +1516,10 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                         return CGSize(width: collectionView.frame.size.width, height: 345)
                     }
                 } else {
-                    if TransactionReceivearray.count == 0 {
+                    if transactionReceivearray.count == 0 {
                         self.showNoTransactionView()
                     }
-                    let responceData = TransactionReceivearray[indexPath.row]
+                    let responceData = transactionReceivearray[indexPath.row]
                     if responceData.direction == BChat_Messenger.TransactionDirection.received {
                         return CGSize(width: collectionView.frame.size.width, height: 250)
                     } else {
@@ -1541,7 +1536,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         if btnAllRef2 == true {
             let indexPath = IndexPath(item: sender.view!.tag, section: 0);
             if collectionView.cellForItem(at: indexPath) is WalletHomeXibCell {
-                let trID = TransactionAllarray[indexPath.row].hash
+                let trID = transactionAllarray[indexPath.row].hash
                 if let url = URL(string: "https://explorer.beldex.io/tx/\(trID)") {
                     UIApplication.shared.open(url)
                 }
@@ -1549,7 +1544,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         }else if btnSendRef2 == true {
             let indexPath = IndexPath(item: sender.view!.tag, section: 0);
             if collectionView.cellForItem(at: indexPath) is WalletHomeXibCell {
-                let trID = TransactionSendarray[indexPath.row].hash
+                let trID = transactionSendarray[indexPath.row].hash
                 if let url = URL(string: "https://explorer.beldex.io/tx/\(trID)") {
                     UIApplication.shared.open(url)
                 }
@@ -1557,7 +1552,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         }else {
             let indexPath = IndexPath(item: sender.view!.tag, section: 0);
             if collectionView.cellForItem(at: indexPath) is WalletHomeXibCell {
-                let trID = TransactionReceivearray[indexPath.row].hash
+                let trID = transactionReceivearray[indexPath.row].hash
                 if let url = URL(string: "https://explorer.beldex.io/tx/\(trID)") {
                     UIApplication.shared.open(url)
                 }
@@ -1673,27 +1668,27 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
     
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
-        TransactionAllarray = history.all
-        expandingArray = TransactionAllarray
+        transactionAllarray = history.all
+        expandingArray = transactionAllarray
         let count = expandingArray.count
         isExpanded = Array(repeating: false, count: count)
-        TransactionSendarray = history.send
-        TransactionReceivearray = history.receive
+        transactionSendarray = history.send
+        transactionReceivearray = history.receive
         self.mainbalance = balance_modify
         DispatchQueue.main.async { [self] in
-            self.TransactionAllarray = history.all
-            self.TransactionSendarray = history.send
-            self.TransactionReceivearray = history.receive
+            self.transactionAllarray = history.all
+            self.transactionSendarray = history.send
+            self.transactionReceivearray = history.receive
             
             if SaveUserDefaultsData.WalletRestoreHeight == "" {
                 let restoreHeightempty = UInt64("1850630")!
-                self.TransactionAllarray = self.TransactionAllarray.filter{$0.blockHeight >= restoreHeightempty}
-                self.TransactionSendarray = self.TransactionSendarray.filter{$0.blockHeight >= restoreHeightempty}
-                self.TransactionReceivearray = self.TransactionReceivearray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionAllarray = self.transactionAllarray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionSendarray = self.transactionSendarray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionReceivearray = self.transactionReceivearray.filter{$0.blockHeight >= restoreHeightempty}
             } else {
-                self.TransactionAllarray = self.TransactionAllarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
-                self.TransactionSendarray = self.TransactionSendarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
-                self.TransactionReceivearray = self.TransactionReceivearray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionAllarray = self.transactionAllarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionSendarray = self.transactionSendarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionReceivearray = self.transactionReceivearray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
             }
             
             if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
@@ -1752,7 +1747,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
             self.reloadData([:])
             
             self.collectionView.reloadData()
-            if self.TransactionAllarray.count == 0 {
+            if self.transactionAllarray.count == 0 {
                 self.showNoTransactionView()
             }else {
                 self.hideNoTransactionView()

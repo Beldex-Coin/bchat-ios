@@ -4316,7 +4316,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                     <color key="titleColor" name="bchat_lbl_name"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="Canceldate_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="LdY-6C-hLb"/>
+                                                    <action selector="cancelDateAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="T09-hr-1ac"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j7c-Im-m1P">
@@ -4330,7 +4330,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                     <color key="titleColor" name="bchat_button_clr"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="Okeydate_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="pkk-aE-yvz"/>
+                                                    <action selector="okeyDateAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="r6F-wm-AdE"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -4384,7 +4384,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                     <color key="titleColor" name="bchat_lbl_name"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="Reconnect_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="6DJ-fx-916"/>
+                                                    <action selector="reconnectAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="gHK-1O-8P8"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUl-JY-0AD">
@@ -4400,7 +4400,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                     <color key="titleColor" name="bchat_lbl_name"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="Rescan_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="AG4-Dj-opK"/>
+                                                    <action selector="rescanAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Umx-3R-8i0"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -4622,7 +4622,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="Send_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Mgy-72-khd"/>
+                                                            <action selector="sendAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Qse-nV-08k"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aau-Uz-TfQ">
@@ -4634,7 +4634,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="Receive_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="rtb-7p-FF4"/>
+                                                            <action selector="receiveAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Bq3-Wm-ukV"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -4661,7 +4661,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <connections>
-                                                    <action selector="Scan_Action:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="RWx-E3-AVY"/>
+                                                    <action selector="scanAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="EQQ-Cl-y3P"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -4739,8 +4739,6 @@ The Beldex network and BChat uses several protocols that were designed by the op
                     </view>
                     <connections>
                         <outlet property="NotransationImg" destination="zTk-of-dqQ" id="d2v-Zf-2O0"/>
-                        <outlet property="NotransationLabel" destination="f0Y-jA-rR0" id="mHA-Zc-SHs"/>
-                        <outlet property="NotransationLabel2" destination="HTS-8Z-bKC" id="b0I-j9-0Fh"/>
                         <outlet property="backgroundBottomScanView" destination="eOR-NN-8aw" id="2s7-Hc-kum"/>
                         <outlet property="backgroundBottomView" destination="Egm-C5-2qL" id="VL2-0x-iDJ"/>
                         <outlet property="bottomview" destination="lXK-QU-7Ex" id="OE6-71-9bW"/>
@@ -4761,6 +4759,8 @@ The Beldex network and BChat uses several protocols that were designed by the op
                         <outlet property="lblMainblns" destination="mi9-Ai-68b" id="f6Q-Ov-QV0"/>
                         <outlet property="lblOtherCurrencyblns" destination="dvl-cK-XEr" id="5bB-fE-371"/>
                         <outlet property="lblsyncedRestoreHeight" destination="Lvv-tb-8rg" id="c99-FG-XhZ"/>
+                        <outlet property="notransationLabel" destination="f0Y-jA-rR0" id="mHA-Zc-SHs"/>
+                        <outlet property="notransationLabel2" destination="HTS-8Z-bKC" id="b0I-j9-0Fh"/>
                         <outlet property="outgoingButton" destination="wOT-72-sbP" id="r0S-UT-JbO"/>
                         <outlet property="outgoingImageView" destination="Umd-r0-RHb" id="YJ4-0U-gFu"/>
                         <outlet property="progressLabel" destination="ggR-mn-Wrr" id="Wkx-Ep-83p"/>

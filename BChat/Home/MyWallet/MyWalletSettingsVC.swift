@@ -369,7 +369,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
                 if count > 1
                 {
                     let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
-                    VC.BackAPISelectedDecimal = true
+                    VC.backAPISelectedDecimal = true
                 }
             }
             collectionView.reloadData()
@@ -388,7 +388,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
                 if count > 1
                 {
                     let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
-                    VC.BackAPISelectedCurrency = true
+                    VC.backAPISelectedCurrency = true
                 }
             }
             self.txtSearchBar.resignFirstResponder()

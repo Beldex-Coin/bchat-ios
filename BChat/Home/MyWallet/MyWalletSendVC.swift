@@ -27,13 +27,13 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     
     public lazy var loadingState = { Postable<Bool>() }()
     private var currencyName = ""
-    private var BdxCurrencyValue = ""
-    private var CurrencyValue: Double!
+    private var bdxCurrencyValue = ""
+    private var currencyValue: Double!
     private var refreshDuration: TimeInterval = 60
     private var marketsDataRequest: DataRequest?
     
-    var WalletAddress: String!
-    var WalletAmt: String!
+    var walletAddress: String!
+    var walletAmount: String!
     var wallet: BDXWallet?
     private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     private var currentBlockChainHeight: UInt64 = 0
@@ -59,7 +59,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     }
     var BackAPI = false
     var hashArray = [RecipientDomainSchema]()
-    var RecipientAddressON = false
+    var recipientAddressON = false
     var placeholderLabel : UILabel!
     var finalWalletAddress = ""
     var finalWalletAmount = ""
@@ -83,7 +83,6 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         self.navigationItem.leftBarButtonItem = newBackButton
         //TextView Placholder
         txtaddress.delegate = self
-        txtaddress.text = "4L4sXh3mYWhiS5knMjBW4t4CDqa2yejy1RgkQUxgp8Eb6LDhS7GuHiRSY18DPrHH7wFaQ5N8tV3GEB8VXGgNTQin224EuGhimi37cwmbrz"
         placeholderLabel = UILabel()
         placeholderLabel.text = "Beldex address"
         placeholderLabel.font = Fonts.OpenSans(ofSize: (txtaddress.font?.pointSize)!)
@@ -94,7 +93,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         placeholderLabel.isHidden = !txtaddress.text.isEmpty
         
         //Save Receipent Address fun developed In Local
-        self.SaveReceipeinetAddressOnAndOff()
+        self.saveReceipeinetAddressOnAndOff()
         
         btnsend.layer.cornerRadius = 6
         backgroundAddressView.layer.cornerRadius = 6
@@ -130,13 +129,13 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         imgtick.layer.cornerRadius = imgtick.layer.frame.height/2
         imgtick.clipsToBounds = true
         
-        if WalletAddress != nil {
+        if walletAddress != nil {
             placeholderLabel?.isHidden = true
-            self.txtaddress.text = "\(WalletAddress!)"
+            self.txtaddress.text = "\(walletAddress!)"
         }
-        if WalletAmt != nil {
-            self.txtamount.text = "\(WalletAmt!)"
-            self.BdxCurrencyValue = txtamount.text!
+        if walletAmount != nil {
+            self.txtamount.text = "\(walletAmount!)"
+            self.bdxCurrencyValue = txtamount.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
             reloadData([:])
@@ -151,12 +150,11 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         
         let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(dismiss)
-        
     }
     
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
-        self.SaveReceipeinetAddressOnAndOff()
+        self.saveReceipeinetAddressOnAndOff()
         if BackAPI == true{
             self.confirmSendingPopView.isHidden = false
             self.successPopView.isHidden = true
@@ -249,15 +247,15 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         return super.canPerformAction(action, withSender: sender)
     }
     
-    func SaveReceipeinetAddressOnAndOff(){
+    func saveReceipeinetAddressOnAndOff(){
         if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
             if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
-                RecipientAddressON = true
+                recipientAddressON = true
             } else {
-                RecipientAddressON = false
+                recipientAddressON = false
             }
         }else {
-            RecipientAddressON = false
+            recipientAddressON = false
         }
     }
     
@@ -283,7 +281,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         let commitPendingTransaction = self.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
-            if RecipientAddressON == true {
+            if recipientAddressON == true {
                 if !UserDefaults.standard.domainSchemas.isEmpty {
                     hashArray = UserDefaults.standard.domainSchemas
                     hashArray.append(.init(localhash: txid, localaddress: lbladdressAftersending.text!))
@@ -325,7 +323,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let indexOfString = txtamount.text!
             let lastString = txtamount.text!.index(before: txtamount.text!.endIndex)
             guard BChatWalletWrapper.validAddress(txtaddress.text!) else {
-                let alert = UIAlertController(title: "My Wallet", message: "Address Format Error", preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: "My Wallet", message: "Not a valid address", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
                 return
@@ -365,7 +363,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }else if txtamount.text == "." {
             // print("---dot value entry----")
         }else {
-            self.BdxCurrencyValue = txtamount.text!
+            self.bdxCurrencyValue = txtamount.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
             reloadData([:])
@@ -379,7 +377,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }else if txtamount.text == "." {
             // print("---dot value entry----")
         }else {
-            self.BdxCurrencyValue = txtamount.text!
+            self.bdxCurrencyValue = txtamount.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
             reloadData([:])
@@ -389,10 +387,10 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     private func reloadData(_ json: [String: [String: Any]]) {
         let xmrAmount = json["beldex"]?[currencyName] as? Double
         if xmrAmount != nil {
-            CurrencyValue = xmrAmount
+            currencyValue = xmrAmount
         }
-        if CurrencyValue != nil {
-            let tax = Double(BdxCurrencyValue)! * CurrencyValue
+        if currencyValue != nil && bdxCurrencyValue != "" {
+            let tax = Double(bdxCurrencyValue)! * currencyValue
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             lblusd.text = "  \(self.currencyName.uppercased()) \(String(format:"%.4f",tax))  "
         }

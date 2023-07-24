@@ -14,7 +14,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
     }
     @IBOutlet var NodePopView: UIView!
     var rightBarButtonItems: [UIBarButtonItem] = []
-    var NodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
     var randomNodeValue = ""
     var randomValueAfterAddNewNode = ""
     var selectedIndex : Int = 70
@@ -75,7 +75,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         self.nodePortNumTxtFld.keyboardType = .numberPad
         
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
-        randomValueAfterAddNewNode = NodeArray.randomElement()!
+        randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.NodePopView.isHidden = true
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         self.NodePopView.layer.cornerRadius = 6
@@ -87,12 +87,12 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
         }else{
-            NodeArray.removeAll()
+            nodeArray.removeAll()
             collectionView.reloadData();
         }
         
-        for i in 0 ..< NodeArray.count {
-            self.forVerifyAllNodeURI(host_port: self.NodeArray[i])
+        for i in 0 ..< nodeArray.count {
+            self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
         }
         
     }
@@ -141,7 +141,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         super.viewWillAppear(animated)
         if SaveUserDefaultsData.SaveLocalNodelist != []{
             if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-                NodeArray = SaveUserDefaultsData.SaveLocalNodelist
+                nodeArray = SaveUserDefaultsData.SaveLocalNodelist
                 collectionView.reloadData()
             }
         }
@@ -166,14 +166,14 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
             self.collectionView.isHidden = true
             self.NodePopView.isHidden = false
             self.navigationController?.navigationBar.isUserInteractionEnabled = false
-            self.nodeAddressTxtFld.text = NodeArray[indexPath.row]
+            self.nodeAddressTxtFld.text = nodeArray[indexPath.row]
             self.currentIndexForEditNode = indexPath.row
             
-            if let range1 = NodeArray[indexPath.row].range(of: ":") {
-                let port = NodeArray[indexPath.row][range1.upperBound...]
+            if let range1 = nodeArray[indexPath.row].range(of: ":") {
+                let port = nodeArray[indexPath.row][range1.upperBound...]
                 self.nodePortNumTxtFld.text = String(port)
             }
-            let name = NodeArray[indexPath.row].components(separatedBy: ":")
+            let name = nodeArray[indexPath.row].components(separatedBy: ":")
             self.nodeAddressTxtFld.text = name[0]
             self.nodenameTxtFld.text = name[0]
             
@@ -197,12 +197,12 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
             let refreshAlert = UIAlertController(title: "Wallet Node", message: "Are you sure you want to refresh Node", preferredStyle: UIAlertController.Style.alert)
             refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { [self] (action: UIAlertAction!) in
                 SaveUserDefaultsData.SwitchNode = true
-                self.NodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
+                self.nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
                 SaveUserDefaultsData.SaveLocalNodelist = []
-                for i in 0 ..< self.NodeArray.count {
-                    self.forVerifyAllNodeURI(host_port: self.NodeArray[i])
+                for i in 0 ..< self.nodeArray.count {
+                    self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
                 }
-                self.randomNodeValue = self.NodeArray.randomElement()!
+                self.randomNodeValue = self.nodeArray.randomElement()!
                 SaveUserDefaultsData.SelectedNode = randomNodeValue
                 if self.navigationController != nil{
                     let count = self.navigationController!.viewControllers.count
@@ -220,7 +220,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
             }))
             self.present(refreshAlert, animated: true, completion: nil)
         }else{
-            NodeArray.removeAll()
+            nodeArray.removeAll()
             collectionView.reloadData();
         }
     }
@@ -256,7 +256,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         } else {
             if self.testResultFlag == true {
                 let txtfldStr = nodeAddressTxtFld.text! + ":" + nodePortNumTxtFld.text!
-                if NodeArray.contains(txtfldStr){
+                if nodeArray.contains(txtfldStr){
                     let alert = UIAlertController(title: "", message: "This Node is already exists", preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
@@ -329,18 +329,18 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
             }else {
                 
                 if self.currentIndexForEditNode != -1 {
-                    self.NodeArray[self.currentIndexForEditNode] = host_port
+                    self.nodeArray[self.currentIndexForEditNode] = host_port
                 } else {
-                    self.NodeArray.append(host_port)
+                    self.nodeArray.append(host_port)
                 }
-                for i in 0 ..< self.NodeArray.count {
-                    self.forVerifyAllNodeURI(host_port: self.NodeArray[i])
+                for i in 0 ..< self.nodeArray.count {
+                    self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
                 }
                 self.NodePopView.isHidden = true
                 self.navigationController?.navigationBar.isUserInteractionEnabled = true
                 self.collectionView.isHidden = false
-                SaveUserDefaultsData.SaveLocalNodelist = self.NodeArray
-                SaveUserDefaultsData.SelectedNode = self.NodeArray.last!
+                SaveUserDefaultsData.SaveLocalNodelist = self.nodeArray
+                SaveUserDefaultsData.SelectedNode = self.nodeArray.last!
                 self.nodeAddressTxtFld.text = ""
                 self.nodePortNumTxtFld.text = ""
                 self.nodeUsernameTxtFld.text = ""
@@ -402,12 +402,12 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return NodeArray.count
+        return nodeArray.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyWalletNodeXibCell.identifier, for: indexPath) as! MyWalletNodeXibCell
-        if checkedData.keys.contains(NodeArray[indexPath.row]) {
-            let dictionaryIndex = checkedData.index(forKey: NodeArray[indexPath.row])
+        if checkedData.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedData.index(forKey: nodeArray[indexPath.row])
             let status = checkedData.values[dictionaryIndex!]
             if status == "OK" {
                 cell.viewcolour.backgroundColor = .green
@@ -416,8 +416,8 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
             }
         }
         
-        if checkedDataForTimeInterval.keys.contains(NodeArray[indexPath.row]) {
-            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: NodeArray[indexPath.row])
+        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
                 cell.lblDetails.textColor = .red
@@ -428,18 +428,18 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
             }
         }
         
-        cell.lblmyaddress.text = NodeArray[indexPath.row]
+        cell.lblmyaddress.text = nodeArray[indexPath.row]
         cell.mainView.layer.backgroundColor = Colors.bchat_view_bg_clr.cgColor
         cell.isUserInteractionEnabled = true
         if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
             let selectedNodeData = SaveUserDefaultsData.SelectedNode
-            if(NodeArray[indexPath.row] == selectedNodeData) {
+            if(nodeArray[indexPath.row] == selectedNodeData) {
                 selectedIndex = indexPath.row
                 cell.mainView.layer.backgroundColor = UIColor(red: 35.0/255, green: 130.0/255, blue: 244.0/255, alpha: 1.0).cgColor
                 cell.isUserInteractionEnabled = false
             }
-        } else if (NodeArray.count == 7) {
-            if(NodeArray[indexPath.row] == randomNodeValue) {
+        } else if (nodeArray.count == 7) {
+            if(nodeArray[indexPath.row] == randomNodeValue) {
                 cell.mainView.layer.backgroundColor = UIColor(red: 35.0/255, green: 130.0/255, blue: 244.0/255, alpha: 1.0).cgColor
                 cell.isUserInteractionEnabled = false
             }
@@ -456,7 +456,7 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
         let alertView = UIAlertController(title: "", message: "Are you sure you want to switch to another node?", preferredStyle: UIAlertController.Style.alert)
         alertView.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self] (action: UIAlertAction!) in
             SaveUserDefaultsData.SwitchNode = true
-            selectedValue = self.NodeArray[indexPath.row]
+            selectedValue = self.nodeArray[indexPath.row]
             SaveUserDefaultsData.SelectedNode = selectedValue
             if self.navigationController != nil{
                 let count = self.navigationController!.viewControllers.count
