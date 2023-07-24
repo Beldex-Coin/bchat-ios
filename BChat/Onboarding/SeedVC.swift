@@ -61,14 +61,14 @@ final class SeedVC : BaseVC {
         // Set up title label
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: isIPhone5OrSmaller ? Values.largeFontSize : Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.largeFontSize : Values.veryLargeFontSize)
         titleLabel.text = NSLocalizedString("vc_seed_title_2", comment: "")
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("vc_seed_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
@@ -88,7 +88,7 @@ final class SeedVC : BaseVC {
         // Set up call to action label
         let callToActionLabel = UILabel()
         callToActionLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        callToActionLabel.font = .systemFont(ofSize: isIPhone5OrSmaller ? Values.smallFontSize : Values.mediumFontSize)
+        callToActionLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.smallFontSize : Values.mediumFontSize)
         callToActionLabel.text = NSLocalizedString("vc_seed_reveal_button_title", comment: "")
         callToActionLabel.textAlignment = .center
         let callToActionLabelGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(revealMnemonic))

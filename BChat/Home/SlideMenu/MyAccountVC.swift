@@ -57,24 +57,24 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         self.second_view.isHidden = false
         
         if isLightMode {
-            let origImage = UIImage(named: "322")
+            let origImage = UIImage(named: "ic_QR_dark")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             myBtn.setImage(tintedImage, for: .normal)
             myBtn.tintColor = .black
         }else {
-            let origImage = UIImage(named: "3222")
+            let origImage = UIImage(named: "ic_QR_white")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             myBtn.setImage(tintedImage, for: .normal)
             myBtn.tintColor = .white
         }
         
         //Share logo Image
-        let logoName2 = isLightMode ? "share" : "share"  //share_dark
-        sharelogoimg.image = UIImage(named: logoName2)!
+        let logoImg = isLightMode ? "share" : "share"
+        sharelogoimg.image = UIImage(named: logoImg)!
         
         //editProfilepiclogoimg
-        let logoName3 = isLightMode ? "camera_profile_pic" : "WhatsApp"
-        editProfilepiclogoimg.image = UIImage(named: logoName3)!
+        let logoCamera = isLightMode ? "ic_camera_dark" : "ic_camera_white"
+        editProfilepiclogoimg.image = UIImage(named: logoCamera)!
         
         //Share
         shareview.layer.cornerRadius = 5
@@ -91,12 +91,12 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         displayNameTextField.text = nam?.firstCharacterUpperCase()
         
         displayNameTextField.textColor = Colors.text
-        displayNameTextField.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        displayNameTextField.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         displayNameTextField.delegate = self
         
         //Bacht ID
         //  publicKeyLabel.textColor = Colors.text
-        publicKeyLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
+        publicKeyLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
         publicKeyLabel.textAlignment = .left
         publicKeyLabel.adjustsFontSizeToFitWidth = false
         publicKeyLabel.lineBreakMode = .byTruncatingTail
@@ -111,7 +111,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         //Beldex address ID
         //  beldexaddressLabel.textColor = Colors.text
-        beldexaddressLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
+        beldexaddressLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
         beldexaddressLabel.textAlignment = .left
         beldexaddressLabel.adjustsFontSizeToFitWidth = false
         beldexaddressLabel.lineBreakMode = .byTruncatingTail
@@ -143,13 +143,13 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     @objc func tapFunction(sender:UITapGestureRecognizer) {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         publicKeyLabel.isUserInteractionEnabled = false
-        self.showToast22(message: "Your BChat ID copied to clipboard", seconds: 1.0)
+        self.showToastMsg(message: "Your BChat ID copied to clipboard", seconds: 1.0)
     }
     
     @objc func tapFunction2(sender:UITapGestureRecognizer) {
         UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexaddressLabel.isUserInteractionEnabled = false
-        self.showToast22(message: "Your Beldex Address is copied to clipboard", seconds: 1.0)
+        self.showToastMsg(message: "Your Beldex Address is copied to clipboard", seconds: 1.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -170,12 +170,12 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
             //  self.second_view.isHidden = false
             if self.second_view.isHidden == false {
                 if isLightMode {
-                    let origImage = UIImage(named: "322")
+                    let origImage = UIImage(named: "ic_QR_dark")
                     let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                     self.myBtn.setImage(tintedImage, for: .normal)
                     self.myBtn.tintColor = .black
                 }else {
-                    let origImage = UIImage(named: "3222")
+                    let origImage = UIImage(named: "ic_QR_white")
                     let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
                     self.myBtn.setImage(tintedImage, for: .normal)
                     self.myBtn.tintColor = .white
@@ -217,9 +217,8 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
                 string: " Enter a Display Name",
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
             )
-            displayNameTextField.font = .systemFont(ofSize: Values.smallFontSize)
+            displayNameTextField.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             displayNameTextField.layer.masksToBounds = true
-            // displayNameTextField.layer.backgroundColor = UIColor.lightText.cgColor
             displayNameTextField.layer.cornerRadius = 4
             displayNameTextField.layer.borderWidth = 0.1
         } else {
@@ -395,7 +394,6 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         self.present(imagePicker, animated: true, completion: nil)
     }
     
-    
     //MARK:UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -427,52 +425,7 @@ extension String {
         return lowerCasedString.replacingCharacters(in: lowerCasedString.startIndex...lowerCasedString.startIndex, with: String(lowerCasedString[lowerCasedString.startIndex]).uppercased())
     }
 }
-extension UITextField {
-    
-    enum Direction {
-        case Left
-        case Right
-    }
-    
-    // add image to textfield
-    func withImage(direction: Direction, image: UIImage, colorBorder: UIColor){
-        let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
-        // mainView.layer.cornerRadius = 5
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
-        //    view.backgroundColor = .white
-        //    view.clipsToBounds = true
-        //  view.layer.cornerRadius = 5
-        // view.layer.borderWidth = CGFloat(0.5)
-        //    view.layer.borderColor = colorBorder.cgColor
-        mainView.addSubview(view)
-        
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        //  imageView.tintColor = UIColor.red
-        imageView.frame = CGRect(x: 0, y: 0, width: 15, height: 20)
-        view.addSubview(imageView)
-        
-        //    let seperatorView = UIView()
-        //    seperatorView.backgroundColor = colorSeparator
-        //    mainView.addSubview(seperatorView)
-        
-        if(Direction.Left == direction){ // image left
-            // seperatorView.frame = CGRect(x: 45, y: 0, width: 5, height: 20)
-            self.leftViewMode = .always
-            self.leftView = mainView
-        } else { // image right
-            // seperatorView.frame = CGRect(x: 0, y: 0, width: 5, height: 20)
-            self.rightViewMode = .always
-            self.rightView = mainView
-        }
-        
-        // self.layer.borderColor = colorBorder.cgColor
-        // self.layer.borderWidth = CGFloat(0.5)
-        // self.layer.cornerRadius = 5
-    }
-    
-}
+
 extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -500,7 +453,7 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 45)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let pathVC = PathVC()

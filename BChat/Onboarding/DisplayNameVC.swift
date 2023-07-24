@@ -28,6 +28,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         nextRef.layer.cornerRadius = 6
         userNametxt.attributedPlaceholder = NSAttributedString(string:"Enter a display name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         userNametxt.delegate = self
+        userNametxt.returnKeyType = .done
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -108,6 +109,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in
                 switch result {
                 case .success(let wallet):
+                    wallet.close()
                     let seed = wallet.seed
                 case .failure(_):
                     print("in case failyre")

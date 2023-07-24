@@ -35,7 +35,7 @@ public final class TextField : UITextField {
     
     private func setUpStyle() {
         textColor = Colors.text
-        font = .systemFont(ofSize: Values.smallFontSize)
+        font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let placeholder = NSMutableAttributedString(string: self.placeholder!)
         let placeholderColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         placeholder.addAttribute(.foregroundColor, value: placeholderColor, range: NSRange(location: 0, length: placeholder.length))

@@ -74,4 +74,6 @@ public final class Colors : NSObject {
     @objc public static var bchatattachemnt: UIColor { UIColor(named: "bchatattachemnt")! }
     @objc public static var bchatmeassgeReq: UIColor { UIColor(named: "bchatmeassgeReq")! }
     @objc public static var bchat_join_backgroundgreen: UIColor { UIColor(named: "bchat_join_backgroundgreen")! }
+    @objc public static var SyncingPopColor: UIColor { UIColor(named: "SyncingPopColor")! }
+    @objc public static var mywallethome_bottomview: UIColor { UIColor(named: "mywallethome_bottomview")! }
 }

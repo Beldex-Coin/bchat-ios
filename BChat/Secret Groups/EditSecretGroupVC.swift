@@ -19,7 +19,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
     private lazy var groupNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.lineBreakMode = .byTruncatingTail
         result.textAlignment = .center
         result.layer.borderColor = UIColor.lightGray.cgColor
@@ -109,7 +109,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
         // Members label
         let membersLabel = UILabel()
         membersLabel.textColor = Colors.text
-        membersLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+        membersLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         membersLabel.text = "Members"
         // Add members button
         let hasContactsToAdd = !Set(ContactUtilities.getAllContacts()).subtracting(self.membersAndZombies).isEmpty

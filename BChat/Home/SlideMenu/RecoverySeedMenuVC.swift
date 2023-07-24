@@ -10,7 +10,7 @@ class RecoverySeedMenuVC: UIViewController {
     @IBOutlet weak var copyimg:UIImageView!
     @IBOutlet weak var backgroundCopyView:UIView!
     @IBOutlet weak var lblcopy:UILabel!
-  
+    
     private let mnemonic: String = {
         let identityManager = OWSIdentityManager.shared()
         let databaseConnection = identityManager.value(forKey: "dbConnection") as! YapDatabaseConnection
@@ -28,10 +28,10 @@ class RecoverySeedMenuVC: UIViewController {
         }, completion: nil)
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         self.title = "Seed"
@@ -59,7 +59,7 @@ class RecoverySeedMenuVC: UIViewController {
         
     }
     // MARK: - Navigation
-
+    
     @IBAction func copyAction(sender:UIButton){
         UIPasteboard.general.string = mnemonic
         copyref.isUserInteractionEnabled = false

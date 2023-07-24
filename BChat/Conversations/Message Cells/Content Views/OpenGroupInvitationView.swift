@@ -41,20 +41,20 @@ final class OpenGroupInvitationView : UIView {
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.text = name
         titleLabel.textColor = textColor
-        titleLabel.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         // Subtitle
         let subtitleLabel = UILabel()
         subtitleLabel.lineBreakMode = .byTruncatingTail
         subtitleLabel.text = NSLocalizedString("view_open_group_invitation_description", comment: "")
         subtitleLabel.textColor = textColor
-        subtitleLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        subtitleLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         // URL
         let urlLabel = UILabel()
         urlLabel.lineBreakMode = .byCharWrapping
         urlLabel.text = url
         urlLabel.textColor = textColor
         urlLabel.numberOfLines = 0
-        urlLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+        urlLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         // Label stack
         let labelStackView = UIStackView(arrangedSubviews: [ titleLabel, UIView.vSpacer(2), subtitleLabel, UIView.vSpacer(4), urlLabel ])
         labelStackView.axis = .vertical

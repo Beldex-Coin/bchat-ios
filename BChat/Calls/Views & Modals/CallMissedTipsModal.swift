@@ -29,13 +29,13 @@ final class CallMissedTipsModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = NSLocalizedString("modal_call_missed_tips_title", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
         messageLabel.text = message
         messageLabel.numberOfLines = 0

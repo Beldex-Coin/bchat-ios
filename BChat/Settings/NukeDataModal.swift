@@ -10,7 +10,7 @@ final class NukeDataModal : Modal {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.text = NSLocalizedString("Clear All Data", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -21,7 +21,7 @@ final class NukeDataModal : Modal {
     private lazy var titleLabel2: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bchat_button_clr
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("Chat ID", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -32,7 +32,7 @@ final class NukeDataModal : Modal {
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("This will clear all your BChat data from device.", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
@@ -48,8 +48,7 @@ final class NukeDataModal : Modal {
             result.backgroundColor = Colors.destructive
         }
         result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
-      //  result.setTitleColor(isLightMode ? Colors.text : Colors.text, for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("TXT_DELETE_TITLE", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearAllData), for: UIControl.Event.touchUpInside)
@@ -69,7 +68,7 @@ final class NukeDataModal : Modal {
         result.set(.height, to: Values.mediumButtonHeight)
         result.layer.cornerRadius = Modal.buttonCornerRadius
         result.backgroundColor = Colors.buttonBackground
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearDeviceOnly), for: UIControl.Event.touchUpInside)
@@ -84,8 +83,7 @@ final class NukeDataModal : Modal {
             result.backgroundColor = Colors.destructive
         }
         result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
-     //   result.setTitleColor(isLightMode ? Colors.destructive : Colors.text, for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Yes", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)

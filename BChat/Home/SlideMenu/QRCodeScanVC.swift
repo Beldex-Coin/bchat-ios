@@ -15,7 +15,7 @@ class QRCodeScanVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
@@ -50,7 +50,6 @@ class QRCodeScanVC: BaseVC {
         vc.newChatScanflag = false
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
     
 }
 extension UIImage {

@@ -23,16 +23,16 @@ final class BlockedModal: Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = String(format: NSLocalizedString("modal_blocked_title", comment: ""), name)
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_blocked_explanation", comment: ""), name)
         let attributedMessage = NSMutableAttributedString(string: message)
-        attributedMessage.addAttributes([ .font : UIFont.boldSystemFont(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
+        attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
         messageLabel.attributedText = attributedMessage
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -48,7 +48,7 @@ final class BlockedModal: Modal {
             unblockButton.backgroundColor = Colors.bchat_join_backgroundgreen
             unblockButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
-        unblockButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        unblockButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         unblockButton.setTitle(NSLocalizedString("modal_blocked_button_title", comment: ""), for: UIControl.State.normal)
         unblockButton.addTarget(self, action: #selector(unblock), for: UIControl.Event.touchUpInside)
         // Button stack view

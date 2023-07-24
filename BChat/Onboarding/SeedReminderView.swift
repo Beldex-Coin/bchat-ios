@@ -18,7 +18,7 @@ final class SeedReminderView : UIView {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -26,7 +26,7 @@ final class SeedReminderView : UIView {
     lazy var subtitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = .systemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
         return result
@@ -59,7 +59,7 @@ final class SeedReminderView : UIView {
         labelStackView.spacing = 4
         // Set up button
         let button = Button(style: .prominentOutline, size: .small)
-        button.titleLabel!.font = .boldSystemFont(ofSize: CGFloat(13))
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: CGFloat(13))
         button.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
         button.set(.width, to: 96)
         button.addTarget(self, action: #selector(handleContinueButtonTapped), for: UIControl.Event.touchUpInside)

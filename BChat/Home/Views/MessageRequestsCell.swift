@@ -47,7 +47,7 @@ class MessageRequestsCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         result.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.text = NSLocalizedString("MESSAGE_REQUESTS_TITLE", comment: "")
         result.textColor = Colors.bchat_lbl_name
         result.lineBreakMode = .byTruncatingTail
@@ -69,7 +69,7 @@ class MessageRequestsCell: UITableViewCell {
     private let unreadCountLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = UIColor.white
         result.textAlignment = .center
         

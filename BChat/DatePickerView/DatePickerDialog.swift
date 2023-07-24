@@ -40,7 +40,7 @@ open class DatePickerDialog: UIView {
     @objc public init(
         textColor: UIColor? = nil,
         buttonColor: UIColor? = nil,
-        font: UIFont = .boldSystemFont(ofSize: 15),
+        font: UIFont = Fonts.boldOpenSans(ofSize: 15),
         locale: Locale? = nil,
         showCancelButton: Bool = true
     ) {

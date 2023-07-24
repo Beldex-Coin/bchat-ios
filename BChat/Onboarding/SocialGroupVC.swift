@@ -60,6 +60,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         }
         
         txtview.delegate = self
+        txtview.returnKeyType = .done
         txtview.setPlaceholder2()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -217,7 +218,7 @@ extension UITextView{
     func setPlaceholder2() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter a social group URL"
-        placeholderLabel.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)

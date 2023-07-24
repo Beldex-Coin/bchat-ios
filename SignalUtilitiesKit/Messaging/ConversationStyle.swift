@@ -104,7 +104,7 @@ public class ConversationStyle: NSObject {
             maxMessageWidth = floor(contentWidth - 32)
         }
 
-        let messageTextFont = UIFont.systemFont(ofSize: Values.smallFontSize)
+        let messageTextFont = Fonts.OpenSans(ofSize: Values.smallFontSize)
 
         let baseFontOffset: CGFloat = 12
 

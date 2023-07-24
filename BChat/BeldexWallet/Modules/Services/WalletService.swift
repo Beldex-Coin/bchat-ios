@@ -42,6 +42,7 @@ class WalletService {
                 SaveUserDefaultsData.WalletpublicAddress = result_wallet.publicAddress
                 SaveUserDefaultsData.WalletSeed = WalletSeed.sentence
                 SaveUserDefaultsData.WalletName = result_wallet.walletName
+                SaveUserDefaultsData.WalletRestoreHeight = String(result_wallet.restoreHeight)
             }
         case .recovery(let data, let recover):
             switch recover.from {

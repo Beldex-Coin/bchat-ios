@@ -90,7 +90,7 @@ public final class Button : UIButton {
         }
         layer.borderWidth = 0
         let fontSize = (size == .small) ? Values.smallFontSize : Values.mediumFontSize
-        titleLabel!.font = .boldSystemFont(ofSize: fontSize)
+        titleLabel!.font = Fonts.boldOpenSans(ofSize: fontSize)
         setTitleColor(textColor, for: UIControl.State.normal)
     }
 

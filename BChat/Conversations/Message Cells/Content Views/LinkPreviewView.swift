@@ -37,7 +37,7 @@ final class LinkPreviewView : UIView {
 
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.numberOfLines = 0
         return result
     }()

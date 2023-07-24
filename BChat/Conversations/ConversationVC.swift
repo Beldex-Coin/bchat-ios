@@ -140,7 +140,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     lazy var unreadCountLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = Colors.text
         result.textAlignment = .center
         return result
@@ -189,7 +189,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = UIFont.systemFont(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 13)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
         result.textColor = Colors.bchatMessageRequestsInfoText
         result.textAlignment = .center
@@ -202,7 +202,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         result.setTitle(NSLocalizedString("TXT_DELETE_ACCEPT", comment: ""), for: .normal)
         result.setTitleColor(Colors.bchatHeading, for: .normal)
         result.setBackgroundImage(
@@ -234,7 +234,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         result.setTitle(NSLocalizedString("Decline", comment: ""), for: .normal)
         result.setTitleColor(Colors.destructive, for: .normal)
         result.setBackgroundImage(
@@ -823,7 +823,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let unreadCount = unreadViewItems.count
         unreadCountLabel.text = unreadCount < 10000 ? "\(unreadCount)" : "9999+"
         let fontSize = (unreadCount < 10000) ? Values.verySmallFontSize : 8
-        unreadCountLabel.font = .boldSystemFont(ofSize: fontSize)
+        unreadCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
         unreadCountView.isHidden = (unreadCount == 0)
     }
     

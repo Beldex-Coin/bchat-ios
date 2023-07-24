@@ -284,7 +284,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             
         }else{
             if text.count == 4096 || text.count > 4096 {
-                self.showToast22(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
             }else {
                 let thread = self.thread
                 
@@ -358,7 +358,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //            self.longtextmesg(text:text)
 //        }else {
 //            if text.count == 4096 || text.count > 4096 {
-//                self.showToast22(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+//                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
 //            }else {
 //                self.longtextmesg(text:text)
 //            }
@@ -891,7 +891,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 title = String(format: NSLocalizedString("Report & Delete", comment: ""), viewItem.interaction.thread.name())
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
-                // self.showToast22(message: "Report send", seconds: 1.0)
+                // self.showToastMsg(message: "Report send", seconds: 1.0)
                 let uiAlert = UIAlertController(title: "Report & Delete", message: "This message will be forwarded to the BChat Team & will be deleted.", preferredStyle: UIAlertController.Style.alert)
                 self.present(uiAlert, animated: true, completion: nil)
                 uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in

@@ -11,7 +11,7 @@ final class ConversationTitleView : UIView {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -19,7 +19,7 @@ final class ConversationTitleView : UIView {
     private lazy var subtitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .systemFont(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 13)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -73,7 +73,7 @@ final class ConversationTitleView : UIView {
         let subtitle = getSubtitle()
         subtitleLabel.attributedText = subtitle
         let titleFontSize = (subtitle != nil) ? Values.mediumFontSize : Values.veryLargeFontSize
-        titleLabel.font = .boldSystemFont(ofSize: titleFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: titleFontSize)
     }
 
     // MARK: General

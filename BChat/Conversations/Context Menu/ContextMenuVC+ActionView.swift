@@ -37,7 +37,7 @@ extension ContextMenuVC {
             let titleLabel = UILabel()
             titleLabel.text = action.title
             titleLabel.textColor = Colors.text
-            titleLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+            titleLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
             // Stack view
             let stackView = UIStackView(arrangedSubviews: [ iconImageView, titleLabel ])
             stackView.axis = .horizontal

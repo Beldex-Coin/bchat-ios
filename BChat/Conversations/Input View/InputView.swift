@@ -45,9 +45,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         return result
     }()
     
-    
     private lazy var sendButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "send_2"), isSendButton: true, delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
         result.isHidden = true
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
@@ -87,7 +86,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var disabledInputLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0

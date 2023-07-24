@@ -20,16 +20,16 @@ final class URLModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = NSLocalizedString("modal_open_url_title", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), url.absoluteString)
         let attributedMessage = NSMutableAttributedString(string: message)
-        attributedMessage.addAttributes([ .font : UIFont.boldSystemFont(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: url.absoluteString))
+        attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: url.absoluteString))
         messageLabel.attributedText = attributedMessage
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -39,7 +39,7 @@ final class URLModal : Modal {
         openButton.set(.height, to: Values.mediumButtonHeight)
         openButton.layer.cornerRadius = Modal.buttonCornerRadius
         openButton.backgroundColor = Colors.buttonBackground
-        openButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        openButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         openButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         openButton.setTitle(NSLocalizedString("modal_open_url_button_title", comment: ""), for: UIControl.State.normal)
         openButton.addTarget(self, action: #selector(openURL), for: UIControl.Event.touchUpInside)

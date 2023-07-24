@@ -23,13 +23,13 @@ final class CallPermissionRequestModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = NSLocalizedString("modal_call_permission_request_title", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = NSLocalizedString("modal_call_permission_request_explanation", comment: "")
         messageLabel.text = message
         messageLabel.numberOfLines = 0
@@ -46,7 +46,7 @@ final class CallPermissionRequestModal : Modal {
             goToSettingsButton.backgroundColor = Colors.bchat_join_backgroundgreen
             goToSettingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
-        goToSettingsButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        goToSettingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         goToSettingsButton.setTitle(NSLocalizedString("vc_settings_title", comment: ""), for: UIControl.State.normal)
         goToSettingsButton.addTarget(self, action: #selector(goToSettings), for: UIControl.Event.touchUpInside)
         // Content stack view

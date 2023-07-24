@@ -45,7 +45,7 @@ final class SimplifiedConversationCell : UITableViewCell {
     
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         

@@ -18,7 +18,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         return result
@@ -38,7 +38,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var unreadCountLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = UIColor.white
         result.textAlignment = .center
         return result
@@ -57,7 +57,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var hasMentionLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = Colors.text
         result.text = "@"
         result.textAlignment = .center
@@ -77,7 +77,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var timestampLabel: UILabel = {
         let result = UILabel()
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         result.alpha = Values.lowOpacity
@@ -86,7 +86,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var snippetLabel: UILabel = {
         let result = UILabel()
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         return result
@@ -278,7 +278,7 @@ final class ConversationCell : UITableViewCell {
         
         let range = normalizedSnippet.range(of: searchText)
         result.addAttribute(.foregroundColor, value: Colors.text, range: range)
-        result.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: fontSize), range: range)
+        result.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: fontSize), range: range)
         return result
     }
     
@@ -301,7 +301,7 @@ final class ConversationCell : UITableViewCell {
         let unreadCount = threadViewModel.unreadCount
         unreadCountLabel.text = unreadCount < 10000 ? "\(unreadCount)" : "9999+"
         let fontSize = (unreadCount < 10000) ? Values.verySmallFontSize : 8
-        unreadCountLabel.font = .boldSystemFont(ofSize: fontSize)
+        unreadCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
         hasMentionView.isHidden = !(threadViewModel.hasUnreadMentions && thread.isGroupThread())
         profilePictureView.update(for: thread)
         displayNameLabel.text = getDisplayName()
@@ -402,7 +402,7 @@ final class ConversationCell : UITableViewCell {
             result.append(imageString)
             result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
-        let font = threadViewModel.hasUnreadMessages ? UIFont.systemFont(ofSize: Values.smallFontSize) : UIFont.systemFont(ofSize: Values.smallFontSize)
+        let font = threadViewModel.hasUnreadMessages ? Fonts.OpenSans(ofSize: Values.smallFontSize) : Fonts.OpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
             result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.text ]))
         }

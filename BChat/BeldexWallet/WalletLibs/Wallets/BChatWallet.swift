@@ -122,7 +122,11 @@ public class BDXWallet {
     }
     
     public func createPendingTransaction(_ dstAddress: String, paymentId: String, amount: String) -> Bool {
-        return walletWrapper.createTransaction(toAddress: dstAddress, paymentId: paymentId, amount: amount, mixinCount: 10, priority: .default)
+        if SaveUserDefaultsData.FeePriority == "Flash" || SaveUserDefaultsData.FeePriority == "" {
+            return walletWrapper.createTransaction(toAddress: dstAddress, paymentId: paymentId, amount: amount, mixinCount: 10, priority: .default)
+        }else {
+            return walletWrapper.createTransaction(toAddress: dstAddress, paymentId: paymentId, amount: amount, mixinCount: 10, priority: .low)
+        }
     }
     
     public func createSweepTransaction(_ dstAddress: String, paymentId: String) -> Bool {

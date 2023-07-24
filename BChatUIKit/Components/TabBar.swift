@@ -8,7 +8,7 @@ public final class TabBar : UIView {
     // MARK: Components
     private lazy var tabLabels: [UILabel] = tabs.map { tab in
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         result.textAlignment = .center
         result.text = tab.title

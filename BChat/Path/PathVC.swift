@@ -76,7 +76,7 @@ final class PathVC : BaseVC {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("BChat masks your IP address by routing your messages through several masternodes in the Beldex decentralized network. Your connection is currently routed through the following masternodes", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
@@ -164,7 +164,7 @@ final class PathVC : BaseVC {
         lineView.set(.height, to: PathVC.rowHeight)
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = title
         titleLabel.lineBreakMode = .byTruncatingTail
         let titleStackView = UIStackView(arrangedSubviews: [ titleLabel ])
@@ -172,7 +172,7 @@ final class PathVC : BaseVC {
         if let subtitle = subtitle {
             let subtitleLabel = UILabel()
             subtitleLabel.textColor = Colors.text
-            subtitleLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+            subtitleLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
             subtitleLabel.text = subtitle
             subtitleLabel.lineBreakMode = .byTruncatingTail
             titleStackView.addArrangedSubview(subtitleLabel)

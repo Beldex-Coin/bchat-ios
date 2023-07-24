@@ -256,7 +256,7 @@ public class MediaMessageView: UIView, OWSAudioPlayerDelegate {
         if attachment.isUrl {
             // If we have no link preview info at this point then assume link previews are disabled
             if let linkPreviewURL: String = linkPreviewInfo?.url {
-                label.font = .boldSystemFont(ofSize: Values.smallFontSize)
+                label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
                 label.text = linkPreviewURL
                 label.textAlignment = .left
                 label.lineBreakMode = .byTruncatingTail

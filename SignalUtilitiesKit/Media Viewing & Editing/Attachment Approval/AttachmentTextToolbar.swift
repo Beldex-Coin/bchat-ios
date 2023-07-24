@@ -63,7 +63,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         sendButton.setTitle(sendTitle, for: .normal)
         sendButton.addTarget(self, action: #selector(didTapSend), for: .touchUpInside)
 
-        sendButton.titleLabel?.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        sendButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         sendButton.titleLabel?.textAlignment = .center
         sendButton.tintColor = Colors.accent
 
@@ -194,7 +194,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         textView.backgroundColor = .clear
         textView.tintColor = .white
 
-        textView.font = .systemFont(ofSize: Values.mediumFontSize)
+        textView.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         textView.textColor = .white
         textView.showsVerticalScrollIndicator = false
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)

@@ -37,12 +37,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     
     @IBOutlet weak var backgroundEnterPinView:UIView!
     @IBOutlet weak var backgroundReEnterPinView:UIView!
-    
     @IBOutlet weak var enterPintxt:UITextField!
     @IBOutlet weak var reEnterPintxt:UITextField!
-    
     @IBOutlet weak var nextRef:UIButton!
-    
     @IBOutlet weak var btneye1:UIButton!
     @IBOutlet weak var btneye2:UIButton!
     var iconClick = true
@@ -55,6 +52,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         self.title = "Create Password"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        //Keyboard Done Option
+        enterPintxt.addDoneButtonKeybord()
+        reEnterPintxt.addDoneButtonKeybord()
         
         setUpGradientBackground()
         setUpNavBarStyle()

@@ -2,7 +2,7 @@
 //  BeldexTrxHistory.h
 //  beldex-ios-wallet
 //
-//  Created by Beldex International Limited OU on 16/11/22.
+//  Created by Blockhash on 16/11/22.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,7 +13,7 @@ typedef NS_ENUM(NSUInteger, TrxDirection) {
 };
 
 typedef NS_ENUM(NSUInteger, PendingTransactionPriority) {
-    PendingTransactionPriority_Default = 0,
+    PendingTransactionPriority_Default = 5,
     PendingTransactionPriority_Low = 1,
     PendingTransactionPriority_Medium = 2,
     PendingTransactionPriority_High = 3,

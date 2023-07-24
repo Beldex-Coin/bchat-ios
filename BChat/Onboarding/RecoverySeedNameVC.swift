@@ -74,6 +74,9 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         setUpNavBarStyle()
         self.title = "Restore from seed"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        //Keyboard Done Option
+        heighttxt.addDoneButtonKeybord()
+        
         backgroundNameView.layer.cornerRadius = 10
         backgroundHeightView.layer.cornerRadius = 10
         backgroundDateView.layer.cornerRadius = 10
@@ -95,6 +98,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         heighttxt.delegate = self
         datetxt.delegate = self
         heighttxt.keyboardType = .numberPad
+        userNametxt.returnKeyType = .done
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)

@@ -191,7 +191,7 @@ extension OpenGroupSuggestionGrid {
         private lazy var label: UILabel = {
             let result = UILabel()
             result.textColor = Colors.text
-            result.font = .systemFont(ofSize: Values.smallFontSize)
+            result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             result.lineBreakMode = .byTruncatingTail
             return result
         }()

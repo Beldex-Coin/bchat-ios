@@ -30,7 +30,7 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
@@ -39,7 +39,7 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -87,5 +87,5 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
         }
         tableView.endUpdates()
     }
-
+    
 }

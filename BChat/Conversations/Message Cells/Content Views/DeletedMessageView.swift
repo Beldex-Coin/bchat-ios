@@ -37,7 +37,7 @@ final class DeletedMessageView : UIView {
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.text = NSLocalizedString("message_deleted", comment: "")
         titleLabel.textColor = textColor
-        titleLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        titleLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         // Stack view
         let stackView = UIStackView(arrangedSubviews: [ imageView, titleLabel ])
         stackView.axis = .horizontal

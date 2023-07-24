@@ -18,7 +18,7 @@ final class UserCell : UITableViewCell {
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()

@@ -28,7 +28,7 @@ final class UserDetailsSheet : Sheet {
         let displayNameLabel = UILabel()
         let displayName = Storage.shared.getContact(with: bchatuserID)?.displayName(for: .regular) ?? bchatuserID
         displayNameLabel.text = displayName
-        displayNameLabel.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        displayNameLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         displayNameLabel.textColor = Colors.text
         displayNameLabel.numberOfLines = 1
         displayNameLabel.lineBreakMode = .byTruncatingTail

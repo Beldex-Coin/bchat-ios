@@ -191,7 +191,7 @@ private final class EnterURLVC : UIViewController, UIGestureRecognizerDelegate, 
     private lazy var suggestionGridTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         result.text = NSLocalizedString("vc_join_open_group_suggestions_title", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -297,14 +297,14 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("vc_scan_qr_code_camera_access_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
         explanationLabel.lineBreakMode = .byWordWrapping
         // Call to action button
         let callToActionButton = UIButton()
-        callToActionButton.titleLabel!.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         callToActionButton.setTitleColor(Colors.accent, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
         callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)

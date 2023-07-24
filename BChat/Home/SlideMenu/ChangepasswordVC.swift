@@ -22,6 +22,10 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         self.title = "Change Password"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
+        //Keyboard Done Option
+        oldPintxt.addDoneButtonKeybord()
+        newPintxt.addDoneButtonKeybord()
+        
         let imgName = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
         let image1 = UIImage(named: "\(imgName).png")!
         self.btneye1.setImage(image1, for: .normal)

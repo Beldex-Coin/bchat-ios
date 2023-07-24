@@ -48,7 +48,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isUserInteractionEnabled = false
-        result.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("MESSAGE_REQUESTS_EMPTY_TEXT", comment: "")
         result.textColor = Colors.text
         result.textAlignment = .center
@@ -290,17 +290,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         return true
     }
     
-//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-//        guard let thread = self.thread(at: indexPath.row) else { return [] }
-//
-//        let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("TXT_DELETE_TITLE", comment: "")) { [weak self] _, _ in
-//            self?.delete(thread)
-//        }
-//        delete.backgroundColor = Colors.destructive
-//
-//        return [ delete ]
-//    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
         let delete = UIContextualAction(style: .destructive, title: "TXT_DELETE_TITLE", handler: { (action, view, success) in
           self.delete(thread)

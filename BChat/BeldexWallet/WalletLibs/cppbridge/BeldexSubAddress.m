@@ -2,7 +2,7 @@
 //  BeldexSubAddress.m
 //  beldex-ios-wallet
 //
-//  Created by Beldex International Limited OU on 14/11/22.
+//  Created by Blockhash on 14/11/22.
 //
 
 #import "BeldexSubAddress.h"

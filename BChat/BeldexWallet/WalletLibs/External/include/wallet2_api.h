@@ -67,7 +67,7 @@ struct PendingTransaction
     };
     
     enum Priority {
-        Priority_Default = 0,
+        Priority_Default = 5,
         Priority_Low = 1,
         Priority_Medium = 2,
         Priority_High = 3,
@@ -842,7 +842,8 @@ struct Wallet
 
     virtual PendingTransaction *createTransaction(const std::string &dst_addr,
                                                   std::optional<uint64_t> amount,
-                                                  uint32_t priority                  = 0,
+//                                                  uint32_t priority                  = 0,
+                                                  PendingTransaction::Priority = PendingTransaction::Priority_Low,
                                                   uint32_t subaddr_account           = 0,
                                                   std::set<uint32_t> subaddr_indices = {}) = 0;
 

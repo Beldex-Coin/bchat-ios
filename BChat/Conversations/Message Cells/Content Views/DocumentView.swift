@@ -42,7 +42,7 @@ final class DocumentView : UIView {
         sizeLabel.lineBreakMode = .byTruncatingTail
         sizeLabel.text = OWSFormat.formatFileSize(UInt(attachment.byteCount))
         sizeLabel.textColor = textColor
-        sizeLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+        sizeLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         // Label stack view
         let labelStackView = UIStackView(arrangedSubviews: [ titleLabel, sizeLabel ])
         labelStackView.axis = .vertical

@@ -7,7 +7,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
     @IBOutlet weak var backgroundView:UIView!
     @IBOutlet weak var clearRef:UIButton!
     @IBOutlet weak var nextRef:UIButton!
-    @IBOutlet weak var copyRef:UIButton!
+    @IBOutlet weak var pasteRef:UIButton!
     @IBOutlet weak var lblcount:UILabel!
     @IBOutlet weak var txtview:UITextView!
     var placeholderLabel : UILabel!
@@ -30,8 +30,8 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         
         let origImage = UIImage(named: "pasteicon")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        copyRef.setImage(tintedImage, for: .normal)
-        copyRef.tintColor = Colors.accent2
+        pasteRef.setImage(tintedImage, for: .normal)
+        pasteRef.tintColor = Colors.accent2
         
         backgroundView.layer.cornerRadius = 10
         clearRef.layer.cornerRadius = 6
@@ -46,7 +46,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         placeholderLabel = UILabel()
         placeholderLabel.text = "Enter your recovery seed to restore\n your account."
         placeholderLabel.numberOfLines = 2
-        placeholderLabel.font = UIFont.systemFont(ofSize: (txtview.font?.pointSize)!)
+        placeholderLabel.font = Fonts.OpenSans(ofSize: (txtview.font?.pointSize)!)
         placeholderLabel.sizeToFit()
         txtview.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (txtview.font?.pointSize)! / 2)
@@ -76,7 +76,6 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         let strings : String! = txtview.text.lowercased()
         let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
         let words = strings.components(separatedBy: spaces)
-        
         if lastWordSeedStr == words.last! {
             Seedflag = true
         }else {
@@ -95,8 +94,9 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         }
     }
     
-    @IBAction func CopyAction(sender:UIButton){
+    @IBAction func pasteAction(sender:UIButton){
         if let myString = UIPasteboard.general.string {
+            self.txtview.text = ""
             let strings : String! = myString
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
             let words = strings.components(separatedBy: spaces)
@@ -110,14 +110,14 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
     }
     @IBAction func NextAction(sender:UIButton){
         if Seedflag == false {
-            self.showToast22(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
+            self.showToastMsg(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
         }else {
             let strings : String! = txtview.text.lowercased()
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
-                self.showToast22(message: "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.", seconds: 2.0)
+                self.showToastMsg(message: "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.", seconds: 2.0)
             }else {
                 func showError(title: String, message: String = "") {
                     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

@@ -4,10 +4,7 @@ import SideMenu
 import SVGKit
 import BChatUIKit
 
-// See https://github.com/yapstudios/YapDatabase/wiki/LongLivedReadTransactions and
-// https://github.com/yapstudios/YapDatabase/wiki/YapDatabaseModifiedNotification for
-// more information on database handling.
-final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate, SeedReminderViewDelegate {
+final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate {
     private var threads: YapDatabaseViewMappings!
     private var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     private var tableViewTopConstraint: NSLayoutConstraint!
@@ -37,17 +34,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     private var isReloading = false
     
     // MARK: UI Components
-    private lazy var seedReminderView: SeedReminderView = {
-        let result = SeedReminderView(hasContinueButton: true)
-        let title = "You're almost finished! 80%"
-        let attributedTitle = NSMutableAttributedString(string: title)
-        attributedTitle.addAttribute(.foregroundColor, value: Colors.accent, range: (title as NSString).range(of: "80%"))
-        result.title = attributedTitle
-        result.subtitle = NSLocalizedString("view_seed_reminder_subtitle_1", comment: "")
-        result.setProgress(0.8, animated: false)
-        result.delegate = self
-        return result
-    }()
     
     private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -78,7 +64,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.bchat_placeholder_clr
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center
@@ -86,7 +72,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         
         let explanationLabel2 = UILabel()
         explanationLabel2.textColor = Colors.bchat_placeholder_clr
-        explanationLabel2.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel2.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel2.numberOfLines = 0
         explanationLabel2.lineBreakMode = .byWordWrapping
         explanationLabel2.textAlignment = .center
@@ -117,6 +103,23 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let username = SaveUserDefaultsData.NameForWallet
+        WalletService.shared.openWallet(username, password: "") { [] (result) in
+            var walletSeed: Seed?
+            switch result {
+            case .success(let wallet):
+                walletSeed = wallet.seed
+                wallet.close()
+            case .failure(_):
+                break
+            }
+            DispatchQueue.main.async {
+                guard walletSeed != nil else {
+                    return
+                }
+            }
+        }
+        
         // Note: This is a hack to ensure `isRTL` is initially gets run on the main thread so the value is cached (it gets
         // called on background threads and if it hasn't cached the value then it can cause odd performance issues since
         // it accesses UIKit)
@@ -133,15 +136,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         updateNavBarButtons()
         setUpNavBarSessionHeading()
-        
-        // Recovery phrase reminder
-        //        let hasViewedSeed = UserDefaults.standard[.hasViewedSeed]
-        //        if !hasViewedSeed {
-        //            view.addSubview(seedReminderView)
-        //            seedReminderView.pin(.leading, to: .leading, of: view)
-        //            seedReminderView.pin(.top, to: .top, of: view)
-        //            seedReminderView.pin(.trailing, to: .trailing, of: view)
-        //        }
         // Table view
         tableView.dataSource = self
         tableView.delegate = self
@@ -149,23 +143,10 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         
         tableView.pin(.leading, to: .leading, of: view)
         tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0)
-        //        if !hasViewedSeed {
-        //            tableViewTopConstraint = tableView.pin(.top, to: .bottom, of: seedReminderView)
-        //        } else {
-        //            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
-        //        }
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         view.addSubview(someImageView)
         someImageView.pin(to: view)
-        
-        
-        //        fadeView.pin(.leading, to: .leading, of: view)
-        //        let topInset = 0.15 * view.height()
-        //        fadeView.pin(.top, to: .top, of: view, withInset: topInset)
-        //        fadeView.pin(.trailing, to: .trailing, of: view)
-        //        fadeView.pin(.bottom, to: .bottom, of: view)
-        
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -217,7 +198,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
-        print ("Mode Change-: \(text)")
         someImageView.layer.masksToBounds = true
         let logoName = isLightMode ? "svg_light" : "svg_dark"
         let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
@@ -227,7 +207,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         let searchController = GlobalSearchViewController()
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
-    //Sree
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
@@ -458,7 +438,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
         tableViewTopConstraint.isActive = false
         tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
-        // seedReminderView.removeFromSuperview()
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -466,37 +445,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     private func updateNavBarButtons() {
-        // Profile picture view
-        //        let profilePictureSize = Values.verySmallProfilePictureSize
-        //        let profilePictureView = ProfilePictureView()
-        //        profilePictureView.accessibilityLabel = "Settings button"
-        //        profilePictureView.size = profilePictureSize
-        //        profilePictureView.publicKey = getUserHexEncodedPublicKey()
-        //        profilePictureView.update()
-        //        profilePictureView.set(.width, to: profilePictureSize)
-        //        profilePictureView.set(.height, to: profilePictureSize)
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openSettings))
-        //        profilePictureView.addGestureRecognizer(tapGestureRecognizer)
-        //        // Path status indicator
-        //        let pathStatusView = PathStatusView()
-        //        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-        //        pathStatusView.set(.width, to: PathStatusView.size)
-        //        pathStatusView.set(.height, to: PathStatusView.size)
-        //        // Container view
-        //        let profilePictureViewContainer = UIView()
-        //        profilePictureViewContainer.accessibilityLabel = "Settings button"
-        //        profilePictureViewContainer.addSubview(profilePictureView)
-        //        profilePictureView.autoPinEdgesToSuperviewEdges()
-        //        profilePictureViewContainer.addSubview(pathStatusView)
-        //        pathStatusView.pin(.trailing, to: .trailing, of: profilePictureViewContainer)
-        //        pathStatusView.pin(.bottom, to: .bottom, of: profilePictureViewContainer)
-        
-        // Left bar button item
-        //        let leftBarButtonItem = UIBarButtonItem(customView: profilePictureViewContainer)
-        //        leftBarButtonItem.accessibilityLabel = "Settings button"
-        //        leftBarButtonItem.isAccessibilityElement = true
-        //        navigationItem.leftBarButtonItem = leftBarButtonItem
-        
         let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
         backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
         backButton.isAccessibilityElement = true
@@ -647,17 +595,10 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             else {
                 return UISwipeActionsConfiguration(actions: [ delete, (isPinned ? unpin : pin) ])
             }
-            
         }
     }
     
     // MARK: - Interaction
-    
-    func handleContinueButtonTapped(from seedReminderView: SeedReminderView) {
-        let seedVC = SeedVC()
-        let navigationController = OWSNavigationController(rootViewController: seedVC)
-        present(navigationController, animated: true, completion: nil)
-    }
     
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
         DispatchMainThreadSafe {
@@ -730,7 +671,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
-    
     @objc(createNewDMFromDeepLink:)
     func createNewDMFromDeepLink(bchatuserID: String) {
         let newDMVC = NewDMVC(bchatuserID: bchatuserID)
@@ -740,7 +680,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         present(navigationController, animated: true, completion: nil)
     }
-    
     
     // MARK: Convenience
     private func thread(at index: Int) -> TSThread? {

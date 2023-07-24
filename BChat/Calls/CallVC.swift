@@ -171,7 +171,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         return result
     }()
@@ -180,7 +180,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let result = UILabel()
         result.isHidden = call.hasConnected
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         if call.hasStartedConnecting { result.text = "Connecting..." }
         return result
@@ -190,7 +190,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let result = UILabel()
         result.isHidden = true
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         return result
     }()

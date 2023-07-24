@@ -83,13 +83,12 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         optionViews[1].isSelected = true
         nextRef.isUserInteractionEnabled = false
         nextRef.backgroundColor = UIColor.lightGray
-        
     }
     
     @IBAction func CopyAction(sender:UIButton){
         nextRef.isUserInteractionEnabled = true
         nextRef.backgroundColor = Colors.bchat_button_clr
-        self.showToast22(message: "Please copy the seed and save it", seconds: 1.0)
+        self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         copyRef.isUserInteractionEnabled = false
         seedcopy = true
@@ -112,7 +111,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
             syncTokensJob.uploadOnlyIfStale = false
             let _: Promise<Void> = syncTokensJob.run()
         }else {
-            self.showToast22(message: "Please copy the Seed...", seconds: 1.0)
+            self.showToastMsg(message: "Please copy the Seed...", seconds: 1.0)
         }
     }
     

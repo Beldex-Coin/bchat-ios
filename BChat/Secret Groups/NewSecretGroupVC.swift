@@ -79,7 +79,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
         } else {
             let explanationLabel = UILabel()
             explanationLabel.textColor = Colors.text
-            explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+            explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             explanationLabel.numberOfLines = 0
             explanationLabel.lineBreakMode = .byWordWrapping
             explanationLabel.textAlignment = .center

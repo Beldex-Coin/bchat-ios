@@ -24,13 +24,13 @@ final class CallModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         titleLabel.text = NSLocalizedString("modal_call_title", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = NSLocalizedString("modal_call_explanation", comment: "")
         messageLabel.text = message
         messageLabel.numberOfLines = 0
@@ -47,7 +47,7 @@ final class CallModal : Modal {
             enableButton.backgroundColor = Colors.bchat_join_backgroundgreen
             enableButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
-        enableButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        enableButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         enableButton.setTitle(NSLocalizedString("modal_link_previews_button_title", comment: ""), for: UIControl.State.normal)
         enableButton.addTarget(self, action: #selector(enable), for: UIControl.Event.touchUpInside)
         // Button stack view

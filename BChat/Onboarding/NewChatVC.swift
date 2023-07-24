@@ -66,6 +66,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         }
         
         txtview.delegate = self
+        txtview.returnKeyType = .done
         txtview.setPlaceholder()
         self.lblchatid.text = getUserHexEncodedPublicKey()
         self.lblchatid.textColor = Colors.bchat_button_clr
@@ -151,7 +152,6 @@ class NewChatVC: BaseVC,UITextViewDelegate {
     @IBAction func shareAction(sender:UIButton){
         let shareVC = UIActivityViewController(activityItems: [ getUserHexEncodedPublicKey() ], applicationActivities: nil)
         navigationController!.present(shareVC, animated: true, completion: nil)
-        // NewChatVC.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
     @IBAction func NextAction(sender:UIButton){
@@ -169,7 +169,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             startNewDM(with: onsNameOrPublicKey)
         } else {
             // This could be an ONS name
-            self.showToast22(message: "invalid BChat ID", seconds: 1.0)
+            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
         }
     }
     private func startNewDM(with bchatuserID: String) {
@@ -188,7 +188,7 @@ extension UITextView{
     func setPlaceholder() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter BChat ID"
-        placeholderLabel.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)

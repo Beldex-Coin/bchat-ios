@@ -50,7 +50,7 @@ final class SAEScreenLockViewController: ScreenLockViewController, ScreenLockVie
     
     private lazy var titleLabel: UILabel = {
         let titleLabel: UILabel = UILabel()
-        titleLabel.font = UIFont.boldSystemFont(ofSize: Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         titleLabel.text = "vc_share_title".localized()
         titleLabel.textColor = Colors.text
         

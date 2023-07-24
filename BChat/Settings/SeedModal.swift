@@ -17,7 +17,7 @@ final class SeedModal : Modal {
         // Set up title label
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = NSLocalizedString("modal_seed_title", comment: "")
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
@@ -40,7 +40,7 @@ final class SeedModal : Modal {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("modal_seed_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
@@ -50,7 +50,7 @@ final class SeedModal : Modal {
         copyButton.set(.height, to: Values.mediumButtonHeight)
         copyButton.layer.cornerRadius = Modal.buttonCornerRadius
         copyButton.backgroundColor = Colors.buttonBackground
-        copyButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        copyButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         copyButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
         copyButton.addTarget(self, action: #selector(copySeed), for: UIControl.Event.touchUpInside)

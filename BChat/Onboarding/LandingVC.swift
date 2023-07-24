@@ -17,6 +17,7 @@ class LandingVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpGradientBackground()
+        AppModeManager.shared.setCurrentAppMode(to: .dark)
         // Do any additional setup after loading the view.
         guard let navigationBar = navigationController?.navigationBar else { return }
         if #available(iOS 15.0, *) {

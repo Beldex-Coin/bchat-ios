@@ -62,7 +62,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var slideToCancelLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("vc_conversation_voice_message_cancel_message", comment: "")
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         return result
     }()
@@ -70,7 +70,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var cancelButton: UIButton = {
         let result = UIButton()
         result.setTitle("Cancel", for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.addTarget(self, action: #selector(handleCancelButtonTapped), for: UIControl.Event.touchUpInside)
         result.alpha = 0
@@ -99,7 +99,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var durationLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = "0:00"
         return result
     }()

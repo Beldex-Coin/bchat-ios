@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="OpenSans-Bold.ttf">
+            <string>OpenSans-Bold</string>
+        </array>
+        <array key="OpenSans-Regular.ttf">
+            <string>OpenSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="WalletHomeXibCell" customModule="BChat_Messenger" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="500" height="350"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="500" height="350"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="beU-UX-fG2">
+                        <rect key="frame" x="15" y="5" width="470" height="340"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_receive" translatesAutoresizingMaskIntoConstraints="NO" id="WoL-ji-mwP">
+                                <rect key="frame" x="15" y="18" width="25" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="0Ws-aC-dRw"/>
+                                    <constraint firstAttribute="width" constant="25" id="Dxy-qJ-Jmo"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_Celldropdown" translatesAutoresizingMaskIntoConstraints="NO" id="dIG-ef-PYM">
+                                <rect key="frame" x="442" y="27.5" width="13" height="11"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="11" id="bkM-eY-7ny"/>
+                                    <constraint firstAttribute="width" constant="13" id="nui-YC-xc2"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZZ-bJ-4Yl">
+                                <rect key="frame" x="327" y="25" width="105" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="105" id="Ri6-ik-cuq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.8888" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9sx-Ml-WxD">
+                                <rect key="frame" x="60" y="18" width="257" height="20.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="15"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12-Fb-2022" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BP6-IC-vyg">
+                                <rect key="frame" x="60" y="42.5" width="57.5" height="15"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="11"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date &amp; Time :" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XuW-dw-mOO">
+                                <rect key="frame" x="15" y="139.5" width="440" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5355353" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFa-fh-UaP">
+                                <rect key="frame" x="15" y="202.5" width="440" height="15"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="11"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.1 BDX" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhE-Es-Rkz">
+                                <rect key="frame" x="15" y="244" width="440" height="15"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="11"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="as7ad9sf09d8gsdgjnd0ja9madasd9asd9as8das7das7ad9sf09d8gsdgjnd0ja9madasd9asd9as8das7das7ad9sf09d8gsdgjnd0ja9madasd9asd9as8das7d" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yde-Ue-s6u">
+                                <rect key="frame" x="15" y="285.5" width="440" height="30"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="11"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12-Fb-2022" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s0Y-0z-dz7">
+                                <rect key="frame" x="15" y="161" width="440" height="15"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="11"/>
+                                <color key="textColor" name="bchat_message_requests_info_text"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a5a46bfeb1fe97f7795b34f15d20ed6428d49fbd8475c9a5a46bfeb1fe97f7795b34f15d20ed6428d49fbd8475c9" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y2f-Sb-8Nu">
+                                <rect key="frame" x="15" y="99" width="440" height="35.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="13"/>
+                                <color key="textColor" name="bchat_button_clr"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction ID :" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPf-4Y-cvy">
+                                <rect key="frame" x="15" y="77.5" width="440" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fee :" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAi-eY-oOv">
+                                <rect key="frame" x="15" y="222.5" width="440" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Height :" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SIB-dd-8Z6">
+                                <rect key="frame" x="15" y="181" width="440" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recipient address : " lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2s-uD-cfc">
+                                <rect key="frame" x="15" y="264" width="440" height="16.5"/>
+                                <color key="tintColor" name="bchat_button_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAp-Wu-35y">
+                                <rect key="frame" x="0.0" y="0.0" width="470" height="75"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="h5X-MG-H7g"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <connections>
+                                    <action selector="topButtonTouched:" destination="gTV-IL-0wX" eventType="touchUpInside" id="y9w-nv-G0H"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" name="bchat_view_bg_clr"/>
+                        <constraints>
+                            <constraint firstItem="XuW-dw-mOO" firstAttribute="leading" secondItem="Y2f-Sb-8Nu" secondAttribute="leading" id="0Lm-cj-wxH"/>
+                            <constraint firstItem="QhE-Es-Rkz" firstAttribute="top" secondItem="MAi-eY-oOv" secondAttribute="bottom" constant="5" id="1ws-87-Eed"/>
+                            <constraint firstItem="BP6-IC-vyg" firstAttribute="top" secondItem="CZZ-bJ-4Yl" secondAttribute="bottom" constant="1" id="3Cd-vM-Qir"/>
+                            <constraint firstItem="dIG-ef-PYM" firstAttribute="leading" secondItem="CZZ-bJ-4Yl" secondAttribute="trailing" constant="10" id="4Se-RK-2lA"/>
+                            <constraint firstAttribute="trailing" secondItem="EFa-fh-UaP" secondAttribute="trailing" constant="15" id="4gP-74-t37"/>
+                            <constraint firstItem="MAi-eY-oOv" firstAttribute="leading" secondItem="EFa-fh-UaP" secondAttribute="leading" id="7nG-Vd-50t"/>
+                            <constraint firstItem="MAi-eY-oOv" firstAttribute="top" secondItem="EFa-fh-UaP" secondAttribute="bottom" constant="5" id="Aaj-Rb-A0o"/>
+                            <constraint firstItem="SIB-dd-8Z6" firstAttribute="top" secondItem="s0Y-0z-dz7" secondAttribute="bottom" constant="5" id="BzE-AD-Cwj"/>
+                            <constraint firstItem="9sx-Ml-WxD" firstAttribute="leading" secondItem="WoL-ji-mwP" secondAttribute="trailing" constant="20" id="Dsm-vh-xPq"/>
+                            <constraint firstAttribute="trailing" secondItem="Yde-Ue-s6u" secondAttribute="trailing" constant="15" id="EPa-7p-t1M"/>
+                            <constraint firstItem="EFa-fh-UaP" firstAttribute="top" secondItem="SIB-dd-8Z6" secondAttribute="bottom" constant="5" id="FLf-Oz-xQK"/>
+                            <constraint firstItem="WoL-ji-mwP" firstAttribute="top" secondItem="beU-UX-fG2" secondAttribute="top" constant="18" id="FRL-xF-Zln"/>
+                            <constraint firstItem="bAp-Wu-35y" firstAttribute="top" secondItem="beU-UX-fG2" secondAttribute="top" id="FdD-7x-dVH"/>
+                            <constraint firstAttribute="trailing" secondItem="SIB-dd-8Z6" secondAttribute="trailing" constant="15" id="Gai-Hq-xd3"/>
+                            <constraint firstItem="9sx-Ml-WxD" firstAttribute="centerY" secondItem="WoL-ji-mwP" secondAttribute="centerY" constant="-5" id="H0V-ZM-pt4"/>
+                            <constraint firstAttribute="trailing" secondItem="s0Y-0z-dz7" secondAttribute="trailing" constant="15" id="KI7-pF-zKx"/>
+                            <constraint firstItem="Yde-Ue-s6u" firstAttribute="top" secondItem="p2s-uD-cfc" secondAttribute="bottom" constant="5" id="Kb8-Lt-JqK"/>
+                            <constraint firstItem="p2s-uD-cfc" firstAttribute="top" secondItem="QhE-Es-Rkz" secondAttribute="bottom" constant="5" id="NBC-Ez-bNQ"/>
+                            <constraint firstItem="SIB-dd-8Z6" firstAttribute="leading" secondItem="s0Y-0z-dz7" secondAttribute="leading" id="O3w-nr-05X"/>
+                            <constraint firstAttribute="trailing" secondItem="bAp-Wu-35y" secondAttribute="trailing" id="OCN-dj-EDu"/>
+                            <constraint firstItem="bPf-4Y-cvy" firstAttribute="top" secondItem="BP6-IC-vyg" secondAttribute="bottom" constant="20" id="P2F-yB-7Eg"/>
+                            <constraint firstItem="s0Y-0z-dz7" firstAttribute="top" secondItem="XuW-dw-mOO" secondAttribute="bottom" constant="5" id="PNi-jx-ueW"/>
+                            <constraint firstAttribute="trailing" secondItem="XuW-dw-mOO" secondAttribute="trailing" constant="15" id="QXn-mf-nhO"/>
+                            <constraint firstItem="Y2f-Sb-8Nu" firstAttribute="leading" secondItem="bPf-4Y-cvy" secondAttribute="leading" id="RFw-HN-vwE"/>
+                            <constraint firstItem="dIG-ef-PYM" firstAttribute="centerY" secondItem="CZZ-bJ-4Yl" secondAttribute="centerY" id="SOP-C0-xRG"/>
+                            <constraint firstItem="BP6-IC-vyg" firstAttribute="leading" secondItem="9sx-Ml-WxD" secondAttribute="leading" id="SOf-ou-hTy"/>
+                            <constraint firstItem="CZZ-bJ-4Yl" firstAttribute="leading" secondItem="9sx-Ml-WxD" secondAttribute="trailing" constant="10" id="XpP-GH-O5T"/>
+                            <constraint firstItem="Y2f-Sb-8Nu" firstAttribute="top" secondItem="bPf-4Y-cvy" secondAttribute="bottom" constant="5" id="ZLG-Ku-nkf"/>
+                            <constraint firstAttribute="trailing" secondItem="Y2f-Sb-8Nu" secondAttribute="trailing" constant="15" id="ZXB-h7-N0C"/>
+                            <constraint firstItem="WoL-ji-mwP" firstAttribute="leading" secondItem="beU-UX-fG2" secondAttribute="leading" constant="15" id="Zr1-g7-Qdg"/>
+                            <constraint firstAttribute="trailing" secondItem="QhE-Es-Rkz" secondAttribute="trailing" constant="15" id="cJV-c9-hZk"/>
+                            <constraint firstItem="p2s-uD-cfc" firstAttribute="leading" secondItem="QhE-Es-Rkz" secondAttribute="leading" id="dqR-3Z-epY"/>
+                            <constraint firstAttribute="trailing" secondItem="p2s-uD-cfc" secondAttribute="trailing" constant="15" id="edI-Zv-q6Y"/>
+                            <constraint firstItem="CZZ-bJ-4Yl" firstAttribute="centerY" secondItem="WoL-ji-mwP" secondAttribute="centerY" id="f3T-vH-m6b"/>
+                            <constraint firstItem="bAp-Wu-35y" firstAttribute="leading" secondItem="beU-UX-fG2" secondAttribute="leading" id="har-0X-VK3"/>
+                            <constraint firstItem="bPf-4Y-cvy" firstAttribute="leading" secondItem="WoL-ji-mwP" secondAttribute="leading" id="hko-cd-Ucx"/>
+                            <constraint firstAttribute="trailing" secondItem="dIG-ef-PYM" secondAttribute="trailing" constant="15" id="ojl-q3-xbb"/>
+                            <constraint firstItem="s0Y-0z-dz7" firstAttribute="leading" secondItem="XuW-dw-mOO" secondAttribute="leading" id="u9Q-O3-wJE"/>
+                            <constraint firstAttribute="trailing" secondItem="MAi-eY-oOv" secondAttribute="trailing" constant="15" id="ulW-qU-02E"/>
+                            <constraint firstItem="QhE-Es-Rkz" firstAttribute="leading" secondItem="MAi-eY-oOv" secondAttribute="leading" id="vMd-Hb-5Lm"/>
+                            <constraint firstItem="Yde-Ue-s6u" firstAttribute="leading" secondItem="p2s-uD-cfc" secondAttribute="leading" id="vZE-gw-hTo"/>
+                            <constraint firstItem="XuW-dw-mOO" firstAttribute="top" secondItem="Y2f-Sb-8Nu" secondAttribute="bottom" constant="5" id="w4H-gE-1av"/>
+                            <constraint firstItem="EFa-fh-UaP" firstAttribute="leading" secondItem="SIB-dd-8Z6" secondAttribute="leading" id="wPO-AF-nCT"/>
+                            <constraint firstAttribute="trailing" secondItem="bPf-4Y-cvy" secondAttribute="trailing" constant="15" id="wig-aS-RMH"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="beU-UX-fG2" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="6ew-4X-OG7"/>
+                <constraint firstAttribute="bottom" secondItem="beU-UX-fG2" secondAttribute="bottom" constant="5" id="MDo-ik-Do3"/>
+                <constraint firstAttribute="trailing" secondItem="beU-UX-fG2" secondAttribute="trailing" constant="15" id="N63-PF-qNs"/>
+                <constraint firstItem="beU-UX-fG2" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="Nzb-cS-lJO"/>
+            </constraints>
+            <connections>
+                <outlet property="img" destination="dIG-ef-PYM" id="P3N-De-qV5"/>
+                <outlet property="imgpic" destination="WoL-ji-mwP" id="SQ3-DA-7sP"/>
+                <outlet property="lblReceipentAddress" destination="Yde-Ue-s6u" id="H4V-6e-ssC"/>
+                <outlet property="lblReceipentAddressTitle" destination="p2s-uD-cfc" id="fN7-ID-0wt"/>
+                <outlet property="lblSendandReceive" destination="CZZ-bJ-4Yl" id="JAa-0E-oAm"/>
+                <outlet property="lblamount" destination="9sx-Ml-WxD" id="Z7l-kr-tRS"/>
+                <outlet property="lbldate" destination="BP6-IC-vyg" id="uIR-j5-LkK"/>
+                <outlet property="lbldateandtime" destination="s0Y-0z-dz7" id="2uz-ip-5tq"/>
+                <outlet property="lblfee" destination="QhE-Es-Rkz" id="8UH-3m-fup"/>
+                <outlet property="lblfeeTitle" destination="MAi-eY-oOv" id="kdU-0H-9B5"/>
+                <outlet property="lblheight" destination="EFa-fh-UaP" id="jgJ-rB-oLJ"/>
+                <outlet property="lbltraID" destination="Y2f-Sb-8Nu" id="9Sn-nC-Iv8"/>
+                <outlet property="mainView" destination="beU-UX-fG2" id="HRN-x8-Vpf"/>
+                <outlet property="topButton" destination="bAp-Wu-35y" id="iZ3-31-xrN"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="97.767857142857139"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="ic_Celldropdown" width="43" height="25"/>
+        <image name="ic_receive" width="24" height="24"/>
+        <namedColor name="bchat_button_clr">
+            <color red="0.070588235294117646" green="0.55294117647058827" blue="0.082352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_lbl_name">
+            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_message_requests_info_text">
+            <color red="0.62352941176470589" green="0.62352941176470589" blue="0.62352941176470589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_view_bg_clr">
+            <color red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

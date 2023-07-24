@@ -193,7 +193,7 @@ import SignalUtilitiesKit
         let titleLabel = UILabel()
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
-        titleLabel.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         titleLabel.text = NSLocalizedString("CROP_SCALE_IMAGE_VIEW_TITLE",
                                             comment: "Title for the 'crop/scale image' dialog.")
         contentView.addSubview(titleLabel)
@@ -439,7 +439,7 @@ import SignalUtilitiesKit
 
         let cancelButton = createButton(title: CommonStrings.cancelButton,
                                         action: #selector(cancelPressed))
-        cancelButton.titleLabel!.font = .systemFont(ofSize: 18) // Match iOS UI
+        cancelButton.titleLabel!.font = Fonts.OpenSans(ofSize: 18) // Match iOS UI
         buttonRow.addSubview(cancelButton)
         cancelButton.autoPinEdge(toSuperviewEdge: .top)
         cancelButton.autoPinEdge(toSuperviewEdge: .bottom)
@@ -447,7 +447,7 @@ import SignalUtilitiesKit
 
         let doneButton = createButton(title: CommonStrings.doneButton,
                                       action: #selector(donePressed))
-        doneButton.titleLabel!.font = .systemFont(ofSize: 18) // Match iOS UI
+        doneButton.titleLabel!.font = Fonts.OpenSans(ofSize: 18) // Match iOS UI
         buttonRow.addSubview(doneButton)
         doneButton.autoPinEdge(toSuperviewEdge: .top)
         doneButton.autoPinEdge(toSuperviewEdge: .bottom)

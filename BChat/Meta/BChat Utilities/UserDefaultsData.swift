@@ -54,7 +54,6 @@ struct SaveUserDefaultsData {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.FinalWallet_node) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.FinalWallet_node) as? String ?? "" }
     }
-    
     static var SelectedNode : String {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.SelectedNode) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.SelectedNode) as? String ?? "" }
@@ -83,7 +82,6 @@ struct SaveUserDefaultsData {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.SelectedBalance) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.SelectedBalance) as? String ?? "" }
     }
-    
     static var SaveLocalNodelist : [String] {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.SaveLocalNodelist) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.SaveLocalNodelist) as? [String] ?? [] }
