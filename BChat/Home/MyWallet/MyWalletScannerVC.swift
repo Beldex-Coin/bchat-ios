@@ -71,7 +71,6 @@ extension MyWalletScannerVC: QRScannerViewDelegate {
         
         if qrString.contains("?") {
             let walletAddress = qrString.components(separatedBy: "?")
-            print("SCAN:::Address : ",walletAddress[0])
             vc.walletAddress = walletAddress[0]
         } else {
             vc.walletAddress = qrString
@@ -79,7 +78,6 @@ extension MyWalletScannerVC: QRScannerViewDelegate {
         
         if qrString.contains("=") {
             let walletAmount = qrString.components(separatedBy: "=")
-            print("SCAN:::Amount : ",walletAmount[1])
             vc.walletAmount = walletAmount[1]
         } else {
             vc.walletAmount = ""

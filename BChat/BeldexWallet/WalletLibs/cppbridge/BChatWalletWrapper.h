@@ -14,6 +14,7 @@
 - (void)beldexWalletNewBlock:(nonnull BChatWalletWrapper *)wallet currentHeight:(uint64_t)currentHeight;
 @end
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface BChatWalletWrapper : NSObject
 @property (nonatomic, copy, readonly) NSString * name;
@@ -78,7 +79,6 @@
 
 
 - (BOOL)createTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId amount:(NSString *)amount mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority;
-
 - (BOOL)createSweepTransactionToAddress:(NSString *)address paymentId:(NSString *)paymentId mixinCount:(uint32_t)mixinCount priority:(PendingTransactionPriority)priority;
 - (BOOL)commitPendingTransaction;
 - (void)disposeTransaction;
@@ -89,3 +89,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

@@ -1031,7 +1031,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         }
         
         // Delete the message
-        BOOL wasSentByUser = (interationType == OWSInteractionType_OutgoingMessage);
+//        BOOL wasSentByUser = (interationType == OWSInteractionType_OutgoingMessage);
         if (openGroupV2 != nil) {
             [[SNOpenGroupAPIV2 deleteMessageWithServerID:message.openGroupServerMessageID fromRoom:openGroupV2.room onServer:openGroupV2.server].catch(^(NSError *error) {
                 // Roll back

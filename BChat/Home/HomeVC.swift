@@ -102,24 +102,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let username = SaveUserDefaultsData.NameForWallet
-        WalletService.shared.openWallet(username, password: "") { [] (result) in
-            var walletSeed: Seed?
-            switch result {
-            case .success(let wallet):
-                walletSeed = wallet.seed
-                wallet.close()
-            case .failure(_):
-                break
-            }
-            DispatchQueue.main.async {
-                guard walletSeed != nil else {
-                    return
-                }
-            }
-        }
-        
+    
         // Note: This is a hack to ensure `isRTL` is initially gets run on the main thread so the value is cached (it gets
         // called on background threads and if it hasn't cached the value then it can cause odd performance issues since
         // it accesses UIKit)

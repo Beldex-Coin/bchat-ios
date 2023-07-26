@@ -116,9 +116,9 @@
 		6010E9F428C86A0F00600D1A /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F328C86A0F00600D1A /* Section.swift */; };
 		6010E9F628C86A1700600D1A /* ExpandableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F528C86A1700600D1A /* ExpandableHeaderView.swift */; };
 		6010E9F828C86A5800600D1A /* ChangeLogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F728C86A5800600D1A /* ChangeLogVC.swift */; };
+		601F123E2A6FA41300D5D583 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 601F123D2A6FA41300D5D583 /* libwallet_api.a */; };
 		6036B3FF28E32C7100ABA398 /* MyAccountXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */; };
 		6036B40028E32C7100ABA398 /* MyAccountXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */; };
-		603864DF2A65525D002CDAF3 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 603864DE2A65525D002CDAF3 /* libwallet_api.a */; };
 		603864E62A6E418E002CDAF3 /* WalletHomeXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 603864E42A6E418D002CDAF3 /* WalletHomeXibCell.xib */; };
 		603864E72A6E418E002CDAF3 /* WalletHomeXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603864E52A6E418D002CDAF3 /* WalletHomeXibCell.swift */; };
 		6040691028B4A8340094E74D /* SlideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040690828B4A8330094E74D /* SlideMenuCell.swift */; };
@@ -1202,11 +1202,11 @@
 		6010E9F328C86A0F00600D1A /* Section.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		6010E9F528C86A1700600D1A /* ExpandableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableHeaderView.swift; sourceTree = "<group>"; };
 		6010E9F728C86A5800600D1A /* ChangeLogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLogVC.swift; sourceTree = "<group>"; };
+		601F123D2A6FA41300D5D583 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountXibCell.swift; sourceTree = "<group>"; };
 		6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyAccountXibCell.xib; sourceTree = "<group>"; };
 		603864C52A5FAF28002CDAF3 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		603864C62A5FAF53002CDAF3 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		603864DE2A65525D002CDAF3 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		603864E42A6E418D002CDAF3 /* WalletHomeXibCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletHomeXibCell.xib; sourceTree = "<group>"; };
 		603864E52A6E418D002CDAF3 /* WalletHomeXibCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletHomeXibCell.swift; sourceTree = "<group>"; };
 		6040690828B4A8330094E74D /* SlideMenuCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideMenuCell.swift; sourceTree = "<group>"; };
@@ -2137,7 +2137,7 @@
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				603864DF2A65525D002CDAF3 /* libwallet_api.a in Frameworks */,
+				601F123E2A6FA41300D5D583 /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -2568,7 +2568,7 @@
 		60D3A49A29ED312D0059472A /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				603864DE2A65525D002CDAF3 /* libwallet_api.a */,
+				601F123D2A6FA41300D5D583 /* libwallet_api.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -5759,11 +5759,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = BChatShareExtension/Meta/SignalShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 124;
+				CURRENT_PROJECT_VERSION = 125;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5791,6 +5793,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_ShareExtancen_Certificate;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChatShareExtension/Meta/SignalShareExtension-Bridging-Header.h";
@@ -5832,11 +5835,13 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = BChatShareExtension/Meta/SignalShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 124;
+				CURRENT_PROJECT_VERSION = 125;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -5869,6 +5874,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_ShareExtancen_Certificate;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -6041,11 +6047,13 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = BChatNotificationServiceExtension/Meta/BChatNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 124;
+				CURRENT_PROJECT_VERSION = 125;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6067,6 +6075,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Notification_AppStore_Certificate;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -6111,11 +6120,13 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = BChatNotificationServiceExtension/Meta/BChatNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 124;
+				CURRENT_PROJECT_VERSION = 125;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -6142,6 +6153,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Notification_AppStore_Certificate;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -6908,9 +6920,11 @@
 				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 124;
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 125;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6963,6 +6977,7 @@
 				PRODUCT_NAME = "BChat Messenger";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Dist_Certificate_New;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChat/Meta/Signal-Bridging-Header.h";
@@ -6989,9 +7004,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 124;
-				DEVELOPMENT_TEAM = 3X33AB44S7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 125;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -7043,6 +7060,7 @@
 				PRODUCT_NAME = "BChat Messenger";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Bchat_Dist_Certificate_New;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChat/Meta/Signal-Bridging-Header.h";

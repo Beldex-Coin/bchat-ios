@@ -186,7 +186,7 @@ extension BDXWallet {
         return walletWrapper.publicAddress
     }
     public var seed: Seed? {
-        let sentence = walletWrapper.getSeedString(language)!
+        let sentence = walletWrapper.getSeedString(language)
         return Seed(sentence: sentence)
     }
     public var synchronized: Bool {

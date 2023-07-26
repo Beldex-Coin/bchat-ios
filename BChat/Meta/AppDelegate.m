@@ -575,11 +575,9 @@ static NSTimeInterval launchStartedAt;
     UIViewController *rootViewController;
     BOOL navigationBarHidden = NO;
     if ([self.tsAccountManager isRegistered]) {
-        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
-                                stringForKey:@"BChatPassword"];
-        
+//        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+//                                stringForKey:@"BChatPassword"];
         rootViewController = [HomeVC new];
-        
         OWSAssertDebug(rootViewController);
         OWSNavigationController *navigationController =
         [[OWSNavigationController alloc] initWithRootViewController:rootViewController];

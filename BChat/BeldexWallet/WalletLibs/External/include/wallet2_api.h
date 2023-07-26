@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Monero Project
+// Copyright (c) 2014-2019, The Beldex Project
 //
 // All rights reserved.
 //
@@ -534,7 +534,7 @@ struct Wallet
      * \param upper_transaction_size_limit
      * \param daemon_username
      * \param daemon_password
-     * \param lightWallet - start wallet in light mode, connect to a openmonero compatible server.
+     * \param lightWallet - start wallet in light mode, connect to a openbeldex compatible server.
      * \return  - true on success
      */
     virtual bool init(const std::string &daemon_address, uint64_t upper_transaction_size_limit = 0, const std::string &daemon_username = "", const std::string &daemon_password = "", bool use_ssl = false, bool lightWallet = false) = 0;
@@ -1201,7 +1201,7 @@ struct WalletManagerBase
     //! returns current block target
     virtual uint64_t blockTarget() = 0;
 
-    //! resolves an OpenAlias address to a monero address
+    //! resolves an OpenAlias address to a beldex address
     virtual std::string resolveOpenAlias(const std::string &address, bool &dnssec_valid) const = 0;
 };
 

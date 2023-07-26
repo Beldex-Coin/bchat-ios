@@ -1107,7 +1107,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         if (shouldShowDateOnNextViewItem && canShowDate) {
             shouldShowDate = YES;
-            shouldShowDateOnNextViewItem = NO;
+//            shouldShowDateOnNextViewItem = NO;
         }
 
         viewItem.shouldShowDate = shouldShowDate;
