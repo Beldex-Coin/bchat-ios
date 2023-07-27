@@ -1,4 +1,4 @@
-BChat is a decentralized p2p messaging app that runs on Beldex network. Unlike other centralized messaging apps BChat never collect any user data like phone number, location, email, IP address.. etc. The message you sent using BChat will be highly secure and anonymous. No one (even us) can have control of your data that has been shared in BChat. Wtih BChat you own your data.
+BChat is a decentralized p2p messaging app that runs on Beldex network. Unlike other centralized messaging apps BChat never collect any user data like phone number, location, email, IP address.. etc. The message you sent using BChat will be highly secure and anonymous. No one (even us) can have control of your data that has been shared in BChat. Wtih BChat you own your data d.
 
 Download BChat from [App Store](https://apps.apple.com/us/app/bchat-messenger/id1626066143)
 
