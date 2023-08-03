@@ -270,7 +270,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
     }
     
     // Node Validation func developed
-    @IBAction func TestBtnAction(_ sender: Any) {
+    @IBAction func nodetestButtonTapped(_ sender: Any) {
         if (nodeAddressTxtFld.text == "") {
             let alert = UIAlertController(title: "", message: "Please Enter Node Address", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))

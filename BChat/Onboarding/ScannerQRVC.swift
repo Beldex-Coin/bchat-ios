@@ -33,12 +33,6 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         self.title = "Scan QR Code"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        if newChatScanflag == true {
-            print("Social group func calling")
-        }else {
-            print("Dirct group one to one func calling")
-        }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,11 +132,9 @@ extension ScannerQRVC: QRScannerViewDelegate {
     }
     func qrScanningSucceededWithCode(_ str: String?) {
         if newChatScanflag == true {
-            print("Social group func calling")
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
         }else {
-            print("Dirct group one to one func calling")
             self.qrData = QRData(codeString: str)
             startNewDMIfPossible(with: str!)
         }

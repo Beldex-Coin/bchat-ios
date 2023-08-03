@@ -7,12 +7,12 @@ public final class PushNotificationAPI : NSObject {
     // MARK: Settings
     
     // For Testnet
-    public static let server = "http://notification.beldex.network"
-    public static let serverPublicKey = "43a22a03097d06b16f7d4da1cf884d8ba0f8acad468f9784e1583a09f8940811"
+//    public static let server = "http://notification.beldex.network"
+//    public static let serverPublicKey = "43a22a03097d06b16f7d4da1cf884d8ba0f8acad468f9784e1583a09f8940811"
     
    // For Mainnet
-   // public static let server = "http://notification.rpcnode.stream"
-   // public static let serverPublicKey = "54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911"
+    public static let server = "http://notification.rpcnode.stream"
+    public static let serverPublicKey = "54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911"
     
     private static let maxRetryCount: UInt = 4
     private static let tokenExpirationInterval: TimeInterval = 12 * 60 * 60

@@ -269,13 +269,15 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         self.navigationController?.popToSpecificViewController(ofClass: MyWalletHomeVC.self, animated: true)
     }
     
-    @IBAction func Cancel_Action(_ sender: UIButton) {
+    // cancel Button Tapped
+    @IBAction func cancelButtonTapped(_ sender: UIButton) {
         confirmSendingPopView.isHidden = true
         successPopView.isHidden = true
         loading.stopAnimating()
     }
     
-    @IBAction func Ok_Action(_ sender: UIButton) {
+    //confirm sending Button Tapped
+    @IBAction func confirmsendingButtonTapped(_ sender: UIButton) {
         loading.startAnimating()
         let txid = self.wallet!.txid()
         let commitPendingTransaction = self.wallet!.commitPendingTransaction()
@@ -296,25 +298,21 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             successPopView.isHidden = false
         }
     }
-    
-    @IBAction func FinalOkey_Action(_ sender: UIButton) {
-        confirmSendingPopView.isHidden = true
-        successPopView.isHidden = true
-    }
-    
-    @IBAction func FinalOkey22_Action(_ sender: UIButton) {
+
+    //success Button Tapped
+    @IBAction func successButtonTapped(_ sender: UIButton) {
         self.navigationController?.popToSpecificViewController(ofClass: MyWalletHomeVC.self, animated: true)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "syncWallet"), object: nil)
     }
-    
-    @IBAction func AddressBook_Action(_ sender: UIButton) {
+    //address Book Button Tapped
+    @IBAction func addressBookButtonTapped(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletAddressBookVC") as! MyWalletAddressBookVC
         vc.delegate = self
         vc.flagSendAddress = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    @IBAction func Sendtransation_Action(_ sender: UIButton) {
+    //send Transation Button Tapped
+    @IBAction func sendTransationButtonTapped(_ sender: UIButton) {
         if txtaddress.text!.isEmpty || txtamount.text!.isEmpty {
             let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -349,8 +347,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             }
         }
     }
-    
-    @IBAction func ScanTransation_Action(_ sender: UIButton) {
+    //scan Transation Button Tapped
+    @IBAction func scanTransationButtonTapped(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletScannerVC") as! MyWalletScannerVC
         vc.isFromWallet = true
         self.navigationController?.pushViewController(vc, animated: true)
@@ -494,7 +492,7 @@ extension MyWalletSendVC: BeldexWalletDelegate {
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
     }
     private func postData(balance: String, history: TransactionHistory) {
-        let balance_modify = Helper.displayDigitsAmount(balance)
+//        let balance_modify = Helper.displayDigitsAmount(balance)
         DispatchQueue.main.async {
         }
     }

@@ -322,8 +322,53 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                                   cancelAction: #selector(tocancelAction),
                                   datePickerMode: .date)
         
+        
+        // UIPanGesture recognizer swiping only in one direction left side
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanForLeftswipe(_:)))
+        view.addGestureRecognizer(panGestureRecognizer)
+        
     }
     
+    //UIPanGesture recognizer swiping only in one direction left side
+    @objc func handlePanForLeftswipe(_ gestureRecognizer: UIPanGestureRecognizer) {
+        // Get the translation of the pan gesture
+        let translation = gestureRecognizer.translation(in: view)
+        // Calculate the progress of the swipe based on the translation
+        let progress = translation.x / view.bounds.width
+        switch gestureRecognizer.state {
+        case .began:
+            // Handle the pan gesture start, if needed
+            break
+        case .changed:
+            // Handle the pan gesture changes, if needed
+            // You can update the screen content or perform animations based on the progress.
+            break
+        case .ended, .cancelled:
+            // Complete or cancel the interactive transition based on progress
+            if progress > 0.5 {
+                navigateToNextScreen()
+            } else if progress < -0.5 {
+                navigateToPreviousScreen()
+            } else {
+                // Reset the screen to its initial state as the swipe is not significant
+                resetScreen()
+            }
+        default:
+            // Handle other states, if needed
+            break
+        }
+    }
+    func navigateToNextScreen() {
+        // Perform the navigation action to the next view controller
+    }
+    func navigateToPreviousScreen() {
+        // Perform the navigation action to the previous view controller
+    }
+    func resetScreen() {
+        // Reset the screen to its initial state
+        // For example, you can cancel any ongoing animations or undo any changes made during the swipe.
+        self.navigationController?.popToSpecificViewController(ofClass: HomeVC.self, animated: true)
+    }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let firstTouch = touches.first {
@@ -1659,7 +1704,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         }
     }
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
-        print("-----------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
+        print("11111------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         self.needSynchronized = true
