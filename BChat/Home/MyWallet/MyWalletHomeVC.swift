@@ -186,7 +186,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if BackAPI == true{
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
-            self.reloadData([:])
         }
         
         //MARK:- Wallet Ref
@@ -461,13 +460,17 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         textField.isUserInteractionEnabled = true
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        UIApplication.shared.isIdleTimerDisabled = true
         if BackAPI == true{
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
-            self.reloadData([:])
         }
         
         if UserDefaults.standard.domainSchemas.isEmpty {}else {

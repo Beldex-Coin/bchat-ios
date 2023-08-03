@@ -4359,63 +4359,6 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                     <constraint firstItem="xsh-Ir-lzE" firstAttribute="centerY" secondItem="fnq-oh-xys" secondAttribute="centerY" id="nuq-V1-QYT"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qlb-Nr-6tr">
-                                <rect key="frame" x="20" y="293" width="388" height="200"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Syncing Option" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aFD-iC-83M">
-                                        <rect key="frame" x="126.33333333333336" y="15.333333333333316" width="135.66666666666663" height="24.666666666666671"/>
-                                        <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
-                                        <color key="textColor" name="bchat_lbl_name"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9kx-Hj-pxs">
-                                        <rect key="frame" x="35" y="60" width="318" height="110"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71w-zA-BHA">
-                                                <rect key="frame" x="0.0" y="0.0" width="318" height="45"/>
-                                                <color key="backgroundColor" name="SyncingPopColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="Zuq-Zv-QAc"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="18"/>
-                                                <color key="tintColor" name="bchat_lbl_name"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Reconnect">
-                                                    <color key="titleColor" name="bchat_lbl_name"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="reconnectAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="gHK-1O-8P8"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUl-JY-0AD">
-                                                <rect key="frame" x="0.0" y="65" width="318" height="45"/>
-                                                <color key="backgroundColor" name="SyncingPopColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="45" id="G5a-FP-D3C"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="18"/>
-                                                <color key="tintColor" name="bchat_lbl_name"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Rescan">
-                                                    <color key="titleColor" name="bchat_lbl_name"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="rescanAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Umx-3R-8i0"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" name="bchat_view_bg_clr"/>
-                                <constraints>
-                                    <constraint firstItem="9kx-Hj-pxs" firstAttribute="centerY" secondItem="qlb-Nr-6tr" secondAttribute="centerY" constant="15" id="41U-lc-tUw"/>
-                                    <constraint firstItem="9kx-Hj-pxs" firstAttribute="leading" secondItem="qlb-Nr-6tr" secondAttribute="leading" constant="35" id="Gvt-US-xwO"/>
-                                    <constraint firstAttribute="trailing" secondItem="9kx-Hj-pxs" secondAttribute="trailing" constant="35" id="IOf-gK-28K"/>
-                                    <constraint firstItem="9kx-Hj-pxs" firstAttribute="top" secondItem="aFD-iC-83M" secondAttribute="bottom" constant="20" id="ScT-54-vQn"/>
-                                    <constraint firstAttribute="height" constant="200" id="gZE-GX-Cim"/>
-                                    <constraint firstItem="aFD-iC-83M" firstAttribute="centerX" secondItem="71w-zA-BHA" secondAttribute="centerX" id="sLb-1N-RY3"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NuX-ak-Cfd">
                                 <rect key="frame" x="20" y="278" width="388" height="230"/>
                                 <subviews>
@@ -4603,6 +4546,80 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                     <constraint firstAttribute="trailing" secondItem="3eN-EF-iN1" secondAttribute="trailing" constant="30" id="yJg-ZV-Dm1"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iqp-Xn-sNz">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qlb-Nr-6tr">
+                                        <rect key="frame" x="20" y="293" width="388" height="200"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Syncing Option" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aFD-iC-83M">
+                                                <rect key="frame" x="126.33333333333336" y="15.333333333333316" width="135.66666666666663" height="24.666666666666671"/>
+                                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
+                                                <color key="textColor" name="bchat_lbl_name"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="9kx-Hj-pxs">
+                                                <rect key="frame" x="35" y="60" width="318" height="110"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="71w-zA-BHA">
+                                                        <rect key="frame" x="0.0" y="0.0" width="318" height="45"/>
+                                                        <color key="backgroundColor" name="SyncingPopColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="45" id="Zuq-Zv-QAc"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="18"/>
+                                                        <color key="tintColor" name="bchat_lbl_name"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Reconnect">
+                                                            <color key="titleColor" name="bchat_lbl_name"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="reconnectAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="gHK-1O-8P8"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUl-JY-0AD">
+                                                        <rect key="frame" x="0.0" y="65" width="318" height="45"/>
+                                                        <color key="backgroundColor" name="SyncingPopColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="45" id="G5a-FP-D3C"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="18"/>
+                                                        <color key="tintColor" name="bchat_lbl_name"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Rescan">
+                                                            <color key="titleColor" name="bchat_lbl_name"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="rescanAction:" destination="pLo-Sy-UFO" eventType="touchUpInside" id="Umx-3R-8i0"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="bchat_view_bg_clr"/>
+                                        <constraints>
+                                            <constraint firstItem="9kx-Hj-pxs" firstAttribute="centerY" secondItem="qlb-Nr-6tr" secondAttribute="centerY" constant="15" id="41U-lc-tUw"/>
+                                            <constraint firstItem="9kx-Hj-pxs" firstAttribute="leading" secondItem="qlb-Nr-6tr" secondAttribute="leading" constant="35" id="Gvt-US-xwO"/>
+                                            <constraint firstAttribute="trailing" secondItem="9kx-Hj-pxs" secondAttribute="trailing" constant="35" id="IOf-gK-28K"/>
+                                            <constraint firstItem="9kx-Hj-pxs" firstAttribute="top" secondItem="aFD-iC-83M" secondAttribute="bottom" constant="20" id="ScT-54-vQn"/>
+                                            <constraint firstAttribute="height" constant="200" id="gZE-GX-Cim"/>
+                                            <constraint firstItem="aFD-iC-83M" firstAttribute="centerX" secondItem="71w-zA-BHA" secondAttribute="centerX" id="sLb-1N-RY3"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="bchat_custom"/>
+                                <constraints>
+                                    <constraint firstItem="qlb-Nr-6tr" firstAttribute="centerY" secondItem="iqp-Xn-sNz" secondAttribute="centerY" constant="-70" id="8wh-SH-irA"/>
+                                    <constraint firstItem="qlb-Nr-6tr" firstAttribute="leading" secondItem="iqp-Xn-sNz" secondAttribute="leading" constant="20" id="dQO-nL-BgK"/>
+                                    <constraint firstAttribute="trailing" secondItem="qlb-Nr-6tr" secondAttribute="trailing" constant="20" id="ea1-3H-NIa"/>
+                                    <constraint firstItem="qlb-Nr-6tr" firstAttribute="centerX" secondItem="iqp-Xn-sNz" secondAttribute="centerX" id="sEx-hf-N4p"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lXK-QU-7Ex">
                                 <rect key="frame" x="0.0" y="813" width="428" height="113"/>
                                 <subviews>
@@ -4708,16 +4725,18 @@ The Beldex network and BChat uses several protocols that were designed by the op
                         <constraints>
                             <constraint firstItem="kxA-BJ-pgk" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" id="017-uk-RPa"/>
                             <constraint firstAttribute="trailing" secondItem="cke-SL-zsn" secondAttribute="trailing" constant="20" id="0Le-k9-nQm"/>
-                            <constraint firstItem="qlb-Nr-6tr" firstAttribute="centerX" secondItem="IJc-k8-pmK" secondAttribute="centerX" id="1Te-Eu-YV3"/>
                             <constraint firstAttribute="bottom" secondItem="lXK-QU-7Ex" secondAttribute="bottom" id="3M3-9p-lUp"/>
                             <constraint firstItem="NuX-ak-Cfd" firstAttribute="centerY" secondItem="IJc-k8-pmK" secondAttribute="centerY" constant="-70" id="4nh-1y-m6h"/>
+                            <constraint firstAttribute="trailing" secondItem="iqp-Xn-sNz" secondAttribute="trailing" id="9mZ-kB-jzk"/>
                             <constraint firstItem="ggR-mn-Wrr" firstAttribute="top" secondItem="kxA-BJ-pgk" secondAttribute="bottom" constant="5" id="9pg-NS-4D2"/>
                             <constraint firstItem="lXK-QU-7Ex" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" id="EU9-4g-bJr"/>
-                            <constraint firstAttribute="trailing" secondItem="qlb-Nr-6tr" secondAttribute="trailing" constant="20" id="Hcb-oU-7Mx"/>
                             <constraint firstItem="IEy-aT-KVH" firstAttribute="trailing" secondItem="uMa-OB-UU0" secondAttribute="trailing" id="Hta-te-53G"/>
                             <constraint firstItem="8Nk-pf-vlJ" firstAttribute="width" secondItem="IJc-k8-pmK" secondAttribute="width" id="LFd-1t-sck"/>
                             <constraint firstAttribute="trailing" secondItem="5Yz-2p-N3a" secondAttribute="trailing" id="MCf-Pm-YKW"/>
+                            <constraint firstAttribute="bottom" secondItem="iqp-Xn-sNz" secondAttribute="bottom" id="Mxe-8Q-Q8A"/>
                             <constraint firstItem="cke-SL-zsn" firstAttribute="top" secondItem="kxA-BJ-pgk" secondAttribute="bottom" constant="170" id="NEG-eB-bbV"/>
+                            <constraint firstItem="iqp-Xn-sNz" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" id="O8q-1v-DlY"/>
+                            <constraint firstItem="iqp-Xn-sNz" firstAttribute="top" secondItem="IJc-k8-pmK" secondAttribute="top" id="TEr-kU-qpc"/>
                             <constraint firstAttribute="trailing" secondItem="kxA-BJ-pgk" secondAttribute="trailing" id="Tv6-Gj-aPs"/>
                             <constraint firstItem="lXk-df-gvf" firstAttribute="centerY" secondItem="ggR-mn-Wrr" secondAttribute="centerY" id="UzX-OZ-7H7"/>
                             <constraint firstItem="NuX-ak-Cfd" firstAttribute="centerX" secondItem="IJc-k8-pmK" secondAttribute="centerX" id="Vi6-R8-hw7"/>
@@ -4725,11 +4744,9 @@ The Beldex network and BChat uses several protocols that were designed by the op
                             <constraint firstAttribute="trailing" secondItem="lXK-QU-7Ex" secondAttribute="trailing" id="hPJ-MM-nbX"/>
                             <constraint firstItem="5Yz-2p-N3a" firstAttribute="top" secondItem="ggR-mn-Wrr" secondAttribute="bottom" constant="4" id="hRP-rd-f5J"/>
                             <constraint firstItem="lXK-QU-7Ex" firstAttribute="top" secondItem="5Yz-2p-N3a" secondAttribute="bottom" id="hY3-YP-aRy"/>
-                            <constraint firstItem="qlb-Nr-6tr" firstAttribute="centerY" secondItem="IJc-k8-pmK" secondAttribute="centerY" constant="-70" id="hgL-Kp-45T"/>
                             <constraint firstItem="cke-SL-zsn" firstAttribute="centerX" secondItem="IJc-k8-pmK" secondAttribute="centerX" id="n8a-Ef-uGP"/>
                             <constraint firstItem="cke-SL-zsn" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" constant="20" id="oK1-8l-krs"/>
                             <constraint firstItem="lXk-df-gvf" firstAttribute="leading" secondItem="ggR-mn-Wrr" secondAttribute="trailing" constant="5" id="rTm-Y9-8Gy"/>
-                            <constraint firstItem="qlb-Nr-6tr" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" constant="20" id="som-g9-6hV"/>
                             <constraint firstItem="NuX-ak-Cfd" firstAttribute="leading" secondItem="IJc-k8-pmK" secondAttribute="leading" constant="20" id="t4T-cw-pc5"/>
                             <constraint firstItem="kxA-BJ-pgk" firstAttribute="top" secondItem="5ba-UB-3Vs" secondAttribute="bottom" id="uMr-4y-A0q"/>
                             <constraint firstItem="IEy-aT-KVH" firstAttribute="top" secondItem="uMa-OB-UU0" secondAttribute="bottom" constant="17" id="vUm-xa-97w"/>
@@ -4774,14 +4791,14 @@ The Beldex network and BChat uses several protocols that were designed by the op
                         <outlet property="txtfromdate" destination="WzX-Vw-fwc" id="RPg-pZ-ySK"/>
                         <outlet property="txttodate" destination="tKb-Yj-ggi" id="b2s-yg-r16"/>
                         <outlet property="viewFromdateRef" destination="PFc-Lb-MkF" id="8Po-vg-4Cx"/>
-                        <outlet property="viewSyncing" destination="qlb-Nr-6tr" id="JHk-hr-d9a"/>
+                        <outlet property="viewSyncing" destination="iqp-Xn-sNz" id="Pkg-b0-J60"/>
                         <outlet property="viewTodateRef" destination="fFV-Kj-Iso" id="QTL-aS-ivb"/>
                         <outlet property="viewdateRangeRef" destination="cke-SL-zsn" id="hrT-U9-Aq0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NdD-Vf-3sz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-423" y="3432"/>
+            <point key="canvasLocation" x="-423.36448598130841" y="3431.5334773218146"/>
         </scene>
     </scenes>
     <designables>
@@ -4859,6 +4876,9 @@ The Beldex network and BChat uses several protocols that were designed by the op
         </namedColor>
         <namedColor name="bchat_button_clr2">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_custom">
+            <color red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="bchat_lbl_name">
             <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
