@@ -32,7 +32,7 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
     var decimalString = ""
     var currencyNameString = ""
     var feePriorityString = ""
-    var NodeValue = ""
+    var nodeValue = ""
     var BackAPI = false
     @IBOutlet weak var txtSearchBar: UITextField!
     @IBOutlet weak var txtSearchBarHeightConstraint: NSLayoutConstraint!
@@ -64,14 +64,14 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
         btnclose.setImage(UIImage(named: logoName), for: .normal)
                 
         if BackAPI == true{
-            NodeValue = SaveUserDefaultsData.SelectedNode
+            nodeValue = SaveUserDefaultsData.SelectedNode
             collectionView.reloadData()
         }else {
             if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                NodeValue = SaveUserDefaultsData.SelectedNode
+                nodeValue = SaveUserDefaultsData.SelectedNode
             }
             if !SaveUserDefaultsData.FinalWallet_node.isEmpty {
-                NodeValue = SaveUserDefaultsData.FinalWallet_node
+                nodeValue = SaveUserDefaultsData.FinalWallet_node
             }
             collectionView.reloadData()
         }
@@ -80,13 +80,13 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         if BackAPI == true{
-            NodeValue = SaveUserDefaultsData.SelectedNode
+            nodeValue = SaveUserDefaultsData.SelectedNode
         }else {
             if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                NodeValue = SaveUserDefaultsData.SelectedNode
+                nodeValue = SaveUserDefaultsData.SelectedNode
             }
             if !SaveUserDefaultsData.FinalWallet_node.isEmpty {
-                NodeValue = SaveUserDefaultsData.FinalWallet_node
+                nodeValue = SaveUserDefaultsData.FinalWallet_node
             }
         }
         collectionView.reloadData()
@@ -155,7 +155,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyWalletSettingsXibCell2.identifier, for: indexPath) as! MyWalletSettingsXibCell2
             if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-                cell.lblnodename.text = NodeValue
+                cell.lblnodename.text = nodeValue
             }else{
                 cell.lblnodename.text = "Waiting for network.."
             }
@@ -164,7 +164,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyWalletSettingsXibCell3.identifier, for: indexPath) as! MyWalletSettingsXibCell3
             
             cell.btnDisplayNameAS.tag = indexPath.row
-            cell.btnDisplayNameAS.addTarget(self, action: #selector(self.DisplayNameAS_action(_:)), for: .touchUpInside)
+            cell.btnDisplayNameAS.addTarget(self, action: #selector(self.displayNameASButtonTapped(_:)), for: .touchUpInside)
             
             if !SaveUserDefaultsData.SelectedBalance.isEmpty {
                 cell.btnDisplayNameAS.setTitle(SaveUserDefaultsData.SelectedBalance, for: .normal)
@@ -175,7 +175,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
             }
             
             cell.btnDecimals.tag = indexPath.row
-            cell.btnDecimals.addTarget(self, action: #selector(self.Decimals_action(_:)), for: .touchUpInside)
+            cell.btnDecimals.addTarget(self, action: #selector(self.decimalsButtonTapped(_:)), for: .touchUpInside)
             
             if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                 cell.btnDecimals.setTitle(SaveUserDefaultsData.SelectedDecimal, for: .normal)
@@ -186,7 +186,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
             }
             
             cell.btnCurrency.tag = indexPath.row
-            cell.btnCurrency.addTarget(self, action: #selector(self.Currency_action(_:)), for: .touchUpInside)
+            cell.btnCurrency.addTarget(self, action: #selector(self.currencyButtonTapped(_:)), for: .touchUpInside)
             
             if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
                 cell.btnCurrency.setTitle(SaveUserDefaultsData.SelectedCurrency.uppercased(), for: .normal)
@@ -197,7 +197,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
             }
             
             cell.btnFeepriority.tag = indexPath.row
-            cell.btnFeepriority.addTarget(self, action: #selector(self.Feepriority_action(_:)), for: .touchUpInside)
+            cell.btnFeepriority.addTarget(self, action: #selector(self.feepriorityButtonTapped(_:)), for: .touchUpInside)
             if !SaveUserDefaultsData.FeePriority.isEmpty {
                 let val = SaveUserDefaultsData.FeePriority
                 cell.btnFeepriority.setTitle(val, for: .normal)
@@ -206,7 +206,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
             }
             
             cell.btnSaveRecipientAddress.tag = indexPath.row
-            cell.btnSaveRecipientAddress.addTarget(self, action: #selector(self.SaveRecipientAddress_action(_:)), for: .valueChanged)
+            cell.btnSaveRecipientAddress.addTarget(self, action: #selector(self.saveRecipientAddressButtonTapped(_:)), for: .valueChanged)
             
             if SaveUserDefaultsData.SaveReceipeinetSwitch == false {
                 cell.btnSaveRecipientAddress.isOn = false
@@ -255,8 +255,8 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         vc.isChangePin = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    @objc func DisplayNameAS_action(_ x: AnyObject) {
+    // displayNameAS ButtonTapped
+    @objc func displayNameASButtonTapped(_ x: AnyObject) {
         txtSearchBarHeightConstraint.constant = 0
         lbltitlename.text = "Display Balance As"
         popview.isHidden = false
@@ -265,7 +265,8 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         flagString = "11"
         tableView.reloadData()
     }
-    @objc func Decimals_action(_ x: AnyObject) {
+    // decimals ButtonTapped
+    @objc func decimalsButtonTapped(_ x: AnyObject) {
         txtSearchBarHeightConstraint.constant = 0
         lbltitlename.text = "Decimals"
         popview.isHidden = false
@@ -274,7 +275,8 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         flagString = "22"
         tableView.reloadData()
     }
-    @objc func Currency_action(_ x: AnyObject) {
+   // currency ButtonTapped
+    @objc func currencyButtonTapped(_ x: AnyObject) {
         txtSearchBarHeightConstraint.constant = 30
         lbltitlename.text = "Currency"
         popview.isHidden = false
@@ -283,7 +285,8 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         flagString = "33"
         tableView.reloadData()
     }
-    @objc func Feepriority_action(_ x: AnyObject) {
+  // feepriority ButtonTapped
+    @objc func feepriorityButtonTapped(_ x: AnyObject) {
         txtSearchBarHeightConstraint.constant = 0
         lbltitlename.text = "Fee Priority"
         popview.isHidden = false
@@ -292,7 +295,8 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         flagString = "44"
         tableView.reloadData()
     }
-    @objc func SaveRecipientAddress_action(_ x: UISwitch) {
+   // saveRecipientAddress ButtonTapped
+    @objc func saveRecipientAddressButtonTapped(_ x: UISwitch) {
         if (x.isOn){
             SaveUserDefaultsData.SaveReceipeinetSwitch = true
         }else{

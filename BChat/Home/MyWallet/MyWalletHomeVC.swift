@@ -155,32 +155,21 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
         backgroundBottomScanView.backgroundColor = UIColor.darkGray
         
-        let imageScan_QR = UIImage(named: "ic_Scan_QR")?.withRenderingMode(.alwaysTemplate)
-        imgScanRef.image = imageScan_QR!.withRenderingMode(.alwaysTemplate)
-        imgScanRef.tintColor = UIColor.lightGray
+        let colorScanQR: UIColor = isDarkMode ? .lightGray : .lightGray
+        imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
         
         let logo_ic_no_transactions = isLightMode ? "ic_no_transactions_light" : "ic_no_transactions"
         NotransationImg.image = UIImage(named: logo_ic_no_transactions)!
         
-        if isLightMode {
-            let image = UIImage(named: "ic_beldex")?.withRenderingMode(.alwaysTemplate)
-            imgBeldexlogo.image = image!.withRenderingMode(.alwaysTemplate)
-            imgBeldexlogo.tintColor = UIColor.black
-        }else {
-            let image = UIImage(named: "ic_beldex")?.withRenderingMode(.alwaysTemplate)
-            imgBeldexlogo.image = image!.withRenderingMode(.alwaysTemplate)
-            imgBeldexlogo.tintColor = UIColor.white
-        }
+        let colorimgBeldex: UIColor = isDarkMode ? .white : .black
+        imgBeldexlogo.image = UIImage(named: "ic_beldex")?.asTintedImage(color: colorimgBeldex)
         
-        let image = UIImage(named: "ic_Datefilter")?.withRenderingMode(.alwaysTemplate)
-        btnBydateRef.setImage(image, for: .normal)
-        let color = isLightMode ? UIColor.black : UIColor.white
-        btnBydateRef.tintColor = color
+        let imageDatefilter = UIImage(named: "ic_Datefilter")?.asTintedImage(color: colorimgBeldex)
+        btnBydateRef.setImage(imageDatefilter, for: .normal)
         
-        let imagesyncedIconRef = UIImage(named: "ic_info")?.withRenderingMode(.alwaysTemplate)
-        syncedIconRef.setImage(imagesyncedIconRef, for: .normal)
-        let colors = isLightMode ? UIColor.black : UIColor.white
-        syncedIconRef.tintColor = colors
+        let imageinfo = UIImage(named: "ic_info")?.asTintedImage(color: colorimgBeldex)
+        syncedIconRef.setImage(imageinfo, for: .normal)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(syncWalletData(_:)), name: Notification.Name(rawValue: "syncWallet"), object: nil)
         
         if BackAPI == true{
@@ -556,30 +545,36 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
-        lblMainblns.text = "0.00"
-        lblOtherCurrencyblns.text = "0.00"
-        self.syncedflag = false
-        conncetingState.value = true
-        syncedIconRef.isHidden = true
-        progressLabel.text = "Loading Wallet ..."
-        let username = SaveUserDefaultsData.NameForWallet
-        WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
-            DispatchQueue.main.async {
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let wallet):
-                    strongSelf.wallet = wallet
-                    strongSelf.connect(wallet: wallet)
-                case .failure(_):
-                    strongSelf.refreshState.value = true
-                    strongSelf.conncetingState.value = false
-                    strongSelf.progressLabel.textColor = .red
-                    strongSelf.progressLabel.text = "Failed to Connect"
-                    self!.syncedflag = true
-                    self!.syncedIconRef.isHidden = true
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            lblMainblns.text = "0.00"
+            lblOtherCurrencyblns.text = "0.00"
+            self.syncedflag = false
+            conncetingState.value = true
+            syncedIconRef.isHidden = true
+            self.progressLabel.textColor = Colors.bchat_button_clr
+            progressLabel.text = "Loading Wallet ..."
+            let username = SaveUserDefaultsData.NameForWallet
+            WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
+                DispatchQueue.main.async {
+                    guard let strongSelf = self else { return }
+                    switch result {
+                    case .success(let wallet):
+                        strongSelf.wallet = wallet
+                        strongSelf.connect(wallet: wallet)
+                    case .failure(_):
+                        strongSelf.refreshState.value = true
+                        strongSelf.conncetingState.value = false
+                        strongSelf.progressLabel.textColor = .red
+                        strongSelf.progressLabel.text = "Failed to Connect"
+                        self!.syncedflag = true
+                        self!.syncedIconRef.isHidden = true
+                    }
                 }
             }
+        } else {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
         }
+        
     }
     
     func connect(wallet: BDXWallet) {
@@ -587,6 +582,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.syncedflag = false
             self.conncetingState.value = true
             syncedIconRef.isHidden = true
+            self.progressLabel.textColor = Colors.bchat_button_clr
             progressLabel.text = "Connecting ..."
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
@@ -616,33 +612,41 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     }
     
     private func updateSyncingProgress() {
-        taskQueue.async {
-            let (current, total) = (self.currentBlockChainHeight, self.daemonBlockChainHeight)
-            guard total != current else { return }
-            let difference = total.subtractingReportingOverflow(current)
-            var progress = CGFloat(current) / CGFloat(total)
-            let leftBlocks: String
-            if difference.overflow || difference.partialValue <= 1 {
-                leftBlocks = "1"
-                progress = 1
-            } else {
-                leftBlocks = String(difference.partialValue)
-            }
-            let largeNumber = Int(leftBlocks)
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            numberFormatter.groupingSize = 3
-            numberFormatter.secondaryGroupingSize = 2
-            let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
-            let statusText = "\(formattedNumber!)" + " Blocks Remaining"
-            DispatchQueue.main.async {
-                if self.conncetingState.value {
-                    self.conncetingState.value = false
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            if self.wallet?.synchronized == false {
+                taskQueue.async {
+                    let (current, total) = (self.currentBlockChainHeight, self.daemonBlockChainHeight)
+                    guard total != current else { return }
+                    let difference = total.subtractingReportingOverflow(current)
+                    var progress = CGFloat(current) / CGFloat(total)
+                    let leftBlocks: String
+                    if difference.overflow || difference.partialValue <= 1 {
+                        leftBlocks = "1"
+                        progress = 1
+                    } else {
+                        leftBlocks = String(difference.partialValue)
+                    }
+                    let largeNumber = Int(leftBlocks)
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .decimal
+                    numberFormatter.groupingSize = 3
+                    numberFormatter.secondaryGroupingSize = 2
+                    let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
+                    let statusText = "\(formattedNumber!)" + " Blocks Remaining"
+                    DispatchQueue.main.async {
+                        if self.conncetingState.value {
+                            self.conncetingState.value = false
+                        }
+                        self.syncedflag = false
+                        self.progressView.progress = Float(progress)
+                        self.progressLabel.textColor = Colors.bchat_button_clr
+                        self.progressLabel.text = statusText
+                    }
                 }
-                self.syncedflag = false
-                self.progressView.progress = Float(progress)
-                self.progressLabel.text = statusText
             }
+        } else {
+            self.progressLabel.textColor = .red
+            self.progressLabel.text = "Check your internet"
         }
     }
     
@@ -660,6 +664,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         imgScanRef.image = UIImage(named: logoName)!
         btnHomeSend.backgroundColor = Colors.sentMessageBackground
         btnHomeSend.setTitleColor(.white, for: .normal)
+        self.progressLabel.textColor = Colors.bchat_button_clr
         self.progressLabel.text = "Synchronized"
         syncedIconRef.isHidden = false
         self.collectionView.reloadData()
@@ -853,31 +858,19 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     func filterTransaction() {
         if self.incomingButton.isSelected {
-            if isLightMode {
-                self.incomingImageView.image = UIImage(named: "icCheck_box")
-            }else {
-                self.incomingImageView.image = UIImage(named: "ic_Check_box_white")
-            }
+            let checkBox = isLightMode ? "icCheck_box" : "ic_Check_box_white"
+            incomingImageView.image = UIImage(named: checkBox)!
         } else {
-            if isLightMode {
-                self.incomingImageView.image = UIImage(named: "ic_Uncheck-box")
-            }else {
-                self.incomingImageView.image = UIImage(named: "ic_Uncheck_box_white")
-            }
+            let checkBox = isLightMode ? "ic_Uncheck-box" : "ic_Uncheck_box_white"
+            incomingImageView.image = UIImage(named: checkBox)!
         }
         
         if self.outgoingButton.isSelected {
-            if isLightMode {
-                self.outgoingImageView.image = UIImage(named: "icCheck_box")
-            }else {
-                self.outgoingImageView.image = UIImage(named: "ic_Check_box_white")
-            }
+            let checkBox = isLightMode ? "icCheck_box" : "ic_Check_box_white"
+            outgoingImageView.image = UIImage(named: checkBox)!
         } else {
-            if isLightMode {
-                self.outgoingImageView.image = UIImage(named: "ic_Uncheck-box")
-            }else {
-                self.outgoingImageView.image = UIImage(named: "ic_Uncheck_box_white")
-            }
+            let checkBox = isLightMode ? "ic_Uncheck-box" : "ic_Uncheck_box_white"
+            outgoingImageView.image = UIImage(named: checkBox)!
         }
         
         self.noTransaction = false
@@ -1686,7 +1679,11 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
         print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
-        self.isSyncingUI = false
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            if self.wallet?.synchronized == true {
+                self.isSyncingUI = false
+            }
+        }
         if self.needSynchronized {
             self.needSynchronized = !wallet.save()
         }

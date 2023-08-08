@@ -278,24 +278,28 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     
     //confirm sending Button Tapped
     @IBAction func confirmsendingButtonTapped(_ sender: UIButton) {
-        loading.startAnimating()
-        let txid = self.wallet!.txid()
-        let commitPendingTransaction = self.wallet!.commitPendingTransaction()
-        if commitPendingTransaction == true {
-            //Save Receipent Address fun developed In Local
-            if recipientAddressON == true {
-                if !UserDefaults.standard.domainSchemas.isEmpty {
-                    hashArray = UserDefaults.standard.domainSchemas
-                    hashArray.append(.init(localhash: txid, localaddress: lbladdressAftersending.text!))
-                    UserDefaults.standard.domainSchemas = hashArray
-                }else {
-                    hashArray.append(.init(localhash: txid, localaddress: lbladdressAftersending.text!))
-                    UserDefaults.standard.domainSchemas = hashArray
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            loading.startAnimating()
+            let txid = self.wallet!.txid()
+            let commitPendingTransaction = self.wallet!.commitPendingTransaction()
+            if commitPendingTransaction == true {
+                //Save Receipent Address fun developed In Local
+                if recipientAddressON == true {
+                    if !UserDefaults.standard.domainSchemas.isEmpty {
+                        hashArray = UserDefaults.standard.domainSchemas
+                        hashArray.append(.init(localhash: txid, localaddress: lbladdressAftersending.text!))
+                        UserDefaults.standard.domainSchemas = hashArray
+                    }else {
+                        hashArray.append(.init(localhash: txid, localaddress: lbladdressAftersending.text!))
+                        UserDefaults.standard.domainSchemas = hashArray
+                    }
                 }
+                loading.stopAnimating()
+                confirmSendingPopView.isHidden = true
+                successPopView.isHidden = false
             }
-            loading.stopAnimating()
-            confirmSendingPopView.isHidden = true
-            successPopView.isHidden = false
+        } else {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
         }
     }
 
@@ -336,14 +340,18 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }else {
-                self.finalWalletAddress = self.txtaddress.text!
-                self.finalWalletAmount = self.txtamount.text!
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                vc.isSendWalletVC = true
-                vc.wallet = self.wallet
-                vc.finalWalletAddress = self.finalWalletAddress
-                vc.finalWalletAmount = self.finalWalletAmount
-                self.navigationController?.pushViewController(vc, animated: true)
+                if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                    self.finalWalletAddress = self.txtaddress.text!
+                    self.finalWalletAmount = self.txtamount.text!
+                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+                    vc.isSendWalletVC = true
+                    vc.wallet = self.wallet
+                    vc.finalWalletAddress = self.finalWalletAddress
+                    vc.finalWalletAmount = self.finalWalletAmount
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                }
             }
         }
     }
