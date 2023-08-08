@@ -12,59 +12,10 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var heighttxt:UITextField!
     @IBOutlet weak var datetxt:UITextField!
     @IBOutlet weak var nextRef:UIButton!
-    
     let datePicker = DatePickerDialog()
     var SeedPass:String!
     private var data = NewWallet()
     private var recovery_seed = RecoverWallet(from: .seed)
-    var finalheight = ""
-    var DateHeightdata = ["2019-03:21164",
-                          "2019-04:42675",
-                          "2019-05:64918",
-                          "2019-06:87175",
-                          "2019-07:108687",
-                          "2019-08:130935",
-                          "2019-09:152452",
-                          "2019-10:174680",
-                          "2019-11:196906",
-                          "2019-12:217017",
-                          "2020-01:239353",
-                          "2020-02:260946",
-                          "2020-03:283214",
-                          "2020-04:304758",
-                          "2020-05:326679",
-                          "2020-06:348926",
-                          "2020-07:370533",
-                          "2020-08:392807",
-                          "2020-09:414270",
-                          "2020-10:436562",
-                          "2020-11:458817",
-                          "2020-12:479654",
-                          "2021-01:501870",
-                          "2021-02:523356",
-                          "2021-03:545569",
-                          "2021-04:567123",
-                          "2021-05:589402",
-                          "2021-06:611687",
-                          "2021-07:633161",
-                          "2021-08:655438",
-                          "2021-09:677038",
-                          "2021-10:699358",
-                          "2021-11:721678",
-                          "2021-12:741838",
-                          "2022-01:788501",
-                          "2022-02:877781",
-                          "2022-03:958421",
-                          "2022-04:1006790",
-                          "2022-05:1093190",
-                          "2022-06:1199750",
-                          "2022-07:1291910",
-                          "2022-08:1361030",
-                          "2022-09:1456070",
-                          "2022-10:1574150",
-                          "2022-11:1674950",
-                          "2022-12:1764230",
-                          "2023-01:1850630"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,15 +71,12 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
-                for element in self.DateHeightdata {
+                for element in DateHeight.getBlockHeight {
                     let fullNameArr = element.components(separatedBy: ":")
                     let dateString  = fullNameArr[0]
                     let heightString = fullNameArr[1]
                     if dateString == finalDate {
-                        finalheight = heightString
-                    }else {
-                        finalheight = "1850630"
-                        SaveUserDefaultsData.WalletRestoreHeight = finalheight
+                        SaveUserDefaultsData.WalletRestoreHeight = heightString
                     }
                 }
             }
@@ -220,7 +168,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
             }
         }
         if heighttxt.text!.isEmpty && datetxt.text != nil{
-            SaveUserDefaultsData.WalletRestoreHeight = finalheight
+            SaveUserDefaultsData.WalletRestoreHeight = heighttxt.text!
             self.mnemonicSeedconnect()
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
             navigationflowTag = true

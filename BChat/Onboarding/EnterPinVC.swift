@@ -156,34 +156,17 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     }
     
     @IBAction func NextAction(sender:UIButton){
-        var a = false
-        var b = false
-        var c = false
-        if enterPintxt.text?.count == 4 {
-            c = true
-        }else {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
+        guard let pin = enterPintxt.text,
+              let confirmPin = reEnterPintxt.text else {
+            return
         }
-        if enterPintxt.text! == reEnterPintxt.text! {
-            a = true
-        } else {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
-        }
-        if(enterPintxt.text! == "" || reEnterPintxt.text! == "") {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message3) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
-        } else {
-            b = true
-        }
-        if a == true && b == true && c == true {
+        if pin.count == 4 && pin == confirmPin {
             SaveUserDefaultsData.BChatPassword = reEnterPintxt.text!
             if navigationflowTag == false {
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoveryVC") as! RecoveryVC
                 self.navigationController?.pushViewController(vc, animated: true)
             }else{
-                UserDefaults.standard[.isUsingFullAPNs] = true//(selectedOptionView == apnsOptionView)
+                UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
                 let homeVC = HomeVC()
                 navigationController!.setViewControllers([ homeVC ], animated: true)
@@ -191,8 +174,21 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
                 syncTokensJob.uploadOnlyIfStale = false
                 let _: Promise<Void> = syncTokensJob.run()
             }
+        } else {
+            if (enterPintxt.text! == "" || reEnterPintxt.text! == "") {
+                _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message3) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                })
+            }else {
+                if enterPintxt.text!.count < 4 {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                }
+                else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                }
+            }
         }
     }
-    
     
 }

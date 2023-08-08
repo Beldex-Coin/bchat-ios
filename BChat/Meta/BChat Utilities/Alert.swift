@@ -19,6 +19,7 @@ struct Alert
     static let Alert_BChat_Enter_Pin_Message = "Please enter 4 Digits"
     static let Alert_BChat_Enter_Pin_Message2 = "Passwords Do Not Match"
     static let Alert_BChat_Enter_Pin_Message3 = "Password Field is empty"
+    static let Alert_BChat_Enter_Pin_Message6 = "Please enter 4 Digits or Passwords Do Not Match."
     static let Alert_BChat_Enter_Pin_Message4 = "New Password Field is empty"
     static let Alert_BChat_Enter_Pin_Message5 =  "Both are same"
     static let Alert_BChat_Password_Message =  "Password changes successfully"
