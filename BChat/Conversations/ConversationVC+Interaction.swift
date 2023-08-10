@@ -25,6 +25,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     @objc func openSettings() {
+        snInputView.resignFirstResponder()
         let settingsVC = OWSConversationSettingsViewController()
         settingsVC.configure(with: thread, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
@@ -42,6 +43,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
         let contact: Contact = Storage.shared.getContact(with: publicKey)!

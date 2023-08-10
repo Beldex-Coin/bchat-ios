@@ -555,13 +555,14 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             progressLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
-                DispatchQueue.main.async {
-                    guard let strongSelf = self else { return }
-                    switch result {
-                    case .success(let wallet):
-                        strongSelf.wallet = wallet
-                        strongSelf.connect(wallet: wallet)
-                    case .failure(_):
+                
+                guard let strongSelf = self else { return }
+                switch result {
+                case .success(let wallet):
+                    strongSelf.wallet = wallet
+                    strongSelf.connect(wallet: wallet)
+                case .failure(_):
+                    DispatchQueue.main.async {
                         strongSelf.refreshState.value = true
                         strongSelf.conncetingState.value = false
                         strongSelf.progressLabel.textColor = .red

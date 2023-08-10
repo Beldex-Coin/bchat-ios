@@ -176,6 +176,11 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.BackAPI = false
+    }
+    
+    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -187,7 +192,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         placeholderLabel?.isHidden = !textView.text.isEmpty
     }
     func textViewDidBeginEditing(_ textView: UITextView) {
-        placeholderLabel?.isHidden = true
+//        placeholderLabel?.isHidden = true
     }
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {

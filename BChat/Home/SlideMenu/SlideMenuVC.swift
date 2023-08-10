@@ -26,7 +26,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     }
     @IBOutlet weak var tableViewhightConst: NSLayoutConstraint!
     @IBOutlet weak var sampleSwitch: UISwitch!
-    var array = ["My Account","My Wallet","Notification","Message Requests","Privacy","Recovery Seed","Report Issue","Help","Invite","About"]
+    var titlesArray = ["My Account","My Wallet","Notification","Message Requests","Privacy","Recovery Seed","Report Issue","Help","Invite","About"]
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var lblversion: UILabel!
     private var hasTappableProfilePicture: Bool = false
@@ -89,8 +89,8 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         if section == 0 {
             return 1
         } else {
-            self.tableViewhightConst.constant = CGFloat(array.count * 60)
-            return array.count
+            self.tableViewhightConst.constant = CGFloat(titlesArray.count * 60)
+            return titlesArray.count
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -137,7 +137,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SlideMenuCell", for: indexPath) as! SlideMenuCell
             cell.selectionStyle = .none
-            cell.lblname.text = array[indexPath.row]
+            cell.lblname.text = titlesArray[indexPath.row]
             cell.lblbeta.isHidden = true
             
             if indexPath.row == 0 {
