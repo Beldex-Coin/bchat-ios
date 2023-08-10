@@ -24,14 +24,12 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     @IBOutlet weak var successPopView: UIView!
     @IBOutlet weak var btnfinalOK: UIButton!
     @IBOutlet weak var imgtick: UIImageView!
-    
     public lazy var loadingState = { Postable<Bool>() }()
     private var currencyName = ""
     private var bdxCurrencyValue = ""
     private var currencyValue: Double!
     private var refreshDuration: TimeInterval = 60
     private var marketsDataRequest: DataRequest?
-    
     var walletAddress: String!
     var walletAmount: String!
     var wallet: BDXWallet?
@@ -110,7 +108,6 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         txtaddress.delegate = self
         txtamount.delegate = self
         txtaddress.returnKeyType = .done
-        btnsend.isUserInteractionEnabled = true
         let logoScanImg = isLightMode ? "scan_QR_dark" : "scan_QR"
         scanRefbtn.setImage(UIImage(named: logoScanImg), for: .normal)
         let logoAddressImg = isLightMode ? "user_light" : "user_dark"
@@ -179,7 +176,6 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     override func viewWillDisappear(_ animated: Bool) {
         self.BackAPI = false
     }
-    
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
@@ -251,6 +247,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     
     // Delegate Method
     func sendDataToMyWalletSendVC(myData: String) {
+        btnsend.isUserInteractionEnabled = true
         placeholderLabel?.isHidden = true
         self.txtaddress.text = myData
     }
@@ -264,7 +261,6 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         confirmSendingPopView.isHidden = true
         successPopView.isHidden = true
         loading.stopAnimating()
-        btnsend.isUserInteractionEnabled = false
     }
     
     //confirm sending Button Tapped
@@ -288,7 +284,6 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
                 loading.stopAnimating()
                 confirmSendingPopView.isHidden = true
                 successPopView.isHidden = false
-                btnsend.isUserInteractionEnabled = false
             }
         } else {
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
@@ -309,40 +304,46 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     }
     //send Transation Button Tapped
     @IBAction func sendTransationButtonTapped(_ sender: UIButton) {
-        if txtaddress.text!.isEmpty || txtamount.text!.isEmpty {
-            let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+        if confirmSendingPopView.isHidden == false {
+            btnsend.isUserInteractionEnabled = false
         }else {
-            let indexOfString = txtamount.text!
-            let lastString = txtamount.text!.index(before: txtamount.text!.endIndex)
-            guard BChatWalletWrapper.validAddress(txtaddress.text!) else {
-                let alert = UIAlertController(title: "My Wallet", message: "Not a valid address", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                return
-            }
-            if txtamount.text?.count == 0 {
-                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-            else if txtamount.text! == "." || Int(txtamount.text!) == 0 || indexOfString.count > 16 || txtamount.text![lastString] == "." {
-                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter Proper amount", preferredStyle: UIAlertController.Style.alert)
+            btnsend.isUserInteractionEnabled = true
+            
+            if txtaddress.text!.isEmpty || txtamount.text!.isEmpty {
+                let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }else {
-                if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-                    self.finalWalletAddress = self.txtaddress.text!
-                    self.finalWalletAmount = self.txtamount.text!
-                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                    vc.isSendWalletVC = true
-                    vc.wallet = self.wallet
-                    vc.finalWalletAddress = self.finalWalletAddress
-                    vc.finalWalletAmount = self.finalWalletAmount
-                    self.navigationController?.pushViewController(vc, animated: true)
-                } else {
-                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                let indexOfString = txtamount.text!
+                let lastString = txtamount.text!.index(before: txtamount.text!.endIndex)
+                guard BChatWalletWrapper.validAddress(txtaddress.text!) else {
+                    let alert = UIAlertController(title: "My Wallet", message: "Not a valid address", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                if txtamount.text?.count == 0 {
+                    let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+                else if txtamount.text! == "." || Int(txtamount.text!) == 0 || indexOfString.count > 16 || txtamount.text![lastString] == "." {
+                    let alert = UIAlertController(title: "My Wallet", message: "Pls Enter Proper amount", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }else {
+                    if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                        self.finalWalletAddress = self.txtaddress.text!
+                        self.finalWalletAmount = self.txtamount.text!
+                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+                        vc.isSendWalletVC = true
+                        vc.wallet = self.wallet
+                        vc.finalWalletAddress = self.finalWalletAddress
+                        vc.finalWalletAmount = self.finalWalletAmount
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                    }
                 }
             }
         }
@@ -452,10 +453,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             self.lblFeeAftersending.text = feeValue
             loading.stopAnimating()
-            btnsend.isUserInteractionEnabled = false
         }else {
             loading.stopAnimating()
-            btnsend.isUserInteractionEnabled = false
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
