@@ -59,7 +59,7 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
         self.collectionView.isUserInteractionEnabled = true
         txtSearchBar.delegate = self
         txtSearchBarHeightConstraint.constant = 0
-        
+        txtSearchBar.clearButtonMode = .whileEditing
         let logoName = isLightMode ? "ic_WalletClose" : "ic_WalletCloseWhite"
         btnclose.setImage(UIImage(named: logoName), for: .normal)
                 
@@ -75,6 +75,18 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
             }
             collectionView.reloadData()
         }
+    }
+    
+    // UITextFieldDelegate method to respond to the clear button action
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        // This method is called when the clear button is pressed
+        // You can perform any additional actions you need here
+        self.isSearched = false
+        self.txtSearchBar.text = ""
+        self.tableView.reloadData()
+        self.txtSearchBar.resignFirstResponder()
+        self.collectionView.reloadData()
+        return true
     }
     
     override func viewWillAppear(_ animated: Bool) {

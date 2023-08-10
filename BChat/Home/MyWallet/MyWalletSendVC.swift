@@ -110,7 +110,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         txtaddress.delegate = self
         txtamount.delegate = self
         txtaddress.returnKeyType = .done
-        
+        btnsend.isUserInteractionEnabled = true
         let logoScanImg = isLightMode ? "scan_QR_dark" : "scan_QR"
         scanRefbtn.setImage(UIImage(named: logoScanImg), for: .normal)
         let logoAddressImg = isLightMode ? "user_light" : "user_dark"
@@ -213,34 +213,19 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
             return newString.length <= 97
         }else{
-            let inverseSet = NSCharacterSet(charactersIn:"0123456789").inverted
-            let components = string.components(separatedBy: inverseSet)
-            let filtered = components.joined(separator: "")
-            if filtered == string {
-                if textField == txtamount{
-                    let currentString: NSString = textField.text! as NSString
-                    let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-                    return newString.length <= 16
-                }
+            // Get the current text in the text field
+            guard let currentText = txtamount.text else {
                 return true
-            } else {
-                if string == "." {
-                    let countdots = txtamount.text!.components(separatedBy:".").count - 1
-                    if countdots == 0 {
-                        return true
-                    }else{
-                        if countdots > 0 && string == "." {
-                            return false
-                        } else {
-                            return true
-                        }
-                    }
-                }else{
-                    return false
-                }
             }
+            // Calculate the future text if the user's input is accepted
+            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            // Use regular expression to validate the new text format
+            let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+            let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
+            return amountTest.evaluate(with: newText)
         }
     }
+    
     // Textfiled Paste option hide
     override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         if action == #selector(paste(_:))
@@ -279,6 +264,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         confirmSendingPopView.isHidden = true
         successPopView.isHidden = true
         loading.stopAnimating()
+        btnsend.isUserInteractionEnabled = false
     }
     
     //confirm sending Button Tapped
@@ -302,6 +288,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
                 loading.stopAnimating()
                 confirmSendingPopView.isHidden = true
                 successPopView.isHidden = false
+                btnsend.isUserInteractionEnabled = false
             }
         } else {
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
@@ -465,8 +452,10 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             self.lblFeeAftersending.text = feeValue
             loading.stopAnimating()
+            btnsend.isUserInteractionEnabled = false
         }else {
             loading.stopAnimating()
+            btnsend.isUserInteractionEnabled = false
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()

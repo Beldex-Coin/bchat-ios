@@ -51,33 +51,17 @@ class MyWalletReceiveVC: BaseVC,UITextFieldDelegate {
     
     // txtamout only sigle . enter
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let inverseSet = NSCharacterSet(charactersIn:"0123456789").inverted
-        let components = string.components(separatedBy: inverseSet)
-        let filtered = components.joined(separator: "")
-        if filtered == string {
-            if textField == txtamount{
-                let currentString: NSString = textField.text! as NSString
-                let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-                return newString.length <= 16
-            }
+        // Get the current text in the text field
+        guard let currentText = txtamount.text else {
             return true
-        } else {
-            if string == "." {
-                let countdots = txtamount.text!.components(separatedBy:".").count - 1
-                if countdots == 0 {
-                    return true
-                }else{
-                    if countdots > 0 && string == "." {
-                        return false
-                    } else {
-                        return true
-                    }
-                }
-            }
-            else{
-                return false
-            }
         }
+        // Calculate the future text if the user's input is accepted
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        
+        // Use regular expression to validate the new text format
+        let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+        let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
+        return amountTest.evaluate(with: newText)
     }
     
     // Textfiled Paste option hide

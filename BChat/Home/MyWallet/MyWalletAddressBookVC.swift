@@ -43,6 +43,7 @@ class MyWalletAddressBookVC: BaseVC,UITextFieldDelegate {
         self.collectionView?.setCollectionViewLayout(layout, animated: true)
         txtSearchBar.delegate = self
         txtSearchBar.returnKeyType = .done
+        txtSearchBar.clearButtonMode = .whileEditing
         var contactNameArray = [String]()
         var beldexAddressArray = [String]()
         for publicKey in contacts {
@@ -102,6 +103,17 @@ class MyWalletAddressBookVC: BaseVC,UITextFieldDelegate {
         searchfilterNamearray = self.allFilterData.filter({$0.key.lowercased().hasPrefix(text.lowercased())})
         isSearched = true
         collectionView.reloadData()
+    }
+    
+    // UITextFieldDelegate method to respond to the clear button action
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        // This method is called when the clear button is pressed
+        // You can perform any additional actions you need here
+        self.isSearched = false
+        self.txtSearchBar.text = ""
+        self.txtSearchBar.resignFirstResponder()
+        self.collectionView.reloadData()
+        return true
     }
     
 }
