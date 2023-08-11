@@ -33,7 +33,7 @@
                                 <rect key="frame" x="15" y="7" width="400" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PzA-KE-qVz">
-                                        <rect key="frame" x="15" y="10" width="330" height="20"/>
+                                        <rect key="frame" x="15" y="8.3333333333333339" width="330" height="23.333333333333329"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="17"/>
                                         <color key="textColor" name="bchat_lbl_name"/>
@@ -69,7 +69,7 @@
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rz2-BI-ced">
                                 <rect key="frame" x="15" y="57" width="400" height="74"/>
-                                <string key="text">asfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018x</string>
+                                <string key="text">asfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018xpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018x</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>

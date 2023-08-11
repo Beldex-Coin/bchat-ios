@@ -39,8 +39,8 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
         for publicKey in contacts {
             let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
             if blockedflag == true {
-                let Aname = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-                names.append(Aname)
+                let userName = Storage.shared.getContact(with: publicKey)?.name
+                names.append(userName!)
                 let pukey = Storage.shared.getContact(with: publicKey)
                 publicKeys.append(pukey!.bchatuser_ID)
             }

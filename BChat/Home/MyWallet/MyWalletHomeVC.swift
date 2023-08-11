@@ -1137,7 +1137,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             scrollView.isUserInteractionEnabled = true
             self.navigationController?.navigationBar.isUserInteractionEnabled = true
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletRescanVC") as! MyWalletRescanVC
-            vc.BlockChainHeight = daemonBlockChainHeight
+            vc.daemonBlockChainHeight = daemonBlockChainHeight
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
             self.showToastMsg(message: "Can't rescan while wallet is syncing", seconds: 1.0)

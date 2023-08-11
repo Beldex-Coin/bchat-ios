@@ -13,7 +13,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var lblBlockChainHeight: UILabel!
     let datePicker = DatePickerDialog()
     var flag = false
-    var BlockChainHeight: UInt64 = 0
+    var daemonBlockChainHeight: UInt64 = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +24,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         
         self.title = "Rescan"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
+        self.lblBlockChainHeight.text = "\(daemonBlockChainHeight)"
         //Keyboard Done Option
         txthight.addDoneButtonKeybord()
         
@@ -38,7 +38,6 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         
         let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(dismiss)
-        self.lblBlockChainHeight.text = "\(BlockChainHeight)"
         
     }
     
@@ -116,7 +115,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         let dateString = txtdate.text
         if heightString == "" && dateString != ""{
             let number: Int64? = Int64("\(txthight.text!)")
-            if number! > BlockChainHeight {
+            if number! > daemonBlockChainHeight {
                 let alert = UIAlertController(title: "Wallet", message: "Invalid BlockChainHeight", preferredStyle: .alert)
                 let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
                 })
@@ -137,14 +136,14 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         }
         if heightString != "" && dateString == "" {
             let number: Int64? = Int64("\(heightString!)")
-            if number! > BlockChainHeight {
+            if number! > daemonBlockChainHeight {
                 print("In valid BlockChainHeight")
                 let alert = UIAlertController(title: "Wallet", message: "Invalid BlockChainHeight", preferredStyle: .alert)
                 let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
                 })
                 alert.addAction(okayAction)
                 self.present(alert, animated: true, completion: nil)
-            }else if number! == BlockChainHeight {
+            }else if number! == daemonBlockChainHeight {
                 let alert = UIAlertController(title: "Wallet", message: "Invalid BlockChainHeight", preferredStyle: .alert)
                 let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
                 })

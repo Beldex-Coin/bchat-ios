@@ -118,6 +118,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             self.successPopView.isHidden = true
             self.lbladdressAftersending.text = self.txtaddress.text!
             self.lblAmountAftersending.text = self.txtamount.text!
+            self.lblFeeAftersending.text = "---"
         }else {
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
@@ -157,6 +158,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             self.successPopView.isHidden = true
             self.lbladdressAftersending.text = self.txtaddress.text!
             self.lblAmountAftersending.text = self.txtamount.text!
+            self.lblFeeAftersending.text = "---"
             self.txtamount.text = ""
             self.txtaddress.text = ""
             loading.startAnimating()
@@ -224,7 +226,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             // Calculate the future text if the user's input is accepted
             let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
             // Use regular expression to validate the new text format
-            let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+            let amountPattern = "^(\\d{0,16})(\\.\\d{0,5})?$"
             let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
             return amountTest.evaluate(with: newText)
         }
@@ -367,6 +369,10 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         if txtamount.text!.count == 0 {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             lblusd.text = "  \(self.currencyName.uppercased()) 0.00  "
+            self.bdxCurrencyValue = txtamount.text!
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            fetchMarketsData(false)
+            reloadData([:])
         }else if txtamount.text == "." {
             // print("---dot value entry----")
         }else {

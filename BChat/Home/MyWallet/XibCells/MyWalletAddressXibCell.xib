@@ -33,7 +33,7 @@
                                 <rect key="frame" x="15" y="7" width="400" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3m-cZ-pM3">
-                                        <rect key="frame" x="15" y="10" width="330" height="20"/>
+                                        <rect key="frame" x="15" y="8.5" width="330" height="23"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="17"/>
                                         <color key="textColor" name="bchat_lbl_name"/>
@@ -67,9 +67,8 @@
                                     <constraint firstItem="bFG-aK-5MR" firstAttribute="centerY" secondItem="c2Z-TR-HKh" secondAttribute="centerY" id="ifL-g0-YpC"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNT-i8-Hzp">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfas" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zNT-i8-Hzp">
                                 <rect key="frame" x="15" y="57" width="400" height="74"/>
-                                <string key="text">asfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018xasfayfasifpmfadisapdi290181892n0x1m01x8m018x</string>
                                 <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>

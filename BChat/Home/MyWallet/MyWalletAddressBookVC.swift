@@ -51,8 +51,8 @@ class MyWalletAddressBookVC: BaseVC,UITextFieldDelegate {
             if isApprovedflag == true {
                 let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
                 if blockedflag == false {
-                    let contactName = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-                    contactNameArray.append(contactName)
+                    let userName = Storage.shared.getContact(with: publicKey)?.name
+                    contactNameArray.append(userName!)
                     let pukey = Storage.shared.getContact(with: publicKey)
                     if pukey!.beldexAddress != nil {
                         beldexAddressArray.append(pukey!.beldexAddress!)

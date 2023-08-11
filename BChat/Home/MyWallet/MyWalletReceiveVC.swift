@@ -59,7 +59,7 @@ class MyWalletReceiveVC: BaseVC,UITextFieldDelegate {
         let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
         
         // Use regular expression to validate the new text format
-        let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+        let amountPattern = "^(\\d{0,16})(\\.\\d{0,5})?$"
         let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
         return amountTest.evaluate(with: newText)
     }
