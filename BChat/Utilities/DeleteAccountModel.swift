@@ -140,6 +140,7 @@ final class DeleteAccountModel : Modal {
     }
     
     @objc private func clearEntireAccount() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
             MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
                 self?.dismiss(animated: true, completion: nil) // Dismiss the loader

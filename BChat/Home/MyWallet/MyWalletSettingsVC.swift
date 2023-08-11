@@ -38,6 +38,9 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var txtSearchBarHeightConstraint: NSLayoutConstraint!
     fileprivate var isSearched : Bool = false
     fileprivate var searchfilterCurrencyNamearray = [String]()
+    
+    
+    var timerForShowScrollIndicator: Timer?
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +118,32 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
         self.tableView.reloadData()
         self.collectionView.reloadData()
     }
-        
+    
+    // Show indicators for currency
+    @objc func showScrollIndicatorsInContacts() {
+        UIView.animate(withDuration: 0.001) {
+            self.tableView.flashScrollIndicators()
+        }
+    }
+
+    func startTimerForShowScrollIndicator() {
+        self.timerForShowScrollIndicator = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.showScrollIndicatorsInContacts), userInfo: nil, repeats: true)
+    }
+
+    func stopTimerForShowScrollIndicator() {
+        self.timerForShowScrollIndicator?.invalidate()
+        self.timerForShowScrollIndicator = nil
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.startTimerForShowScrollIndicator()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.stopTimerForShowScrollIndicator()
+    }
+    
     // MARK: - Navigation
     @IBAction func popviewCloseAction(_ sender: UIButton) {
         self.isSearched = false
@@ -296,6 +324,7 @@ extension MyWalletSettingsVC: UICollectionViewDataSource, UICollectionViewDelega
         self.collectionView.isUserInteractionEnabled = false
         flagString = "33"
         tableView.reloadData()
+        self.tableView.flashScrollIndicators()
     }
   // feepriority ButtonTapped
     @objc func feepriorityButtonTapped(_ x: AnyObject) {

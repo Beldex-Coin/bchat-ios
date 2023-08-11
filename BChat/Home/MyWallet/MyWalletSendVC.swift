@@ -160,6 +160,14 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             self.txtamount.text = ""
             self.txtaddress.text = ""
             loading.startAnimating()
+            placeholderLabel?.isHidden = !txtaddress.text.isEmpty
+            if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
+                self.currencyName = SaveUserDefaultsData.SelectedCurrency
+                lblusd.text = "  \(self.currencyName.uppercased()) 0.00  "
+            }else {
+                self.currencyName = "usd"
+                lblusd.text = "  \(self.currencyName.uppercased()) 0.00  "
+            }
         }else {
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true

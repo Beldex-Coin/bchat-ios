@@ -269,11 +269,9 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         btnReceiveRef2 = false
         self.incomingButton.isSelected = true
         self.outgoingButton.isSelected = true
-        if isLightMode {
-            self.incomingImageView.image = UIImage(named: "icCheck_box")
-        }else {
-            self.outgoingImageView.image = UIImage(named: "ic_Check_box_white")
-        }
+        let checkBox = isLightMode ? "icCheck_box" : "ic_Check_box_white"
+        incomingImageView.image = UIImage(named: checkBox)!
+        outgoingImageView.image = UIImage(named: checkBox)!
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
         
         self.filterView.isHidden = true
@@ -808,29 +806,23 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     // Date Range References
     @IBAction func filterAction(_ sender: UIButton) {
         self.noTransaction = false
-        self.incomingButton.isSelected = true
-        self.outgoingButton.isSelected = true
-        if isLightMode {
-            self.incomingImageView.image = UIImage(named: "icCheck_box")
-            self.outgoingImageView.image = UIImage(named: "icCheck_box")
-        }else {
-            self.outgoingImageView.image = UIImage(named: "ic_Check_box_white")
-            self.incomingImageView.image = UIImage(named: "ic_Check_box_white")
-        }
+//        self.incomingButton.isSelected = true
+//        self.outgoingButton.isSelected = true
+       
         self.isFilter = false
         fromDate = ""
         toDate = ""
         if let datePickerView = self.txttodate.inputView as? UIDatePicker {
             datePickerView.minimumDate = nil
         }
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
-        btnAllRef2 = true
-        btnSendRef2 = false
-        btnReceiveRef2 = false
-        UserDefaults.standard.setValue(nil, forKey: "btnclicked")
-        collectionView.reloadData()
+//        filteredAllTransactionarray = []
+//        filteredOutgoingTransactionarray = []
+//        filteredIncomingTransactionarray = []
+//        btnAllRef2 = true
+//        btnSendRef2 = false
+//        btnReceiveRef2 = false
+//        UserDefaults.standard.setValue(nil, forKey: "btnclicked")
+//        collectionView.reloadData()
         self.filterView.isHidden = false
         bottomview.isUserInteractionEnabled = false
         scrollView.isUserInteractionEnabled = false
