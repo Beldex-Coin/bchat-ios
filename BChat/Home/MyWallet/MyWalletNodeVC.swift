@@ -73,7 +73,12 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         self.nodenameTxtFld.delegate = self
         self.nodePortNumTxtFld.delegate = self
         self.nodePortNumTxtFld.keyboardType = .numberPad
-        
+        nodeAddressTxtFld.tintColor = Colors.bchat_button_clr
+        nodePortNumTxtFld.tintColor = Colors.bchat_button_clr
+        nodeUsernameTxtFld.tintColor = Colors.bchat_button_clr
+        nodePasswordTxtFld.tintColor = Colors.bchat_button_clr
+        nodenameTxtFld.tintColor = Colors.bchat_button_clr
+        nodePortNumTxtFld.tintColor = Colors.bchat_button_clr
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
         randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.NodePopView.isHidden = true

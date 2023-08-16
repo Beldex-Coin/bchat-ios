@@ -108,6 +108,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         txtaddress.delegate = self
         txtamount.delegate = self
         txtaddress.returnKeyType = .done
+        txtamount.tintColor = Colors.bchat_button_clr
+        txtaddress.tintColor = Colors.bchat_button_clr
         let logoScanImg = isLightMode ? "scan_QR_dark" : "scan_QR"
         scanRefbtn.setImage(UIImage(named: logoScanImg), for: .normal)
         let logoAddressImg = isLightMode ? "user_light" : "user_dark"

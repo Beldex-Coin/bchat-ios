@@ -146,14 +146,15 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         layout.scrollDirection = .vertical //depending upon direction of collection view
         self.collectionView?.setCollectionViewLayout(layout, animated: true)
         self.collectionView.showsVerticalScrollIndicator = false
-        self.scrollView.showsVerticalScrollIndicator = false
-        
+        // Disable vertical scrolling
+        scrollView.isScrollEnabled = false
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height)
         progressView.tintColor = Colors.bchat_button_clr
         btnHomeSend.setTitleColor(.lightGray, for: .normal)
         btnHomeScan.isUserInteractionEnabled = false
         btnHomeSend.isUserInteractionEnabled = false
         btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
-        backgroundBottomScanView.backgroundColor = UIColor.darkGray
+        backgroundBottomScanView.backgroundColor = Colors.bchat_storyboard_clr
         
         let colorScanQR: UIColor = isDarkMode ? .lightGray : .lightGray
         imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
@@ -476,8 +477,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if backAPISelectedCurrency == true {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency.uppercased()
             if mainbalance.isEmpty {
-                let fullblnce = "0.00"
-                lblOtherCurrencyblns.text = "\(String(format:"%.2f", fullblnce)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
+                lblOtherCurrencyblns.text = "0.00 \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
             }else {
                 let fullblnce = Double(mainbalance)! * CurrencyValue
                 lblOtherCurrencyblns.text = "\(String(format:"%.2f", fullblnce)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
@@ -1697,7 +1697,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         }
     }
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
-        print("11111------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
+//        print("11111------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         self.needSynchronized = true
@@ -1744,23 +1744,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
                 self.lblMainblns.text = String(format:"%.4f", Double(balance_modify)!)
             }
             
-            if SaveUserDefaultsData.SelectedBalance == "Beldex Full Balance" {
-                if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
-                    SelectedDecimal = SaveUserDefaultsData.SelectedDecimal
-                    if SelectedDecimal == "4 - Decimal" {
-                        self.lblMainblns.text = String(format:"%.4f", Double(mainbalance)!)
-                    }else if SelectedDecimal == "3 - Decimal" {
-                        self.lblMainblns.text = String(format:"%.3f", Double(mainbalance)!)
-                    }else if SelectedDecimal == "2 - Decimal" {
-                        self.lblMainblns.text = String(format:"%.2f", Double(mainbalance)!)
-                    }else if SelectedDecimal == "0 - Decimal" {
-                        self.lblMainblns.text = String(format:"%.0f", Double(mainbalance)!)
-                    }
-                }else {
-                    self.lblMainblns.text = String(format:"%.4f", Double(balance_modify)!)
-                }
-            }
-            if SaveUserDefaultsData.SelectedBalance == "Beldex Available Balance" {
+            if SaveUserDefaultsData.SelectedBalance == "Beldex Full Balance" || SaveUserDefaultsData.SelectedBalance == "Beldex Available Balance"{
                 if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                     SelectedDecimal = SaveUserDefaultsData.SelectedDecimal
                     if SelectedDecimal == "4 - Decimal" {
@@ -1777,8 +1761,8 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
                 }
             }
             if SaveUserDefaultsData.SelectedBalance == "Beldex Hidden" {
-                self.lblMainblns.text = "-.--"
-                self.lblOtherCurrencyblns.text = "-.-- \((SaveUserDefaultsData.SelectedCurrency.uppercased()))"
+                self.lblMainblns.text = "---"
+                self.lblOtherCurrencyblns.text = "---"
             }
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             self.fetchMarketsData(false)
