@@ -106,6 +106,10 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     
     func textViewDidChange(_ textView: UITextView) {
         let str = textView.text!
+        if str == "\n" {
+            textView.resignFirstResponder()
+            return
+        }
         if str.count == 0 {
             nextRef.isUserInteractionEnabled = false
             nextRef.backgroundColor = Colors.bchat_view_bg_clr

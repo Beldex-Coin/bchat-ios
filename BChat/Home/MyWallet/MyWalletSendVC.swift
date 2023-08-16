@@ -364,6 +364,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     @IBAction func scanTransationButtonTapped(_ sender: UIButton) {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletScannerVC") as! MyWalletScannerVC
         vc.isFromWallet = true
+        vc.wallet = self.wallet
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

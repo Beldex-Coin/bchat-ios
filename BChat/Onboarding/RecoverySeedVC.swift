@@ -92,6 +92,10 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
             txtviewstr = txtview.text.lowercased()
             placeholderLabel.isHidden = !textView.text.isEmpty
         }
+        
+        if textView.text == "" {
+            lblcount.text = "0/25"
+        }
     }
     
     @IBAction func pasteAction(sender:UIButton){
@@ -107,6 +111,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
     }
     @IBAction func ClearAction(sender:UIButton){
         txtview.text = ""
+        lblcount.text = "0/25"
     }
     @IBAction func NextAction(sender:UIButton){
         if Seedflag == false {

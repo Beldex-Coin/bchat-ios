@@ -197,6 +197,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         reload()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        newConversationButtonSet.collapse(withAnimation: false)
+    }
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         reload()

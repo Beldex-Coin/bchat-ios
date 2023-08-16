@@ -275,7 +275,7 @@ final class VoiceMessageRecordingView : UIView {
             circleView.addGestureRecognizer(tapGestureRecognizer)
             UIView.animate(withDuration: 0.25, delay: 0, options: .transitionCrossDissolve, animations: {
                 self.lockView.alpha = 0
-                self.iconImageView.image = UIImage(named: "send_2")!.withTint(.white)
+                self.iconImageView.image = UIImage(named: "ic_chevron_up")!.withTint(.white)
                 self.slideToCancelStackView.alpha = 0
                 self.cancelButton.alpha = 1
             }, completion: { _ in

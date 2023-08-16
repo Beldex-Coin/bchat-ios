@@ -133,7 +133,7 @@ final class NewConversationButtonSet : UIView {
             self.isUserDragging = isUserDragging
         })
     }
-    private func collapse(withAnimation isAnimated: Bool) {
+     func collapse(withAnimation isAnimated: Bool) {
         isUserDragging = false
         let buttons = [ joinOpenGroupButton, newDMButton, createClosedGroupButton ]
         let labels = [ joinOpenGroupLabel, newDMLabel, createClosedGroupLabel ]

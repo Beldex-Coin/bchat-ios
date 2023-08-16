@@ -29,7 +29,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
         result.register(UserCell.self, forCellReuseIdentifier: "UserCell")
         result.separatorStyle = .none
         result.backgroundColor = .clear
-        result.isScrollEnabled = false
+        result.isScrollEnabled = true
         return result
     }()
     

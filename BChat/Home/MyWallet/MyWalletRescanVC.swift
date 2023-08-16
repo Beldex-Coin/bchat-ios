@@ -78,6 +78,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         datePicker.show("Select Date",
                         doneButtonTitle: "Done",
                         cancelButtonTitle: "Cancel",
+                        maximumDate: Date(),
                         datePickerMode: .date) { [self] (date) in
             if let dt = date {
                 let formatter = DateFormatter()
