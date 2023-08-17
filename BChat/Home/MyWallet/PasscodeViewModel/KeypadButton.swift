@@ -28,14 +28,14 @@ class KeypadButton: UIButton {
         let attString = NSMutableAttributedString()
         attString.append(NSAttributedString(string: title + "\n", attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 37.0),
                                                                                NSAttributedString.Key.paragraphStyle: paragraph,
-                                                                               NSAttributedString.Key.foregroundColor : UIColor.white]))
+                                                                               NSAttributedString.Key.foregroundColor : isLightMode ? UIColor.black : UIColor.white]))
         attString.append(NSAttributedString(string: subTitle, attributes: [NSAttributedString.Key.font : UIFont.systemFont(ofSize: 10.0, weight: .medium),
                                                                            NSAttributedString.Key.paragraphStyle: paragraph2,
-                                                                           NSAttributedString.Key.foregroundColor : UIColor.white]))
+                                                                           NSAttributedString.Key.foregroundColor : isLightMode ? UIColor.black : UIColor.white]))
         setAttributedTitle(attString, for: .normal)
         titleLabel?.numberOfLines = 2
         
-        backgroundColor = UIColor.darkGray
+        backgroundColor = UIColor.lightGray
         layer.cornerRadius = self.bounds.height/2
     }
     
@@ -56,13 +56,13 @@ class KeypadButton: UIButton {
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.allowUserInteraction], animations: {
-            self.backgroundColor = UIColor.darkGray
+            self.backgroundColor = UIColor.lightGray
         }, completion: nil)
     }
     
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.allowUserInteraction], animations: {
-            self.backgroundColor = UIColor.darkGray
+            self.backgroundColor = UIColor.lightGray
         }, completion: nil)
     }
     
