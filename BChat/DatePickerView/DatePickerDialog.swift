@@ -190,12 +190,12 @@ open class DatePickerDialog: UIView {
 
         // First, we style the dialog to match the iOS8 UIAlertView >>>
         gradient.frame = container.bounds
-        gradient.colors = ColorsDate.gradientBackground
+//        gradient.colors = ColorsDate.gradientBackground
 
         let cornerRadius = kCornerRadius
         gradient.cornerRadius = cornerRadius
         container.layer.insertSublayer(gradient, at: 0)
-
+        container.backgroundColor = Colors.bchat_view_bg_clr
         container.layer.cornerRadius = cornerRadius
         container.layer.borderColor = ColorsDate.separator.cgColor
         container.layer.borderWidth = 1
