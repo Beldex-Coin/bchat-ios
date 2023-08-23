@@ -751,6 +751,12 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // MARK: Settings
     @objc func settingsoptn(_ sender: Any?) {
+        self.filterView.isHidden = true
+        viewdateRangeRef.isUserInteractionEnabled = true
+        bottomview.isUserInteractionEnabled = true
+        scrollView.isUserInteractionEnabled = true
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
+        self.syncedIconView.isHidden = true
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletSettingsVC") as! MyWalletSettingsVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -761,6 +767,13 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             bottomview.isUserInteractionEnabled = false
             scrollView.isUserInteractionEnabled = false
             self.navigationController?.navigationBar.isUserInteractionEnabled = false
+            self.filterView.isHidden = true
+            viewdateRangeRef.isUserInteractionEnabled = true
+            bottomview.isUserInteractionEnabled = true
+            scrollView.isUserInteractionEnabled = true
+            self.navigationController?.navigationBar.isUserInteractionEnabled = true
+            self.syncedIconView.isHidden = true
+            
         } else {
             viewSyncing.isHidden = true
             bottomview.isUserInteractionEnabled = true
@@ -796,11 +809,21 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func syncedforRestoreHeightAction(_ sender: UIButton) {
+        self.filterView.isHidden = true
+        viewdateRangeRef.isUserInteractionEnabled = true
+        bottomview.isUserInteractionEnabled = true
+        scrollView.isUserInteractionEnabled = true
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
         self.syncedIconView.isHidden = false
         lblsyncedRestoreHeight.text = "\(SaveUserDefaultsData.WalletRestoreHeight)."
     }
     @IBAction func syncedforRestoreHeightCloseAction(_ sender: UIButton) {
         self.syncedIconView.isHidden = true
+        self.filterView.isHidden = true
+        viewdateRangeRef.isUserInteractionEnabled = true
+        bottomview.isUserInteractionEnabled = true
+        scrollView.isUserInteractionEnabled = true
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
     }
     
     // Date Range References
@@ -826,7 +849,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.filterView.isHidden = false
         bottomview.isUserInteractionEnabled = false
         scrollView.isUserInteractionEnabled = false
-        self.navigationController?.navigationBar.isUserInteractionEnabled = false
+//        self.navigationController?.navigationBar.isUserInteractionEnabled = false
     }
     
     @IBAction func incomingButtonTapped(_ sender: UIButton) {
@@ -926,6 +949,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // Date Range References
     @IBAction func cancelDateAction(_ sender: UIButton) {
+        self.fromcancelAction()
+        self.tocancelAction()
         viewdateRangeRef.isHidden = true
         bottomview.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true

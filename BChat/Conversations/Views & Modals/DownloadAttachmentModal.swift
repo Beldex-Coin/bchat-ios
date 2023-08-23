@@ -44,6 +44,11 @@ final class DownloadAttachmentModal : Modal {
         downloadButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         downloadButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: UIControl.State.normal)
+        if isDarkMode {
+            downloadButton.backgroundColor = Colors.buttonBackground
+        }else {
+            downloadButton.backgroundColor = UIColor.lightGray
+        }
         downloadButton.addTarget(self, action: #selector(trust), for: UIControl.Event.touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, downloadButton ])
