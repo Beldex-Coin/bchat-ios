@@ -829,27 +829,15 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     // Date Range References
     @IBAction func filterAction(_ sender: UIButton) {
         self.noTransaction = false
-//        self.incomingButton.isSelected = true
-//        self.outgoingButton.isSelected = true
-       
         self.isFilter = false
         fromDate = ""
         toDate = ""
         if let datePickerView = self.txttodate.inputView as? UIDatePicker {
             datePickerView.minimumDate = nil
         }
-//        filteredAllTransactionarray = []
-//        filteredOutgoingTransactionarray = []
-//        filteredIncomingTransactionarray = []
-//        btnAllRef2 = true
-//        btnSendRef2 = false
-//        btnReceiveRef2 = false
-//        UserDefaults.standard.setValue(nil, forKey: "btnclicked")
-//        collectionView.reloadData()
         self.filterView.isHidden = false
         bottomview.isUserInteractionEnabled = false
         scrollView.isUserInteractionEnabled = false
-//        self.navigationController?.navigationBar.isUserInteractionEnabled = false
     }
     
     @IBAction func incomingButtonTapped(_ sender: UIButton) {

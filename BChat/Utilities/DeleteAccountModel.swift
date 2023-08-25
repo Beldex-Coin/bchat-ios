@@ -66,7 +66,11 @@ final class DeleteAccountModel : Modal {
         let result = UIButton()
         result.set(.height, to: Values.mediumButtonHeight)
         result.layer.cornerRadius = Modal.buttonCornerRadius
-        result.backgroundColor = Colors.buttonBackground
+        if isDarkMode {
+            result.backgroundColor = Colors.buttonBackground
+        }else {
+            result.backgroundColor = UIColor.lightGray
+        }
         result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)

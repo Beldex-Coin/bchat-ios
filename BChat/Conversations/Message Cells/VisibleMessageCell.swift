@@ -368,7 +368,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 // Body text view
                 let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self)
                 self.bodyTextView = bodyTextView
-                print("----full data Incomming and Outgoing msgs----> \(bodyTextView)")
                 stackView.addArrangedSubview(bodyTextView)
                 // Constraints
                 snContentView.addSubview(stackView)

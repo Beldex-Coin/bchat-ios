@@ -35,7 +35,8 @@ class KeypadButton: UIButton {
         setAttributedTitle(attString, for: .normal)
         titleLabel?.numberOfLines = 2
         
-        backgroundColor = UIColor.lightGray
+        let colorbutton: UIColor = isDarkMode ? .darkGray : .lightGray
+        backgroundColor = colorbutton
         layer.cornerRadius = self.bounds.height/2
     }
     
@@ -56,13 +57,15 @@ class KeypadButton: UIButton {
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.allowUserInteraction], animations: {
-            self.backgroundColor = UIColor.lightGray
+            let colorbutton: UIColor = isDarkMode ? .darkGray : .lightGray
+            self.backgroundColor = colorbutton
         }, completion: nil)
     }
     
     open override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         UIView.animate(withDuration: 0.1, delay: 0.0, options: [.allowUserInteraction], animations: {
-            self.backgroundColor = UIColor.lightGray
+            let colorbutton: UIColor = isDarkMode ? .darkGray : .lightGray
+            self.backgroundColor = colorbutton
         }, completion: nil)
     }
     
