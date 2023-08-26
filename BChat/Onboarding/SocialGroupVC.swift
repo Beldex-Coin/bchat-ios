@@ -123,9 +123,16 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // became first responder
-        print("TextField did begin editing method called")
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            if textView.text.count >= 1 {
+                textView.resignFirstResponder()
+                let url = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
+                joinOpenGroup(with: url)
+                return false
+            }
+        }
+        return true
     }
     
     @IBAction func ScanAction(sender:UIButton){
@@ -183,9 +190,6 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     
     // MARK: Layout
     
-    //    func numberOfSections(in collectionView: UICollectionView) -> Int {
-    //        return 1
-    //    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Allrooms.count    //min(Allrooms.count, 8) // Cap to a maximum of 8 (4 rows of 2)
     }

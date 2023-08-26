@@ -76,6 +76,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
             view.addSubview(scrollView)
             scrollView.set(.width, to: UIScreen.main.bounds.width)
             scrollView.pin(to: view)
+            scrollView.isScrollEnabled = false
         } else {
             let explanationLabel = UILabel()
             explanationLabel.textColor = Colors.text

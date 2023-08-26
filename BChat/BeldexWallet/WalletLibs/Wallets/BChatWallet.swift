@@ -225,7 +225,6 @@ extension BDXWallet {
     
     public func getAllSubAddress() -> [SubAddress] {
         let list = walletWrapper.fetchSubAddress(withAccountIndex: 0).map({SubAddress.init(model: $0)})
-       // dPrint(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> \(list)")
         return list
     }
     

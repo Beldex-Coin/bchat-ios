@@ -198,7 +198,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        newConversationButtonSet.collapse(withAnimation: false)
+        newConversationButtonSet.collapse(withAnimation: true)
     }
     
     
@@ -646,6 +646,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     @objc private func openSettings() {
+        newConversationButtonSet.collapse(withAnimation: true)
         let RightVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuNavigationController") as! SideMenuNavigationController
         SideMenuManager.default.leftMenuNavigationController = RightVC
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
