@@ -16,6 +16,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     var SeedPass:String!
     private var data = NewWallet()
     private var recovery_seed = RecoverWallet(from: .seed)
+    var dateHeight = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +78,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
                     let dateString  = fullNameArr[0]
                     let heightString = fullNameArr[1]
                     if dateString == finalDate {
-                        SaveUserDefaultsData.WalletRestoreHeight = heightString
+                        dateHeight = heightString
                     }
                 }
             }
@@ -169,7 +170,11 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
             }
         }
         if heighttxt.text!.isEmpty && datetxt.text != nil{
-            SaveUserDefaultsData.WalletRestoreHeight = heighttxt.text!
+            if !dateHeight.isEmpty {
+                SaveUserDefaultsData.WalletRestoreHeight = dateHeight
+            }else {
+                SaveUserDefaultsData.WalletRestoreHeight = ""
+            }
             self.mnemonicSeedconnect()
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
             navigationflowTag = true

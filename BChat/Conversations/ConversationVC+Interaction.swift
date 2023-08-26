@@ -48,6 +48,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let publicKey = thread.contactBChatID()
         let contact: Contact = Storage.shared.getContact(with: publicKey)!
         if contact.isBlocked {
+            guard !showBlockedModalIfNeeded() else { return }
         }else{
             guard BChatCall.isEnabled else { return }
             if SSKPreferences.areCallsEnabled {

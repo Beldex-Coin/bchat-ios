@@ -228,7 +228,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             // Calculate the future text if the user's input is accepted
             let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
             // Use regular expression to validate the new text format
-            let amountPattern = "^(\\d{0,16})(\\.\\d{0,5})?$"
+            let amountPattern = "^(\\d{0,16})(\\.\\d{0,9})?$"
             let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
             return amountTest.evaluate(with: newText)
         }

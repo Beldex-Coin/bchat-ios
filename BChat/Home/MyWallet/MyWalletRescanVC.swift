@@ -14,6 +14,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
     let datePicker = DatePickerDialog()
     var flag = false
     var daemonBlockChainHeight: UInt64 = 0
+    var dateHeight = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +93,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
                     let dateString  = fullNameArr[0]
                     let heightString = fullNameArr[1]
                     if dateString == finalDate {
-                        SaveUserDefaultsData.WalletRestoreHeight = heightString
+                        dateHeight = heightString
                     }
                 }
             }
@@ -115,25 +116,20 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         let heightString = txthight.text
         let dateString = txtdate.text
         if heightString == "" && dateString != ""{
-            let number: Int64? = Int64("\(txthight.text!)")
-            if number! > daemonBlockChainHeight {
-                let alert = UIAlertController(title: "Wallet", message: "Invalid BlockChainHeight", preferredStyle: .alert)
-                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                })
-                alert.addAction(okayAction)
-                self.present(alert, animated: true, completion: nil)
+            if !dateHeight.isEmpty {
+                SaveUserDefaultsData.WalletRestoreHeight = dateHeight
             }else {
-                SaveUserDefaultsData.WalletRestoreHeight = txthight.text!
-                if self.navigationController != nil{
-                    let count = self.navigationController!.viewControllers.count
-                    if count > 1
-                    {
-                        let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
-                        VC.backAPIRescanVC = true
-                    }
-                }
-                self.navigationController?.popViewController(animated: true)
+                SaveUserDefaultsData.WalletRestoreHeight = ""
             }
+            if self.navigationController != nil{
+                let count = self.navigationController!.viewControllers.count
+                if count > 1
+                {
+                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
+                    VC.backAPIRescanVC = true
+                }
+            }
+            self.navigationController?.popViewController(animated: true)
         }
         if heightString != "" && dateString == "" {
             let number: Int64? = Int64("\(heightString!)")
