@@ -42,17 +42,13 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         self.navigationController?.isNavigationBarHidden = true
         if isLightMode {
             sampleSwitch.isOn = false
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .black
         }else {
             sampleSwitch.isOn = true
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .white
         }
+        let origImage = UIImage(named: isLightMode ? "X" : "X")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        closebtn.setImage(tintedImage, for: .normal)
+        closebtn.tintColor = isLightMode ? UIColor.black : UIColor.white
         let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"]!
         let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"]!
         self.lblversion.text = "BChat \(version) (\(buildNumber))"
@@ -61,21 +57,15 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     @IBAction func sampleSwitchValueChanged(_ sender: Any) {
         if sampleSwitch.isOn {
             AppModeManager.shared.setCurrentAppMode(to: .dark)
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .white
-            let userInfo = [ "text" : "dark" ]
-            NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         }else {
             AppModeManager.shared.setCurrentAppMode(to: .light)
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .black
-            let userInfo = [ "text" : "light" ]
-            NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         }
+        let origImage = UIImage(named: isLightMode ? "X" : "X")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        closebtn.setImage(tintedImage, for: .normal)
+        closebtn.tintColor = isLightMode ? UIColor.black : UIColor.white
+        let userInfo = [ "text" : "dark" ]
+        NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         tableView.reloadData()
     }
     

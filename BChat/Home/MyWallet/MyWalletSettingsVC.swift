@@ -135,7 +135,6 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
         self.timerForShowScrollIndicator = nil
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
         self.startTimerForShowScrollIndicator()
     }

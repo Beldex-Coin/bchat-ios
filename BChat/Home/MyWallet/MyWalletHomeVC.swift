@@ -114,13 +114,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     private var CurrencyValue: Double!
     private var refreshDuration: TimeInterval = 60
     private var marketsDataRequest: DataRequest?
-    // Date Range References
     @IBOutlet weak var viewdateRangeRef: UIView!
     @IBOutlet weak var viewFromdateRef: UIView!
     @IBOutlet weak var viewTodateRef: UIView!
     @IBOutlet weak var btndateCancel: UIButton!
     @IBOutlet weak var btndateOkey: UIButton!
-    // var iconClick4 = true
     @IBOutlet weak var txtfromdate: UITextField!
     @IBOutlet weak var txttodate: UITextField!
     var fromDate : String = ""
@@ -553,7 +551,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             progressLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
-                
                 guard let strongSelf = self else { return }
                 switch result {
                 case .success(let wallet):
@@ -773,7 +770,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             scrollView.isUserInteractionEnabled = true
             self.navigationController?.navigationBar.isUserInteractionEnabled = true
             self.syncedIconView.isHidden = true
-            
         } else {
             viewSyncing.isHidden = true
             bottomview.isUserInteractionEnabled = true

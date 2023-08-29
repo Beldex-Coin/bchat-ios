@@ -28,7 +28,6 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
         self.lblBlockChainHeight.text = "\(daemonBlockChainHeight)"
         //Keyboard Done Option
         txthight.addDoneButtonKeybord()
-        
         backgroundHeightView.layer.cornerRadius = 6
         backgroundDateView.layer.cornerRadius = 6
         backgroundCurrentHeightView.layer.cornerRadius = 6

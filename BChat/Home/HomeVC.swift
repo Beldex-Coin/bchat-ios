@@ -539,13 +539,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
                             guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
                                 return
                             }
-                            
                             contact.isBlocked = true
                             Storage.shared.setContact(contact, using: transaction as Any)
                         },
                         completion: {
                             MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            
                             DispatchQueue.main.async {
                                 tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
                             }

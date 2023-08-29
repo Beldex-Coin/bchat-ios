@@ -63,12 +63,10 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isUserInteractionEnabled = false
         result.setGradient(Gradients.homeVCFade)
-        
         return result
     }()
     
     private lazy var clearAllButton: Button = {
-        //  unimportant, regular, prominentOutline, prominentFilled, regularBorderless, destructiveOutline
           let result: Button = Button(style: .unimportant, size: .medium)
           result.layer.borderWidth = 0
           result.layer.cornerRadius = 6
@@ -342,13 +340,11 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                         if let uniqueId: String = thread.uniqueId {
                             Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
                         }
-                        
                         self?.updateContactAndThread(thread: thread, with: transaction) { threadNeedsSync in
                             if threadNeedsSync {
                                 needsSync = true
                             }
                         }
-                        
                         // Block the contact
                         if
                             let bchatuserId: String = (thread as? TSContactThread)?.contactBChatID(),

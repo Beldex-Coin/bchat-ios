@@ -372,11 +372,8 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         let tempImage:UIImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)!
         let maxSize = Int(kOWSProfileManager_MaxAvatarDiameter)
         profilePictureToBeUploaded = tempImage.resizedImage(toFillPixelSize: CGSize(width: maxSize, height: maxSize))
-        //  print("profilePictureToBeUploaded------> \(profilePictureToBeUploaded!)")
-        
         profilePictureView.image = profilePictureToBeUploaded
         profilePictureView.contentMode = .scaleAspectFit
-        
         imagePicker.dismiss(animated: true, completion: nil)
         updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
@@ -411,7 +408,6 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyAccountXibCell.identifier, for: indexPath) as! MyAccountXibCell
         cell.lblname.text = array[indexPath.item]
         if indexPath.row == 0 {
-            //Path
             let pathStatusView = PathStatusView()
             pathStatusView.set(.width, to: PathStatusView.size)
             pathStatusView.set(.height, to: PathStatusView.size)

@@ -46,19 +46,10 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         backgroundView.layer.cornerRadius = 10
         nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            let origImage = UIImage(named: "scan_QR")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "scan_QR_dark")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .white
-        }
-        
+        let origImage = UIImage(named: isLightMode ? "scan_QR" : "scan_QR_dark")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        scanRef.setImage(tintedImage, for: .normal)
+        scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
         txtview.delegate = self
         txtview.returnKeyType = .done
         txtview.setPlaceholder2()

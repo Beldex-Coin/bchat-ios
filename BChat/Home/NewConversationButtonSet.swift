@@ -172,12 +172,6 @@ final class NewConversationButtonSet : UIView {
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first, isUserDragging else { return }
-        // Here BChat logo icon moving Stoped
-//        let mainButtonSize = mainButton.frame.size
-//        let mainButtonLocationInSelfCoordinates = CGPoint(x: width() / 2, y: height() - NewConversationButtonSet.expandedButtonSize / 2)
-//        let touchLocationInSelfCoordinates = touch.location(in: self)
-//        mainButton.frame = CGRect(center: touchLocationInSelfCoordinates, size: mainButtonSize)
-//        mainButton.alpha = 1 - (touchLocationInSelfCoordinates.distance(to: mainButtonLocationInSelfCoordinates) / maxDragDistance)
         let buttons = [ joinOpenGroupButton, newDMButton, createClosedGroupButton ]
         let buttonToExpand = buttons.first { button in
             var hasUserDraggedBeyondButton = false

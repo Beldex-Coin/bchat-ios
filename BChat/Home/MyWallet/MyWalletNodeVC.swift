@@ -372,7 +372,6 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
                let header = result["block_header"] as? [String: Any],
                let timestamp = header["timestamp"] as? Int,
                timestamp > 0
-                
             {
                 self.checkedData[host_port] = status
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timestamp))
