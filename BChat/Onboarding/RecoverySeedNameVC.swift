@@ -36,16 +36,9 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         
         let seedvalue = userNametxt.text!.lowercased()
         recovery_seed.seed = seedvalue
-        
-        if isLightMode {
-            userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
+        userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         userNametxt.delegate = self
         heighttxt.delegate = self
         datetxt.delegate = self

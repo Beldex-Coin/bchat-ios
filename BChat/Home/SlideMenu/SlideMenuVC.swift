@@ -120,17 +120,10 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             pathStatusView.layer.borderColor = UIColor.white.cgColor
             pathStatusView.pin(.trailing, to: .trailing, of: cell.imgpic)
             pathStatusView.pin(.bottom, to: .bottom, of: cell.imgpic)
-            if isLightMode {
-                let origImage = UIImage(named: "ic_QR_white")
-                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                cell.scanRef.setImage(tintedImage, for: .normal)
-                cell.scanRef.tintColor = .black
-            }else {
-                let origImage = UIImage(named: "ic_QR_dark")
-                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                cell.scanRef.setImage(tintedImage, for: .normal)
-                cell.scanRef.tintColor = .white
-            }
+            let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
+            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+            cell.scanRef.setImage(tintedImage, for: .normal)
+            cell.scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
             cell.scanRef.tag = indexPath.row
             cell.scanRef.addTarget(self, action: #selector(didSelectViewAll), for: .touchUpInside)
             return cell

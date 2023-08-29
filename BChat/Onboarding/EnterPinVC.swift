@@ -3,7 +3,7 @@
 import UIKit
 import Sodium
 import PromiseKit
-
+import BChatUIKit
 
 class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     
@@ -70,15 +70,8 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         backgroundEnterPinView.layer.cornerRadius = 10
         backgroundReEnterPinView.layer.cornerRadius = 10
         nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
-        
+        enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         enterPintxt.delegate = self
         reEnterPintxt.delegate = self
         enterPintxt.isSecureTextEntry = true

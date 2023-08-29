@@ -1,6 +1,7 @@
 // Copyright © 2022 Beldex. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     
@@ -37,15 +38,8 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         backgroundOldPinView.layer.cornerRadius = 10
         backgroundNewPinView.layer.cornerRadius = 10
         nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
-        
+        oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         oldPintxt.delegate = self
         newPintxt.delegate = self
         oldPintxt.isSecureTextEntry = true
@@ -97,24 +91,19 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // YOU SHOULD FIRST CHECK FOR THE BACKSPACE. IF BACKSPACE IS PRESSED ALLOW IT
-        
         if string == "" {
             return true
         }
-        
         if let characterCount = textField.text?.count {
             // CHECK FOR CHARACTER COUNT IN TEXT FIELD
             if characterCount >= 4 {
-                
                 newPintxt.becomeFirstResponder()
-                
                 // RESIGN FIRST RERSPONDER TO HIDE KEYBOARD
                 return textField.resignFirstResponder()
             }
         }
         return true
     }
-    
     
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.

@@ -43,27 +43,14 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         shareref.layer.cornerRadius = 6
         bcakgroundCopyView.layer.cornerRadius = 6
         bcakgroundShareView.layer.cornerRadius = 6
-        
         lblcopy.isHidden = true
         copyref.setTitle("Copy", for: .normal)
-        
-        let logoName2 = isLightMode ? "copy-dark" : "copy_white"
-        copyimg.image = UIImage(named: logoName2)!
-        
-        let logoName23 = isLightMode ? "share_dark" : "share"
-        shareimg.image = UIImage(named: logoName23)!
-        
-        if isLightMode {
-            let origImage = UIImage(named: "scan_QR")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "scan_QR_dark")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .white
-        }
+        copyimg.image = UIImage(named: isLightMode ? "copy-dark" : "copy_white")!
+        shareimg.image = UIImage(named: isLightMode ? "share_dark" : "share")!
+        let origImage = UIImage(named: isLightMode ? "scan_QR" : "scan_QR_dark")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        scanRef.setImage(tintedImage, for: .normal)
+        scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
         
         txtview.delegate = self
         txtview.returnKeyType = .done

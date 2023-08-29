@@ -125,7 +125,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            if textView.text.count >= 1 {
+            if textView.text.count >= 0 {
                 textView.resignFirstResponder()
                 let url = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
                 joinOpenGroup(with: url)

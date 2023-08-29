@@ -1,6 +1,7 @@
 // Copyright © 2022 Beldex. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -55,27 +56,14 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         self.first_view.isHidden = true
         self.second_view.isHidden = false
-        
-        if isLightMode {
-            let origImage = UIImage(named: "ic_QR_dark")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            myBtn.setImage(tintedImage, for: .normal)
-            myBtn.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "ic_QR_white")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            myBtn.setImage(tintedImage, for: .normal)
-            myBtn.tintColor = .white
-        }
-        
+        let origImage = UIImage(named: isLightMode ? "ic_QR_dark" : "ic_QR_white")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        myBtn.setImage(tintedImage, for: .normal)
+        myBtn.tintColor = isLightMode ? UIColor.black : UIColor.white
         //Share logo Image
-        let logoImg = isLightMode ? "share" : "share"
-        sharelogoimg.image = UIImage(named: logoImg)!
-        
+        sharelogoimg.image = UIImage(named: isLightMode ? "share" : "share")!
         //editProfilepiclogoimg
-        let logoCamera = isLightMode ? "ic_camera_dark" : "ic_camera_white"
-        editProfilepiclogoimg.image = UIImage(named: logoCamera)!
-        
+        editProfilepiclogoimg.image = UIImage(named: isLightMode ? "ic_camera_dark" : "ic_camera_white")!
         //Share
         shareview.layer.cornerRadius = 5
         shareref.layer.cornerRadius = 6
@@ -169,32 +157,18 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         UIView.transition(with: second_view, duration: 0.5, options: .transitionFlipFromLeft, animations: {
             //  self.second_view.isHidden = false
             if self.second_view.isHidden == false {
-                if isLightMode {
-                    let origImage = UIImage(named: "ic_QR_dark")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn.setImage(tintedImage, for: .normal)
-                    self.myBtn.tintColor = .black
-                }else {
-                    let origImage = UIImage(named: "ic_QR_white")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn.setImage(tintedImage, for: .normal)
-                    self.myBtn.tintColor = .white
-                }
+                let origImage = UIImage(named: isLightMode ? "ic_QR_dark" : "ic_QR_white")
+                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                self.myBtn.setImage(tintedImage, for: .normal)
+                self.myBtn.tintColor = isLightMode ? UIColor.black : UIColor.white
                 self.first_view.isHidden = false
                 self.second_view.isHidden = true
             }
             else {
-                if isLightMode {
-                    let origImage = UIImage(named: "user_dark")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn2.setImage(tintedImage, for: .normal)
-                    self.myBtn2.tintColor = .black
-                }else {
-                    let origImage = UIImage(named: "user_light")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn2.setImage(tintedImage, for: .normal)
-                    self.myBtn2.tintColor = .white
-                }
+                let origImage = UIImage(named: isLightMode ? "user_dark" : "user_light")
+                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                self.myBtn2.setImage(tintedImage, for: .normal)
+                self.myBtn2.tintColor = isLightMode ? UIColor.black : UIColor.white
                 self.first_view.isHidden = true
                 self.second_view.isHidden = false
             }
@@ -312,7 +286,6 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         let userDefaults = UserDefaults.standard
         let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
         let profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
-        //  print("profilePicture------> \(profilePicture!)")
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
             OWSProfileManager.shared().updateLocalProfileName(name, avatarImage: profilePicture, success: {
                 if displayNameToBeUploaded != nil {
@@ -325,7 +298,6 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
                         guard let self = self else { return }
-                        // self.profilePictureView.update()
                         self.displayNameTextField.text = name
                         self.profilePictureToBeUploaded = nil
                         self.displayNameToBeUploaded = nil

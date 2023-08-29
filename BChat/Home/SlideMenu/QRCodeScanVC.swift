@@ -24,11 +24,8 @@ class QRCodeScanVC: BaseVC {
         shareref.layer.cornerRadius = 6
         backgroundScanView.layer.cornerRadius = 6
         backgroundShareView.layer.cornerRadius = 6
-        
-        let logoName2 = isLightMode ? "share_dark" : "share"
-        shareImh.image = UIImage(named: logoName2)!
-        let logoName23 = isLightMode ? "scan_QR_dark" : "scan_QR"
-        scanImg.image = UIImage(named: logoName23)!
+        shareImh.image = UIImage(named: "share")!
+        scanImg.image = UIImage(named: "scan_QR")!
         self.title = "QR Code"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)

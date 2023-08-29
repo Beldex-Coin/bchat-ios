@@ -1,13 +1,11 @@
 import PromiseKit
 
 private protocol TableViewTouchDelegate {
-    
     func tableViewWasTouched(_ tableView: TableView)
 }
 
 private final class TableView : UITableView {
     var touchDelegate: TableViewTouchDelegate?
-
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         touchDelegate?.tableViewWasTouched(self)
         return super.hitTest(point, with: event)
@@ -19,7 +17,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
     private var selectedContacts: Set<String> = []
     
     // MARK: Components
-    private lazy var nameTextField = TextField(placeholder: NSLocalizedString("Enter your group name", comment: ""))
+    private lazy var nameTextField = TextField(placeholder: NSLocalizedString("Enter a group name", comment: ""))
 
     private lazy var tableView: TableView = {
         let result = TableView()
