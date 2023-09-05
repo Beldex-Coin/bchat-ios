@@ -126,6 +126,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     var hashArray2 = [RecipientDomainSchema]()
     var isFilter = false
     var noTransaction = false
+    var syncingIsFromDelegateMethod = true
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -178,6 +180,13 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         
         //MARK:- Wallet Ref
         init_syncing_wallet()
+        
+        if WalletSharedData.sharedInstance.wallet != nil {
+            if self.wallet == nil {
+                isSyncingUI = true
+                syncingIsFromDelegateMethod = false
+            }
+        }
         
         // Selected Currency Code Implement
         if backAPISelectedCurrency == true {
@@ -555,6 +564,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                 switch result {
                 case .success(let wallet):
                     strongSelf.wallet = wallet
+                    WalletSharedData.sharedInstance.wallet = wallet
                     strongSelf.connect(wallet: wallet)
                 case .failure(_):
                     DispatchQueue.main.async {
@@ -577,9 +587,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if !connecting {
             self.syncedflag = false
             self.conncetingState.value = true
-            syncedIconRef.isHidden = true
-            self.progressLabel.textColor = Colors.bchat_button_clr
-            progressLabel.text = "Connecting ..."
+            DispatchQueue.main.async {
+                self.syncedIconRef.isHidden = true
+                self.progressLabel.textColor = Colors.bchat_button_clr
+                //                self.progressLabel.text = "Connecting ..."
+            }
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
             guard let `self` = self else { return }
@@ -609,12 +621,44 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     private func updateSyncingProgress() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            if self.wallet?.synchronized == false {
+            if syncingIsFromDelegateMethod {
+                if self.wallet?.synchronized == false {
+                    taskQueue.async {
+                        let (current, total) = (self.currentBlockChainHeight, self.daemonBlockChainHeight)
+                        guard total != current else { return }
+                        let difference = total.subtractingReportingOverflow(current)
+                        var progress = CGFloat(current) / CGFloat(total)
+                        let leftBlocks: String
+                        if difference.overflow || difference.partialValue <= 1 {
+                            leftBlocks = "1"
+                            progress = 1
+                        } else {
+                            leftBlocks = String(difference.partialValue)
+                        }
+                        let largeNumber = Int(leftBlocks)
+                        let numberFormatter = NumberFormatter()
+                        numberFormatter.numberStyle = .decimal
+                        numberFormatter.groupingSize = 3
+                        numberFormatter.secondaryGroupingSize = 2
+                        let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
+                        let statusText = "\(formattedNumber!)" + " Blocks Remaining"
+                        DispatchQueue.main.async {
+                            if self.conncetingState.value {
+                                self.conncetingState.value = false
+                            }
+                            self.syncedflag = false
+                            self.progressView.progress = Float(progress)
+                            self.progressLabel.textColor = Colors.bchat_button_clr
+                            self.progressLabel.text = statusText
+                        }
+                    }
+                }
+            } else {
                 taskQueue.async {
-                    let (current, total) = (self.currentBlockChainHeight, self.daemonBlockChainHeight)
+                    let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
                     guard total != current else { return }
-                    let difference = total.subtractingReportingOverflow(current)
-                    var progress = CGFloat(current) / CGFloat(total)
+                    let difference = total!.subtractingReportingOverflow(current!)
+                    var progress = CGFloat(current!) / CGFloat(total!)
                     let leftBlocks: String
                     if difference.overflow || difference.partialValue <= 1 {
                         leftBlocks = "1"
@@ -622,6 +666,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                     } else {
                         leftBlocks = String(difference.partialValue)
                     }
+                    
+                    if difference.overflow || difference.partialValue <= 1500 {
+                        self.timer.invalidate()
+                    }
+                    
                     let largeNumber = Int(leftBlocks)
                     let numberFormatter = NumberFormatter()
                     numberFormatter.numberStyle = .decimal
@@ -664,6 +713,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.progressLabel.text = "Synchronized"
         syncedIconRef.isHidden = false
         self.collectionView.reloadData()
+        WalletSharedData.sharedInstance.wallet = nil
     }
     
     // MARK: - Refresh Func
@@ -1706,7 +1756,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         }
     }
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
-//        print("11111------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
+        print("NewBlock------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         self.needSynchronized = true
