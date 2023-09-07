@@ -55,6 +55,14 @@ class WalletService {
                         SaveUserDefaultsData.WalletpublicAddress = result_wallet.publicAddress
                         SaveUserDefaultsData.WalletSeed = WalletSeed.sentence
                         SaveUserDefaultsData.WalletName = result_wallet.walletName
+                    } else {
+                        result_wallet = BDXWalletBuilder(name: data.name, password: data.pwd).openExisting()
+                        if result_wallet != nil {
+                            let WalletSeed = result_wallet.seed!
+                            SaveUserDefaultsData.WalletpublicAddress = result_wallet.publicAddress
+                            SaveUserDefaultsData.WalletSeed = WalletSeed.sentence
+                            SaveUserDefaultsData.WalletName = result_wallet.walletName
+                        }
                     }
                 }
                 if let seedStr = recover.seed, let seed = Seed.init(sentence: seedStr) {

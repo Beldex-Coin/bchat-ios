@@ -457,6 +457,18 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.isIdleTimerDisabled = false
+        viewSyncing.isHidden = true
+        filterView.isHidden = true
+        syncedIconView.isHidden = true
+        self.fromcancelAction()
+        self.tocancelAction()
+        viewdateRangeRef.isHidden = true
+        txtfromdate.placeholder = "Select From Date"
+        txttodate.placeholder = "Select To Date"
+        txtfromdate.text = ""
+        txttodate.text = ""
+        fromDate = ""
+        toDate = ""
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -697,6 +709,10 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     //syncWalletData
     @objc func syncWalletData(_ notification: Notification) {
+        self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
+        self.btnHomeScan.isUserInteractionEnabled = false
+        self.btnHomeSend.isUserInteractionEnabled = false
+        self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
         init_syncing_wallet()
     }
     
@@ -840,15 +856,18 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // MARK: - Button Action
     @IBAction func sendAction(_ sender: UIButton) {
+        viewSyncing.isHidden = true
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletSendVC") as! MyWalletSendVC
         vc.wallet = self.wallet
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func receiveAction(_ sender: UIButton) {
+        viewSyncing.isHidden = true
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletReceiveVC") as! MyWalletReceiveVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func scanAction(_ sender: UIButton) {
+        viewSyncing.isHidden = true
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletScannerVC") as! MyWalletScannerVC
         vc.wallet = self.wallet
         vc.isFromWallet = true
