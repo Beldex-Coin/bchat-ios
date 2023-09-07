@@ -705,8 +705,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         syncedflag = true
         btnHomeScan.isUserInteractionEnabled = true
         btnHomeSend.isUserInteractionEnabled = true
-        let logoName = isLightMode ? "ic_Scan_QR" : "ic_Scan_QR"
-        imgScanRef.image = UIImage(named: logoName)!
+        let colorScanQR: UIColor = isDarkMode ? .white : .black
+        imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
         btnHomeSend.backgroundColor = Colors.sentMessageBackground
         btnHomeSend.setTitleColor(.white, for: .normal)
         self.progressLabel.textColor = Colors.bchat_button_clr

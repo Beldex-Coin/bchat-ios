@@ -81,6 +81,9 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         self.navigationItem.leftBarButtonItem = newBackButton
         //TextView Placholder
         txtaddress.delegate = self
+        txtaddress.isUserInteractionEnabled = true
+        scanRefbtn.isUserInteractionEnabled = true
+        addressRefbtn.isUserInteractionEnabled = true
         placeholderLabel = UILabel()
         placeholderLabel.text = "Beldex address"
         placeholderLabel.font = Fonts.OpenSans(ofSize: (txtaddress.font?.pointSize)!)
@@ -121,9 +124,15 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             self.lbladdressAftersending.text = self.txtaddress.text!
             self.lblAmountAftersending.text = self.txtamount.text!
             self.lblFeeAftersending.text = "---"
+            txtaddress.isUserInteractionEnabled = false
+            scanRefbtn.isUserInteractionEnabled = false
+            addressRefbtn.isUserInteractionEnabled = false
         }else {
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
+            txtaddress.isUserInteractionEnabled = true
+            scanRefbtn.isUserInteractionEnabled = true
+            addressRefbtn.isUserInteractionEnabled = true
         }
         
         imgtick.layer.cornerRadius = imgtick.layer.frame.height/2
@@ -163,6 +172,9 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             self.lblFeeAftersending.text = "---"
             self.txtamount.text = ""
             self.txtaddress.text = ""
+            txtaddress.isUserInteractionEnabled = false
+            scanRefbtn.isUserInteractionEnabled = false
+            addressRefbtn.isUserInteractionEnabled = false
             loading.startAnimating()
             placeholderLabel?.isHidden = !txtaddress.text.isEmpty
             if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
@@ -175,6 +187,9 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }else {
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
+            txtaddress.isUserInteractionEnabled = true
+            scanRefbtn.isUserInteractionEnabled = true
+            addressRefbtn.isUserInteractionEnabled = true
         }
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -228,7 +243,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             // Calculate the future text if the user's input is accepted
             let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
             // Use regular expression to validate the new text format
-            let amountPattern = "^(\\d{0,16})(\\.\\d{0,9})?$"
+            let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
             let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
             return amountTest.evaluate(with: newText)
         }
@@ -272,6 +287,9 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         confirmSendingPopView.isHidden = true
         successPopView.isHidden = true
+        txtaddress.isUserInteractionEnabled = true
+        scanRefbtn.isUserInteractionEnabled = true
+        addressRefbtn.isUserInteractionEnabled = true
         loading.stopAnimating()
     }
     
