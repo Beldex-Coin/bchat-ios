@@ -8,10 +8,9 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
     private var seed: Data! { didSet { updateKeyPair() } }
     private var ed25519KeyPair: Sign.KeyPair!
     private var x25519KeyPair: ECKeyPair! { didSet { updatePublicKeyLabel() } }
-    
     @IBOutlet weak var backgroungView:UIView!
     @IBOutlet weak var userNametxt:UITextField!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     private var data = NewWallet()
     
     override func viewDidLoad() {
@@ -25,7 +24,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         backgroungView!.layer.cornerRadius = 10
         backgroungView!.layer.masksToBounds = true
-        nextRef.layer.cornerRadius = 6
+        continueRef.layer.cornerRadius = 6
         userNametxt.attributedPlaceholder = NSAttributedString(string:"Enter a display name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         userNametxt.delegate = self
         userNametxt.returnKeyType = .done
@@ -110,7 +109,6 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
                 switch result {
                 case .success(let wallet):
                     wallet.close()
-                    let seed = wallet.seed
                 case .failure(_):
                     print("in case failyre")
                 }
@@ -151,7 +149,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         }
     }
 
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         performAction()
     }
     

@@ -13,7 +13,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var datetxt:UITextField!
     @IBOutlet weak var nextRef:UIButton!
     let datePicker = DatePickerDialog()
-    var SeedPass:String!
+    var seedPassing:String!
     private var data = NewWallet()
     private var recovery_seed = RecoverWallet(from: .seed)
     var dateHeight = ""
@@ -34,8 +34,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         backgroundDateView.layer.cornerRadius = 10
         nextRef.layer.cornerRadius = 6
         
-        let seedvalue = userNametxt.text!.lowercased()
-        recovery_seed.seed = seedvalue
+        recovery_seed.seed = seedPassing
         userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
@@ -193,7 +192,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     
     func mnemonicSeedconnect() {
         self.alertWarningIfNeed(recovery_seed)
-        let mnemonic = SeedPass!
+        let mnemonic = seedPassing!
         do {
             let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
             let seed = Data(hex: hexEncodedSeed)
@@ -231,8 +230,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     }
     
     private func createWallet(_ recover: RecoverWallet) {
-        let seedvalue = SeedPass!
-        SaveUserDefaultsData.WalletRecoverSeed = seedvalue
+        SaveUserDefaultsData.WalletRecoverSeed = seedPassing!
         data.name = userNametxt.text!
         WalletService.shared.createWallet(with: .recovery(data: data, recover: recover)) { (result) in
             switch result {

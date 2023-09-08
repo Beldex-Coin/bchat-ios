@@ -141,7 +141,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func nextAction(sender:UIButton){
         let text = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
         self.startNewDMIfPossible(with: text)
     }
@@ -164,7 +164,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
-    @IBAction func ScanAction(sender:UIButton){
+    @IBAction func scanAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = false
         self.navigationController?.pushViewController(vc, animated: true)

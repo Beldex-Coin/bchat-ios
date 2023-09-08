@@ -14,7 +14,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
             collectionView.register(Groupcell.nib, forCellWithReuseIdentifier: Groupcell.identifier)
         }
     }
-    private var Allrooms: [OpenGroupAPIV2.Info] = [] { didSet { update() } }
+    private var allRooms: [OpenGroupAPIV2.Info] = [] { didSet { update() } }
     private var heightConstraint: NSLayoutConstraint!
     private static let cellHeight: CGFloat = 40
     private lazy var spinner: NVActivityIndicatorView = {
@@ -23,8 +23,6 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         result.set(.height, to: SocialGroupVC.cellHeight)
         return result
     }()
-    
-    @IBOutlet weak var mainview22: UIView! 
     @IBOutlet weak var backgroundView:UIView!
     @IBOutlet weak var nextRef:UIButton!
     @IBOutlet weak var txtview:UITextView!
@@ -62,7 +60,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
             .done { [weak self] rooms in
-                self?.Allrooms = rooms
+                self?.allRooms = rooms
             }
             .catch { [weak self] _ in
                 self?.update()
@@ -126,13 +124,13 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         return true
     }
     
-    @IBAction func ScanAction(sender:UIButton){
+    @IBAction func scanAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func nextAction(sender:UIButton){
         let url = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
         joinOpenGroup(with: url)
     }
@@ -182,11 +180,11 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     // MARK: Layout
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Allrooms.count    //min(Allrooms.count, 8) // Cap to a maximum of 8 (4 rows of 2)
+        return allRooms.count    //min(allRooms.count, 8) // Cap to a maximum of 8 (4 rows of 2)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Groupcell.identifier, for: indexPath) as! Groupcell
-        cell.allroom = Allrooms[indexPath.item]
+        cell.allroom = allRooms[indexPath.item]
         
         return cell
     }
@@ -201,13 +199,13 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let room = Allrooms[indexPath.item]
+        let room = allRooms[indexPath.item]
         joinV2OpenGroup(room: room.id, server: OpenGroupAPIV2.defaultServer, publicKey: OpenGroupAPIV2.defaultServerPublicKey)
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
-            let room = Allrooms[indexPath.item]
+            let room = allRooms[indexPath.item]
             joinV2OpenGroup(room: room.id, server: OpenGroupAPIV2.defaultServer, publicKey: OpenGroupAPIV2.defaultServerPublicKey)
         }
     }

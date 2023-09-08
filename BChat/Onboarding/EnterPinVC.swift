@@ -39,7 +39,7 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     @IBOutlet weak var backgroundReEnterPinView:UIView!
     @IBOutlet weak var enterPintxt:UITextField!
     @IBOutlet weak var reEnterPintxt:UITextField!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     @IBOutlet weak var btneye1:UIButton!
     @IBOutlet weak var btneye2:UIButton!
     var iconClick = true
@@ -69,7 +69,7 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         backgroundEnterPinView.layer.cornerRadius = 10
         backgroundReEnterPinView.layer.cornerRadius = 10
-        nextRef.layer.cornerRadius = 6
+        continueRef.layer.cornerRadius = 6
         enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         enterPintxt.delegate = self
@@ -148,7 +148,7 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         view.endEditing(true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         guard let pin = enterPintxt.text,
               let confirmPin = reEnterPintxt.text else {
             return

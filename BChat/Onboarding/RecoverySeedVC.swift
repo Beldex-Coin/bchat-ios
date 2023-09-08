@@ -11,11 +11,10 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
     @IBOutlet weak var lblcount:UILabel!
     @IBOutlet weak var txtview:UITextView!
     var placeholderLabel : UILabel!
-    var WordCount:Int!
     var fulllenthSeedStr = ""
     var lastWordSeedStr = ""
     var txtviewstr = ""
-    var Seedflag = false
+    var seedFlag = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,12 +76,12 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
         let words = strings.components(separatedBy: spaces)
         if lastWordSeedStr == words.last! {
-            Seedflag = true
+            seedFlag = true
         }else {
-            Seedflag = false
+            seedFlag = false
         }
         if words.count == 25 {
-            Seedflag = true
+            seedFlag = true
         }
         lblcount.text = "\(words.count)/25"
         if words.count > 25 {
@@ -113,8 +112,8 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         txtview.text = ""
         lblcount.text = "0/25"
     }
-    @IBAction func NextAction(sender:UIButton){
-        if Seedflag == false {
+    @IBAction func nextAction(sender:UIButton){
+        if seedFlag == false {
             self.showToastMsg(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
         }else {
             let strings : String! = txtview.text.lowercased()
@@ -139,7 +138,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
                     Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
                         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedNameVC") as! RecoverySeedNameVC
                         navigationflowTag = true
-                        vc.SeedPass = self.txtview.text!.lowercased()
+                        vc.seedPassing = self.txtview.text!.lowercased()
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 } catch let error {

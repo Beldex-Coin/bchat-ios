@@ -9,7 +9,7 @@ class LandingVC: BaseVC {
     
     @IBOutlet weak var createRef:UIButton!
     @IBOutlet weak var signRef:UIButton!
-    @IBOutlet weak var TermsRef:UIButton!
+    @IBOutlet weak var termsRef:UIButton!
     @IBOutlet weak var gifimg:UIImageView!
     @IBOutlet weak var btnterms:UIButton!
     var flagvalue:Bool = false
@@ -128,7 +128,7 @@ class LandingVC: BaseVC {
     
     // MARK: - Create Account
     
-    @IBAction func CraeteAction(sender:UIButton){
+    @IBAction func craeteAction(sender:UIButton){
         if flagvalue == true {
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
             navigationflowTag = false
@@ -140,12 +140,12 @@ class LandingVC: BaseVC {
         }
     }
     // MARK: - Sign InAccount
-    @IBAction func SignINAction(sender:UIButton){
+    @IBAction func signInAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedVC") as! RecoverySeedVC
         navigationflowTag = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    @IBAction func TermsAction(sender:UIButton){
+    @IBAction func termsAction(sender:UIButton){
         let urlAsString: String?
         urlAsString = bchat_TermsConditionUrl_Link
         if let urlAsString = urlAsString {
@@ -153,7 +153,6 @@ class LandingVC: BaseVC {
             UIApplication.shared.open(url)
         }
     }
-    
     @IBAction func termsandconditionAction(sender:UIButton){
         btnterms.isSelected = !btnterms.isSelected
         if btnterms.isSelected {
