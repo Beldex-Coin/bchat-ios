@@ -208,6 +208,12 @@ struct WalletListenerImpl: Wallet::WalletListener
     }
 }
 
+- (void)rescanBlockchainAsync {
+    if (beldex_wallet) {
+        beldex_wallet->rescanBlockchainAsync();
+    }
+}
+
 - (void)pauseRefresh {
     if (beldex_wallet) {
         beldex_wallet->pauseRefresh();
@@ -531,6 +537,13 @@ struct WalletListenerImpl: Wallet::WalletListener
 - (uint64_t)daemonBlockChainHeight {
     if (beldex_wallet) {
         return beldex_wallet->daemonBlockChainHeight();
+    }
+    return 0;
+}
+
+- (uint64_t)estimateBlockChainHeight {
+    if (beldex_wallet) {
+        return beldex_wallet->estimateBlockChainHeight();
     }
     return 0;
 }

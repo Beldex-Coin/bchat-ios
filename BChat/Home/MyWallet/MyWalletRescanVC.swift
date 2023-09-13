@@ -125,7 +125,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
                 if count > 1
                 {
                     let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
-                    VC.backAPIRescanVC = true
+                    VC.backApiRescanVC = true
                 }
             }
             self.navigationController?.popViewController(animated: true)
@@ -153,7 +153,7 @@ class MyWalletRescanVC: BaseVC,UITextFieldDelegate {
                     if count > 1
                     {
                         let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
-                        VC.backAPIRescanVC = true
+                        VC.backApiRescanVC = true
                     }
                 }
                 self.navigationController?.popViewController(animated: true)

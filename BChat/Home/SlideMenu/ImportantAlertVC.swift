@@ -8,7 +8,7 @@ class ImportantAlertVC: BaseVC, UITextFieldDelegate {
     @IBOutlet weak var contentlbl2:UILabel!
     @IBOutlet weak var contentlbl3:UILabel!
     @IBOutlet weak var contentlbl4:UILabel!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var yesImSureRef:UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,13 +16,13 @@ class ImportantAlertVC: BaseVC, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
-        nextRef.layer.cornerRadius = 6
+        yesImSureRef.layer.cornerRadius = 6
         
         self.contentlbl1.text = "IMPORTANT"
         self.contentlbl2.text = "Never share your seed with anyone!"
         self.contentlbl3.text = "Your seed can be used to restore your account. Never share it with anyone or store a digital copy of it. Never enter your seed in any other website or application other than BChat or the Beldex official wallet."
         self.contentlbl4.text = "Check your surroundings and ensure no one is overlooking. Do you want to proceed?"
-        nextRef.setTitle("Yes, I'm Safe.", for: .normal)
+        yesImSureRef.setTitle("Yes, I'm Safe.", for: .normal)
         
     }
     //MARK:- UITextFieldDelegate
@@ -44,7 +44,7 @@ class ImportantAlertVC: BaseVC, UITextFieldDelegate {
     }
     
     // MARK: - Navigation
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func yesImSureRefAction(sender:UIButton){
         SwiftAlertView.show(title: "BChat",message: "Enter your password to view your seed. Write it down on paper.", buttonTitles: "Cancel", "Ok") { alertView in
             alertView.addTextField { textField in
                 textField.attributedPlaceholder = NSAttributedString(string: "Please Enter Password", attributes: [.foregroundColor: UIColor.gray])

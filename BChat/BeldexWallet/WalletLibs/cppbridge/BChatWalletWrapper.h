@@ -32,6 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) uint64_t unlockedBalance;
 @property (nonatomic, assign, readonly) uint64_t blockChainHeight;
 @property (nonatomic, assign, readonly) uint64_t daemonBlockChainHeight;
+@property (nonatomic, assign, readonly) uint64_t estimateBlockChainHeight;
 @property (nonatomic, assign, readwrite) uint64_t restoreHeight;
 
 
@@ -58,7 +59,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)pauseRefresh;
 - (BOOL)save;
 - (BOOL)close;
-
+- (void)rescanBlockchainAsync;
 
 + (BOOL)validAddress:(NSString *)address;
 + (BOOL)verifyPassword:(NSString *)password path:(NSString *)path;

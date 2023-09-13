@@ -5,7 +5,7 @@ import UIKit
 class QRCodeScanVC: BaseVC {
     
     @IBOutlet weak var backgroundMainView:UIView!
-    @IBOutlet weak var ScanQRcode:UIButton!
+    @IBOutlet weak var scanQrCode:UIButton!
     @IBOutlet weak var shareref:UIButton!
     @IBOutlet weak var qrCodeImageView:UIImageView!
     @IBOutlet weak var backgroundScanView:UIView!
@@ -20,7 +20,7 @@ class QRCodeScanVC: BaseVC {
         setUpGradientBackground()
         setUpNavBarStyle()
         backgroundMainView.layer.cornerRadius = 10
-        ScanQRcode.layer.cornerRadius = 6
+        scanQrCode.layer.cornerRadius = 6
         shareref.layer.cornerRadius = 6
         backgroundScanView.layer.cornerRadius = 6
         backgroundShareView.layer.cornerRadius = 6
@@ -42,7 +42,7 @@ class QRCodeScanVC: BaseVC {
         self.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
-    @IBAction func ScanQRAction(sender:UIButton){
+    @IBAction func scanQrAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = false
         self.navigationController?.pushViewController(vc, animated: true)

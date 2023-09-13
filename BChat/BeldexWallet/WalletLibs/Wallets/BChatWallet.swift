@@ -91,6 +91,9 @@ public class BDXWallet {
         walletWrapper.startRefresh()
     }
     
+    public func rescanBlockchainAsync() {
+        walletWrapper.rescanBlockchainAsync()
+    }
     public func close() {
         guard !isClosed else {
             return
@@ -163,6 +166,9 @@ extension BDXWallet {
     }
     public var daemonBlockChainHeight: UInt64 {
         return walletWrapper.daemonBlockChainHeight
+    }
+    public var estimateBlockChainHeight: UInt64 {
+        return walletWrapper.estimateBlockChainHeight
     }
     public var restoreHeight: UInt64 {
         get { return walletWrapper.restoreHeight }

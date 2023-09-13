@@ -43,7 +43,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     @IBOutlet weak var syncedIconRefbtn: UIButton!
     var iconClick = true
     var BackAPI = false
-    var backAPIRescanVC = false
+    var backApiRescanVC = false
     var backAPISelectedCurrency = false
     var backAPISelectedDecimal = false
     @IBOutlet var scrollView: UIScrollView!
@@ -170,6 +170,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         
         let imageinfo = UIImage(named: "ic_info")?.asTintedImage(color: colorimgBeldex)
         syncedIconRef.setImage(imageinfo, for: .normal)
+        syncedIconRef.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(syncWalletData(_:)), name: Notification.Name(rawValue: "syncWallet"), object: nil)
         
@@ -519,7 +520,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         }
         
         // Rescan Height Update in userdefaults work
-        if backAPIRescanVC == true {
+        if backApiRescanVC == true {
             init_syncing_wallet()
         }
         filteredAllTransactionarray = []
@@ -602,7 +603,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             DispatchQueue.main.async {
                 self.syncedIconRef.isHidden = true
                 self.progressLabel.textColor = Colors.bchat_button_clr
-                //                self.progressLabel.text = "Connecting ..."
+                //self.progressLabel.text = "Connecting ..."
             }
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
@@ -610,10 +611,13 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             if isConnected {
                 if let wallet = self.wallet {
                     if SaveUserDefaultsData.WalletRestoreHeight == "" {
-                        let defaultHeight = UInt64("1850630")!
-                        wallet.restoreHeight = defaultHeight
+                        SaveUserDefaultsData.WalletRestoreHeight = "1850630"
+                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
+                    }
+                    if self.backApiRescanVC == true {
+                        wallet.rescanBlockchainAsync()
                     }
                     wallet.start()
                 }
@@ -726,7 +730,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         btnHomeSend.backgroundColor = Colors.sentMessageBackground
         btnHomeSend.setTitleColor(.white, for: .normal)
         self.progressLabel.textColor = Colors.bchat_button_clr
-        self.progressLabel.text = "Synchronized"
+        if self.backApiRescanVC == true{
+            self.progressLabel.text = "Connecting..."
+        }else {
+            self.progressLabel.text = "Synchronized"
+        }
         syncedIconRef.isHidden = false
         self.collectionView.reloadData()
         WalletSharedData.sharedInstance.wallet = nil
@@ -1778,8 +1786,49 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         print("NewBlock------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
-        self.needSynchronized = true
-        self.isSyncingUI = true
+        // Wallet Rescan for Height
+        if self.backApiRescanVC == true {
+            self.isFromWalletRescan(isCurrentHeight: currentHeight, isdaemonBlockHeight: wallet.daemonBlockChainHeight)
+        }else{
+            self.needSynchronized = true
+            self.isSyncingUI = true
+        }
+    }
+    
+    func isFromWalletRescan(isCurrentHeight:UInt64,isdaemonBlockHeight:UInt64) {
+        taskQueue.async {
+            let (current, total) = (self.currentBlockChainHeight, self.wallet!.daemonBlockChainHeight)
+            guard total != current else { return }
+            let difference = total.subtractingReportingOverflow(current)
+            var progress = CGFloat(current) / CGFloat(total)
+            let leftBlocks: String
+            if difference.overflow || difference.partialValue <= 1 {
+                leftBlocks = "1"
+                progress = 1
+            } else {
+                leftBlocks = String(difference.partialValue)
+            }
+
+            let largeNumber = Int(leftBlocks)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.groupingSize = 3
+            numberFormatter.secondaryGroupingSize = 2
+            let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
+            let statusText = "\(formattedNumber!)" + " Blocks Remaining"
+            if formattedNumber == "1" {
+                self.backApiRescanVC = false
+            }
+            DispatchQueue.main.async {
+                if self.conncetingState.value {
+                    self.conncetingState.value = false
+                }
+                self.syncedflag = false
+                self.progressView.progress = Float(progress)
+                self.progressLabel.textColor = Colors.bchat_button_clr
+                self.progressLabel.text = statusText
+            }
+        }
     }
     
     private func postData(balance: String, history: TransactionHistory) {

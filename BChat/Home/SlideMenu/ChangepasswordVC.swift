@@ -9,7 +9,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var backgroundNewPinView:UIView!
     @IBOutlet weak var oldPintxt:UITextField!
     @IBOutlet weak var newPintxt:UITextField!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     @IBOutlet weak var btneye1:UIButton!
     @IBOutlet weak var btneye2:UIButton!
     
@@ -28,16 +28,13 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         newPintxt.addDoneButtonKeybord()
         
         let imgName = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
-        let image1 = UIImage(named: "\(imgName).png")!
-        self.btneye1.setImage(image1, for: .normal)
-        
-        let imgName2 = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
-        let image12 = UIImage(named: "\(imgName2).png")!
-        self.btneye2.setImage(image12, for: .normal)
+        let image = UIImage(named: "\(imgName).png")!
+        self.btneye1.setImage(image, for: .normal)
+        self.btneye2.setImage(image, for: .normal)
         
         backgroundOldPinView.layer.cornerRadius = 10
         backgroundNewPinView.layer.cornerRadius = 10
-        nextRef.layer.cornerRadius = 6
+        continueRef.layer.cornerRadius = 6
         oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         oldPintxt.delegate = self
@@ -110,7 +107,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         var a = false
         var b = false
         var c = false

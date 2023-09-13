@@ -741,7 +741,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="NextActionWithSender:" destination="eIN-fJ-lg0" eventType="touchUpInside" id="a41-B7-Rdn"/>
+                                    <action selector="yesImSureRefActionWithSender:" destination="eIN-fJ-lg0" eventType="touchUpInside" id="AZW-PI-jq0"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Never Give your Seed to Anyone!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEC-Qo-xfK">
@@ -803,7 +803,7 @@
                         <outlet property="contentlbl2" destination="NEC-Qo-xfK" id="AnU-sQ-IRc"/>
                         <outlet property="contentlbl3" destination="I16-Qd-DZR" id="Giu-cQ-zps"/>
                         <outlet property="contentlbl4" destination="cZQ-eM-ZVu" id="3Lc-zR-Wtu"/>
-                        <outlet property="nextRef" destination="0B6-zV-yVI" id="Fxi-Rl-HbI"/>
+                        <outlet property="yesImSureRef" destination="0B6-zV-yVI" id="Jj1-ni-spe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G6Y-DA-PUF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -868,7 +868,6 @@
                                         </state>
                                         <connections>
                                             <action selector="copyActionWithSender:" destination="5kY-5X-k3H" eventType="touchUpInside" id="ze5-kX-Y5G"/>
-                                            <action selector="shareActionWithSender:" destination="yhI-tv-BnH" eventType="touchUpInside" id="366-l0-H73"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1272,7 +1271,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="copyActionWithSender:" destination="Os3-Hq-Tia" eventType="touchUpInside" id="x7l-1z-p94"/>
-                                                    <action selector="shareActionWithSender:" destination="yhI-tv-BnH" eventType="touchUpInside" id="qfn-tk-7jv"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1311,7 +1309,6 @@
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <connections>
-                                                    <action selector="ScanQRActionWithSender:" destination="yhI-tv-BnH" eventType="touchUpInside" id="mhW-ix-STz"/>
                                                     <action selector="shareActionWithSender:" destination="Os3-Hq-Tia" eventType="touchUpInside" id="mL5-Vv-wP5"/>
                                                 </connections>
                                             </button>
@@ -1454,7 +1451,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="200" height="45"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <connections>
-                                                    <action selector="ScanQRActionWithSender:" destination="yhI-tv-BnH" eventType="touchUpInside" id="Fk0-iR-qHC"/>
+                                                    <action selector="scanQrActionWithSender:" destination="yhI-tv-BnH" eventType="touchUpInside" id="3Og-1Z-EPd"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -1493,12 +1490,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ScanQRcode" destination="B2R-VJ-1bP" id="yQo-Y0-Z9E"/>
                         <outlet property="backgroundMainView" destination="f69-sl-nRo" id="hwS-DF-f8X"/>
                         <outlet property="backgroundScanView" destination="DK6-gY-L0E" id="AhP-I2-vFn"/>
                         <outlet property="backgroundShareView" destination="d8Q-YY-scB" id="Rtt-Ck-wDD"/>
                         <outlet property="qrCodeImageView" destination="NO6-5F-6DI" id="jFm-p2-mbR"/>
                         <outlet property="scanImg" destination="FFf-3Y-FRj" id="uOU-pF-Nrc"/>
+                        <outlet property="scanQrCode" destination="B2R-VJ-1bP" id="X3S-0n-JvH"/>
                         <outlet property="shareImh" destination="29g-Jc-6G0" id="hZj-QP-uHA"/>
                         <outlet property="shareref" destination="ucP-tm-xvD" id="8vM-tU-xLT"/>
                     </connections>
@@ -1574,7 +1571,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="NextActionWithSender:" destination="ZZH-vV-NDh" eventType="touchUpInside" id="vsR-uy-Vc4"/>
+                                    <action selector="continueActionWithSender:" destination="ZZH-vV-NDh" eventType="touchUpInside" id="7WJ-al-94x"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z7p-Xd-qqQ">
@@ -1686,8 +1683,8 @@
                         <outlet property="backgroundOldPinView" destination="JE5-yd-Z1w" id="WKZ-sE-3kP"/>
                         <outlet property="btneye1" destination="WVO-xv-yfQ" id="VPI-Fo-Rm1"/>
                         <outlet property="btneye2" destination="cE1-rP-APl" id="IV2-NO-P38"/>
+                        <outlet property="continueRef" destination="1F0-P1-D2z" id="7jz-kD-fWF"/>
                         <outlet property="newPintxt" destination="T0w-g6-lIE" id="xBX-e2-mDa"/>
-                        <outlet property="nextRef" destination="1F0-P1-D2z" id="a0s-hE-8XU"/>
                         <outlet property="oldPintxt" destination="XHy-iT-SyL" id="Nn8-7e-vLD"/>
                     </connections>
                 </viewController>
@@ -4058,8 +4055,8 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                     <constraint firstAttribute="height" constant="3" id="JLs-sm-1Gs"/>
                                 </constraints>
                             </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Synchronized" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggR-mn-Wrr">
-                                <rect key="frame" x="166" y="54.999999999999993" width="96" height="20.666666666666664"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Wallet ..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggR-mn-Wrr">
+                                <rect key="frame" x="153.66666666666666" y="54.999999999999993" width="120.99999999999997" height="20.666666666666664"/>
                                 <color key="tintColor" name="bchat_button_clr"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="15"/>
                                 <color key="textColor" name="bchat_button_clr"/>
@@ -4432,7 +4429,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IEy-aT-KVH">
-                                <rect key="frame" x="200.66666666666663" y="220" width="212.33333333333337" height="202.66666666666663"/>
+                                <rect key="frame" x="200.66666666666663" y="226.66666666666669" width="212.33333333333337" height="202.66666666666669"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter By" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1O-Sc-qXE">
                                         <rect key="frame" x="16" y="16" width="74.666666666666671" height="24.666666666666671"/>
@@ -4707,7 +4704,7 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lXk-df-gvf">
-                                <rect key="frame" x="267" y="57" width="17" height="17"/>
+                                <rect key="frame" x="279.66666666666669" y="57" width="17" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="Qvt-MT-cGX"/>
                                     <constraint firstAttribute="width" constant="17" id="UMp-OX-Zz0"/>
