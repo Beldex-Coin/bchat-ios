@@ -213,7 +213,7 @@ class MyWalletPasscodeVC: BaseVC {
                     VC.wallet = self.wallet
                     VC.finalWalletAddress = self.finalWalletAddress
                     VC.finalWalletAmount = self.finalWalletAmount
-                    VC.BackAPI = true
+                    VC.backAPI = true
                 }
             }
             self.navigationController?.popViewController(animated: true)

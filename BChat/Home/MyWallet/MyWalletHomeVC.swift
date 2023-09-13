@@ -475,6 +475,12 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         UIApplication.shared.isIdleTimerDisabled = true
+        
+        self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
+        self.btnHomeScan.isUserInteractionEnabled = false
+        self.btnHomeSend.isUserInteractionEnabled = false
+        self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
+        
         if BackAPI == true{
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
@@ -564,6 +570,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
+            self.btnHomeScan.isUserInteractionEnabled = false
+            self.btnHomeSend.isUserInteractionEnabled = false
+            self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
+            
             lblMainblns.text = "0.00"
             lblOtherCurrencyblns.text = "0.00"
             self.syncedflag = false

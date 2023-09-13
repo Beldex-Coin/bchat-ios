@@ -55,7 +55,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             loading.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
-    var BackAPI = false
+    var backAPI = false
     var hashArray = [RecipientDomainSchema]()
     var recipientAddressON = false
     var placeholderLabel : UILabel!
@@ -118,7 +118,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         let logoAddressImg = isLightMode ? "user_light" : "user_dark"
         addressRefbtn.setImage(UIImage(named: logoAddressImg), for: .normal)
         
-        if BackAPI == true{
+        if backAPI == true{
             self.confirmSendingPopView.isHidden = false
             self.successPopView.isHidden = true
             self.lbladdressAftersending.text = self.txtaddress.text!
@@ -164,7 +164,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         self.saveReceipeinetAddressOnAndOff()
-        if BackAPI == true{
+        if backAPI == true{
+            self.btnOK.backgroundColor = UIColor(red: 0.47, green: 0.47, blue: 0.55, alpha: 1.00)
             self.confirmSendingPopView.isHidden = false
             self.successPopView.isHidden = true
             self.lbladdressAftersending.text = self.txtaddress.text!
@@ -193,7 +194,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }
     }
     override func viewDidAppear(_ animated: Bool) {
-        if BackAPI == true{
+        if backAPI == true{
+            self.btnOK.backgroundColor = UIColor(red: 0.47, green: 0.47, blue: 0.55, alpha: 1.00)
             self.txtamount.text = ""
             self.txtaddress.text = ""
             connect(wallet: self.wallet!)
@@ -201,7 +203,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.BackAPI = false
+        self.backAPI = false
     }
     
     @objc func dismissKeyboard() {
@@ -488,8 +490,10 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             self.lblFeeAftersending.text = feeValue
             loading.stopAnimating()
+            self.btnOK.backgroundColor = Colors.bchat_button_clr
         }else {
             loading.stopAnimating()
+            self.btnOK.backgroundColor = UIColor(red: 0.47, green: 0.47, blue: 0.55, alpha: 1.00)
             confirmSendingPopView.isHidden = true
             successPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
