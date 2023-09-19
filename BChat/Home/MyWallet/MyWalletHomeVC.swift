@@ -476,11 +476,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         super.viewWillAppear(true)
         UIApplication.shared.isIdleTimerDisabled = true
         
-        self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
-        self.btnHomeScan.isUserInteractionEnabled = false
-        self.btnHomeSend.isUserInteractionEnabled = false
-        self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
-        
         if BackAPI == true{
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
@@ -1043,6 +1038,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         collectionView.reloadData()
     }
     @IBAction func okeyDateAction(_ sender: UIButton) {
+        self.fromcancelAction()
+        self.tocancelAction()
         viewdateRangeRef.isHidden = true
         bottomview.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true
@@ -1053,7 +1050,10 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if fromDate == "" || toDate == "" {
             self.isFilter = false
             let alert = UIAlertController(title: "", message: "please select both From and To dates", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default,handler: { action in
+                self.fromcancelAction()
+                self.tocancelAction()
+             }))
             self.present(alert, animated: true, completion: nil)
         }
         else {
@@ -1217,6 +1217,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if let datePickerView = self.txttodate.inputView as? UIDatePicker {
             datePickerView.minimumDate = nil
         }
+        viewdateRangeRef.isHidden = true
+        txtfromdate.placeholder = "Select From Date"
+        txttodate.placeholder = "Select To Date"
+        txtfromdate.text = ""
+        txttodate.text = ""
     }
     
     // Recycle perpose code

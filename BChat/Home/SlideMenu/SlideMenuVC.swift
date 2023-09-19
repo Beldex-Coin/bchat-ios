@@ -100,8 +100,13 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             
             let publicKey = getUserHexEncodedPublicKey()
             cell.imgpic.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+            
+            if let statusView = view.viewWithTag(333222) {
+                statusView.removeFromSuperview()
+            }
             // Path status indicator
             let pathStatusView = PathStatusView()
+            pathStatusView.tag = 333222
             pathStatusView.accessibilityLabel = "Current onion routing path indicator"
             pathStatusView.set(.width, to: PathStatusView.size)
             pathStatusView.set(.height, to: PathStatusView.size)
