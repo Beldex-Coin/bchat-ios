@@ -61,7 +61,12 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
             if let dt = date {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
+                formatter.timeZone = TimeZone(identifier: "UTC")
                 self.datetxt.text = formatter.string(from: dt)
+                let dateString = formatter.string(from: dt)
+                print("selected date---------String Formate--------------------->: ",dateString)
+//                let date = formatter.date(from: dateString)
+//                print("selected date---------date Formate--------------------->: ", date!)
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
@@ -100,7 +105,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     
     // MARK: Updating
     @objc private func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        guard let newHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height else { return }
+        guard (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height != nil else { return }
     }
     
     @objc private func handleKeyboardWillHideNotification(_ notification: Notification) {
