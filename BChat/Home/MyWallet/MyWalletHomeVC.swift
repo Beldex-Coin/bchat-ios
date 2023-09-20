@@ -894,7 +894,19 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         scrollView.isUserInteractionEnabled = true
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         self.syncedIconView.isHidden = false
-        lblsyncedRestoreHeight.text = "\(SaveUserDefaultsData.WalletRestoreHeight)."
+        if self.backApiRescanVC == false {
+            if navigationflowTag == true {
+                // SignIN account height
+                lblsyncedRestoreHeight.text = "\(SaveUserDefaultsData.WalletRestoreHeight)."
+            }else {
+                // Create account height
+                let height = wallet?.daemonBlockChainHeight
+                lblsyncedRestoreHeight.text = "\(height!)."
+            }
+        }else {
+            // Rescan account height
+            lblsyncedRestoreHeight.text = "\(SaveUserDefaultsData.WalletRestoreHeight)."
+        }
     }
     @IBAction func syncedforRestoreHeightCloseAction(_ sender: UIButton) {
         self.syncedIconView.isHidden = true
