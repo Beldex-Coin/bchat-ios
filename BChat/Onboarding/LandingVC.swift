@@ -23,7 +23,7 @@ class LandingVC: BaseVC {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground2
+            appearance.backgroundColor = Colors.navigationBarBackgroundColor
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -31,7 +31,7 @@ class LandingVC: BaseVC {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = false
-            navigationBar.barTintColor = Colors.navigationBarBackground2
+            navigationBar.barTintColor = Colors.navigationBarBackgroundColor
         }
         self.navigationItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -108,7 +108,7 @@ class LandingVC: BaseVC {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground2
+            appearance.backgroundColor = Colors.navigationBarBackgroundColor
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -116,7 +116,7 @@ class LandingVC: BaseVC {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = false
-            navigationBar.barTintColor = Colors.navigationBarBackground2
+            navigationBar.barTintColor = Colors.navigationBarBackgroundColor
         }
         flagvalue = false
         if isLightMode {
@@ -157,7 +157,7 @@ class LandingVC: BaseVC {
         btnterms.isSelected = !btnterms.isSelected
         if btnterms.isSelected {
             flagvalue = true
-            createRef.backgroundColor = Colors.bchat_button_clr
+            createRef.backgroundColor = Colors.bchatButtonColor
             let img = UIImage(named: "checked_img.png")!
             let tintedImage = img.withRenderingMode(.alwaysTemplate)
             self.btnterms.setImage(tintedImage, for: .normal)

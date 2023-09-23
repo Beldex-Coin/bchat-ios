@@ -140,7 +140,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView ])
         mainStackView.axis = .vertical
-        mainStackView.backgroundColor = Colors.bchat_view_bg_clr
+        mainStackView.backgroundColor = Colors.bchatViewBackgroundColor
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
         mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)

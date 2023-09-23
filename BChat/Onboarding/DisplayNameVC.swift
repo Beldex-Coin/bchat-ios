@@ -122,7 +122,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
                 let seed = Data(hex: hexEncodedSeed)
                 updateSeed(seedvalue: seed)
             } catch let error {
-                print("failsur")
+                print("Failure: \(error)")
             }
             // Bchat Work
             Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)

@@ -27,7 +27,7 @@ final class ConversationCell : UITableViewCell {
     private lazy var unreadCountView: UIView = {
         let result = UIView()
       //  result.backgroundColor = Colors.text.withAlphaComponent(Values.veryLowOpacity)
-        result.backgroundColor = Colors.bchat_button_clr
+        result.backgroundColor = Colors.bchatButtonColor
         let size = ConversationCell.unreadCountViewSize
         result.set(.width, greaterThanOrEqualTo: size)
         result.set(.height, to: size)
@@ -137,7 +137,7 @@ final class ConversationCell : UITableViewCell {
     private func setUpViewHierarchy() {
         let cellHeight: CGFloat = 68
         // Background color
-        backgroundColor = Colors.cellBackground2
+        backgroundColor = Colors.cellBackgroundColor
         // Highlight color
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = Colors.cellSelected
@@ -286,7 +286,7 @@ final class ConversationCell : UITableViewCell {
     private func update() {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
-        backgroundColor = threadViewModel.isPinned ? Colors.cellPinned : Colors.cellBackground2
+        backgroundColor = threadViewModel.isPinned ? Colors.cellPinned : Colors.cellBackgroundColor
         
         if thread.isBlocked() {
             accentLineView.backgroundColor = Colors.destructive

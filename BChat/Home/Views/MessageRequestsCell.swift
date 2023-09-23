@@ -49,7 +49,7 @@ class MessageRequestsCell: UITableViewCell {
         result.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.text = NSLocalizedString("MESSAGE_REQUESTS_TITLE", comment: "")
-        result.textColor = Colors.bchat_lbl_name
+        result.textColor = Colors.bchatLabelNameColor
         result.lineBreakMode = .byTruncatingTail
         
         return result
@@ -59,8 +59,7 @@ class MessageRequestsCell: UITableViewCell {
         let result: UIView = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.backgroundColor = Colors.bchat_button_clr
-       // result.backgroundColor = Colors.bchat_button_clr.withAlphaComponent(Values.veryLowOpacity)
+        result.backgroundColor = Colors.bchatButtonColor
         result.layer.cornerRadius = (ConversationCell.unreadCountViewSize / 2)
         
         return result
@@ -77,7 +76,7 @@ class MessageRequestsCell: UITableViewCell {
     }()
     
     private func setUpViewHierarchy() {
-        backgroundColor = Colors.cellPinned2
+        backgroundColor = Colors.cellPinnedColor
         selectedBackgroundView = UIView()
         selectedBackgroundView?.backgroundColor = Colors.cellSelected
         

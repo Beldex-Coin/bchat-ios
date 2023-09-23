@@ -41,10 +41,10 @@ final class JoinOpenGroupModal : Modal {
         joinButton.set(.height, to: Values.mediumButtonHeight)
         joinButton.layer.cornerRadius = Modal.buttonCornerRadius
         if isDarkMode {
-            joinButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            joinButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }else {
-            joinButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            joinButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         

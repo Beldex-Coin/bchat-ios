@@ -18,7 +18,7 @@ final class DeleteAccountModel : Modal {
     
     private lazy var titleLabel2: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bchat_button_clr
+        result.textColor = Colors.bchatButtonColor
         result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("Chat ID", comment: "")
         result.numberOfLines = 0

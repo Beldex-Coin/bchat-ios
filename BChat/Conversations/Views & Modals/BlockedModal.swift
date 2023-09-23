@@ -42,10 +42,10 @@ final class BlockedModal: Modal {
         unblockButton.set(.height, to: Values.mediumButtonHeight)
         unblockButton.layer.cornerRadius = Modal.buttonCornerRadius
         if isDarkMode {
-            unblockButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            unblockButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             unblockButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }else{
-            unblockButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            unblockButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             unblockButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         unblockButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)

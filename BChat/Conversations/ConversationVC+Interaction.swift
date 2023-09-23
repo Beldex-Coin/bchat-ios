@@ -1353,7 +1353,7 @@ extension ConversationVC {
             
         })
         Cancel.setValue(UIColor.lightGray, forKey: "titleTextColor")
-        Accept.setValue(Colors.bchat_button_clr, forKey: "titleTextColor")
+        Accept.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
         alert.addAction(Accept)
         DispatchQueue.main.async(execute: {
             self.present(alert, animated: true)

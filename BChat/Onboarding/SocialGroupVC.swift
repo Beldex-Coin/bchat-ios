@@ -66,7 +66,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
                 self?.update()
             }
         nextRef.isUserInteractionEnabled = false
-        nextRef.backgroundColor = Colors.bchat_view_bg_clr
+        nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         
     }
     
@@ -101,12 +101,12 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         }
         if str.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
             nextRef.setTitleColor(UIColor.lightGray, for: .normal)
             txtview.checkPlaceholder()
         }else {
             nextRef.isUserInteractionEnabled = true
-            nextRef.backgroundColor = Colors.bchat_button_clr
+            nextRef.backgroundColor = Colors.bchatButtonColor
             nextRef.setTitleColor(UIColor.white, for: .normal)
             txtview.checkPlaceholder()
         }

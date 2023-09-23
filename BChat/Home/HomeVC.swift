@@ -63,7 +63,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
-        explanationLabel.textColor = Colors.bchat_placeholder_clr
+        explanationLabel.textColor = Colors.bchatPlaceholderColor
         explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
@@ -71,7 +71,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         explanationLabel.text = NSLocalizedString("Much empty.Such wow.", comment: "")
         
         let explanationLabel2 = UILabel()
-        explanationLabel2.textColor = Colors.bchat_placeholder_clr
+        explanationLabel2.textColor = Colors.bchatPlaceholderColor
         explanationLabel2.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel2.numberOfLines = 0
         explanationLabel2.lineBreakMode = .byWordWrapping

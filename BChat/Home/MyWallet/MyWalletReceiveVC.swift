@@ -21,7 +21,7 @@ class MyWalletReceiveVC: BaseVC,UITextFieldDelegate {
         txtamount.addTarget(self, action: #selector(onAmountChange), for: .editingChanged)
         txtamount.delegate = self
         txtamount.keyboardType = .decimalPad
-        txtamount.tintColor = Colors.bchat_button_clr
+        txtamount.tintColor = Colors.bchatButtonColor
         //Keyboard Done Option
         txtamount.addDoneButtonKeybord()
         

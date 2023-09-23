@@ -195,7 +195,7 @@ open class DatePickerDialog: UIView {
         let cornerRadius = kCornerRadius
         gradient.cornerRadius = cornerRadius
         container.layer.insertSublayer(gradient, at: 0)
-        container.backgroundColor = Colors.bchat_view_bg_clr
+        container.backgroundColor = Colors.bchatViewBackgroundColor
         container.layer.cornerRadius = cornerRadius
         container.layer.borderColor = ColorsDate.separator.cgColor
         container.layer.borderWidth = 1

@@ -40,10 +40,10 @@ final class CallPermissionRequestModal : Modal {
         goToSettingsButton.set(.height, to: Values.mediumButtonHeight)
         goToSettingsButton.layer.cornerRadius = Modal.buttonCornerRadius
         if isDarkMode {
-            goToSettingsButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            goToSettingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             goToSettingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }else {
-            goToSettingsButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            goToSettingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             goToSettingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         goToSettingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)

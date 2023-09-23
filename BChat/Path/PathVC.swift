@@ -48,8 +48,8 @@ final class PathVC : BaseVC {
         result.setTitle(NSLocalizedString("vc_path_learn_more_button_title", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(learnMore), for: UIControl.Event.touchUpInside)
         result.layer.borderWidth = 0
-        result.setTitleColor(Colors.bchat_lbl_name, for: .normal)
-        result.layer.backgroundColor = Colors.bchat_button_clr.cgColor
+        result.setTitleColor(Colors.bchatLabelNameColor, for: .normal)
+        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
         return result
     }()
     

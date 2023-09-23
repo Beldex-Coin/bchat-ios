@@ -22,7 +22,7 @@ public final class Colors : NSObject {
     @objc public static var cellBackground: UIColor { UIColor(named: "bchat_cell_background")! }
     @objc public static var cellSelected: UIColor { UIColor(named: "bchat_cell_selected")! }
     @objc public static var cellPinned: UIColor { UIColor(named: "bchat_cell_pinned")! }
-    @objc public static var cellPinned2: UIColor { UIColor(named: "bchat_cell_pinned2")! }
+    @objc public static var cellPinnedColor: UIColor { UIColor(named: "cellPinnedColor")! }
     @objc public static var navigationBarBackground: UIColor { UIColor(named: "bchat_navigation_bar_background")! }
     @objc public static var searchBarPlaceholder: UIColor { UIColor(named: "bchat_search_bar_placeholder")! } // Also used for the icons
     @objc public static var searchBarBackground: UIColor { UIColor(named: "bchat_search_bar_background")! }
@@ -30,7 +30,7 @@ public final class Colors : NSObject {
     @objc public static var separator: UIColor { UIColor(named: "bchat_separator")! }
     @objc public static var unimportantButtonBackground: UIColor { UIColor(named: "bchat_unimportant_button_background")! }
     @objc public static var buttonBackground: UIColor { UIColor(named: "bchat_button_background")! }
-    @objc public static var buttonBackground2: UIColor { UIColor(named: "bchat_button_background2")! }
+    @objc public static var buttonBackgroundColor: UIColor { UIColor(named: "buttonBackgroundColor")! }
     @objc public static var settingButtonSelected: UIColor { UIColor(named: "bchat_setting_button_selected")! }
     @objc public static var modalBackground: UIColor { UIColor(named: "bchat_modal_background")! }
     @objc public static var modalBorder: UIColor { UIColor(named: "bchat_modal_border")! }
@@ -52,28 +52,28 @@ public final class Colors : NSObject {
     @objc public static var bchatMessageRequestsTitle: UIColor { UIColor(named: "bchat_message_requests_title")! }
     @objc public static var bchatMessageRequestsInfoText: UIColor { UIColor(named: "bchat_message_requests_info_text")! }
     
-    @objc public static var accent2: UIColor { UIColor(named: "bchat_accent2")! }
-    @objc public static var accent3: UIColor { UIColor(named: "bchat_accent3")! }
-    @objc public static var cellBackground2: UIColor { UIColor(named: "bchat_cell_background2")! }
-    @objc public static var navigationBarBackground2: UIColor { UIColor(named: "bchat_navigation_bar_background2")! }
-    @objc public static var unimportantButtonBackground2: UIColor { UIColor(named: "bchat_unimportant_button_background2")! }
+    @objc public static var accentColor: UIColor { UIColor(named: "accentColor")! }
+    @objc public static var accentFullColor: UIColor { UIColor(named: "accentFullColor")! }
+    @objc public static var cellBackgroundColor: UIColor { UIColor(named: "cellBackgroundColor")! }
+    @objc public static var navigationBarBackgroundColor: UIColor { UIColor(named: "navigationBarBackgroundColor")! }
+    @objc public static var unimportantButtonBackgroundColor: UIColor { UIColor(named: "unimportantButtonBackgroundColor")! }
     
-    @objc public static var bchat_button_clr: UIColor { UIColor(named: "bchat_button_clr")! }
-    @objc public static var bchat_button_clr2: UIColor { UIColor(named: "bchat_button_clr2")! }
-    @objc public static var bchat_lbl_name: UIColor { UIColor(named: "bchat_lbl_name")! }
-    @objc public static var bchat_placeholder_clr: UIColor { UIColor(named: "bchat_placeholder_clr")! }
-    @objc public static var bchat_small_label_clr: UIColor { UIColor(named: "bchat_small_label_clr")! }
-    @objc public static var bchat_storyboard_clr: UIColor { UIColor(named: "bchat_storyboard_clr")! }
-    @objc public static var bchat_view_bg_clr: UIColor { UIColor(named: "bchat_view_bg_clr")! }
-    @objc public static var myaccountclrs: UIColor { UIColor(named: "myaccountclrs")! }
+    @objc public static var bchatButtonColor: UIColor { UIColor(named: "bchat_button_clr")! }
+    @objc public static var bchatButtonGreenColor: UIColor { UIColor(named: "bchat_button_clr2")! }
+    @objc public static var bchatLabelNameColor: UIColor { UIColor(named: "bchat_lbl_name")! }
+    @objc public static var bchatPlaceholderColor: UIColor { UIColor(named: "bchat_placeholder_clr")! }
+    @objc public static var bchatSmallLabelColor: UIColor { UIColor(named: "bchat_small_label_clr")! }
+    @objc public static var bchatStoryboardColor: UIColor { UIColor(named: "bchat_storyboard_clr")! }
+    @objc public static var bchatViewBackgroundColor: UIColor { UIColor(named: "bchat_view_bg_clr")! }
+    @objc public static var myAccountColor: UIColor { UIColor(named: "myaccountclrs")! }
     
-    @objc public static var RegBChatViewcolors: UIColor { UIColor(named: "RegBChatViewcolors")! }
-    @objc public static var SlidemenuBgcolor: UIColor { UIColor(named: "SlidemenuBgcolor")! }
-    @objc public static var SlidemenuBgcolorBOX: UIColor { UIColor(named: "SlidemenuBgcolorBOX")! }
+    @objc public static var regBchatViewColor: UIColor { UIColor(named: "RegBChatViewcolors")! }
+    @objc public static var slideMenuBackgroundColor: UIColor { UIColor(named: "SlidemenuBgcolor")! }
+    @objc public static var slideMenuBackgroundColorBox: UIColor { UIColor(named: "SlidemenuBgcolorBOX")! }
     @objc public static var bchatpopupclr: UIColor { UIColor(named: "bchatpopupclr")! }
     @objc public static var bchatattachemnt: UIColor { UIColor(named: "bchatattachemnt")! }
     @objc public static var bchatmeassgeReq: UIColor { UIColor(named: "bchatmeassgeReq")! }
-    @objc public static var bchat_join_backgroundgreen: UIColor { UIColor(named: "bchat_join_backgroundgreen")! }
-    @objc public static var SyncingPopColor: UIColor { UIColor(named: "SyncingPopColor")! }
-    @objc public static var mywallethome_bottomview: UIColor { UIColor(named: "mywallethome_bottomview")! }
+    @objc public static var bchatJoinOpenGpBackgroundGreen: UIColor { UIColor(named: "bchat_join_backgroundgreen")! }
+    @objc public static var syncingPopColor: UIColor { UIColor(named: "SyncingPopColor")! }
+    @objc public static var myWalletHomeBottomViewColor: UIColor { UIColor(named: "mywallethome_bottomview")! }
 }

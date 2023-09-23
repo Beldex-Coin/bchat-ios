@@ -56,7 +56,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         txtview.returnKeyType = .done
         txtview.setPlaceholder()
         self.lblchatid.text = getUserHexEncodedPublicKey()
-        self.lblchatid.textColor = Colors.bchat_button_clr
+        self.lblchatid.textColor = Colors.bchatButtonColor
         self.lblchatid.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         self.lblchatid.numberOfLines = 0
         self.lblchatid.textAlignment = .center
@@ -64,7 +64,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
         nextRef.isUserInteractionEnabled = false
-        nextRef.backgroundColor = Colors.bchat_view_bg_clr
+        nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -88,12 +88,12 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         let str = textView.text!
         if str.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
             nextRef.setTitleColor(UIColor.lightGray, for: .normal)
             txtview.checkPlaceholder()
         }else {
             nextRef.isUserInteractionEnabled = true
-            nextRef.backgroundColor = Colors.bchat_button_clr
+            nextRef.backgroundColor = Colors.bchatButtonColor
             nextRef.setTitleColor(UIColor.white, for: .normal)
             txtview.checkPlaceholder()
         }
@@ -107,11 +107,11 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         }
         else if text.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         }
         else {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         }
         return true
     }

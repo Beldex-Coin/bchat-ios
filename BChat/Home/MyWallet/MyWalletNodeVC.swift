@@ -73,12 +73,12 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         self.nodenameTxtFld.delegate = self
         self.nodePortNumTxtFld.delegate = self
         self.nodePortNumTxtFld.keyboardType = .numberPad
-        nodeAddressTxtFld.tintColor = Colors.bchat_button_clr
-        nodePortNumTxtFld.tintColor = Colors.bchat_button_clr
-        nodeUsernameTxtFld.tintColor = Colors.bchat_button_clr
-        nodePasswordTxtFld.tintColor = Colors.bchat_button_clr
-        nodenameTxtFld.tintColor = Colors.bchat_button_clr
-        nodePortNumTxtFld.tintColor = Colors.bchat_button_clr
+        nodeAddressTxtFld.tintColor = Colors.bchatButtonColor
+        nodePortNumTxtFld.tintColor = Colors.bchatButtonColor
+        nodeUsernameTxtFld.tintColor = Colors.bchatButtonColor
+        nodePasswordTxtFld.tintColor = Colors.bchatButtonColor
+        nodenameTxtFld.tintColor = Colors.bchatButtonColor
+        nodePortNumTxtFld.tintColor = Colors.bchatButtonColor
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
         randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.NodePopView.isHidden = true
@@ -245,7 +245,7 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         nodePasswordTxtFld.text = ""
         nodenameTxtFld.text = ""
         testResultView.backgroundColor = Colors.accent
-        lbltestresult.textColor = Colors.bchat_lbl_name
+        lbltestresult.textColor = Colors.bchatLabelNameColor
         lbltestresult.text = "Test result:"
         imgtestresult.isHidden = true
     }
@@ -427,13 +427,13 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 cell.lblDetails.textColor = .red
                 cell.lblDetails.text = checkedDataForTimeInterval.values[dictionaryIndex!]
             } else {
-                cell.lblDetails.textColor = Colors.bchat_lbl_name
+                cell.lblDetails.textColor = Colors.bchatLabelNameColor
                 cell.lblDetails.text = "Last Block: " +  checkedDataForTimeInterval.values[dictionaryIndex!]
             }
         }
         
         cell.lblmyaddress.text = nodeArray[indexPath.row]
-        cell.mainView.layer.backgroundColor = Colors.bchat_view_bg_clr.cgColor
+        cell.mainView.layer.backgroundColor = Colors.bchatViewBackgroundColor.cgColor
         cell.isUserInteractionEnabled = true
         if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
             let selectedNodeData = SaveUserDefaultsData.SelectedNode

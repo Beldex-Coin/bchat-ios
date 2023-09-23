@@ -52,7 +52,7 @@ final class UserCell : UITableViewCell {
 
     private func setUpViewHierarchy() {
         // Background color
-        backgroundColor = Colors.cellBackground2
+        backgroundColor = Colors.cellBackgroundColor
         // Highlight color
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = .clear // Disabled for now

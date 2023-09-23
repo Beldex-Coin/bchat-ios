@@ -43,7 +43,7 @@ final class CallMissedTipsModal : Modal {
         messageLabel.textAlignment = .natural
         // Cancel Button
         cancelButton.setTitle(NSLocalizedString("  OK  ", comment: ""), for: .normal)
-        cancelButton.setTitleColor(Colors.bchat_button_clr, for: .normal)
+        cancelButton.setTitleColor(Colors.bchatButtonColor, for: .normal)
         cancelButton.backgroundColor = UIColor.lightGray
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ tipsIconImageView, titleLabel, messageLabel, cancelButton ])

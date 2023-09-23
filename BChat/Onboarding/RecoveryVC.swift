@@ -65,12 +65,12 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         let origImage = UIImage(named: "copy")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         copyRef.setImage(tintedImage, for: .normal)
-        copyRef.tintColor = Colors.accent2
+        copyRef.tintColor = Colors.accentColor
         backgroundView.layer.cornerRadius = 10
         continueRef.layer.cornerRadius = 6
         lblrecovery.isHidden = false
         self.lblname.text = "\(mnemonic)"
-        lblname.textColor = Colors.bchat_button_clr2
+        lblname.textColor = Colors.bchatButtonGreenColor
         lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         lblname.numberOfLines = 0
         lblname.lineBreakMode = .byWordWrapping
@@ -78,7 +78,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(string: "Note: ", attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]));
-        text.append(NSAttributedString(string: "Save your recovery seed! Only your recovery seed can be used to recover your account on another device. Copy the recovery seed to continue.", attributes: [NSAttributedString.Key.foregroundColor: Colors.bchat_lbl_name.cgColor]))
+        text.append(NSAttributedString(string: "Save your recovery seed! Only your recovery seed can be used to recover your account on another device. Copy the recovery seed to continue.", attributes: [NSAttributedString.Key.foregroundColor: Colors.bchatLabelNameColor.cgColor]))
         notelbl.attributedText = text
         optionViews[1].isSelected = true
         continueRef.isUserInteractionEnabled = false
@@ -87,7 +87,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     
     @IBAction func copyAction(sender:UIButton){
         continueRef.isUserInteractionEnabled = true
-        continueRef.backgroundColor = Colors.bchat_button_clr
+        continueRef.backgroundColor = Colors.bchatButtonColor
         self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         copyRef.isUserInteractionEnabled = false

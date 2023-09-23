@@ -5,7 +5,6 @@ import CoreMedia
 
 class DisplayBChatIDsVC: BaseVC {
     
-    
     @IBOutlet weak var backgroundBChatIDView:UIView!
     @IBOutlet weak var subbackgroundBChatIDView:UIView!
     @IBOutlet weak var lblbchatid:UILabel!

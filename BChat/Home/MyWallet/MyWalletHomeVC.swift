@@ -149,12 +149,12 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         // Disable vertical scrolling
         scrollView.isScrollEnabled = false
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height)
-        progressView.tintColor = Colors.bchat_button_clr
+        progressView.tintColor = Colors.bchatButtonColor
         btnHomeSend.setTitleColor(.lightGray, for: .normal)
         btnHomeScan.isUserInteractionEnabled = false
         btnHomeSend.isUserInteractionEnabled = false
-        btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
-        backgroundBottomScanView.backgroundColor = Colors.bchat_storyboard_clr
+        btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+        backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
         
         let colorScanQR: UIColor = isDarkMode ? .lightGray : .lightGray
         imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
@@ -300,7 +300,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         viewTodateRef.layer.cornerRadius = 3
         viewFromdateRef.layer.borderWidth = 1
         viewTodateRef.layer.borderWidth = 1
-        viewFromdateRef.layer.borderColor = Colors.bchat_button_clr.cgColor
+        viewFromdateRef.layer.borderColor = Colors.bchatButtonColor.cgColor
         viewTodateRef.layer.borderColor = Colors.bchatmeassgeReq.cgColor
         
         txtfromdate.delegate = self
@@ -568,14 +568,14 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
             self.btnHomeScan.isUserInteractionEnabled = false
             self.btnHomeSend.isUserInteractionEnabled = false
-            self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
+            self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
             
             lblMainblns.text = "0.00"
             lblOtherCurrencyblns.text = "0.00"
             self.syncedflag = false
             conncetingState.value = true
             syncedIconRef.isHidden = true
-            self.progressLabel.textColor = Colors.bchat_button_clr
+            self.progressLabel.textColor = Colors.bchatButtonColor
             progressLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
@@ -608,7 +608,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.conncetingState.value = true
             DispatchQueue.main.async {
                 self.syncedIconRef.isHidden = true
-                self.progressLabel.textColor = Colors.bchat_button_clr
+                self.progressLabel.textColor = Colors.bchatButtonColor
                 //self.progressLabel.text = "Connecting ..."
             }
         }
@@ -670,7 +670,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                             }
                             self.syncedflag = false
                             self.progressView.progress = Float(progress)
-                            self.progressLabel.textColor = Colors.bchat_button_clr
+                            self.progressLabel.textColor = Colors.bchatButtonColor
                             self.progressLabel.text = statusText
                         }
                     }
@@ -706,7 +706,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         }
                         self.syncedflag = false
                         self.progressView.progress = Float(progress)
-                        self.progressLabel.textColor = Colors.bchat_button_clr
+                        self.progressLabel.textColor = Colors.bchatButtonColor
                         self.progressLabel.text = statusText
                     }
                 }
@@ -722,7 +722,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
         self.btnHomeScan.isUserInteractionEnabled = false
         self.btnHomeSend.isUserInteractionEnabled = false
-        self.btnHomeSend.backgroundColor = Colors.bchat_storyboard_clr
+        self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
         init_syncing_wallet()
     }
     
@@ -735,7 +735,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
         btnHomeSend.backgroundColor = Colors.sentMessageBackground
         btnHomeSend.setTitleColor(.white, for: .normal)
-        self.progressLabel.textColor = Colors.bchat_button_clr
+        self.progressLabel.textColor = Colors.bchatButtonColor
         if self.backApiRescanVC == true{
             self.progressLabel.text = "Connecting..."
         }else {
@@ -792,7 +792,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             })
             alert.addAction(exit)
             cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchat_button_clr, forKey: "titleTextColor")
+            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true)
             })
@@ -808,7 +808,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             })
             alert.addAction(exit)
             cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchat_button_clr, forKey: "titleTextColor")
+            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
             DispatchQueue.main.async(execute: {
                 self.present(alert, animated: true)
             })
@@ -1363,7 +1363,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }else {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1407,7 +1407,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }else {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1534,7 +1534,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 if responceData.direction != BChat_Messenger.TransactionDirection.received {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1544,7 +1544,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }else {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1579,7 +1579,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 if responceData.direction != BChat_Messenger.TransactionDirection.received {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1589,7 +1589,7 @@ extension MyWalletHomeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 }else {
                     cell.lblSendandReceive.text = "Received"
                     cell.imgpic.image = UIImage(named: "ic_receive")
-                    cell.lblamount.textColor = Colors.bchat_button_clr
+                    cell.lblamount.textColor = Colors.bchatButtonColor
                     let bdxamount = Double(responceData.amount)!.removeZerosFromEnd()
                     cell.lblamount.text = "+ \(bdxamount)"
                     cell.lblfee.isHidden = true
@@ -1853,7 +1853,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
                 }
                 self.syncedflag = false
                 self.progressView.progress = Float(progress)
-                self.progressLabel.textColor = Colors.bchat_button_clr
+                self.progressLabel.textColor = Colors.bchatButtonColor
                 self.progressLabel.text = statusText
             }
         }

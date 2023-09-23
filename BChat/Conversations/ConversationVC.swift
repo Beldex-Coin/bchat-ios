@@ -213,7 +213,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         )
         result.layer.cornerRadius = 6
         result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.bchat_button_clr.cgColor
+        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
         result.layer.borderColor = {
             if #available(iOS 13.0, *) {
                 return Colors.bchatHeading
@@ -225,7 +225,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             return Colors.bchatHeading.cgColor
         }()
-        result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
+        result.addTarget(ConversationVC.self, action: #selector(acceptMessageRequest), for: .touchUpInside)
         
         return result
     }()
@@ -257,7 +257,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             return Colors.destructive.cgColor
         }()
-        result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
+        result.addTarget(ConversationVC.self, action: #selector(deleteMessageRequest), for: .touchUpInside)
         
         return result
     }()

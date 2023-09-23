@@ -23,7 +23,7 @@ final class InfoBanner : UIView {
         let label = UILabel()
         label.text = message
         label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        label.textColor = Colors.bchat_lbl_name
+        label.textColor = Colors.bchatLabelNameColor
         label.numberOfLines = 0
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping

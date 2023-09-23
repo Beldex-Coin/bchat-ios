@@ -376,7 +376,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             if !SaveUserDefaultsData.SelectedBalance.isEmpty {
                 if SaveUserDefaultsData.SelectedBalance.contains(displayBalanceArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else{
                     cell.view1.backgroundColor = .clear
@@ -386,7 +386,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             else {
                 if "Beldex Available Balance".contains(displayBalanceArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else {
                     cell.view1.backgroundColor = .clear
@@ -398,7 +398,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                 if SaveUserDefaultsData.SelectedDecimal.contains(decimalArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else{
                     cell.lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
@@ -408,7 +408,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             else {
                 if "4 - Decimal".contains(decimalArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else {
                     cell.view1.backgroundColor = .clear
@@ -419,7 +419,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
                 if SaveUserDefaultsData.SelectedCurrency.contains(currencyNameArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else{
                     cell.lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
@@ -429,7 +429,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             else {
                 if "USD".contains(currencyNameArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else {
                     cell.view1.backgroundColor = .clear
@@ -446,7 +446,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             if !SaveUserDefaultsData.FeePriority.isEmpty {
                 if SaveUserDefaultsData.FeePriority.contains(feePriorityArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else{
                     cell.lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
@@ -456,7 +456,7 @@ extension MyWalletSettingsVC:UITableViewDelegate,UITableViewDataSource {
             else {
                 if "Flash".contains(feePriorityArray[indexPath.row]) {
                     cell.lblname.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-                    cell.view1.backgroundColor = Colors.bchat_view_bg_clr
+                    cell.view1.backgroundColor = Colors.bchatViewBackgroundColor
                     cell.view1.layer.cornerRadius = 6
                 }else {
                     cell.view1.backgroundColor = .clear

@@ -30,7 +30,7 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         let origImage = UIImage(named: "pasteicon")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         pasteRef.setImage(tintedImage, for: .normal)
-        pasteRef.tintColor = Colors.accent2
+        pasteRef.tintColor = Colors.accentColor
         
         backgroundView.layer.cornerRadius = 10
         clearRef.layer.cornerRadius = 6

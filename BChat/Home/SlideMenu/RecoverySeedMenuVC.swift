@@ -39,7 +39,7 @@ class RecoverySeedMenuVC: UIViewController {
         
         backgroundView.layer.cornerRadius = 10
         self.lblname.text = mnemonic
-        lblname.textColor = Colors.bchat_button_clr
+        lblname.textColor = Colors.bchatButtonColor
         lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         lblname.numberOfLines = 0
         lblname.lineBreakMode = .byWordWrapping

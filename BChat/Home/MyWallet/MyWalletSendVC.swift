@@ -90,7 +90,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         placeholderLabel.sizeToFit()
         txtaddress.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (txtaddress.font?.pointSize)! / 2)
-        placeholderLabel.textColor = Colors.bchat_placeholder_clr
+        placeholderLabel.textColor = Colors.bchatPlaceholderColor
         placeholderLabel.isHidden = !txtaddress.text.isEmpty
         
         //Save Receipent Address fun developed In Local
@@ -111,8 +111,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         txtaddress.delegate = self
         txtamount.delegate = self
         txtaddress.returnKeyType = .done
-        txtamount.tintColor = Colors.bchat_button_clr
-        txtaddress.tintColor = Colors.bchat_button_clr
+        txtamount.tintColor = Colors.bchatButtonColor
+        txtaddress.tintColor = Colors.bchatButtonColor
         let logoScanImg = isLightMode ? "scan_QR_dark" : "scan_QR"
         scanRefbtn.setImage(UIImage(named: logoScanImg), for: .normal)
         let logoAddressImg = isLightMode ? "user_light" : "user_dark"
@@ -490,7 +490,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             self.lblFeeAftersending.text = feeValue
             loading.stopAnimating()
-            self.btnOK.backgroundColor = Colors.bchat_button_clr
+            self.btnOK.backgroundColor = Colors.bchatButtonColor
         }else {
             loading.stopAnimating()
             self.btnOK.backgroundColor = UIColor(red: 0.47, green: 0.47, blue: 0.55, alpha: 1.00)

@@ -88,7 +88,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         publicKeyLabel.textAlignment = .left
         publicKeyLabel.adjustsFontSizeToFitWidth = false
         publicKeyLabel.lineBreakMode = .byTruncatingTail
-        publicKeyLabel.backgroundColor = Colors.myaccountclrs
+        publicKeyLabel.backgroundColor = Colors.myAccountColor
         publicKeyLabel?.layer.masksToBounds = true
         publicKeyLabel.layer.cornerRadius = 6
         publicKeyLabel.text = " \(getUserHexEncodedPublicKey())"
@@ -103,7 +103,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         beldexaddressLabel.textAlignment = .left
         beldexaddressLabel.adjustsFontSizeToFitWidth = false
         beldexaddressLabel.lineBreakMode = .byTruncatingTail
-        beldexaddressLabel.backgroundColor = Colors.myaccountclrs
+        beldexaddressLabel.backgroundColor = Colors.myAccountColor
         beldexaddressLabel?.layer.masksToBounds = true
         beldexaddressLabel.layer.cornerRadius = 6
         beldexaddressLabel.text = " \(SaveUserDefaultsData.WalletpublicAddress)"

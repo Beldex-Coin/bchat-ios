@@ -41,10 +41,10 @@ final class CallModal : Modal {
         enableButton.set(.height, to: Values.mediumButtonHeight)
         enableButton.layer.cornerRadius = Modal.buttonCornerRadius
         if isDarkMode {
-            enableButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            enableButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             enableButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }else {
-            enableButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            enableButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             enableButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         enableButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)

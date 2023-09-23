@@ -91,7 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
         } else {
             TSInteraction *_Nullable firstUnseenInteraction =
                 [[TSDatabaseView unseenDatabaseViewExtension:transaction] firstObjectInGroup:thread.uniqueId];
-            if (firstUnseenInteraction && firstUnseenInteraction.sortId != NULL) {
+//            if (firstUnseenInteraction && firstUnseenInteraction.sortId != NULL) {
+//                firstUnseenSortId = @(firstUnseenInteraction.sortId);
+//            }
+            if (firstUnseenInteraction && firstUnseenInteraction.sortId != 0) {
                 firstUnseenSortId = @(firstUnseenInteraction.sortId);
             }
         }

@@ -46,7 +46,7 @@ public final class TextField : UITextField {
             set(.height, to: height)
         }
         layer.borderColor = isLightMode ? Colors.text.cgColor : Colors.border.withAlphaComponent(Values.lowOpacity).cgColor
-        layer.backgroundColor = Colors.bchat_view_bg_clr.cgColor
+        layer.backgroundColor = Colors.bchatViewBackgroundColor.cgColor
         layer.borderWidth = 0
         layer.cornerRadius = TextField.cornerRadius
     }
