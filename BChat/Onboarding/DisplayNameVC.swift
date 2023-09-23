@@ -123,6 +123,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
                 updateSeed(seedvalue: seed)
             } catch let error {
                 print("Failure: \(error)")
+                return
             }
             // Bchat Work
             Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)

@@ -88,6 +88,7 @@ public struct BDXWalletBuilder {
         if let result = openExistingWallet() {
             return BDXWallet(walletWrapper: result)
         }
+        WalletSharedData.sharedInstance.wallet = nil
         return nil
     }
     

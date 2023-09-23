@@ -426,6 +426,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func answerCall() {
+        UIApplication.shared.isIdleTimerDisabled = true
         AppEnvironment.shared.callManager.answerCall(call) { error in
             DispatchQueue.main.async {
                 if let _ = error {
@@ -437,6 +438,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func endCall() {
+        UIApplication.shared.isIdleTimerDisabled = false
         AppEnvironment.shared.callManager.endCall(call) { error in
           //  self.alertOnCallEnding()
             if let _ = error {

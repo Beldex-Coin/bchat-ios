@@ -470,6 +470,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         txttodate.text = ""
         fromDate = ""
         toDate = ""
+        self.backApiRescanVC = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -477,6 +478,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         UIApplication.shared.isIdleTimerDisabled = true
         
         if BackAPI == true{
+            self.closeWallet()
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
@@ -522,6 +524,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         
         // Rescan Height Update in userdefaults work
         if backApiRescanVC == true {
+            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
+            self.btnHomeScan.isUserInteractionEnabled = false
+            self.btnHomeSend.isUserInteractionEnabled = false
+            self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+            self.closeWallet()
             init_syncing_wallet()
         }
         filteredAllTransactionarray = []
@@ -579,6 +586,13 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             progressLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
+                WalletSharedData.sharedInstance.wallet = nil
+                DispatchQueue.main.async {
+                    self?.btnHomeSend.setTitleColor(.lightGray, for: .normal)
+                    self?.btnHomeScan.isUserInteractionEnabled = false
+                    self?.btnHomeSend.isUserInteractionEnabled = false
+                    self?.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+                }
                 guard let strongSelf = self else { return }
                 switch result {
                 case .success(let wallet):
@@ -723,6 +737,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.btnHomeScan.isUserInteractionEnabled = false
         self.btnHomeSend.isUserInteractionEnabled = false
         self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+        self.closeWallet()
         init_syncing_wallet()
     }
     
@@ -1242,6 +1257,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         bottomview.isUserInteractionEnabled = false
         scrollView.isUserInteractionEnabled = false
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
+        self.closeWallet()
         init_syncing_wallet()
     }
     @IBAction func rescanAction(_ sender: UIButton) {
@@ -1815,12 +1831,12 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         // Wallet Rescan for Height
-        if self.backApiRescanVC == true {
+//        if self.backApiRescanVC == true {
             self.isFromWalletRescan(isCurrentHeight: currentHeight, isdaemonBlockHeight: wallet.daemonBlockChainHeight)
-        }else{
+//        }else{
             self.needSynchronized = true
             self.isSyncingUI = true
-        }
+//        }
     }
     
     func isFromWalletRescan(isCurrentHeight:UInt64,isdaemonBlockHeight:UInt64) {
@@ -1844,7 +1860,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
             numberFormatter.secondaryGroupingSize = 2
             let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
             let statusText = "\(formattedNumber!)" + " Blocks Remaining"
-            if formattedNumber == "1" {
+            if difference.overflow || difference.partialValue <= 1500 {
                 self.backApiRescanVC = false
             }
             DispatchQueue.main.async {

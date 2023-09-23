@@ -264,12 +264,8 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
     
     func saveReceipeinetAddressOnAndOff(){
         if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
-            if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
-                recipientAddressON = true
-            } else {
-                recipientAddressON = false
-            }
-        }else {
+            recipientAddressON = true
+        } else {
             recipientAddressON = false
         }
     }
