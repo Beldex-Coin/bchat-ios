@@ -127,7 +127,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     var isFilter = false
     var noTransaction = false
     var syncingIsFromDelegateMethod = true
-    
+    var isdaemonHeight : Int64 = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1267,7 +1267,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             scrollView.isUserInteractionEnabled = true
             self.navigationController?.navigationBar.isUserInteractionEnabled = true
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletRescanVC") as! MyWalletRescanVC
-            vc.daemonBlockChainHeight = daemonBlockChainHeight
+            vc.daemonBlockChainHeight = UInt64(isdaemonHeight)
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
             self.showToastMsg(message: "Can't rescan while wallet is syncing", seconds: 1.0)
@@ -1802,6 +1802,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
         print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+        isdaemonHeight = Int64(wallet.blockChainHeight)
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             if self.wallet?.synchronized == true {
                 self.isSyncingUI = false
@@ -1830,18 +1831,15 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         print("NewBlock------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
-        // Wallet Rescan for Height
-//        if self.backApiRescanVC == true {
-            self.isFromWalletRescan(isCurrentHeight: currentHeight, isdaemonBlockHeight: wallet.daemonBlockChainHeight)
-//        }else{
-            self.needSynchronized = true
-            self.isSyncingUI = true
-//        }
+        isdaemonHeight = Int64(wallet.daemonBlockChainHeight)
+        self.isFromWalletRescan(isCurrentHeight: currentHeight, isdaemonBlockHeight: wallet.daemonBlockChainHeight)
+        self.needSynchronized = true
+        self.isSyncingUI = true
     }
     
     func isFromWalletRescan(isCurrentHeight:UInt64,isdaemonBlockHeight:UInt64) {
         taskQueue.async {
-            let (current, total) = (self.currentBlockChainHeight, self.wallet!.daemonBlockChainHeight)
+            let (current, total) = (isCurrentHeight, isdaemonBlockHeight)
             guard total != current else { return }
             let difference = total.subtractingReportingOverflow(current)
             var progress = CGFloat(current) / CGFloat(total)
