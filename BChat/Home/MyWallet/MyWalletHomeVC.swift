@@ -631,7 +631,9 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             if isConnected {
                 if let wallet = self.wallet {
                     if SaveUserDefaultsData.WalletRestoreHeight == "" {
-                        SaveUserDefaultsData.WalletRestoreHeight = "1850630"
+                        let lastElementHeight = DateHeight.getBlockHeight.last
+                        let height = lastElementHeight!.components(separatedBy: ":")
+                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!

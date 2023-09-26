@@ -158,7 +158,7 @@ class MyWalletSettingsVC: BaseVC,UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
         var searchText  = textField.text! + string
         if string  == "" {
-            searchText = (searchText as String).substring(to: searchText.index(before: searchText.endIndex))
+            searchText = String(searchText.prefix(searchText.count - 1))
         }
         if searchText == "" {
             isSearched = false

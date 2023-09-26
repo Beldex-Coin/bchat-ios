@@ -467,8 +467,10 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             if isConnected {
                 if let wallet = self.wallet {
                     if SaveUserDefaultsData.WalletRestoreHeight == "" {
-                        let restoreHeightempty = UInt64("1850630")!
-                        wallet.restoreHeight = restoreHeightempty
+                        let lastElementHeight = DateHeight.getBlockHeight.last
+                        let height = lastElementHeight!.components(separatedBy: ":")
+                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
+                        wallet.restoreHeight = UInt64("\(height[1])")!
                     }else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
