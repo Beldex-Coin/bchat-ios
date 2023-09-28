@@ -1890,7 +1890,9 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
             self.transactionReceivearray = history.receive
             
             if SaveUserDefaultsData.WalletRestoreHeight == "" {
-                let restoreHeightempty = UInt64("1850630")!
+                let lastElementHeight = DateHeight.getBlockHeight.last
+                let height = lastElementHeight!.components(separatedBy: ":")
+                let restoreHeightempty = UInt64("\(height[1])")!
                 self.transactionAllarray = self.transactionAllarray.filter{$0.blockHeight >= restoreHeightempty}
                 self.transactionSendarray = self.transactionSendarray.filter{$0.blockHeight >= restoreHeightempty}
                 self.transactionReceivearray = self.transactionReceivearray.filter{$0.blockHeight >= restoreHeightempty}
