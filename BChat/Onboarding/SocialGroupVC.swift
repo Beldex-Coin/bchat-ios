@@ -61,6 +61,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
             .done { [weak self] rooms in
                 self?.allRooms = rooms
+                self?.update()
             }
             .catch { [weak self] _ in
                 self?.update()

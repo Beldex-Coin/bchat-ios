@@ -1708,14 +1708,14 @@
                                 <rect key="frame" x="25" y="77" width="378" height="65"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tjk-pU-7ZI">
-                                        <rect key="frame" x="348" y="20" width="25" height="25"/>
+                                        <rect key="frame" x="343" y="20" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="4ka-jR-8tM"/>
                                             <constraint firstAttribute="width" constant="25" id="FRB-S0-i9j"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R5b-lN-UoZ">
-                                        <rect key="frame" x="348" y="20" width="25" height="25"/>
+                                        <rect key="frame" x="343" y="20" width="25" height="25"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" image="scan_QR"/>
                                         <connections>
@@ -1723,7 +1723,7 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="lcC-Op-cOx">
-                                        <rect key="frame" x="5" y="5" width="338" height="55"/>
+                                        <rect key="frame" x="5" y="5" width="333" height="55"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="14"/>
@@ -1739,7 +1739,7 @@
                                     <constraint firstAttribute="bottom" secondItem="lcC-Op-cOx" secondAttribute="bottom" constant="5" id="M0f-gT-x8e"/>
                                     <constraint firstItem="lcC-Op-cOx" firstAttribute="top" secondItem="zWa-k8-5ey" secondAttribute="top" constant="5" id="N5a-GP-zaP"/>
                                     <constraint firstItem="Tjk-pU-7ZI" firstAttribute="centerY" secondItem="zWa-k8-5ey" secondAttribute="centerY" id="SJd-VK-j5T"/>
-                                    <constraint firstAttribute="trailing" secondItem="Tjk-pU-7ZI" secondAttribute="trailing" constant="5" id="Yan-0i-gs3"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tjk-pU-7ZI" secondAttribute="trailing" constant="10" id="Yan-0i-gs3"/>
                                     <constraint firstItem="Tjk-pU-7ZI" firstAttribute="leading" secondItem="lcC-Op-cOx" secondAttribute="trailing" constant="5" id="Yhk-N6-iYu"/>
                                     <constraint firstItem="R5b-lN-UoZ" firstAttribute="width" secondItem="Tjk-pU-7ZI" secondAttribute="width" id="bsb-85-nQh"/>
                                     <constraint firstItem="R5b-lN-UoZ" firstAttribute="leading" secondItem="Tjk-pU-7ZI" secondAttribute="trailing" constant="-25" id="t9I-Js-hFP"/>
