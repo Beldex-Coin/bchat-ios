@@ -275,9 +275,9 @@ extension SendMediaNavigationController: UINavigationControllerDelegate {
 
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if viewController == captureViewController {
-            setNavBarBackgroundColor(to: .black)
+            setNavBarBackgroundColor(to: isLightMode ? .white : .black)
         } else if viewController == mediaLibraryViewController {
-            setNavBarBackgroundColor(to: .white)
+            setNavBarBackgroundColor(to: isLightMode ? .white : .black)
         } else {
             setNavBarBackgroundColor(to: Colors.navigationBarBackground)
         }
@@ -304,9 +304,9 @@ extension SendMediaNavigationController: UINavigationControllerDelegate {
     // In case back navigation was canceled, we re-apply whatever is showing.
     func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         if viewController == captureViewController {
-            setNavBarBackgroundColor(to: .black)
+            setNavBarBackgroundColor(to: isLightMode ? .white : .black)
         } else if viewController == mediaLibraryViewController {
-            setNavBarBackgroundColor(to: .white)
+            setNavBarBackgroundColor(to: isLightMode ? .white : .black)
         } else {
             setNavBarBackgroundColor(to: Colors.navigationBarBackground)
         }
@@ -402,7 +402,6 @@ extension SendMediaNavigationController: ImagePickerGridControllerDelegate {
 
         let libraryMedia = MediaLibrarySelection(asset: asset, signalAttachmentPromise: attachmentPromise)
         mediaLibrarySelections.append(key: asset, value: libraryMedia)
-
         updateButtons(topViewController: imagePicker)
     }
 
@@ -411,7 +410,6 @@ extension SendMediaNavigationController: ImagePickerGridControllerDelegate {
             return
         }
         mediaLibrarySelections.remove(key: asset)
-
         updateButtons(topViewController: imagePicker)
     }
 

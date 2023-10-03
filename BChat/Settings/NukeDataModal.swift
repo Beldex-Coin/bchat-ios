@@ -1,4 +1,5 @@
 import UIKit
+import SignalUtilitiesKit
 import BChatUIKit
 import BChatSnodeKit
 import BChatMessagingKit
@@ -72,7 +73,6 @@ final class NukeDataModal : Modal {
         }else {
             result.backgroundColor = UIColor.lightGray
         }
-//        result.backgroundColor = Colors.buttonBackground
         result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)
@@ -154,12 +154,32 @@ final class NukeDataModal : Modal {
     @objc private func clearEntireAccount() {
         UIApplication.shared.applicationIconBadgeNumber = 0
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
-            MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
-                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
-                General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
-                NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
-            }.retainUntilComplete()
+            // Dismiss the loader on the main thread
+            DispatchQueue.main.async {
+                self?.dismiss(animated: true, completion: {
+                    // After the loader is dismissed, you can continue with your data clearing and other operations here
+                    self?.clearUserData()
+                })
+            }
         }
+    }
+    func clearUserData() {
+        // Clear user data, such as UserDefaults and cached data
+        UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
+        General.Cache.cachedEncodedPublicKey.mutate { $0 = nil }
+        // Notify that data nuking is requested
+        NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
+        // 3. Initiate the configuration synchronization with proper error handling
+        MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
+            // Handle successful synchronization if needed
+            UserDefaults.removeAll()
+            General.Cache.cachedEncodedPublicKey.mutate { $0 = nil }
+            NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
+        }
+        .catch { error in
+            // Handle any errors that may occur during synchronization
+            print("Error synchronizing configuration: \(error)")
+        }
+        .retainUntilComplete()
     }
 }
