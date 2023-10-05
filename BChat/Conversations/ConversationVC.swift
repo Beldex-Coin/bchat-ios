@@ -225,7 +225,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             return Colors.bchatHeading.cgColor
         }()
-        result.addTarget(ConversationVC.self, action: #selector(acceptMessageRequest), for: .touchUpInside)
+        result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
         
         return result
     }()
@@ -257,7 +257,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             return Colors.destructive.cgColor
         }()
-        result.addTarget(ConversationVC.self, action: #selector(deleteMessageRequest), for: .touchUpInside)
+        result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
         
         return result
     }()

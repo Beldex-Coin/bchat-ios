@@ -3460,9 +3460,9 @@
 				607021D428D8426F00D5F4D4 /* MyWallet */,
 				6040690728B4A7CB0094E74D /* SlideMenu */,
 				7B93D06B27CF175800811CB6 /* Views */,
-				7B93D06827CF173D00811CB6 /* Message Requests */,
 				7BAF54CA27ACCEEC003D12F8 /* GlobalSearch */,
 				B8BB82A4238F627000BA5194 /* HomeVC.swift */,
+				7B93D06827CF173D00811CB6 /* Message Requests */,
 				B83F2B85240C7B8F000A54AB /* NewConversationButtonSet.swift */,
 			);
 			path = Home;

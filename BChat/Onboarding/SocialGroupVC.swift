@@ -166,7 +166,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
                     let title = "Couldn't Join"
                     let message = error.localizedDescription
                     self?.isJoining = false
-                    self?.showError(title: title, message: message)
+                    self?.showError(title: "BChat", message: "Couldn't join social group.")
                 }
         }
     }
