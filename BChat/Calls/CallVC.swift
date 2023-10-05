@@ -75,6 +75,17 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         return result
     }()
     
+    private lazy var backButton: UIButton = {
+        let result = UIButton(type: .custom)
+        result.isHidden = call.hasConnected
+        let image = UIImage(named: "NavBarBack")!.withTint(.white)
+        result.setImage(image, for: UIControl.State.normal)
+        result.set(.width, to: 60)
+        result.set(.height, to: 60)
+        result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
+        return result
+    }()
+    
     private lazy var answerButton: UIButton = {
         let result = UIButton(type: .custom)
         result.isHidden = call.hasStartedConnecting
@@ -232,6 +243,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callInfoLabel.text = "Connected"
+                self.backButton.isHidden = true
                 self.minimizeButton.isHidden = false
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
@@ -311,6 +323,10 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         minimizeButton.translatesAutoresizingMaskIntoConstraints = false
         minimizeButton.pin(.left, to: .left, of: view)
         minimizeButton.pin(.top, to: .top, of: view, withInset: 32)
+        view.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.pin(.left, to: .left, of: view)
+        backButton.pin(.top, to: .top, of: view, withInset: 32)
         // Title label
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -482,6 +498,11 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         miniCallView.show()
         self.conversationVC?.showInputAccessoryView()
         presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func pop() {
+        self.conversationVC?.showInputAccessoryView()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Video and Audio

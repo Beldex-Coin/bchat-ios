@@ -591,9 +591,16 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             if let presentedVC = self.presentedViewController {
                 presentedVC.dismiss(animated: false, completion: nil)
             }
-            let conversationVC = ConversationVC(thread: thread)
-            self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
         }
+        let conversationVC = ConversationVC(thread: thread)
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
+        
     }
     
     private func delete(_ thread: TSThread) {

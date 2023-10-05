@@ -2,6 +2,7 @@
 
 import UIKit
 import AVFoundation
+import BChatUIKit
 
 class MyWalletScannerVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate {
     
@@ -65,17 +66,30 @@ extension MyWalletScannerVC: QRScannerViewDelegate {
         if qrString.contains("Beldex:") {
             qrString = qrString.replacingOccurrences(of: "Beldex:", with: "")
         }
-        
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletSendVC") as! MyWalletSendVC
         vc.wallet = self.wallet
-        
         if qrString.contains("?") {
             let walletAddress = qrString.components(separatedBy: "?")
+            guard BChatWalletWrapper.validAddress(walletAddress[0]) else {
+                let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    self.scannerView.startScanning()
+                }))
+                present(alertController, animated: true, completion: nil)
+                return
+            }
             vc.walletAddress = walletAddress[0]
         } else {
+            guard BChatWalletWrapper.validAddress(qrString) else {
+                let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    self.scannerView.startScanning()
+                }))
+                present(alertController, animated: true, completion: nil)
+                return
+            }
             vc.walletAddress = qrString
         }
-        
         if qrString.contains("=") {
             let walletAmount = qrString.components(separatedBy: "=")
             vc.walletAmount = walletAmount[1]
@@ -83,7 +97,6 @@ extension MyWalletScannerVC: QRScannerViewDelegate {
             vc.walletAmount = ""
         }
         self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
 }
