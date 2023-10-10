@@ -124,6 +124,11 @@ void VerifyRegistrationsForPrimaryStorage(OWSStorage *storage)
     // Do so atomically, and fetch all the notifications for each commit we jump.
     NSArray *notifications = [self.uiDatabaseConnection beginLongLivedReadTransaction];
     
+    if (notifications == nil) {
+        NSLog(@"notifications array is null");
+        return;
+    }
+    
     // Notify observers that the uiDatabaseConnection was updated
     NSDictionary *userInfo = @{ OWSUIDatabaseConnectionNotificationsKey: notifications };
     [[NSNotificationCenter defaultCenter] postNotificationName:OWSUIDatabaseConnectionDidUpdateNotification
