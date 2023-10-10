@@ -154,32 +154,50 @@ final class NukeDataModal : Modal {
     @objc private func clearEntireAccount() {
         UIApplication.shared.applicationIconBadgeNumber = 0
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
-            // Dismiss the loader on the main thread
-            DispatchQueue.main.async {
-                self?.dismiss(animated: true, completion: {
-                    // After the loader is dismissed, you can continue with your data clearing and other operations here
-                    self?.clearUserData()
-                })
+            guard let strongSelf = self else { return }
+            MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
+                strongSelf.dismiss(animated: true, completion: nil) // Dismiss the loader
+                strongSelf.deleteAllWalletFiles()
+                AppEnvironment.shared.notificationPresenter.clearAllNotifications()
+                UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
+                General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
+                NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
+            }.retainUntilComplete()
+        }
+    }
+    
+    func deleteAllWalletFiles() {
+        let username = SaveUserDefaultsData.NameForWallet
+        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentDirectory = allPaths[0]
+        let documentPath = documentDirectory + "/"
+        let pathWithFileName = documentPath + username
+        let pathWithFileKeys = documentPath + "\(username).keys"
+        let pathWithFileAddress = documentPath + "\(username).address.txt"
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponentForFileName = url.appendingPathComponent("\(username)") {
+            let filePath = pathComponentForFileName.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileName)")
+            }
+        }
+        if let pathComponentForFileKeys = url.appendingPathComponent("\(username).keys") {
+            let filePath = pathComponentForFileKeys.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileKeys)")
+            }
+        }
+        if let pathComponentForFileAddress = url.appendingPathComponent("\(username).address.txt") {
+            let filePath = pathComponentForFileAddress.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileAddress)")
             }
         }
     }
-    func clearUserData() {
-        // Clear user data, such as UserDefaults and cached data
-        UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
-        General.Cache.cachedEncodedPublicKey.mutate { $0 = nil }
-        // Notify that data nuking is requested
-        NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
-        // 3. Initiate the configuration synchronization with proper error handling
-        MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
-            // Handle successful synchronization if needed
-            UserDefaults.removeAll()
-            General.Cache.cachedEncodedPublicKey.mutate { $0 = nil }
-            NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
-        }
-        .catch { error in
-            // Handle any errors that may occur during synchronization
-            print("Error synchronizing configuration: \(error)")
-        }
-        .retainUntilComplete()
-    }
+    
+    
 }

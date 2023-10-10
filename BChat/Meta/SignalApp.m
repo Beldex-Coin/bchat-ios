@@ -148,7 +148,17 @@ NS_ASSUME_NONNULL_BEGIN
     [AppEnvironment.shared.notificationPresenter clearAllNotifications];
 
     if (onReset != nil) { onReset(); }
-    exit(0);
+//    exit(0);
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+     LandingVC *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LandingVC"];
+     UIWindow *window = UIApplication.sharedApplication.keyWindow;
+     [window makeKeyAndVisible];
+     // Init YourNavigationController
+     UINavigationController *navigationContoller = [[UINavigationController alloc] initWithRootViewController: loginViewController];
+     loginViewController.navigationController.navigationBarHidden = NO;
+     loginViewController.navigationController.navigationBar.backgroundColor = UIColor.blackColor;
+     // Set rootViewController
+     window.rootViewController = navigationContoller;
 }
 
 - (void)showHomeView
