@@ -145,6 +145,7 @@ final class DeleteAccountModel : Modal {
     
     @objc private func clearEntireAccount() {
         UIApplication.shared.applicationIconBadgeNumber = 0
+        WalletSharedData.sharedInstance.isCleardataStarting = true
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
             guard let strongSelf = self else { return }
             MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {

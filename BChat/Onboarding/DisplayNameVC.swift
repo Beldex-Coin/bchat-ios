@@ -105,7 +105,14 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         else {
             // MARK:- Beldex Wallet
             data.name = userNametxt.text!
-            WalletService.shared.createWallet(with: .new(data: data)) { (result) in}
+            WalletService.shared.createWallet(with: .new(data: data)) { (result) in
+                switch result {
+                case .success(let wallet):
+                    wallet.close()
+                case .failure(_):
+                    print("in case failyre")
+                }
+            }
             let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
             let WalletSeed = SaveUserDefaultsData.WalletSeed
             SaveUserDefaultsData.NameForWallet = data.name

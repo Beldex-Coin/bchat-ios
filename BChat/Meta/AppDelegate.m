@@ -683,6 +683,11 @@ static NSTimeInterval launchStartedAt;
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
         __IOS_AVAILABLE(10.0)__TVOS_AVAILABLE(10.0)__WATCHOS_AVAILABLE(3.0)__OSX_AVAILABLE(10.14)
 {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [prefs stringForKey:@"isDataCleared"];
+    if ([myString isEqualToString:@"Yes"]) {
+        return;
+    }
     if (notification.request.content.userInfo[@"remote"]) {
         OWSLogInfo(@"[Beldex] Ignoring remote notifications while the app is in the foreground.");
         return;
@@ -808,6 +813,9 @@ static NSTimeInterval launchStartedAt;
         // Resetting the data clears the old user defaults. We need to restore the unlink default.
         [NSUserDefaults.standardUserDefaults setBool:wasUnlinked forKey:@"wasUnlinked"];
     }];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:@"Yes" forKey:@"isDataCleared"];
+     
 }
 
 # pragma mark - App Link
