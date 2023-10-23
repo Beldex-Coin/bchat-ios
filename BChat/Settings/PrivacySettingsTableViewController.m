@@ -219,10 +219,29 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
                     }
                     target:weakSelf
                     selector:@selector(didToggleCallsEnabled:)]];
-    callsSection.headerTitle = [NSString stringWithFormat:@"%@ (BETA)", NSLocalizedString( @"SETTINGS_CALLS_HEADER", @"Header for setting for enabling & disabling voice & video calls.")];
+    callsSection.headerTitle = [NSString stringWithFormat:@"%@ ", NSLocalizedString( @"SETTINGS_CALLS_HEADER", @"Header for setting for enabling & disabling voice & video calls.")];
     callsSection.footerTitle = NSLocalizedString(
         @"SETTINGS_CALLS_FOOTER", @"Footer for setting for enabling & disabling voice & video calls.");
     [contents addSection:callsSection];
+    
+    //Wallet Option
+    OWSTableSection *walletOption = [OWSTableSection new];
+    [walletOption
+        addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"SETTINGS_WALLET",
+                                                     @"Setting for enabling & disabling wallet.")
+                    accessibilityIdentifier:[NSString stringWithFormat:@"settings.privacy.%@", @"calls"]
+                    isOnBlock:^{
+                        return [SSKPreferences areWalletEnabled];
+                    }
+                    isEnabledBlock:^{
+                        return YES;
+                    }
+                    target:weakSelf
+                    selector:@selector(didToggleOnWalletOption:)]];
+    walletOption.headerTitle = [NSString stringWithFormat:@"%@", NSLocalizedString( @"SETTINGS_WALLET_HEADER", @"Header for setting for enabling & disabling wallet.")];
+    walletOption.footerTitle = NSLocalizedString(
+        @"SETTINGS_WALLET_FOOTER", @"Footer for setting for enabling & disabling wallet.");
+    [contents addSection:walletOption];
 
     self.contents = contents;
 }
@@ -301,6 +320,13 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
         OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
         SSKPreferences.areCallsEnabled = enabled;
     }
+}
+
+- (void)didToggleOnWalletOption:(UISwitch *)sender
+{
+    BOOL enabled = sender.isOn;
+    OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
+    SSKPreferences.areWalletEnabled = enabled;
 }
 
 - (void)isScreenLockEnabledDidChange:(UISwitch *)sender

@@ -155,40 +155,31 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         btnHomeSend.isUserInteractionEnabled = false
         btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
         backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
-        
         let colorScanQR: UIColor = isDarkMode ? .lightGray : .lightGray
         imgScanRef.image = UIImage(named: "ic_Scan_QR")?.asTintedImage(color: colorScanQR)
-        
         let logo_ic_no_transactions = isLightMode ? "ic_no_transactions_light" : "ic_no_transactions"
         NotransationImg.image = UIImage(named: logo_ic_no_transactions)!
-        
         let colorimgBeldex: UIColor = isDarkMode ? .white : .black
         imgBeldexlogo.image = UIImage(named: "ic_beldex")?.asTintedImage(color: colorimgBeldex)
-        
         let imageDatefilter = UIImage(named: "ic_Datefilter")?.asTintedImage(color: colorimgBeldex)
         btnBydateRef.setImage(imageDatefilter, for: .normal)
-        
         let imageinfo = UIImage(named: "ic_info")?.asTintedImage(color: colorimgBeldex)
         syncedIconRef.setImage(imageinfo, for: .normal)
         syncedIconRef.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(syncWalletData(_:)), name: Notification.Name(rawValue: "syncWallet"), object: nil)
-        
         if BackAPI == true{
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
         }
-        
         //MARK:- Wallet Ref
         init_syncing_wallet()
-        
         if WalletSharedData.sharedInstance.wallet != nil {
             if self.wallet == nil {
                 isSyncingUI = true
                 syncingIsFromDelegateMethod = false
             }
         }
-        
         // Selected Currency Code Implement
         if backAPISelectedCurrency == true {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
@@ -226,7 +217,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         
         let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_WalletSettings")!, style: .plain, target: self, action: #selector(settingsoptn))
         rightBarButtonItems.append(settingsButton)
-        
         let refreButton = UIBarButtonItem(image: UIImage(named: "ic_resync"), style: .plain, target: self, action: #selector(refreshoptn))
         refreButton.accessibilityLabel = "Settings button"
         refreButton.isAccessibilityElement = true
@@ -237,9 +227,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         if UserDefaults.standard.domainSchemas.isEmpty { }else {
             hashArray2 = UserDefaults.standard.domainSchemas
         }
-        
         isExpanded = Array(repeating: false, count: transactionAllarray.count)
-        
         if self.transactionAllarray.count == 0 {
             self.showNoTransactionView()
         }else {
@@ -249,30 +237,24 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         bottomview.clipsToBounds = true
         bottomview.layer.cornerRadius = 10
         bottomview.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
         rightview.clipsToBounds = true
         rightview.layer.cornerRadius = 10
         rightview.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
         backgroundBottomView.layer.cornerRadius = 6
         backgroundBottomScanView.layer.cornerRadius = 6
         txttodate.delegate = self
         txtfromdate.delegate = self
-        
         //1st view popUp Recycle
         viewSyncing.layer.cornerRadius = 6
         btnReconnect.layer.cornerRadius = 6
         btnRescan.layer.cornerRadius = 6
         viewSyncing.isHidden = true
-        
         btnHomeSend.layer.cornerRadius = 6
         btnHomeReceive.layer.cornerRadius = 6
-        
         //2nd view popUp
         bottomview.isUserInteractionEnabled = true
         scrollView.isUserInteractionEnabled = true
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
-        
         btnAllRef2 = true
         btnSendRef2 = false
         btnReceiveRef2 = false
@@ -282,14 +264,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         incomingImageView.image = UIImage(named: checkBox)!
         outgoingImageView.image = UIImage(named: checkBox)!
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
-        
         self.filterView.isHidden = true
         self.filterView.layer.cornerRadius = 6
-        
         self.syncedIconView.isHidden = true
         self.syncedIconView.layer.cornerRadius = 6
         self.syncedIconRefbtn.layer.cornerRadius = 6
-        
         // Date Range References
         viewdateRangeRef.isHidden = true
         bottomview.isUserInteractionEnabled = true
@@ -302,12 +281,10 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         viewTodateRef.layer.borderWidth = 1
         viewFromdateRef.layer.borderColor = Colors.bchatButtonColor.cgColor
         viewTodateRef.layer.borderColor = Colors.bchatmeassgeReq.cgColor
-        
         txtfromdate.delegate = self
         txttodate.delegate = self
         txtfromdate.placeholder = "Select From Date"
         txttodate.placeholder = "Select To Date"
-        
         self.txtfromdate.datePicker(target: self,
                                     doneAction: #selector(fromdoneAction),
                                     cancelAction: #selector(fromcancelAction),
@@ -316,7 +293,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                                   doneAction: #selector(todoneAction),
                                   cancelAction: #selector(tocancelAction),
                                   datePickerMode: .date)
-        
         
         // UIPanGesture recognizer swiping only in one direction left side
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanForLeftswipe(_:)))
@@ -476,18 +452,15 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         UIApplication.shared.isIdleTimerDisabled = true
-        
         if BackAPI == true{
             self.closeWallet()
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
         }
-        
         if UserDefaults.standard.domainSchemas.isEmpty {}else {
             hashArray2 = UserDefaults.standard.domainSchemas
         }
-        
         // randomElement node And Selected Node
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
             randomNodeValue = SaveUserDefaultsData.SelectedNode
@@ -613,7 +586,6 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         } else {
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
         }
-        
     }
     
     func connect(wallet: BDXWallet) {
@@ -1082,7 +1054,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default,handler: { action in
                 self.fromcancelAction()
                 self.tocancelAction()
-             }))
+            }))
             self.present(alert, animated: true, completion: nil)
         }
         else {
@@ -1852,7 +1824,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
             } else {
                 leftBlocks = String(difference.partialValue)
             }
-
+            
             let largeNumber = Int(leftBlocks)
             let numberFormatter = NumberFormatter()
             numberFormatter.numberStyle = .decimal

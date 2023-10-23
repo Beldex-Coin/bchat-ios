@@ -280,7 +280,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             return present(modal, animated: true, completion: nil)
         }
         
-        //Sreekanth Developed.
+        //john Developed.
         let spaceCount = text.reduce(0) { $1.isWhitespace && !$1.isNewline ? $0 + 1 : $0 }
         // I have develop word count 4096 perpose logic
         if spaceCount < 0 {
@@ -368,7 +368,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //        }
 //    }
     
-    //Sreekanth Dev
 //    func longtextmesg(text:String,hasPermissionToSendSeed: Bool = false) {
 //        let thread = self.thread
 //        guard !text.isEmpty else { return }

@@ -310,7 +310,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationItem.titleView = titleView
         updateNavBarButtons()
         
-        //Sree kanth adding Bg Image
+        //adding Bg Image
         view.addSubview(someImageView)
         someImageView.pin(to: view)
         
@@ -936,7 +936,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
         //        navBar.stubbedNextResponder = self
         
-        //Sreekanth
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = self
@@ -947,7 +946,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         isShowingSearchUI = false
         navigationItem.titleView = titleView
         updateNavBarButtons()
-        //Sreekanth
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = nil

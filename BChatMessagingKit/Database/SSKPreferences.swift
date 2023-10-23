@@ -38,6 +38,19 @@ public class SSKPreferences: NSObject {
         }
     }
     
+    // MARK: - Bool for Wallet Enabled
+    private static let areWalletEnabledKey = "areWalletEnabled"
+    
+    @objc
+    public static var areWalletEnabled: Bool {
+        get {
+            return getBool(key: areWalletEnabledKey, defaultValue: false)
+        }
+        set {
+            setBool(newValue, key: areWalletEnabledKey)
+        }
+    }
+    
     @objc
     public static var isCallKitSupported: Bool {
         let userLocale = NSLocale.current

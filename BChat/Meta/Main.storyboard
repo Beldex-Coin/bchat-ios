@@ -2126,7 +2126,7 @@
                                     <action selector="nextActionWithSender:" destination="epG-ED-qsU" eventType="touchUpInside" id="9vW-tz-zNc"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey Sree, welcome to BChat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyZ-5L-dwR">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey John, welcome to BChat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyZ-5L-dwR">
                                 <rect key="frame" x="25" y="72" width="378" height="23.333333333333329"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="17"/>
                                 <color key="textColor" name="bchat_lbl_name"/>

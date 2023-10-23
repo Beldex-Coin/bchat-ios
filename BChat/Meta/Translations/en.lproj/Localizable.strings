@@ -376,10 +376,16 @@
 "SETTINGS_LINK_PREVIEWS_HEADER" = "Link Previews";
 /* Setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS" = "Voice and video calls";
+/* Setting for enabling & disabling wallet. */
+"SETTINGS_WALLET" = "Wallet";
 /* Footer for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_FOOTER" = "Allow access to accept voice and video calls from other users.";
+/* Footer for setting for enabling & disabling wallet. */
+"SETTINGS_WALLET_FOOTER" = "Allow access to accept enable or disable the wallet.";
 /* Header for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_HEADER" = "Calls";
+/* Header for setting for enabling & disabling wallet. */
+"SETTINGS_WALLET_HEADER" = "Wallet (BETA)";
 /* table section header */
 "SETTINGS_NOTIFICATION_CONTENT_TITLE" = "Notification Content";
 /* Label for the 'read receipts' setting. */
