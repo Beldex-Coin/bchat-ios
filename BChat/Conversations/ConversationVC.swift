@@ -379,8 +379,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         // Notifications
         let notificationCenter = NotificationCenter.default
-//        notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-//        notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleAudioDidFinishPlayingNotification(_:)), name: .SNAudioDidFinishPlaying, object: nil)
         notificationCenter.addObserver(self, selector: #selector(addOrRemoveBlockedBanner), name: .contactBlockedStateChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
@@ -460,14 +460,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         recoverInputView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         let text = snInputView.text
         Storage.write { transaction in
             self.thread.setDraft(text, transaction: transaction)
@@ -651,6 +645,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         guard self.isViewLoaded else { return }
         let updateType = conversationUpdate.conversationUpdateType
         guard updateType != .minor else { return } // No view items were affected
+        updateNavBarButtons()
         if updateType == .reload {
             if threadStartedAsMessageRequest {
                 updateNavBarButtons()   // In case the message request was approved

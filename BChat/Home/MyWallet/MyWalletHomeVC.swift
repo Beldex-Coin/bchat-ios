@@ -1805,7 +1805,9 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
             if self.conncetingState.value {
                 self.conncetingState.value = false
             }
-            self.synchronizedUI()
+            if wallet.isSynchronized {
+                self.synchronizedUI()
+            }
         }
     }
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {

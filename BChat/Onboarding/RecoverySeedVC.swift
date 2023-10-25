@@ -97,6 +97,12 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         }
     }
     
+    func showError(title: String, message: String = "") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        presentAlert(alert)
+    }
+    
     @IBAction func pasteAction(sender:UIButton){
         if let myString = UIPasteboard.general.string {
             self.txtview.text = ""
@@ -116,18 +122,15 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
         if seedFlag == false {
             self.showToastMsg(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
         }else {
+            self.nextRef.isUserInteractionEnabled = false
             let strings : String! = txtview.text.lowercased()
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
                 self.showToastMsg(message: "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.", seconds: 2.0)
+                self.nextRef.isUserInteractionEnabled = true
             }else {
-                func showError(title: String, message: String = "") {
-                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-                    presentAlert(alert)
-                }
                 let mnemonic = txtview.text!.lowercased()
                 do {
                     let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
@@ -138,10 +141,12 @@ class RecoverySeedVC: BaseVC,UITextViewDelegate {
                     Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
                         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedNameVC") as! RecoverySeedNameVC
                         navigationflowTag = true
+                        self.nextRef.isUserInteractionEnabled = true
                         vc.seedPassing = self.txtview.text!.lowercased()
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 } catch let error {
+                    self.nextRef.isUserInteractionEnabled = true
                     let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
                     showError(title: error.errorDescription!)
                 }
