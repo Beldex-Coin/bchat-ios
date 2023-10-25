@@ -15,6 +15,7 @@
 #import <SignalUtilitiesKit/ThreadUtil.h>
 #import <BChatMessagingKit/OWSReadReceiptManager.h>
 #import <SignalUtilitiesKit/SignalUtilitiesKit-Swift.h>
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -313,7 +314,29 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
         [userDefaults setBool:YES forKey:@"hasSeenCallIPExposureWarning"];
         CallModal *modal = [[CallModal alloc] initOnCallEnabled:^{
             OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
-            [self objc_requestMicrophonePermissionIfNeeded];
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
+                [audioSession requestRecordPermission:^(BOOL granted) {
+                    if (granted) {
+                        // Microphone access granted, you can now use the microphone.
+                        OWSLogInfo(@"Microphone access granted");
+                        // Perform any additional actions you want here.
+                        
+                        // Check if the view controller is still presented
+                        if (self.presentingViewController) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                // Dismiss the presented view controller
+                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+                                    // This block is optional and can be used to perform any tasks after the view controller is dismissed
+                                }];
+                            });
+                        }
+                    } else {
+                        // Microphone access denied. Handle this case accordingly.
+                        OWSLogInfo(@"Microphone access denied");
+                    }
+                }];
+            }
         }];
         [self presentViewController:modal animated:YES completion:nil];
     } else {

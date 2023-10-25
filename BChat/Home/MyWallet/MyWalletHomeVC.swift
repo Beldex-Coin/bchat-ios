@@ -150,8 +150,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         scrollView.isScrollEnabled = false
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height)
         progressView.tintColor = Colors.bchatButtonColor
-        btnHomeSend.setTitleColor(.lightGray, for: .normal)
         btnHomeScan.isUserInteractionEnabled = false
+        btnHomeSend.setTitleColor(.lightGray, for: .normal)
         btnHomeSend.isUserInteractionEnabled = false
         btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
         backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
@@ -497,10 +497,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         
         // Rescan Height Update in userdefaults work
         if backApiRescanVC == true {
-            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
             self.btnHomeScan.isUserInteractionEnabled = false
+            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
             self.btnHomeSend.isUserInteractionEnabled = false
             self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+            self.backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
             self.closeWallet()
             init_syncing_wallet()
         }
@@ -545,10 +546,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
             self.btnHomeScan.isUserInteractionEnabled = false
+            self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
             self.btnHomeSend.isUserInteractionEnabled = false
             self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+            self.backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
             
             lblMainblns.text = "0.00"
             lblOtherCurrencyblns.text = "0.00"
@@ -561,10 +563,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
                 WalletSharedData.sharedInstance.wallet = nil
                 DispatchQueue.main.async {
-                    self?.btnHomeSend.setTitleColor(.lightGray, for: .normal)
                     self?.btnHomeScan.isUserInteractionEnabled = false
+                    self?.btnHomeSend.setTitleColor(.lightGray, for: .normal)
                     self?.btnHomeSend.isUserInteractionEnabled = false
                     self?.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+                    self?.backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
                 }
                 guard let strongSelf = self else { return }
                 switch result {
@@ -578,7 +581,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         strongSelf.conncetingState.value = false
                         strongSelf.progressLabel.textColor = .red
                         strongSelf.progressLabel.text = "Failed to Connect"
-                        self!.syncedflag = true
+                        self!.syncedflag = false
                         self!.syncedIconRef.isHidden = true
                     }
                 }
@@ -656,6 +659,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                             if self.conncetingState.value {
                                 self.conncetingState.value = false
                             }
+                            self.syncedIconRef.isHidden = true
                             self.syncedflag = false
                             self.progressView.progress = Float(progress)
                             self.progressLabel.textColor = Colors.bchatButtonColor
@@ -692,6 +696,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         if self.conncetingState.value {
                             self.conncetingState.value = false
                         }
+                        self.syncedIconRef.isHidden = true
                         self.syncedflag = false
                         self.progressView.progress = Float(progress)
                         self.progressLabel.textColor = Colors.bchatButtonColor
@@ -707,10 +712,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     //syncWalletData
     @objc func syncWalletData(_ notification: Notification) {
-        self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
         self.btnHomeScan.isUserInteractionEnabled = false
+        self.btnHomeSend.setTitleColor(.lightGray, for: .normal)
         self.btnHomeSend.isUserInteractionEnabled = false
         self.btnHomeSend.backgroundColor = Colors.bchatStoryboardColor
+        self.backgroundBottomScanView.backgroundColor = Colors.bchatStoryboardColor
         self.closeWallet()
         init_syncing_wallet()
     }
@@ -727,10 +733,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         self.progressLabel.textColor = Colors.bchatButtonColor
         if self.backApiRescanVC == true{
             self.progressLabel.text = "Connecting..."
+            syncedIconRef.isHidden = true
         }else {
             self.progressLabel.text = "Synchronized"
+            syncedIconRef.isHidden = false
         }
-        syncedIconRef.isHidden = false
         self.collectionView.reloadData()
         WalletSharedData.sharedInstance.wallet = nil
     }
@@ -1839,6 +1846,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
                 if self.conncetingState.value {
                     self.conncetingState.value = false
                 }
+                self.syncedIconRef.isHidden = true
                 self.syncedflag = false
                 self.progressView.progress = Float(progress)
                 self.progressLabel.textColor = Colors.bchatButtonColor

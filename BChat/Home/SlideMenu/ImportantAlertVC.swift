@@ -53,7 +53,8 @@ class ImportantAlertVC: BaseVC, UITextFieldDelegate {
             }
             alertView.isEnabledValidationLabel = true
             alertView.isDismissOnActionButtonClicked = false
-            alertView.style = .dark
+            alertView.style = isLightMode ? .light : .dark
+//            alertView.backgroundColor = Colors.bchatStoryboardColor
         }
         .onActionButtonClicked { alert, buttonIndex in
             let username = alert.textField(at: 0)?.text ?? ""

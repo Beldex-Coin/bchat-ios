@@ -88,15 +88,23 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // YOU SHOULD FIRST CHECK FOR THE BACKSPACE. IF BACKSPACE IS PRESSED ALLOW IT
-        if string == "" {
-            return true
-        }
+//        if string == "" {
+//            return true
+//        }
         if let characterCount = textField.text?.count {
             // CHECK FOR CHARACTER COUNT IN TEXT FIELD
             if characterCount >= 4 {
                 newPintxt.becomeFirstResponder()
                 // RESIGN FIRST RERSPONDER TO HIDE KEYBOARD
                 return textField.resignFirstResponder()
+            }
+        }
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789")
+        // Iterate through each character in the replacement string
+        for char in string.unicodeScalars {
+            if !allowedCharacterSet.contains(Unicode.Scalar(char.value)!) {
+                // If the character is not in the allowed character set, disallow it
+                return false
             }
         }
         return true
