@@ -37,8 +37,14 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if !scannerView.isRunning {
-            scannerView.startScanning()
+        
+        let hasCameraAccess = (AVCaptureDevice.authorizationStatus(for: .video) == .authorized)
+        if hasCameraAccess {
+            if !scannerView.isRunning {
+                scannerView.startScanning()
+            }
+        } else {
+            guard requestCameraPermissionIfNeeded() else { return }
         }
     }
     override func viewWillDisappear(_ animated: Bool) {

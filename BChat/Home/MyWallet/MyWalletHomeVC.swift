@@ -1785,7 +1785,7 @@ extension MyWalletHomeVC: BeldexWalletDelegate {
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         isdaemonHeight = Int64(wallet.blockChainHeight)
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            if self.wallet?.synchronized == true {
+            if wallet.isSynchronized == true {
                 self.isSyncingUI = false
             }
         }

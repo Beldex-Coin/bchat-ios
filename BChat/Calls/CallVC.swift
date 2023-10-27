@@ -497,6 +497,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let miniCallView = MiniCallView(from: self)
         miniCallView.show()
         self.conversationVC?.showInputAccessoryView()
+        self.conversationVC?.resignFirstResponder()
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
