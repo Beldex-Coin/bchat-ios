@@ -290,33 +290,33 @@ class MyWalletNodeVC: BaseVC,UITextFieldDelegate {
         }
     }
     
+    // Node validation cheking
     func verifyNodeURI(host_port:String) {
         let url = "http://" + host_port + "/json_rpc"
         let param = ["jsonrpc": "2.0", "id": "0", "method": "getlastblockheader"]
-        let dataTask = Session.default.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, headers: nil)
-        dataTask.responseJSON { (response) in
-            if let json = response.value as? [String: Any],
-               let result = json["result"] as? [String: Any],
-               let header = result["block_header"] as? [String: Any],
-               let timestamp = header["timestamp"] as? Int,
-               timestamp > 0
-            {
-                self.testResultView.backgroundColor = Colors.accent
-                self.lbltestresult.text = "Test result: Success"
-                self.imgtestresult.isHidden = false
-                self.imgtestresult.image = UIImage(named: "ic_NodeTest")
-                self.testResultFlag = true
-            } else {
-                self.testResultView.backgroundColor = .red
-                self.imgtestresult.isHidden = false
-                self.lbltestresult.text = "Test result: CONNECTION ERROR"
-                self.imgtestresult.image = UIImage(named: "ic_NodeTestAlert")
-                self.testResultFlag = false
+        Session.default.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, headers: nil)
+            .responseDecodable(of: ApiResponseType.self) { (response) in
+                switch response.result {
+                case .success(let responseObject):
+                    // Process the responseObject here
+                    if let timestamp = responseObject.result?.block_header?.timestamp, timestamp > 0 {
+                        self.testResultView.backgroundColor = Colors.accent
+                        self.lbltestresult.text = "Test result: Success"
+                        self.imgtestresult.isHidden = false
+                        self.imgtestresult.image = UIImage(named: "ic_NodeTest")
+                        self.testResultFlag = true
+                    } else {
+                        self.testResultView.backgroundColor = .red
+                        self.imgtestresult.isHidden = false
+                        self.lbltestresult.text = "Test result: CONNECTION ERROR"
+                        self.imgtestresult.image = UIImage(named: "ic_NodeTestAlert")
+                        self.testResultFlag = false
+                    }
+                case .failure(let error):
+                    // Handle the error here
+                    print("Request failed with error: \(error)")
+                }
             }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now()+5) {
-            dataTask.cancel()
-        }
     }
     
     func verifyNodeURICheking(host_port:String) {
@@ -456,25 +456,42 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedIndex = indexPath.row
-        let alertView = UIAlertController(title: "", message: "Are you sure you want to switch to another node?", preferredStyle: UIAlertController.Style.alert)
-        alertView.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self] (action: UIAlertAction!) in
-            SaveUserDefaultsData.SwitchNode = true
-            selectedValue = self.nodeArray[indexPath.row]
-            SaveUserDefaultsData.SelectedNode = selectedValue
-            if self.navigationController != nil{
-                let count = self.navigationController!.viewControllers.count
-                if count > 1
-                {
-                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSettingsVC
-                    VC.BackAPI = true
-                }
+        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
+            let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
+            if notError == "CONNECTION ERROR" {
+                self.showToastMsg(message: "Please connect some another node", seconds: 1.0)
+            } else {
+                selectedIndex = indexPath.row
+                let alertView = UIAlertController(title: "", message: "Are you sure you want to switch to another node?", preferredStyle: UIAlertController.Style.alert)
+                alertView.addAction(UIAlertAction(title: "YES", style: .default, handler: { [self] (action: UIAlertAction!) in
+                    SaveUserDefaultsData.SwitchNode = true
+                    selectedValue = self.nodeArray[indexPath.row]
+                    SaveUserDefaultsData.SelectedNode = selectedValue
+                    if self.navigationController != nil{
+                        let count = self.navigationController!.viewControllers.count
+                        if count > 1
+                        {
+                            let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSettingsVC
+                            VC.BackAPI = true
+                        }
+                    }
+                    collectionView.reloadData()
+                }))
+                alertView.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (action: UIAlertAction!) in
+                }))
+                present(alertView, animated: true, completion: nil)
             }
-            collectionView.reloadData()
-        }))
-        alertView.addAction(UIAlertAction(title: "CANCEL", style: .cancel, handler: { (action: UIAlertAction!) in
-        }))
-        present(alertView, animated: true, completion: nil)
+        }
     }
 }
 
+struct ApiResponseType: Decodable {
+    let result: ResultType?
+}
+struct ResultType: Decodable {
+    let block_header: BlockHeaderType?
+}
+struct BlockHeaderType: Decodable {
+    let timestamp: Int?
+}

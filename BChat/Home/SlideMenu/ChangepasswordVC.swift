@@ -88,9 +88,9 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // YOU SHOULD FIRST CHECK FOR THE BACKSPACE. IF BACKSPACE IS PRESSED ALLOW IT
-//        if string == "" {
-//            return true
-//        }
+        if string == "" {
+            return true
+        }
         if let characterCount = textField.text?.count {
             // CHECK FOR CHARACTER COUNT IN TEXT FIELD
             if characterCount >= 4 {
