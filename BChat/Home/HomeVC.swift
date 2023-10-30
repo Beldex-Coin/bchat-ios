@@ -338,60 +338,62 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         
         guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
         
-        tableView.beginUpdates()
-        
-        // If we need to unhide the message request row and then re-insert it
-        if !messageRequestChanges.isEmpty {
-            
-            // If there are no unread message requests then hide the message request banner
-            if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
-                CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-                tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            }
-            else {
-                if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
+        //        tableView.beginUpdates()
+        self.tableView.performBatchUpdates({
+            // If we need to unhide the message request row and then re-insert it
+            if !messageRequestChanges.isEmpty {
+                
+                // If there are no unread message requests then hide the message request banner
+                if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
+                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
                     tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
                 }
-                else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-                    tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                else {
+                    if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
+                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                    }
+                    else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
+                        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                    }
                 }
             }
-        }
-        
-        inboxRowChanges.forEach { rowChange in
-            let key = rowChange.collectionKey.key
-            threadViewModelCache[key] = nil
             
-            switch rowChange.type {
-            case .delete:
-                tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+            inboxRowChanges.forEach { rowChange in
+                let key = rowChange.collectionKey.key
+                threadViewModelCache[key] = nil
                 
-            case .insert:
-                tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                
-            case .update:
-                tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
-                
-            case .move:
-                // Note: We need to handle the move from the message requests section to the inbox (since
-                // we are only showing a single row for message requests we need to custom handle this as
-                // an insert as the change won't be defined correctly)
-                if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
-                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                }
-                else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
+                switch rowChange.type {
+                case .delete:
                     tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    
+                case .insert:
+                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+                    
+                case .update:
+                    tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    
+                case .move:
+                    // Note: We need to handle the move from the message requests section to the inbox (since
+                    // we are only showing a single row for message requests we need to custom handle this as
+                    // an insert as the change won't be defined correctly)
+                    if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
+                        tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+                    }
+                    else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
+                        tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    }
+                    
+                default: break
                 }
-                
-            default: break
             }
-        }
-        tableView.endUpdates()
+            //        tableView.endUpdates()
+        }, completion: nil)
         // HACK: Moves can have conflicts with the other 3 types of change.
         // Just batch perform all the moves separately to prevent crashing.
         // Since all the changes are from the original state to the final state,
         // it will still be correct if we pick the moves out.
-        tableView.beginUpdates()
+//        tableView.beginUpdates()
+        self.tableView.performBatchUpdates({
         rowChanges.forEach { rowChange in
             let rowChange = rowChange as! YapDatabaseViewRowChange
             let key = rowChange.collectionKey.key
@@ -410,7 +412,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             default: break
             }
         }
-        tableView.endUpdates()
+        //        tableView.endUpdates()
+    }, completion: nil)
         emptyStateView.isHidden = (threadCount != 0)
         someImageView.isHidden = (threadCount != 0)
     }

@@ -236,7 +236,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     
     private func createWallet(_ recover: RecoverWallet) {
         SaveUserDefaultsData.WalletRecoverSeed = seedPassing!
-        data.name = userNametxt.text!
+        data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         WalletService.shared.createWallet(with: .recovery(data: data, recover: recover)) { (result) in
             switch result {
             case .success(let wallet):
