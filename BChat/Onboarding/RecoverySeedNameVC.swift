@@ -236,7 +236,10 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     
     private func createWallet(_ recover: RecoverWallet) {
         SaveUserDefaultsData.WalletRecoverSeed = seedPassing!
+        let uuid = UUID()
         data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        data.pwd = uuid.uuidString
+        SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
         WalletService.shared.createWallet(with: .recovery(data: data, recover: recover)) { (result) in
             switch result {
             case .success(let wallet):

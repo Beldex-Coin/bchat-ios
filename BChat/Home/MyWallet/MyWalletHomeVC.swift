@@ -560,7 +560,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.progressLabel.textColor = Colors.bchatButtonColor
             progressLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
-            WalletService.shared.openWallet(username, password: "") { [weak self] (result) in
+            let pwd = SaveUserDefaultsData.israndomUUIDPassword
+            WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
                 WalletSharedData.sharedInstance.wallet = nil
                 DispatchQueue.main.async {
                     self?.btnHomeScan.isUserInteractionEnabled = false

@@ -90,6 +90,10 @@ struct SaveUserDefaultsData {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.SelectedCurrency) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.SelectedCurrency) as? String ?? "usd" }
     }
+    static var israndomUUIDPassword : String {
+        set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.israndomUUIDPassword) }
+        get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.israndomUUIDPassword) as? String ?? "" }
+    }
     
 }
 
@@ -116,4 +120,5 @@ struct UserDefaultsKeys {
     static let SelectedBalance = "SelectedBalance"
     static let SaveLocalNodelist = "SaveLocalNodelist"
     static let SelectedCurrency = "SelectedCurrency"
+    static let israndomUUIDPassword = "israndomUUIDPassword"
 }
