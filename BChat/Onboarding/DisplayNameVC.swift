@@ -105,7 +105,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         else {
             // MARK:- Beldex Wallet
             let uuid = UUID()
-            data.name = userNametxt.text!
+            data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             data.pwd = uuid.uuidString
             SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in

@@ -377,7 +377,7 @@
 /* Setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS" = "Voice and video calls";
 /* Setting for enabling & disabling wallet. */
-"SETTINGS_WALLET" = "Wallet";
+"SETTINGS_WALLET" = "Start Wallet";
 /* Footer for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_FOOTER" = "Allow access to accept voice and video calls from other users.";
 /* Footer for setting for enabling & disabling wallet. */
