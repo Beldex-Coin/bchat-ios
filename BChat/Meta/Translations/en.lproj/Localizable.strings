@@ -381,7 +381,7 @@
 /* Footer for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_FOOTER" = "Allow access to accept voice and video calls from other users.";
 /* Footer for setting for enabling & disabling wallet. */
-"SETTINGS_WALLET_FOOTER" = "Allow access to accept enable or disable the wallet.";
+"SETTINGS_WALLET_FOOTER" = "Enabling wallet will allow you to send and receive BDX";
 /* Header for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_HEADER" = "Calls";
 /* Header for setting for enabling & disabling wallet. */

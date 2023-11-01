@@ -605,7 +605,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         UIView.animate(withDuration: 0.25, animations: {
             self.inputAccessoryView?.isHidden = false
             self.inputAccessoryView?.alpha = 1
-            self.resignFirstResponder()
         })
     }
 

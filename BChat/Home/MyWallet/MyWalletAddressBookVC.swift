@@ -69,7 +69,7 @@ class MyWalletAddressBookVC: BaseVC,UITextFieldDelegate {
         filterContactNameArray = allcontactNameArray.filter({ $0 != ""})
         filterBeldexAddressArray = allbeldexAddressArray.filter({ $0 != ""})
         
-        self.allFilterData = Dictionary(uniqueKeysWithValues: zip(filterContactNameArray, filterBeldexAddressArray))
+        self.allFilterData = Dictionary(zip(filterContactNameArray, filterBeldexAddressArray), uniquingKeysWith: { (first, _) in first })
         if filterContactNameArray.count == 0 {
             noContactdatalbl.isHidden = false
             collectionView.isHidden = true

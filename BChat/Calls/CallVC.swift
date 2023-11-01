@@ -375,6 +375,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         shouldRestartCamera = true
         addLocalVideoView()
         remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
