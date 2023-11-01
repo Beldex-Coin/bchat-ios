@@ -12,7 +12,6 @@ class MyWalletInstructionsVC: BaseVC {
     @IBOutlet weak var bottomOftheStringTitle:UILabel!
     @IBOutlet weak var enableWalletbtn:UIButton!
     @IBOutlet weak var isCheckedActionbtn:UIButton!
-    var flagvalue:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +53,7 @@ class MyWalletInstructionsVC: BaseVC {
         bottomOftheStringTitle.attributedText = attributedText3
         
         enableWalletbtn.layer.cornerRadius = 6
+        enableWalletbtn.isUserInteractionEnabled = false
         
         if isLightMode {
             yesIUnderstandDarkMode()
@@ -66,13 +66,17 @@ class MyWalletInstructionsVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
-        flagvalue = false
         if isLightMode {
             yesIUnderstandDarkMode()
         }else {
             yesIUnderstandWhiteMode()
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        enableWalletbtn.isUserInteractionEnabled = false
+    }
+    
 
     func yesIUnderstandWhiteMode(){
         enableWalletbtn.backgroundColor = UIColor.lightGray
@@ -94,14 +98,14 @@ class MyWalletInstructionsVC: BaseVC {
     @IBAction func isCheckActionTapped(_ sender: UIButton) {
         isCheckedActionbtn.isSelected = !isCheckedActionbtn.isSelected
         if isCheckedActionbtn.isSelected {
-            flagvalue = true
             enableWalletbtn.backgroundColor = Colors.bchatButtonColor
             let img = UIImage(named: "checked_img.png")!
             let tintedImage = img.withRenderingMode(.alwaysTemplate)
             self.isCheckedActionbtn.setImage(tintedImage, for: .normal)
             isCheckedActionbtn.tintColor = isLightMode ? .black : .white
+            enableWalletbtn.isUserInteractionEnabled = true
         }else {
-            flagvalue = false
+            enableWalletbtn.isUserInteractionEnabled = false
             if isLightMode {
                 yesIUnderstandDarkMode()
             }else {
@@ -111,7 +115,15 @@ class MyWalletInstructionsVC: BaseVC {
     }
     
     @IBAction func isEnableWalletTapped(_ sender: UIButton) {
-        
+        if SaveUserDefaultsData.WalletPassword.isEmpty {
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else {
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+            vc.isEnterPin = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        SSKPreferences.areWalletEnabled = true
     }
 
 }

@@ -191,21 +191,8 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
                     }else {
-                        let alert = UIAlertController(title: "Confirmation", message: "Please enable wallet in privacy settings", preferredStyle: .alert)
-                        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                            
-                        })
-                        alert.addAction(cancel)
-                        let settings = UIAlertAction(title: "Okey", style: .default, handler: { action in
-                            let privacySettingsVC = PrivacySettingsTableViewController()
-                            self.navigationController!.pushViewController(privacySettingsVC, animated: true)
-                        })
-                        alert.addAction(settings)
-                        cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-                        settings.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-                        DispatchQueue.main.async(execute: {
-                            self.present(alert, animated: true)
-                        })
+                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletInstructionsVC") as! MyWalletInstructionsVC
+                        self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }else {
                     self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
