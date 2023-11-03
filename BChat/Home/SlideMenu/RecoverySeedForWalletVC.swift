@@ -12,6 +12,7 @@ class RecoverySeedForWalletVC: UIViewController {
     @IBOutlet weak var backgroundCopyView:UIView!
     @IBOutlet weak var lblcopy:UILabel!
     @IBOutlet weak var continueButton:UIButton!
+    @IBOutlet weak var titleLabel:UILabel!
     
     private let mnemonic: String = {
         let identityManager = OWSIdentityManager.shared()
@@ -59,6 +60,13 @@ class RecoverySeedForWalletVC: UIViewController {
         
         UserDefaults.standard[.hasViewedSeed] = true
         NotificationCenter.default.post(name: .seedViewed, object: nil)
+        let text = "Note: Copy your Recovery Seed and save it. You will need the Recovery Seed to restore your account and generate a wallet password.\nIf you lose your seed, you will permanently lose access to your account."
+        let redTextAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: UIColor.red.cgColor]
+        let whiteTextAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Colors.bchatLabelNameColor.cgColor]
+        let attributedText = NSMutableAttributedString(string: text, attributes: whiteTextAttributes)
+        let range = (text as NSString).range(of: "Note:")
+        attributedText.addAttributes(redTextAttributes, range: range)
+        titleLabel.attributedText = attributedText
     }
     
     

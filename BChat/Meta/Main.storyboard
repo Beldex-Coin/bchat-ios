@@ -4823,34 +4823,34 @@ The Beldex network and BChat uses several protocols that were designed by the op
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info about Wallet Password generation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idI-vB-29F">
-                                <rect key="frame" x="75.666666666666657" y="363.33333333333331" width="276.66666666666674" height="20.666666666666686"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="15"/>
+                                <rect key="frame" x="51.333333333333343" y="337" width="325.66666666666663" height="24.666666666666686"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="18"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6IX-rF-IZh">
-                                <rect key="frame" x="30" y="414" width="368" height="98.333333333333371"/>
+                                <rect key="frame" x="30" y="391.66666666666669" width="368" height="143.00000000000006"/>
                                 <string key="text">To access your wallet, you will first need to generate a wallet password. Your wallet password can be used to access your wallet within BChat and authenticate your transactions.
 
 You can generate a wallet password only by restoring your account.</string>
-                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
-                                <color key="textColor" name="bchat_small_label_clr"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="15"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IMPORTANT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7hN-nh-gds">
-                                <rect key="frame" x="163" y="320" width="102.33333333333331" height="23.333333333333314"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="17"/>
+                                <rect key="frame" x="156.66666666666666" y="291" width="114.66666666666666" height="26"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="19"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you wish to continue, click &quot;proceed.&quot;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LFX-Hc-2vR">
-                                <rect key="frame" x="40" y="542.33333333333337" width="348" height="18"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="13"/>
+                                <rect key="frame" x="40" y="564.66666666666663" width="348" height="23.333333333333371"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="17"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icons8-error" translatesAutoresizingMaskIntoConstraints="NO" id="vqU-tG-FTx">
-                                <rect key="frame" x="154" y="185" width="120" height="120"/>
+                                <rect key="frame" x="154" y="156" width="120" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="120" id="Cwa-1J-XSq"/>
                                     <constraint firstAttribute="height" constant="120" id="L6s-m4-hUW"/>
@@ -5010,6 +5010,7 @@ If you lose your seed, you will permanently lose access to your account.</string
                         <outlet property="copyref" destination="qyO-Wg-lkc" id="cZy-nG-S0V"/>
                         <outlet property="lblcopy" destination="6jF-X8-LD7" id="PV7-2D-fcx"/>
                         <outlet property="lblname" destination="Djg-66-pdr" id="UOS-kk-ghi"/>
+                        <outlet property="titleLabel" destination="FUU-kl-8PU" id="wtM-UY-BDp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywe-uD-w19" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -5019,7 +5020,7 @@ If you lose your seed, you will permanently lose access to your account.</string
         <!--My Wallet InstructionsVC-->
         <scene sceneID="z7l-VS-U6O">
             <objects>
-                <viewController storyboardIdentifier="MyWalletInstructionsVC" id="YRu-Cd-VCi" customClass="MyWalletInstructionsVC" customModule="AutoHeight" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MyWalletInstructionsVC" id="YRu-Cd-VCi" customClass="MyWalletInstructionsVC" customModule="BChat_Messenger" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JIJ-jp-lMy"/>
                         <viewControllerLayoutGuide type="bottom" id="jqo-1h-FH5"/>

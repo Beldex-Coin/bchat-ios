@@ -918,6 +918,9 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     @IBAction func filterAction(_ sender: UIButton) {
         self.noTransaction = false
         self.isFilter = false
+        filteredAllTransactionarray = []
+        filteredOutgoingTransactionarray = []
+        filteredIncomingTransactionarray = []
         fromDate = ""
         toDate = ""
         if let datePickerView = self.txttodate.inputView as? UIDatePicker {
@@ -1090,10 +1093,25 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         let ListDate = ListArray[0]
                         let ListMonth = ListArray[1]
                         let ListYear = ListArray[2]
+                        
+                        let currentDateString = listDate
+                        let startDateString = fromDate
+                        let endDateString = toDate
+                        let dateFormatter222 = DateFormatter()
+                        dateFormatter222.dateFormat = "dd-MM-yyyy"
+                        dateFormatter222.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+                        let currentDate = dateFormatter222.date(from: currentDateString)!
+                        let startDate = dateFormatter222.date(from: startDateString)!
+                        let endDate = dateFormatter222.date(from: endDateString)!
+                        let isCointain = currentDate.isBetween(date: startDate as NSDate, andDate: endDate as NSDate)
+                        if isCointain {
+                            filteredOutgoingTransactionarray.append(element)
+                        }
+                        
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
                                 if ListDate >= FromDate && ListDate <= ToDate{ //
-                                    filteredOutgoingTransactionarray.append(element)
+//                                    filteredOutgoingTransactionarray.append(element)
                                 }
                             }
                         }
@@ -1138,10 +1156,25 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                         let ListDate = ListArray[0]
                         let ListMonth = ListArray[1]
                         let ListYear = ListArray[2]
+                        
+                        let currentDateString = listDate
+                        let startDateString = fromDate
+                        let endDateString = toDate
+                        let dateFormatter222 = DateFormatter()
+                        dateFormatter222.dateFormat = "dd-MM-yyyy"
+                        dateFormatter222.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+                        let currentDate = dateFormatter222.date(from: currentDateString)!
+                        let startDate = dateFormatter222.date(from: startDateString)!
+                        let endDate = dateFormatter222.date(from: endDateString)!
+                        let isCointain = currentDate.isBetween(date: startDate as NSDate, andDate: endDate as NSDate)
+                        if isCointain {
+                            filteredIncomingTransactionarray.append(element)
+                        }
+                        
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
                                 if ListDate >= FromDate && ListDate <= ToDate{ //
-                                    filteredIncomingTransactionarray.append(element)
+//                                    filteredIncomingTransactionarray.append(element)
                                 }
                             }
                         }
@@ -1189,10 +1222,25 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
                     let ListDate = ListArray[0]
                     let ListMonth = ListArray[1]
                     let ListYear = ListArray[2]
+                    
+                    let currentDateString = listDate
+                    let startDateString = fromDate
+                    let endDateString = toDate
+                    let dateFormatter222 = DateFormatter()
+                    dateFormatter222.dateFormat = "dd-MM-yyyy"
+                    dateFormatter222.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+                    let currentDate = dateFormatter222.date(from: currentDateString)!
+                    let startDate = dateFormatter222.date(from: startDateString)!
+                    let endDate = dateFormatter222.date(from: endDateString)!
+                    let isCointain = currentDate.isBetween(date: startDate as NSDate, andDate: endDate as NSDate)
+                    if isCointain {
+                        filteredAllTransactionarray.append(element)
+                    }
+                    
                     if ListYear >= FromYear && ListYear <= ToYear {
                         if ListMonth >= FromMonth && ListMonth <= ToMonth {
                             if ListDate >= FromDate && ListDate <= ToDate{ //
-                                filteredAllTransactionarray.append(element)
+//                                filteredAllTransactionarray.append(element)
                             }
                         }
                     }

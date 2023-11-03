@@ -118,3 +118,12 @@ extension Date {
         return Date.blockheight.map({ return $0.value }).last ?? 0
     }
 }
+
+
+extension Date {
+    
+    func isBetween(date date1: NSDate, andDate date2: NSDate) -> Bool {
+        return date1.compare(self as Date).rawValue * self.compare(date2 as Date).rawValue >= 0
+    }
+    
+}

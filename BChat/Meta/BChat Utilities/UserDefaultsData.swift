@@ -103,7 +103,7 @@ struct UserDefaultsKeys {
     static let WalletpublicAddress = "WalletpublicAddress"
     static let WalletSeed = "WalletSeed"
     static let WalletRecoverSeed = "WalletRecoverSeed"
-    static let BChatPassword = "BChatPassword"
+    static let BChatPassword = "pwd"
     static let lastname = "lastname"
     static let isSignedIn = "isSignedIn"
     static let viewtype = "viewtype"

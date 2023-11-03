@@ -13,6 +13,14 @@ class AlertForWalletVC: BaseVC, UITextFieldDelegate {
         super.viewDidLoad()
 
         proceedButton.layer.cornerRadius = 6
+        
+        let text = "Info about Wallet Password generation"
+        let redTextAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Colors.accent.cgColor]
+        let whiteTextAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.foregroundColor: Colors.bchatLabelNameColor.cgColor]
+        let attributedText = NSMutableAttributedString(string: text, attributes: whiteTextAttributes)
+        let range = (text as NSString).range(of: "Wallet Password")
+        attributedText.addAttributes(redTextAttributes, range: range)
+        titleLabel.attributedText = attributedText
     }
     
 
