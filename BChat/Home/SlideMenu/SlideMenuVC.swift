@@ -95,7 +95,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             cell.selectionStyle = .none
             
-            cell.lblname.text = Storage.shared.getUser()?.name
+            cell.lblname.text = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             cell.lblIDName.text = "ID: \(getUserHexEncodedPublicKey())"
             
             let publicKey = getUserHexEncodedPublicKey()
