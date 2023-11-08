@@ -101,7 +101,7 @@ struct SaveUserDefaultsData {
 //MARK:- Userdefault Keys
 struct UserDefaultsKeys {
     static let WalletpublicAddress = "WalletpublicAddress"
-    static let WalletSeed = "WalletSeed"
+    static let WalletSeed = "BeldexSeed"
     static let WalletRecoverSeed = "WalletRecoverSeed"
     static let BChatPassword = "pwd"
     static let lastname = "lastname"

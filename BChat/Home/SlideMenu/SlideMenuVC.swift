@@ -174,7 +174,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             }else if indexPath.row == 1 {
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
                     // MARK: - Old flow (without wallet)
-                    if SaveUserDefaultsData.NameForWallet == "" && SaveUserDefaultsData.israndomUUIDPassword == "" {
+                    if SaveUserDefaultsData.israndomUUIDPassword == "" {
                         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AlertForWalletVC") as! AlertForWalletVC
                         self.navigationController?.pushViewController(vc, animated: true)
                         return
