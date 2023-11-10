@@ -829,7 +829,7 @@ static NSTimeInterval launchStartedAt;
     NSString *intent = components.host;
     if (intent != nil && [intent isEqualToString:@"DM"]) {
         NSArray<NSURLQueryItem*> *params = [components queryItems];
-        NSPredicate *bchatIDPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"bchatID"];
+        NSPredicate *bchatIDPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"sessionID"];
         NSArray<NSURLQueryItem*> *matches = [params filteredArrayUsingPredicate:bchatIDPredicate];
         if (matches.count > 0) {
             NSString *bchatuserID = matches.firstObject.value;

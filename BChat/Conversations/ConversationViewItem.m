@@ -565,6 +565,14 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
 
     if (self.hasBodyText && message.linkPreview) {
         self.linkPreview = message.linkPreview;
+        
+        NSString *className = NSStringFromClass([self.linkPreview class]);
+        
+        if ([className isEqualToString:@"OWSUnknownDBObject"]) {
+            return;
+        } else {
+            NSLog(@"Unexpected class: %@", className);
+        }
         if (message.linkPreview.imageAttachmentId && message.linkPreview.imageAttachmentId.length > 0) {
             TSAttachment *_Nullable linkPreviewAttachment =
                 [TSAttachment fetchObjectWithUniqueID:message.linkPreview.imageAttachmentId transaction:transaction];

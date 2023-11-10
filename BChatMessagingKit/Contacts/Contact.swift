@@ -74,7 +74,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     
     // MARK: Coding
     public required init?(coder: NSCoder) {
-        guard let bchatUserID = coder.decodeObject(forKey: "bchatID") as! String? else { return nil }
+        guard let bchatUserID = coder.decodeObject(forKey: "sessionID") as! String? else { return nil }
         self.bchatuser_ID = bchatUserID
         if let beldexAddress = coder.decodeObject(forKey: "beldexAddress") as! String? { self.beldexAddress = beldexAddress }
         isTrusted = coder.decodeBool(forKey: "isTrusted")
@@ -93,7 +93,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     }
 
     public func encode(with coder: NSCoder) {
-        coder.encode(bchatuser_ID, forKey: "bchatID")
+        coder.encode(bchatuser_ID, forKey: "sessionID")
         coder.encode(name, forKey: "displayName")
         coder.encode(nickname, forKey: "nickname")
         coder.encode(profilePictureURL, forKey: "profilePictureURL")

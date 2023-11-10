@@ -1,7 +1,8 @@
 
 extension Storage {
     
-    private static let contactCollection = "BeldexContactCollection"
+    private static let contactCollection = "LokiContactCollection"
+    private static let contactCollection2 = "BeldexContactCollection"
 
     @objc(getContactWithBChatID:)
     public func getContact(with bchatID: String) -> Contact? {
@@ -15,10 +16,15 @@ extension Storage {
     @objc(getContactWithBChatID:using:)
     public func getContact(with bchatID: String, using transaction: Any) -> Contact? {
         var result: Contact?
+        var result2: Contact?
         let transaction = transaction as! YapDatabaseReadTransaction
         result = transaction.object(forKey: bchatID, inCollection: Storage.contactCollection) as? Contact
+        result2 = transaction.object(forKey: bchatID, inCollection: Storage.contactCollection2) as? Contact
         if let result = result, result.bchatuser_ID == getUserHexEncodedPublicKey() {
             result.isTrusted = true // Always trust ourselves
+        }
+        if let result2 = result2, result2.bchatuser_ID == getUserHexEncodedPublicKey() {
+            result2.isTrusted = true // Always trust ourselves
         }
         return result
     }

@@ -198,8 +198,13 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
         [result addObjectsFromArray:self.quotedMessage.thumbnailAttachmentStreamIds];
     }
 
-    if (self.linkPreview.imageAttachmentId) {
-        [result addObject:self.linkPreview.imageAttachmentId];
+    NSString *className = NSStringFromClass([self.linkPreview class]);
+    if ([className isEqualToString:@"OWSUnknownDBObject"]) {
+        
+    } else {
+        if (self.linkPreview.imageAttachmentId) {
+            [result addObject:self.linkPreview.imageAttachmentId];
+        }
     }
 
     return [result copy];
