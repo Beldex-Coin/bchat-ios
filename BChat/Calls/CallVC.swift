@@ -546,6 +546,12 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         videoButton.backgroundColor = .white
         switchCameraButton.isEnabled = true
         call.isVideoEnabled = true
+        let currentSession = AVAudioSession.sharedInstance()
+        do {
+            try currentSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } catch let error as NSError {
+            print("audioSession error: \(error.localizedDescription)")
+        }
     }
     
     @objc private func switchCamera() {
