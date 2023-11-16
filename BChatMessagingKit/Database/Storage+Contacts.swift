@@ -20,10 +20,10 @@ extension Storage {
         let transaction = transaction as! YapDatabaseReadTransaction
         result = transaction.object(forKey: bchatID, inCollection: Storage.contactCollection) as? Contact
         result2 = transaction.object(forKey: bchatID, inCollection: Storage.contactCollection2) as? Contact
-        if let result = result, result.bchatuser_ID == getUserHexEncodedPublicKey() {
+        if let result = result, result.bchatID == getUserHexEncodedPublicKey() {
             result.isTrusted = true // Always trust ourselves
         }
-        if let result2 = result2, result2.bchatuser_ID == getUserHexEncodedPublicKey() {
+        if let result2 = result2, result2.bchatID == getUserHexEncodedPublicKey() {
             result2.isTrusted = true // Always trust ourselves
         }
         return result
@@ -32,11 +32,11 @@ extension Storage {
     @objc(setContact:usingTransaction:)
     public func setContact(_ contact: Contact, using transaction: Any) {
         let transaction = transaction as! YapDatabaseReadWriteTransaction
-        let oldContact = getContact(with: contact.bchatuser_ID, using: transaction)
-        if contact.bchatuser_ID == getUserHexEncodedPublicKey() {
+        let oldContact = getContact(with: contact.bchatID, using: transaction)
+        if contact.bchatID == getUserHexEncodedPublicKey() {
             contact.isTrusted = true // Always trust ourselves
         }
-        transaction.setObject(contact, forKey: contact.bchatuser_ID, inCollection: Storage.contactCollection)
+        transaction.setObject(contact, forKey: contact.bchatID, inCollection: Storage.contactCollection)
         transaction.addCompletionQueue(DispatchQueue.main) {
             // Delete old profile picture if needed
             if let oldProfilePictureFileName = oldContact?.profilePictureFileName,
@@ -48,18 +48,18 @@ extension Storage {
             }
             // Post notification
             let notificationCenter = NotificationCenter.default
-            notificationCenter.post(name: .contactUpdated, object: contact.bchatuser_ID)
+            notificationCenter.post(name: .contactUpdated, object: contact.bchatID)
             
-            if contact.bchatuser_ID == getUserHexEncodedPublicKey() {
+            if contact.bchatID == getUserHexEncodedPublicKey() {
                 notificationCenter.post(name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
             }
             else {
-                let userInfo = [ kNSNotificationKey_ProfileRecipientId : contact.bchatuser_ID ]
+                let userInfo = [ kNSNotificationKey_ProfileRecipientId : contact.bchatID ]
                 notificationCenter.post(name: Notification.Name(kNSNotificationName_OtherUsersProfileDidChange), object: nil, userInfo: userInfo)
             }
             
             if contact.isBlocked != oldContact?.isBlocked {
-                notificationCenter.post(name: .contactBlockedStateChanged, object: contact.bchatuser_ID)
+                notificationCenter.post(name: .contactBlockedStateChanged, object: contact.bchatID)
             }
         }
     }

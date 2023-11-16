@@ -1082,10 +1082,10 @@ CGFloat kIconViewLength = 24;
 - (void)saveName
 {
     if (![self.thread isKindOfClass:TSContactThread.class]) { return; }
-    NSString *bchatuserID = ((TSContactThread *)self.thread).contactBChatID;
-    SNContact *contact = [LKStorage.shared getContactWithBChatID:bchatuserID];
+    NSString *bchatID = ((TSContactThread *)self.thread).contactBChatID;
+    SNContact *contact = [LKStorage.shared getContactWithBChatID:bchatID];
     if (contact == nil) {
-        contact = [[SNContact alloc] initWithBchatID:bchatuserID];
+        contact = [[SNContact alloc] initWithBchatID:bchatID];
     }
     NSString *text = [self.displayNameTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
     contact.nickname = text.length > 0 ? text : nil;

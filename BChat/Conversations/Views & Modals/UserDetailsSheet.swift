@@ -1,9 +1,9 @@
 
 final class UserDetailsSheet : Sheet {
-    private let bchatuserID: String
+    private let bchatID: String
     
-    init(for bchatuserID: String) {
-        self.bchatuserID = bchatuserID
+    init(for bchatID: String) {
+        self.bchatID = bchatID
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -22,11 +22,11 @@ final class UserDetailsSheet : Sheet {
         profilePictureView.size = size
         profilePictureView.set(.width, to: size)
         profilePictureView.set(.height, to: size)
-        profilePictureView.publicKey = bchatuserID
+        profilePictureView.publicKey = bchatID
         profilePictureView.update()
         // Display name label
         let displayNameLabel = UILabel()
-        let displayName = Storage.shared.getContact(with: bchatuserID)?.displayName(for: .regular) ?? bchatuserID
+        let displayName = Storage.shared.getContact(with: bchatID)?.displayName(for: .regular) ?? bchatID
         displayNameLabel.text = displayName
         displayNameLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         displayNameLabel.textColor = Colors.text
@@ -39,7 +39,7 @@ final class UserDetailsSheet : Sheet {
         bchatIDLabel.numberOfLines = 0
         bchatIDLabel.lineBreakMode = .byCharWrapping
         bchatIDLabel.accessibilityLabel = "BChat ID label"
-        bchatIDLabel.text = bchatuserID
+        bchatIDLabel.text = bchatID
         // BChat ID label container
         let bchatIDLabelContainer = UIView()
         bchatIDLabelContainer.addSubview(bchatIDLabel)
@@ -63,7 +63,7 @@ final class UserDetailsSheet : Sheet {
     }
     
     @objc private func copyBChatID() {
-        UIPasteboard.general.string = bchatuserID
+        UIPasteboard.general.string = bchatID
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
 }

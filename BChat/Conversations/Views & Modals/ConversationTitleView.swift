@@ -85,12 +85,12 @@ final class ConversationTitleView : UIView {
             return "Note to Self"
         }
         else {
-            let bchatuserID = (thread as! TSContactThread).contactBChatID()
-            var result = bchatuserID
+            let bchatID = (thread as! TSContactThread).contactBChatID()
+            var result = bchatID
             Storage.read { transaction in
-                let displayName: String = ((Storage.shared.getContact(with: bchatuserID)?.displayName(for: .regular)) ?? bchatuserID)
-                let middleTruncatedHexKey: String = "\(bchatuserID.prefix(4))...\(bchatuserID.suffix(4))"
-                result = (displayName == bchatuserID ? middleTruncatedHexKey : displayName)
+                let displayName: String = ((Storage.shared.getContact(with: bchatID)?.displayName(for: .regular)) ?? bchatID)
+                let middleTruncatedHexKey: String = "\(bchatID.prefix(4))...\(bchatID.suffix(4))"
+                result = (displayName == bchatID ? middleTruncatedHexKey : displayName)
             }
             return result
         }

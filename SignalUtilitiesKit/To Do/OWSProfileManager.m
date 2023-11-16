@@ -459,7 +459,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         BOOL hasProfilePictureURL = (contact.profilePictureURL != nil && contact.profilePictureURL.length > 0);
         if (!hasProfilePictureURL) {
-            OWSLogDebug(@"Skipping downloading avatar for %@ because url is not set", contact.bchatuser_ID);
+            OWSLogDebug(@"Skipping downloading avatar for %@ because url is not set", contact.bchatID);
             return;
         }
         NSString *_Nullable avatarUrlPathAtStart = contact.profilePictureURL;
@@ -476,14 +476,14 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
 
         @synchronized(self.currentAvatarDownloads)
         {
-            if ([self.currentAvatarDownloads containsObject:contact.bchatuser_ID]) {
+            if ([self.currentAvatarDownloads containsObject:contact.bchatID]) {
                 // Download already in flight; ignore.
                 return;
             }
-            [self.currentAvatarDownloads addObject:contact.bchatuser_ID];
+            [self.currentAvatarDownloads addObject:contact.bchatID];
         }
 
-        OWSLogVerbose(@"downloading profile avatar: %@", contact.bchatuser_ID);
+        OWSLogVerbose(@"downloading profile avatar: %@", contact.bchatID);
 
         NSString *profilePictureURL = contact.profilePictureURL;
         
@@ -494,7 +494,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
         [promise.then(^(NSData *data) {
             @synchronized(self.currentAvatarDownloads)
             {
-                [self.currentAvatarDownloads removeObject:contact.bchatuser_ID];
+                [self.currentAvatarDownloads removeObject:contact.bchatID];
             }
             NSData *_Nullable encryptedData = data;
             NSData *_Nullable decryptedData = [self decryptProfileData:encryptedData profileKey:profileKeyAtStart];
@@ -506,7 +506,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
                 }
             }
             
-            SNContact *latestContact = [LKStorage.shared getContactWithBChatID:contact.bchatuser_ID];
+            SNContact *latestContact = [LKStorage.shared getContactWithBChatID:contact.bchatID];
 
             BOOL hasProfileEncryptionKey = (latestContact.profileEncryptionKey != nil
                 && latestContact.profileEncryptionKey.keyData.length > 0);
@@ -518,11 +518,11 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
                     [self downloadAvatarForUserProfile:latestContact];
                 }
             } else if (!encryptedData) {
-                OWSLogError(@"avatar encrypted data for %@ could not be read.", contact.bchatuser_ID);
+                OWSLogError(@"avatar encrypted data for %@ could not be read.", contact.bchatID);
             } else if (!decryptedData) {
-                OWSLogError(@"avatar data for %@ could not be decrypted.", contact.bchatuser_ID);
+                OWSLogError(@"avatar data for %@ could not be decrypted.", contact.bchatID);
             } else if (!image) {
-                OWSLogError(@"avatar image for %@ could not be loaded.", contact.bchatuser_ID);
+                OWSLogError(@"avatar image for %@ could not be loaded.", contact.bchatID);
             } else {
                 latestContact.profilePictureFileName = fileName;
                 [LKStorage writeWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {

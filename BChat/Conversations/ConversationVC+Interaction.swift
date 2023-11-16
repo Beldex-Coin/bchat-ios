@@ -1044,8 +1044,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         reply(viewItem)
     }
     
-    func showUserDetails(for bchatuserID: String) {
-        let userDetailsSheet = UserDetailsSheet(for: bchatuserID)
+    func showUserDetails(for bchatID: String) {
+        let userDetailsSheet = UserDetailsSheet(for: bchatID)
         userDetailsSheet.modalPresentationStyle = .overFullScreen
         userDetailsSheet.modalTransitionStyle = .crossDissolve
         present(userDetailsSheet, animated: true, completion: nil)
@@ -1240,8 +1240,8 @@ extension ConversationVC {
         // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
         // (it'll be updated with correct profile info if they accept the message request so this
         // shouldn't cause weird behaviours)
-        let bchatuserId: String = contactThread.contactBChatID()
-        let contact: Contact = (Storage.shared.getContact(with: bchatuserId) ?? Contact(bchatID: bchatuserId))
+        let bchatId: String = contactThread.contactBChatID()
+        let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
         
         guard !contact.isApproved else { return Promise.value(()) }
         
@@ -1374,9 +1374,9 @@ extension ConversationVC {
                     
                     // Update the contact
                     if let contactThread: TSContactThread = self?.thread as? TSContactThread {
-                        let bchatuserId: String = contactThread.contactBChatID()
+                        let bchatId: String = contactThread.contactBChatID()
                         
-                        if let contact: Contact = Storage.shared.getContact(with: bchatuserId) {
+                        if let contact: Contact = Storage.shared.getContact(with: bchatId) {
                             // Stop observing the `BlockListDidChange` notification (we are about to pop the screen
                             // so showing the banner just looks buggy)
                             if let strongSelf = self {

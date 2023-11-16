@@ -79,5 +79,5 @@ protocol MessageCellDelegate : AnyObject {
     func showFullText(_ viewItem: ConversationViewItem)
     func openURL(_ url: URL)
     func handleReplyButtonTapped(for viewItem: ConversationViewItem)
-    func showUserDetails(for bchatuserID: String)
+    func showUserDetails(for bchatID: String)
 }

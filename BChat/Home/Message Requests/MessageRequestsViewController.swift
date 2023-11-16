@@ -309,9 +309,9 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         var needsSync: Bool = false
         
         // Update the contact
-        let bchatuserId: String = contactThread.contactBChatID()
+        let bchatId: String = contactThread.contactBChatID()
         
-        if let contact: Contact = Storage.shared.getContact(with: bchatuserId), (contact.isApproved || !contact.isBlocked) {
+        if let contact: Contact = Storage.shared.getContact(with: bchatId), (contact.isApproved || !contact.isBlocked) {
             contact.isApproved = false
             contact.isBlocked = true
             
@@ -347,9 +347,9 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                         }
                         // Block the contact
                         if
-                            let bchatuserId: String = (thread as? TSContactThread)?.contactBChatID(),
+                            let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
                             !thread.isBlocked(),
-                            let contact: Contact = Storage.shared.getContact(with: bchatuserId, using: transaction)
+                            let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
                         {
                             contact.isBlocked = true
                             Storage.shared.setContact(contact, using: transaction)
@@ -381,9 +381,9 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                     
                     // Block the contact
                     if
-                        let bchatuserId: String = (thread as? TSContactThread)?.contactBChatID(),
+                        let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
                         !thread.isBlocked(),
-                        let contact: Contact = Storage.shared.getContact(with: bchatuserId, using: transaction)
+                        let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
                     {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)

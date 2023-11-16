@@ -38,9 +38,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         return result
     }()
     
-    init(bchatuserID: String) {
+    init(bchatID: String) {
         super.init(nibName: nil, bundle: nil)
-        enterPublicKeyVC.setBChatID(to: bchatuserID)
+        enterPublicKeyVC.setBChatID(to: bchatID)
     }
     
     required init?(coder: NSCoder) {
@@ -143,9 +143,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         } else {
             // This could be an ONS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatuserID in
+                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
-                        self?.startNewDM(with: bchatuserID)
+                        self?.startNewDM(with: bchatID)
                     }
                 }.catch { error in
                     modalActivityIndicator.dismiss {
@@ -166,8 +166,8 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         }
     }
 
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
@@ -275,8 +275,8 @@ private final class EnterPublicKeyVC : UIViewController {
     }
     
     // MARK: General
-    func setBChatID(to bchatuserID: String){
-        publicKeyTextView.insertText(bchatuserID)
+    func setBChatID(to bchatID: String){
+        publicKeyTextView.insertText(bchatID)
     }
 
     func constrainHeight(to height: CGFloat) {

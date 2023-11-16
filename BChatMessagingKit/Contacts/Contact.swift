@@ -2,7 +2,7 @@ import Foundation
 
 @objc(SNContact)
 public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is needed for YapDatabase compatibility
-    @objc public let bchatuser_ID: String
+    @objc public let bchatID: String
     /// The URL from which to fetch the contact's profile picture.
     @objc public var profilePictureURL: String?
     /// The file name of the contact's profile picture on local storage.
@@ -45,9 +45,9 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
             // In open groups, where it's more likely that multiple users have the same name, we display a bit of the BChat ID after
             // a user's display name for added context.
             guard let name = name else { return nil }
-            let endIndex = bchatuser_ID.endIndex
-            let cutoffIndex = bchatuser_ID.index(endIndex, offsetBy: -8)
-            return "\(name) (...\(bchatuser_ID[cutoffIndex..<endIndex]))"
+            let endIndex = bchatID.endIndex
+            let cutoffIndex = bchatID.index(endIndex, offsetBy: -8)
+            return "\(name) (...\(bchatID[cutoffIndex..<endIndex]))"
         }
     }
     
@@ -59,7 +59,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     
     // MARK: Initialization
     @objc public init(bchatID: String) {
-        self.bchatuser_ID = bchatID
+        self.bchatID = bchatID
         super.init()
     }
 
@@ -74,8 +74,8 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     
     // MARK: Coding
     public required init?(coder: NSCoder) {
-        guard let bchatUserID = coder.decodeObject(forKey: "sessionID") as! String? else { return nil }
-        self.bchatuser_ID = bchatUserID
+        guard let bchatID = coder.decodeObject(forKey: "sessionID") as! String? else { return nil }
+        self.bchatID = bchatID
         if let beldexAddress = coder.decodeObject(forKey: "beldexAddress") as! String? { self.beldexAddress = beldexAddress }
         isTrusted = coder.decodeBool(forKey: "isTrusted")
         if let name = coder.decodeObject(forKey: "displayName") as! String? { self.name = name }
@@ -93,7 +93,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     }
 
     public func encode(with coder: NSCoder) {
-        coder.encode(bchatuser_ID, forKey: "sessionID")
+        coder.encode(bchatID, forKey: "sessionID")
         coder.encode(name, forKey: "displayName")
         coder.encode(nickname, forKey: "nickname")
         coder.encode(profilePictureURL, forKey: "profilePictureURL")
@@ -111,17 +111,17 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     // MARK: Equality
     override public func isEqual(_ other: Any?) -> Bool {
         guard let other = other as? Contact else { return false }
-        return bchatuser_ID == other.bchatuser_ID
+        return bchatID == other.bchatID
     }
 
     // MARK: Hashing
     override public var hash: Int { // Override NSObject.hash and not Hashable.hashValue or Hashable.hash(into:)
-        return bchatuser_ID.hash
+        return bchatID.hash
     }
 
     // MARK: Description
     override public var description: String {
-        nickname ?? name ?? bchatuser_ID
+        nickname ?? name ?? bchatID
     }
     
     // MARK: Convenience

@@ -159,8 +159,8 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
         }
     }
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }

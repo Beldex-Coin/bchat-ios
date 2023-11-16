@@ -42,7 +42,7 @@ class BlockedContactVC: BaseVC, UITableViewDelegate, UITableViewDataSource,UITex
                 let userName = Storage.shared.getContact(with: publicKey)?.name
                 names.append(userName!)
                 let pukey = Storage.shared.getContact(with: publicKey)
-                publicKeys.append(pukey!.bchatuser_ID)
+                publicKeys.append(pukey!.bchatID)
             }
             tableView.reloadData()
         }

@@ -669,8 +669,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     @objc(createNewDMFromDeepLink:)
-    func createNewDMFromDeepLink(bchatuserID: String) {
-        let newDMVC = NewDMVC(bchatuserID: bchatuserID)
+    func createNewDMFromDeepLink(bchatID: String) {
+        let newDMVC = NewDMVC(bchatID: bchatID)
         let navigationController = OWSNavigationController(rootViewController: newDMVC)
         if UIDevice.current.isIPad {
             navigationController.modalPresentationStyle = .fullScreen

@@ -121,9 +121,9 @@ public final class WebRTCBChat : NSObject, RTCPeerConnectionDelegate {
         return promise
     }
     
-    public func sendOffer(to bchatuserID: String, using transaction: YapDatabaseReadWriteTransaction, isRestartingICEConnection: Bool = false) -> Promise<Void> {
+    public func sendOffer(to bchatID: String, using transaction: YapDatabaseReadWriteTransaction, isRestartingICEConnection: Bool = false) -> Promise<Void> {
         SNLog("[Calls] Sending offer message.")
-        guard let thread = TSContactThread.fetch(for: bchatuserID, using: transaction) else { return Promise(error: Error.noThread) }
+        guard let thread = TSContactThread.fetch(for: bchatID, using: transaction) else { return Promise(error: Error.noThread) }
         let (promise, seal) = Promise<Void>.pending()
         peerConnection?.offer(for: mediaConstraints(isRestartingICEConnection)) { [weak self] sdp, error in
             if let error = error {
@@ -153,9 +153,9 @@ public final class WebRTCBChat : NSObject, RTCPeerConnectionDelegate {
         return promise
     }
     
-    public func sendAnswer(to bchatuserID: String, using transaction: YapDatabaseReadWriteTransaction) -> Promise<Void> {
+    public func sendAnswer(to bchatID: String, using transaction: YapDatabaseReadWriteTransaction) -> Promise<Void> {
         SNLog("[Calls] Sending answer message.")
-        guard let thread = TSContactThread.fetch(for: bchatuserID, using: transaction) else { return Promise(error: Error.noThread) }
+        guard let thread = TSContactThread.fetch(for: bchatID, using: transaction) else { return Promise(error: Error.noThread) }
         let (promise, seal) = Promise<Void>.pending()
         peerConnection?.answer(for: mediaConstraints(false)) { [weak self] sdp, error in
             if let error = error {
@@ -211,8 +211,8 @@ public final class WebRTCBChat : NSObject, RTCPeerConnectionDelegate {
         }
     }
     
-    public func endCall(with bchatuserID: String, using transaction: YapDatabaseReadWriteTransaction) {
-        guard let thread = TSContactThread.fetch(for: bchatuserID, using: transaction) else { return }
+    public func endCall(with bchatID: String, using transaction: YapDatabaseReadWriteTransaction) {
+        guard let thread = TSContactThread.fetch(for: bchatID, using: transaction) else { return }
         let message = CallMessage()
         message.uuid = self.uuid
         message.kind = .endCall

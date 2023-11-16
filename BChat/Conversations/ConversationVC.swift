@@ -328,7 +328,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messageRequestView.addSubview(messageRequestDescriptionLabel)
         messageRequestView.addSubview(messageRequestAcceptButton)
         messageRequestView.addSubview(messageRequestDeleteButton)
-        
         scrollButton.pin(.right, to: .right, of: view, withInset: -20)
         messageRequestView.pin(.left, to: .left, of: view)
         messageRequestView.pin(.right, to: .right, of: view)
@@ -338,23 +337,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.scrollButtonMessageRequestsBottomConstraint = scrollButton.pin(.bottom, to: .top, of: messageRequestView, withInset: -16)
         self.scrollButtonMessageRequestsBottomConstraint?.isActive = thread.isMessageRequest()
         self.scrollButtonBottomConstraint?.isActive = !thread.isMessageRequest()
-        
         messageRequestDescriptionLabel.pin(.top, to: .top, of: messageRequestView, withInset: 10)
         messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 40)
         messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -40)
-        
-        //        messageRequestAcceptButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        //        messageRequestAcceptButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
-        //        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        //        messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        //
-        //        messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        //        messageRequestDeleteButton.pin(.left, to: .right, of: messageRequestAcceptButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 20)
-        //        messageRequestDeleteButton.pin(.right, to: .right, of: messageRequestView, withInset: -20)
-        //        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        //        messageRequestDeleteButton.set(.width, to: .width, of: messageRequestAcceptButton)
-        //        messageRequestDeleteButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        
         messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
         messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
         messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
@@ -365,7 +350,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
         messageRequestAcceptButton.set(.width, to: .width, of: messageRequestDeleteButton)
         messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        
         // Unread count view
         view.addSubview(unreadCountView)
         unreadCountView.addSubview(unreadCountLabel)
@@ -400,8 +384,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Update the input state if this is a contact thread
         if let contactThread: TSContactThread = thread as? TSContactThread {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
-            
-            
             // BeldexAddress view in Conversation Page (Get from DB)
             if contact?.beldexAddress != nil {
                 let belexAddress = contact?.beldexAddress
@@ -409,7 +391,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }else {
                 print("--belexAddress in conversation VCbelexAddress else--")
             }
-            
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
             self.snInputView.setEnabledMessageTypes(

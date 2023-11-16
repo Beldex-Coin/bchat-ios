@@ -61,9 +61,9 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         } else {
             // This could be an ONS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatuserID in
+                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
-                        self?.startNewDM(with: bchatuserID)
+                        self?.startNewDM(with: bchatID)
                     }
                 }.catch { error in
                     modalActivityIndicator.dismiss {
@@ -83,8 +83,8 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         }
     }
     
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }

@@ -832,22 +832,22 @@ static NSTimeInterval launchStartedAt;
         NSPredicate *bchatIDPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"sessionID"];
         NSArray<NSURLQueryItem*> *matches = [params filteredArrayUsingPredicate:bchatIDPredicate];
         if (matches.count > 0) {
-            NSString *bchatuserID = matches.firstObject.value;
-            [self createNewDMFromDeepLink:bchatuserID];
+            NSString *bchatID = matches.firstObject.value;
+            [self createNewDMFromDeepLink:bchatID];
             return YES;
         }
     }
     return NO;
 }
 
-- (void)createNewDMFromDeepLink:(NSString *)bchatuserID
+- (void)createNewDMFromDeepLink:(NSString *)bchatID
 {
     UIViewController *viewController = self.window.rootViewController;
     if ([viewController class] == [OWSNavigationController class]) {
         UIViewController *visibleVC = ((OWSNavigationController *)viewController).visibleViewController;
         if ([visibleVC isKindOfClass:HomeVC.class]) {
             HomeVC *homeVC = (HomeVC *)visibleVC;
-            [homeVC createNewDMFromDeepLink:bchatuserID];
+            [homeVC createNewDMFromDeepLink:bchatID];
         }
     }
 }
