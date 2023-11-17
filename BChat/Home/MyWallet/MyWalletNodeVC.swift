@@ -442,7 +442,7 @@ extension MyWalletNodeVC: UICollectionViewDataSource, UICollectionViewDelegate, 
                 cell.mainView.layer.backgroundColor = UIColor(red: 35.0/255, green: 130.0/255, blue: 244.0/255, alpha: 1.0).cgColor
                 cell.isUserInteractionEnabled = false
             }
-        } else if (nodeArray.count == 7) {
+        } else if (nodeArray.count == 6) {
             if(nodeArray[indexPath.row] == randomNodeValue) {
                 cell.mainView.layer.backgroundColor = UIColor(red: 35.0/255, green: 130.0/255, blue: 244.0/255, alpha: 1.0).cgColor
                 cell.isUserInteractionEnabled = false
