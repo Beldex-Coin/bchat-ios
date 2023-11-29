@@ -14,7 +14,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
             collectionView.register(Groupcell.nib, forCellWithReuseIdentifier: Groupcell.identifier)
         }
     }
-    private var Allrooms: [OpenGroupAPIV2.Info] = [] { didSet { update() } }
+    private var allRooms: [OpenGroupAPIV2.Info] = [] { didSet { update() } }
     private var heightConstraint: NSLayoutConstraint!
     private static let cellHeight: CGFloat = 40
     private lazy var spinner: NVActivityIndicatorView = {
@@ -23,8 +23,6 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         result.set(.height, to: SocialGroupVC.cellHeight)
         return result
     }()
-    
-    @IBOutlet weak var mainview22: UIView! 
     @IBOutlet weak var backgroundView:UIView!
     @IBOutlet weak var nextRef:UIButton!
     @IBOutlet weak var txtview:UITextView!
@@ -46,20 +44,12 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         backgroundView.layer.cornerRadius = 10
         nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            let origImage = UIImage(named: "scan_QR")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "scan_QR_dark")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .white
-        }
-        
+        let origImage = UIImage(named: isLightMode ? "scan_QR" : "scan_QR_dark")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        scanRef.setImage(tintedImage, for: .normal)
+        scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
         txtview.delegate = self
+        txtview.returnKeyType = .done
         txtview.setPlaceholder2()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -70,13 +60,14 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
         
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
             .done { [weak self] rooms in
-                self?.Allrooms = rooms
+                self?.allRooms = rooms
+                self?.update()
             }
             .catch { [weak self] _ in
                 self?.update()
             }
         nextRef.isUserInteractionEnabled = false
-        nextRef.backgroundColor = Colors.bchat_view_bg_clr
+        nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         
     }
     
@@ -105,31 +96,42 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     
     func textViewDidChange(_ textView: UITextView) {
         let str = textView.text!
+        if str == "\n" {
+            textView.resignFirstResponder()
+            return
+        }
         if str.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
             nextRef.setTitleColor(UIColor.lightGray, for: .normal)
             txtview.checkPlaceholder()
         }else {
             nextRef.isUserInteractionEnabled = true
-            nextRef.backgroundColor = Colors.bchat_button_clr
+            nextRef.backgroundColor = Colors.bchatButtonColor
             nextRef.setTitleColor(UIColor.white, for: .normal)
             txtview.checkPlaceholder()
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // became first responder
-        print("TextField did begin editing method called")
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            if textView.text.count >= 0 {
+                textView.resignFirstResponder()
+                let url = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
+                joinOpenGroup(with: url)
+                return false
+            }
+        }
+        return true
     }
     
-    @IBAction func ScanAction(sender:UIButton){
+    @IBAction func scanAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func nextAction(sender:UIButton){
         let url = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
         joinOpenGroup(with: url)
     }
@@ -164,7 +166,7 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
                     let title = "Couldn't Join"
                     let message = error.localizedDescription
                     self?.isJoining = false
-                    self?.showError(title: title, message: message)
+                    self?.showError(title: "BChat", message: "Couldn't join social group.")
                 }
         }
     }
@@ -178,15 +180,12 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     
     // MARK: Layout
     
-    //    func numberOfSections(in collectionView: UICollectionView) -> Int {
-    //        return 1
-    //    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Allrooms.count    //min(Allrooms.count, 8) // Cap to a maximum of 8 (4 rows of 2)
+        return allRooms.count    //min(allRooms.count, 8) // Cap to a maximum of 8 (4 rows of 2)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Groupcell.identifier, for: indexPath) as! Groupcell
-        cell.allroom = Allrooms[indexPath.item]
+        cell.allroom = allRooms[indexPath.item]
         
         return cell
     }
@@ -201,13 +200,13 @@ class SocialGroupVC: BaseVC,UITextFieldDelegate,UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let room = Allrooms[indexPath.item]
+        let room = allRooms[indexPath.item]
         joinV2OpenGroup(room: room.id, server: OpenGroupAPIV2.defaultServer, publicKey: OpenGroupAPIV2.defaultServerPublicKey)
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
         if let indexPath = self.collectionView?.indexPathForItem(at: sender.location(in: self.collectionView)) {
-            let room = Allrooms[indexPath.item]
+            let room = allRooms[indexPath.item]
             joinV2OpenGroup(room: room.id, server: OpenGroupAPIV2.defaultServer, publicKey: OpenGroupAPIV2.defaultServerPublicKey)
         }
     }
@@ -217,7 +216,7 @@ extension UITextView{
     func setPlaceholder2() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter a social group URL"
-        placeholderLabel.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)

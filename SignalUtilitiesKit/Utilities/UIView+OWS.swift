@@ -18,29 +18,35 @@ public extension UIEdgeInsets {
 @objc
 public extension UINavigationController {
     func pushViewController(_ viewController: UIViewController,
-                                   animated: Bool,
-                                   completion: (() -> Void)?) {
+                            animated: Bool,
+                            completion: (() -> Void)?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         pushViewController(viewController, animated: animated)
         CATransaction.commit()
     }
-
+    
     func popViewController(animated: Bool,
-                                  completion: (() -> Void)?) {
+                           completion: (() -> Void)?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         popViewController(animated: animated)
         CATransaction.commit()
     }
-
+    
     func popToViewController(_ viewController: UIViewController,
-                                    animated: Bool,
-                                    completion: (() -> Void)?) {
+                             animated: Bool,
+                             completion: (() -> Void)?) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         self.popToViewController(viewController, animated: animated)
         CATransaction.commit()
+    }
+    
+    func popToSpecificViewController(ofClass: AnyClass, animated: Bool = true) {
+        if let vc = viewControllers.last(where: { $0.isKind(of: ofClass) }) {
+            popToViewController(vc, animated: animated)
+        }
     }
 }
 

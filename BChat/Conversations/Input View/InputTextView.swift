@@ -10,7 +10,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private lazy var placeholderLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("Write a message...", comment: "")
-        result.font = .systemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         return result
     }()
@@ -59,12 +59,12 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         showsVerticalScrollIndicator = false
         backgroundColor = .clear
         textColor = Colors.text
-        font = .systemFont(ofSize: Values.mediumFontSize)
+        font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         tintColor = Colors.accent
         keyboardAppearance = isLightMode ? .light : .dark
         heightConstraint.isActive = true
         let horizontalInset: CGFloat = 2
-        textContainerInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+        textContainerInset = UIEdgeInsets(top: -horizontalInset, left: horizontalInset, bottom: 0, right: horizontalInset)
         addSubview(placeholderLabel)
         placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 3) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)

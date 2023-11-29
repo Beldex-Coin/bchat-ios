@@ -28,7 +28,6 @@
 #import <BChatMessagingKit/TSDatabaseView.h>
 #import <YapDatabase/YapDatabaseCryptoUtils.h>
 #import <sys/utsname.h>
-
 @import Intents;
 
 NSString *const AppDelegateStoryboardMain = @"Main";
@@ -140,8 +139,7 @@ static NSTimeInterval launchStartedAt;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
-   
+    
     // This should be the first thing we do
     SetCurrentAppContext([MainAppContext new]);
 
@@ -541,6 +539,13 @@ static NSTimeInterval launchStartedAt;
              ]) {
             YapDatabaseViewTransaction *databaseView = [transaction ext:viewName];
             OWSAssertDebug([databaseView isKindOfClass:[YapDatabaseViewTransaction class]]);
+            // Example: Use the databaseView to access the view's data.
+            // Replace this part with your actual code to work with the view data.
+            if ([databaseView numberOfItemsInAllGroups] > 0) {
+                // Perform some actions with the data in the view.
+                // For example, you can iterate through the view items, retrieve their data, etc.
+                // ...
+            }
         }
     }];
 }
@@ -577,11 +582,9 @@ static NSTimeInterval launchStartedAt;
     UIViewController *rootViewController;
     BOOL navigationBarHidden = NO;
     if ([self.tsAccountManager isRegistered]) {
-        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
-                                stringForKey:@"BChatPassword"];
-        
+//        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
+//                                stringForKey:@"BChatPassword"];
         rootViewController = [HomeVC new];
-        
         OWSAssertDebug(rootViewController);
         OWSNavigationController *navigationController =
         [[OWSNavigationController alloc] initWithRootViewController:rootViewController];
@@ -618,15 +621,14 @@ static NSTimeInterval launchStartedAt;
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     OWSAssertIsOnMainThread();
-
     if (self.didAppLaunchFail) {
         OWSFailDebug(@"App launch failed");
         return;
     }
-
     [self.pushRegistrationManager didReceiveVanillaPushToken:deviceToken];
-
     OWSLogInfo(@"Registering for push notifications with token: %@.", deviceToken);
+    NSString *deviceTokenString = [deviceToken hexadecimalString];
+    NSLog(@"deviceToken String: %@", deviceTokenString);
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -681,6 +683,11 @@ static NSTimeInterval launchStartedAt;
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
         __IOS_AVAILABLE(10.0)__TVOS_AVAILABLE(10.0)__WATCHOS_AVAILABLE(3.0)__OSX_AVAILABLE(10.14)
 {
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [prefs stringForKey:@"isDataCleared"];
+    if ([myString isEqualToString:@"Yes"]) {
+        return;
+    }
     if (notification.request.content.userInfo[@"remote"]) {
         OWSLogInfo(@"[Beldex] Ignoring remote notifications while the app is in the foreground.");
         return;
@@ -806,6 +813,9 @@ static NSTimeInterval launchStartedAt;
         // Resetting the data clears the old user defaults. We need to restore the unlink default.
         [NSUserDefaults.standardUserDefaults setBool:wasUnlinked forKey:@"wasUnlinked"];
     }];
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:@"Yes" forKey:@"isDataCleared"];
+     
 }
 
 # pragma mark - App Link
@@ -819,25 +829,25 @@ static NSTimeInterval launchStartedAt;
     NSString *intent = components.host;
     if (intent != nil && [intent isEqualToString:@"DM"]) {
         NSArray<NSURLQueryItem*> *params = [components queryItems];
-        NSPredicate *bchatIDPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"bchatID"];
+        NSPredicate *bchatIDPredicate = [NSPredicate predicateWithFormat:@"name == %@", @"sessionID"];
         NSArray<NSURLQueryItem*> *matches = [params filteredArrayUsingPredicate:bchatIDPredicate];
         if (matches.count > 0) {
-            NSString *bchatuserID = matches.firstObject.value;
-            [self createNewDMFromDeepLink:bchatuserID];
+            NSString *bchatID = matches.firstObject.value;
+            [self createNewDMFromDeepLink:bchatID];
             return YES;
         }
     }
     return NO;
 }
 
-- (void)createNewDMFromDeepLink:(NSString *)bchatuserID
+- (void)createNewDMFromDeepLink:(NSString *)bchatID
 {
     UIViewController *viewController = self.window.rootViewController;
     if ([viewController class] == [OWSNavigationController class]) {
         UIViewController *visibleVC = ((OWSNavigationController *)viewController).visibleViewController;
         if ([visibleVC isKindOfClass:HomeVC.class]) {
             HomeVC *homeVC = (HomeVC *)visibleVC;
-            [homeVC createNewDMFromDeepLink:bchatuserID];
+            [homeVC createNewDMFromDeepLink:bchatID];
         }
     }
 }

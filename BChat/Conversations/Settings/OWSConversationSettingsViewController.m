@@ -290,7 +290,7 @@ CGFloat kIconViewLength = 24;
             return [weakSelf
                 disclosureCellWithName:NSLocalizedString(@"vc_conversation_settings_copy_bchat_id_button_title", "")
                               iconName:@"ic_copy"
-               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"copy_session_id")];
+               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"copy_bchat_id")];
         }
         actionBlock:^{
             [weakSelf copyBChatID];
@@ -622,57 +622,35 @@ CGFloat kIconViewLength = 24;
           UITableViewCell *cell = [strongSelf disclosureCellWithName:cellTitle iconName:@"about987"
             accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"block")];
           cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    //      UISwitch *blockConversationSwitch = [UISwitch new];
-    //      blockConversationSwitch.on = [strongSelf.blockingManager isThreadBlocked:strongSelf.thread];
-    //      [blockConversationSwitch addTarget:strongSelf action:@selector(reportConversationSwitchDidChange:)
-    //        forControlEvents:UIControlEventValueChanged];
-    //
-    //
-    //
-    //      cell.accessoryView = blockConversationSwitch;
           return cell;
         } actionBlock:^{
-          NSString *displayName;
           TSContactThread *thread = (TSContactThread *)self.thread;
-          displayName = [[LKStorage.shared getContactWithBChatID:thread.contactBChatID] displayNameFor:SNContactContextRegular];
-          NSString *FulldisplayName;
-          FulldisplayName = [NSString stringWithFormat:NSLocalizedString(@"Report %@ ", ""), displayName];
+          NSString *displayName = [[LKStorage.shared getContactWithBChatID:thread.contactBChatID] displayNameFor:SNContactContextRegular];
+            NSString *FulldisplayName = [NSString stringWithFormat:NSLocalizedString(@"Report %@ ", ""), displayName];
           UIAlertController * alert = [UIAlertController
                            alertControllerWithTitle:FulldisplayName
-                           message:@"This user will be reported to BChat Team."
+                                       message:NSLocalizedString(@"This user will be reported to BChat Team.", @"")
                            preferredStyle:UIAlertControllerStyleAlert];
             //Add Buttons
             UIAlertAction* yesButton = [UIAlertAction
-                          actionWithTitle:@"Ok"
+                          actionWithTitle:NSLocalizedString(@"Ok", @"")
                           style:UIAlertActionStyleDefault
                           handler:^(UIAlertAction * action) {
                             //Handle your yes please button action here
                           }];
             UIAlertAction* noButton = [UIAlertAction
-                          actionWithTitle:@"Cancel"
+                          actionWithTitle:NSLocalizedString(@"Cancel", @"")
                           style:UIAlertActionStyleDefault
                           handler:^(UIAlertAction * action) {
                             //Handle no, thanks button
                           }];
+            // NSLocalizedString(@"This user will be reported to BChat Team.", @"");
             //Add your buttons to alert controller
             [alert addAction:yesButton];
             [alert addAction:noButton];
             [self presentViewController:alert animated:YES completion:nil];
         }]];
       }
-
-
-
-
-
-
-
-
-
-
-    
-    
-
     self.contents = contents;
 }
 
@@ -752,7 +730,7 @@ CGFloat kIconViewLength = 24;
     [profilePictureView autoSetDimension:ALDimensionHeight toSize:size];
     [profilePictureView addGestureRecognizer:profilePictureTapGestureRecognizer];
     
-    self.displayNameLabel.text = (self.threadName != nil && self.threadName.length > 0) ? self.threadName : @"Anonymous";
+    self.displayNameLabel.text = (self.threadName != nil && self.threadName.length > 0) ? self.threadName :NSLocalizedString(@"Anonymous", comment: "");
     if ([self.thread isKindOfClass:TSContactThread.class]) {
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showEditNameUI)];
         [self.displayNameContainer addGestureRecognizer:tapGestureRecognizer];
@@ -850,22 +828,19 @@ CGFloat kIconViewLength = 24;
     SNEditSecretGroupVC *editSecretGroupVC = [[SNEditSecretGroupVC alloc] initWithThreadID:self.thread.uniqueId];
     [self.navigationController pushViewController:editSecretGroupVC animated:YES completion:nil];
 }
-
 - (void)didTapLeaveGroup
 {
     NSString *userPublicKey = [SNGeneralUtilities getUserPublicKey];
     NSString *message;
     if ([((TSGroupThread *)self.thread).groupModel.groupAdminIds containsObject:userPublicKey]) {
-        message = @"Because you are the creator of this group it will be deleted for everyone. This cannot be undone.";
+        message = NSLocalizedString(@"Because you are the creator of this group it will be deleted for everyone. This cannot be undone.", comment: "");
     } else {
         message = NSLocalizedString(@"CONFIRM_LEAVE_GROUP_DESCRIPTION", @"Alert body");
     }
-    
     UIAlertController *alert =
         [UIAlertController alertControllerWithTitle:NSLocalizedString(@"CONFIRM_LEAVE_GROUP_TITLE", @"Alert title")
                                             message:message
                                      preferredStyle:UIAlertControllerStyleAlert];
-
     UIAlertAction *leaveAction = [UIAlertAction
                 actionWithTitle:NSLocalizedString(@"LEAVE_BUTTON_TITLE", @"Confirmation button within contextual alert")
         accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, @"leave_group_confirm")
@@ -878,7 +853,7 @@ CGFloat kIconViewLength = 24;
     [leaveAction setValue:[UIColor colorWithRed: 0.41 green: 2.53 blue: 0.46 alpha: 1] forKey:@"titleTextColor"];
     [self presentAlert:alert];
 }
-
+//
 - (BOOL)hasLeftGroup
 {
     if (self.isGroupThread) {
@@ -1016,9 +991,8 @@ CGFloat kIconViewLength = 24;
 - (void)copyBChatID
 {
     UIPasteboard.generalPasteboard.string = ((TSContactThread *)self.thread).contactBChatID;
-    
-    NSString *message = @"Your BChat ID copied to clipboard";
-        UIAlertController *toast =[UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+//    NSString *message = @"Your BChat ID copied to clipboard";
+        UIAlertController *toast =[UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Your BChat ID copied to clipboard", comment: "") preferredStyle:UIAlertControllerStyleAlert];
         [self presentViewController:toast animated:YES completion:nil];
         int duration = 1.0; // in seconds
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -1108,10 +1082,10 @@ CGFloat kIconViewLength = 24;
 - (void)saveName
 {
     if (![self.thread isKindOfClass:TSContactThread.class]) { return; }
-    NSString *bchatuserID = ((TSContactThread *)self.thread).contactBChatID;
-    SNContact *contact = [LKStorage.shared getContactWithBChatID:bchatuserID];
+    NSString *bchatID = ((TSContactThread *)self.thread).contactBChatID;
+    SNContact *contact = [LKStorage.shared getContactWithBChatID:bchatID];
     if (contact == nil) {
-        contact = [[SNContact alloc] initWithBchatID:bchatuserID];
+        contact = [[SNContact alloc] initWithBchatID:bchatID];
     }
     NSString *text = [self.displayNameTextField.text stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
     contact.nickname = text.length > 0 ? text : nil;

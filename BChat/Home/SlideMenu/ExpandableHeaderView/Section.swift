@@ -14,7 +14,6 @@ struct Section
     var movies: [String]!
     var expandable:Bool!
     
-    
     init(genre: String, movies: [String], expandable: Bool) {
         
         self.genre = genre

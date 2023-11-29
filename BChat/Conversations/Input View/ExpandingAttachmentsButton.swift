@@ -68,9 +68,9 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     }
     
     private func setUpViewHierarchy() {
-        documentButton.backgroundColor = Colors.bchat_button_clr
-        libraryButton.backgroundColor = Colors.bchat_button_clr
-        cameraButton.backgroundColor = Colors.bchat_button_clr
+        documentButton.backgroundColor = Colors.bchatButtonColor
+        libraryButton.backgroundColor = Colors.bchatButtonColor
+        cameraButton.backgroundColor = Colors.bchatButtonColor
         
         backgroundColor = .clear
         // GIF button

@@ -97,7 +97,7 @@ private extension MentionSelectionView {
         private lazy var displayNameLabel: UILabel = {
             let result = UILabel()
             result.textColor = Colors.text
-            result.font = .systemFont(ofSize: Values.smallFontSize)
+            result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             result.lineBreakMode = .byTruncatingTail
             return result
         }()

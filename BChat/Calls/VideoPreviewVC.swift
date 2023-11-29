@@ -57,7 +57,7 @@ class VideoPreviewVC: UIViewController, CameraManagerDelegate {
         let result = UILabel()
         result.text = "Preview"
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         return result
     }()

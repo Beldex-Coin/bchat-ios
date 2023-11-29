@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import BChatUIKit
 
 @objc
 public protocol DisappearingTimerConfigurationViewDelegate: class {
@@ -41,7 +42,7 @@ public class DisappearingTimerConfigurationView: UIView {
 
         self.label = UILabel()
         label.text = NSString.formatDurationSeconds(durationSeconds, useShortFormat: true)
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = Fonts.OpenSans(ofSize: 10)
         label.textAlignment = .center
         label.minimumScaleFactor = 0.5
 

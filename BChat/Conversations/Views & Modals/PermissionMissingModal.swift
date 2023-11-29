@@ -22,16 +22,16 @@ final class PermissionMissingModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = "BChat"
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = "BChat needs \(permission) access to continue. You can enable access in the iOS settings."
         let attributedMessage = NSMutableAttributedString(string: message)
-        attributedMessage.addAttributes([ .font : UIFont.boldSystemFont(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: permission))
+        attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: permission))
         messageLabel.attributedText = attributedMessage
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -40,8 +40,10 @@ final class PermissionMissingModal : Modal {
         let settingsButton = UIButton()
         settingsButton.set(.height, to: Values.mediumButtonHeight)
         settingsButton.layer.cornerRadius = Modal.buttonCornerRadius
-        settingsButton.backgroundColor = Colors.buttonBackground
-        settingsButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        settingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
+        settingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        // settingsButton.backgroundColor = Colors.buttonBackground
+        settingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         settingsButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         settingsButton.setTitle("Settings", for: UIControl.State.normal)
         settingsButton.addTarget(self, action: #selector(goToSettings), for: UIControl.Event.touchUpInside)

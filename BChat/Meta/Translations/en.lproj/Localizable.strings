@@ -376,10 +376,16 @@
 "SETTINGS_LINK_PREVIEWS_HEADER" = "Link Previews";
 /* Setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS" = "Voice and video calls";
+/* Setting for enabling & disabling wallet. */
+"SETTINGS_WALLET" = "Start Wallet";
 /* Footer for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_FOOTER" = "Allow access to accept voice and video calls from other users.";
+/* Footer for setting for enabling & disabling wallet. */
+"SETTINGS_WALLET_FOOTER" = "Enabling wallet will allow you to send and receive BDX";
 /* Header for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_HEADER" = "Calls";
+/* Header for setting for enabling & disabling wallet. */
+"SETTINGS_WALLET_HEADER" = "Wallet (BETA)";
 /* table section header */
 "SETTINGS_NOTIFICATION_CONTENT_TITLE" = "Notification Content";
 /* Label for the 'read receipts' setting. */
@@ -513,12 +519,12 @@
 "vc_settings_display_name_text_field_hint" = "Enter a display name";
 "vc_settings_display_name_missing_error" = "Please pick a display name";
 "vc_settings_display_name_too_long_error" = "Please pick a shorter display name";
-"vc_settings_privacy_button_title" = "Privacy";
+"vc_settings_privacy_button_title" = "Settings";
 "vc_settings_notifications_button_title" = "Notifications";
 "vc_settings_recovery_phrase_button_title" = "Recovery Phrase";
 "vc_settings_clear_all_data_button_title" = "Clear Data";
 "vc_notification_settings_title" = "Notifications";
-"vc_privacy_settings_title" = "Privacy";
+"vc_privacy_settings_title" = "Settings";
 "preferences_notifications_strategy_category_title" = "Notification Strategy";
 "modal_seed_title" = "Your Recovery Phrase";
 "modal_seed_explanation" = "This is your recovery phrase. With it, you can restore or migrate your BChat ID to a new device.";

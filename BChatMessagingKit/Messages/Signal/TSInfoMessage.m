@@ -112,10 +112,10 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
     TSThread *thread = [self threadWithTransaction:transaction];
     if ([thread isKindOfClass: [TSContactThread class]]) {
         TSContactThread *contactThread = (TSContactThread *)thread;
-        NSString *bchatUserID = contactThread.contactBChatID;
+        NSString *bchatID = contactThread.contactBChatID;
         NSString *name = [contactThread nameWithTransaction:transaction];
-        if ([name isEqual:bchatUserID]) {
-            name = [NSString stringWithFormat:@"%@...%@", [bchatUserID substringToIndex:4], [bchatUserID substringFromIndex:bchatUserID.length - 4]];
+        if ([name isEqual:bchatID]) {
+            name = [NSString stringWithFormat:@"%@...%@", [bchatID substringToIndex:4], [bchatID substringFromIndex:bchatID.length - 4]];
         }
         switch (_callState) {
             case TSInfoMessageCallStateIncoming:

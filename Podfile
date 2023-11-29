@@ -34,7 +34,7 @@ abstract_target 'GlobalDependencies' do
     pod 'Curve25519Kit', git: 'https://github.com/signalapp/Curve25519Kit.git'
     pod 'SignalCoreKit', git: 'https://github.com/oxen-io/session-ios-core-kit', branch: 'session-version'
     
-#    target 'BChatNotificationServiceExtension'
+    target 'BChatNotificationServiceExtension'
     target 'BChatSnodeKit'
     
     # Dependencies that are shared across a number of extensions/frameworks but not all

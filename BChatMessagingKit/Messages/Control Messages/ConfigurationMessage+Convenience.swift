@@ -53,11 +53,11 @@ extension ConfigurationMessage {
         
         contacts = storage.getAllContacts(with: transaction)
             .compactMap { contact -> ConfigurationMessage.Contact? in
-                let threadID = TSContactThread.threadID(fromContactBChatID: contact.bchatuser_ID)
+                let threadID = TSContactThread.threadID(fromContactBChatID: contact.bchatID)
                 
                 guard
                     // Skip the current user
-                    contact.bchatuser_ID != currentUserPublicKey &&
+                    contact.bchatID != currentUserPublicKey &&
                     // Contacts which have visible threads
                     TSContactThread.fetch(uniqueId: threadID, transaction: transaction)?.shouldBeVisible == true && (
                         
@@ -79,8 +79,8 @@ extension ConfigurationMessage {
                 let profileKey = contact.profileEncryptionKey?.keyData
                 
                 return ConfigurationMessage.Contact(
-                    publicKey: contact.bchatuser_ID,
-                    displayName: (contact.name ?? contact.bchatuser_ID),
+                    publicKey: contact.bchatID,
+                    displayName: (contact.name ?? contact.bchatID),
                     profilePictureURL: profilePictureURL,
                     profileKey: profileKey,
                     hasIsApproved: true,

@@ -9,7 +9,7 @@ class LandingVC: BaseVC {
     
     @IBOutlet weak var createRef:UIButton!
     @IBOutlet weak var signRef:UIButton!
-    @IBOutlet weak var TermsRef:UIButton!
+    @IBOutlet weak var termsRef:UIButton!
     @IBOutlet weak var gifimg:UIImageView!
     @IBOutlet weak var btnterms:UIButton!
     var flagvalue:Bool = false
@@ -17,12 +17,16 @@ class LandingVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpGradientBackground()
+        WalletSharedData.sharedInstance.isCleardataStarting = false
+        
+        
+        AppModeManager.shared.setCurrentAppMode(to: .dark)
         // Do any additional setup after loading the view.
         guard let navigationBar = navigationController?.navigationBar else { return }
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground2
+            appearance.backgroundColor = Colors.navigationBarBackgroundColor
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -30,7 +34,7 @@ class LandingVC: BaseVC {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = false
-            navigationBar.barTintColor = Colors.navigationBarBackground2
+            navigationBar.barTintColor = Colors.navigationBarBackgroundColor
         }
         self.navigationItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -107,7 +111,7 @@ class LandingVC: BaseVC {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground2
+            appearance.backgroundColor = Colors.navigationBarBackgroundColor
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -115,7 +119,7 @@ class LandingVC: BaseVC {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = false
-            navigationBar.barTintColor = Colors.navigationBarBackground2
+            navigationBar.barTintColor = Colors.navigationBarBackgroundColor
         }
         flagvalue = false
         if isLightMode {
@@ -127,7 +131,7 @@ class LandingVC: BaseVC {
     
     // MARK: - Create Account
     
-    @IBAction func CraeteAction(sender:UIButton){
+    @IBAction func craeteAction(sender:UIButton){
         if flagvalue == true {
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
             navigationflowTag = false
@@ -139,12 +143,12 @@ class LandingVC: BaseVC {
         }
     }
     // MARK: - Sign InAccount
-    @IBAction func SignINAction(sender:UIButton){
+    @IBAction func signInAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedVC") as! RecoverySeedVC
         navigationflowTag = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    @IBAction func TermsAction(sender:UIButton){
+    @IBAction func termsAction(sender:UIButton){
         let urlAsString: String?
         urlAsString = bchat_TermsConditionUrl_Link
         if let urlAsString = urlAsString {
@@ -152,12 +156,11 @@ class LandingVC: BaseVC {
             UIApplication.shared.open(url)
         }
     }
-    
     @IBAction func termsandconditionAction(sender:UIButton){
         btnterms.isSelected = !btnterms.isSelected
         if btnterms.isSelected {
             flagvalue = true
-            createRef.backgroundColor = Colors.bchat_button_clr
+            createRef.backgroundColor = Colors.bchatButtonColor
             let img = UIImage(named: "checked_img.png")!
             let tintedImage = img.withRenderingMode(.alwaysTemplate)
             self.btnterms.setImage(tintedImage, for: .normal)

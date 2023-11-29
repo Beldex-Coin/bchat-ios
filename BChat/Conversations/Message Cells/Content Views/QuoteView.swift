@@ -171,7 +171,7 @@ final class QuoteView : UIView {
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
-        bodyLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        bodyLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
         bodyLabel.textColor = textColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
@@ -183,7 +183,7 @@ final class QuoteView : UIView {
             let context: Contact.Context = groupThread.isOpenGroup ? .openGroup : .regular
             authorLabel.text = Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
             authorLabel.textColor = textColor
-            authorLabel.font = .boldSystemFont(ofSize: Values.smallFontSize)
+            authorLabel.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
             authorLabel.set(.height, to: authorLabelSize.height)
             authorLabelHeight = authorLabelSize.height

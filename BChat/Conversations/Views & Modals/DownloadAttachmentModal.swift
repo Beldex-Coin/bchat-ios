@@ -23,16 +23,16 @@ final class DownloadAttachmentModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = String(format: NSLocalizedString("modal_download_attachment_title", comment: ""), name)
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_download_attachment_explanation", comment: ""), name)
         let attributedMessage = NSMutableAttributedString(string: message)
-        attributedMessage.addAttributes([ .font : UIFont.boldSystemFont(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
+        attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
         messageLabel.attributedText = attributedMessage
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -41,9 +41,14 @@ final class DownloadAttachmentModal : Modal {
         let downloadButton = UIButton()
         downloadButton.set(.height, to: Values.mediumButtonHeight)
         downloadButton.layer.cornerRadius = Modal.buttonCornerRadius
-        downloadButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        downloadButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         downloadButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: UIControl.State.normal)
+        if isDarkMode {
+            downloadButton.backgroundColor = Colors.buttonBackground
+        }else {
+            downloadButton.backgroundColor = UIColor.lightGray
+        }
         downloadButton.addTarget(self, action: #selector(trust), for: UIControl.Event.touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, downloadButton ])

@@ -5,7 +5,7 @@ import UIKit
 class QRCodeScanVC: BaseVC {
     
     @IBOutlet weak var backgroundMainView:UIView!
-    @IBOutlet weak var ScanQRcode:UIButton!
+    @IBOutlet weak var scanQrCode:UIButton!
     @IBOutlet weak var shareref:UIButton!
     @IBOutlet weak var qrCodeImageView:UIImageView!
     @IBOutlet weak var backgroundScanView:UIView!
@@ -15,20 +15,17 @@ class QRCodeScanVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
         backgroundMainView.layer.cornerRadius = 10
-        ScanQRcode.layer.cornerRadius = 6
+        scanQrCode.layer.cornerRadius = 6
         shareref.layer.cornerRadius = 6
         backgroundScanView.layer.cornerRadius = 6
         backgroundShareView.layer.cornerRadius = 6
-        
-        let logoName2 = isLightMode ? "share_dark" : "share"
-        shareImh.image = UIImage(named: logoName2)!
-        let logoName23 = isLightMode ? "scan_QR_dark" : "scan_QR"
-        scanImg.image = UIImage(named: logoName23)!
+        shareImh.image = UIImage(named: "share")!
+        scanImg.image = UIImage(named: "scan_QR")!
         self.title = "QR Code"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
@@ -45,12 +42,11 @@ class QRCodeScanVC: BaseVC {
         self.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
-    @IBAction func ScanQRAction(sender:UIButton){
+    @IBAction func scanQrAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = false
         self.navigationController?.pushViewController(vc, animated: true)
     }
-
     
 }
 extension UIImage {

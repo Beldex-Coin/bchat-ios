@@ -48,7 +48,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isUserInteractionEnabled = false
-        result.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("MESSAGE_REQUESTS_EMPTY_TEXT", comment: "")
         result.textColor = Colors.text
         result.textAlignment = .center
@@ -63,12 +63,10 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isUserInteractionEnabled = false
         result.setGradient(Gradients.homeVCFade)
-        
         return result
     }()
     
     private lazy var clearAllButton: Button = {
-        //  unimportant, regular, prominentOutline, prominentFilled, regularBorderless, destructiveOutline
           let result: Button = Button(style: .unimportant, size: .medium)
           result.layer.borderWidth = 0
           result.layer.cornerRadius = 6
@@ -290,17 +288,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         return true
     }
     
-//    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-//        guard let thread = self.thread(at: indexPath.row) else { return [] }
-//
-//        let delete = UITableViewRowAction(style: .destructive, title: NSLocalizedString("TXT_DELETE_TITLE", comment: "")) { [weak self] _, _ in
-//            self?.delete(thread)
-//        }
-//        delete.backgroundColor = Colors.destructive
-//
-//        return [ delete ]
-//    }
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
         let delete = UIContextualAction(style: .destructive, title: "TXT_DELETE_TITLE", handler: { (action, view, success) in
           self.delete(thread)
@@ -321,9 +309,9 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         var needsSync: Bool = false
         
         // Update the contact
-        let bchatuserId: String = contactThread.contactBChatID()
+        let bchatId: String = contactThread.contactBChatID()
         
-        if let contact: Contact = Storage.shared.getContact(with: bchatuserId), (contact.isApproved || !contact.isBlocked) {
+        if let contact: Contact = Storage.shared.getContact(with: bchatId), (contact.isApproved || !contact.isBlocked) {
             contact.isApproved = false
             contact.isBlocked = true
             
@@ -352,18 +340,16 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                         if let uniqueId: String = thread.uniqueId {
                             Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
                         }
-                        
                         self?.updateContactAndThread(thread: thread, with: transaction) { threadNeedsSync in
                             if threadNeedsSync {
                                 needsSync = true
                             }
                         }
-                        
                         // Block the contact
                         if
-                            let bchatuserId: String = (thread as? TSContactThread)?.contactBChatID(),
+                            let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
                             !thread.isBlocked(),
-                            let contact: Contact = Storage.shared.getContact(with: bchatuserId, using: transaction)
+                            let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
                         {
                             contact.isBlocked = true
                             Storage.shared.setContact(contact, using: transaction)
@@ -395,9 +381,9 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                     
                     // Block the contact
                     if
-                        let bchatuserId: String = (thread as? TSContactThread)?.contactBChatID(),
+                        let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
                         !thread.isBlocked(),
-                        let contact: Contact = Storage.shared.getContact(with: bchatuserId, using: transaction)
+                        let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
                     {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)

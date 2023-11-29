@@ -14,4 +14,3 @@ Credits
 - Portions Copyright (c) 2011 Whisper Systems
 - Portions Copyright (c) 2013-2017 Open Whisper Systems
 - Portions Copyright (c) 2018-2021 Session
-- Portions Copyright (c) 2020-2023 Bchat

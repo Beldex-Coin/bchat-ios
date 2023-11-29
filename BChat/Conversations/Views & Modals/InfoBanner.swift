@@ -22,8 +22,8 @@ final class InfoBanner : UIView {
         backgroundColor = Colors.cellPinned
         let label = UILabel()
         label.text = message
-        label.font = .boldSystemFont(ofSize: Values.smallFontSize)
-        label.textColor = Colors.bchat_lbl_name
+        label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        label.textColor = Colors.bchatLabelNameColor
         label.numberOfLines = 0
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
@@ -31,7 +31,7 @@ final class InfoBanner : UIView {
         label.pin(to: self, withInset: Values.mediumSpacing)
         let titleLabel1 = UILabel()
         titleLabel1.textColor = UIColor.white
-        titleLabel1.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        titleLabel1.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         titleLabel1.text = " Unblock  "
         titleLabel1.textAlignment = .center
         titleLabel1.numberOfLines = 0
@@ -42,7 +42,7 @@ final class InfoBanner : UIView {
         titleLabel1.pin(to: self, withInset: Values.mediumSpacing)
         let label2 = UILabel()
         label2.text = ""
-        label2.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        label2.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label2.textColor = .white
         label2.numberOfLines = 0
         label.textAlignment = .center

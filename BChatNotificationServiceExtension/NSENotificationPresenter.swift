@@ -98,7 +98,7 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         // Add request
         let trigger: UNNotificationTrigger?
         if isBackgroudPoll {
-            trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+            trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
             let numberOfNotifications: Int
             if let lastRequest = notifications[identifier], let counter = lastRequest.content.userInfo[NotificationServiceExtension.threadNotificationCounter] as? Int  {
                 numberOfNotifications = counter + 1

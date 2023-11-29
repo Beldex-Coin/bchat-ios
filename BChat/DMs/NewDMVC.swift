@@ -38,9 +38,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         return result
     }()
     
-    init(bchatuserID: String) {
+    init(bchatID: String) {
         super.init(nibName: nil, bundle: nil)
-        enterPublicKeyVC.setBChatID(to: bchatuserID)
+        enterPublicKeyVC.setBChatID(to: bchatID)
     }
     
     required init?(coder: NSCoder) {
@@ -143,9 +143,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         } else {
             // This could be an ONS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatuserID in
+                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
-                        self?.startNewDM(with: bchatuserID)
+                        self?.startNewDM(with: bchatID)
                     }
                 }.catch { error in
                     modalActivityIndicator.dismiss {
@@ -166,8 +166,8 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         }
     }
 
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
@@ -231,7 +231,7 @@ private final class EnterPublicKeyVC : UIViewController {
         // Explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        explanationLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         explanationLabel.text = NSLocalizedString("vc_enter_public_key_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
@@ -275,8 +275,8 @@ private final class EnterPublicKeyVC : UIViewController {
     }
     
     // MARK: General
-    func setBChatID(to bchatuserID: String){
-        publicKeyTextView.insertText(bchatuserID)
+    func setBChatID(to bchatID: String){
+        publicKeyTextView.insertText(bchatID)
     }
 
     func constrainHeight(to height: CGFloat) {
@@ -358,14 +358,14 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("vc_scan_qr_code_camera_access_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
         explanationLabel.lineBreakMode = .byWordWrapping
         // Set up call to action button
         let callToActionButton = UIButton()
-        callToActionButton.titleLabel!.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         callToActionButton.setTitleColor(Colors.accent, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
         callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)

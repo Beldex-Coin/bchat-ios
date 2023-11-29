@@ -22,9 +22,7 @@ class EmptySearchResultCell: UITableViewCell {
     }()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         backgroundColor = .clear
-        
         contentView.addSubview(messageLabel)
         messageLabel.autoSetDimension(.height, toSize: 150)
         messageLabel.autoPinEdge(toSuperviewMargin: .top, relation: .greaterThanOrEqual)
@@ -35,7 +33,6 @@ class EmptySearchResultCell: UITableViewCell {
         messageLabel.autoHCenterInSuperview()
         messageLabel.setContentHuggingHigh()
         messageLabel.setCompressionResistanceHigh()
-
         contentView.addSubview(spinner)
         spinner.autoCenterInSuperview()
     }

@@ -4,10 +4,7 @@ import SideMenu
 import SVGKit
 import BChatUIKit
 
-// See https://github.com/yapstudios/YapDatabase/wiki/LongLivedReadTransactions and
-// https://github.com/yapstudios/YapDatabase/wiki/YapDatabaseModifiedNotification for
-// more information on database handling.
-final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate, SeedReminderViewDelegate {
+final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate {
     private var threads: YapDatabaseViewMappings!
     private var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     private var tableViewTopConstraint: NSLayoutConstraint!
@@ -37,17 +34,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     private var isReloading = false
     
     // MARK: UI Components
-    private lazy var seedReminderView: SeedReminderView = {
-        let result = SeedReminderView(hasContinueButton: true)
-        let title = "You're almost finished! 80%"
-        let attributedTitle = NSMutableAttributedString(string: title)
-        attributedTitle.addAttribute(.foregroundColor, value: Colors.accent, range: (title as NSString).range(of: "80%"))
-        result.title = attributedTitle
-        result.subtitle = NSLocalizedString("view_seed_reminder_subtitle_1", comment: "")
-        result.setProgress(0.8, animated: false)
-        result.delegate = self
-        return result
-    }()
     
     private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -77,16 +63,16 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
-        explanationLabel.textColor = Colors.bchat_placeholder_clr
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.textColor = Colors.bchatPlaceholderColor
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center
         explanationLabel.text = NSLocalizedString("Much empty.Such wow.", comment: "")
         
         let explanationLabel2 = UILabel()
-        explanationLabel2.textColor = Colors.bchat_placeholder_clr
-        explanationLabel2.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel2.textColor = Colors.bchatPlaceholderColor
+        explanationLabel2.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel2.numberOfLines = 0
         explanationLabel2.lineBreakMode = .byWordWrapping
         explanationLabel2.textAlignment = .center
@@ -116,7 +102,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         // Note: This is a hack to ensure `isRTL` is initially gets run on the main thread so the value is cached (it gets
         // called on background threads and if it hasn't cached the value then it can cause odd performance issues since
         // it accesses UIKit)
@@ -133,15 +119,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         updateNavBarButtons()
         setUpNavBarSessionHeading()
-        
-        // Recovery phrase reminder
-        //        let hasViewedSeed = UserDefaults.standard[.hasViewedSeed]
-        //        if !hasViewedSeed {
-        //            view.addSubview(seedReminderView)
-        //            seedReminderView.pin(.leading, to: .leading, of: view)
-        //            seedReminderView.pin(.top, to: .top, of: view)
-        //            seedReminderView.pin(.trailing, to: .trailing, of: view)
-        //        }
         // Table view
         tableView.dataSource = self
         tableView.delegate = self
@@ -149,23 +126,10 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         
         tableView.pin(.leading, to: .leading, of: view)
         tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0)
-        //        if !hasViewedSeed {
-        //            tableViewTopConstraint = tableView.pin(.top, to: .bottom, of: seedReminderView)
-        //        } else {
-        //            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
-        //        }
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         view.addSubview(someImageView)
         someImageView.pin(to: view)
-        
-        
-        //        fadeView.pin(.leading, to: .leading, of: view)
-        //        let topInset = 0.15 * view.height()
-        //        fadeView.pin(.top, to: .top, of: view, withInset: topInset)
-        //        fadeView.pin(.trailing, to: .trailing, of: view)
-        //        fadeView.pin(.bottom, to: .bottom, of: view)
-        
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -217,7 +181,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
-        print ("Mode Change-: \(text)")
         someImageView.layer.masksToBounds = true
         let logoName = isLightMode ? "svg_light" : "svg_dark"
         let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
@@ -227,12 +190,17 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         let searchController = GlobalSearchViewController()
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
-    //Sree
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
         reload()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        newConversationButtonSet.collapse(withAnimation: true)
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -370,60 +338,62 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         
         guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
         
-        tableView.beginUpdates()
-        
-        // If we need to unhide the message request row and then re-insert it
-        if !messageRequestChanges.isEmpty {
-            
-            // If there are no unread message requests then hide the message request banner
-            if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
-                CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-                tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            }
-            else {
-                if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
+        //        tableView.beginUpdates()
+        self.tableView.performBatchUpdates({
+            // If we need to unhide the message request row and then re-insert it
+            if !messageRequestChanges.isEmpty {
+                
+                // If there are no unread message requests then hide the message request banner
+                if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
+                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
                     tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
                 }
-                else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-                    tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                else {
+                    if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
+                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                    }
+                    else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
+                        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+                    }
                 }
             }
-        }
-        
-        inboxRowChanges.forEach { rowChange in
-            let key = rowChange.collectionKey.key
-            threadViewModelCache[key] = nil
             
-            switch rowChange.type {
-            case .delete:
-                tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+            inboxRowChanges.forEach { rowChange in
+                let key = rowChange.collectionKey.key
+                threadViewModelCache[key] = nil
                 
-            case .insert:
-                tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                
-            case .update:
-                tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
-                
-            case .move:
-                // Note: We need to handle the move from the message requests section to the inbox (since
-                // we are only showing a single row for message requests we need to custom handle this as
-                // an insert as the change won't be defined correctly)
-                if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
-                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                }
-                else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
+                switch rowChange.type {
+                case .delete:
                     tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    
+                case .insert:
+                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+                    
+                case .update:
+                    tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    
+                case .move:
+                    // Note: We need to handle the move from the message requests section to the inbox (since
+                    // we are only showing a single row for message requests we need to custom handle this as
+                    // an insert as the change won't be defined correctly)
+                    if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
+                        tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+                    }
+                    else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
+                        tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+                    }
+                    
+                default: break
                 }
-                
-            default: break
             }
-        }
-        tableView.endUpdates()
+            //        tableView.endUpdates()
+        }, completion: nil)
         // HACK: Moves can have conflicts with the other 3 types of change.
         // Just batch perform all the moves separately to prevent crashing.
         // Since all the changes are from the original state to the final state,
         // it will still be correct if we pick the moves out.
-        tableView.beginUpdates()
+//        tableView.beginUpdates()
+        self.tableView.performBatchUpdates({
         rowChanges.forEach { rowChange in
             let rowChange = rowChange as! YapDatabaseViewRowChange
             let key = rowChange.collectionKey.key
@@ -442,7 +412,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             default: break
             }
         }
-        tableView.endUpdates()
+        //        tableView.endUpdates()
+    }, completion: nil)
         emptyStateView.isHidden = (threadCount != 0)
         someImageView.isHidden = (threadCount != 0)
     }
@@ -458,7 +429,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
         tableViewTopConstraint.isActive = false
         tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
-        // seedReminderView.removeFromSuperview()
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -466,37 +436,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     private func updateNavBarButtons() {
-        // Profile picture view
-        //        let profilePictureSize = Values.verySmallProfilePictureSize
-        //        let profilePictureView = ProfilePictureView()
-        //        profilePictureView.accessibilityLabel = "Settings button"
-        //        profilePictureView.size = profilePictureSize
-        //        profilePictureView.publicKey = getUserHexEncodedPublicKey()
-        //        profilePictureView.update()
-        //        profilePictureView.set(.width, to: profilePictureSize)
-        //        profilePictureView.set(.height, to: profilePictureSize)
-        //        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(openSettings))
-        //        profilePictureView.addGestureRecognizer(tapGestureRecognizer)
-        //        // Path status indicator
-        //        let pathStatusView = PathStatusView()
-        //        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-        //        pathStatusView.set(.width, to: PathStatusView.size)
-        //        pathStatusView.set(.height, to: PathStatusView.size)
-        //        // Container view
-        //        let profilePictureViewContainer = UIView()
-        //        profilePictureViewContainer.accessibilityLabel = "Settings button"
-        //        profilePictureViewContainer.addSubview(profilePictureView)
-        //        profilePictureView.autoPinEdgesToSuperviewEdges()
-        //        profilePictureViewContainer.addSubview(pathStatusView)
-        //        pathStatusView.pin(.trailing, to: .trailing, of: profilePictureViewContainer)
-        //        pathStatusView.pin(.bottom, to: .bottom, of: profilePictureViewContainer)
-        
-        // Left bar button item
-        //        let leftBarButtonItem = UIBarButtonItem(customView: profilePictureViewContainer)
-        //        leftBarButtonItem.accessibilityLabel = "Settings button"
-        //        leftBarButtonItem.isAccessibilityElement = true
-        //        navigationItem.leftBarButtonItem = leftBarButtonItem
-        
         let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
         backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
         backButton.isAccessibilityElement = true
@@ -603,13 +542,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
                             guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
                                 return
                             }
-                            
                             contact.isBlocked = true
                             Storage.shared.setContact(contact, using: transaction as Any)
                         },
                         completion: {
                             MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            
                             DispatchQueue.main.async {
                                 tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
                             }
@@ -647,26 +584,26 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             else {
                 return UISwipeActionsConfiguration(actions: [ delete, (isPinned ? unpin : pin) ])
             }
-            
         }
     }
     
     // MARK: - Interaction
-    
-    func handleContinueButtonTapped(from seedReminderView: SeedReminderView) {
-        let seedVC = SeedVC()
-        let navigationController = OWSNavigationController(rootViewController: seedVC)
-        present(navigationController, animated: true, completion: nil)
-    }
     
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
         DispatchMainThreadSafe {
             if let presentedVC = self.presentedViewController {
                 presentedVC.dismiss(animated: false, completion: nil)
             }
-            let conversationVC = ConversationVC(thread: thread)
-            self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
         }
+        let conversationVC = ConversationVC(thread: thread)
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        self.navigationController?.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
+        
     }
     
     private func delete(_ thread: TSThread) {
@@ -717,6 +654,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     @objc private func openSettings() {
+        newConversationButtonSet.collapse(withAnimation: true)
         let RightVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuNavigationController") as! SideMenuNavigationController
         SideMenuManager.default.leftMenuNavigationController = RightVC
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
@@ -730,17 +668,15 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
-    
     @objc(createNewDMFromDeepLink:)
-    func createNewDMFromDeepLink(bchatuserID: String) {
-        let newDMVC = NewDMVC(bchatuserID: bchatuserID)
+    func createNewDMFromDeepLink(bchatID: String) {
+        let newDMVC = NewDMVC(bchatID: bchatID)
         let navigationController = OWSNavigationController(rootViewController: newDMVC)
         if UIDevice.current.isIPad {
             navigationController.modalPresentationStyle = .fullScreen
         }
         present(navigationController, animated: true, completion: nil)
     }
-    
     
     // MARK: Convenience
     private func thread(at index: Int) -> TSThread? {

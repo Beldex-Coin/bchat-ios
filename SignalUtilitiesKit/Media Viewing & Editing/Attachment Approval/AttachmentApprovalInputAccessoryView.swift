@@ -66,7 +66,7 @@ class AttachmentApprovalInputAccessoryView: UIView {
         backgroundView.autoPinEdgesToSuperviewEdges()
 
         currentCaptionLabel.textColor = .white
-        currentCaptionLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+        currentCaptionLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         currentCaptionLabel.numberOfLines = 5
         currentCaptionLabel.lineBreakMode = .byWordWrapping
 

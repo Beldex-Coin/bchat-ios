@@ -1,3 +1,4 @@
+
 // Copyright © 2022 Beldex. All rights reserved.
 
 import UIKit
@@ -10,13 +11,12 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var userNametxt:UITextField!
     @IBOutlet weak var heighttxt:UITextField!
     @IBOutlet weak var datetxt:UITextField!
-    
     @IBOutlet weak var nextRef:UIButton!
     let datePicker = DatePickerDialog()
-    var SeedPass:String!
-    
+    var seedPassing:String!
     private var data = NewWallet()
     private var recovery_seed = RecoverWallet(from: .seed)
+    var dateHeight = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,24 +26,23 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         setUpNavBarStyle()
         self.title = "Restore from seed"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        //Keyboard Done Option
+        heighttxt.addDoneButtonKeybord()
+        
         backgroundNameView.layer.cornerRadius = 10
         backgroundHeightView.layer.cornerRadius = 10
         backgroundDateView.layer.cornerRadius = 10
-        
         nextRef.layer.cornerRadius = 6
         
-        if isLightMode {
-            userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
+        recovery_seed.seed = seedPassing
+        userNametxt.attributedPlaceholder = NSAttributedString(string:"Display Name", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        heighttxt.attributedPlaceholder = NSAttributedString(string:"Restore from Blockheight", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        datetxt.attributedPlaceholder = NSAttributedString(string:"Restore from Date", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         userNametxt.delegate = self
         heighttxt.delegate = self
         datetxt.delegate = self
+        heighttxt.keyboardType = .numberPad
+        userNametxt.returnKeyType = .done
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -54,15 +53,31 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         
     }
     func datePickerTapped() {
-        let currentDate = Date()
         datePicker.show("Select Date",
                         doneButtonTitle: "Done",
                         cancelButtonTitle: "Cancel",
-                        datePickerMode: .date) { (date) in
+                        maximumDate: Date(),
+                        datePickerMode: .date) { [self] (date) in
             if let dt = date {
                 let formatter = DateFormatter()
-                formatter.dateFormat = "MM-dd-yyyy"
+                formatter.dateFormat = "yyyy-MM-dd"
+                formatter.timeZone = TimeZone(identifier: "UTC")
                 self.datetxt.text = formatter.string(from: dt)
+                let dateString = formatter.string(from: dt)
+                print("selected date---------String Formate--------------------->: ",dateString)
+//                let date = formatter.date(from: dateString)
+//                print("selected date---------date Formate--------------------->: ", date!)
+                let formatter2 = DateFormatter()
+                formatter2.dateFormat = "yyyy-MM"
+                let finalDate = formatter2.string(from: dt)
+                for element in DateHeight.getBlockHeight {
+                    let fullNameArr = element.components(separatedBy: ":")
+                    let dateString  = fullNameArr[0]
+                    let heightString = fullNameArr[1]
+                    if dateString == finalDate {
+                        dateHeight = heightString
+                    }
+                }
             }
         }
     }
@@ -73,8 +88,6 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
         }
         return true
     }
-    
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         userNametxt.becomeFirstResponder()
@@ -87,28 +100,15 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
     // MARK: General
     @objc private func dismissKeyboard() {
         userNametxt.resignFirstResponder()
+        heighttxt.resignFirstResponder()
     }
     
     // MARK: Updating
     @objc private func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        guard let newHeight = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height else { return }
-        //        bottomConstraint.constant = -newHeight // Negative due to how the constraint is set up
-        //        registerButtonBottomOffsetConstraint.constant = isIPhone5OrSmaller ? Values.smallSpacing : Values.largeSpacing
-        //        spacer1HeightConstraint.constant = isIPhone5OrSmaller ? Values.smallSpacing : Values.mediumSpacing
-        //        spacer2HeightConstraint.constant = isIPhone5OrSmaller ? Values.smallSpacing : Values.mediumSpacing
-        //        UIView.animate(withDuration: 0.25) {
-        //            self.view.layoutIfNeeded()
-        //        }
+        guard (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size.height != nil else { return }
     }
     
     @objc private func handleKeyboardWillHideNotification(_ notification: Notification) {
-        //        bottomConstraint.constant = 0
-        //        registerButtonBottomOffsetConstraint.constant = Values.onboardingButtonBottomOffset
-        //        spacer1HeightConstraint.constant = isIPhone5OrSmaller ? Values.smallSpacing : Values.veryLargeSpacing
-        //        spacer2HeightConstraint.constant = isIPhone5OrSmaller ? Values.smallSpacing : Values.veryLargeSpacing
-        //        UIView.animate(withDuration: 0.25) {
-        //            self.view.layoutIfNeeded()
-        //        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -141,6 +141,7 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
             alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
             presentAlert(alert)
         }
+        let dateText = datetxt.text!
         if userNametxt.text!.isEmpty {
             let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
@@ -153,57 +154,100 @@ class RecoverySeedNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
             }
         }
-        else
-        {
-            // Wallet Seed
-            self.createWallet(recover: recovery_seed)
-            let mnemonic = SeedPass!
-            do {
-                let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
-                let seed = Data(hex: hexEncodedSeed)
-                let (ed25519KeyPair, x25519KeyPair) = KeyPairUtilities.generate(from: seed)
-                Onboarding.Flow.recover.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
-                Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
-                }
-            } catch let error {
-                let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
-                showError(title: error.errorDescription!)
-            }
-            func showError(title: String, message: String = "") {
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-                presentAlert(alert)
-            }
-            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        if heighttxt.text!.isEmpty && datetxt.text!.isEmpty { //
+            let displayName = heighttxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+                return showError(title: NSLocalizedString("restore height or date is missing", comment: ""))
             }
+        }
+        if heighttxt.text!.count >= 9 {
+            let displayName = heighttxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+                return showError(title: NSLocalizedString("restore height is too long", comment: ""))
             }
-            OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: { }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
-            
+        }
+        if heighttxt.text!.isEmpty && datetxt.text != nil{
+            if !dateHeight.isEmpty {
+                SaveUserDefaultsData.WalletRestoreHeight = dateHeight
+            }else {
+                SaveUserDefaultsData.WalletRestoreHeight = ""
+            }
+            self.mnemonicSeedconnect()
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
             navigationflowTag = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        if userNametxt.text != "" && heighttxt.text != "" && datetxt.text != "" {
+            showError(title: NSLocalizedString("enter either Restore height or Date", comment: ""))
+        }
+        if userNametxt.text != "" && heighttxt.text != nil && dateText == ""{ //
+            SaveUserDefaultsData.WalletRestoreHeight = heighttxt.text!
+            SaveUserDefaultsData.NameForWallet = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            self.mnemonicSeedconnect()
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
+            navigationflowTag = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else{
+            // Wallet Seed
+            self.mnemonicSeedconnect()
+            SaveUserDefaultsData.NameForWallet = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        }
     }
     
+    func mnemonicSeedconnect() {
+        self.alertWarningIfNeed(recovery_seed)
+        let mnemonic = seedPassing!
+        do {
+            let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
+            let seed = Data(hex: hexEncodedSeed)
+            let (ed25519KeyPair, x25519KeyPair) = KeyPairUtilities.generate(from: seed)
+            Onboarding.Flow.recover.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
+            Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
+            }
+        } catch let error {
+            let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
+            showError(title: error.errorDescription!)
+        }
+        func showError(title: String, message: String = "") {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            presentAlert(alert)
+        }
+        let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        guard !displayName.isEmpty else {
+            return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+        }
+        guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
+            return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+        }
+        OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: { }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
+    }
     
-    func createWallet(recover:RecoverWallet) {
-        let seedvalue = SeedPass!
-        UserDefaultsData.WalletRecoverSeed = seedvalue
-        recovery_seed.seed = seedvalue
-        data.name = userNametxt.text!
+    private func alertWarningIfNeed(_ recover: RecoverWallet) {
+        guard recover.date == nil &&
+                recover.block == nil
+        else {
+            self.createWallet(recover)
+            return
+        }
+        self.createWallet(recover)
+    }
+    
+    private func createWallet(_ recover: RecoverWallet) {
+        SaveUserDefaultsData.WalletRecoverSeed = seedPassing!
+        let uuid = UUID()
+        data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        data.pwd = uuid.uuidString
+        SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
         WalletService.shared.createWallet(with: .recovery(data: data, recover: recover)) { (result) in
             switch result {
             case .success(let wallet):
-                print("wallet ---> \(wallet.publicAddress)")
+                wallet.close()
+                print("sucecs in import")
             case .failure(_):
                 print("faile in import")
             }
         }
     }
-    
-    
 }

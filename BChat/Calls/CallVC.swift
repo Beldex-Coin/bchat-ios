@@ -4,7 +4,7 @@ import BChatMessagingKit
 import BChatUtilitiesKit
 import UIKit
 import MediaPlayer
-
+import AVFoundation
 final class CallVC : UIViewController, VideoPreviewDelegate {
     let call: BChatCall
     var latestKnownAudioOutputDeviceName: String?
@@ -12,7 +12,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     var duration: Int = 0
     var shouldRestartCamera = true
     weak var conversationVC: ConversationVC? = nil
-    
+    var player: AVAudioPlayer?;
     lazy var cameraManager: CameraManager = {
         let result = CameraManager()
         result.delegate = self
@@ -72,6 +72,17 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         result.set(.width, to: 60)
         result.set(.height, to: 60)
         result.addTarget(self, action: #selector(minimize), for: UIControl.Event.touchUpInside)
+        return result
+    }()
+    
+    private lazy var backButton: UIButton = {
+        let result = UIButton(type: .custom)
+        result.isHidden = call.hasConnected
+        let image = UIImage(named: "NavBarBack")!.withTint(.white)
+        result.setImage(image, for: UIControl.State.normal)
+        result.set(.width, to: 60)
+        result.set(.height, to: 60)
+        result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
         return result
     }()
     
@@ -171,7 +182,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         return result
     }()
@@ -180,7 +191,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let result = UILabel()
         result.isHidden = call.hasConnected
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         if call.hasStartedConnecting { result.text = "Connecting..." }
         return result
@@ -190,7 +201,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let result = UILabel()
         result.isHidden = true
         result.textColor = .white
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.textAlignment = .center
         return result
     }()
@@ -232,6 +243,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callInfoLabel.text = "Connected"
+                self.backButton.isHidden = true
                 self.minimizeButton.isHidden = false
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
@@ -284,6 +296,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         }
         setupOrientationMonitoring()
         NotificationCenter.default.addObserver(self, selector: #selector(audioRouteDidChange), name: AVAudioSession.routeChangeNotification, object: nil)
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
     }
     
     deinit {
@@ -311,6 +325,10 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         minimizeButton.translatesAutoresizingMaskIntoConstraints = false
         minimizeButton.pin(.left, to: .left, of: view)
         minimizeButton.pin(.top, to: .top, of: view, withInset: 32)
+        view.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.pin(.left, to: .left, of: view)
+        backButton.pin(.top, to: .top, of: view, withInset: 32)
         // Title label
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -359,6 +377,13 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         shouldRestartCamera = true
         addLocalVideoView()
         remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -412,6 +437,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.callInfoLabel.isHidden = false
         self.callDurationLabel.isHidden = true
         callInfoLabel.text = "Call Ended"
+        self.alertOnCallEnding()
         UIView.animate(withDuration: 0.25) {
             self.remoteVideoView.alpha = 0
             self.operationPanel.alpha = 1
@@ -425,6 +451,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func answerCall() {
+        UIApplication.shared.isIdleTimerDisabled = true
         AppEnvironment.shared.callManager.answerCall(call) { error in
             DispatchQueue.main.async {
                 if let _ = error {
@@ -436,7 +463,9 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func endCall() {
+        UIApplication.shared.isIdleTimerDisabled = false
         AppEnvironment.shared.callManager.endCall(call) { error in
+          //  self.alertOnCallEnding()
             if let _ = error {
                 self.call.endBChatCall()
                 AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
@@ -445,6 +474,24 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 self.conversationVC?.showInputAccessoryView()
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
+        }
+    }
+    
+    func alertOnCallEnding(){
+        guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
+            print("error");
+            return;
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: AVAudioSession.CategoryOptions.mixWithOthers);
+            player = try AVAudioPlayer(contentsOf: url);
+            guard let player = player else {
+                print("error");
+                return;
+            }
+            player.play();
+        } catch let error {
+            print(error.localizedDescription);
         }
     }
     
@@ -459,7 +506,13 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         let miniCallView = MiniCallView(from: self)
         miniCallView.show()
         self.conversationVC?.showInputAccessoryView()
+        self.conversationVC?.resignFirstResponder()
         presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func pop() {
+        self.conversationVC?.showInputAccessoryView()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Video and Audio
@@ -493,6 +546,12 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         videoButton.backgroundColor = .white
         switchCameraButton.isEnabled = true
         call.isVideoEnabled = true
+        let currentSession = AVAudioSession.sharedInstance()
+        do {
+            try currentSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } catch let error as NSError {
+            print("audioSession error: \(error.localizedDescription)")
+        }
     }
     
     @objc private func switchCamera() {
@@ -510,8 +569,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func audioRouteDidChange() {
-        let currentBChat = AVAudioSession.sharedInstance()
-        let currentRoute = currentBChat.currentRoute
+        let currentSession = AVAudioSession.sharedInstance()
+        let currentRoute = currentSession.currentRoute
         if let currentOutput = currentRoute.outputs.first {
             if let latestKnownAudioOutputDeviceName = latestKnownAudioOutputDeviceName, currentOutput.portName == latestKnownAudioOutputDeviceName { return }
             latestKnownAudioOutputDeviceName = currentOutput.portName

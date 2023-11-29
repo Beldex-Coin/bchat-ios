@@ -5,7 +5,6 @@ import CoreMedia
 
 class DisplayBChatIDsVC: BaseVC {
     
-    
     @IBOutlet weak var backgroundBChatIDView:UIView!
     @IBOutlet weak var subbackgroundBChatIDView:UIView!
     @IBOutlet weak var lblbchatid:UILabel!
@@ -14,7 +13,6 @@ class DisplayBChatIDsVC: BaseVC {
     @IBOutlet weak var nextRef:UIButton!
     @IBOutlet weak var backgroundBeldexIDView:UIView!
     @IBOutlet weak var subbackgroundBeldexIDView:UIView!
-    
     var userNameString:String!
     var bchatIDString:String!
     var beldexAddressIDString:String!
@@ -43,7 +41,7 @@ class DisplayBChatIDsVC: BaseVC {
         
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func nextAction(sender:UIButton){
         if navigationflowTag == false {
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
             self.navigationController?.pushViewController(vc, animated: true)

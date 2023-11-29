@@ -118,7 +118,7 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         let titleLabel = UILabel()
         titleLabel.text = NSLocalizedString("GIF", comment: "")
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         navigationItem.titleView = titleLabel
 
         createViews()

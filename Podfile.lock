@@ -14,11 +14,11 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - Alamofire (5.7.1)
+  - Alamofire (5.6.4)
   - CocoaLumberjack (3.8.0):
     - CocoaLumberjack/Core (= 3.8.0)
   - CocoaLumberjack/Core (3.8.0)
-  - CryptoSwift (1.7.1)
+  - CryptoSwift (1.7.0)
   - Curve25519Kit (2.1.0):
     - CocoaLumberjack
     - SignalCoreKit
@@ -29,7 +29,7 @@ PODS:
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
-  - OpenSSL-Universal (1.1.2000)
+  - OpenSSL-Universal (1.1.1900)
   - PromiseKit (6.18.1):
     - PromiseKit/CorePromise (= 6.18.1)
     - PromiseKit/Foundation (= 6.18.1)
@@ -48,10 +48,10 @@ PODS:
     - OpenSSL-Universal
   - SocketRocket (0.5.1)
   - Sodium (0.9.1)
-  - SQLCipher (4.5.4):
-    - SQLCipher/standard (= 4.5.4)
-  - SQLCipher/common (4.5.4)
-  - SQLCipher/standard (4.5.4):
+  - SQLCipher (4.5.3):
+    - SQLCipher/standard (= 4.5.3)
+  - SQLCipher/common (4.5.3)
+  - SQLCipher/standard (4.5.3):
     - SQLCipher/common
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
@@ -59,7 +59,7 @@ PODS:
   - SwiftyRSA (1.7.0):
     - SwiftyRSA/ObjC (= 1.7.0)
   - SwiftyRSA/ObjC (1.7.0)
-  - WebRTC-lib (113.0.0)
+  - WebRTC-lib (111.0.0)
   - YapDatabase/SQLCipher (3.1.1):
     - YapDatabase/SQLCipher/Core (= 3.1.1)
     - YapDatabase/SQLCipher/Extensions (= 3.1.1)
@@ -210,14 +210,14 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
-  Alamofire: 0123a34370cb170936ae79a8df46cc62b2edeb88
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
-  CryptoSwift: d3d18dc357932f7e6d580689e065cf1f176007c1
+  CryptoSwift: e71dbe5bbb7a945e365d4b9034dbccf28d033a8f
   Curve25519Kit: e63f9859ede02438ae3defc5e1a87e09d1ec7ee6
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
-  OpenSSL-Universal: 708e3d1e616a2c40f09a880aafc4b14d2f2a61ec
+  OpenSSL-Universal: 84efb8a29841f2764ac5403e0c4119a28b713346
   PromiseKit: 49d70c53d5d20e346beaea4b276b5dd2ab446bb4
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -226,15 +226,15 @@ SPEC CHECKSUMS:
   SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
-  SQLCipher: 905b145f65f349f26da9e60a19901ad24adcd381
+  SQLCipher: 57fa9f863fa4a3ed9dd3c90ace52315db8c0fdca
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
-  WebRTC-lib: d9c91d380e62fa0ea3d3144ccd50deb7a70fb6a8
+  WebRTC-lib: 7e7f08b0062e5610599a73c0c232ed22662c0bf1
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: b03ee67a2edc5974ba93d7d2067217eaa6efc601
+PODFILE CHECKSUM: 10454b87f998be3dfe281cf3ac339ec5a98e6fc5
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0

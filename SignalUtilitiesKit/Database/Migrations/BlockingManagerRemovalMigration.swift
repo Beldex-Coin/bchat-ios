@@ -28,7 +28,7 @@ public class BlockingManagerRemovalMigration: OWSDatabaseMigration {
         Storage.write(
             with: { transaction in
                 Storage.shared.getAllContacts(with: transaction)
-                    .filter { contact -> Bool in blockedBChatIds.contains(contact.bchatuser_ID) }
+                    .filter { contact -> Bool in blockedBChatIds.contains(contact.bchatID) }
                     .forEach { contact in
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)

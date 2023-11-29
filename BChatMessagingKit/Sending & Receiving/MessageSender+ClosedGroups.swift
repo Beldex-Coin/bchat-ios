@@ -59,6 +59,12 @@ extension MessageSender {
         let transaction = transaction as! YapDatabaseReadWriteTransaction
         let groupID = LKGroupUtilities.getEncodedClosedGroupIDAsData(groupPublicKey)
         let threadID = TSGroupThread.threadId(fromGroupId: groupID)
+        
+        guard UserDefaults.standard.string(forKey: "WalletpublicAddress") != nil
+        else {
+            return Promise(error: Error.noUserX25519KeyPair)
+        }
+        
         guard let thread = TSGroupThread.fetch(uniqueId: threadID, transaction: transaction) else {
             SNLog("Can't distribute new encryption key pair for nonexistent closed group.")
             return Promise(error: Error.noThread)

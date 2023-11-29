@@ -20,7 +20,7 @@ final class IncomingCallBanner: UIView, UIGestureRecognizerDelegate {
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor.white
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()

@@ -22,16 +22,16 @@ final class JoinOpenGroupModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = "Join \(name)?"
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         let message = "Are you sure you want to join the \(name) open group?";
         let attributedMessage = NSMutableAttributedString(string: message)
-        attributedMessage.addAttributes([ .font : UIFont.boldSystemFont(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
+        attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
         messageLabel.attributedText = attributedMessage
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -41,14 +41,14 @@ final class JoinOpenGroupModal : Modal {
         joinButton.set(.height, to: Values.mediumButtonHeight)
         joinButton.layer.cornerRadius = Modal.buttonCornerRadius
         if isDarkMode {
-            joinButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            joinButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }else {
-            joinButton.backgroundColor = Colors.bchat_join_backgroundgreen
+            joinButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         
-        joinButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        joinButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         joinButton.setTitle("Join", for: UIControl.State.normal)
         joinButton.addTarget(self, action: #selector(joinOpenGroup), for: UIControl.Event.touchUpInside)
         // Button stack view

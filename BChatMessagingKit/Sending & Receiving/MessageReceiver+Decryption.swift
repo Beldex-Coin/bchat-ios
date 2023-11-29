@@ -10,8 +10,6 @@ extension MessageReceiver {
         let sodium = Sodium()
         let signatureSize = sodium.sign.Bytes
         let ed25519PublicKeySize = sodium.sign.PublicKeyBytes
-        print("--cipherText in decryption---> \(ciphertext.toHexString())")
-        
         // 1. ) Decrypt the message
         guard let plaintextWithMetadata = sodium.box.open(anonymousCipherText: Bytes(ciphertext), recipientPublicKey: Box.PublicKey(Bytes(recipientX25519PublicKey)),
                                                           recipientSecretKey: Bytes(recipientX25519PrivateKey)), plaintextWithMetadata.count > (signatureSize + ed25519PublicKeySize) else { throw Error.decryptionFailed }
@@ -30,23 +28,14 @@ extension MessageReceiver {
         if(receivedbeldexAddress != "b"){
             let senderBeldexAddress = Bytes(plaintextWithMetadata[0..<95])
             let newPlainText = Bytes(plaintextWithMetadata[95..<plaintextWithMetadata.count - (signatureSize + ed25519PublicKeySize)])
-            //   print("--senderBeldexAddress in decryption---> \(senderBeldexAddress.utf8String!)")
-            print("--newPlainText in decryption---> \(newPlainText.toHexString())")
             receivedbeldexAddress = senderBeldexAddress.utf8String
-            //  print("--senderBeldexAddress in decryption---> \(beldexAddress!)")
-            print("--newPlainText in decryption---> \(newPlainText.toHexString())")
             // 5. ) Get the sender's X25519 public key
             guard let senderX25519PublicKey = sodium.sign.toX25519(ed25519PublicKey: senderED25519PublicKey) else { throw Error.decryptionFailed }
             return (Data(newPlainText), "bd" + senderX25519PublicKey.toHexString(),receivedbeldexAddress!)
         }else {
             let senderBeldexAddress = Bytes(plaintextWithMetadata[0..<97])
             let newPlainText = Bytes(plaintextWithMetadata[97..<plaintextWithMetadata.count - (signatureSize + ed25519PublicKeySize)])
-            //   print("--senderBeldexAddress in decryption---> \(senderBeldexAddress.utf8String!)")
-            print("--newPlainText in decryption---> \(newPlainText.toHexString())")
             receivedbeldexAddress = senderBeldexAddress.utf8String
-            //  print("--senderBeldexAddress in decryption---> \(beldexAddress!)")
-            print("--newPlainText in decryption---> \(newPlainText.toHexString())")
-            // 5. ) Get the sender's X25519 public key
             guard let senderX25519PublicKey = sodium.sign.toX25519(ed25519PublicKey: senderED25519PublicKey) else { throw Error.decryptionFailed }
             return (Data(newPlainText), "bd" + senderX25519PublicKey.toHexString(),receivedbeldexAddress!)
         }

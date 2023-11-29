@@ -1,13 +1,11 @@
 import PromiseKit
 
 private protocol TableViewTouchDelegate {
-    
     func tableViewWasTouched(_ tableView: TableView)
 }
 
 private final class TableView : UITableView {
     var touchDelegate: TableViewTouchDelegate?
-
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         touchDelegate?.tableViewWasTouched(self)
         return super.hitTest(point, with: event)
@@ -19,7 +17,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
     private var selectedContacts: Set<String> = []
     
     // MARK: Components
-    private lazy var nameTextField = TextField(placeholder: NSLocalizedString("Enter your group name", comment: ""))
+    private lazy var nameTextField = TextField(placeholder: NSLocalizedString("Enter a group name", comment: ""))
 
     private lazy var tableView: TableView = {
         let result = TableView()
@@ -29,7 +27,7 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
         result.register(UserCell.self, forCellReuseIdentifier: "UserCell")
         result.separatorStyle = .none
         result.backgroundColor = .clear
-        result.isScrollEnabled = false
+        result.isScrollEnabled = true
         return result
     }()
     
@@ -76,10 +74,11 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
             view.addSubview(scrollView)
             scrollView.set(.width, to: UIScreen.main.bounds.width)
             scrollView.pin(to: view)
+            scrollView.isScrollEnabled = false
         } else {
             let explanationLabel = UILabel()
             explanationLabel.textColor = Colors.text
-            explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+            explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             explanationLabel.numberOfLines = 0
             explanationLabel.lineBreakMode = .byWordWrapping
             explanationLabel.textAlignment = .center

@@ -33,18 +33,18 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         self.title = "Scan QR Code"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        if newChatScanflag == true {
-            print("Social group func calling")
-        }else {
-            print("Dirct group one to one func calling")
-        }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if !scannerView.isRunning {
-            scannerView.startScanning()
+        
+        let hasCameraAccess = (AVCaptureDevice.authorizationStatus(for: .video) == .authorized)
+        if hasCameraAccess {
+            if !scannerView.isRunning {
+                scannerView.startScanning()
+            }
+        } else {
+            guard requestCameraPermissionIfNeeded() else { return }
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -61,9 +61,9 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         } else {
             // This could be an ONS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatuserID in
+                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
-                        self?.startNewDM(with: bchatuserID)
+                        self?.startNewDM(with: bchatID)
                     }
                 }.catch { error in
                     modalActivityIndicator.dismiss {
@@ -83,8 +83,8 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         }
     }
     
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
@@ -138,11 +138,9 @@ extension ScannerQRVC: QRScannerViewDelegate {
     }
     func qrScanningSucceededWithCode(_ str: String?) {
         if newChatScanflag == true {
-            print("Social group func calling")
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
         }else {
-            print("Dirct group one to one func calling")
             self.qrData = QRData(codeString: str)
             startNewDMIfPossible(with: str!)
         }

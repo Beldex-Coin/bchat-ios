@@ -11,7 +11,7 @@ final class ConversationTitleView : UIView {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -19,7 +19,7 @@ final class ConversationTitleView : UIView {
     private lazy var subtitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .systemFont(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 13)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -73,7 +73,7 @@ final class ConversationTitleView : UIView {
         let subtitle = getSubtitle()
         subtitleLabel.attributedText = subtitle
         let titleFontSize = (subtitle != nil) ? Values.mediumFontSize : Values.veryLargeFontSize
-        titleLabel.font = .boldSystemFont(ofSize: titleFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: titleFontSize)
     }
 
     // MARK: General
@@ -85,12 +85,12 @@ final class ConversationTitleView : UIView {
             return "Note to Self"
         }
         else {
-            let bchatuserID = (thread as! TSContactThread).contactBChatID()
-            var result = bchatuserID
+            let bchatID = (thread as! TSContactThread).contactBChatID()
+            var result = bchatID
             Storage.read { transaction in
-                let displayName: String = ((Storage.shared.getContact(with: bchatuserID)?.displayName(for: .regular)) ?? bchatuserID)
-                let middleTruncatedHexKey: String = "\(bchatuserID.prefix(4))...\(bchatuserID.suffix(4))"
-                result = (displayName == bchatuserID ? middleTruncatedHexKey : displayName)
+                let displayName: String = ((Storage.shared.getContact(with: bchatID)?.displayName(for: .regular)) ?? bchatID)
+                let middleTruncatedHexKey: String = "\(bchatID.prefix(4))...\(bchatID.suffix(4))"
+                result = (displayName == bchatID ? middleTruncatedHexKey : displayName)
             }
             return result
         }

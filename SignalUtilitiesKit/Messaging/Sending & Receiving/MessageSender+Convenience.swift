@@ -109,7 +109,7 @@ extension MessageSender {
     public static func syncConfiguration(forceSyncNow: Bool = true) -> Promise<Void> {
         let (promise, seal) = Promise<Void>.pending()
         let destination: Message.Destination = Message.Destination.contact(publicKey: getUserHexEncodedPublicKey())
-        
+        print("BChatID===>:",destination)
         // Note: SQLite only supports a single write thread so we can be sure this will retrieve the most up-to-date data
         Storage.writeSync { transaction in
             guard Storage.shared.getUser(using: transaction)?.name != nil, let configurationMessage = ConfigurationMessage.getCurrent(with: transaction) else {

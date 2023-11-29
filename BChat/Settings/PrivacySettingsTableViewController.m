@@ -15,6 +15,7 @@
 #import <SignalUtilitiesKit/ThreadUtil.h>
 #import <BChatMessagingKit/OWSReadReceiptManager.h>
 #import <SignalUtilitiesKit/SignalUtilitiesKit-Swift.h>
+#import <AVFoundation/AVFoundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -219,10 +220,29 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
                     }
                     target:weakSelf
                     selector:@selector(didToggleCallsEnabled:)]];
-    callsSection.headerTitle = [NSString stringWithFormat:@"%@ (BETA)", NSLocalizedString( @"SETTINGS_CALLS_HEADER", @"Header for setting for enabling & disabling voice & video calls.")];
+    callsSection.headerTitle = [NSString stringWithFormat:@"%@ ", NSLocalizedString( @"SETTINGS_CALLS_HEADER", @"Header for setting for enabling & disabling voice & video calls.")];
     callsSection.footerTitle = NSLocalizedString(
         @"SETTINGS_CALLS_FOOTER", @"Footer for setting for enabling & disabling voice & video calls.");
     [contents addSection:callsSection];
+    
+    //Wallet Option
+    OWSTableSection *walletOption = [OWSTableSection new];
+    [walletOption
+        addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"SETTINGS_WALLET",
+                                                     @"Setting for enabling & disabling wallet.")
+                    accessibilityIdentifier:[NSString stringWithFormat:@"settings.privacy.%@", @"calls"]
+                    isOnBlock:^{
+                        return [SSKPreferences areWalletEnabled];
+                    }
+                    isEnabledBlock:^{
+                        return YES;
+                    }
+                    target:weakSelf
+                    selector:@selector(didToggleOnWalletOption:)]];
+    walletOption.headerTitle = [NSString stringWithFormat:@"%@", NSLocalizedString( @"SETTINGS_WALLET_HEADER", @"Header for setting for enabling & disabling wallet.")];
+    walletOption.footerTitle = NSLocalizedString(
+        @"SETTINGS_WALLET_FOOTER", @"Footer for setting for enabling & disabling wallet.");
+    [contents addSection:walletOption];
 
     self.contents = contents;
 }
@@ -294,13 +314,42 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
         [userDefaults setBool:YES forKey:@"hasSeenCallIPExposureWarning"];
         CallModal *modal = [[CallModal alloc] initOnCallEnabled:^{
             OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
-            [self objc_requestMicrophonePermissionIfNeeded];
+            AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+            if ([audioSession respondsToSelector:@selector(requestRecordPermission:)]) {
+                [audioSession requestRecordPermission:^(BOOL granted) {
+                    if (granted) {
+                        // Microphone access granted, you can now use the microphone.
+                        OWSLogInfo(@"Microphone access granted");
+                        // Perform any additional actions you want here.
+                        
+                        // Check if the view controller is still presented
+                        if (self.presentingViewController) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                // Dismiss the presented view controller
+                                [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+                                    // This block is optional and can be used to perform any tasks after the view controller is dismissed
+                                }];
+                            });
+                        }
+                    } else {
+                        // Microphone access denied. Handle this case accordingly.
+                        OWSLogInfo(@"Microphone access denied");
+                    }
+                }];
+            }
         }];
         [self presentViewController:modal animated:YES completion:nil];
     } else {
         OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
         SSKPreferences.areCallsEnabled = enabled;
     }
+}
+
+- (void)didToggleOnWalletOption:(UISwitch *)sender
+{
+    BOOL enabled = sender.isOn;
+    OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
+    SSKPreferences.areWalletEnabled = enabled;
 }
 
 - (void)isScreenLockEnabledDidChange:(UISwitch *)sender

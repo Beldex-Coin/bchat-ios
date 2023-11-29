@@ -45,9 +45,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         return result
     }()
     
-    
     private lazy var sendButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "send_2"), isSendButton: true, delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
         result.isHidden = true
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
@@ -87,7 +86,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var disabledInputLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0
@@ -141,7 +140,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView ])
         mainStackView.axis = .vertical
-        mainStackView.backgroundColor = Colors.bchat_view_bg_clr
+        mainStackView.backgroundColor = Colors.bchatViewBackgroundColor
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
         mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)

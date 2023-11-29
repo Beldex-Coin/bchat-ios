@@ -19,13 +19,13 @@ final class ShareLogsModal : Modal {
         // Title
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = NSLocalizedString("modal_share_logs_title", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        messageLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         messageLabel.text = NSLocalizedString("modal_share_logs_explanation", comment: "")
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
@@ -35,7 +35,7 @@ final class ShareLogsModal : Modal {
         shareButton.set(.height, to: Values.mediumButtonHeight)
         shareButton.layer.cornerRadius = Modal.buttonCornerRadius
         shareButton.backgroundColor = Colors.buttonBackground
-        shareButton.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        shareButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         shareButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
         shareButton.addTarget(self, action: #selector(shareLogs), for: UIControl.Event.touchUpInside)

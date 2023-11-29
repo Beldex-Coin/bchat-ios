@@ -8,10 +8,9 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
     private var seed: Data! { didSet { updateKeyPair() } }
     private var ed25519KeyPair: Sign.KeyPair!
     private var x25519KeyPair: ECKeyPair! { didSet { updatePublicKeyLabel() } }
-    
     @IBOutlet weak var backgroungView:UIView!
     @IBOutlet weak var userNametxt:UITextField!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     private var data = NewWallet()
     
     override func viewDidLoad() {
@@ -25,9 +24,10 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         backgroungView!.layer.cornerRadius = 10
         backgroungView!.layer.masksToBounds = true
-        nextRef.layer.cornerRadius = 6
+        continueRef.layer.cornerRadius = 6
         userNametxt.attributedPlaceholder = NSAttributedString(string:"Enter a display name", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         userNametxt.delegate = self
+        userNametxt.returnKeyType = .done
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -104,25 +104,29 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         }
         else {
             // MARK:- Beldex Wallet
-            data.name = userNametxt.text!
-            // data.pwd = pwd.text!
+            let uuid = UUID()
+            data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            data.pwd = uuid.uuidString
+            SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in
                 switch result {
                 case .success(let wallet):
-                    let seed = wallet.seed
+                    wallet.close()
                 case .failure(_):
                     print("in case failyre")
                 }
             }
-            let WalletpublicAddress = UserDefaultsData.WalletpublicAddress
-            let WalletSeed = UserDefaultsData.WalletSeed
+            let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
+            let WalletSeed = SaveUserDefaultsData.WalletSeed
+            SaveUserDefaultsData.NameForWallet = data.name
             let mnemonic = WalletSeed
             do {
                 let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
                 let seed = Data(hex: hexEncodedSeed)
                 updateSeed(seedvalue: seed)
             } catch let error {
-                print("failsur")
+                print("Failure: \(error)")
+                return
             }
             // Bchat Work
             Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
@@ -149,7 +153,7 @@ class DisplayNameVC: BaseVC,UITextFieldDelegate {
         }
     }
 
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         performAction()
     }
     

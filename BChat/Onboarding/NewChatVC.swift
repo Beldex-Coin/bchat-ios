@@ -43,32 +43,20 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         shareref.layer.cornerRadius = 6
         bcakgroundCopyView.layer.cornerRadius = 6
         bcakgroundShareView.layer.cornerRadius = 6
-        
         lblcopy.isHidden = true
         copyref.setTitle("Copy", for: .normal)
-        
-        let logoName2 = isLightMode ? "copy-dark" : "copy_white"
-        copyimg.image = UIImage(named: logoName2)!
-        
-        let logoName23 = isLightMode ? "share_dark" : "share"
-        shareimg.image = UIImage(named: logoName23)!
-        
-        if isLightMode {
-            let origImage = UIImage(named: "scan_QR")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "scan_QR_dark")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            scanRef.setImage(tintedImage, for: .normal)
-            scanRef.tintColor = .white
-        }
+        copyimg.image = UIImage(named: isLightMode ? "copy-dark" : "copy_white")!
+        shareimg.image = UIImage(named: isLightMode ? "share_dark" : "share")!
+        let origImage = UIImage(named: isLightMode ? "scan_QR" : "scan_QR_dark")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        scanRef.setImage(tintedImage, for: .normal)
+        scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
         
         txtview.delegate = self
+        txtview.returnKeyType = .done
         txtview.setPlaceholder()
         self.lblchatid.text = getUserHexEncodedPublicKey()
-        self.lblchatid.textColor = Colors.bchat_button_clr
+        self.lblchatid.textColor = Colors.bchatButtonColor
         self.lblchatid.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         self.lblchatid.numberOfLines = 0
         self.lblchatid.textAlignment = .center
@@ -76,7 +64,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
         nextRef.isUserInteractionEnabled = false
-        nextRef.backgroundColor = Colors.bchat_view_bg_clr
+        nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -100,12 +88,12 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         let str = textView.text!
         if str.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
             nextRef.setTitleColor(UIColor.lightGray, for: .normal)
             txtview.checkPlaceholder()
         }else {
             nextRef.isUserInteractionEnabled = true
-            nextRef.backgroundColor = Colors.bchat_button_clr
+            nextRef.backgroundColor = Colors.bchatButtonColor
             nextRef.setTitleColor(UIColor.white, for: .normal)
             txtview.checkPlaceholder()
         }
@@ -119,11 +107,11 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         }
         else if text.count == 0 {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         }
         else {
             nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchat_view_bg_clr
+            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
         }
         return true
     }
@@ -151,10 +139,9 @@ class NewChatVC: BaseVC,UITextViewDelegate {
     @IBAction func shareAction(sender:UIButton){
         let shareVC = UIActivityViewController(activityItems: [ getUserHexEncodedPublicKey() ], applicationActivities: nil)
         navigationController!.present(shareVC, animated: true, completion: nil)
-        // NewChatVC.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func nextAction(sender:UIButton){
         let text = txtview.text?.trimmingCharacters(in: .whitespaces) ?? ""
         self.startNewDMIfPossible(with: text)
     }
@@ -169,15 +156,15 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             startNewDM(with: onsNameOrPublicKey)
         } else {
             // This could be an ONS name
-            self.showToast22(message: "invalid BChat ID", seconds: 1.0)
+            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
         }
     }
-    private func startNewDM(with bchatuserID: String) {
-        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatuserID)
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
         presentingViewController?.dismiss(animated: true, completion: nil)
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
-    @IBAction func ScanAction(sender:UIButton){
+    @IBAction func scanAction(sender:UIButton){
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
         vc.newChatScanflag = false
         self.navigationController?.pushViewController(vc, animated: true)
@@ -188,7 +175,7 @@ extension UITextView{
     func setPlaceholder() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter BChat ID"
-        placeholderLabel.font = UIFont.systemFont(ofSize: Values.smallFontSize)
+        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)

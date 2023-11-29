@@ -1,4 +1,5 @@
 import UIKit
+import SignalUtilitiesKit
 import BChatUIKit
 import BChatSnodeKit
 import BChatMessagingKit
@@ -10,7 +11,7 @@ final class NukeDataModal : Modal {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.text = NSLocalizedString("Clear All Data", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -20,8 +21,8 @@ final class NukeDataModal : Modal {
     
     private lazy var titleLabel2: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bchat_button_clr
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.textColor = Colors.bchatButtonColor
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("Chat ID", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -32,7 +33,7 @@ final class NukeDataModal : Modal {
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("This will clear all your BChat data from device.", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
@@ -48,8 +49,7 @@ final class NukeDataModal : Modal {
             result.backgroundColor = Colors.destructive
         }
         result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
-      //  result.setTitleColor(isLightMode ? Colors.text : Colors.text, for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("TXT_DELETE_TITLE", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearAllData), for: UIControl.Event.touchUpInside)
@@ -68,8 +68,12 @@ final class NukeDataModal : Modal {
         let result = UIButton()
         result.set(.height, to: Values.mediumButtonHeight)
         result.layer.cornerRadius = Modal.buttonCornerRadius
-        result.backgroundColor = Colors.buttonBackground
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
+        if isDarkMode {
+            result.backgroundColor = Colors.buttonBackground
+        }else {
+            result.backgroundColor = UIColor.lightGray
+        }
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearDeviceOnly), for: UIControl.Event.touchUpInside)
@@ -84,8 +88,7 @@ final class NukeDataModal : Modal {
             result.backgroundColor = Colors.destructive
         }
         result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = .systemFont(ofSize: Values.smallFontSize)
-     //   result.setTitleColor(isLightMode ? Colors.destructive : Colors.text, for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Yes", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
@@ -149,13 +152,53 @@ final class NukeDataModal : Modal {
     }
     
     @objc private func clearEntireAccount() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        WalletSharedData.sharedInstance.isCleardataStarting = true
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
+            guard let strongSelf = self else { return }
             MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
-                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                strongSelf.dismiss(animated: true, completion: nil) // Dismiss the loader
+                strongSelf.deleteAllWalletFiles()
+                AppEnvironment.shared.notificationPresenter.clearAllNotifications()
                 UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
                 General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
                 NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
             }.retainUntilComplete()
         }
     }
+    
+    func deleteAllWalletFiles() {
+        let username = SaveUserDefaultsData.NameForWallet
+        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentDirectory = allPaths[0]
+        let documentPath = documentDirectory + "/"
+        let pathWithFileName = documentPath + username
+        let pathWithFileKeys = documentPath + "\(username).keys"
+        let pathWithFileAddress = documentPath + "\(username).address.txt"
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponentForFileName = url.appendingPathComponent("\(username)") {
+            let filePath = pathComponentForFileName.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileName)")
+            }
+        }
+        if let pathComponentForFileKeys = url.appendingPathComponent("\(username).keys") {
+            let filePath = pathComponentForFileKeys.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileKeys)")
+            }
+        }
+        if let pathComponentForFileAddress = url.appendingPathComponent("\(username).address.txt") {
+            let filePath = pathComponentForFileAddress.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileAddress)")
+            }
+        }
+    }
+    
+    
 }

@@ -42,20 +42,24 @@
 
     OWSPreferences *prefs = Environment.shared.preferences;
 
-//    OWSTableSection *strategySection = [OWSTableSection new];
-//    strategySection.headerTitle = NSLocalizedString(@"preferences_notifications_strategy_category_title", @"");
-//    [strategySection addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"vc_notification_settings_notification_mode_title", @"")
-//                              accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, @"push_notification_strategy")
-//                              isOnBlock:^{
-//                                  return [NSUserDefaults.standardUserDefaults boolForKey:@"isUsingFullAPNs"];
-//                              }
-//                              isEnabledBlock:^{
-//                                  return YES;
-//                              }
-//                              target:weakSelf
-//                              selector:@selector(didToggleAPNsSwitch:)]];
-//    strategySection.footerTitle = @"You’ll be notified of new messages reliably and immediately using Apple’s notification servers.";
-//    [contents addSection:strategySection];
+    OWSTableSection *strategySection = [OWSTableSection new];
+    strategySection.headerTitle = NSLocalizedString(@"preferences_notifications_strategy_category_title", @"");
+    [strategySection addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"vc_notification_settings_notification_mode_title", @"")
+                              accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, @"push_notification_strategy")
+                              isOnBlock:^{
+                                  return [NSUserDefaults.standardUserDefaults boolForKey:@"isUsingFullAPNs"];
+                              }
+                              isEnabledBlock:^{
+                                  return YES;
+                              }
+                              target:weakSelf
+                              selector:@selector(didToggleAPNsSwitch:)]];
+    strategySection.footerTitle = @"You’ll be notified of new messages reliably and immediately using Apple’s notification servers.";
+    [contents addSection:strategySection];
+    
+    
+
+    
 
     // Sounds section.
 
@@ -116,10 +120,10 @@
 
 - (void)didToggleAPNsSwitch:(UISwitch *)sender
 {
-//    [NSUserDefaults.standardUserDefaults setBool:sender.on forKey:@"isUsingFullAPNs"];
-//    OWSSyncPushTokensJob *syncTokensJob = [[OWSSyncPushTokensJob alloc] initWithAccountManager:AppEnvironment.shared.accountManager preferences:Environment.shared.preferences];
-//    syncTokensJob.uploadOnlyIfStale = NO;
-//    [[syncTokensJob run] retainUntilComplete];
+    [NSUserDefaults.standardUserDefaults setBool:sender.on forKey:@"isUsingFullAPNs"];
+    OWSSyncPushTokensJob *syncTokensJob = [[OWSSyncPushTokensJob alloc] initWithAccountManager:AppEnvironment.shared.accountManager preferences:Environment.shared.preferences];
+    syncTokensJob.uploadOnlyIfStale = NO;
+    [[syncTokensJob run] retainUntilComplete];
 }
 
 @end

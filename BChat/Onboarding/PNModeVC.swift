@@ -37,7 +37,7 @@ final class PNModeVC : BaseVC, OptionViewDelegate {
         // Set up title label
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: isIPhone5OrSmaller ? Values.largeFontSize : Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.largeFontSize : Values.veryLargeFontSize)
         titleLabel.text = NSLocalizedString("vc_pn_mode_title", comment: "")
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
@@ -49,7 +49,7 @@ final class PNModeVC : BaseVC, OptionViewDelegate {
         // Set up register button
         let registerButton = Button(style: .prominentFilled, size: .large)
         registerButton.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
-        registerButton.titleLabel!.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        registerButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         registerButton.addTarget(self, action: #selector(register), for: UIControl.Event.touchUpInside)
         // Set up register button container
         let registerButtonContainer = UIView(wrapping: registerButton, withInsets: UIEdgeInsets(top: 0, leading: Values.massiveSpacing, bottom: 0, trailing: Values.massiveSpacing), shouldAdaptForIPadWithWidth: Values.iPadButtonWidth)

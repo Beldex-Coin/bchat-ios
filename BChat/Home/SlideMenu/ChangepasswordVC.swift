@@ -1,6 +1,7 @@
 // Copyright © 2022 Beldex. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     
@@ -8,7 +9,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     @IBOutlet weak var backgroundNewPinView:UIView!
     @IBOutlet weak var oldPintxt:UITextField!
     @IBOutlet weak var newPintxt:UITextField!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     @IBOutlet weak var btneye1:UIButton!
     @IBOutlet weak var btneye2:UIButton!
     
@@ -22,26 +23,20 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         self.title = "Change Password"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        let imgName = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
-        let image1 = UIImage(named: "\(imgName).png")!
-        self.btneye1.setImage(image1, for: .normal)
+        //Keyboard Done Option
+        oldPintxt.addDoneButtonKeybord()
+        newPintxt.addDoneButtonKeybord()
         
-        let imgName2 = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
-        let image12 = UIImage(named: "\(imgName2).png")!
-        self.btneye2.setImage(image12, for: .normal)
+        let imgName = isLightMode ? "eye_icon" : "eye_unclosedicon_white"
+        let image = UIImage(named: "\(imgName).png")!
+        self.btneye1.setImage(image, for: .normal)
+        self.btneye2.setImage(image, for: .normal)
         
         backgroundOldPinView.layer.cornerRadius = 10
         backgroundNewPinView.layer.cornerRadius = 10
-        nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
-        
+        continueRef.layer.cornerRadius = 6
+        oldPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        newPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         oldPintxt.delegate = self
         newPintxt.delegate = self
         oldPintxt.isSecureTextEntry = true
@@ -93,31 +88,34 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // YOU SHOULD FIRST CHECK FOR THE BACKSPACE. IF BACKSPACE IS PRESSED ALLOW IT
-        
         if string == "" {
             return true
         }
-        
         if let characterCount = textField.text?.count {
             // CHECK FOR CHARACTER COUNT IN TEXT FIELD
             if characterCount >= 4 {
-                
                 newPintxt.becomeFirstResponder()
-                
                 // RESIGN FIRST RERSPONDER TO HIDE KEYBOARD
                 return textField.resignFirstResponder()
             }
         }
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789")
+        // Iterate through each character in the replacement string
+        for char in string.unicodeScalars {
+            if !allowedCharacterSet.contains(Unicode.Scalar(char.value)!) {
+                // If the character is not in the allowed character set, disallow it
+                return false
+            }
+        }
         return true
     }
-    
     
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         var a = false
         var b = false
         var c = false
@@ -126,7 +124,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
                 
             })
         }
-        if UserDefaultsData.BChatPassword == oldPintxt.text! {
+        if SaveUserDefaultsData.BChatPassword == oldPintxt.text! {
             a = true
         }
         else{
@@ -142,7 +140,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
                 
             })
         }
-        if UserDefaultsData.BChatPassword == newPintxt.text! {
+        if SaveUserDefaultsData.BChatPassword == newPintxt.text! {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message5) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                 
             })
@@ -152,7 +150,7 @@ class ChangepasswordVC: BaseVC,UITextFieldDelegate {
         if a == true && b == true && c == true {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Password_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                 
-                UserDefaultsData.BChatPassword = self.newPintxt.text!
+                SaveUserDefaultsData.BChatPassword = self.newPintxt.text!
                 self.navigationController?.popViewController(animated: true)
                 
             })

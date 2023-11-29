@@ -1,6 +1,7 @@
 // Copyright © 2022 Beldex. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -55,27 +56,14 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         self.first_view.isHidden = true
         self.second_view.isHidden = false
-        
-        if isLightMode {
-            let origImage = UIImage(named: "322")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            myBtn.setImage(tintedImage, for: .normal)
-            myBtn.tintColor = .black
-        }else {
-            let origImage = UIImage(named: "3222")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            myBtn.setImage(tintedImage, for: .normal)
-            myBtn.tintColor = .white
-        }
-        
+        let origImage = UIImage(named: isLightMode ? "ic_QR_dark" : "ic_QR_white")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        myBtn.setImage(tintedImage, for: .normal)
+        myBtn.tintColor = isLightMode ? UIColor.black : UIColor.white
         //Share logo Image
-        let logoName2 = isLightMode ? "share" : "share"  //share_dark
-        sharelogoimg.image = UIImage(named: logoName2)!
-        
+        sharelogoimg.image = UIImage(named: isLightMode ? "share" : "share")!
         //editProfilepiclogoimg
-        let logoName3 = isLightMode ? "camera_profile_pic" : "WhatsApp"
-        editProfilepiclogoimg.image = UIImage(named: logoName3)!
-        
+        editProfilepiclogoimg.image = UIImage(named: isLightMode ? "ic_camera_dark" : "ic_camera_white")!
         //Share
         shareview.layer.cornerRadius = 5
         shareref.layer.cornerRadius = 6
@@ -88,19 +76,19 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         // Display name label
         let nam = Storage.shared.getUser()?.name
-        displayNameTextField.text = nam?.firstCharacterUpperCase()
+        displayNameTextField.text = nam?.firstCharacterUpperCase() ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         displayNameTextField.textColor = Colors.text
-        displayNameTextField.font = .boldSystemFont(ofSize: Values.largeFontSize)
+        displayNameTextField.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
         displayNameTextField.delegate = self
         
         //Bacht ID
         //  publicKeyLabel.textColor = Colors.text
-        publicKeyLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
+        publicKeyLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
         publicKeyLabel.textAlignment = .left
         publicKeyLabel.adjustsFontSizeToFitWidth = false
         publicKeyLabel.lineBreakMode = .byTruncatingTail
-        publicKeyLabel.backgroundColor = Colors.myaccountclrs
+        publicKeyLabel.backgroundColor = Colors.myAccountColor
         publicKeyLabel?.layer.masksToBounds = true
         publicKeyLabel.layer.cornerRadius = 6
         publicKeyLabel.text = " \(getUserHexEncodedPublicKey())"
@@ -111,14 +99,14 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         //Beldex address ID
         //  beldexaddressLabel.textColor = Colors.text
-        beldexaddressLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
+        beldexaddressLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
         beldexaddressLabel.textAlignment = .left
         beldexaddressLabel.adjustsFontSizeToFitWidth = false
         beldexaddressLabel.lineBreakMode = .byTruncatingTail
-        beldexaddressLabel.backgroundColor = Colors.myaccountclrs
+        beldexaddressLabel.backgroundColor = Colors.myAccountColor
         beldexaddressLabel?.layer.masksToBounds = true
         beldexaddressLabel.layer.cornerRadius = 6
-        beldexaddressLabel.text = " \(UserDefaultsData.WalletpublicAddress)"
+        beldexaddressLabel.text = " \(SaveUserDefaultsData.WalletpublicAddress)"
         
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(MyAccountVC.tapFunction2))
         beldexaddressLabel.isUserInteractionEnabled = true
@@ -143,13 +131,13 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     @objc func tapFunction(sender:UITapGestureRecognizer) {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         publicKeyLabel.isUserInteractionEnabled = false
-        self.showToast22(message: "Your BChat ID copied to clipboard", seconds: 1.0)
+        self.showToastMsg(message: "Your BChat ID copied to clipboard", seconds: 1.0)
     }
     
     @objc func tapFunction2(sender:UITapGestureRecognizer) {
-        UIPasteboard.general.string = UserDefaultsData.WalletpublicAddress
+        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexaddressLabel.isUserInteractionEnabled = false
-        self.showToast22(message: "Your Beldex Address is copied to clipboard", seconds: 1.0)
+        self.showToastMsg(message: "Your Beldex Address is copied to clipboard", seconds: 1.0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -169,32 +157,18 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         UIView.transition(with: second_view, duration: 0.5, options: .transitionFlipFromLeft, animations: {
             //  self.second_view.isHidden = false
             if self.second_view.isHidden == false {
-                if isLightMode {
-                    let origImage = UIImage(named: "322")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn.setImage(tintedImage, for: .normal)
-                    self.myBtn.tintColor = .black
-                }else {
-                    let origImage = UIImage(named: "3222")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn.setImage(tintedImage, for: .normal)
-                    self.myBtn.tintColor = .white
-                }
+                let origImage = UIImage(named: isLightMode ? "ic_QR_dark" : "ic_QR_white")
+                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                self.myBtn.setImage(tintedImage, for: .normal)
+                self.myBtn.tintColor = isLightMode ? UIColor.black : UIColor.white
                 self.first_view.isHidden = false
                 self.second_view.isHidden = true
             }
             else {
-                if isLightMode {
-                    let origImage = UIImage(named: "user_dark")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn2.setImage(tintedImage, for: .normal)
-                    self.myBtn2.tintColor = .black
-                }else {
-                    let origImage = UIImage(named: "user_light")
-                    let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                    self.myBtn2.setImage(tintedImage, for: .normal)
-                    self.myBtn2.tintColor = .white
-                }
+                let origImage = UIImage(named: isLightMode ? "user_dark" : "user_light")
+                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+                self.myBtn2.setImage(tintedImage, for: .normal)
+                self.myBtn2.tintColor = isLightMode ? UIColor.black : UIColor.white
                 self.first_view.isHidden = true
                 self.second_view.isHidden = false
             }
@@ -217,9 +191,8 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
                 string: " Enter a Display Name",
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
             )
-            displayNameTextField.font = .systemFont(ofSize: Values.smallFontSize)
+            displayNameTextField.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
             displayNameTextField.layer.masksToBounds = true
-            // displayNameTextField.layer.backgroundColor = UIColor.lightText.cgColor
             displayNameTextField.layer.cornerRadius = 4
             displayNameTextField.layer.borderWidth = 0.1
         } else {
@@ -313,7 +286,6 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         let userDefaults = UserDefaults.standard
         let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
         let profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
-        //  print("profilePicture------> \(profilePicture!)")
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
             OWSProfileManager.shared().updateLocalProfileName(name, avatarImage: profilePicture, success: {
                 if displayNameToBeUploaded != nil {
@@ -326,7 +298,6 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
                         guard let self = self else { return }
-                        // self.profilePictureView.update()
                         self.displayNameTextField.text = name
                         self.profilePictureToBeUploaded = nil
                         self.displayNameToBeUploaded = nil
@@ -395,18 +366,14 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         self.present(imagePicker, animated: true, completion: nil)
     }
     
-    
     //MARK:UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let tempImage:UIImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)!
         let maxSize = Int(kOWSProfileManager_MaxAvatarDiameter)
         profilePictureToBeUploaded = tempImage.resizedImage(toFillPixelSize: CGSize(width: maxSize, height: maxSize))
-        //  print("profilePictureToBeUploaded------> \(profilePictureToBeUploaded!)")
-        
         profilePictureView.image = profilePictureToBeUploaded
         profilePictureView.contentMode = .scaleAspectFit
-        
         imagePicker.dismiss(animated: true, completion: nil)
         updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
@@ -427,52 +394,7 @@ extension String {
         return lowerCasedString.replacingCharacters(in: lowerCasedString.startIndex...lowerCasedString.startIndex, with: String(lowerCasedString[lowerCasedString.startIndex]).uppercased())
     }
 }
-extension UITextField {
-    
-    enum Direction {
-        case Left
-        case Right
-    }
-    
-    // add image to textfield
-    func withImage(direction: Direction, image: UIImage, colorBorder: UIColor){
-        let mainView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
-        // mainView.layer.cornerRadius = 5
-        
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 20))
-        //    view.backgroundColor = .white
-        //    view.clipsToBounds = true
-        //  view.layer.cornerRadius = 5
-        // view.layer.borderWidth = CGFloat(0.5)
-        //    view.layer.borderColor = colorBorder.cgColor
-        mainView.addSubview(view)
-        
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        //  imageView.tintColor = UIColor.red
-        imageView.frame = CGRect(x: 0, y: 0, width: 15, height: 20)
-        view.addSubview(imageView)
-        
-        //    let seperatorView = UIView()
-        //    seperatorView.backgroundColor = colorSeparator
-        //    mainView.addSubview(seperatorView)
-        
-        if(Direction.Left == direction){ // image left
-            // seperatorView.frame = CGRect(x: 45, y: 0, width: 5, height: 20)
-            self.leftViewMode = .always
-            self.leftView = mainView
-        } else { // image right
-            // seperatorView.frame = CGRect(x: 0, y: 0, width: 5, height: 20)
-            self.rightViewMode = .always
-            self.rightView = mainView
-        }
-        
-        // self.layer.borderColor = colorBorder.cgColor
-        // self.layer.borderWidth = CGFloat(0.5)
-        // self.layer.cornerRadius = 5
-    }
-    
-}
+
 extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -486,7 +408,6 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyAccountXibCell.identifier, for: indexPath) as! MyAccountXibCell
         cell.lblname.text = array[indexPath.item]
         if indexPath.row == 0 {
-            //Path
             let pathStatusView = PathStatusView()
             pathStatusView.set(.width, to: PathStatusView.size)
             pathStatusView.set(.height, to: PathStatusView.size)
@@ -500,7 +421,7 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 45)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let pathVC = PathVC()
@@ -529,7 +450,7 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }else {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChnageLogVC") as! ChnageLogVC
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangeLogVC") as! ChangeLogVC
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

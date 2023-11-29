@@ -40,7 +40,7 @@ open class DatePickerDialog: UIView {
     @objc public init(
         textColor: UIColor? = nil,
         buttonColor: UIColor? = nil,
-        font: UIFont = .boldSystemFont(ofSize: 15),
+        font: UIFont = Fonts.boldOpenSans(ofSize: 15),
         locale: Locale? = nil,
         showCancelButton: Bool = true
     ) {
@@ -190,12 +190,12 @@ open class DatePickerDialog: UIView {
 
         // First, we style the dialog to match the iOS8 UIAlertView >>>
         gradient.frame = container.bounds
-        gradient.colors = ColorsDate.gradientBackground
+//        gradient.colors = ColorsDate.gradientBackground
 
         let cornerRadius = kCornerRadius
         gradient.cornerRadius = cornerRadius
         container.layer.insertSublayer(gradient, at: 0)
-
+        container.backgroundColor = Colors.bchatViewBackgroundColor
         container.layer.cornerRadius = cornerRadius
         container.layer.borderColor = ColorsDate.separator.cgColor
         container.layer.borderWidth = 1

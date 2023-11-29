@@ -9,12 +9,12 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     private let topMargin = UIApplication.shared.keyWindow!.safeAreaInsets.top + Values.veryLargeSpacing
     private let bottomMargin = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
     
-    private var width: NSLayoutConstraint?
-    private var height: NSLayoutConstraint?
-    private var left: NSLayoutConstraint?
-    private var right: NSLayoutConstraint?
-    private var top: NSLayoutConstraint?
-    private var bottom: NSLayoutConstraint?
+    private var widthW: NSLayoutConstraint?
+    private var heightH: NSLayoutConstraint?
+    private var leftL: NSLayoutConstraint?
+    private var rightR: NSLayoutConstraint?
+    private var topT: NSLayoutConstraint?
+    private var bottomB: NSLayoutConstraint?
     
 #if targetEnvironment(simulator)
     // Note: 'RTCMTLVideoView' doesn't seem to work on the simulator so use 'RTCEAGLVideoView' instead
@@ -51,8 +51,8 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
                 UIView.animate(withDuration: 0.25) {
                     self.remoteVideoView.alpha = isEnabled ? 1 : 0
                     if !isEnabled {
-                        self.width?.constant = MiniCallView.defaultSize
-                        self.height?.constant = MiniCallView.defaultSize
+                        self.widthW?.constant = MiniCallView.defaultSize
+                        self.heightH?.constant = MiniCallView.defaultSize
                     }
                 }
             }
@@ -68,8 +68,8 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     }
     
     private func setUpViewHierarchy() {
-        self.width = self.set(.width, to: MiniCallView.defaultSize)
-        self.height = self.set(.height, to: MiniCallView.defaultSize)
+        self.widthW = self.set(.width, to: MiniCallView.defaultSize)
+        self.heightH = self.set(.height, to: MiniCallView.defaultSize)
         self.layer.cornerRadius = 10
         self.layer.masksToBounds = true
         // Background
@@ -115,12 +115,12 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         self.alpha = 0.0
         let window = CurrentAppContext().mainWindow!
         window.addSubview(self)
-        left = self.autoPinEdge(toSuperviewEdge: .left)
-        left?.isActive = false
-        right = self.autoPinEdge(toSuperviewEdge: .right)
-        top = self.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
-        bottom = self.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomMargin)
-        bottom?.isActive = false
+        leftL = self.autoPinEdge(toSuperviewEdge: .left)
+        leftL?.isActive = false
+        rightR = self.autoPinEdge(toSuperviewEdge: .right)
+        topT = self.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
+        bottomB = self.autoPinEdge(toSuperviewEdge: .bottom, withInset: bottomMargin)
+        bottomB?.isActive = false
         UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.alpha = 1.0
         }, completion: nil)
@@ -141,31 +141,31 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
         let newSize = CGSize(width: min(160.0, 160.0 * size.width / size.height), height: min(160.0, 160.0 * size.height / size.width))
         persistCurrentPosition(newSize: newSize)
-        self.width?.constant = newSize.width
-        self.height?.constant = newSize.height
+        self.widthW?.constant = newSize.width
+        self.heightH?.constant = newSize.height
     }
     
     func persistCurrentPosition(newSize: CGSize) {
         let currentCenter = self.center
         
         if currentCenter.x < self.superview!.width() / 2 {
-            left?.isActive = true
-            right?.isActive = false
+            leftL?.isActive = true
+            rightR?.isActive = false
         } else {
-            left?.isActive = false
-            right?.isActive = true
+            leftL?.isActive = false
+            rightR?.isActive = true
         }
         
         let willTouchTop = currentCenter.y < newSize.height / 2 + topMargin
         let willTouchBottom = currentCenter.y + newSize.height / 2 >= self.superview!.height()
         if willTouchBottom {
-            top?.isActive = false
-            bottom?.isActive = true
+            topT?.isActive = false
+            bottomB?.isActive = true
         } else {
             let constant = willTouchTop ? topMargin : currentCenter.y - newSize.height / 2
-            top?.constant = constant
-            top?.isActive = true
-            bottom?.isActive = false
+            topT?.constant = constant
+            topT?.isActive = true
+            bottomB?.isActive = false
         }
     }
 

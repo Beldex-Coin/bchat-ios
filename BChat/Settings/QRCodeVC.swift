@@ -144,7 +144,7 @@ private final class ViewMyQRCodeVC : UIViewController {
         // Set up title label
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: isIPhone5OrSmaller ? CGFloat(40) : Values.massiveFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? CGFloat(40) : Values.massiveFontSize)
         titleLabel.text = "Scan Me"
         titleLabel.numberOfLines = 1
         titleLabel.textAlignment = .center
@@ -168,7 +168,7 @@ private final class ViewMyQRCodeVC : UIViewController {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         explanationLabel.text = NSLocalizedString("vc_view_my_qr_code_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
@@ -229,14 +229,14 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("vc_scan_qr_code_camera_access_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
         explanationLabel.lineBreakMode = .byWordWrapping
         // Set up call to action button
         let callToActionButton = UIButton()
-        callToActionButton.titleLabel!.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         callToActionButton.setTitleColor(Colors.accent, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
         callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)

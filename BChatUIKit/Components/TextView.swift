@@ -11,7 +11,7 @@ public final class TextView : UITextView, UITextViewDelegate {
 
     private lazy var placeholderLabel: UILabel = {
         let result = UILabel()
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         return result
     }()
@@ -39,9 +39,9 @@ public final class TextView : UITextView, UITextViewDelegate {
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
         placeholderLabel.text = placeholder
-        backgroundColor = Colors.bchat_view_bg_clr
+        backgroundColor = Colors.bchatViewBackgroundColor
         textColor = Colors.text
-        font = .systemFont(ofSize: Values.smallFontSize)
+        font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         tintColor = Colors.accent
         keyboardAppearance = isLightMode ? .light : .dark
         if usesDefaultHeight {

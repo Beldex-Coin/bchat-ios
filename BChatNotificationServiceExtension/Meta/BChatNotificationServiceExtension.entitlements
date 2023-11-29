@@ -5,7 +5,7 @@
 	<key>com.apple.developer.usernotifications.filtering</key>
 	<true/>
 	<key>aps-environment</key>
-	<string>development</string>
+	<string>production</string>
 	<key>com.apple.security.application-groups</key>
 	<array>
 		<string>group.com.beldex.bchat</string>

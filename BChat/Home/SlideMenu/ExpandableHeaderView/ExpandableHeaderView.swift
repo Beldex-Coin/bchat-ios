@@ -43,8 +43,8 @@ class ExpandableHeaderView: UITableViewHeaderFooterView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.textLabel?.textColor = Colors.bchat_lbl_name
-        self.contentView.backgroundColor = Colors.bchat_view_bg_clr
+        self.textLabel?.textColor = Colors.bchatLabelNameColor
+        self.contentView.backgroundColor = Colors.bchatViewBackgroundColor
         
     }
     /*

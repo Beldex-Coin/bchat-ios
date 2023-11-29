@@ -26,7 +26,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     }
     @IBOutlet weak var tableViewhightConst: NSLayoutConstraint!
     @IBOutlet weak var sampleSwitch: UISwitch!
-    var array = ["My Account","Notification","Message Requests","Privacy","Recovery Seed","Report Issue","Help","Invite","About"]
+    var titlesArray = ["My Account","Settings","Notification","Message Requests","Recovery Seed","My Wallet","Report Issue","Help","Invite","About"]
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var lblversion: UILabel!
     private var hasTappableProfilePicture: Bool = false
@@ -42,17 +42,13 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         self.navigationController?.isNavigationBarHidden = true
         if isLightMode {
             sampleSwitch.isOn = false
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .black
         }else {
             sampleSwitch.isOn = true
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .white
         }
+        let origImage = UIImage(named: isLightMode ? "X" : "X")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        closebtn.setImage(tintedImage, for: .normal)
+        closebtn.tintColor = isLightMode ? UIColor.black : UIColor.white
         let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"]!
         let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"]!
         self.lblversion.text = "BChat \(version) (\(buildNumber))"
@@ -61,24 +57,17 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     @IBAction func sampleSwitchValueChanged(_ sender: Any) {
         if sampleSwitch.isOn {
             AppModeManager.shared.setCurrentAppMode(to: .dark)
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .white
-            let userInfo = [ "text" : "dark" ]
-            NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         }else {
             AppModeManager.shared.setCurrentAppMode(to: .light)
-            let origImage = UIImage(named: "X")
-            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-            closebtn.setImage(tintedImage, for: .normal)
-            closebtn.tintColor = .black
-            let userInfo = [ "text" : "light" ]
-            NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         }
+        let origImage = UIImage(named: isLightMode ? "X" : "X")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        closebtn.setImage(tintedImage, for: .normal)
+        closebtn.tintColor = isLightMode ? UIColor.black : UIColor.white
+        let userInfo = [ "text" : "dark" ]
+        NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         tableView.reloadData()
     }
-    
     
     @IBAction func CloseAction(_ sender: UIButton) {
         self.navigationController?.dismiss(animated: true, completion: nil)
@@ -90,8 +79,8 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         if section == 0 {
             return 1
         } else {
-            self.tableViewhightConst.constant = CGFloat(array.count * 60)
-            return array.count
+            self.tableViewhightConst.constant = CGFloat(titlesArray.count * 60)
+            return titlesArray.count
         }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -106,13 +95,18 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             cell.selectionStyle = .none
             
-            cell.lblname.text = Storage.shared.getUser()?.name
+            cell.lblname.text = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             cell.lblIDName.text = "ID: \(getUserHexEncodedPublicKey())"
             
             let publicKey = getUserHexEncodedPublicKey()
             cell.imgpic.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+            
+            if let statusView = view.viewWithTag(333222) {
+                statusView.removeFromSuperview()
+            }
             // Path status indicator
             let pathStatusView = PathStatusView()
+            pathStatusView.tag = 333222
             pathStatusView.accessibilityLabel = "Current onion routing path indicator"
             pathStatusView.set(.width, to: PathStatusView.size)
             pathStatusView.set(.height, to: PathStatusView.size)
@@ -121,52 +115,48 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             pathStatusView.layer.borderColor = UIColor.white.cgColor
             pathStatusView.pin(.trailing, to: .trailing, of: cell.imgpic)
             pathStatusView.pin(.bottom, to: .bottom, of: cell.imgpic)
-            if isLightMode {
-                let origImage = UIImage(named: "3222")
-                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                cell.scanRef.setImage(tintedImage, for: .normal)
-                cell.scanRef.tintColor = .black
-            }else {
-                let origImage = UIImage(named: "322")
-                let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-                cell.scanRef.setImage(tintedImage, for: .normal)
-                cell.scanRef.tintColor = .white
-            }
-            
+            let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
+            let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+            cell.scanRef.setImage(tintedImage, for: .normal)
+            cell.scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
             cell.scanRef.tag = indexPath.row
             cell.scanRef.addTarget(self, action: #selector(didSelectViewAll), for: .touchUpInside)
-            
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SlideMenuCell", for: indexPath) as! SlideMenuCell
             cell.selectionStyle = .none
-            cell.lblname.text = array[indexPath.row]
+            cell.lblname.text = titlesArray[indexPath.row]
+            cell.lblbeta.isHidden = true
             
-            if indexPath.row == 0 {
+            if indexPath.row == 0 { //My Account
                 let logoName = isLightMode ? "my_account" : "round-account-button-with-user-inside"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 1 {
+            }else if indexPath.row == 1 {   //Settings
+                let logoName = isLightMode ? "ic_settings" : "ic_settings_white"
+                cell.img.image = UIImage(named: logoName)!
+            }else if indexPath.row == 2 {   //Notification
                 let logoName = isLightMode ? "notification" : "icons8-notification"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 2 {
+            }else if indexPath.row == 3 {   //Message Requests
                 let logoName = isLightMode ? "message_request" : "MsgReq"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 3 {
-                let logoName = isLightMode ? "privacy44" : "privacy-1"
-                cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 4 {
+            }else if indexPath.row == 4 {   //Recovery Seed
                 let logoName = isLightMode ? "recovery_seed" : "recovery_seed-1"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 5 {
-                let logoName = isLightMode ? "1X" : "1X1"
+            }else if indexPath.row == 5 {   //My Wallet
+                cell.lblbeta.isHidden = false
+                let logoName = isLightMode ? "ic_MyWalletDark" : "ic_MyWalletWhite"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 6 {
+            }else if indexPath.row == 6 {   //Report Issue
+                let logoName = isLightMode ? "ic_ReportDark" : "ic_ReportWhite"
+                cell.img.image = UIImage(named: logoName)!
+            }else if indexPath.row == 7 {   //Help
                 let logoName = isLightMode ? "icons8-help" : "help-web-button"
                 cell.img.image = UIImage(named: logoName)!
-            }else if indexPath.row == 7{
+            }else if indexPath.row == 8{    //Invite
                 let logoName = isLightMode ? "invite" : "invite-1"
                 cell.img.image = UIImage(named: logoName)!
-            }else {
+            }else { //About
                 let logoName = isLightMode ? "about_dark" : "about987"
                 cell.img.image = UIImage(named: logoName)!
             }
@@ -178,33 +168,59 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
-            if indexPath.row == 0 {
+            if indexPath.row == 0 { //My Account
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
                 self.navigationController?.pushViewController(vc, animated: true)
-            }else if indexPath.row == 1 {
-                let notificationSettingsVC = NotificationSettingsViewController()
-                navigationController!.pushViewController(notificationSettingsVC, animated: true)
-            }else if indexPath.row == 2 {
-                let viewController: MessageRequestsViewController = MessageRequestsViewController()
-                self.navigationController?.pushViewController(viewController, animated: true)
-            }else if indexPath.row == 3 {
+            }else if indexPath.row == 1 {   //Settings
                 let privacySettingsVC = PrivacySettingsTableViewController()
                 navigationController!.pushViewController(privacySettingsVC, animated: true)
-            }else if indexPath.row == 4 {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedMenuVC") as! RecoverySeedMenuVC
+            }else if indexPath.row == 2 {   //Notification
+                let notificationSettingsVC = NotificationSettingsViewController()
+                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+            }else if indexPath.row == 3 {   //Message Requests
+                let viewController: MessageRequestsViewController = MessageRequestsViewController()
+                self.navigationController?.pushViewController(viewController, animated: true)
+            }else if indexPath.row == 4 {   //Recovery Seed
+                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImportantAlertVC") as! ImportantAlertVC
                 self.navigationController?.pushViewController(vc, animated: true)
-            }else if indexPath.row == 5 {
+            }else if indexPath.row == 5 {   //My Wallet
+                if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+                    // MARK: - Old flow (without wallet)
+                    if SaveUserDefaultsData.israndomUUIDPassword == "" {
+                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AlertForWalletVC") as! AlertForWalletVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        return
+                    }
+                    
+                    // MARK: - New flow (with wallet)
+                    if SSKPreferences.areWalletEnabled {
+                        if SaveUserDefaultsData.WalletPassword.isEmpty {
+                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }else {
+                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+                            vc.isEnterPin = true
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }else {
+                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletInstructionsVC") as! MyWalletInstructionsVC
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                }else {
+                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                }
+            }else if indexPath.row == 6 {   //Report Issue
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: "\(bchat_report_IssueID)")
                 SignalApp.shared().presentConversation(for: thread, action: .compose, animated: true)
-            }else if indexPath.row == 6 {
+            }else if indexPath.row == 7 {   //Help
                 if let url = URL(string: "mailto:\(bchat_email_SupportMailID)") {
                     UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 }
-            }else if indexPath.row == 7 {
+            }else if indexPath.row == 8 {   //Invite
                 let invitation = "\(bchat_Invite_Message)" + "\(getUserHexEncodedPublicKey()) !"
                 let shareVC = UIActivityViewController(activityItems: [ invitation ], applicationActivities: nil)
                 navigationController!.present(shareVC, animated: true, completion: nil)
-            }else {
+            }else if indexPath.row == 9{    //About
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AboutUs") as! AboutUs
                 self.navigationController?.pushViewController(vc, animated: true)
             }
@@ -215,7 +231,6 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "QRCodeScanVC") as! QRCodeScanVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {

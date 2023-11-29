@@ -7,7 +7,7 @@ class BaseVC : UIViewController {
     lazy var navBarTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.alpha = 1
         result.textAlignment = .center
         return result
@@ -16,7 +16,7 @@ class BaseVC : UIViewController {
     lazy var crossfadeLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.alpha = 0
         result.textAlignment = .center
         return result
@@ -73,8 +73,8 @@ class BaseVC : UIViewController {
         navBarTitleLabel.text = title
         crossfadeLabel.text = title
         if let customFontSize = customFontSize {
-            navBarTitleLabel.font = .boldSystemFont(ofSize: customFontSize)
-            crossfadeLabel.font = .boldSystemFont(ofSize: customFontSize)
+            navBarTitleLabel.font = Fonts.boldOpenSans(ofSize: customFontSize)
+            crossfadeLabel.font = Fonts.boldOpenSans(ofSize: customFontSize)
         }
         container.addSubview(navBarTitleLabel)
         navBarTitleLabel.pin(to: container)

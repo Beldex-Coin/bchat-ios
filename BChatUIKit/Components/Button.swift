@@ -37,24 +37,24 @@ public final class Button : UIButton {
         let fillColor: UIColor
         switch style {
         case .unimportant: fillColor = isLightMode ? UIColor.clear : Colors.unimportantButtonBackground
-        case .unimportant2: fillColor = isLightMode ? Colors.unimportantButtonBackground2 : Colors.unimportantButtonBackground2
+        case .unimportant2: fillColor = isLightMode ? Colors.unimportantButtonBackgroundColor : Colors.unimportantButtonBackgroundColor
         case .regular: fillColor = UIColor.clear
         case .prominentOutline: fillColor = UIColor.clear
         case .prominentFilled: fillColor = isLightMode ? Colors.text : Colors.accent
-        case .prominentFilled2: fillColor = isLightMode ? Colors.accent2 : Colors.accent2
-        case .prominentFilled3: fillColor = isLightMode ? Colors.accent3 : Colors.accent3
+        case .prominentFilled2: fillColor = isLightMode ? Colors.accentColor : Colors.accentColor
+        case .prominentFilled3: fillColor = isLightMode ? Colors.accentFullColor : Colors.accentFullColor
         case .regularBorderless: fillColor = UIColor.clear
         case .destructiveOutline: fillColor = UIColor.clear
         }
         let borderColor: UIColor
         switch style {
         case .unimportant: borderColor = isLightMode ? Colors.text : Colors.unimportantButtonBackground
-        case .unimportant2: borderColor = isLightMode ? Colors.text : Colors.unimportantButtonBackground2
+        case .unimportant2: borderColor = isLightMode ? Colors.text : Colors.unimportantButtonBackgroundColor
         case .regular: borderColor = Colors.text
         case .prominentOutline: borderColor = isLightMode ? Colors.text : Colors.accent
         case .prominentFilled: borderColor = isLightMode ? Colors.text : Colors.accent
-        case .prominentFilled2: borderColor = isLightMode ? Colors.text : Colors.accent2
-        case .prominentFilled3: borderColor = isLightMode ? Colors.text : Colors.accent2
+        case .prominentFilled2: borderColor = isLightMode ? Colors.text : Colors.accentColor
+        case .prominentFilled3: borderColor = isLightMode ? Colors.text : Colors.accentColor
         case .regularBorderless: borderColor = UIColor.clear
         case .destructiveOutline: borderColor = Colors.destructive
         }
@@ -90,7 +90,7 @@ public final class Button : UIButton {
         }
         layer.borderWidth = 0
         let fontSize = (size == .small) ? Values.smallFontSize : Values.mediumFontSize
-        titleLabel!.font = .boldSystemFont(ofSize: fontSize)
+        titleLabel!.font = Fonts.boldOpenSans(ofSize: fontSize)
         setTitleColor(textColor, for: UIControl.State.normal)
     }
 

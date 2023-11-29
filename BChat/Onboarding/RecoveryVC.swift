@@ -6,7 +6,7 @@ import PromiseKit
 
 class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     @IBOutlet weak var backgroundView:UIView!
-    @IBOutlet weak var nextRef:UIButton!
+    @IBOutlet weak var continueRef:UIButton!
     @IBOutlet weak var copyRef:UIButton!
     @IBOutlet weak var notelbl:UILabel!
     @IBOutlet weak var lblname:UILabel!
@@ -65,12 +65,12 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         let origImage = UIImage(named: "copy")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         copyRef.setImage(tintedImage, for: .normal)
-        copyRef.tintColor = Colors.accent2
+        copyRef.tintColor = Colors.accentColor
         backgroundView.layer.cornerRadius = 10
-        nextRef.layer.cornerRadius = 6
+        continueRef.layer.cornerRadius = 6
         lblrecovery.isHidden = false
         self.lblname.text = "\(mnemonic)"
-        lblname.textColor = Colors.bchat_button_clr2
+        lblname.textColor = Colors.bchatButtonGreenColor
         lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         lblname.numberOfLines = 0
         lblname.lineBreakMode = .byWordWrapping
@@ -78,25 +78,24 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         let text = NSMutableAttributedString()
         text.append(NSAttributedString(string: "Note: ", attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]));
-        text.append(NSAttributedString(string: "Save your recovery seed! Only your recovery seed can be used to recover your account on another device. Copy the recovery seed to continue.", attributes: [NSAttributedString.Key.foregroundColor: Colors.bchat_lbl_name.cgColor]))
+        text.append(NSAttributedString(string: "Save your recovery seed! Only your recovery seed can be used to recover your account on another device. Copy the recovery seed to continue.", attributes: [NSAttributedString.Key.foregroundColor: Colors.bchatLabelNameColor.cgColor]))
         notelbl.attributedText = text
         optionViews[1].isSelected = true
-        nextRef.isUserInteractionEnabled = false
-        nextRef.backgroundColor = UIColor.lightGray
-        
+        continueRef.isUserInteractionEnabled = false
+        continueRef.backgroundColor = UIColor.lightGray
     }
     
-    @IBAction func CopyAction(sender:UIButton){
-        nextRef.isUserInteractionEnabled = true
-        nextRef.backgroundColor = Colors.bchat_button_clr
-        self.showToast22(message: "Please copy the seed and save it", seconds: 1.0)
+    @IBAction func copyAction(sender:UIButton){
+        continueRef.isUserInteractionEnabled = true
+        continueRef.backgroundColor = Colors.bchatButtonColor
+        self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         copyRef.isUserInteractionEnabled = false
         seedcopy = true
         lblrecovery.isHidden = true
     }
     
-    @IBAction func NextAction(sender:UIButton){
+    @IBAction func continueAction(sender:UIButton){
         if seedcopy == true {
             guard selectedOptionView != nil else {
                 let title = NSLocalizedString("vc_pn_mode_no_option_picked_modal_title", comment: "")
@@ -104,7 +103,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
                 return present(alert, animated: true, completion: nil)
             }
-            UserDefaults.standard[.isUsingFullAPNs] = (selectedOptionView == apnsOptionView)
+            UserDefaults.standard[.isUsingFullAPNs] = true//(selectedOptionView == apnsOptionView)
             TSAccountManager.sharedInstance().didRegister()
             let homeVC = HomeVC()
             navigationController!.setViewControllers([ homeVC ], animated: true)
@@ -112,7 +111,7 @@ class RecoveryVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
             syncTokensJob.uploadOnlyIfStale = false
             let _: Promise<Void> = syncTokensJob.run()
         }else {
-            self.showToast22(message: "Please copy the Seed...", seconds: 1.0)
+            self.showToastMsg(message: "Please copy the Seed...", seconds: 1.0)
         }
     }
     

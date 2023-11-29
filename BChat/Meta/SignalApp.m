@@ -147,8 +147,19 @@ NS_ASSUME_NONNULL_BEGIN
     [Environment.shared.preferences clear];
     [AppEnvironment.shared.notificationPresenter clearAllNotifications];
 
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    [prefs setObject:@"Yes" forKey:@"isDataCleared"];
     if (onReset != nil) { onReset(); }
-    exit(0);
+    UIWindow *window = UIApplication.sharedApplication.keyWindow;
+    window.backgroundColor = [UIColor blackColor];
+    [UIView animateWithDuration:0.8 animations:^{
+        window.alpha = 0.0; // fade out...
+        // ... while pinching to a point
+        window.transform = CGAffineTransformScale(
+                                                  CGAffineTransformMakeTranslation( 0, 0 ), 0.1, 0.1 );
+    } completion:^(BOOL finished) {
+        exit(0);
+    }];
 }
 
 - (void)showHomeView

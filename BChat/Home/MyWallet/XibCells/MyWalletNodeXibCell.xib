@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="OpenSans-Regular.ttf">
+            <string>OpenSans-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="MyWalletNodeXibCell" customModule="BChat_Messenger" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="450" height="75"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="450" height="75"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d7S-Wb-vf8">
+                        <rect key="frame" x="10" y="2" width="430" height="71"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Publicnode1.rpcnode.stream:29095" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T70-OD-2i8">
+                                <rect key="frame" x="5" y="16" width="395" height="19.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="14"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iBm-S3-Ru4">
+                                <rect key="frame" x="405" y="30.5" width="10" height="10"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="dcn-qO-ipt"/>
+                                    <constraint firstAttribute="width" constant="10" id="fMW-4Z-Xqz"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Block: 78 seconds ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgN-Af-k0o">
+                                <rect key="frame" x="5" y="38.5" width="149" height="16.5"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" name="bchat_lbl_name"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="bchat_view_bg_clr"/>
+                        <constraints>
+                            <constraint firstItem="wgN-Af-k0o" firstAttribute="leading" secondItem="T70-OD-2i8" secondAttribute="leading" id="ETE-0Y-FO7"/>
+                            <constraint firstItem="wgN-Af-k0o" firstAttribute="top" secondItem="T70-OD-2i8" secondAttribute="bottom" constant="3" id="Jc4-ii-VXz"/>
+                            <constraint firstItem="T70-OD-2i8" firstAttribute="leading" secondItem="d7S-Wb-vf8" secondAttribute="leading" constant="5" id="NAJ-wk-DZj"/>
+                            <constraint firstAttribute="trailing" secondItem="iBm-S3-Ru4" secondAttribute="trailing" constant="15" id="PqN-oQ-7Cq"/>
+                            <constraint firstItem="iBm-S3-Ru4" firstAttribute="centerY" secondItem="d7S-Wb-vf8" secondAttribute="centerY" id="QeT-rq-ofY"/>
+                            <constraint firstItem="iBm-S3-Ru4" firstAttribute="leading" secondItem="T70-OD-2i8" secondAttribute="trailing" constant="5" id="aJm-Tk-8pP"/>
+                            <constraint firstItem="T70-OD-2i8" firstAttribute="centerY" secondItem="d7S-Wb-vf8" secondAttribute="centerY" constant="-10" id="gJl-wx-dRx"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" name="bchat_storyboard_clr"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="d7S-Wb-vf8" secondAttribute="bottom" constant="2" id="4pD-8L-Yjf"/>
+                <constraint firstItem="d7S-Wb-vf8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="BXj-bD-Mj5"/>
+                <constraint firstAttribute="trailing" secondItem="d7S-Wb-vf8" secondAttribute="trailing" constant="10" id="Tdb-lR-IsY"/>
+                <constraint firstItem="d7S-Wb-vf8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="ekE-IC-0vJ"/>
+            </constraints>
+            <connections>
+                <outlet property="lblDetails" destination="wgN-Af-k0o" id="Ug9-Ft-YfB"/>
+                <outlet property="lblmyaddress" destination="T70-OD-2i8" id="KGN-eh-SFW"/>
+                <outlet property="mainView" destination="d7S-Wb-vf8" id="bZ5-LN-U9b"/>
+                <outlet property="viewcolour" destination="iBm-S3-Ru4" id="JUX-Or-9Ez"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="98.772321428571431"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="bchat_lbl_name">
+            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_storyboard_clr">
+            <color red="0.92941176470588238" green="0.92941176470588238" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="bchat_view_bg_clr">
+            <color red="0.9882352941176471" green="0.9882352941176471" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

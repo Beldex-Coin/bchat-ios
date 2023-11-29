@@ -41,14 +41,14 @@ final class OptionView : UIView {
         // Set up title label
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         titleLabel.text = title
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+        explanationLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         explanationLabel.text = explanation
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
@@ -66,7 +66,7 @@ final class OptionView : UIView {
         if isRecommended {
             let recommendedLabel = UILabel()
             recommendedLabel.textColor = Colors.accent
-            recommendedLabel.font = .boldSystemFont(ofSize: Values.smallFontSize)
+            recommendedLabel.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
             recommendedLabel.text = NSLocalizedString("vc_pn_mode_recommended_option_tag", comment: "")
             stackView.addArrangedSubview(recommendedLabel)
         }

@@ -36,7 +36,7 @@ extension Seed {
             return Array(slice)
         }
     }
-    
+    //
     public var sentence: String {
         get {
             return self.words.joined(separator: " ")

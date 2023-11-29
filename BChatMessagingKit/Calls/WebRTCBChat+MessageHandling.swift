@@ -7,7 +7,7 @@ extension WebRTCBChat {
         candidate.forEach { peerConnection?.add($0) }
     }
     
-    public func handleRemoteSDP(_ sdp: RTCSessionDescription, from bchatuserID: String) {
+    public func handleRemoteSDP(_ sdp: RTCSessionDescription, from bchatID: String) {
         SNLog("[Calls] Received remote SDP: \(sdp.sdp).")
         peerConnection?.setRemoteDescription(sdp, completionHandler: { [weak self] error in
             if let error = error {
@@ -15,7 +15,7 @@ extension WebRTCBChat {
             } else {
                 guard let self = self, sdp.type == .offer else { return }
                 Storage.write { transaction in
-                    self.sendAnswer(to: bchatuserID, using: transaction).retainUntilComplete()
+                    self.sendAnswer(to: bchatID, using: transaction).retainUntilComplete()
                 }
             }
         })

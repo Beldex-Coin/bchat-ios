@@ -140,7 +140,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     lazy var unreadCountLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = Colors.text
         result.textAlignment = .center
         return result
@@ -189,7 +189,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = UIFont.systemFont(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 13)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
         result.textColor = Colors.bchatMessageRequestsInfoText
         result.textAlignment = .center
@@ -202,7 +202,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         result.setTitle(NSLocalizedString("TXT_DELETE_ACCEPT", comment: ""), for: .normal)
         result.setTitleColor(Colors.bchatHeading, for: .normal)
         result.setBackgroundImage(
@@ -213,7 +213,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         )
         result.layer.cornerRadius = 6
         result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.bchat_button_clr.cgColor
+        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
         result.layer.borderColor = {
             if #available(iOS 13.0, *) {
                 return Colors.bchatHeading
@@ -234,7 +234,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         result.setTitle(NSLocalizedString("Decline", comment: ""), for: .normal)
         result.setTitleColor(Colors.destructive, for: .normal)
         result.setBackgroundImage(
@@ -310,7 +310,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationItem.titleView = titleView
         updateNavBarButtons()
         
-        //Sree kanth adding Bg Image
+        //adding Bg Image
         view.addSubview(someImageView)
         someImageView.pin(to: view)
         
@@ -328,7 +328,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messageRequestView.addSubview(messageRequestDescriptionLabel)
         messageRequestView.addSubview(messageRequestAcceptButton)
         messageRequestView.addSubview(messageRequestDeleteButton)
-        
         scrollButton.pin(.right, to: .right, of: view, withInset: -20)
         messageRequestView.pin(.left, to: .left, of: view)
         messageRequestView.pin(.right, to: .right, of: view)
@@ -338,23 +337,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.scrollButtonMessageRequestsBottomConstraint = scrollButton.pin(.bottom, to: .top, of: messageRequestView, withInset: -16)
         self.scrollButtonMessageRequestsBottomConstraint?.isActive = thread.isMessageRequest()
         self.scrollButtonBottomConstraint?.isActive = !thread.isMessageRequest()
-        
         messageRequestDescriptionLabel.pin(.top, to: .top, of: messageRequestView, withInset: 10)
         messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 40)
         messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -40)
-        
-        //        messageRequestAcceptButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        //        messageRequestAcceptButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
-        //        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        //        messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        //
-        //        messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        //        messageRequestDeleteButton.pin(.left, to: .right, of: messageRequestAcceptButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 20)
-        //        messageRequestDeleteButton.pin(.right, to: .right, of: messageRequestView, withInset: -20)
-        //        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        //        messageRequestDeleteButton.set(.width, to: .width, of: messageRequestAcceptButton)
-        //        messageRequestDeleteButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        
         messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
         messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
         messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
@@ -365,7 +350,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
         messageRequestAcceptButton.set(.width, to: .width, of: messageRequestDeleteButton)
         messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
-        
         // Unread count view
         view.addSubview(unreadCountView)
         unreadCountView.addSubview(unreadCountLabel)
@@ -400,8 +384,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Update the input state if this is a contact thread
         if let contactThread: TSContactThread = thread as? TSContactThread {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
-            
-            
             // BeldexAddress view in Conversation Page (Get from DB)
             if contact?.beldexAddress != nil {
                 let belexAddress = contact?.beldexAddress
@@ -409,7 +391,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }else {
                 print("--belexAddress in conversation VCbelexAddress else--")
             }
-            
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
             self.snInputView.setEnabledMessageTypes(
@@ -645,6 +626,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         guard self.isViewLoaded else { return }
         let updateType = conversationUpdate.conversationUpdateType
         guard updateType != .minor else { return } // No view items were affected
+        updateNavBarButtons()
         if updateType == .reload {
             if threadStartedAsMessageRequest {
                 updateNavBarButtons()   // In case the message request was approved
@@ -823,7 +805,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let unreadCount = unreadViewItems.count
         unreadCountLabel.text = unreadCount < 10000 ? "\(unreadCount)" : "9999+"
         let fontSize = (unreadCount < 10000) ? Values.verySmallFontSize : 8
-        unreadCountLabel.font = .boldSystemFont(ofSize: fontSize)
+        unreadCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
         unreadCountView.isHidden = (unreadCount == 0)
     }
     
@@ -930,7 +912,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
         //        navBar.stubbedNextResponder = self
         
-        //Sreekanth
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = self
@@ -941,7 +922,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         isShowingSearchUI = false
         navigationItem.titleView = titleView
         updateNavBarButtons()
-        //Sreekanth
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = nil

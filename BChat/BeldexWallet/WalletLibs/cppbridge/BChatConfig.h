@@ -12,8 +12,9 @@ const Wallet::NetworkType netType = Wallet::MAINNET;
 #pragma mark - method
 
 static NSString * objc_str_dup(std::string cppstr) {
-    const char * cstr = cppstr.c_str();
-    return [NSString stringWithUTF8String:strdup(cstr)];
+    const char *cstr = cppstr.c_str();
+    NSString *objcStr = [NSString stringWithUTF8String:cstr];
+    return objcStr;
 };
 
 

@@ -27,7 +27,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         result.lineBreakMode = .byTruncatingTail
         result.textAlignment = .center
         return result
@@ -69,7 +69,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString("vc_settings_invite_a_friend_button_title", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.addTarget(self, action: #selector(sendInvitation), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -78,7 +78,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString("vc_settings_faq_button_title", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.addTarget(self, action: #selector(openFAQ), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -87,7 +87,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString("vc_settings_survey_button_title", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.addTarget(self, action: #selector(openSurvey), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -96,7 +96,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString("vc_settings_support_button_title", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.addTarget(self, action: #selector(shareLogs), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -105,7 +105,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString("vc_settings_help_us_translate_button_title", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.addTarget(self, action: #selector(helpTranslate), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -120,7 +120,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
     private lazy var versionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = .systemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byCharWrapping
@@ -228,7 +228,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
             let button = UIButton()
             button.setTitle(title, for: UIControl.State.normal)
             button.setTitleColor(color, for: UIControl.State.normal)
-            button.titleLabel!.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+            button.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
             button.titleLabel!.textAlignment = .center
             func getImage(withColor color: UIColor) -> UIImage {
                 let rect = CGRect(origin: CGPoint.zero, size: CGSize(width: 1, height: 1))

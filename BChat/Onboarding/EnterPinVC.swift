@@ -3,7 +3,7 @@
 import UIKit
 import Sodium
 import PromiseKit
-
+import BChatUIKit
 
 class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     
@@ -37,12 +37,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
     
     @IBOutlet weak var backgroundEnterPinView:UIView!
     @IBOutlet weak var backgroundReEnterPinView:UIView!
-    
     @IBOutlet weak var enterPintxt:UITextField!
     @IBOutlet weak var reEnterPintxt:UITextField!
-    
-    @IBOutlet weak var nextRef:UIButton!
-    
+    @IBOutlet weak var continueRef:UIButton!
     @IBOutlet weak var btneye1:UIButton!
     @IBOutlet weak var btneye2:UIButton!
     var iconClick = true
@@ -55,6 +52,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         self.title = "Create Password"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        //Keyboard Done Option
+        enterPintxt.addDoneButtonKeybord()
+        reEnterPintxt.addDoneButtonKeybord()
         
         setUpGradientBackground()
         setUpNavBarStyle()
@@ -69,16 +69,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         
         backgroundEnterPinView.layer.cornerRadius = 10
         backgroundReEnterPinView.layer.cornerRadius = 10
-        nextRef.layer.cornerRadius = 6
-        
-        if isLightMode {
-            enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-            reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        }else {
-            enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-            reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        }
-        
+        continueRef.layer.cornerRadius = 6
+        enterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
+        reEnterPintxt.attributedPlaceholder = NSAttributedString(string:"Eg.0089", attributes:[NSAttributedString.Key.foregroundColor: isLightMode ? UIColor.darkGray : UIColor.lightGray])
         enterPintxt.delegate = self
         reEnterPintxt.delegate = self
         enterPintxt.isSecureTextEntry = true
@@ -143,6 +136,14 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
                 return textField.resignFirstResponder()
             }
         }
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789")
+        // Iterate through each character in the replacement string
+        for char in string.unicodeScalars {
+            if !allowedCharacterSet.contains(Unicode.Scalar(char.value)!) {
+                // If the character is not in the allowed character set, disallow it
+                return false
+            }
+        }
         return true
     }
     
@@ -155,36 +156,18 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         view.endEditing(true)
     }
     
-    @IBAction func NextAction(sender:UIButton){
-        var a = false
-        var b = false
-        var c = false
-        if enterPintxt.text?.count == 4 {
-            c = true
-        }else {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
+    @IBAction func continueAction(sender:UIButton){
+        guard let pin = enterPintxt.text,
+              let confirmPin = reEnterPintxt.text else {
+            return
         }
-        
-        if enterPintxt.text! == reEnterPintxt.text! {
-            a = true
-        } else {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
-        }
-        if(enterPintxt.text! == "" || reEnterPintxt.text! == "") {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message3) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-            })
-        } else {
-            b = true
-        }
-        if a == true && b == true && c == true {
-            UserDefaultsData.BChatPassword = reEnterPintxt.text!
+        if pin.count == 4 && pin == confirmPin {
+            SaveUserDefaultsData.BChatPassword = reEnterPintxt.text!
             if navigationflowTag == false {
                 let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoveryVC") as! RecoveryVC
                 self.navigationController?.pushViewController(vc, animated: true)
             }else{
-                UserDefaults.standard[.isUsingFullAPNs] = (selectedOptionView == apnsOptionView)
+                UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
                 let homeVC = HomeVC()
                 navigationController!.setViewControllers([ homeVC ], animated: true)
@@ -192,8 +175,21 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
                 syncTokensJob.uploadOnlyIfStale = false
                 let _: Promise<Void> = syncTokensJob.run()
             }
+        } else {
+            if (enterPintxt.text! == "" || reEnterPintxt.text! == "") {
+                _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message3) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                })
+            }else {
+                if enterPintxt.text!.count < 4 {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                }
+                else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                }
+            }
         }
     }
-    
     
 }

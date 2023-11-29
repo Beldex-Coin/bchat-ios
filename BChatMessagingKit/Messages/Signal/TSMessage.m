@@ -198,8 +198,13 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
         [result addObjectsFromArray:self.quotedMessage.thumbnailAttachmentStreamIds];
     }
 
-    if (self.linkPreview.imageAttachmentId) {
-        [result addObject:self.linkPreview.imageAttachmentId];
+    NSString *className = NSStringFromClass([self.linkPreview class]);
+    if ([className isEqualToString:@"OWSUnknownDBObject"]) {
+        
+    } else {
+        if (self.linkPreview.imageAttachmentId) {
+            [result addObject:self.linkPreview.imageAttachmentId];
+        }
     }
 
     return [result copy];
@@ -355,14 +360,14 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
     } else if (attachmentDescription.length > 0) {
         return attachmentDescription;
     } else if (self.openGroupInvitationName != nil) {
-        return @"😎 Social group invitation";
+        return @"Social group invitation";
     } else if (self.paymentTxnid != nil) {
         if (self.paymentAmount != nil) {
             NSString *str = self.paymentAmount;
             str = [str stringByAppendingString: @" BDX Received"];
             return str;
         }else {
-            return @"😎 Payment";
+            return @"Payment";
         }
     } else {
         // TODO: We should do better here.

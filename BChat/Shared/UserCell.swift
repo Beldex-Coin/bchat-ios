@@ -18,7 +18,7 @@ final class UserCell : UITableViewCell {
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -52,7 +52,7 @@ final class UserCell : UITableViewCell {
 
     private func setUpViewHierarchy() {
         // Background color
-        backgroundColor = Colors.cellBackground2
+        backgroundColor = Colors.cellBackgroundColor
         // Highlight color
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = .clear // Disabled for now

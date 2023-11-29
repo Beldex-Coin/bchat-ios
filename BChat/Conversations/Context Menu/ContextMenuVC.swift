@@ -22,7 +22,7 @@ final class ContextMenuVC : UIViewController {
         let result = UILabel()
         let date = viewItem.interaction.dateForUI()
         result.text = DateUtil.formatDate(forDisplay: date)
-        result.font = .systemFont(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         result.textColor = isLightMode ? .black : .white
         return result
     }()

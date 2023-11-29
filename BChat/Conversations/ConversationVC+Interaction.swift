@@ -25,6 +25,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     @objc func openSettings() {
+        snInputView.resignFirstResponder()
         let settingsVC = OWSConversationSettingsViewController()
         settingsVC.configure(with: thread, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
@@ -37,15 +38,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // to scroll to the last row instead.
         let indexPath = IndexPath(row: viewItems.count - 1, section: 0)
         unreadViewItems.removeAll()
-        messagesTableView.scrollToRow(at: indexPath, at: .top, animated: true)
+        messagesTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        
     }
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
         let contact: Contact = Storage.shared.getContact(with: publicKey)!
         if contact.isBlocked {
+            guard !showBlockedModalIfNeeded() else { return }
         }else{
             guard BChatCall.isEnabled else { return }
             if SSKPreferences.areCallsEnabled {
@@ -277,14 +281,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             return present(modal, animated: true, completion: nil)
         }
         
-        //Sreekanth Developed.
+        //john Developed.
         let spaceCount = text.reduce(0) { $1.isWhitespace && !$1.isNewline ? $0 + 1 : $0 }
         // I have develop word count 4096 perpose logic
         if spaceCount < 0 {
             
         }else{
             if text.count == 4096 || text.count > 4096 {
-                self.showToast22(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
             }else {
                 let thread = self.thread
                 
@@ -358,14 +362,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //            self.longtextmesg(text:text)
 //        }else {
 //            if text.count == 4096 || text.count > 4096 {
-//                self.showToast22(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+//                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
 //            }else {
 //                self.longtextmesg(text:text)
 //            }
 //        }
 //    }
     
-    //Sreekanth Dev
 //    func longtextmesg(text:String,hasPermissionToSendSeed: Bool = false) {
 //        let thread = self.thread
 //        guard !text.isEmpty else { return }
@@ -891,7 +894,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 title = String(format: NSLocalizedString("Report & Delete", comment: ""), viewItem.interaction.thread.name())
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
-                // self.showToast22(message: "Report send", seconds: 1.0)
+                // self.showToastMsg(message: "Report send", seconds: 1.0)
                 let uiAlert = UIAlertController(title: "Report & Delete", message: "This message will be forwarded to the BChat Team & will be deleted.", preferredStyle: UIAlertController.Style.alert)
                 self.present(uiAlert, animated: true, completion: nil)
                 uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
@@ -1041,8 +1044,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         reply(viewItem)
     }
     
-    func showUserDetails(for bchatuserID: String) {
-        let userDetailsSheet = UserDetailsSheet(for: bchatuserID)
+    func showUserDetails(for bchatID: String) {
+        let userDetailsSheet = UserDetailsSheet(for: bchatID)
         userDetailsSheet.modalPresentationStyle = .overFullScreen
         userDetailsSheet.modalTransitionStyle = .crossDissolve
         present(userDetailsSheet, animated: true, completion: nil)
@@ -1237,8 +1240,8 @@ extension ConversationVC {
         // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
         // (it'll be updated with correct profile info if they accept the message request so this
         // shouldn't cause weird behaviours)
-        let bchatuserId: String = contactThread.contactBChatID()
-        let contact: Contact = (Storage.shared.getContact(with: bchatuserId) ?? Contact(bchatID: bchatuserId))
+        let bchatId: String = contactThread.contactBChatID()
+        let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
         
         guard !contact.isApproved else { return Promise.value(()) }
         
@@ -1350,7 +1353,7 @@ extension ConversationVC {
             
         })
         Cancel.setValue(UIColor.lightGray, forKey: "titleTextColor")
-        Accept.setValue(Colors.bchat_button_clr, forKey: "titleTextColor")
+        Accept.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
         alert.addAction(Accept)
         DispatchQueue.main.async(execute: {
             self.present(alert, animated: true)
@@ -1371,9 +1374,9 @@ extension ConversationVC {
                     
                     // Update the contact
                     if let contactThread: TSContactThread = self?.thread as? TSContactThread {
-                        let bchatuserId: String = contactThread.contactBChatID()
+                        let bchatId: String = contactThread.contactBChatID()
                         
-                        if let contact: Contact = Storage.shared.getContact(with: bchatuserId) {
+                        if let contact: Contact = Storage.shared.getContact(with: bchatId) {
                             // Stop observing the `BlockListDidChange` notification (we are about to pop the screen
                             // so showing the banner just looks buggy)
                             if let strongSelf = self {

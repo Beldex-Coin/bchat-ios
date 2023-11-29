@@ -273,7 +273,7 @@ extension GlobalSearchViewController {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         
         let container = UIView()
         container.backgroundColor = Colors.cellBackground
@@ -285,7 +285,7 @@ extension GlobalSearchViewController {
             let clearButton = UIButton()
             clearButton.setTitle("Clear", for: .normal)
             clearButton.setTitleColor(Colors.text, for: UIControl.State.normal)
-            clearButton.titleLabel!.font = .boldSystemFont(ofSize: Values.smallFontSize)
+            clearButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
             clearButton.addTarget(self, action: #selector(clearRecentSearchResults), for: .touchUpInside)
             container.addSubview(clearButton)
             clearButton.autoPinTrailingToSuperviewMargin()

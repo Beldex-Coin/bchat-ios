@@ -46,7 +46,7 @@ public final class VoiceMessageView : UIView {
     private lazy var countdownLabel: UILabel = {
         let result = UILabel()
         result.textColor = .black
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = "0:00"
         return result
     }()
@@ -54,7 +54,7 @@ public final class VoiceMessageView : UIView {
     private lazy var speedUpLabel: UILabel = {
         let result = UILabel()
         result.textColor = .black
-        result.font = .systemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.alpha = 0
         result.text = "1.5x"
         result.textAlignment = .center

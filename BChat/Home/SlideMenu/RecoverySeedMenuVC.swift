@@ -2,81 +2,72 @@
 
 import UIKit
 
-class RecoverySeedMenuVC: BaseVC, UITextFieldDelegate {
+class RecoverySeedMenuVC: UIViewController {
     
+    @IBOutlet weak var copyref:UIButton!
+    @IBOutlet weak var backgroundView:UIView!
+    @IBOutlet weak var lblname:UILabel!
+    @IBOutlet weak var copyimg:UIImageView!
+    @IBOutlet weak var backgroundCopyView:UIView!
+    @IBOutlet weak var lblcopy:UILabel!
     
-    @IBOutlet weak var contentlbl1:UILabel!
-    @IBOutlet weak var contentlbl2:UILabel!
-    @IBOutlet weak var contentlbl3:UILabel!
-    @IBOutlet weak var contentlbl4:UILabel!
+    private let mnemonic: String = {
+        let identityManager = OWSIdentityManager.shared()
+        let databaseConnection = identityManager.value(forKey: "dbConnection") as! YapDatabaseConnection
+        var hexEncodedSeed: String! = databaseConnection.object(forKey: "BeldexSeed", inCollection: OWSPrimaryStorageIdentityKeyStoreCollection) as! String?
+        if hexEncodedSeed == nil {
+            hexEncodedSeed = identityManager.identityKeyPair()!.hexEncodedPrivateKey // Legacy account
+        }
+        return Mnemonic.encode(hexEncodedString: hexEncodedSeed)
+    }()
     
-    @IBOutlet weak var nextRef:UIButton!
+    @objc private func enableCopyButton() {
+        copyref.isUserInteractionEnabled = true
+        UIView.transition(with: copyref, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.copyref.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
+        }, completion: nil)
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        setUpGradientBackground()
-        setUpNavBarStyle()
-        nextRef.layer.cornerRadius = 6
         
-        self.contentlbl1.text = "IMPORTANT"
-        self.contentlbl2.text = "Never share your seed with anyone!"
-        self.contentlbl3.text = "Your seed can be used to restore your account. Never share it with anyone or store a digital copy of it. Never enter your seed in any other website or application other than BChat or the Beldex official wallet."
-        self.contentlbl4.text = "Check your surroundings and ensure no one is overlooking. Do you want to proceed?"
-        nextRef.setTitle("Yes, I'm Safe.", for: .normal)
+        self.title = "Seed"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        backgroundView.layer.cornerRadius = 10
+        self.lblname.text = mnemonic
+        lblname.textColor = Colors.bchatButtonColor
+        lblname.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        lblname.numberOfLines = 0
+        lblname.lineBreakMode = .byWordWrapping
+        lblname.textAlignment = .center
+        
+        copyref.layer.cornerRadius = 6
+        backgroundCopyView.layer.cornerRadius = 6
+        
+        lblcopy.isHidden = true
+        copyref.setTitle("Copy", for: .normal)
+        
+        let logoName2 = isLightMode ? "copy-dark" : "copy_white"
+        copyimg.image = UIImage(named: logoName2)!
+        
+        UserDefaults.standard[.hasViewedSeed] = true
+        NotificationCenter.default.post(name: .seedViewed, object: nil)
         
     }
-    //MARK:- UITextFieldDelegate
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength = 4
-        let currentString: NSString = textField.text! as NSString
-        let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-        
-        if newString.length == maxLength {
-            textField.text = textField.text! + string
-            textField.resignFirstResponder()
-        }
-        return newString.length <= maxLength
-    }
-    
     // MARK: - Navigation
-    @IBAction func NextAction(sender:UIButton){
-        SwiftAlertView.show(title: "BChat",message: "Enter your password to view your seed. Write it down on paper.", buttonTitles: "Cancel", "Ok") { alertView in
-            alertView.addTextField { textField in
-                textField.attributedPlaceholder = NSAttributedString(string: "Please Enter Password", attributes: [.foregroundColor: UIColor.gray])
-                textField.isSecureTextEntry = true
-                textField.keyboardType = .numberPad
-            }
-            alertView.isEnabledValidationLabel = true
-            alertView.isDismissOnActionButtonClicked = false
-            alertView.style = .dark
-        }
-        .onActionButtonClicked { alert, buttonIndex in
-            let username = alert.textField(at: 0)?.text ?? ""
-            var a = false
-            if UserDefaultsData.BChatPassword == username {
-                a = true
-            }
-            else {
-                alert.validationLabel.text = "Password Do Not Match"
-            }
-            if a == true {
-                alert.dismiss()
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoverySeedMenuVC2") as! RecoverySeedMenuVC2
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-        .onTextChanged { _, text, index in
-            if index == 0 {
-                print("Username text changed: ", text ?? "")
-            }
-        }
+    
+    @IBAction func copyAction(sender:UIButton){
+        UIPasteboard.general.string = mnemonic
+        copyref.isUserInteractionEnabled = false
+        UIView.transition(with: copyref, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.copyref.setTitle(NSLocalizedString("copied", comment: ""), for: UIControl.State.normal)
+        }, completion: nil)
+        Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(enableCopyButton), userInfo: nil, repeats: false)
     }
+    
     
 }

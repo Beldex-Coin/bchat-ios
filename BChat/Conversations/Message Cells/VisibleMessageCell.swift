@@ -75,7 +75,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     private lazy var authorLabel: UILabel = {
         let result = UILabel()
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         return result
     }()
     
@@ -295,7 +295,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateHeader(for viewItem: ConversationViewItem) {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
-        dateBreakLabel.font = .boldSystemFont(ofSize: Values.verySmallFontSize)
+        dateBreakLabel.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
         dateBreakLabel.textColor = Colors.text
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
@@ -368,7 +368,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 // Body text view
                 let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self)
                 self.bodyTextView = bodyTextView
-                print("----full data Incomming and Outgoing msgs----> \(bodyTextView)")
                 stackView.addArrangedSubview(bodyTextView)
                 // Constraints
                 snContentView.addSubview(stackView)
@@ -730,7 +729,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isEditable = false
         let attributes: [NSAttributedString.Key:Any] = [
             .foregroundColor : textColor,
-            .font : UIFont.systemFont(ofSize: getFontSize(for: viewItem))
+            .font : Fonts.OpenSans(ofSize: getFontSize(for: viewItem))
         ]
         let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: message.body ?? "", isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
         result.attributedText = attributedText

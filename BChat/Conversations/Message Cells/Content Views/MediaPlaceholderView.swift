@@ -48,7 +48,7 @@ final class MediaPlaceholderView : UIView {
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.text = "Tap to download \(attachmentDescription)"
         titleLabel.textColor = textColor
-        titleLabel.font = .systemFont(ofSize: Values.mediumFontSize)
+        titleLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         // Stack view
         let stackView = UIStackView(arrangedSubviews: [ imageView, titleLabel ])
         stackView.axis = .horizontal

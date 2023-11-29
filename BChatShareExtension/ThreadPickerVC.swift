@@ -26,7 +26,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         let titleLabel: UILabel = UILabel()
         titleLabel.text = "vc_share_title".localized()
         titleLabel.textColor = Colors.text
-        titleLabel.font = .boldSystemFont(ofSize: Values.veryLargeFontSize)
+        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
         
         return titleLabel
     }()

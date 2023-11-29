@@ -145,8 +145,8 @@ public final class SearchResultsBar : UIView {
     
     private lazy var label: UILabel = {
         let result = UILabel()
-        result.text = "Test"
-        result.font = .boldSystemFont(ofSize: Values.smallFontSize)
+        result.text = ""
+        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
         return result
     }()
