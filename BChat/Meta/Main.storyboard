@@ -1517,7 +1517,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan a user's QR code to start a Bchat. QR Code can be found by tapping the QR code icon in account settngs" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i4E-yI-yAP">
-                                <rect key="frame" x="33" y="477" width="362" height="33"/>
+                                <rect key="frame" x="33" y="527" width="362" height="33"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
@@ -1529,6 +1529,20 @@
                                     <constraint firstAttribute="height" constant="300" id="QtX-1W-gRm"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qoC-qn-nJF">
+                                <rect key="frame" x="114" y="452" width="200" height="45"/>
+                                <color key="backgroundColor" name="bchat_button_clr"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="nt7-Io-UMD"/>
+                                    <constraint firstAttribute="height" constant="45" id="pFM-3c-wlY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="18"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Upload from photos"/>
+                                <connections>
+                                    <action selector="selectImageButtonActionWithSender:" destination="heR-FS-4lT" eventType="touchUpInside" id="eat-bc-XKs"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="bchat_storyboard_clr"/>
                         <constraints>
@@ -1537,11 +1551,14 @@
                             <constraint firstAttribute="trailing" secondItem="i4E-yI-yAP" secondAttribute="trailing" constant="33" id="D1l-PP-m2u"/>
                             <constraint firstAttribute="trailing" secondItem="X6E-Uc-BFu" secondAttribute="trailing" constant="20" id="YtM-k9-Aq0"/>
                             <constraint firstItem="X6E-Uc-BFu" firstAttribute="top" secondItem="gQu-30-J7s" secondAttribute="bottom" constant="75" id="cpj-l2-0e2"/>
-                            <constraint firstItem="i4E-yI-yAP" firstAttribute="top" secondItem="X6E-Uc-BFu" secondAttribute="bottom" constant="55" id="jmM-qR-ITx"/>
+                            <constraint firstItem="i4E-yI-yAP" firstAttribute="top" secondItem="qoC-qn-nJF" secondAttribute="bottom" constant="30" id="gvD-5b-ieS"/>
+                            <constraint firstItem="qoC-qn-nJF" firstAttribute="centerX" secondItem="X6E-Uc-BFu" secondAttribute="centerX" id="kMi-hm-UKg"/>
+                            <constraint firstItem="qoC-qn-nJF" firstAttribute="top" secondItem="X6E-Uc-BFu" secondAttribute="bottom" constant="30" id="lbK-BJ-MTL"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="scannerView" destination="X6E-Uc-BFu" id="388-1h-5wQ"/>
+                        <outlet property="selectImageButton" destination="qoC-qn-nJF" id="IPE-jf-k9u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyU-h4-vbH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2063,6 +2080,93 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVU-0x-DSf">
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eiP-Fc-zEu">
+                                        <rect key="frame" x="12" y="299.33333333333337" width="404" height="267.33333333333337"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Profile Picture" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="9" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8v2-by-NEf">
+                                                <rect key="frame" x="130.66666666666669" y="36" width="142.66666666666669" height="27.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="20"/>
+                                                <color key="textColor" name="bchat_lbl_name"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lNk-d5-OPA">
+                                                <rect key="frame" x="364" y="20" width="20" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="OWs-JU-jEx"/>
+                                                    <constraint firstAttribute="width" constant="20" id="iBa-Sz-50s"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="X"/>
+                                                <connections>
+                                                    <action selector="btnCloseActionWithSender:" destination="a9i-j3-bUZ" eventType="touchUpInside" id="1WJ-oT-Oo6"/>
+                                                </connections>
+                                            </button>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kvj-zF-y6c">
+                                                <rect key="frame" x="162" y="85.333333333333371" width="80" height="80"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="80" id="0RD-4t-YZZ"/>
+                                                    <constraint firstAttribute="height" constant="80" id="h0I-YQ-MPc"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="GkU-Ck-V2k">
+                                                <rect key="frame" x="22" y="201.33333333333337" width="360" height="50"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3oo-52-cpD">
+                                                        <rect key="frame" x="0.0" y="0.0" width="162" height="50"/>
+                                                        <color key="backgroundColor" name="SyncingPopColor"/>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="16"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Remove Picture">
+                                                            <color key="titleColor" name="bchat_lbl_name"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="btnRemovePictureActionWithSender:" destination="a9i-j3-bUZ" eventType="touchUpInside" id="Qtx-lY-Qmn"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TGJ-mB-rvI">
+                                                        <rect key="frame" x="198" y="0.0" width="162" height="50"/>
+                                                        <color key="backgroundColor" name="bchat_button_clr"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="yEO-oG-Lo1"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Medium" family="Open Sans" pointSize="16"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Upload">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="btnUploadActionWithSender:" destination="a9i-j3-bUZ" eventType="touchUpInside" id="rOW-Zs-Y4X"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="bchat_view_bg_clr"/>
+                                        <constraints>
+                                            <constraint firstItem="GkU-Ck-V2k" firstAttribute="top" secondItem="Kvj-zF-y6c" secondAttribute="bottom" constant="36" id="6eh-oi-0BC"/>
+                                            <constraint firstItem="lNk-d5-OPA" firstAttribute="top" secondItem="eiP-Fc-zEu" secondAttribute="top" constant="20" id="FKr-Ts-Ppa"/>
+                                            <constraint firstItem="8v2-by-NEf" firstAttribute="centerX" secondItem="eiP-Fc-zEu" secondAttribute="centerX" id="FN8-d8-w8j"/>
+                                            <constraint firstAttribute="trailing" secondItem="lNk-d5-OPA" secondAttribute="trailing" constant="20" id="GFL-Xq-dsH"/>
+                                            <constraint firstItem="Kvj-zF-y6c" firstAttribute="centerX" secondItem="8v2-by-NEf" secondAttribute="centerX" id="I9v-dP-4WV"/>
+                                            <constraint firstItem="8v2-by-NEf" firstAttribute="top" secondItem="eiP-Fc-zEu" secondAttribute="top" constant="36" id="KiK-Br-mhm"/>
+                                            <constraint firstItem="Kvj-zF-y6c" firstAttribute="top" secondItem="8v2-by-NEf" secondAttribute="bottom" constant="22" id="TPr-VB-rq5"/>
+                                            <constraint firstAttribute="bottom" secondItem="GkU-Ck-V2k" secondAttribute="bottom" constant="16" id="mgR-Pi-y5G"/>
+                                            <constraint firstItem="GkU-Ck-V2k" firstAttribute="leading" secondItem="eiP-Fc-zEu" secondAttribute="leading" constant="22" id="tvu-1x-thJ"/>
+                                            <constraint firstAttribute="trailing" secondItem="GkU-Ck-V2k" secondAttribute="trailing" constant="22" id="v9W-m8-9a3"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="bchat_custom"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="eiP-Fc-zEu" secondAttribute="trailing" constant="12" id="Hx2-HW-oSI"/>
+                                    <constraint firstItem="eiP-Fc-zEu" firstAttribute="centerX" secondItem="dVU-0x-DSf" secondAttribute="centerX" id="MAk-NU-eCw"/>
+                                    <constraint firstItem="eiP-Fc-zEu" firstAttribute="leading" secondItem="dVU-0x-DSf" secondAttribute="leading" constant="12" id="Ogn-Y5-QnF"/>
+                                    <constraint firstItem="eiP-Fc-zEu" firstAttribute="centerY" secondItem="dVU-0x-DSf" secondAttribute="centerY" constant="-30" id="meW-dQ-Q0Z"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" name="bchat_storyboard_clr"/>
                         <constraints>
@@ -2075,17 +2179,27 @@
                             <constraint firstItem="Ntt-o2-kYc" firstAttribute="leading" secondItem="t7e-7Q-LjZ" secondAttribute="leading" constant="12" id="faA-Sp-FJN"/>
                             <constraint firstAttribute="trailing" secondItem="Fq5-YV-kQG" secondAttribute="trailing" constant="12" id="hcu-6B-PI6"/>
                             <constraint firstItem="h9c-nc-nuj" firstAttribute="leading" secondItem="t7e-7Q-LjZ" secondAttribute="leading" constant="10" id="igL-vN-rIV"/>
+                            <constraint firstItem="dVU-0x-DSf" firstAttribute="top" secondItem="t7e-7Q-LjZ" secondAttribute="top" id="rdR-hG-g5l"/>
                             <constraint firstAttribute="trailing" secondItem="Ntt-o2-kYc" secondAttribute="trailing" constant="12" id="s0N-8i-wOX"/>
+                            <constraint firstAttribute="trailing" secondItem="dVU-0x-DSf" secondAttribute="trailing" id="vm7-HI-rug"/>
+                            <constraint firstAttribute="bottom" secondItem="dVU-0x-DSf" secondAttribute="bottom" id="xOk-9E-O7R"/>
+                            <constraint firstItem="dVU-0x-DSf" firstAttribute="leading" secondItem="t7e-7Q-LjZ" secondAttribute="leading" id="zfX-kh-dWY"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="beldexaddressLabel" destination="Kcb-ZU-Ywx" id="t6u-hg-h95"/>
+                        <outlet property="btnCloseProfile" destination="lNk-d5-OPA" id="yo9-6B-AzI"/>
+                        <outlet property="btnRemovePicture" destination="3oo-52-cpD" id="rvG-DH-a9T"/>
+                        <outlet property="btnUpload" destination="TGJ-mB-rvI" id="WnY-zK-ak9"/>
                         <outlet property="collectionView" destination="h9c-nc-nuj" id="XdP-HX-j95"/>
                         <outlet property="displayNameTextField" destination="RSQ-gj-LWA" id="hWj-IY-V1H"/>
                         <outlet property="editProfilepiclogoimg" destination="6DR-FM-MyA" id="AqA-Wf-qJn"/>
                         <outlet property="first_view" destination="Ntt-o2-kYc" id="KJq-KK-yT3"/>
+                        <outlet property="innerProfileImageView" destination="Kvj-zF-y6c" id="TnA-cu-l2d"/>
+                        <outlet property="innerProfileView" destination="eiP-Fc-zEu" id="1Kz-6s-z2L"/>
                         <outlet property="myBtn" destination="MW0-Dj-F61" id="DDe-Hf-snl"/>
                         <outlet property="myBtn2" destination="X9r-VE-r68" id="R1O-OJ-XWQ"/>
+                        <outlet property="outerProfileView" destination="dVU-0x-DSf" id="fSf-9Q-GvM"/>
                         <outlet property="profilePictureView" destination="hnR-qw-5Sv" id="dho-cd-Abe"/>
                         <outlet property="publicKeyLabel" destination="15U-ED-dTB" id="dfN-2R-Bw7"/>
                         <outlet property="qrCodeImageView" destination="Z0U-m0-Wga" id="bGU-fK-wwP"/>
@@ -2097,7 +2211,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W7S-zF-8EN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="244" y="3432"/>
+            <point key="canvasLocation" x="243.92523364485979" y="3431.5334773218146"/>
         </scene>
         <!--DisplayB ChatI DsVC-->
         <scene sceneID="vUW-sq-J4c">
