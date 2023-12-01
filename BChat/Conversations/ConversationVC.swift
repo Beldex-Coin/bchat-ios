@@ -2,13 +2,15 @@ import BChatUIKit
 import BChatMessagingKit
 import UIKit
 import SVGKit
-
+import PromiseKit
+import BChatUtilitiesKit
+import NVActivityIndicatorView
 // TODO:
 // • Slight paging glitch when scrolling up and loading more content
 // • Photo rounding (the small corners don't have the correct rounding)
 // • Remaining search glitchiness
 
-final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate {
+final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
     let thread: TSThread
     let threadStartedAsMessageRequest: Bool
     let focusedMessageID: String? // This is used for global search
@@ -124,9 +126,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         return result
     }()
-    
-    lazy var snInputView: InputView = InputView(delegate: self)
-    
+        
     lazy var unreadCountView: UIView = {
         let result = UIView()
         result.backgroundColor = Colors.text.withAlphaComponent(Values.veryLowOpacity)
@@ -301,6 +301,226 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return theImageView
     }()
     
+    private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
+    private var isSyncingUI = false {
+        didSet {
+            guard oldValue != isSyncingUI else { return }
+            if isSyncingUI {
+                RunLoop.main.add(timer, forMode: .common)
+            } else {
+                timer.invalidate()
+            }
+        }
+    }
+    private lazy var timer: Timer = {
+        Timer.init(timeInterval: 0.5, repeats: true) { [weak self] (_) in
+            guard let `self` = self else { return }
+            self.updateSyncingProgress()
+        }
+    }()
+    
+    lazy var snInputView: InputView = InputView(delegate: self, thread: thread)
+    
+    // MARK: Slide left and Right swipe
+    lazy var customizeSlideToOpen: MTSlideToOpenView = {
+        let slide = MTSlideToOpenView(frame: CGRect(x: 60, y: UIScreen.main.bounds.height/2.8, width: 250, height: 50))
+        slide.sliderViewTopDistance = 0
+        slide.thumbnailViewTopDistance = 4;
+        slide.thumbnailViewStartingDistance = 4;
+        slide.sliderCornerRadius = 28
+        slide.thumnailImageView.backgroundColor = .green
+        slide.draggedView.backgroundColor = .clear
+        slide.delegate = self
+        slide.thumnailImageView.image = #imageLiteral(resourceName: "beldeximg").imageFlippedForRightToLeftLayoutDirection()
+        slide.sliderBackgroundColor = .darkGray
+        return slide
+    }()
+    var finalWalletAddress = ""
+    var finalWalletAmount = ""
+    var wallet: BDXWallet?
+    var mainbalance = ""
+    private var currentBlockChainHeight: UInt64 = 0
+    private var daemonBlockChainHeight: UInt64 = 0
+    lazy var conncetingState = { return Observable<Bool>(false) }()
+    private var needSynchronized = false {
+        didSet {
+            guard needSynchronized, !oldValue,
+                  let wallet = WalletSharedData.sharedInstance.wallet else { return }
+            wallet.saveOnTerminate()
+        }
+    }
+    var backAPI = false
+    var hashArray = [RecipientDomainSchema]()
+    var recipientAddressON = false
+    var isdaemonHeight : Int64 = 0
+    
+    private lazy var isPaymentDetailsView: UIView = {
+        let result = UIView()
+        result.backgroundColor = UIColor.black // Set your desired background color
+        result.layer.cornerRadius = 8
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.modalBackground
+        result.layer.masksToBounds = false
+        return result
+    }()
+    
+    private lazy var nestedStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var nestedView1: UIView = {
+        let view = UIView()
+        view.backgroundColor = .blue
+        view.layer.cornerRadius = 6
+        view.backgroundColor = Colors.bchatStoryboardColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var nestedView2: UIView = {
+        let view = UIView()
+        view.backgroundColor = .green
+        view.layer.cornerRadius = 6
+        view.backgroundColor = Colors.bchatStoryboardColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var nestedView3: UIView = {
+        let view = UIView()
+        view.backgroundColor = .orange
+        view.layer.cornerRadius = 6
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var inChatPaymentTitlelabel: UILabel = {
+        let label = UILabel()
+        label.text = "In-Chat Payment"
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var inChatPaymentAmountlabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.bchatLabelNameColor
+        label.textAlignment = .left
+        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var inChatPaymentAddresslabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var inChatPaymentFeelabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Cancel", for: .normal)
+        button.backgroundColor = .red
+        button.layer.cornerRadius = 6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        if isDarkMode {
+            button.backgroundColor = Colors.buttonBackground
+        }else {
+            button.backgroundColor = UIColor.lightGray
+        }
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var okButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Ok", for: .normal)
+        button.backgroundColor = .green
+        button.layer.cornerRadius = 6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
+        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.addTarget(self, action: #selector(inChatPaymentOkButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var isSuccessPopView: UIView = {
+        let result = UIView()
+        result.backgroundColor = UIColor.black // Set your desired background color
+        result.layer.cornerRadius = 8
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.modalBackground
+        result.layer.masksToBounds = false
+        return result
+    }()
+    
+    private lazy var isSuccesstitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Transaction Initiated Successfully"
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var successImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "selected_blue_circle")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private lazy var isOkActionButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Ok", for: .normal)
+        button.backgroundColor = .green
+        button.layer.cornerRadius = 6
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
+        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.addTarget(self, action: #selector(isSuccessPopTappedButton), for: .touchUpInside)
+        return button
+    }()
+    
+    private let loading = NVActivityIndicatorView(frame: .zero, type: .ballSpinFadeLoader, color: isLightMode ? .black : .white , padding: 0)
+    private func configureLoading() {
+        loading.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(loading)
+        NSLayoutConstraint.activate([
+            loading.widthAnchor.constraint(equalToConstant: 40),
+            loading.heightAnchor.constraint(equalToConstant: 40),
+            loading.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loading.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Gradient
@@ -325,6 +545,114 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.addSubview(scrollButton)
         view.addSubview(messageRequestView)
         
+        isPaymentDetailsView.isHidden = true
+        view.addSubview(isPaymentDetailsView)
+        // Add constraints to center the isPaymentFeeValueView and set its size
+        NSLayoutConstraint.activate([
+            isPaymentDetailsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            isPaymentDetailsView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -75),
+            isPaymentDetailsView.widthAnchor.constraint(equalToConstant: 350),
+            isPaymentDetailsView.heightAnchor.constraint(equalToConstant: 300)
+        ])
+        // Add nested stack view to isPaymentFeeValueView
+        isPaymentDetailsView.addSubview(nestedStackView)
+        // Add nested views to the nested stack view
+        nestedStackView.addArrangedSubview(inChatPaymentTitlelabel)
+        nestedStackView.addArrangedSubview(nestedView1)
+        nestedStackView.addArrangedSubview(nestedView2)
+        nestedStackView.addArrangedSubview(nestedView3)
+        // Add constraints for the nested stack view
+        NSLayoutConstraint.activate([
+            nestedStackView.topAnchor.constraint(equalTo: isPaymentDetailsView.topAnchor, constant: 20),
+            nestedStackView.leadingAnchor.constraint(equalTo: isPaymentDetailsView.leadingAnchor, constant: 20),
+            nestedStackView.trailingAnchor.constraint(equalTo: isPaymentDetailsView.trailingAnchor, constant: -20),
+            nestedStackView.bottomAnchor.constraint(equalTo: isPaymentDetailsView.bottomAnchor, constant: -20)
+        ])
+        // Add equal height constraints for the nested views
+        NSLayoutConstraint.activate([
+            nestedView1.heightAnchor.constraint(equalTo: nestedView3.heightAnchor),
+            //nestedView2.heightAnchor.constraint(equalTo: nestedView3.heightAnchor)
+        ])
+        // Adjust the height of nestedView2
+        NSLayoutConstraint.activate([
+            nestedView2.heightAnchor.constraint(equalToConstant: 120) // Adjust the height based on your preference
+        ])
+        // Add Cancel and OK buttons to nestedView3
+        nestedView3.addSubview(cancelButton)
+        nestedView3.addSubview(okButton)
+        // Center the buttons horizontally
+        NSLayoutConstraint.activate([
+            cancelButton.widthAnchor.constraint(equalToConstant: 120),
+            cancelButton.heightAnchor.constraint(equalToConstant: 35),
+            okButton.widthAnchor.constraint(equalToConstant: 120),
+            okButton.heightAnchor.constraint(equalToConstant: 35),
+            cancelButton.trailingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: -15),
+            okButton.leadingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: +15),
+            cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
+            okButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor)
+        ])
+        // Add the UILabel to nestedView1
+        nestedView1.addSubview(inChatPaymentAmountlabel)
+        // Add constraints for the UILabel
+        NSLayoutConstraint.activate([
+            inChatPaymentAmountlabel.centerXAnchor.constraint(equalTo: nestedView1.centerXAnchor),
+            inChatPaymentAmountlabel.centerYAnchor.constraint(equalTo: nestedView1.centerYAnchor)
+        ])
+        // Create a vertical stack view for the labels
+        let labelsStackView = UIStackView(arrangedSubviews: [inChatPaymentAddresslabel, inChatPaymentFeelabel])
+        labelsStackView.axis = .vertical
+        labelsStackView.spacing = 10 // Set the spacing between labels
+        labelsStackView.translatesAutoresizingMaskIntoConstraints = false
+        // Add the stack view to nestedView2
+        nestedView2.addSubview(labelsStackView)
+        // Add constraints for the stack view
+        NSLayoutConstraint.activate([
+            labelsStackView.topAnchor.constraint(equalTo: nestedView2.topAnchor, constant: 5), // Adjust the top spacing
+            labelsStackView.leadingAnchor.constraint(equalTo: nestedView2.leadingAnchor, constant: 10), // Adjust the leading spacing
+            labelsStackView.trailingAnchor.constraint(equalTo: nestedView2.trailingAnchor, constant: -10), // Adjust the trailing spacing
+            labelsStackView.bottomAnchor.constraint(equalTo: nestedView2.bottomAnchor, constant: -10) // Adjust the bottom spacing
+        ])
+        
+        isSuccessPopView.isHidden = true
+        // Add subviews to isSuccessView
+        isSuccessPopView.addSubview(isSuccesstitleLabel)
+        isSuccessPopView.addSubview(successImageView)
+        isSuccessPopView.addSubview(isOkActionButton)
+        
+        // Add constraints for the subviews inside isSuccessView
+        NSLayoutConstraint.activate([
+            isSuccesstitleLabel.topAnchor.constraint(equalTo: isSuccessPopView.topAnchor, constant: 10),
+            isSuccesstitleLabel.centerXAnchor.constraint(equalTo: isSuccessPopView.centerXAnchor),
+            successImageView.topAnchor.constraint(equalTo: isSuccesstitleLabel.bottomAnchor, constant: 10),
+            successImageView.centerXAnchor.constraint(equalTo: isSuccessPopView.centerXAnchor),
+            successImageView.widthAnchor.constraint(equalToConstant: 50), // Adjust width as needed
+            successImageView.heightAnchor.constraint(equalToConstant: 50),
+            isOkActionButton.topAnchor.constraint(equalTo: successImageView.bottomAnchor, constant: 10),
+            isOkActionButton.centerXAnchor.constraint(equalTo: isSuccessPopView.centerXAnchor),
+            isOkActionButton.bottomAnchor.constraint(equalTo: isSuccessPopView.bottomAnchor, constant: -10),
+            isOkActionButton.widthAnchor.constraint(equalToConstant: 120),
+            isOkActionButton.heightAnchor.constraint(equalToConstant: 35)
+        ])
+        
+        // Add isSuccessView to the main view
+        view.addSubview(isSuccessPopView)
+        
+        // Add constraints to center the isSuccessView and set its size
+        NSLayoutConstraint.activate([
+            isSuccessPopView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            isSuccessPopView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -75),
+            isSuccessPopView.widthAnchor.constraint(equalToConstant: 350),
+            isSuccessPopView.heightAnchor.constraint(equalToConstant: 165)
+        ])
+        
+        configureLoading()
+        
+        customizeSlideToOpen.isHidden = true
+        view.addSubview(customizeSlideToOpen)
+        isSyncingUI = true
+        //Save Receipent Address fun developed In Local
+        self.saveReceipeinetAddressOnAndOff()
+                
         messageRequestView.addSubview(messageRequestDescriptionLabel)
         messageRequestView.addSubview(messageRequestAcceptButton)
         messageRequestView.addSubview(messageRequestDeleteButton)
@@ -387,9 +715,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             // BeldexAddress view in Conversation Page (Get from DB)
             if contact?.beldexAddress != nil {
                 let belexAddress = contact?.beldexAddress
+                finalWalletAddress = belexAddress!
                 print("--belexAddress in conversation VCbelexAddress---> \(belexAddress!)")
-            }else {
-                print("--belexAddress in conversation VCbelexAddress else--")
             }
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
@@ -439,6 +766,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         didFinishInitialLayout = true
         markAllAsRead()
         recoverInputView()
+        if backAPI == true{
+            customizeSlideToOpen.isHidden = true
+            if WalletSharedData.sharedInstance.wallet != nil {
+                connect(wallet: WalletSharedData.sharedInstance.wallet!)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -446,6 +779,15 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let text = snInputView.text
         Storage.write { transaction in
             self.thread.setDraft(text, transaction: transaction)
+        }
+        self.backAPI = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        customizeSlideToOpen.isHidden = true
+        self.saveReceipeinetAddressOnAndOff()
+        if backAPI == true{
+            loading.startAnimating()
         }
     }
     
@@ -462,6 +804,243 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    private func synchronizedUI() {
+        
+    }
+    
+    @objc private func cancelButtonTapped() {
+        // Handle cancel button tap
+        print("Cancel button tapped!")
+        isPaymentDetailsView.isHidden = true
+        isSuccessPopView.isHidden = true
+        loading.stopAnimating()
+    }
+    
+    @objc private func inChatPaymentOkButtonTapped() {
+        // Handle ok button tap
+        print("OK button tapped!")
+        isPaymentDetailsView.isHidden = true
+        
+        loading.startAnimating()
+        var txid = self.wallet!.txid()
+        let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
+        if commitPendingTransaction == true {
+            //Save Receipent Address fun developed In Local
+            if recipientAddressON == true {
+                if !UserDefaults.standard.domainSchemas.isEmpty {
+                    hashArray = UserDefaults.standard.domainSchemas
+                    hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
+                    UserDefaults.standard.domainSchemas = hashArray
+                }else {
+                    hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
+                    UserDefaults.standard.domainSchemas = hashArray
+                }
+            }
+            
+            loading.stopAnimating()
+            isSuccessPopView.isHidden = false
+            
+            //Message and BDX display
+            let thread = self.thread
+            let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+            let message: VisibleMessage = VisibleMessage()
+            message.payment = VisibleMessage.Payment(txnId: txid, amount: finalWalletAmount)
+            message.sentTimestamp = sentTimestamp
+            // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
+            // use it to determine if the user is creating a new thread and update the 'isApproved'
+            // flags appropriately
+            let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
+            let linkPreviewDraft = snInputView.linkPreviewInfo?.draft
+            let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+            let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
+                for: self.thread,
+                isNewThread: !oldThreadShouldBeVisible,
+                timestamp: (sentTimestamp - 1)  // Set 1ms earlier as this is used for sorting
+            )
+            .map { [weak self] _ in
+                self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
+                Storage.write(with: { transaction in
+                    message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
+                }, completion: { [weak self] in
+                    tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
+                    Storage.shared.write(
+                        with: { transaction in
+                            tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
+                        },
+                        completion: { [weak self] in
+                            // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
+                            // the height of the new message cell
+                            self?.scrollToBottom(isAnimated: false)
+                        }
+                    )
+                    Storage.shared.write { transaction in
+                        MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
+                    }
+                    self?.handleMessageSent()
+                })
+            }
+            // Show an error indicating that approving the thread failed
+            promise.catch(on: DispatchQueue.main) { [weak self] _ in
+                let alert = UIAlertController(title: "BChat", message: "An error occurred when trying to accept this message request", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self?.present(alert, animated: true, completion: nil)
+            }
+            promise.retainUntilComplete()
+        }
+    }
+    
+    @objc func isSuccessPopTappedButton() {
+        // Handle button tap action
+        isPaymentDetailsView.isHidden = true
+        isSuccessPopView.isHidden = true
+    }
+    
+    private func updateSyncingProgress() {
+        taskQueue.async {
+            let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+            guard total != current else { return }
+            let difference = total!.subtractingReportingOverflow(current!)
+            var progress = CGFloat(current!) / CGFloat(total!)
+            let leftBlocks: String
+            if difference.overflow || difference.partialValue <= 1 {
+                leftBlocks = "1"
+                progress = 1
+            } else {
+                leftBlocks = String(difference.partialValue)
+            }
+            if difference.overflow || difference.partialValue <= 1500 {
+                self.timer.invalidate()
+            }
+            let largeNumber = Int(leftBlocks)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .decimal
+            numberFormatter.groupingSize = 3
+            numberFormatter.secondaryGroupingSize = 2
+            let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
+            let statusText = "\(formattedNumber!)" + " Blocks Remaining"
+            DispatchQueue.main.async {
+                print("----->",statusText)
+            }
+        }
+    }
+    
+    func saveReceipeinetAddressOnAndOff(){
+        if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
+            recipientAddressON = true
+        } else {
+            recipientAddressON = false
+        }
+    }
+    
+    // MARK: MTSlideToOpenDelegate Slide left and Right swipe
+    func mtSlideToOpenDelegateDidFinish(_ sender: MTSlideToOpenView) {
+        if SSKPreferences.arePayAsYouChatEnabled {
+            customizeSlideToOpen.isHidden = true
+            let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
+            self.finalWalletAmount = text
+            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+            vc.isSendConversionWalletVC = true
+            vc.wallet = WalletSharedData.sharedInstance.wallet
+            vc.finalWalletAddress = self.finalWalletAddress
+            vc.finalWalletAmount = self.finalWalletAmount
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else {
+            let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
+            alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+                let privacySettingsVC = PrivacySettingsTableViewController()
+                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+            }))
+            alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            present(alertView, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: Pay BDX Sending
+    func handlePaySendButtonTapped() {
+        if WalletSharedData.sharedInstance.wallet != nil {
+            let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+            let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+            if blockChainHeight == daemonBlockChainHeight {
+                customizeSlideToOpen.isHidden = true
+                
+                let balance = WalletSharedData.sharedInstance.wallet!.balance
+                let unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
+                let message = """
+                    Balance: \(balance)
+                    Unlocked Balance: \(unlockBalance)
+                    Wallet: 100%
+                """
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.alignment = .left
+                let attributes: [NSAttributedString.Key: Any] = [
+                    .paragraphStyle: paragraphStyle,
+                    .font: UIFont.systemFont(ofSize: 13) // Set your desired font size
+                ]
+                let attributedMessage = NSAttributedString(
+                    string: message,
+                    attributes: attributes
+                )
+                let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                alert.setValue(attributedMessage, forKey: "attributedMessage")
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+            }else {
+                self.showToastMsg(message: "Wallet is syncing...Please wait untill syncing", seconds: 1.5)
+            }
+            print("Height-->",blockChainHeight,daemonBlockChainHeight)
+        }else {
+            
+        }
+    }
+    
+    // Wallet BDX Send Amount Func
+    func connect(wallet: BDXWallet) {
+        wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
+            guard let `self` = self else { return }
+            if isConnected {
+                if let wallet = self.wallet {
+                    if SaveUserDefaultsData.WalletRestoreHeight == "" {
+                        let lastElementHeight = DateHeight.getBlockHeight.last
+                        let height = lastElementHeight!.components(separatedBy: ":")
+                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
+                        wallet.restoreHeight = UInt64("\(height[1])")!
+                    }else {
+                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
+                    }
+                    wallet.start()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.connect(wallet: self.wallet!)
+                }
+            }
+        }
+        let createPendingTransaction = wallet.createPendingTransaction(self.finalWalletAddress, paymentId: "", amount: self.finalWalletAmount)
+        if createPendingTransaction == true {
+            let fee = wallet.feevalue()
+            let feeValue = BChatWalletWrapper.displayAmount(fee)
+            print("fee--Value--->",feeValue)
+            isPaymentDetailsView.isHidden = false
+            inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
+            inChatPaymentAddresslabel.text = "Address : \(finalWalletAddress)"
+            inChatPaymentFeelabel.text = "Fee : \(feeValue)"
+            loading.stopAnimating()
+        }else {
+            loading.stopAnimating()
+            let errMsg = wallet.commitPendingTransactionError()
+            let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
+            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+                self.navigationController?.popViewController(animated: true)
+            })
+            alert.addAction(okayAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     
     // MARK: Table View Data Source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -957,4 +1536,138 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             focusedMessageIndexPath = indexPath
         }
     }
+}
+extension ConversationVC: BeldexWalletDelegate {
+    func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
+        print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
+        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+        isdaemonHeight = Int64(wallet.blockChainHeight)
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            if wallet.isSynchronized == true {
+                self.isSyncingUI = false
+            }
+        }
+        if self.needSynchronized {
+            self.needSynchronized = !wallet.save()
+        }
+        taskQueue.async {
+            guard let wallet = self.wallet else { return }
+            let (balance, history) = (wallet.balance, wallet.history)
+            self.postData(balance: balance, history: history)
+        }
+        if daemonBlockChainHeight != 0 {
+            let difference = wallet.daemonBlockChainHeight.subtractingReportingOverflow(daemonBlockChainHeight)
+            guard !difference.overflow else { return }
+        }
+        DispatchQueue.main.async {
+            if self.conncetingState.value {
+                self.conncetingState.value = false
+            }
+            if wallet.isSynchronized {
+                self.synchronizedUI()
+            }
+        }
+    }
+    func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
+        self.currentBlockChainHeight = currentHeight
+        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+        isdaemonHeight = Int64(wallet.daemonBlockChainHeight)
+        self.needSynchronized = true
+        self.isSyncingUI = true
+    }
+    private func postData(balance: String, history: TransactionHistory) {
+        let balance_modify = Helper.displayDigitsAmount(balance)
+        self.mainbalance = balance_modify
+        DispatchQueue.main.async {
+        }
+    }
+}
+
+extension ConversationVC {
+    fileprivate func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
+        guard let contactThread: TSContactThread = thread as? TSContactThread else { return Promise.value(()) }
+        // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
+        // (it'll be updated with correct profile info if they accept the message request so this
+        // shouldn't cause weird behaviours)
+        let bchatId: String = contactThread.contactBChatID()
+        let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
+        guard !contact.isApproved else { return Promise.value(()) }
+        return Promise.value(())
+            .then { [weak self] _ -> Promise<Void> in
+                guard !isNewThread else { return Promise.value(()) }
+                guard let strongSelf = self else { return Promise(error: MessageSender.Error.noThread) }
+                // If we aren't creating a new thread (ie. sending a message request) then send a
+                // messageRequestResponse back to the sender (this allows the sender to know that
+                // they have been approved and can now use this contact in closed groups)
+                let (promise, seal) = Promise<Void>.pending()
+                let messageRequestResponse: MessageRequestResponse = MessageRequestResponse(
+                    isApproved: true
+                )
+                messageRequestResponse.sentTimestamp = timestamp
+                // Show a loading indicator
+                ModalActivityIndicatorViewController.present(fromViewController: strongSelf, canCancel: false) { _ in
+                    seal.fulfill(())
+                }
+                return promise
+                    .then { _ -> Promise<Void> in
+                        let (promise, seal) = Promise<Void>.pending()
+                        Storage.writeSync { transaction in
+                            MessageSender.sendNonDurably(messageRequestResponse, in: contactThread, using: transaction)
+                                .done { seal.fulfill(()) }
+                                .catch { _ in seal.fulfill(()) } // Fulfill even if this failed; the configuration in the swarm should be at most 2 days old
+                                .retainUntilComplete()
+                        }
+                        
+                        return promise
+                    }
+                    .map { _ in
+                        if self?.presentedViewController is ModalActivityIndicatorViewController {
+                            self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                        }
+                    }
+            }
+            .map { _ in
+                // Default 'didApproveMe' to true for the person approving the message request
+                Storage.write { transaction in
+                    contact.isApproved = true
+                    contact.didApproveMe = (contact.didApproveMe || !isNewThread)
+                    Storage.shared.setContact(contact, using: transaction)
+                }
+                // Send a sync message with the details of the contact
+                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                // Hide the 'messageRequestView' since the request has been approved and force a config
+                // sync to propagate the contact approval state (both must run on the main thread)
+                DispatchQueue.main.async { [weak self] in
+                    let messageRequestViewWasVisible: Bool = (self?.messageRequestView.isHidden == false)
+                    UIView.animate(withDuration: 0.3) {
+                        self?.messageRequestView.isHidden = true
+                        self?.scrollButtonMessageRequestsBottomConstraint?.isActive = false
+                        self?.scrollButtonBottomConstraint?.isActive = true
+                        
+                        // Update the table content inset and offset to account for the dissapearance of
+                        // the messageRequestsView
+                        if messageRequestViewWasVisible {
+                            let messageRequestsOffset: CGFloat = ((self?.messageRequestView.bounds.height ?? 0) + 16)
+                            let oldContentInset: UIEdgeInsets = (self?.messagesTableView.contentInset ?? UIEdgeInsets.zero)
+                            self?.messagesTableView.contentInset = UIEdgeInsets(
+                                top: 0,
+                                leading: 0,
+                                bottom: max(oldContentInset.bottom - messageRequestsOffset, 0),
+                                trailing: 0
+                            )
+                        }
+                    }
+                    // Update UI
+                    self?.updateNavBarButtons()
+                    if let viewControllers: [UIViewController] = self?.navigationController?.viewControllers,
+                       let messageRequestsIndex = viewControllers.firstIndex(where: { $0 is MessageRequestsViewController }),
+                       messageRequestsIndex > 0 {
+                        var newViewControllers = viewControllers
+                        newViewControllers.remove(at: messageRequestsIndex)
+                        self?.navigationController?.setViewControllers(newViewControllers, animated: false)
+                    }
+                }
+            }
+    }
+
 }

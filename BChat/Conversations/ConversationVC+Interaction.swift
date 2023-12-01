@@ -526,6 +526,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
+        if newText != "" && newText.isNumeric == true {
+//            customizeSlideToOpen.isHidden = false
+            if WalletSharedData.sharedInstance.wallet != nil {
+                let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+                let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+                if blockChainHeight == daemonBlockChainHeight {
+                    customizeSlideToOpen.isHidden = false
+                }else {
+                    customizeSlideToOpen.isHidden = true
+                }
+                print("Height-->",blockChainHeight,daemonBlockChainHeight)
+            }
+        }else {
+            customizeSlideToOpen.isHidden = true
+        }
         updateMentions(for: newText)
     }
 

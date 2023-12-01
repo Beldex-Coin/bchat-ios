@@ -7,7 +7,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         case textOnly
         case none
     }
-    
+    let thread: TSThread
     private weak var delegate: InputViewDelegate?
     var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool)? { didSet { handleQuoteDraftChanged() } }
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
@@ -42,6 +42,13 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let result = InputViewButton(icon: #imageLiteral(resourceName: "Microphone"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
+        return result
+    }()
+    
+    private lazy var payAsChatButton: InputViewButton = {
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self)
+        result.accessibilityLabel = NSLocalizedString("", comment: "")
+        result.accessibilityHint = NSLocalizedString("", comment: "")
         return result
     }()
     
@@ -100,11 +107,17 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private static let linkPreviewViewInset: CGFloat = 6
     
     // MARK: Lifecycle
-    init(delegate: InputViewDelegate) {
+    init(delegate: InputViewDelegate,thread: TSThread) {
         self.delegate = delegate
+        self.thread = thread
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
+    
+    // MARK: Lifecycle
+//    init(thread: TSThread, focusedMessageID: String? = nil) {
+//        self.thread = thread
+//    }
     
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
@@ -132,7 +145,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: sendButton) ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), container(for: sendButton) ])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
         bottomStackView.alignment = .center
@@ -166,6 +179,22 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Voice message button
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
+        
+        payAsChatButton.isHidden = true
+        if let contactThread: TSContactThread = thread as? TSContactThread {
+            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                if contact.beldexAddress != nil {
+                    print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
+                    if SSKPreferences.areWalletEnabled {
+                        payAsChatButton.isHidden = false
+                    }
+                }
+            }else {
+                print("NotApproved message BeldexAddress-> ")
+                payAsChatButton.isHidden = true
+            }
+        }
+        
     }
     
     // MARK: Updating
@@ -179,6 +208,12 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageButtonContainer.isHidden = hasText
         autoGenerateLinkPreviewIfPossible()
         delegate?.inputTextViewDidChangeContent(inputTextView)
+    
+//        if hasText == true && text.isNumeric == true {
+//            payAsChatButton.isUserInteractionEnabled = true
+//        }else {
+//            payAsChatButton.isUserInteractionEnabled = false
+//        }
     }
     
     func didPasteImageFromPasteboard(_ inputTextView: InputTextView, image: UIImage) {
@@ -308,7 +343,11 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
-        if inputViewButton == sendButton { delegate?.handleSendButtonTapped() }
+        if inputViewButton == sendButton {
+            delegate?.handleSendButtonTapped()
+        }else if inputViewButton == payAsChatButton {
+            delegate?.handlePaySendButtonTapped()
+        }
     }
 
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
@@ -415,8 +454,16 @@ protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, Voic
 
     func showLinkPreviewSuggestionModal()
     func handleSendButtonTapped()
+    func handlePaySendButtonTapped()
     func handleQuoteViewCancelButtonTapped()
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
     func didPasteImageFromPasteboard(_ image: UIImage)
+}
+extension String {
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        let nums: Set<Character> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+        return Set(self).isSubset(of: nums)
+    }
 }

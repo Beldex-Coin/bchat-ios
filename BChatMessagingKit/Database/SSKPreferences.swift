@@ -51,6 +51,19 @@ public class SSKPreferences: NSObject {
         }
     }
     
+    // MARK: - Bool for Pay As U Chat
+    private static let arePayAsYouChatEnabledKey = "arePayAsYouChatEnabled"
+    
+    @objc
+    public static var arePayAsYouChatEnabled: Bool {
+        get {
+            return getBool(key: arePayAsYouChatEnabledKey, defaultValue: false)
+        }
+        set {
+            setBool(newValue, key: arePayAsYouChatEnabledKey)
+        }
+    }
+    
     @objc
     public static var isCallKitSupported: Bool {
         let userLocale = NSLocale.current

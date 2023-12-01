@@ -174,12 +174,14 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.fetchMarketsData(false)
         }
         //MARK:- Wallet Ref
-        init_syncing_wallet()
+        
         if WalletSharedData.sharedInstance.wallet != nil {
             if self.wallet == nil {
                 isSyncingUI = true
                 syncingIsFromDelegateMethod = false
             }
+        }else {
+            init_syncing_wallet()
         }
         // Selected Currency Code Implement
         if backAPISelectedCurrency == true {
