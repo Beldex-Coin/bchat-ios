@@ -323,7 +323,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {
-        let slide = MTSlideToOpenView(frame: CGRect(x: 60, y: UIScreen.main.bounds.height/2.8, width: 250, height: 50))
+        let slide = MTSlideToOpenView(frame: CGRect(x: 60, y: UIScreen.main.bounds.height/1.4, width: 250, height: 50))
         slide.sliderViewTopDistance = 0
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
@@ -335,6 +335,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         slide.sliderBackgroundColor = .darkGray
         return slide
     }()
+    private var SelectedDecimal = ""
+    var newSlidePositionY = 0.0
     var finalWalletAddress = ""
     var finalWalletAmount = ""
     var wallet: BDXWallet?
@@ -353,6 +355,15 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var hashArray = [RecipientDomainSchema]()
     var recipientAddressON = false
     var isdaemonHeight : Int64 = 0
+    
+    private lazy var HiddenView: UIView = {
+        let result = UIView()
+        result.layer.cornerRadius = 8
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = .clear
+        result.layer.masksToBounds = false
+        return result
+    }()
     
     private lazy var isPaymentDetailsView: UIView = {
         let result = UIView()
@@ -508,17 +519,61 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return button
     }()
     
-    private let loading = NVActivityIndicatorView(frame: .zero, type: .ballSpinFadeLoader, color: isLightMode ? .black : .white , padding: 0)
-    private func configureLoading() {
-        loading.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(loading)
-        NSLayoutConstraint.activate([
-            loading.widthAnchor.constraint(equalToConstant: 40),
-            loading.heightAnchor.constraint(equalToConstant: 40),
-            loading.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            loading.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ])
-    }
+    private lazy var initiatingTransactionPopView: UIView = {
+        let result = UIView()
+        result.backgroundColor = UIColor.black // Set your desired background color
+        result.layer.cornerRadius = 8
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.modalBackground
+        result.layer.masksToBounds = false
+        return result
+    }()
+    
+    private lazy var isinitiatingTransactionTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Initiating Transaction..."
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var isinitiatingTransactionSubLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Please don't close this window or attend calls or navigate to another app until the transaction gets initiated."
+        label.textColor = Colors.bchatLabelNameColor
+        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var isinitiatingTransactiongifimageView: UIImageView = {
+        let theImageView = UIImageView()
+        theImageView.set(.width, to: 45)
+        theImageView.set(.height, to: 45)
+        theImageView.layer.masksToBounds = true
+        theImageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        if isLightMode {
+            do {
+                let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
+                theImageView.image = UIImage.gif(data: imageData)
+            } catch {
+                print(error)
+            }
+        }else {
+            do {
+                let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
+                theImageView.image = UIImage.gif(data: imageData)
+            } catch {
+                print(error)
+            }
+        }
+        theImageView.translatesAutoresizingMaskIntoConstraints = false
+        return theImageView
+    }()
     
     
     override func viewDidLoad() {
@@ -545,8 +600,45 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.addSubview(scrollButton)
         view.addSubview(messageRequestView)
         
-        isPaymentDetailsView.isHidden = true
-        view.addSubview(isPaymentDetailsView)
+        // Add your HiddenView to the main view
+        HiddenView.isHidden = true
+        view.addSubview(HiddenView)
+        // Set up constraints for HiddenView
+        NSLayoutConstraint.activate([
+            HiddenView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            HiddenView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            HiddenView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            HiddenView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+        
+        initiatingTransactionPopView.isHidden = true
+        view.addSubview(initiatingTransactionPopView)
+        initiatingTransactionPopView.addSubview(isinitiatingTransactionTitleLabel)
+        initiatingTransactionPopView.addSubview(isinitiatingTransactionSubLabel)
+        initiatingTransactionPopView.addSubview(isinitiatingTransactiongifimageView)
+        NSLayoutConstraint.activate([
+            isinitiatingTransactionTitleLabel.topAnchor.constraint(equalTo: initiatingTransactionPopView.topAnchor, constant: 10),
+            isinitiatingTransactionTitleLabel.centerXAnchor.constraint(equalTo: initiatingTransactionPopView.centerXAnchor),
+            isinitiatingTransactionSubLabel.topAnchor.constraint(equalTo: isinitiatingTransactionTitleLabel.bottomAnchor, constant: 10),
+            isinitiatingTransactionSubLabel.centerXAnchor.constraint(equalTo: initiatingTransactionPopView.centerXAnchor),
+            isinitiatingTransactionSubLabel.leadingAnchor.constraint(equalTo: initiatingTransactionPopView.leadingAnchor, constant: 10),
+            isinitiatingTransactionSubLabel.trailingAnchor.constraint(equalTo: initiatingTransactionPopView.trailingAnchor, constant: -10),
+            isinitiatingTransactiongifimageView.topAnchor.constraint(equalTo: isinitiatingTransactionSubLabel.bottomAnchor, constant: 10),
+            isinitiatingTransactiongifimageView.centerXAnchor.constraint(equalTo: initiatingTransactionPopView.centerXAnchor),
+            isinitiatingTransactiongifimageView.bottomAnchor.constraint(equalTo: initiatingTransactionPopView.bottomAnchor, constant: -10),
+            isinitiatingTransactiongifimageView.widthAnchor.constraint(equalToConstant: 120),
+            isinitiatingTransactiongifimageView.heightAnchor.constraint(equalToConstant: 45)
+        ])
+        NSLayoutConstraint.activate([
+            initiatingTransactionPopView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            initiatingTransactionPopView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -75),
+            initiatingTransactionPopView.widthAnchor.constraint(equalToConstant: 350),
+            initiatingTransactionPopView.heightAnchor.constraint(equalToConstant: 175)
+        ])
+        
+//        isPaymentDetailsView.isHidden = true
+        HiddenView.addSubview(isPaymentDetailsView)
+//        view.addSubview(isPaymentDetailsView)
         // Add constraints to center the isPaymentFeeValueView and set its size
         NSLayoutConstraint.activate([
             isPaymentDetailsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -645,10 +737,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             isSuccessPopView.heightAnchor.constraint(equalToConstant: 165)
         ])
         
-        configureLoading()
-        
         customizeSlideToOpen.isHidden = true
         view.addSubview(customizeSlideToOpen)
+        newSlidePositionY = UIScreen.main.bounds.height/1.4
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         isSyncingUI = true
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
@@ -773,7 +865,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if WalletSharedData.sharedInstance.wallet != nil {
                 connect(wallet: WalletSharedData.sharedInstance.wallet!)
             }
+            if HiddenView.isHidden == false{
+                navigationController?.navigationBar.isHidden = true
+                snInputView.isUserInteractionEnabled = false
+            }else {
+                navigationController?.navigationBar.isHidden = false
+                snInputView.isUserInteractionEnabled = true
+            }
         }
+        newSlidePositionY = UIScreen.main.bounds.height/1.4
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -794,7 +895,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         self.saveReceipeinetAddressOnAndOff()
         if backAPI == true{
-            loading.startAnimating()
+            initiatingTransactionPopView.isHidden = false
         }
     }
     
@@ -818,18 +919,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc private func cancelButtonTapped() {
         // Handle cancel button tap
+        navigationController?.navigationBar.isHidden = false
+        snInputView.isUserInteractionEnabled = true
         print("Cancel button tapped!")
-        isPaymentDetailsView.isHidden = true
+        HiddenView.isHidden = true
         isSuccessPopView.isHidden = true
-        loading.stopAnimating()
+        initiatingTransactionPopView.isHidden = true
     }
     
     @objc private func inChatPaymentOkButtonTapped() {
         // Handle ok button tap
         print("OK button tapped!")
-        isPaymentDetailsView.isHidden = true
-        
-        loading.startAnimating()
+        HiddenView.isHidden = true
+        initiatingTransactionPopView.isHidden = true
         var txid = self.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
@@ -845,7 +947,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 }
             }
             
-            loading.stopAnimating()
+            initiatingTransactionPopView.isHidden = true
             isSuccessPopView.isHidden = false
             
             //Message and BDX display
@@ -895,11 +997,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
             promise.retainUntilComplete()
         }
+        snInputView.isUserInteractionEnabled = true
+        navigationController?.navigationBar.isHidden = false
     }
     
     @objc func isSuccessPopTappedButton() {
         // Handle button tap action
-        isPaymentDetailsView.isHidden = true
+        HiddenView.isHidden = true
         isSuccessPopView.isHidden = true
     }
     
@@ -971,40 +1075,82 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Pay BDX Sending
     func handlePaySendButtonTapped() {
-        if WalletSharedData.sharedInstance.wallet != nil {
-            let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
-            let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
-            if blockChainHeight == daemonBlockChainHeight {
-                customizeSlideToOpen.isHidden = true
-                
-                let balance = WalletSharedData.sharedInstance.wallet!.balance
-                let unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
-                let message = """
-                    Balance: \(balance)
-                    Unlocked Balance: \(unlockBalance)
-                    Wallet: 100%
-                """
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.alignment = .left
-                let attributes: [NSAttributedString.Key: Any] = [
-                    .paragraphStyle: paragraphStyle,
-                    .font: UIFont.systemFont(ofSize: 13) // Set your desired font size
-                ]
-                let attributedMessage = NSAttributedString(
-                    string: message,
-                    attributes: attributes
-                )
-                let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                alert.setValue(attributedMessage, forKey: "attributedMessage")
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                
-            }else {
-                self.showToastMsg(message: "Wallet is syncing...Please wait untill syncing", seconds: 1.5)
+        if SSKPreferences.arePayAsYouChatEnabled {
+            if WalletSharedData.sharedInstance.wallet != nil {
+                let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+                let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+                if blockChainHeight == daemonBlockChainHeight {
+                    customizeSlideToOpen.isHidden = true
+                    
+                    var balance = WalletSharedData.sharedInstance.wallet!.balance
+                    var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
+                    
+                    if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
+                        SelectedDecimal = SaveUserDefaultsData.SelectedDecimal
+                        if SelectedDecimal == "4 - Decimal" {
+                            balance = String(format:"%.4f", Double(balance)!)
+                            unlockBalance = String(format:"%.4f", Double(unlockBalance)!)
+                        }else if SelectedDecimal == "3 - Decimal" {
+                            balance = String(format:"%.3f", Double(balance)!)
+                            unlockBalance = String(format:"%.3f", Double(unlockBalance)!)
+                        }else if SelectedDecimal == "2 - Decimal" {
+                            balance = String(format:"%.2f", Double(balance)!)
+                            unlockBalance = String(format:"%.2f", Double(unlockBalance)!)
+                        }else if SelectedDecimal == "0 - Decimal" {
+                            balance = String(format:"%.0f", Double(balance)!)
+                            unlockBalance = String(format:"%.0f", Double(unlockBalance)!)
+                        }
+                    }else {
+                        balance = String(format:"%.4f", Double(balance)!)
+                        unlockBalance = String(format:"%.4f", Double(unlockBalance)!)
+                    }
+                    
+                    
+                    let message = """
+                        Balance: \(balance)
+                        Unlocked Balance: \(unlockBalance)
+                        Wallet: 100%
+                    """
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.alignment = .left
+                    let attributes: [NSAttributedString.Key: Any] = [
+                        .paragraphStyle: paragraphStyle,
+                        .font: UIFont.systemFont(ofSize: 13) // Set your desired font size
+                    ]
+                    let attributedMessage = NSAttributedString(
+                        string: message,
+                        attributes: attributes
+                    )
+                    let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                    alert.setValue(attributedMessage, forKey: "attributedMessage")
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    
+                }else {
+                    if let current = WalletSharedData.sharedInstance.wallet?.blockChainHeight,
+                       let total = WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight,
+                       total > 0 {
+                        let percentage = CGFloat(current) / CGFloat(total)
+                        let formattedPercentage = String(format: "%.2f", percentage * 100)
+                        self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
+                    } else {
+                        // Handle the case where total is 0 or nil
+                        // You can choose to show a different message or take appropriate action
+                    }
+                    //self.showToastMsg(message: "Wallet is syncing...Please wait untill syncing", seconds: 1.5)
+                }
+                print("Height-->",blockChainHeight,daemonBlockChainHeight)
             }
-            print("Height-->",blockChainHeight,daemonBlockChainHeight)
         }else {
-            
+            let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
+            alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+                let privacySettingsVC = PrivacySettingsTableViewController()
+                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+            }))
+            alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            present(alertView, animated: true, completion: nil)
         }
     }
     
@@ -1042,15 +1188,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.customizeSlideToOpen.isHidden = true
             }
             isPaymentDetailsView.isHidden = false
+            HiddenView.isHidden = false
             inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
             inChatPaymentAddresslabel.text = "Address : \(finalWalletAddress)"
             inChatPaymentFeelabel.text = "Fee : \(feeValue)"
-            loading.stopAnimating()
+            initiatingTransactionPopView.isHidden = true
         }else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
-            loading.stopAnimating()
+            initiatingTransactionPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
             let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
             let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
@@ -1135,6 +1282,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
+        newSlidePositionY = UIScreen.main.bounds.height / 2.8
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        
         // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
         // needed for proper calculations, so force an initial layout if it doesn't have a size)
         var hasDoneLayout: Bool = true
@@ -1198,6 +1348,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        
+        newSlidePositionY = UIScreen.main.bounds.height / 1.4
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
         UIView.animate(
             withDuration: duration,

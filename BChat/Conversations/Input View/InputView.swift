@@ -49,8 +49,15 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
+        // Create and add the circular progress view
+        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        result.addSubview(progressView)
         return result
     }()
+    
+    private var progressView: CircularProgressView? {
+        return payAsChatButton.subviews.compactMap { $0 as? CircularProgressView }.first
+    }
     
     private lazy var sendButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
@@ -183,20 +190,40 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
         
         payAsChatButton.isHidden = true
-        if let contactThread: TSContactThread = thread as? TSContactThread {
-            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
-                if contact.beldexAddress != nil {
-                    print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
-                    if SSKPreferences.areWalletEnabled {
-                        payAsChatButton.isHidden = false
+        if SSKPreferences.areWalletEnabled {
+            if let contactThread: TSContactThread = thread as? TSContactThread {
+                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                    if contact.beldexAddress != nil {
+                        print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
+                        if SSKPreferences.areWalletEnabled {
+                            payAsChatButton.isHidden = false
+                        } else {
+                            payAsChatButton.isHidden = true
+                        }
+                    } else {
+                        payAsChatButton.isHidden = true
+                    }
+                } else{
+                    payAsChatButton.isHidden = true
+                }
+            }
+            if SSKPreferences.arePayAsYouChatEnabled {
+                // Show the Circular Progress View
+                progressView?.isHidden = false
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                    let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+                    guard let current = current, let total = total else { return }
+                    // Calculate the percentage completion
+                    let percentage = CGFloat(current) / CGFloat(total)
+                    // Set the progress bar
+                    self.progressView?.setProgress(min(percentage, 1.0))
+                    if percentage >= 1.0 {
+                        timer.invalidate()
+                        self.progressView?.isHidden = false
                     }
                 }
-            }else {
-                print("NotApproved message BeldexAddress-> ")
-                payAsChatButton.isHidden = true
             }
         }
-        
     }
     
     
@@ -217,12 +244,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageButtonContainer.isHidden = hasText
         autoGenerateLinkPreviewIfPossible()
         delegate?.inputTextViewDidChangeContent(inputTextView)
-    
-//        if hasText == true && text.isNumeric == true {
-//            payAsChatButton.isUserInteractionEnabled = true
-//        }else {
-//            payAsChatButton.isUserInteractionEnabled = false
-//        }
     }
     
     func didPasteImageFromPasteboard(_ inputTextView: InputTextView, image: UIImage) {
@@ -477,7 +498,48 @@ protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, Voic
 extension String {
     var isNumeric: Bool {
         guard self.count > 0 else { return false }
-        let nums: Set<Character> = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
-        return Set(self).isSubset(of: nums)
+        // Regular expression pattern for the specified format
+        let pattern = "^[0-9]{0,9}(\\.[0-9]{0,5})?$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: self)
+    }
+}
+
+
+class CircularProgressView: UIView {
+    private var progressLayer = CAShapeLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+
+    private func configure() {
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        let circularPath = UIBezierPath(arcCenter: center, radius: bounds.width / 2, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        // Background layer
+        let backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = circularPath.cgPath
+        backgroundLayer.strokeColor = Colors.bchatPlaceholderColor.cgColor
+        backgroundLayer.lineWidth = 2.2
+        backgroundLayer.fillColor = UIColor.clear.cgColor
+        layer.addSublayer(backgroundLayer)
+        
+        progressLayer.path = circularPath.cgPath
+        progressLayer.strokeColor = Colors.accent.cgColor
+        progressLayer.lineWidth = 2.2
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeEnd = 0.0
+        layer.addSublayer(progressLayer)
+    }
+
+    func setProgress(_ progress: CGFloat) {
+        progressLayer.strokeEnd = progress
     }
 }

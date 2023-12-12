@@ -179,6 +179,8 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             if self.wallet == nil {
                 isSyncingUI = true
                 syncingIsFromDelegateMethod = false
+                self.closeWallet()
+                init_syncing_wallet()
             }
         }else {
             init_syncing_wallet()
@@ -800,39 +802,41 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // MARK: - BackScreen Func
     @objc func backHomeScreen(sender: UIBarButtonItem) {
-        if syncedflag == false {
-            let alert = UIAlertController(title: "Wallet is syncing...", message: "If you close the wallet, synchronization will be paused.Are you sure you want to exit the wallet?", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                
-            })
-            alert.addAction(cancel)
-            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
-                let homeVC = HomeVC()
-                self.navigationController!.setViewControllers([ homeVC ], animated: true)
-            })
-            alert.addAction(exit)
-            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-            DispatchQueue.main.async(execute: {
-                self.present(alert, animated: true)
-            })
-        }else {
-            let alert = UIAlertController(title: "Are you sure you want to exit the wallet?", message: "", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                
-            })
-            alert.addAction(cancel)
-            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
-                let homeVC = HomeVC()
-                self.navigationController!.setViewControllers([ homeVC ], animated: true)
-            })
-            alert.addAction(exit)
-            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-            DispatchQueue.main.async(execute: {
-                self.present(alert, animated: true)
-            })
-        }
+        let homeVC = HomeVC()
+        self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//        if syncedflag == false {
+//            let alert = UIAlertController(title: "Wallet is syncing...", message: "If you close the wallet, synchronization will be paused.Are you sure you want to exit the wallet?", preferredStyle: .alert)
+//            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+//
+//            })
+//            alert.addAction(cancel)
+//            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
+//                let homeVC = HomeVC()
+//                self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//            })
+//            alert.addAction(exit)
+//            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
+//            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
+//            DispatchQueue.main.async(execute: {
+//                self.present(alert, animated: true)
+//            })
+//        }else {
+//            let alert = UIAlertController(title: "Are you sure you want to exit the wallet?", message: "", preferredStyle: .alert)
+//            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+//
+//            })
+//            alert.addAction(cancel)
+//            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
+//                let homeVC = HomeVC()
+//                self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//            })
+//            alert.addAction(exit)
+//            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
+//            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
+//            DispatchQueue.main.async(execute: {
+//                self.present(alert, animated: true)
+//            })
+//        }
     }
     
     // MARK: - Navigation
