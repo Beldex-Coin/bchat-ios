@@ -527,12 +527,25 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
         if newText != "" && newText.isNumeric == true {
-//            customizeSlideToOpen.isHidden = false
             if WalletSharedData.sharedInstance.wallet != nil {
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    customizeSlideToOpen.isHidden = false
+                    if SSKPreferences.areWalletEnabled {
+                        // Here Contact list based on social group and in the secret group chat
+                        if let contactThread: TSContactThread = thread as? TSContactThread {
+                            // is Approved Contacts only without social group and secret group
+                            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
+                                // is Here PayAsYouChat Enable
+                                if SSKPreferences.arePayAsYouChatEnabled {
+                                    customizeSlideToOpen.isHidden = false
+                                }
+                            }
+                            else { // Here social group and secret group chat dis able the Custom Slide
+                                customizeSlideToOpen.isHidden = true
+                            }
+                        }
+                    }
                 }else {
                     customizeSlideToOpen.isHidden = true
                 }

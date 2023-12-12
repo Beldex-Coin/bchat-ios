@@ -15,6 +15,7 @@ final class InputViewButton : UIView {
     
     // MARK: Settings
     static let size = CGFloat(40)
+    static let circularSize = CGFloat(33)
     static let expandedSize = CGFloat(48)
     static let iconSize: CGFloat = 20
     
