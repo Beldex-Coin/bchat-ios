@@ -402,4 +402,5 @@ protocol VoiceMessageRecordingViewDelegate : class {
     func startVoiceMessageRecording()
     func endVoiceMessageRecording()
     func cancelVoiceMessageRecording()
+    func payAsYouChatLongPress()
 }

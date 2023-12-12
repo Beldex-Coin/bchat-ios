@@ -88,7 +88,7 @@ import UIKit
     }
     public var sliderBackgroundColor: UIColor = UIColor(red:0.1, green:0.61, blue:0.84, alpha:0.1) {
         didSet {
-            sliderHolderView.backgroundColor = sliderBackgroundColor
+            sliderHolderView.backgroundColor = Colors.bchatViewBackgroundColor//sliderBackgroundColor
             sliderTextLabel.textColor = sliderBackgroundColor
         }
     }
@@ -216,7 +216,7 @@ import UIKit
         thumnailImageView.backgroundColor = thumbnailColor
         textLabel.text = labelText
         textLabel.font = textFont
-        textLabel.textColor = textColor
+        textLabel.textColor = Colors.accent//textColor
         textLabel.textAlignment = .center
 
         sliderTextLabel.text = labelText
@@ -266,10 +266,12 @@ import UIKit
                 updateThumbnailXPosition(thumbnailViewStartingDistance)
                 return
             }
+            thumnailImageView.transform = CGAffineTransform(rotationAngle: CGFloat(translatedPoint * 2 * .pi / xEndingPoint))
             updateThumbnailXPosition(translatedPoint)
             textLabel.alpha = (xEndingPoint - translatedPoint) / xEndingPoint
             break
         case .ended:
+            thumnailImageView.transform = .identity
             if translatedPoint >= xEndingPoint {
                 textLabel.alpha = 0
                 updateThumbnailXPosition(xEndingPoint)

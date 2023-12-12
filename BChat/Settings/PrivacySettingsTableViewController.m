@@ -254,7 +254,7 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
                         return [SSKPreferences arePayAsYouChatEnabled];
                     }
                     isEnabledBlock:^{
-                        return YES;
+        return [SSKPreferences areWalletEnabled];
                     }
                     target:weakSelf
                     selector:@selector(didTogglePayAsYouChat:)]];
@@ -369,6 +369,8 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
     BOOL enabled = sender.isOn;
     OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
     SSKPreferences.areWalletEnabled = enabled;
+    [self updateTableContents];
+//    [self.tableView reloadData];
     
 }
 

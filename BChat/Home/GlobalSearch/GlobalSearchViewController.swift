@@ -198,6 +198,17 @@ extension GlobalSearchViewController: UISearchBarDelegate {
         guard let searchText = searchBar.text?.ows_stripped() else { return }
         self.searchText = searchText
     }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+           DispatchQueue.main.async {
+               if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
+                   cancelButton.isEnabled = true
+               }
+           }
+           return true
+       }
+
+    
 }
 
 // MARK: - UITableViewDelegate & UITableViewDataSource

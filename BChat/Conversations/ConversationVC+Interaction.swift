@@ -526,13 +526,29 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
-        if newText != "" && newText.isNumeric == true {
+        if newText != "" && newText.isNumeric == true && newText.filter({ $0 == "." }).count <= 1 {
 //            customizeSlideToOpen.isHidden = false
             if WalletSharedData.sharedInstance.wallet != nil {
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    customizeSlideToOpen.isHidden = false
+                    
+                    if let contactThread: TSContactThread = thread as? TSContactThread {
+                        if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                            if contact.beldexAddress != nil {
+                                print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
+                                if SSKPreferences.areWalletEnabled {
+                                    if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
+                                        customizeSlideToOpen.isHidden = false
+                                    }
+                                }
+                            }
+                        }else {
+                            print("NotApproved message BeldexAddress-> ")
+                            customizeSlideToOpen.isHidden = true
+                        }
+                    }
+//                    customizeSlideToOpen.isHidden = false
                 }else {
                     customizeSlideToOpen.isHidden = true
                 }
@@ -673,6 +689,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     confirmDownload()
                 } else {
+                    guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
+                        let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
+                    let albumView = cell.subviews[5]
+                    let albumCheck = gestureRecognizer.location(in: albumView)
+                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                        return
+                    }
                     playOrPauseAudio(for: viewItem)
                 }
             case .mediaMessage:
@@ -686,6 +709,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     guard let albumView = cell.albumView else { return }
                     let locationInCell = gestureRecognizer.location(in: cell)
                     // Figure out which of the media views was tapped
+                    let albumCheck = gestureRecognizer.location(in: albumView)
+                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                        return
+                    }
                     let locationInAlbumView = cell.convert(locationInCell, to: albumView)
                     guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
                     if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
@@ -1103,10 +1130,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioPlayer.playbackRate = 1.5
         viewItem.lastAudioMessageView?.showSpeedUpLabel()
     }
+    
+    
+    func payAsYouChatLongPress() {
+        let payAsYouChatPermissionRequestModal = PayAsYouChatPermissionRequestModal()
+        self.navigationController?.present(payAsYouChatPermissionRequestModal, animated: true, completion: nil)
+    }
+    
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
         // Request permission if needed
+        self.customizeSlideToOpen.isHidden = true
         requestMicrophonePermissionIfNeeded() { [weak self] in
             self?.cancelVoiceMessageRecording()
         }

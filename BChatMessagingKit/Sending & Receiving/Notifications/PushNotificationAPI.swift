@@ -7,8 +7,8 @@ public final class PushNotificationAPI : NSObject {
     // MARK: Settings
     
     // For Testnet
-//    public static let server = "http://notification.beldex.network"
-//    public static let serverPublicKey = "43a22a03097d06b16f7d4da1cf884d8ba0f8acad468f9784e1583a09f8940811"
+//    public static let server = "http://194.233.68.227:1900"
+//    public static let serverPublicKey = "aea4fcf485fb267fa98c5f24b1848a6a865ea8769c2823ac385de051723b5954"
     
    // For Mainnet
     public static let server = "http://notification.rpcnode.stream"

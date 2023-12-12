@@ -180,6 +180,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        
         payAsChatButton.isHidden = true
         if let contactThread: TSContactThread = thread as? TSContactThread {
             if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
@@ -196,6 +198,13 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
         
     }
+    
+    
+    
+    @objc func showPayAsYouChatButton(_ notification: Notification) {
+        payAsChatButton.isHidden = false
+    }
+
     
     // MARK: Updating
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView) {
@@ -351,6 +360,11 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
 
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
+        
+        if inputViewButton == payAsChatButton {
+            delegate?.payAsYouChatLongPress()
+        }
+        
         guard inputViewButton == voiceMessageButton else { return }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
