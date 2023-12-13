@@ -189,7 +189,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
         
-        payAsChatButton.isHidden = true
         if SSKPreferences.areWalletEnabled {
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
@@ -206,6 +205,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                 } else{
                     payAsChatButton.isHidden = true
                 }
+            } else {
+                payAsChatButton.isHidden = true
             }
             if SSKPreferences.arePayAsYouChatEnabled {
                 // Show the Circular Progress View
