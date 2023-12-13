@@ -194,7 +194,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.textColor = Colors.bchatMessageRequestsInfoText
         result.textAlignment = .center
         result.numberOfLines = 3
-        
         return result
     }()
     
@@ -226,7 +225,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             return Colors.bchatHeading.cgColor
         }()
         result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
-        
         return result
     }()
     
@@ -258,7 +256,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             return Colors.destructive.cgColor
         }()
         result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
-        
         return result
     }()
     
@@ -410,6 +407,15 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return view
     }()
     
+    private lazy var beldexImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_sliderImage")
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private lazy var inChatPaymentTitlelabel: UILabel = {
         let label = UILabel()
         label.text = "In-Chat Payment"
@@ -424,13 +430,35 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let label = UILabel()
         label.textColor = Colors.bchatLabelNameColor
         label.textAlignment = .left
-        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var inChatPaymentAddresslabel: UILabel = {
+        let label = PaddingLabel()
+        label.textColor = Colors.bchatLabelNameColor
+        label.layer.cornerRadius = 6
+        label.layer.masksToBounds = true
+        if isDarkMode {
+            label.backgroundColor = Colors.buttonBackground
+        }else {
+            label.backgroundColor = UIColor.lightGray
+        }
+        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.paddingTop = 8
+        label.paddingBottom = 8
+        label.paddingLeft = 8
+        label.paddingRight = 8
+        return label
+    }()
+    
+    private lazy var inChatPaymentAddressTitlelabel: UILabel = {
         let label = UILabel()
+        label.text = "Address :"
         label.textColor = Colors.bchatLabelNameColor
         label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
@@ -451,7 +479,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.backgroundColor = .red
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         if isDarkMode {
@@ -467,7 +494,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Ok", for: .normal)
-        button.backgroundColor = .green
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
@@ -479,7 +505,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     private lazy var isSuccessPopView: UIView = {
         let result = UIView()
-        result.backgroundColor = UIColor.black // Set your desired background color
         result.layer.cornerRadius = 8
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.modalBackground
@@ -509,7 +534,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var isOkActionButton: UIButton = {
         let button = UIButton()
         button.setTitle("Ok", for: .normal)
-        button.backgroundColor = .green
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
@@ -521,7 +545,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     private lazy var initiatingTransactionPopView: UIView = {
         let result = UIView()
-        result.backgroundColor = UIColor.black // Set your desired background color
         result.layer.cornerRadius = 8
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.modalBackground
@@ -644,7 +667,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             isPaymentDetailsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             isPaymentDetailsView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -75),
             isPaymentDetailsView.widthAnchor.constraint(equalToConstant: 350),
-            isPaymentDetailsView.heightAnchor.constraint(equalToConstant: 300)
+            isPaymentDetailsView.heightAnchor.constraint(equalToConstant: 340)
         ])
         // Add nested stack view to isPaymentFeeValueView
         isPaymentDetailsView.addSubview(nestedStackView)
@@ -655,7 +678,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         nestedStackView.addArrangedSubview(nestedView3)
         // Add constraints for the nested stack view
         NSLayoutConstraint.activate([
-            nestedStackView.topAnchor.constraint(equalTo: isPaymentDetailsView.topAnchor, constant: 20),
+            nestedStackView.topAnchor.constraint(equalTo: isPaymentDetailsView.topAnchor, constant: 10),
             nestedStackView.leadingAnchor.constraint(equalTo: isPaymentDetailsView.leadingAnchor, constant: 20),
             nestedStackView.trailingAnchor.constraint(equalTo: isPaymentDetailsView.trailingAnchor, constant: -20),
             nestedStackView.bottomAnchor.constraint(equalTo: isPaymentDetailsView.bottomAnchor, constant: -20)
@@ -667,7 +690,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         // Adjust the height of nestedView2
         NSLayoutConstraint.activate([
-            nestedView2.heightAnchor.constraint(equalToConstant: 120) // Adjust the height based on your preference
+            nestedView2.heightAnchor.constraint(equalToConstant: 130) // Adjust the height based on your preference
         ])
         // Add Cancel and OK buttons to nestedView3
         nestedView3.addSubview(cancelButton)
@@ -683,17 +706,33 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
             okButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor)
         ])
-        // Add the UILabel to nestedView1
-        nestedView1.addSubview(inChatPaymentAmountlabel)
+        
+        // Create a vertical stack view for the labels
+        let labelsStackView2 = UIStackView(arrangedSubviews: [inChatPaymentAmountlabel, beldexImage])
+        labelsStackView2.axis = .horizontal
+        labelsStackView2.spacing = 5 // Set the spacing between labels
+        labelsStackView2.translatesAutoresizingMaskIntoConstraints = false
+        // Add the stack view to nestedView2
+        nestedView1.addSubview(labelsStackView2)
+        // Add constraints for the stack view
+        NSLayoutConstraint.activate([
+            labelsStackView2.topAnchor.constraint(equalTo: nestedView1.topAnchor, constant: 5), // Adjust the top spacing
+            labelsStackView2.leadingAnchor.constraint(equalTo: nestedView1.leadingAnchor, constant: 10), // Adjust the leading spacing
+            labelsStackView2.trailingAnchor.constraint(equalTo: nestedView1.trailingAnchor, constant: -10), // Adjust the trailing spacing
+            labelsStackView2.bottomAnchor.constraint(equalTo: nestedView1.bottomAnchor, constant: -15), // Adjust the bottom spacing
+            beldexImage.widthAnchor.constraint(equalToConstant: 30), // Adjust width as needed
+            beldexImage.heightAnchor.constraint(equalToConstant: 30),
+        ])
+        
         // Add constraints for the UILabel
         NSLayoutConstraint.activate([
             inChatPaymentAmountlabel.centerXAnchor.constraint(equalTo: nestedView1.centerXAnchor),
             inChatPaymentAmountlabel.centerYAnchor.constraint(equalTo: nestedView1.centerYAnchor)
         ])
         // Create a vertical stack view for the labels
-        let labelsStackView = UIStackView(arrangedSubviews: [inChatPaymentAddresslabel, inChatPaymentFeelabel])
+        let labelsStackView = UIStackView(arrangedSubviews: [inChatPaymentAddressTitlelabel, inChatPaymentAddresslabel, inChatPaymentFeelabel])
         labelsStackView.axis = .vertical
-        labelsStackView.spacing = 10 // Set the spacing between labels
+        labelsStackView.spacing = 5 // Set the spacing between labels
         labelsStackView.translatesAutoresizingMaskIntoConstraints = false
         // Add the stack view to nestedView2
         nestedView2.addSubview(labelsStackView)
@@ -702,7 +741,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             labelsStackView.topAnchor.constraint(equalTo: nestedView2.topAnchor, constant: 5), // Adjust the top spacing
             labelsStackView.leadingAnchor.constraint(equalTo: nestedView2.leadingAnchor, constant: 10), // Adjust the leading spacing
             labelsStackView.trailingAnchor.constraint(equalTo: nestedView2.trailingAnchor, constant: -10), // Adjust the trailing spacing
-            labelsStackView.bottomAnchor.constraint(equalTo: nestedView2.bottomAnchor, constant: -10) // Adjust the bottom spacing
+            labelsStackView.bottomAnchor.constraint(equalTo: nestedView2.bottomAnchor, constant: -15) // Adjust the bottom spacing
         ])
         
         isSuccessPopView.isHidden = true
@@ -1183,15 +1222,17 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if createPendingTransaction == true {
             let fee = wallet.feevalue()
             let feeValue = BChatWalletWrapper.displayAmount(fee)
-            print("fee--Value--->",feeValue)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
             isPaymentDetailsView.isHidden = false
             HiddenView.isHidden = false
             inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
-            inChatPaymentAddresslabel.text = "Address : \(finalWalletAddress)"
-            inChatPaymentFeelabel.text = "Fee : \(feeValue)"
+            inChatPaymentAddresslabel.text = "\(finalWalletAddress)"
+            let attributedString = NSMutableAttributedString(string: "Fee : \(feeValue)")
+            let boldRange = (attributedString.string as NSString).range(of: feeValue)
+            attributedString.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: Values.verySmallFontSize), range: boldRange)
+            inChatPaymentFeelabel.attributedText = attributedString
             initiatingTransactionPopView.isHidden = true
         }else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
