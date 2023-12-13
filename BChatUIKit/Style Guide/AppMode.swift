@@ -34,15 +34,16 @@ public final class AppModeManager : NSObject {
         let userDefaults = UserDefaults.standard
         
         guard userDefaults.dictionaryRepresentation().keys.contains("appMode") else {
-            if #available(iOS 13.0, *) {
-                return UITraitCollection.current.userInterfaceStyle == .dark ? .dark : .light
-            }
+//            if #available(iOS 13.0, *) {
+//                return UITraitCollection.current.userInterfaceStyle == .dark ? .dark : .light
+//            }
             
-            return .light
+            return .dark
+//            return .light
         }
         
         let mode = userDefaults.integer(forKey: "appMode")
-        return AppMode(rawValue: mode) ?? .light
+        return AppMode(rawValue: mode) ?? .dark//.light
     }
 }
 

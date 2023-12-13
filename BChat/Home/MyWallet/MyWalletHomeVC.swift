@@ -62,7 +62,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     //MARK:- Wallet References
     //========================================================================================
 //    ,"publicnode5.rpcnode.stream:29095"
-    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"] //["149.102.156.174:19095"]
     var randomNodeValue = ""
     var filteredAllTransactionarray : [TransactionItem] = []
     var filteredOutgoingTransactionarray : [TransactionItem] = []
@@ -452,6 +452,26 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         fromDate = ""
         toDate = ""
         self.backApiRescanVC = false
+        
+        btnAllRef2 = true
+        btnSendRef2 = false
+        btnReceiveRef2 = false
+        self.incomingButton.isSelected = true
+        self.outgoingButton.isSelected = true
+        let checkBox = isLightMode ? "icCheck_box" : "ic_Check_box_white"
+        incomingImageView.image = UIImage(named: checkBox)!
+        outgoingImageView.image = UIImage(named: checkBox)!
+        UserDefaults.standard.setValue(nil, forKey: "btnclicked")
+        
+        
+        self.noTransaction = false
+        self.isFilter = false
+        if let datePickerView = self.txttodate.inputView as? UIDatePicker {
+            datePickerView.minimumDate = nil
+        }
+        filteredAllTransactionarray = []
+        filteredOutgoingTransactionarray = []
+        filteredIncomingTransactionarray = []
     }
     
     override func viewWillAppear(_ animated: Bool) {

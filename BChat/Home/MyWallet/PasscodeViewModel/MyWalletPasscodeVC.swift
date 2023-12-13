@@ -232,6 +232,7 @@ class MyWalletPasscodeVC: BaseVC {
                     VC.finalWalletAddress = self.finalWalletAddress
                     VC.finalWalletAmount = self.finalWalletAmount
                     VC.backAPI = true
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
         }

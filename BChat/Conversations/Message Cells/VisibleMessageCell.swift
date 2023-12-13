@@ -541,6 +541,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard let viewItem = viewItem else { return }
+        var quoteDraftOrNil: OWSQuotedReplyModel?
+        Storage.read { transaction in
+            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+        }
+        guard let quoteDraft = quoteDraftOrNil else { return }
+        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+            return
+        }
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(-CGFloat.greatestFiniteMagnitude, 0)
         switch gestureRecognizer.state {

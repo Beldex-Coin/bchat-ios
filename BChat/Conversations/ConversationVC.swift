@@ -859,7 +859,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         markAllAsRead()
         recoverInputView()
         if backAPI == true{
-            customizeSlideToOpen.isHidden = true
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+            }
             if WalletSharedData.sharedInstance.wallet != nil {
                 connect(wallet: WalletSharedData.sharedInstance.wallet!)
             }
@@ -882,10 +884,15 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.thread.setDraft(text, transaction: transaction)
         }
         self.backAPI = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        customizeSlideToOpen.isHidden = true
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
         self.saveReceipeinetAddressOnAndOff()
         if backAPI == true{
             initiatingTransactionPopView.isHidden = false
@@ -1043,6 +1050,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             customizeSlideToOpen.isHidden = true
             let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
             self.finalWalletAmount = text
+            self.customizeSlideToOpen.resetStateWithAnimation(false)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+            }
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
             vc.isSendConversionWalletVC = true
             vc.wallet = WalletSharedData.sharedInstance.wallet
@@ -1145,6 +1156,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // Wallet BDX Send Amount Func
     func connect(wallet: BDXWallet) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
             guard let `self` = self else { return }
             if isConnected {
@@ -1169,12 +1183,20 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if createPendingTransaction == true {
             let fee = wallet.feevalue()
             let feeValue = BChatWalletWrapper.displayAmount(fee)
+            print("fee--Value--->",feeValue)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+            }
+            isPaymentDetailsView.isHidden = false
             HiddenView.isHidden = false
             inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
             inChatPaymentAddresslabel.text = "Address : \(finalWalletAddress)"
             inChatPaymentFeelabel.text = "Fee : \(feeValue)"
             initiatingTransactionPopView.isHidden = true
         }else {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+            }
             initiatingTransactionPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
             let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
@@ -1223,6 +1245,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     if shouldShowCallButton {
                         let callButton = UIBarButtonItem(image: UIImage(named: "Phone")!, style: .plain, target: self, action: #selector(startCall))
                         rightBarButtonItems.append(callButton)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
                     }
                 }
                 else {

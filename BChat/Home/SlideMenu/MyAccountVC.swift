@@ -84,7 +84,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         // Display name label
         let nam = Storage.shared.getUser()?.name
-        displayNameTextField.text = nam?.firstCharacterUpperCase() ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        displayNameTextField.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         displayNameTextField.textColor = Colors.text
         displayNameTextField.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)

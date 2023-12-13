@@ -770,11 +770,11 @@ static NSTimeInterval launchStartedAt;
             break;
         }
     }
-    if (LKAppModeUtilities.isSystemDefault) {
-        if (@available(iOS 13.0, *)) {
-            window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
-        }
-    }
+//    if (LKAppModeUtilities.isSystemDefault) {
+//        if (@available(iOS 13.0, *)) {
+//            window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
+//        }
+//    }
     [NSNotificationCenter.defaultCenter postNotificationName:NSNotification.appModeChanged object:nil];
 }
 

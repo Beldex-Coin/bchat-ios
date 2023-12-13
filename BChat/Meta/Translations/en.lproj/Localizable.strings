@@ -663,3 +663,6 @@
 "modal_call_permission_request_explanation" = "You can enable the 'Voice and video calls' permission in the Privacy Settings.";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_TITLE" = "Oops, an error occurred";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_SUBTITLE" = "Please try again later";
+"modal_pay_as_you_chat_permission_request_title" = "Pay As You Chat";
+"modal_pay_as_you_chat_permission_request_explanation" = "To disable pay as you chat, go to Settings -> Wallet Settings -> Pay As You Chat to use this option";
+"vc_ok_title" = "Ok";

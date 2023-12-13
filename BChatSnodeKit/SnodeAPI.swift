@@ -37,7 +37,7 @@ public final class SnodeAPI : NSObject {
     private static let minSwarmSnodeCount = 3
     
     // MainNet links
-    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://38.242.196.72:19091" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
     
     private static let snodeFailureThreshold = 3
     private static let targetSwarmSnodeCount = 2

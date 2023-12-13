@@ -187,42 +187,51 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        
+        payAsChatButton.isHidden = true
         if SSKPreferences.areWalletEnabled {
             if let contactThread: TSContactThread = thread as? TSContactThread {
-                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(){
+                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
                     if contact.beldexAddress != nil {
+                        print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
                         if SSKPreferences.areWalletEnabled {
                             payAsChatButton.isHidden = false
+                        } else {
+                            payAsChatButton.isHidden = true
                         }
+                    } else {
+                        payAsChatButton.isHidden = true
                     }
-                }else {
+                } else{
                     payAsChatButton.isHidden = true
                 }
-            }else {
-                payAsChatButton.isHidden = true
             }
-        }else{
-            payAsChatButton.isHidden = true
-        }
-        
-        if SSKPreferences.arePayAsYouChatEnabled {
-            // Show the Circular Progress View
-            progressView?.isHidden = false
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-                let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
-                guard let current = current, let total = total else { return }
-                // Calculate the percentage completion
-                let percentage = CGFloat(current) / CGFloat(total)
-                // Set the progress bar
-                self.progressView?.setProgress(min(percentage, 1.0))
-                if percentage >= 1.0 {
-                    timer.invalidate()
-                    self.progressView?.isHidden = false
+            if SSKPreferences.arePayAsYouChatEnabled {
+                // Show the Circular Progress View
+                progressView?.isHidden = false
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                    let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+                    guard let current = current, let total = total else { return }
+                    // Calculate the percentage completion
+                    let percentage = CGFloat(current) / CGFloat(total)
+                    // Set the progress bar
+                    self.progressView?.setProgress(min(percentage, 1.0))
+                    if percentage >= 1.0 {
+                        timer.invalidate()
+                        self.progressView?.isHidden = false
+                    }
                 }
             }
         }
-        
     }
+    
+    
+    
+    @objc func showPayAsYouChatButton(_ notification: Notification) {
+        payAsChatButton.isHidden = false
+    }
+
     
     // MARK: Updating
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView) {
@@ -372,6 +381,11 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
 
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
+        
+        if inputViewButton == payAsChatButton {
+            delegate?.payAsYouChatLongPress()
+        }
+        
         guard inputViewButton == voiceMessageButton else { return }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
