@@ -110,7 +110,7 @@ final class PayAsYouChatPermissionRequestModal : Modal {
         
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true
-        theImageView.image = UIImage(named: "bchat_QR")
+        theImageView.image = UIImage(named: "ic_popUpImage")
         theImageView.contentMode = .scaleAspectFit
         
         // Title

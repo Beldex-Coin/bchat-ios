@@ -24,10 +24,19 @@ import UIKit
     }()
     public let thumnailImageView: UIImageView = {
         let view = MTRoundImageView()
-        view.isUserInteractionEnabled = true        
-        view.contentMode = .center
+        view.isUserInteractionEnabled = true
+        view.contentMode = .scaleAspectFit
         return view
     }()
+    
+    public let thumnailImageViewRight: UIImageView = {
+        let view = MTRoundImageView()
+        view.isUserInteractionEnabled = true
+        view.contentMode = .scaleAspectFit
+        view.tintColor = Colors.bchatViewBackgroundColor
+        return view
+    }()
+    
     public let sliderHolderView: UIView = {
         let view = UIView()
         return view
@@ -155,13 +164,16 @@ import UIKit
     private func setupView() {
         self.addSubview(view)
         view.addSubview(thumnailImageView)
+        view.addSubview(thumnailImageViewRight)
         view.addSubview(sliderHolderView)
         view.addSubview(draggedView)
         draggedView.addSubview(sliderTextLabel)
         sliderHolderView.addSubview(textLabel)
+        view.bringSubviewToFront(self.thumnailImageViewRight)
         view.bringSubviewToFront(self.thumnailImageView)
         setupConstraint()
         setStyle()
+        thumnailImageViewRight.frame = CGRect(x: 206, y: 10, width: 30, height: 30)
         // Add pan gesture
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(_:)))
         panGestureRecognizer.minimumNumberOfTouches = 1
@@ -213,7 +225,7 @@ import UIKit
     }
     
     private func setStyle() {
-        thumnailImageView.backgroundColor = thumbnailColor
+//        thumnailImageView.backgroundColor = thumbnailColor
         textLabel.text = labelText
         textLabel.font = textFont
         textLabel.textColor = Colors.accent//textColor
