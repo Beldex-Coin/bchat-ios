@@ -325,10 +325,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
         slide.sliderCornerRadius = 28
-        slide.thumnailImageView.backgroundColor = .green
         slide.draggedView.backgroundColor = .clear
         slide.delegate = self
-        slide.thumnailImageView.image = #imageLiteral(resourceName: "beldeximg").imageFlippedForRightToLeftLayoutDirection()
+        slide.thumnailImageView.image = #imageLiteral(resourceName: "ic_sliderImage").imageFlippedForRightToLeftLayoutDirection()
+        slide.thumnailImageViewRight.image = #imageLiteral(resourceName: "send_icon").imageFlippedForRightToLeftLayoutDirection()
         slide.sliderBackgroundColor = .darkGray
         return slide
     }()
