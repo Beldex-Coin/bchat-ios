@@ -1061,6 +1061,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             vc.finalWalletAmount = self.finalWalletAmount
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
+            self.customizeSlideToOpen.resetStateWithAnimation(false)
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
                 let privacySettingsVC = PrivacySettingsTableViewController()
@@ -1298,6 +1299,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        if keyboardTop <= 100 {
+            newSlidePositionY = UIScreen.main.bounds.height / 1.4
+            customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        } else {
+            newSlidePositionY = UIScreen.main.bounds.height / 2.8
+            customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        }
         let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
         let oldContentInset: UIEdgeInsets = messagesTableView.contentInset
         let newContentInset: UIEdgeInsets = UIEdgeInsets(

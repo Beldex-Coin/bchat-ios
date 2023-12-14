@@ -531,42 +531,29 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    if let contactThread: TSContactThread = thread as? TSContactThread {
-                        if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
-                            if contact.beldexAddress != nil {
-                                print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
-                                if SSKPreferences.areWalletEnabled {
-                                    if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
-                                        customizeSlideToOpen.isHidden = false
+                    if SSKPreferences.areWalletEnabled {
+                        if let contactThread: TSContactThread = thread as? TSContactThread {
+                            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                                if contact.beldexAddress != nil {
+                                    if SSKPreferences.arePayAsYouChatEnabled {
+                                        if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
+                                            customizeSlideToOpen.isHidden = false
+                                        } else {
+                                            customizeSlideToOpen.isHidden = true
+                                        }
                                     }
                                 }
-                            }
-                        }else {
-                            print("NotApproved message BeldexAddress-> ")
-                            customizeSlideToOpen.isHidden = true
-                        }
-                    }
-                    if SSKPreferences.areWalletEnabled {
-                        // Here Contact list based on social group and in the secret group chat
-                        if let contactThread: TSContactThread = thread as? TSContactThread {
-                            // is Approved Contacts only without social group and secret group
-                            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
-                                // is Here PayAsYouChat Enable
-                                if SSKPreferences.arePayAsYouChatEnabled {
-                                    customizeSlideToOpen.isHidden = false
-                                }
-                            }
-                            else { // Here social group and secret group chat dis able the Custom Slide
+                            } else {
                                 customizeSlideToOpen.isHidden = true
                             }
                         }
                     }
-                }else {
+                } else {
                     customizeSlideToOpen.isHidden = true
                 }
                 print("Height-->",blockChainHeight,daemonBlockChainHeight)
             }
-        }else {
+        } else {
             customizeSlideToOpen.isHidden = true
         }
         updateMentions(for: newText)
@@ -870,6 +857,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //            snInputView.becomeFirstResponder()
 //            UserDefaults.standard.removeObject(forKey: "TSIncomingMessageAmount")
 //        }else {
+        customizeSlideToOpen.isHidden = true
             var quoteDraftOrNil: OWSQuotedReplyModel?
             Storage.read { transaction in
                 quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
