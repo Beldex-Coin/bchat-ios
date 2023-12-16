@@ -2,5 +2,8 @@
 @objc(SNFeatures)
 public final class Features : NSObject {
     public static let useOnionRequests = true
-    public static let useTestnet = false
+    //TESTNET
+    public static let useTestnet = true
+    //MAINNET
+//    public static let useTestnet = false
 }

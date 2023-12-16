@@ -5,16 +5,16 @@ import BChatSnodeKit
 public final class FileServerAPIV2 : NSObject {
     
     // MARK: TESTNET
-//    @objc public static let oldServer = "http://fileserver.rpcnode.stream"
-//    public static let oldServerPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
-//    @objc public static let server = "http://fileserver.rpcnode.stream"
-//    public static let serverPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
+    @objc public static let oldServer = "http://fileserver.rpcnode.stream"
+    public static let oldServerPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
+    @objc public static let server = "http://fileserver.rpcnode.stream"
+    public static let serverPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
     
     // MARK: MAINNET
-      @objc public static let oldServer = "http://fs1.rpcnode.stream"
-      public static let oldServerPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
-      @objc public static let server = "http://fs1.rpcnode.stream"
-      public static let serverPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
+//      @objc public static let oldServer = "http://fs1.rpcnode.stream"
+//      public static let oldServerPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
+//      @objc public static let server = "http://fs1.rpcnode.stream"
+//      public static let serverPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
     
     public static let maxFileSize = 10_000_000 // 10 MB
     /// The file server has a file size limit of `maxFileSize`, which the Service Nodes try to enforce as well. However, the limit applied by the Service Nodes
