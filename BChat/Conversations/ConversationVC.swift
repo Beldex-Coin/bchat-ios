@@ -40,6 +40,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var isLoadingMore = false
     var scrollDistanceToBottomBeforeUpdate: CGFloat?
     var baselineKeyboardHeight: CGFloat = 0
+    var isSyncingStatus = false
     
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
