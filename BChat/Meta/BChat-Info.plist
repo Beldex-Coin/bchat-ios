@@ -68,27 +68,7 @@
                 <true/>
                 <key>NSExceptionDomains</key>
                 <dict>
-                    <key>publicnode4.rpcnode.stream</key>
-                    <dict>
-                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                        <true/>
-                    </dict>
-                    <key>publicnode5.rpcnode.stream</key>
-                    <dict>
-                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                        <true/>
-                    </dict>
-                    <key>publicnode3.rpcnode.stream</key>
-                    <dict>
-                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                        <true/>
-                    </dict>
-                    <key>publicnode2.rpcnode.stream</key>
-                    <dict>
-                        <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                        <true/>
-                    </dict>
-                    <key>publicnode1.rpcnode.stream</key>
+                    <key>149.102.156.174</key>
                     <dict>
                         <key>NSExceptionAllowsInsecureHTTPLoads</key>
                         <true/>

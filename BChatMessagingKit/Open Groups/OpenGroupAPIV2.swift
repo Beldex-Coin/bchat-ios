@@ -18,14 +18,14 @@ public final class OpenGroupAPIV2 : NSObject {
     }()
     
     // MARK: TESTNET
-//    public static let legacyDefaultServerDNS = "190.2.147.31"
-//    public static let defaultServer = "http://social.rpcnode.stream:8080"
-//    public static let defaultServerPublicKey = "7c4dc4a0d6eddcdbbed85487f6ccc3425284ad03bbcd33de2c4ce8cbb303a946"
+    public static let legacyDefaultServerDNS = "190.2.147.31"
+    public static let defaultServer = "http://social.rpcnode.stream:8080"
+    public static let defaultServerPublicKey = "7c4dc4a0d6eddcdbbed85487f6ccc3425284ad03bbcd33de2c4ce8cbb303a946"
     
     // MARK: MAINNET
-    public static let legacyDefaultServerDNS = "190.2.147.31"
-    public static let defaultServer = "http://social.beldex.io"
-    public static let defaultServerPublicKey = "0cfdbcc8bba5989a6787019c6635c08415c103174609360f9c3e4e764ef48073"
+//    public static let legacyDefaultServerDNS = "190.2.147.31"
+//    public static let defaultServer = "http://social.beldex.io"
+//    public static let defaultServerPublicKey = "0cfdbcc8bba5989a6787019c6635c08415c103174609360f9c3e4e764ef48073"
     
     
     // MARK: Error

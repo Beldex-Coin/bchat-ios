@@ -528,30 +528,32 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         if newText != "" && newText.isNumeric == true && newText.filter({ $0 == "." }).count <= 1 {
             if WalletSharedData.sharedInstance.wallet != nil {
-                let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
-                let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
-                if blockChainHeight == daemonBlockChainHeight {
-                    if SSKPreferences.areWalletEnabled {
-                        if let contactThread: TSContactThread = thread as? TSContactThread {
-                            if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
-                                if contact.beldexAddress != nil {
-                                    if SSKPreferences.arePayAsYouChatEnabled {
-                                        if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
-                                            customizeSlideToOpen.isHidden = false
-                                        } else {
-                                            customizeSlideToOpen.isHidden = true
+                if SSKPreferences.areWalletEnabled {
+                    let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+                    let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+                    if blockChainHeight == daemonBlockChainHeight {
+                        if SSKPreferences.areWalletEnabled {
+                            if let contactThread: TSContactThread = thread as? TSContactThread {
+                                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                                    if contact.beldexAddress != nil {
+                                        if SSKPreferences.arePayAsYouChatEnabled {
+                                            if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
+                                                customizeSlideToOpen.isHidden = false
+                                            } else {
+                                                customizeSlideToOpen.isHidden = true
+                                            }
                                         }
                                     }
+                                } else {
+                                    customizeSlideToOpen.isHidden = true
                                 }
-                            } else {
-                                customizeSlideToOpen.isHidden = true
                             }
                         }
+                    } else {
+                        customizeSlideToOpen.isHidden = true
                     }
-                } else {
-                    customizeSlideToOpen.isHidden = true
+                    print("Height-->",blockChainHeight,daemonBlockChainHeight)
                 }
-                print("Height-->",blockChainHeight,daemonBlockChainHeight)
             }
         } else {
             customizeSlideToOpen.isHidden = true

@@ -188,49 +188,60 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageButtonContainer.center(in: sendButton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
-        
+        self.hideOrShowPayAsYouChatButton()
+    }
+    
+    
+    func hideOrShowPayAsYouChatButton() {
         if SSKPreferences.areWalletEnabled {
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
                     if contact.beldexAddress != nil {
                         print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
-                        if SSKPreferences.areWalletEnabled {
+                        if SSKPreferences.arePayAsYouChatEnabled {
                             payAsChatButton.isHidden = false
+                            progressView?.isHidden = false
+                            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                                let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+                                guard let current = current, let total = total else { return }
+                                // Calculate the percentage completion
+                                let percentage = CGFloat(current * 100) / CGFloat(total)
+                                // Set the progress bar
+                                let progress = (percentage / 100)
+                                let progress8 = progress * 0.8
+                                self.progressView?.setProgress(min(progress8, 1.0))
+                                if progress >= 1.0 {
+                                    timer.invalidate()
+                                    self.progressView?.isHidden = false
+                                }
+                            }
+                            
                         } else {
                             payAsChatButton.isHidden = true
+                            progressView?.isHidden = true
                         }
                     } else {
                         payAsChatButton.isHidden = true
+                        progressView?.isHidden = true
                     }
                 } else{
                     payAsChatButton.isHidden = true
+                    progressView?.isHidden = true
                 }
             } else {
                 payAsChatButton.isHidden = true
+                progressView?.isHidden = true
             }
-            if SSKPreferences.arePayAsYouChatEnabled {
-                // Show the Circular Progress View
-                progressView?.isHidden = false
-                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-                    let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
-                    guard let current = current, let total = total else { return }
-                    // Calculate the percentage completion
-                    let percentage = CGFloat(current) / CGFloat(total)
-                    // Set the progress bar
-                    self.progressView?.setProgress(min(percentage, 1.0))
-                    if percentage >= 1.0 {
-                        timer.invalidate()
-                        self.progressView?.isHidden = false
-                    }
-                }
-            }
+        } else {
+            payAsChatButton.isHidden = true
+            progressView?.isHidden = true
         }
     }
     
     
     
     @objc func showPayAsYouChatButton(_ notification: Notification) {
-        payAsChatButton.isHidden = false
+        self.hideOrShowPayAsYouChatButton()
     }
 
     
