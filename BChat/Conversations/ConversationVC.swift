@@ -1132,82 +1132,86 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Pay BDX Sending
     func handlePaySendButtonTapped() {
-        if SSKPreferences.arePayAsYouChatEnabled {
-            if WalletSharedData.sharedInstance.wallet != nil {
-                let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
-                let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
-                if blockChainHeight == daemonBlockChainHeight {
-                    customizeSlideToOpen.isHidden = true
-                    
-                    var balance = WalletSharedData.sharedInstance.wallet!.balance
-                    var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
-                    
-                    if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
-                        SelectedDecimal = SaveUserDefaultsData.SelectedDecimal
-                        if SelectedDecimal == "4 - Decimal" {
+        if isSyncingStatus == true {
+            if SSKPreferences.arePayAsYouChatEnabled {
+                if WalletSharedData.sharedInstance.wallet != nil {
+                    let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+                    let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+                    if blockChainHeight == daemonBlockChainHeight {
+                        customizeSlideToOpen.isHidden = true
+                        
+                        var balance = WalletSharedData.sharedInstance.wallet!.balance
+                        var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
+                        
+                        if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
+                            SelectedDecimal = SaveUserDefaultsData.SelectedDecimal
+                            if SelectedDecimal == "4 - Decimal" {
+                                balance = String(format:"%.4f", Double(balance)!)
+                                unlockBalance = String(format:"%.4f", Double(unlockBalance)!)
+                            }else if SelectedDecimal == "3 - Decimal" {
+                                balance = String(format:"%.3f", Double(balance)!)
+                                unlockBalance = String(format:"%.3f", Double(unlockBalance)!)
+                            }else if SelectedDecimal == "2 - Decimal" {
+                                balance = String(format:"%.2f", Double(balance)!)
+                                unlockBalance = String(format:"%.2f", Double(unlockBalance)!)
+                            }else if SelectedDecimal == "0 - Decimal" {
+                                balance = String(format:"%.0f", Double(balance)!)
+                                unlockBalance = String(format:"%.0f", Double(unlockBalance)!)
+                            }
+                        }else {
                             balance = String(format:"%.4f", Double(balance)!)
                             unlockBalance = String(format:"%.4f", Double(unlockBalance)!)
-                        }else if SelectedDecimal == "3 - Decimal" {
-                            balance = String(format:"%.3f", Double(balance)!)
-                            unlockBalance = String(format:"%.3f", Double(unlockBalance)!)
-                        }else if SelectedDecimal == "2 - Decimal" {
-                            balance = String(format:"%.2f", Double(balance)!)
-                            unlockBalance = String(format:"%.2f", Double(unlockBalance)!)
-                        }else if SelectedDecimal == "0 - Decimal" {
-                            balance = String(format:"%.0f", Double(balance)!)
-                            unlockBalance = String(format:"%.0f", Double(unlockBalance)!)
                         }
+                        
+                        
+                        let message = """
+                            Balance: \(balance)
+                            Unlocked Balance: \(unlockBalance)
+                            Wallet: 100%
+                        """
+                        let paragraphStyle = NSMutableParagraphStyle()
+                        paragraphStyle.alignment = .left
+                        let attributes: [NSAttributedString.Key: Any] = [
+                            .paragraphStyle: paragraphStyle,
+                            .font: UIFont.systemFont(ofSize: 13) // Set your desired font size
+                        ]
+                        let attributedMessage = NSAttributedString(
+                            string: message,
+                            attributes: attributes
+                        )
+                        let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
+                        alert.setValue(attributedMessage, forKey: "attributedMessage")
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
                     }else {
-                        balance = String(format:"%.4f", Double(balance)!)
-                        unlockBalance = String(format:"%.4f", Double(unlockBalance)!)
+                        if let current = WalletSharedData.sharedInstance.wallet?.blockChainHeight,
+                           let total = WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight,
+                           total > 0 {
+                            let percentage = CGFloat(current * 100) / CGFloat(total)
+                            let formattedPercentage = String(format: "%.2f", percentage)
+                            self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
+                        } else {
+                            // Handle the case where total is 0 or nil
+                            // You can choose to show a different message or take appropriate action
+                        }
+                        //self.showToastMsg(message: "Wallet is syncing...Please wait untill syncing", seconds: 1.5)
                     }
-                    
-                    
-                    let message = """
-                        Balance: \(balance)
-                        Unlocked Balance: \(unlockBalance)
-                        Wallet: 100%
-                    """
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.alignment = .left
-                    let attributes: [NSAttributedString.Key: Any] = [
-                        .paragraphStyle: paragraphStyle,
-                        .font: UIFont.systemFont(ofSize: 13) // Set your desired font size
-                    ]
-                    let attributedMessage = NSAttributedString(
-                        string: message,
-                        attributes: attributes
-                    )
-                    let alert = UIAlertController(title: "", message: "", preferredStyle: .alert)
-                    alert.setValue(attributedMessage, forKey: "attributedMessage")
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    
-                }else {
-                    if let current = WalletSharedData.sharedInstance.wallet?.blockChainHeight,
-                       let total = WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight,
-                       total > 0 {
-                        let percentage = CGFloat(current * 100) / CGFloat(total)
-                        let formattedPercentage = String(format: "%.2f", percentage)
-                        self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
-                    } else {
-                        // Handle the case where total is 0 or nil
-                        // You can choose to show a different message or take appropriate action
-                    }
-                    //self.showToastMsg(message: "Wallet is syncing...Please wait untill syncing", seconds: 1.5)
+                    print("Height-->",blockChainHeight,daemonBlockChainHeight)
                 }
-                print("Height-->",blockChainHeight,daemonBlockChainHeight)
+            }else {
+                let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
+                alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
+                    let privacySettingsVC = PrivacySettingsTableViewController()
+                    self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+                }))
+                alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                    
+                }))
+                present(alertView, animated: true, completion: nil)
             }
         }else {
-            let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
-            alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
-            }))
-            alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-                
-            }))
-            present(alertView, animated: true, completion: nil)
+            self.showToastMsg(message: "Failed to Connect", seconds: 1.5)
         }
     }
     
