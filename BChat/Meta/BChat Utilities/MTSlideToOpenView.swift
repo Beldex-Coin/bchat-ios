@@ -130,7 +130,7 @@ import UIKit
             sliderTextLabel.text = labelText
         }
     }
-    public var textFont: UIFont = UIFont.systemFont(ofSize: 15.0) {
+    public var textFont: UIFont = UIFont.boldSystemFont(ofSize: 15.0) {
         didSet {
             textLabel.font = textFont
             sliderTextLabel.font = textFont

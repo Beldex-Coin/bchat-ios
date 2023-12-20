@@ -312,7 +312,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var timer: Timer = {
         Timer.init(timeInterval: 0.5, repeats: true) { [weak self] (_) in
             guard let `self` = self else { return }
-            self.updateSyncingProgress()
+            if SSKPreferences.areWalletEnabled {
+                self.updateSyncingProgress()
+            } else {
+                self.timer.invalidate()
+            }
+            
         }
     }()
     
@@ -897,6 +902,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         didFinishInitialLayout = true
         markAllAsRead()
         recoverInputView()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
         if backAPI == true{
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
@@ -1086,13 +1092,24 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     // MARK: MTSlideToOpenDelegate Slide left and Right swipe
     func mtSlideToOpenDelegateDidFinish(_ sender: MTSlideToOpenView) {
         if SSKPreferences.arePayAsYouChatEnabled {
-            customizeSlideToOpen.isHidden = true
+            
             let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
             self.finalWalletAmount = text
+            let lastString = text.index(before: text.endIndex)
+            if text == "." || Int(text) == 0 || text.count > 16 || text[lastString] == "." || Double(text)! <= 0.0 {
+                self.customizeSlideToOpen.resetStateWithAnimation(true)
+                let alert = UIAlertController(title: "Pay As You Chat", message: "Please enter valid amount", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+
+            customizeSlideToOpen.isHidden = true
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
+            snInputView.text = ""
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
             vc.isSendConversionWalletVC = true
             vc.wallet = WalletSharedData.sharedInstance.wallet
@@ -1170,8 +1187,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     if let current = WalletSharedData.sharedInstance.wallet?.blockChainHeight,
                        let total = WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight,
                        total > 0 {
-                        let percentage = CGFloat(current) / CGFloat(total)
-                        let formattedPercentage = String(format: "%.2f", percentage * 100)
+                        let percentage = CGFloat(current * 100) / CGFloat(total)
+                        let formattedPercentage = String(format: "%.2f", percentage)
                         self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
                     } else {
                         // Handle the case where total is 0 or nil
