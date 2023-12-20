@@ -272,6 +272,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
 //                init_syncing_wallet()
 //            }
         }else {
+            WalletSharedData.sharedInstance.wallet = nil
             closeWallet()
         }
         
@@ -298,7 +299,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.syncedflag = false
             conncetingState.value = true
             let username = SaveUserDefaultsData.NameForWallet
             let pwd = SaveUserDefaultsData.israndomUUIDPassword
@@ -310,11 +310,12 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
                     strongSelf.wallet = wallet
                     WalletSharedData.sharedInstance.wallet = wallet
                     strongSelf.connect(wallet: wallet)
+                    strongSelf.syncedflag = true
                 case .failure(_):
                     DispatchQueue.main.async {
                         strongSelf.refreshState.value = true
                         strongSelf.conncetingState.value = false
-                        self!.syncedflag = false
+                        strongSelf.syncedflag = false
                     }
                 }
             }
@@ -773,6 +774,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             }
         }
         let conversationVC = ConversationVC(thread: thread)
+        conversationVC.isSyncingStatus = syncedflag
         let transition = CATransition()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
