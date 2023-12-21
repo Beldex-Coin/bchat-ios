@@ -1135,6 +1135,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     
     func payAsYouChatLongPress() {
+        snInputView.isHidden = true
         let payAsYouChatPermissionRequestModal = PayAsYouChatPermissionRequestModal()
         self.navigationController?.present(payAsYouChatPermissionRequestModal, animated: true, completion: nil)
     }

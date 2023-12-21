@@ -215,9 +215,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                                     self.progressView?.isHidden = false
                                 }
                             }
-                            
                         } else {
-                            payAsChatButton.isHidden = true
+                            payAsChatButton.isHidden = false
                             progressView?.isHidden = true
                         }
                     } else {
