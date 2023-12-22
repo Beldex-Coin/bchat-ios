@@ -869,6 +869,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if let v2OpenGroup = Storage.shared.getV2OpenGroup(for: thread.uniqueId!) {
             OpenGroupAPIV2.getMemberCount(for: v2OpenGroup.room, on: v2OpenGroup.server).retainUntilComplete()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+    }
+    
+    @objc func hideOrShowInputViewAction(_ notification: Notification) {
+        snInputView.isHidden = false
     }
     
     override func viewDidLayoutSubviews() {

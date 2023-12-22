@@ -64,6 +64,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 self.inputAccessoryView?.alpha = 0
                 present(callVC, animated: true, completion: nil)
             } else {
+                snInputView.isHidden = true
                 let callPermissionRequestModal = CallPermissionRequestModal()
                 self.navigationController?.present(callPermissionRequestModal, animated: true, completion: nil)
             }
@@ -526,6 +527,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
+        inputTextView.textColor = Colors.text
         if newText != "" && newText.isNumeric == true && newText.filter({ $0 == "." }).count <= 1 {
             if WalletSharedData.sharedInstance.wallet != nil {
                 if SSKPreferences.areWalletEnabled {
@@ -539,6 +541,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                         if SSKPreferences.arePayAsYouChatEnabled {
                                             if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
                                                 customizeSlideToOpen.isHidden = false
+                                                inputTextView.textColor = Colors.accent
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
                                             }
