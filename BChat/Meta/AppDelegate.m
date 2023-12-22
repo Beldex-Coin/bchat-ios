@@ -320,6 +320,9 @@ static NSTimeInterval launchStartedAt;
 
     // On every activation, clear old temp directories.
     ClearOldTemporaryDirectories();
+    
+    // This Code will App Update Version
+    [self forceUpdateIsNeeded];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -657,9 +660,6 @@ static NSTimeInterval launchStartedAt;
     //    self.window.rootViewController = navigationController;
     //
     //    [UIViewController attemptRotationToDeviceOrientation];
-    
-    // This Code will App Update Version
-    [self forceUpdateIsNeeded];
 }
 
 #pragma mark - Notifications
