@@ -35,6 +35,20 @@ final class CallPermissionRequestModal : Modal {
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.textAlignment = .center
+        
+        // Cancel button
+        let cancelButtonForCall = UIButton()
+        cancelButtonForCall.set(.height, to: Values.mediumButtonHeight)
+        cancelButtonForCall.layer.cornerRadius = Modal.buttonCornerRadius
+        if isDarkMode {
+            cancelButtonForCall.backgroundColor = Colors.buttonBackground
+        }else {
+            cancelButtonForCall.backgroundColor = UIColor.lightGray
+        }
+        cancelButtonForCall.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        cancelButtonForCall.setTitle(NSLocalizedString("cancel", comment: ""), for: UIControl.State.normal)
+        cancelButtonForCall.addTarget(self, action: #selector(cancelButtonForCallAction), for: UIControl.Event.touchUpInside)
+        
         // Enable button
         let goToSettingsButton = UIButton()
         goToSettingsButton.set(.height, to: Values.mediumButtonHeight)
@@ -54,7 +68,7 @@ final class CallPermissionRequestModal : Modal {
         contentStackView.axis = .vertical
         contentStackView.spacing = Values.largeSpacing
         // Button stack view
-        let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, goToSettingsButton ])
+        let buttonStackView = UIStackView(arrangedSubviews: [ cancelButtonForCall, goToSettingsButton ])
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         // Main stack view
@@ -81,6 +95,12 @@ final class CallPermissionRequestModal : Modal {
             }
         })
     }
+    
+    @objc func cancelButtonForCallAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+    }
+    
 }
 
 
@@ -128,6 +148,20 @@ final class PayAsYouChatPermissionRequestModal : Modal {
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.textAlignment = .center
+        
+        // Cancel button
+        let cancelButtonPayAsChat = UIButton()
+        cancelButtonPayAsChat.set(.height, to: Values.mediumButtonHeight)
+        cancelButtonPayAsChat.layer.cornerRadius = Modal.buttonCornerRadius
+        if isDarkMode {
+            cancelButtonPayAsChat.backgroundColor = Colors.buttonBackground
+        }else {
+            cancelButtonPayAsChat.backgroundColor = UIColor.lightGray
+        }
+        cancelButtonPayAsChat.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        cancelButtonPayAsChat.setTitle(NSLocalizedString("cancel", comment: ""), for: UIControl.State.normal)
+        cancelButtonPayAsChat.addTarget(self, action: #selector(cancelButtonAction), for: UIControl.Event.touchUpInside)
+        
         // Enable button
         let goToSettingsButton = UIButton()
         goToSettingsButton.set(.height, to: Values.mediumButtonHeight)
@@ -147,7 +181,7 @@ final class PayAsYouChatPermissionRequestModal : Modal {
         contentStackView.axis = .vertical
         contentStackView.spacing = Values.largeSpacing
         // Button stack view
-        let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, goToSettingsButton ])
+        let buttonStackView = UIStackView(arrangedSubviews: [ cancelButtonPayAsChat, goToSettingsButton ])
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
         // Main stack view
@@ -173,5 +207,10 @@ final class PayAsYouChatPermissionRequestModal : Modal {
                 vc.present(nav, animated: true, completion: nil)
             }
         })
+    }
+    
+    @objc func cancelButtonAction(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
     }
 }

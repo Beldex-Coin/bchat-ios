@@ -46,7 +46,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }()
     
     private lazy var payAsChatButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view

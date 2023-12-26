@@ -322,7 +322,7 @@ static NSTimeInterval launchStartedAt;
     ClearOldTemporaryDirectories();
     
     // This Code will App Update Version
-    [self forceUpdateIsNeeded];
+//    [self forceUpdateIsNeeded];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
