@@ -325,12 +325,17 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
+		8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */; };
+		812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */; };
+		813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */; };
 		81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		81423AA32A29E2B6001BBBFA /* BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A6F025539DE700C340D1 /* BChatMessagingKit.framework */; };
 		81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A59F255385C100C340D1 /* BChatSnodeKit.framework */; };
 		81423AB02A29E2C4001BBBFA /* BChatUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A679255388CC00C340D1 /* BChatUtilitiesKit.framework */; };
 		81423AB42A29E2C8001BBBFA /* SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33FD9AB255A548A00E217F9 /* SignalUtilitiesKit.framework */; };
 		815A7BF12A2F2BC400A430F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
+		8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164F10B2B3C280500590775 /* RegisterVC.swift */; };
 		816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816564BE2AA729C800477BC7 /* WalletHelper.swift */; };
 		818C2F682AF0FE1300202F05 /* AlertForWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818C2F672AF0FE1300202F05 /* AlertForWalletVC.swift */; };
 		818C2F6A2AF10A3800202F05 /* RecoverySeedForWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818C2F692AF10A3800202F05 /* RecoverySeedForWalletVC.swift */; };
@@ -1436,7 +1441,12 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
+		8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordVC.swift; sourceTree = "<group>"; };
+		812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSecretGroupVC.swift; sourceTree = "<group>"; };
+		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
 		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8164F10B2B3C280500590775 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		816564BE2AA729C800477BC7 /* WalletHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHelper.swift; sourceTree = "<group>"; };
 		818C2F672AF0FE1300202F05 /* AlertForWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertForWalletVC.swift; sourceTree = "<group>"; };
 		818C2F692AF10A3800202F05 /* RecoverySeedForWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverySeedForWalletVC.swift; sourceTree = "<group>"; };
@@ -2736,6 +2746,18 @@
 			path = TurnServers;
 			sourceTree = "<group>";
 		};
+		813609CA2B3AFDA5004D3FAC /* New Design */ = {
+			isa = PBXGroup;
+			children = (
+				813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */,
+				8164F10B2B3C280500590775 /* RegisterVC.swift */,
+				8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */,
+				812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */,
+				812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */,
+			);
+			path = "New Design";
+			sourceTree = "<group>";
+		};
 		9404664EC513585B05DF1350 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3444,6 +3466,7 @@
 		C360968D25AD16B4008B62B2 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				813609CA2B3AFDA5004D3FAC /* New Design */,
 				607DCE3028AE2578003F9288 /* LandingVC.swift */,
 				607DCE3228AE3412003F9288 /* DisplayNameVC.swift */,
 				607DCE3C28AE4258003F9288 /* RecoverySeedNameVC.swift */,
@@ -5420,6 +5443,7 @@
 				600A272828B36B44001F9FFE /* Groupcell.swift in Sources */,
 				EF764C351DB67CC5000D9A87 /* UIViewController+Permissions.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* SyncPushTokensJob.swift in Sources */,
+				813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */,
 				B83524A525C3BA4B0089A44F /* InfoMessageCell.swift in Sources */,
 				B84A89BC25DE328A0040017D /* ProfilePictureVC.swift in Sources */,
 				34386A54207D271D009F5D9C /* NeverClearView.swift in Sources */,
@@ -5447,6 +5471,7 @@
 				603864E72A6E418E002CDAF3 /* WalletHomeXibCell.swift in Sources */,
 				34B0796D1FCF46B100E248C2 /* MainAppContext.m in Sources */,
 				6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */,
+				8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */,
 				34A8B3512190A40E00218A25 /* MediaAlbumView.swift in Sources */,
 				7B7CB18B270591630079FF93 /* ShareLogsModal.swift in Sources */,
 				6098CAC12A207DAB005A5502 /* MyWalletSettingsXibCell2.swift in Sources */,
@@ -5519,6 +5544,7 @@
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
 				6040692328B4AEEB0094E74D /* RecoverySeedMenuVC.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
+				8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */,
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
 				B8F5F71A25F1B35C003BF8D4 /* MediaPlaceholderView.swift in Sources */,
@@ -5545,6 +5571,7 @@
 				C331FFF42558FF0300070591 /* PNOptionView.swift in Sources */,
 				4C4AE6A1224AF35700D4AF6F /* SendMediaNavigationController.swift in Sources */,
 				45F32C222057297A00A300D5 /* MediaDetailViewController.m in Sources */,
+				812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */,
 				B82149C125D605C6009C0F2A /* InfoBanner.swift in Sources */,
 				6098CA912A206F05005A5502 /* KeypadView.swift in Sources */,
 				C3DAB3242480CB2B00725F25 /* SRCopyableLabel.swift in Sources */,
@@ -5598,6 +5625,7 @@
 				607DCE3B28AE41E2003F9288 /* RecoverySeedVC.swift in Sources */,
 				3488F9362191CC4000E524CC /* MediaView.swift in Sources */,
 				B8569AC325CB5D2900DBA3DB /* ConversationVC+Interaction.swift in Sources */,
+				812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */,
 				3496955C219B605E00DCFE74 /* ImagePickerController.swift in Sources */,
 				C31D1DE32521718E005D4DA8 /* UserSelectionVC.swift in Sources */,
 				6098CAB12A207DAB005A5502 /* MyWalletScannerVC.swift in Sources */,
