@@ -76,4 +76,19 @@ public final class Colors : NSObject {
     @objc public static var bchatJoinOpenGpBackgroundGreen: UIColor { UIColor(named: "bchat_join_backgroundgreen")! }
     @objc public static var syncingPopColor: UIColor { UIColor(named: "SyncingPopColor")! }
     @objc public static var myWalletHomeBottomViewColor: UIColor { UIColor(named: "mywallethome_bottomview")! }
+    
+    
+    //New Design Colors
+    @objc public static var viewBackgroundColor: UIColor { UIColor(named: "viewBackgroundColor")! }
+    @objc public static var backgroundViewColor: UIColor { UIColor(named: "backgroundViewColor")! }
+    @objc public static var borderColor: UIColor { UIColor(named: "borderColor")! }
+    @objc public static var textColor: UIColor { UIColor(named: "textColor")! }
+    @objc public static var backgroundViewColor2: UIColor { UIColor(named: "backgroundViewColor2")! }
+    @objc public static var placeholderColor: UIColor { UIColor(named: "placeholderColor")! }
+    @objc public static var greenColor: UIColor { UIColor(named: "greenColor")! }
+    @objc public static var blueColor: UIColor { UIColor(named: "blueColor")! }
+    @objc public static var buttonBackgroundColor2: UIColor { UIColor(named: "buttonBackgroundColor2")! }
+    @objc public static var buttonTextColor: UIColor { UIColor(named: "buttonTextColor")! }
+    @objc public static var cellBackgroundColor2: UIColor { UIColor(named: "cellBackgroundColor2")! }
+    
 }

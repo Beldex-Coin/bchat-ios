@@ -28,7 +28,7 @@ class RestoreVC: BaseVC,UITextViewDelegate {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.font = Fonts.OpenSans(ofSize: 12)
-        result.text = NSLocalizedString("Paste the seed to continue", comment: "")
+        result.text = NSLocalizedString("PASTE_THE_SEED_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -46,7 +46,7 @@ class RestoreVC: BaseVC,UITextViewDelegate {
     
     private lazy var isFromPasteButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("  Paste Seed", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("PASTE_SEED_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? 14 : 14)
         result.addTarget(self, action: #selector(fromPasteSeedAction), for: UIControl.Event.touchUpInside)
         // Set the image
@@ -101,7 +101,7 @@ class RestoreVC: BaseVC,UITextViewDelegate {
         mnemonicTextView.textAlignment = .left
         mnemonicTextView.delegate = self
         placeholderLabel = UILabel()
-        placeholderLabel.text = " Enter your Seed"
+        placeholderLabel.text = NSLocalizedString("ENTER_YOUR_SEED_NEW", comment: "")
         placeholderLabel.numberOfLines = 0
         placeholderLabel.font = Fonts.OpenSans(ofSize: (mnemonicTextView.font?.pointSize)!)
         placeholderLabel.sizeToFit()
@@ -283,7 +283,7 @@ class RestoreVC: BaseVC,UITextViewDelegate {
     
     @objc private func isFromRestoreAction() {
         if seedFlag == false {
-            self.showToastMsg(message: "Something went wrong.Please check your mnemonic and try again", seconds: 1.0)
+            self.showToastMsg(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
         }else {
             self.isFromRestoreButton.isUserInteractionEnabled = false
             let strings : String! = mnemonicTextView.text.lowercased()
@@ -291,7 +291,7 @@ class RestoreVC: BaseVC,UITextViewDelegate {
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
-                self.showToastMsg(message: "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.", seconds: 2.0)
+                self.showToastMsg(message: NSLocalizedString("INVALID_SEED_ERROR_NEW", comment: ""), seconds: 2.0)
                 self.isFromRestoreButton.isUserInteractionEnabled = true
             }else {
                 let mnemonic = mnemonicTextView.text!.lowercased()

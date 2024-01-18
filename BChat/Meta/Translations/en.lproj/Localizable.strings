@@ -666,3 +666,59 @@
 "modal_pay_as_you_chat_permission_request_title" = "Pay As You Chat";
 "modal_pay_as_you_chat_permission_request_explanation" = "To disable pay as you chat, go to Settings -> Wallet Settings -> Pay As You Chat to use this option";
 "vc_ok_title" = "Ok";
+
+/* LandingNewVC */
+"CREATE_ACCOUNT_NEW" = "Create Account";
+"RESTORE_ACCOUNT_NEW" = "Restore Account";
+"TERMS_AND_CONDITIONS_NEW" = "Terms & Conditions";
+"WELCOME_TO_NEW" = "Welcome to";
+"HELLO_NEW"= "Hello,";
+"HELLO_SUBTITLE_NEW" = "We're thrilled to have\nyou on board!";
+"HELLO_SUBTITLE_DECSC_NEW" = "Welcome to BChat, your private haven for seamless communication and connection.";
+
+/* RestoreNameVC */
+"DISPLAY_NAME_NEW" = "Display Name";
+"RESTORE_HEIGHT_TITLE_NEW" = "Pick a restore height";
+"RESTORE_DATE_TITLE_NEW" = "Restore from Date";
+"RESTORE_DATE_TITLE_SPACE_NEW" = "  Restore from Date";
+"ENTER_NAME_TITLE_NEW" = "Enter Name";
+"RESTORE_BLOCK_HEIGHT_NEW" = "Enter Block height to Restore";
+"ENTER_DATE_NEW" = "Enter Date";
+"RESTORE_NEW" = "Restore";
+"RESTORE_FROM_HEIGHT_NEW" = "Restore from Height";
+"RESTORE_FROM_HEIGHT_SPACE_NEW" = "  Restore from Height";
+"RESTORE_HEIGHT_DATE_IS_MISSING_NEW" = "restore height or date is missing";
+"RESTORE_HEIGHT_IS_LONG_MSG_NEW" = "restore height is too long";
+"ENTER_DATE_OR_HEIGHT_TXT_NEW" = "enter either Restore height or Date";
+"SELECT_DATE__TITLE_NEW" = "Select Date";
+"DONE_BUTTON_NEW" = "Done";
+"CANECEL_BUTTON_NEW" = "Cancel";
+
+/* RestoreVC */
+"PASTE_THE_SEED_NEW" = "Paste the seed to continue";
+"PASTE_SEED_NEW" = "  Paste Seed";
+"ENTER_YOUR_SEED_NEW" = " Enter your Seed";
+"WRONG_SEED_ERROR_NEW" = "Something went wrong.Please check your mnemonic and try again";
+"INVALID_SEED_ERROR_NEW" = "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.";
+
+/* ChatNewVC */
+"YOUR_CHAT_ID_NEW" = "Your Chat ID";
+"LETS_BCHAT_NEW" = "Let’s BChat";
+"NEW_CHAT_NEW" = "New Chat";
+"ENTER_CHAT_ID_NEW" = "Enter Chat ID";
+"INVALID_BCHAT_ID_NEW" = "invalid BChat ID";
+
+/* MyAccountNewVC */
+"SHARE_OPTION_NEW" = "Share";
+"BELDEX_ADDRESS_TITLE_NEW" = "Beldex Address";
+"BCHAT_ID_NEW" = "BChat ID";
+"NAME_TITLE_NEW" = "Name";
+"PROFILE_PICTURE_NEW" = "Profile Picture";
+"REMOVE_PICTURE_ACTION_NEW" = "Remove Picture";
+"SAVA_OPTION_NEW" = "Save";
+"BELDEX_ADDRESS_COPIED_NEW" = "Your Beldex Address is copied to clipboard";
+"BCHAT_ID_COPIED_NEW" = "Your BChat ID copied to clipboard";
+
+/* SocialGroupNewVC */
+"Enter_Group_Url_New" = "Enter Group URL";
+"Next_Button_New" = "Next";

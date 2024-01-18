@@ -6,7 +6,7 @@ import BChatUIKit
 
 public var navFlowTag = true
 
-class NewLandingVC: BaseVC {
+class LandingNewVC: BaseVC {
     private var spacer1HeightConstraint: NSLayoutConstraint!
     private var spacer2HeightConstraint: NSLayoutConstraint!
     private var spacer3HeightConstraint: NSLayoutConstraint!
@@ -23,20 +23,19 @@ class NewLandingVC: BaseVC {
         result.layer.cornerRadius = result.frame.height / 2
         result.clipsToBounds = true
         result.set(.height, to: 58)
-        result.setTitle(NSLocalizedString("Create Account", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(isCreateButtonAction), for: UIControl.Event.touchUpInside)
         result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         return result
     }()
-    
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.backgroundColor = UIColor(hex: 0x3B3946)
         result.layer.cornerRadius = result.frame.height / 2
         result.clipsToBounds = true
         result.set(.height, to: 58)
-        result.setTitle(NSLocalizedString("Restore Account", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(isRestoreButtonAction), for: UIControl.Event.touchUpInside)
         result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
@@ -44,17 +43,15 @@ class NewLandingVC: BaseVC {
         result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return result
     }()
-    
     private lazy var isTermsAndConditionsButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("Terms & Conditions", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS_NEW", comment: ""), for: .normal)
         result.setTitleColor(UIColor(hex: 0xA7A7BA), for: .normal)
         result.contentHorizontalAlignment = .left
         result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(isTermsAndConditionsButtonAction), for: .touchUpInside)
         return result
     }()
-    
     private lazy var isBottomImge: UIImageView = {
         let result = UIImageView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +64,6 @@ class NewLandingVC: BaseVC {
         result.contentMode = .left
         return result
     }()
-    
     private lazy var isbackgroundImg: UIImageView = {
         let result = UIImageView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +76,6 @@ class NewLandingVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
-    
     private lazy var isCheckedOrNotButton: UIButton = {
         let result = UIButton(type: .system)
         let image = UIImage(named: "ic_Newunchecked")
@@ -90,7 +85,6 @@ class NewLandingVC: BaseVC {
         result.addTarget(self, action: #selector(isCheckedOrNotButtonAction), for: UIControl.Event.touchUpInside)
         return result
     }()
-    
     private lazy var isPasteViewContainer: UIStackView = {
         let result = UIStackView()
         result.axis = .horizontal
@@ -103,12 +97,11 @@ class NewLandingVC: BaseVC {
         }
         return result
     }()
-    
     private lazy var bottomView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
-        stackView.set(.width, to: 100)
+        stackView.set(.width, to: 80)
         return stackView
     }()
     
@@ -138,11 +131,11 @@ class NewLandingVC: BaseVC {
         view.addSubview(isbackgroundImg)
         
         let spacer1 = UIView()
-        spacer1HeightConstraint = spacer1.set(.height, to: 70)
+        spacer1HeightConstraint = spacer1.set(.height, to: 220)
         let spacer2 = UIView()
         spacer2HeightConstraint = spacer2.set(.height, to: isIPhone5OrSmaller ? Values.smallSpacing : Values.veryLargeSpacing)
         let spacer3 = UIView()
-        spacer3HeightConstraint = spacer3.set(.height, to: 60)
+        spacer3HeightConstraint = spacer3.set(.height, to: 30)
         let spacer4 = UIView()
         spacer4HeightConstraint = spacer4.set(.height, to: isIPhone5OrSmaller ? Values.smallSpacing : Values.veryLargeSpacing)
         let spacer5 = UIView()
@@ -165,7 +158,7 @@ class NewLandingVC: BaseVC {
         let titleLabel0 = UILabel()
         titleLabel0.textColor = UIColor(hex: 0xFFFFFF)
         titleLabel0.font = Fonts.boldOpenSans(ofSize: 28)
-        titleLabel0.text = NSLocalizedString("Welcome to", comment: "")
+        titleLabel0.text = NSLocalizedString("WELCOME_TO_NEW", comment: "")
         
         // Set up Bchat logo
         let imageLogo = UIImageView()
@@ -183,19 +176,19 @@ class NewLandingVC: BaseVC {
         let hellotitleLabel = UILabel()
         hellotitleLabel.textColor = UIColor(hex: 0xFFFFFF)
         hellotitleLabel.font = Fonts.boldOpenSans(ofSize: 28)
-        hellotitleLabel.text = NSLocalizedString("Hello,", comment: "")
+        hellotitleLabel.text = NSLocalizedString("HELLO_NEW", comment: "")
         
         let titleLabel2 = UILabel()
         titleLabel2.textColor = UIColor(hex: 0xFFFFFF)
         titleLabel2.font = Fonts.boldOpenSans(ofSize: 28)
-        titleLabel2.text = NSLocalizedString("We're thrilled to have\nyou on board!", comment: "")
+        titleLabel2.text = NSLocalizedString("HELLO_SUBTITLE_NEW", comment: "")
         titleLabel2.numberOfLines = 0
         titleLabel2.lineBreakMode = .byWordWrapping
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = UIColor(hex: 0xFFFFFF)
         explanationLabel.font = Fonts.OpenSans(ofSize: 14)
-        explanationLabel.text = NSLocalizedString("Welcome to BChat, your private haven for seamless communication and connection.", comment: "")
+        explanationLabel.text = NSLocalizedString("HELLO_SUBTITLE_DECSC_NEW", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         // Set up spacers
@@ -275,7 +268,6 @@ class NewLandingVC: BaseVC {
         restoreButton.layer.cornerRadius = restoreButton.bounds.height / 2
     }
     
-    
     // MARK: - Navigation
     @objc private func isCheckedOrNotButtonAction() {
         isTermsAndConditionsButton.isSelected = !isTermsAndConditionsButton.isSelected
@@ -305,7 +297,6 @@ class NewLandingVC: BaseVC {
         }
     }
     
-    
     @objc private func isCreateButtonAction() {
         if isFlagValue == true {
             let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
@@ -313,7 +304,7 @@ class NewLandingVC: BaseVC {
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Terms_Condition_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-
+                
             })
         }
     }
@@ -323,7 +314,5 @@ class NewLandingVC: BaseVC {
         navigationflowTag = true
         navigationController!.pushViewController(restoreVC, animated: true)
     }
-    
-
 }
 

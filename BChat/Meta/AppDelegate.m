@@ -628,8 +628,6 @@ static NSTimeInterval launchStartedAt;
     UIViewController *rootViewController;
     BOOL navigationBarHidden = NO;
     if ([self.tsAccountManager isRegistered]) {
-//        NSString *savedValue = [[NSUserDefaults standardUserDefaults]
-//                                stringForKey:@"BChatPassword"];
         rootViewController = [HomeVC new];
         OWSAssertDebug(rootViewController);
         OWSNavigationController *navigationController =
@@ -637,21 +635,9 @@ static NSTimeInterval launchStartedAt;
         navigationController.navigationBarHidden = navigationBarHidden;
         self.window.rootViewController = navigationController;
         [UIViewController attemptRotationToDeviceOrientation];
-        
     } else {
-                rootViewController = [NewLandingVC new];
-                navigationBarHidden = NO;
-        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        LandingVC *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LandingVC"];
-//        [self.window makeKeyAndVisible];
-//        // Init YourNavigationController
-//        UINavigationController *navigationContoller = [[UINavigationController alloc] initWithRootViewController: loginViewController];
-//        loginViewController.navigationController.navigationBarHidden = NO;
-//        loginViewController.navigationController.navigationBar.backgroundColor = UIColor.blackColor;
-//        // Set rootViewController
-//        self.window.rootViewController = navigationContoller;
-        
+        rootViewController = [LandingNewVC new];
+        navigationBarHidden = NO;
     }
         OWSAssertDebug(rootViewController);
         OWSNavigationController *navigationController =

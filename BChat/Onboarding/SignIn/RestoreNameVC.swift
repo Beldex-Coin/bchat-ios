@@ -35,8 +35,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 14 : 14)
-        result.text = NSLocalizedString("Display Name", comment: "")
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.text = NSLocalizedString("DISPLAY_NAME_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         return result
@@ -45,8 +45,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoretitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 14 : 14)
-        result.text = NSLocalizedString("Pick a restore height", comment: "")
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         return result
@@ -55,8 +55,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var dateTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 14 : 14)
-        result.text = NSLocalizedString("Restore from Date", comment: "")
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.text = NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         return result
@@ -64,12 +64,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var displayNameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:"Enter Name", attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.set(.width, to: 343)
         result.layer.cornerRadius = 16
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
@@ -79,12 +78,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var restoreHeightTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:"Enter Block height to Restore", attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_BLOCK_HEIGHT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.set(.width, to: 343)
         result.layer.cornerRadius = 16
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
@@ -94,12 +92,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var restoreDateHeightTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:"Enter Date", attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_DATE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.set(.width, to: 343)
         result.layer.cornerRadius = 16
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
@@ -108,17 +105,14 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         let imageView = UIImageView(image: UIImage(named: "ic_calendar"))
         imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20) // Adjust the frame as needed
         imageView.contentMode = .scaleAspectFit // Set the content mode as needed
-        
         // Add tap gesture recognizer to the imageView
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
-        
         // Add some padding between the image and the text field
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
         result.rightView = paddingView
         result.rightViewMode = .always
-        
         // Set the rightView of the TextField to the created UIImageView
         result.rightView?.addSubview(imageView)
         return result
@@ -126,7 +120,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var isRestoreFromDateButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("  Restore from Date", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
         result.addTarget(self, action: #selector(isRestoreFromDateButtonAction), for: UIControl.Event.touchUpInside)
         // Set the image
@@ -155,7 +149,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("Restore", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? 18 : 18)
         result.addTarget(self, action: #selector(restoreButtonAction), for: UIControl.Event.touchUpInside)
         result.layer.cornerRadius = 16
@@ -164,18 +158,17 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.setTitleColor(.lightGray, for: .normal)
         return result
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.title = "Restore from seed"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-//        setUpGradientBackground()
-//        setUpNavBarStyle()
         view.backgroundColor = UIColor(hex: 0x11111A)
         recovery_seed.seed = seedPassing
         displayNameTextField.returnKeyType = .done
+        displayNameTextField.delegate = self
         restoreHeightTextField.delegate = self
         restoreDateHeightTextField.delegate = self
         restoreHeightTextField.keyboardType = .numberPad
@@ -253,9 +246,9 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }
     
     func datePickerTapped() {
-        datePicker.show("Select Date",
-                        doneButtonTitle: "Done",
-                        cancelButtonTitle: "Cancel",
+        datePicker.show(NSLocalizedString("SELECT_DATE__TITLE_NEW", comment: ""),
+                        doneButtonTitle: NSLocalizedString("DONE_BUTTON_NEW", comment: ""),
+                        cancelButtonTitle: NSLocalizedString("CANECEL_BUTTON_NEW", comment: ""),
                         maximumDate: Date(),
                         datePickerMode: .date) { [self] (date) in
             if let dt = date {
@@ -265,8 +258,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 self.restoreDateHeightTextField.text = formatter.string(from: dt)
                 let dateString = formatter.string(from: dt)
                 print("selected date---------String Formate--------------------->: ",dateString)
-//                let date = formatter.date(from: dateString)
-//                print("selected date---------date Formate--------------------->: ", date!)
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
@@ -305,7 +296,29 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         self.view.endEditing(true)
         return false
     }
-   
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField == displayNameTextField {
+            // displayNameTextField is mandatory, no need for additional check
+        } else if textField == restoreHeightTextField || textField == restoreDateHeightTextField {
+            // Either restoreHeightTextField or restoreDateHeightTextField is mandatory
+            let isRestoreHeightEmpty = restoreHeightTextField.text?.isEmpty ?? true
+            let isRestoreDateHeightEmpty = restoreDateHeightTextField.text?.isEmpty ?? true
+            if isRestoreHeightEmpty && isRestoreDateHeightEmpty {
+                // Display an error or take appropriate action
+                // Both restoreHeightTextField and restoreDateHeightTextField are empty
+                restoreButton.isUserInteractionEnabled = false
+                restoreButton.backgroundColor = UIColor(hex: 0x282836)
+                restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            } else {
+                // Allow further actions
+                restoreButton.isUserInteractionEnabled = true
+                restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
+                restoreButton.setTitleColor(UIColor.white, for: .normal)
+            }
+        }
+    }
+    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if(textField == restoreHeightTextField){
             let aSet = NSCharacterSet(charactersIn:"0123456789").inverted
@@ -379,14 +392,12 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     @objc private func isRestoreFromDateButtonAction() {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
-            isRestoreFromDateButton.setTitle(NSLocalizedString("  Restore from Date", comment: ""), for: UIControl.State.normal)
-            restoretitleLabel.text = NSLocalizedString("Pick a restore height", comment: "")
-            
+            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            restoretitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoretitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
             dateTitleLabel.isHidden = false
             restoreDateHeightTextField.isHidden = false
-            
             topStackView.addArrangedSubview(titleLabel)
             topStackView.addArrangedSubview(spacer1)
             topStackView.addArrangedSubview(displayNameTextField)
@@ -401,15 +412,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(spacer8)
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
         }else {
-            isRestoreFromDateButton.setTitle(NSLocalizedString("  Restore from Height", comment: ""), for: UIControl.State.normal)
-            restoretitleLabel.text = NSLocalizedString("Pick a restore height", comment: "")
-            
+            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            restoretitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
             dateTitleLabel.isHidden = true
             restoreDateHeightTextField.isHidden = true
             restoretitleLabel.isHidden = false
             restoreHeightTextField.isHidden = false
-            
             topStackView.addArrangedSubview(titleLabel)
             topStackView.addArrangedSubview(spacer1)
             topStackView.addArrangedSubview(displayNameTextField)
@@ -448,13 +457,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty { //
             let displayName = restoreHeightTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("restore height or date is missing", comment: ""))
+                return showError(title: NSLocalizedString("RESTORE_HEIGHT_DATE_IS_MISSING_NEW", comment: ""))
             }
         }
         if restoreHeightTextField.text!.count >= 9 {
             let displayName = restoreHeightTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("restore height is too long", comment: ""))
+                return showError(title: NSLocalizedString("RESTORE_HEIGHT_IS_LONG_MSG_NEW", comment: ""))
             }
         }
         if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil{
@@ -469,7 +478,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
-            showError(title: NSLocalizedString("enter either Restore height or Date", comment: ""))
+            showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != nil && dateText == ""{ //
             SaveUserDefaultsData.WalletRestoreHeight = restoreHeightTextField.text!
@@ -493,12 +502,9 @@ extension UIButton {
         let imageView = UIImageView(image: image)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .center
-
         addSubview(imageView)
-
         let length = CGFloat(15)
         titleEdgeInsets.right += length
-
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: self.titleLabel!.trailingAnchor, constant: 10),
             imageView.centerYAnchor.constraint(equalTo: self.titleLabel!.centerYAnchor, constant: 0),
