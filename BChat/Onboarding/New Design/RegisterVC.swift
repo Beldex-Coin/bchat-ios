@@ -112,7 +112,6 @@ class RegisterVC: BaseVC {
         view.backgroundColor = UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Register"
-        
         self.titleLabel.text = "Hey Name, Welcome to BChat"
         
         view.addSubViews(titleLabel)
@@ -121,7 +120,6 @@ class RegisterVC: BaseVC {
         view.addSubview(bChatInfoLabel)
         view.addSubViews(bottomView)
         view.addSubview(beldexInfoLabel)
-        
 
         topView.addSubview(bChatLabel)
         topView.addSubview(bChatIdLabel)

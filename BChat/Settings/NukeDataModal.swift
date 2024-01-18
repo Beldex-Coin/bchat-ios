@@ -10,9 +10,9 @@ final class NukeDataModal : Modal {
     // MARK: Components
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.text
-        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        result.text = NSLocalizedString("Clear All Data", comment: "")
+        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.text = "Clear all data"//NSLocalizedString("Clear All Data", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -32,9 +32,9 @@ final class NukeDataModal : Modal {
     
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        result.text = NSLocalizedString("This will clear all your BChat data from device.", comment: "")
+        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.text = "Are you sure you want to Permanently clear all data from this device?"//NSLocalizedString("This will clear all your BChat data from device.", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
@@ -43,15 +43,15 @@ final class NukeDataModal : Modal {
     
     private lazy var clearDataButton: UIButton = {
         let result = UIButton()
-        result.set(.height, to: Values.mediumButtonHeight)
-        result.layer.cornerRadius = Modal.buttonCornerRadius
-        if isDarkMode {
-            result.backgroundColor = Colors.destructive
-        }
-        result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
-        result.setTitle(NSLocalizedString("TXT_DELETE_TITLE", comment: ""), for: UIControl.State.normal)
+        result.set(.height, to: 46)
+        result.layer.cornerRadius = 23//Modal.buttonCornerRadius
+//        if isDarkMode {
+//            result.backgroundColor = Colors.destructive
+//        }
+        result.backgroundColor = UIColor(hex: 0x1C1C26)//Colors.destructive
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.setTitleColor(UIColor(hex: 0xFF3E3E), for: UIControl.State.normal)
+        result.setTitle("Clear", for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearAllData), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -106,8 +106,8 @@ final class NukeDataModal : Modal {
     
     private lazy var buttonStackViewContainer: UIView = {
         let result = UIView()
-        result.addSubview(buttonStackView2)
-        buttonStackView2.pin(to: result)
+//        result.addSubview(buttonStackView2)
+//        buttonStackView2.pin(to: result)
         result.addSubview(buttonStackView1)
         buttonStackView1.pin(to: result)
         return result
@@ -130,9 +130,10 @@ final class NukeDataModal : Modal {
     // MARK: Lifecycle
     override func populateContentView() {
         contentView.addSubview(mainStackView)
-        mainStackView.pin(.leading, to: .leading, of: contentView, withInset: Values.largeSpacing)
+        contentView.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        mainStackView.pin(.leading, to: .leading, of: contentView, withInset: 18)
         mainStackView.pin(.top, to: .top, of: contentView, withInset: Values.largeSpacing)
-        contentView.pin(.trailing, to: .trailing, of: mainStackView, withInset: Values.largeSpacing)
+        contentView.pin(.trailing, to: .trailing, of: mainStackView, withInset: 18)
         contentView.pin(.bottom, to: .bottom, of: mainStackView, withInset: mainStackView.spacing)
     }
     
