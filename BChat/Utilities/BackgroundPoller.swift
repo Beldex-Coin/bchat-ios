@@ -68,7 +68,7 @@ public final class BackgroundPoller : NSObject {
             return attempt(maxRetryCount: 4, recoveringOn: DispatchQueue.main) {
                 var namespaces: [Int] = []
                 let promises: [SnodeAPI.RawResponsePromise] = {
-                    if SnodeAPI.hardfork >= 19 && SnodeAPI.softfork >= 1 {
+                    if SnodeAPI.hardfork >= 18 && SnodeAPI.softfork >= 0 {
                         namespaces = [ SnodeAPI.closedGroupNamespace ]
                         return [ SnodeAPI.getRawMessages(from: snode, associatedWith: publicKey, authenticated: false) ]
                     }

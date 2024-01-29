@@ -62,7 +62,11 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     //MARK:- Wallet References
     //========================================================================================
 //    ,"publicnode5.rpcnode.stream:29095"
-    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]
+    // MAINNET
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"] //["149.102.156.174:19095"]
+    
+    // TESTNET
+//    var nodeArray = ["149.102.156.174:19095"]
     var randomNodeValue = ""
     var filteredAllTransactionarray : [TransactionItem] = []
     var filteredOutgoingTransactionarray : [TransactionItem] = []
@@ -174,12 +178,16 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
             self.fetchMarketsData(false)
         }
         //MARK:- Wallet Ref
-        init_syncing_wallet()
+        
         if WalletSharedData.sharedInstance.wallet != nil {
             if self.wallet == nil {
                 isSyncingUI = true
                 syncingIsFromDelegateMethod = false
+                self.closeWallet()
+                init_syncing_wallet()
             }
+        }else {
+            init_syncing_wallet()
         }
         // Selected Currency Code Implement
         if backAPISelectedCurrency == true {
@@ -339,7 +347,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     func resetScreen() {
         // Reset the screen to its initial state
         // For example, you can cancel any ongoing animations or undo any changes made during the swipe.
-        self.navigationController?.popToSpecificViewController(ofClass: HomeVC.self, animated: true)
+//        self.navigationController?.popToSpecificViewController(ofClass: HomeVC.self, animated: true)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -448,6 +456,26 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
         fromDate = ""
         toDate = ""
         self.backApiRescanVC = false
+        
+        btnAllRef2 = true
+        btnSendRef2 = false
+        btnReceiveRef2 = false
+        self.incomingButton.isSelected = true
+        self.outgoingButton.isSelected = true
+        let checkBox = isLightMode ? "icCheck_box" : "ic_Check_box_white"
+        incomingImageView.image = UIImage(named: checkBox)!
+        outgoingImageView.image = UIImage(named: checkBox)!
+        UserDefaults.standard.setValue(nil, forKey: "btnclicked")
+        
+        
+        self.noTransaction = false
+        self.isFilter = false
+        if let datePickerView = self.txttodate.inputView as? UIDatePicker {
+            datePickerView.minimumDate = nil
+        }
+        filteredAllTransactionarray = []
+        filteredOutgoingTransactionarray = []
+        filteredIncomingTransactionarray = []
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -778,39 +806,41 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     
     // MARK: - BackScreen Func
     @objc func backHomeScreen(sender: UIBarButtonItem) {
-        if syncedflag == false {
-            let alert = UIAlertController(title: "Wallet is syncing...", message: "If you close the wallet, synchronization will be paused.Are you sure you want to exit the wallet?", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                
-            })
-            alert.addAction(cancel)
-            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
-                let homeVC = HomeVC()
-                self.navigationController!.setViewControllers([ homeVC ], animated: true)
-            })
-            alert.addAction(exit)
-            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-            DispatchQueue.main.async(execute: {
-                self.present(alert, animated: true)
-            })
-        }else {
-            let alert = UIAlertController(title: "Are you sure you want to exit the wallet?", message: "", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                
-            })
-            alert.addAction(cancel)
-            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
-                let homeVC = HomeVC()
-                self.navigationController!.setViewControllers([ homeVC ], animated: true)
-            })
-            alert.addAction(exit)
-            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
-            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-            DispatchQueue.main.async(execute: {
-                self.present(alert, animated: true)
-            })
-        }
+        let homeVC = HomeVC()
+        self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//        if syncedflag == false {
+//            let alert = UIAlertController(title: "Wallet is syncing...", message: "If you close the wallet, synchronization will be paused.Are you sure you want to exit the wallet?", preferredStyle: .alert)
+//            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+//
+//            })
+//            alert.addAction(cancel)
+//            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
+//                let homeVC = HomeVC()
+//                self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//            })
+//            alert.addAction(exit)
+//            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
+//            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
+//            DispatchQueue.main.async(execute: {
+//                self.present(alert, animated: true)
+//            })
+//        }else {
+//            let alert = UIAlertController(title: "Are you sure you want to exit the wallet?", message: "", preferredStyle: .alert)
+//            let cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+//
+//            })
+//            alert.addAction(cancel)
+//            let exit = UIAlertAction(title: "Exit", style: .default, handler: { action in
+//                let homeVC = HomeVC()
+//                self.navigationController!.setViewControllers([ homeVC ], animated: true)
+//            })
+//            alert.addAction(exit)
+//            cancel.setValue(isLightMode ? UIColor.black : UIColor.white, forKey: "titleTextColor")
+//            exit.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
+//            DispatchQueue.main.async(execute: {
+//                self.present(alert, animated: true)
+//            })
+//        }
     }
     
     // MARK: - Navigation

@@ -291,7 +291,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         loading.stopAnimating()
     }
     
-    //confirm sending Button Tapped
+    //confirm sending Button Tapped 22
     @IBAction func confirmsendingButtonTapped(_ sender: UIButton) {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             loading.startAnimating()
@@ -318,7 +318,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         }
     }
 
-    //success Button Tapped
+    //success Button Tapped 33
     @IBAction func successButtonTapped(_ sender: UIButton) {
         self.navigationController?.popToSpecificViewController(ofClass: MyWalletHomeVC.self, animated: true)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "syncWallet"), object: nil)
@@ -330,7 +330,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         vc.flagSendAddress = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    //send Transation Button Tapped
+    //send Transation Button Tapped 11
     @IBAction func sendTransationButtonTapped(_ sender: UIButton) {
         if confirmSendingPopView.isHidden == false {
             btnsend.isUserInteractionEnabled = false

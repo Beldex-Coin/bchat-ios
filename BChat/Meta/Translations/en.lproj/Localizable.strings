@@ -378,14 +378,20 @@
 "SETTINGS_CALLS" = "Voice and video calls";
 /* Setting for enabling & disabling wallet. */
 "SETTINGS_WALLET" = "Start Wallet";
+/* Setting for Pay as you Chat wallet. */
+"SETTINGS_WALLET_PAY_AS_YOU_CHAT" = "Pay as you chat";
 /* Footer for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_FOOTER" = "Allow access to accept voice and video calls from other users.";
 /* Footer for setting for enabling & disabling wallet. */
 "SETTINGS_WALLET_FOOTER" = "Enabling wallet will allow you to send and receive BDX";
+/* Footer for setting for Pay as you Chat wallet. */
+"SETTINGS_WALLET_FOOTER_PAY_AS_YOU_CHAT" = "Enabling 'Pay As You Chat' will allow you to send and receive BDX right from the chat window";
 /* Header for setting for enabling & disabling voice & video calls. */
 "SETTINGS_CALLS_HEADER" = "Calls";
 /* Header for setting for enabling & disabling wallet. */
 "SETTINGS_WALLET_HEADER" = "Wallet (BETA)";
+/* Header for setting for Pay as you Chat wallet. */
+"SETTINGS_WALLET_HEADER_PAY_AS_YOU_CHAT" = "PAY AS YOU CHAT";
 /* table section header */
 "SETTINGS_NOTIFICATION_CONTENT_TITLE" = "Notification Content";
 /* Label for the 'read receipts' setting. */
@@ -657,3 +663,6 @@
 "modal_call_permission_request_explanation" = "You can enable the 'Voice and video calls' permission in the Privacy Settings.";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_TITLE" = "Oops, an error occurred";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_SUBTITLE" = "Please try again later";
+"modal_pay_as_you_chat_permission_request_title" = "Pay As You Chat";
+"modal_pay_as_you_chat_permission_request_explanation" = "To disable pay as you chat, go to Settings -> Wallet Settings -> Pay As You Chat to use this option";
+"vc_ok_title" = "Ok";

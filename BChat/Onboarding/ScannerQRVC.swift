@@ -3,7 +3,7 @@
 import UIKit
 import AVFoundation
 
-class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate {
+class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
     
     @IBOutlet weak var scannerView: QRScannerView! {
         didSet {
@@ -11,6 +11,12 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
             scannerView.layer.cornerRadius = 14
         }
     }
+    
+    
+    @IBOutlet weak var selectImageButton: UIButton!
+    
+    var imagePicker = UIImagePickerController()
+    
     var qrData: QRData? = nil {
         didSet {
             if qrData != nil {
@@ -29,6 +35,7 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
+        selectImageButton.layer.cornerRadius = 6
         
         self.title = "Scan QR Code"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -130,6 +137,57 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
         alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
+    
+    @IBAction func selectImageButtonAction(sender:UIButton){
+        if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
+            print("Button capture")
+            
+            self.openCamera(UIImagePickerController.SourceType.photoLibrary)
+            imagePicker.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        }
+    }
+    
+    func openCamera(_ sourceType: UIImagePickerController.SourceType) {
+        imagePicker.sourceType = sourceType
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard
+            let qrcodeImg = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage),
+            let detector: CIDetector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy:CIDetectorAccuracyHigh]),
+            let ciImage: CIImage = CIImage(image:qrcodeImg),
+            let features = detector.features(in: ciImage) as? [CIQRCodeFeature]
+        else {
+            print("Something went wrong")
+            return
+        }
+        var qrCodeLink = ""
+        features.forEach { feature in
+            if let messageString = feature.messageString {
+                qrCodeLink += messageString
+            }
+        }
+        if qrCodeLink.isEmpty {
+            print("qrCodeLink is empty!")
+            self.showToastMsg(message: "invalid QR Code", seconds: 1.0)
+        } else {
+            print("message: \(qrCodeLink)")
+            if ECKeyPair.isValidHexEncodedPublicKey(candidate: qrCodeLink) {
+                startNewDM(with: qrCodeLink)
+            } else {
+                self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
+            }
+        }
+        self.dismiss(animated: true)
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+ 
 }
 extension ScannerQRVC: QRScannerViewDelegate {
     func qrScanningDidStop() {}

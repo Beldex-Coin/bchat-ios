@@ -364,7 +364,12 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
     } else if (self.paymentTxnid != nil) {
         if (self.paymentAmount != nil) {
             NSString *str = self.paymentAmount;
-            str = [str stringByAppendingString: @" BDX Received"];
+            NSString *className = NSStringFromClass([self class]);
+            if ([className isEqualToString:@"TSOutgoingMessage"]) {
+                str = [str stringByAppendingString: @" BDX Send"];
+            } else {
+                str = [str stringByAppendingString: @" BDX Received"];
+            }
             return str;
         }else {
             return @"Payment";

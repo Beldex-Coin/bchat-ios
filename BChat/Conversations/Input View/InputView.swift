@@ -7,7 +7,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         case textOnly
         case none
     }
-    
+    let thread: TSThread
     private weak var delegate: InputViewDelegate?
     var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool)? { didSet { handleQuoteDraftChanged() } }
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
@@ -44,6 +44,20 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
     }()
+    
+    private lazy var payAsChatButton: InputViewButton = {
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
+        result.accessibilityLabel = NSLocalizedString("", comment: "")
+        result.accessibilityHint = NSLocalizedString("", comment: "")
+        // Create and add the circular progress view
+        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        result.addSubview(progressView)
+        return result
+    }()
+    
+    private var progressView: CircularProgressView? {
+        return payAsChatButton.subviews.compactMap { $0 as? CircularProgressView }.first
+    }
     
     private lazy var sendButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
@@ -100,11 +114,17 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private static let linkPreviewViewInset: CGFloat = 6
     
     // MARK: Lifecycle
-    init(delegate: InputViewDelegate) {
+    init(delegate: InputViewDelegate,thread: TSThread) {
         self.delegate = delegate
+        self.thread = thread
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
+    
+    // MARK: Lifecycle
+//    init(thread: TSThread, focusedMessageID: String? = nil) {
+//        self.thread = thread
+//    }
     
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
@@ -132,7 +152,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: sendButton) ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), container(for: sendButton) ])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
         bottomStackView.alignment = .center
@@ -166,7 +186,63 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Voice message button
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        self.hideOrShowPayAsYouChatButton()
     }
+    
+    
+    func hideOrShowPayAsYouChatButton() {
+        if SSKPreferences.areWalletEnabled {
+            if let contactThread: TSContactThread = thread as? TSContactThread {
+                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                    if contact.beldexAddress != nil {
+                        print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
+                        if SSKPreferences.arePayAsYouChatEnabled {
+                            payAsChatButton.isHidden = false
+                            progressView?.isHidden = false
+                            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+                                let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+                                guard let current = current, let total = total else { return }
+                                // Calculate the percentage completion
+                                let percentage = CGFloat(current * 100) / CGFloat(total)
+                                // Set the progress bar
+                                let progress = (percentage / 100)
+                                let progress8 = progress * 0.8
+                                self.progressView?.setProgress(min(progress8, 1.0))
+                                if progress >= 1.0 {
+                                    timer.invalidate()
+                                    self.progressView?.isHidden = false
+                                }
+                            }
+                        } else {
+                            payAsChatButton.isHidden = false
+                            progressView?.isHidden = true
+                        }
+                    } else {
+                        payAsChatButton.isHidden = true
+                        progressView?.isHidden = true
+                    }
+                } else{
+                    payAsChatButton.isHidden = true
+                    progressView?.isHidden = true
+                }
+            } else {
+                payAsChatButton.isHidden = true
+                progressView?.isHidden = true
+            }
+        } else {
+            payAsChatButton.isHidden = true
+            progressView?.isHidden = true
+        }
+    }
+    
+    
+    
+    @objc func showPayAsYouChatButton(_ notification: Notification) {
+        self.hideOrShowPayAsYouChatButton()
+    }
+
     
     // MARK: Updating
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView) {
@@ -308,10 +384,19 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
-        if inputViewButton == sendButton { delegate?.handleSendButtonTapped() }
+        if inputViewButton == sendButton {
+            delegate?.handleSendButtonTapped()
+        }else if inputViewButton == payAsChatButton {
+            delegate?.handlePaySendButtonTapped()
+        }
     }
 
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
+        
+        if inputViewButton == payAsChatButton {
+            delegate?.payAsYouChatLongPress()
+        }
+        
         guard inputViewButton == voiceMessageButton else { return }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
@@ -415,8 +500,57 @@ protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, Voic
 
     func showLinkPreviewSuggestionModal()
     func handleSendButtonTapped()
+    func handlePaySendButtonTapped()
     func handleQuoteViewCancelButtonTapped()
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
     func didPasteImageFromPasteboard(_ image: UIImage)
+}
+extension String {
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        // Regular expression pattern for the specified format
+        let pattern = "^[0-9]{0,9}(\\.[0-9]{0,5})?$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: self)
+    }
+}
+
+
+class CircularProgressView: UIView {
+    private var progressLayer = CAShapeLayer()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configure()
+    }
+
+    private func configure() {
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        let circularPath = UIBezierPath(arcCenter: center, radius: bounds.width / 2, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
+        
+        // Background layer
+        let backgroundLayer = CAShapeLayer()
+        backgroundLayer.path = circularPath.cgPath
+        backgroundLayer.strokeColor = Colors.bchatPlaceholderColor.cgColor
+        backgroundLayer.lineWidth = 2.2
+        backgroundLayer.fillColor = UIColor.clear.cgColor
+        layer.addSublayer(backgroundLayer)
+        
+        progressLayer.path = circularPath.cgPath
+        progressLayer.strokeColor = Colors.accent.cgColor
+        progressLayer.lineWidth = 2.2
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeEnd = 0.0
+        layer.addSublayer(progressLayer)
+    }
+
+    func setProgress(_ progress: CGFloat) {
+        progressLayer.strokeEnd = progress
+    }
 }

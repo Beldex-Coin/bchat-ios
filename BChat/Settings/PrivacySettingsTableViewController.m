@@ -230,7 +230,7 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
     [walletOption
         addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"SETTINGS_WALLET",
                                                      @"Setting for enabling & disabling wallet.")
-                    accessibilityIdentifier:[NSString stringWithFormat:@"settings.privacy.%@", @"calls"]
+                    accessibilityIdentifier:[NSString stringWithFormat:@"settings.privacy.%@", @"walletEnable"]
                     isOnBlock:^{
                         return [SSKPreferences areWalletEnabled];
                     }
@@ -243,6 +243,25 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
     walletOption.footerTitle = NSLocalizedString(
         @"SETTINGS_WALLET_FOOTER", @"Footer for setting for enabling & disabling wallet.");
     [contents addSection:walletOption];
+    
+    //Pay-As-U-Chat Option
+    OWSTableSection *payAsYouChat = [OWSTableSection new];
+    [payAsYouChat
+        addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"SETTINGS_WALLET_PAY_AS_YOU_CHAT",
+                                                     @"Setting for Pay as you Chat wallet.")
+                    accessibilityIdentifier:[NSString stringWithFormat:@"settings.privacy.%@", @"payChat"]
+                    isOnBlock:^{
+                        return [SSKPreferences arePayAsYouChatEnabled];
+                    }
+                    isEnabledBlock:^{
+        return [SSKPreferences areWalletEnabled];
+                    }
+                    target:weakSelf
+                    selector:@selector(didTogglePayAsYouChat:)]];
+//    payAsYouChat.headerTitle = [NSString stringWithFormat:@"%@", NSLocalizedString( @"SETTINGS_WALLET_HEADER_PAY_AS_YOU_CHAT", @"Header for setting for Pay as you Chat wallet.")];
+    payAsYouChat.footerTitle = NSLocalizedString(
+        @"SETTINGS_WALLET_FOOTER_PAY_AS_YOU_CHAT", @"Footer for setting for Pay as you Chat wallet.");
+    [contents addSection:payAsYouChat];
 
     self.contents = contents;
 }
@@ -350,6 +369,45 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
     BOOL enabled = sender.isOn;
     OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
     SSKPreferences.areWalletEnabled = enabled;
+    [self updateTableContents];
+//    [self.tableView reloadData];
+    
+}
+
+- (void)didTogglePayAsYouChat:(UISwitch *)sender
+{
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    NSString *myString = [prefs stringForKey:@"WalletPassword"];
+    if ([myString isEqualToString:@""] || myString == nil || [myString isKindOfClass:[NSNull class]]) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Setup Pin", @"Alert title")
+                                                                                 message:NSLocalizedString(@"Please set up wallet pin to enable pay as you chat feature.", @"Alert message")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button title")
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(@"User tapped Cancel");
+        }];
+        [alertController addAction:cancelAction];
+        NSLog(@"User tapped Yes");
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Setup", @"Setup button title")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(@"User tapped Yes");
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            MyWalletPasscodeVC *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyWalletPasscodeVC"];
+            controller.isfromPayasUChat = YES;
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }];
+        [alertController addAction:yesAction];
+        // Present the alert
+        [self presentViewController:alertController animated:YES completion:nil];
+    } else {
+        BOOL enabled = sender.isOn;
+        OWSLogInfo(@"toggled to: %@", (enabled ? @"ON" : @"OFF"));
+        SSKPreferences.arePayAsYouChatEnabled = enabled;
+    }
 }
 
 - (void)isScreenLockEnabledDidChange:(UISwitch *)sender

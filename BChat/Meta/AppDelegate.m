@@ -220,29 +220,72 @@ static NSTimeInterval launchStartedAt;
     
     [self setUpCallHandling];
     
-//    // This code will App Update Version
-//    [self needsUpdate];
-    
-    
     return YES;
 }
 
-//-(BOOL) needsUpdate{
-//    NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
-//    NSString* appID = infoDictionary[@"CFBundleIdentifier"];
-//    NSURL* url = [NSURL URLWithString:[NSString stringWithFormat:@"http://itunes.apple.com/lookup?bundleId=%@", appID]];
-//    NSData* data = [NSData dataWithContentsOfURL:url];
-//    NSDictionary* lookup = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-//    if ([lookup[@"resultCount"] integerValue] == 1){
-//        NSString* appStoreVersion = lookup[@"results"][0][@"version"];
-//        NSString* currentVersion = infoDictionary[@"CFBundleShortVersionString"];
-//        if (![appStoreVersion isEqualToString:currentVersion]){
-//            NSLog(@"Need to update [%@ != %@]", appStoreVersion, currentVersion);
-//            return YES;
-//        }
-//    }
-//    return NO;
-//}
+- (void)forceUpdateIsNeeded {
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    // You need to replace "your_app_id" with your actual App Store ID
+    [self getAppStoreVersionWithCompletion:^(NSString *appStoreVersion) {
+        if (appStoreVersion && [currentVersion compare:appStoreVersion options:NSNumericSearch] == NSOrderedDescending) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self promptForUpdate];
+            });
+        }
+    }];
+}
+
+- (void)getAppStoreVersionWithCompletion:(void (^)(NSString *appStoreVersion))completion {
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"https://itunes.apple.com/lookup?bundleId=%@", bundleIdentifier]];
+    NSURLSession *session = [NSURLSession sharedSession];
+    [[session dataTaskWithURL:url
+            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (data) {
+            NSError *jsonError;
+            NSDictionary *jsonResponse = [NSJSONSerialization JSONObjectWithData:data
+                                                                         options:NSJSONReadingAllowFragments
+                                                                           error:&jsonError];
+            if (!jsonError) {
+                NSArray *results = jsonResponse[@"results"];
+                if (results.count > 0) {
+                    NSString *appStoreVersion = results[0][@"version"];
+                    completion(appStoreVersion);
+                    return;
+                }
+            }
+        }
+        completion(nil);
+    }] resume];
+}
+
+- (void)promptForUpdate {
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:NSLocalizedString(@"Update Required", @"Title for the update alert")
+                                          message:NSLocalizedString(@"A new version of the app is available. Please update to the latest version to continue using the app.", @"Message for the update alert")
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *updateAction = [UIAlertAction
+                                   actionWithTitle:NSLocalizedString(@"Update", @"Title for the update button")
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+        [self openAppStore];
+    }];
+    [alertController addAction:updateAction];
+    [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+- (void)openAppStore {
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    NSURL *appStoreURL = [NSURL URLWithString:[NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", bundleIdentifier]];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:appStoreURL]) {
+        [[UIApplication sharedApplication] openURL:appStoreURL options:@{} completionHandler:nil];
+    } else {
+        NSLog(@"Unable to open App Store URL");
+    }
+}
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     OWSAssertIsOnMainThread();
@@ -277,6 +320,9 @@ static NSTimeInterval launchStartedAt;
 
     // On every activation, clear old temp directories.
     ClearOldTemporaryDirectories();
+    
+    // This Code will App Update Version
+//    [self forceUpdateIsNeeded];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -770,11 +816,11 @@ static NSTimeInterval launchStartedAt;
             break;
         }
     }
-    if (LKAppModeUtilities.isSystemDefault) {
-        if (@available(iOS 13.0, *)) {
-            window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
-        }
-    }
+//    if (LKAppModeUtilities.isSystemDefault) {
+//        if (@available(iOS 13.0, *)) {
+//            window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
+//        }
+//    }
     [NSNotificationCenter.defaultCenter postNotificationName:NSNotification.appModeChanged object:nil];
 }
 

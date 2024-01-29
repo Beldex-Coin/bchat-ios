@@ -64,6 +64,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 self.inputAccessoryView?.alpha = 0
                 present(callVC, animated: true, completion: nil)
             } else {
+                snInputView.isHidden = true
                 let callPermissionRequestModal = CallPermissionRequestModal()
                 self.navigationController?.present(callPermissionRequestModal, animated: true, completion: nil)
             }
@@ -526,6 +527,40 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
+        inputTextView.textColor = Colors.text
+        if newText != "" && newText.isNumeric == true && newText.filter({ $0 == "." }).count <= 1 {
+            if WalletSharedData.sharedInstance.wallet != nil {
+                if SSKPreferences.areWalletEnabled {
+                    let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
+                    let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
+                    if blockChainHeight == daemonBlockChainHeight {
+                        if SSKPreferences.areWalletEnabled {
+                            if let contactThread: TSContactThread = thread as? TSContactThread {
+                                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
+                                    if contact.beldexAddress != nil {
+                                        if SSKPreferences.arePayAsYouChatEnabled {
+                                            if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
+                                                customizeSlideToOpen.isHidden = false
+                                                inputTextView.textColor = Colors.accent
+                                            } else {
+                                                customizeSlideToOpen.isHidden = true
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    customizeSlideToOpen.isHidden = true
+                                }
+                            }
+                        }
+                    } else {
+                        customizeSlideToOpen.isHidden = true
+                    }
+                    print("Height-->",blockChainHeight,daemonBlockChainHeight)
+                }
+            }
+        } else {
+            customizeSlideToOpen.isHidden = true
+        }
         updateMentions(for: newText)
     }
 
@@ -658,6 +693,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     confirmDownload()
                 } else {
+                    guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
+                        let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
+                    let albumView = cell.subviews[5]
+                    let albumCheck = gestureRecognizer.location(in: albumView)
+                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                        return
+                    }
                     playOrPauseAudio(for: viewItem)
                 }
             case .mediaMessage:
@@ -671,6 +713,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     guard let albumView = cell.albumView else { return }
                     let locationInCell = gestureRecognizer.location(in: cell)
                     // Figure out which of the media views was tapped
+                    let albumCheck = gestureRecognizer.location(in: albumView)
+                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                        return
+                    }
                     let locationInAlbumView = cell.convert(locationInCell, to: albumView)
                     guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
                     if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
@@ -816,6 +862,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //            snInputView.becomeFirstResponder()
 //            UserDefaults.standard.removeObject(forKey: "TSIncomingMessageAmount")
 //        }else {
+        customizeSlideToOpen.isHidden = true
             var quoteDraftOrNil: OWSQuotedReplyModel?
             Storage.read { transaction in
                 quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
@@ -1088,10 +1135,19 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioPlayer.playbackRate = 1.5
         viewItem.lastAudioMessageView?.showSpeedUpLabel()
     }
+    
+    
+    func payAsYouChatLongPress() {
+        snInputView.isHidden = true
+        let payAsYouChatPermissionRequestModal = PayAsYouChatPermissionRequestModal()
+        self.navigationController?.present(payAsYouChatPermissionRequestModal, animated: true, completion: nil)
+    }
+    
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
         // Request permission if needed
+        self.customizeSlideToOpen.isHidden = true
         requestMicrophonePermissionIfNeeded() { [weak self] in
             self?.cancelVoiceMessageRecording()
         }

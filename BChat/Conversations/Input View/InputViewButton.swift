@@ -9,21 +9,24 @@ final class InputViewButton : UIView {
     private lazy var heightConstraint = set(.height, to: InputViewButton.size)
     private var longPressTimer: Timer?
     private var isLongPress = false
+    private let isPayButton: Bool
     
     // MARK: UI Components
     private lazy var backgroundView = UIView()
     
     // MARK: Settings
     static let size = CGFloat(40)
+    static let circularSize = CGFloat(33)
     static let expandedSize = CGFloat(48)
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
-    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false) {
+    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false) {
         self.icon = icon
         self.isSendButton = isSendButton
         self.delegate = delegate
         self.hasOpaqueBackground = hasOpaqueBackground
+        self.isPayButton = isPayButton
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         self.isAccessibilityElement = true
@@ -86,7 +89,7 @@ final class InputViewButton : UIView {
     }
     
     private func expand() {
-        animate(to: InputViewButton.expandedSize, glowColor: Colors.expandedButtonGlowColor, backgroundColor: Colors.accent)
+        animate(to: isPayButton ? InputViewButton.size : InputViewButton.expandedSize, glowColor: isPayButton ? UIColor.clear : Colors.expandedButtonGlowColor, backgroundColor: isPayButton ? UIColor.clear : Colors.accent)
     }
     
     private func collapse() {

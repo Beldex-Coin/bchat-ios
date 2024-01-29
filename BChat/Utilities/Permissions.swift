@@ -55,7 +55,7 @@ public func requestLibraryPermissionIfNeeded(onAuthorized: @escaping () -> Void)
             // FIXME: Rather than setting the app mode to light and then to dark again once we're done,
             // it'd be better to just customize the appearance of the image picker. There doesn't currently
             // appear to be a good way to do so though...
-            AppModeManager.shared.setCurrentAppMode(to: .light)
+//            AppModeManager.shared.setCurrentAppMode(to: .light)
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
                 DispatchQueue.main.async {
                     AppModeManager.shared.setCurrentAppMode(to: appMode)

@@ -3,6 +3,7 @@ import UIKit
 import SideMenu
 import SVGKit
 import BChatUIKit
+import Alamofire
 
 final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate {
     private var threads: YapDatabaseViewMappings!
@@ -98,6 +99,55 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         theImageView.image = namSvgImgVar.uiImage
         return theImageView
     }()
+    
+    //MARK:- Wallet References
+    //========================================================================================
+//    ,"publicnode5.rpcnode.stream:29095"
+    //MAINNET
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]
+    //TESTNET
+//    var nodeArray = ["149.102.156.174:19095"]
+    var randomNodeValue = ""
+    lazy var statusTextState = { return Observable<String>("") }()
+    lazy var conncetingState = { return Observable<Bool>(false) }()
+    lazy var refreshState = { return Observable<Bool>(false) }()
+    var syncedflag = false
+    private var connecting: Bool { return conncetingState.value}
+    private var currentBlockChainHeight: UInt64 = 0
+    private var daemonBlockChainHeight: UInt64 = 0
+    private var needSynchronized = false {
+        didSet {
+            guard needSynchronized, !oldValue,
+                  let wallet = self.wallet else { return }
+            wallet.saveOnTerminate()
+        }
+    }
+    private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
+    lazy var progressState = { return Observable<CGFloat>(0) }()
+    // MARK: - Properties (Private)
+    private var wallet: BDXWallet?
+    private var listening = false
+    private var isSyncingUI = false {
+        didSet {
+            guard oldValue != isSyncingUI else { return }
+            if isSyncingUI {
+//                RunLoop.main.add(timer, forMode: .common)
+            } else {
+//                timer.invalidate()
+            }
+        }
+    }
+    public lazy var loadingState = { Postable<Bool>() }()
+    private var SelectedDecimal = ""
+    private var SelectedBalance = ""
+    var mainbalance = ""
+    private var CurrencyValue: Double!
+    private var refreshDuration: TimeInterval = 60
+    private var marketsDataRequest: DataRequest?
+    var hashArray2 = [RecipientDomainSchema]()
+    var syncingIsFromDelegateMethod = true
+    var isdaemonHeight : Int64 = 0
+    var backApiRescanVC = false
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -195,12 +245,43 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
         reload()
+
+        if SSKPreferences.areWalletEnabled{
+            if UserDefaults.standard.domainSchemas.isEmpty {}else {
+                hashArray2 = UserDefaults.standard.domainSchemas
+            }
+            // randomElement node And Selected Node
+            if !SaveUserDefaultsData.SelectedNode.isEmpty {
+                randomNodeValue = SaveUserDefaultsData.SelectedNode
+            }else {
+                randomNodeValue = nodeArray.randomElement()!
+            }
+            SaveUserDefaultsData.FinalWallet_node = randomNodeValue
+            
+            if WalletSharedData.sharedInstance.wallet != nil {
+                if self.wallet == nil {
+                    isSyncingUI = true
+                    syncingIsFromDelegateMethod = false
+                }
+            }else {
+                init_syncing_wallet()
+            }
+            // Rescan Height Update in userdefaults work
+//            if backApiRescanVC == true {
+//                self.closeWallet()
+//                init_syncing_wallet()
+//            }
+        }else {
+            WalletSharedData.sharedInstance.wallet = nil
+            closeWallet()
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         newConversationButtonSet.collapse(withAnimation: true)
+//        self.backApiRescanVC = false
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -211,7 +292,104 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         reload()
     }
     
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
+    
+    //MARK:- Wallet func Connect Deamon
+    func init_syncing_wallet() {
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            conncetingState.value = true
+            let username = SaveUserDefaultsData.NameForWallet
+            let pwd = SaveUserDefaultsData.israndomUUIDPassword
+            WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
+                WalletSharedData.sharedInstance.wallet = nil
+                guard let strongSelf = self else { return }
+                switch result {
+                case .success(let wallet):
+                    strongSelf.wallet = wallet
+                    WalletSharedData.sharedInstance.wallet = wallet
+                    strongSelf.connect(wallet: wallet)
+                    strongSelf.syncedflag = true
+                case .failure(_):
+                    DispatchQueue.main.async {
+                        strongSelf.refreshState.value = true
+                        strongSelf.conncetingState.value = false
+                        strongSelf.syncedflag = false
+                    }
+                }
+            }
+        }
+    }
+    
+    func connect(wallet: BDXWallet) {
+        if !connecting {
+            self.syncedflag = false
+            self.conncetingState.value = true
+        }
+        wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
+            guard let `self` = self else { return }
+            if isConnected {
+                if let wallet = self.wallet {
+                    if SaveUserDefaultsData.WalletRestoreHeight == "" {
+                        let lastElementHeight = DateHeight.getBlockHeight.last
+                        let height = lastElementHeight!.components(separatedBy: ":")
+                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
+                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
+                    }else {
+                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
+                    }
+//                    if self.backApiRescanVC == true {
+//                        wallet.rescanBlockchainAsync()
+//                    }
+                    wallet.start()
+                }
+                self.listening = true
+            } else {
+                DispatchQueue.main.async {
+                    self.refreshState.value = true
+                    self.conncetingState.value = false
+                    self.listening = false
+                }
+            }
+        }
+    }
+    
+    private func synchronizedUI() {
+        syncedflag = true
+//        WalletSharedData.sharedInstance.wallet = nil
+    }
+    
+    // MARK: - Refresh Func
+    func refresh() {
+        refreshState.value = false
+        if let wallet = self.wallet {
+            if listening {
+                wallet.pasue()
+                wallet.start()
+            } else {
+                connect(wallet: wallet)
+            }
+        } else {
+            init_syncing_wallet()
+        }
+    }
+    
+    // MARK: - Close Wallet Func
+    private func closeWallet() {
+        guard let wallet = self.wallet else {
+            return
+        }
+        self.wallet = nil
+        if listening {
+            listening = false
+            wallet.pasue()
+        }
+        wallet.close()
+    }
     deinit {
+        isSyncingUI = false
+        closeWallet()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -596,6 +774,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             }
         }
         let conversationVC = ConversationVC(thread: thread)
+        conversationVC.isSyncingStatus = syncedflag
         let transition = CATransition()
         transition.duration = 0.5
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
@@ -700,6 +879,54 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             }
             threadViewModelCache[thread.uniqueId!] = threadViewModel
             return threadViewModel
+        }
+    }
+}
+
+extension HomeVC: BeldexWalletDelegate {
+    func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
+        print("Refreshed--->blockChainHeight-->\(wallet.blockChainHeight)---->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
+        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+        isdaemonHeight = Int64(wallet.blockChainHeight)
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            if wallet.isSynchronized == true {
+                self.isSyncingUI = false
+            }
+        }
+        if self.needSynchronized {
+            self.needSynchronized = !wallet.save()
+        }
+        taskQueue.async {
+            guard let wallet = self.wallet else { return }
+            let (balance, history) = (wallet.balance, wallet.history)
+            self.postData(balance: balance, history: history)
+        }
+        if daemonBlockChainHeight != 0 {
+            let difference = wallet.daemonBlockChainHeight.subtractingReportingOverflow(daemonBlockChainHeight)
+            guard !difference.overflow else { return }
+        }
+        DispatchQueue.main.async {
+            if self.conncetingState.value {
+                self.conncetingState.value = false
+            }
+            if wallet.isSynchronized {
+                self.synchronizedUI()
+            }
+        }
+    }
+    func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
+        print("NewBlock--currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
+        self.currentBlockChainHeight = currentHeight
+        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+        isdaemonHeight = Int64(wallet.daemonBlockChainHeight)
+        self.needSynchronized = true
+        self.isSyncingUI = true
+    }
+    private func postData(balance: String, history: TransactionHistory) {
+        let balance_modify = Helper.displayDigitsAmount(balance)
+        self.mainbalance = balance_modify
+        DispatchQueue.main.async { [self] in
+            self.tableView.reloadData()
         }
     }
 }

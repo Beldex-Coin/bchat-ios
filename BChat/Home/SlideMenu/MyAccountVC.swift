@@ -32,10 +32,17 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     private var displayNameToBeUploaded: String?
     private var isEditingDisplayName = false { didSet { handleIsEditingDisplayNameChanged() } }
     @IBOutlet weak var profilePictureView:UIImageView!
+    @IBOutlet weak var btnCloseProfile:UIButton!
+    @IBOutlet weak var btnRemovePicture:UIButton!
+    @IBOutlet weak var btnUpload:UIButton!
+    @IBOutlet weak var innerProfileImageView:UIImageView!
+    @IBOutlet weak var outerProfileView:UIView!
+    @IBOutlet weak var innerProfileView:UIView!
     @objc public var useFallbackPicture = false
     @objc public var openGroupProfilePicture: UIImage?
     @objc public var size: CGFloat = 30
     var imagePicker = UIImagePickerController()
+    var isProfileRemove = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +50,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         // Do any additional setup after loading the view.
         setUpGradientBackground()
         setUpNavBarStyle()
+        self.outerProfileView.isHidden = true
         
         self.title = "My Account"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -76,7 +84,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         
         // Display name label
         let nam = Storage.shared.getUser()?.name
-        displayNameTextField.text = nam?.firstCharacterUpperCase() ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        displayNameTextField.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         displayNameTextField.textColor = Colors.text
         displayNameTextField.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
@@ -112,11 +120,24 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         beldexaddressLabel.isUserInteractionEnabled = true
         beldexaddressLabel.addGestureRecognizer(tap1)
         
+        
+        let closeImage = UIImage(named: isLightMode ? "X" : "X")
+        let themeImage = closeImage?.withRenderingMode(.alwaysTemplate)
+        btnCloseProfile.setImage(themeImage, for: .normal)
+        btnCloseProfile.tintColor = isLightMode ? UIColor.black : UIColor.white
+        
+        innerProfileView.layer.cornerRadius = 6
+        innerProfileImageView.layer.cornerRadius = 6
+        btnRemovePicture.layer.cornerRadius = 6
+        btnUpload.layer.cornerRadius = 6
+        
         //Get Profile Pic
         let publicKey = getUserHexEncodedPublicKey()
         profilePictureView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
         profilePictureView.layer.cornerRadius = profilePictureView.frame.height/2
         // profilePictureView.layer.cornerRadius = 10
+        
+        innerProfileImageView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
         
         let profilePictureTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MyAccountVC.tappedMe))
         profilePictureView.addGestureRecognizer(profilePictureTapGestureRecognizer)
@@ -143,6 +164,17 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
     }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            if hitView === self.outerProfileView {
+                self.outerProfileView.isHidden = true
+            }
+        }
+    }
+    
+    
     @IBAction func shareAction(sender:UIButton){
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
         let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
@@ -285,7 +317,13 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
     private func updateProfile(isUpdatingDisplayName: Bool, isUpdatingProfilePicture: Bool) {
         let userDefaults = UserDefaults.standard
         let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
-        let profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
+        var profilePicture: UIImage?
+        if self.isProfileRemove {
+           profilePicture = openGroupProfilePicture
+        } else {
+           profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
+        }
+        
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
             OWSProfileManager.shared().updateLocalProfileName(name, avatarImage: profilePicture, success: {
                 if displayNameToBeUploaded != nil {
@@ -293,7 +331,15 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
                 }
                 if profilePictureToBeUploaded != nil {
                     userDefaults[.lastProfilePictureUpdate] = Date()
+                } else {
+                   let publicKey = getUserHexEncodedPublicKey()
+                    let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+                    self?.profilePictureView.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: self!.size)
+                    self?.isProfileRemove = false
                 }
+                let publicKey = getUserHexEncodedPublicKey()
+                self?.innerProfileImageView.image = self!.useFallbackPicture ? nil : (self?.openGroupProfilePicture ?? self?.getProfilePicture(of: self!.size, for: publicKey))
+                self?.outerProfileView.isHidden = true
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
@@ -306,6 +352,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
             }, failure: { error in
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
+                        self?.outerProfileView.isHidden = true
                         var isMaxFileSizeExceeded = false
                         if let error = error as? FileServerAPIV2.Error {
                             isMaxFileSizeExceeded = (error == .maxFileSizeExceeded)
@@ -340,7 +387,24 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         }
     }
     
-    @objc func tappedMe(){
+    
+    @IBAction func btnCloseAction(sender:UIButton){
+        self.outerProfileView.isHidden = true
+    }
+    
+    @IBAction func btnRemovePictureAction(sender:UIButton){
+        let publicKey = getUserHexEncodedPublicKey()
+        guard !publicKey.isEmpty else { return  }
+        if OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) == nil {
+            return
+        }
+        
+        self.isProfileRemove = true
+        self.outerProfileView.isHidden = true
+        clearAvatar()
+    }
+    
+    @IBAction func btnUploadAction(sender:UIButton){
         let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         let cameraAction = UIAlertAction(title: "Camera", style: UIAlertAction.Style.default) {
             UIAlertAction in
@@ -361,6 +425,11 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         self.present(alert, animated: true, completion: nil)
     }
     
+    
+    @objc func tappedMe(){
+        self.outerProfileView.isHidden = false
+    }
+    
     func openCamera(_ sourceType: UIImagePickerController.SourceType) {
         imagePicker.sourceType = sourceType
         self.present(imagePicker, animated: true, completion: nil)
@@ -375,6 +444,7 @@ class MyAccountVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UI
         profilePictureView.image = profilePictureToBeUploaded
         profilePictureView.contentMode = .scaleAspectFit
         imagePicker.dismiss(animated: true, completion: nil)
+        self.outerProfileView.isHidden = true
         updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
     

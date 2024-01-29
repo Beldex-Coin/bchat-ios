@@ -65,16 +65,18 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
             separator.backgroundColor = Colors.separator
             separator.set(.height, to: Values.separatorThickness)
             mainStackView.addArrangedSubview(separator)
-            tableView.set(.height, to: CGFloat(contacts.count * 60)) // A cell is exactly 65 points high
+            tableView.set(.height, to: CGFloat(contacts.count-1 * 60)) // A cell is exactly 65 points high
             tableView.set(.width, to: UIScreen.main.bounds.width)
             mainStackView.addArrangedSubview(tableView)
-            let scrollView = UIScrollView(wrapping: mainStackView, withInsets: UIEdgeInsets.zero)
-            scrollView.showsVerticalScrollIndicator = false
-            scrollView.delegate = self
-            view.addSubview(scrollView)
-            scrollView.set(.width, to: UIScreen.main.bounds.width)
-            scrollView.pin(to: view)
-            scrollView.isScrollEnabled = false
+            view.addSubview(mainStackView)
+            mainStackView.pin(to: view)
+//            let scrollView = UIScrollView(wrapping: mainStackView, withInsets: UIEdgeInsets.zero)
+//            scrollView.showsVerticalScrollIndicator = false
+//            scrollView.delegate = self
+//            view.addSubview(scrollView)
+//            scrollView.set(.width, to: UIScreen.main.bounds.width)
+//            scrollView.pin(to: view)
+//            scrollView.isScrollEnabled = false
         } else {
             let explanationLabel = UILabel()
             explanationLabel.textColor = Colors.text

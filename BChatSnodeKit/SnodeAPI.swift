@@ -36,8 +36,11 @@ public final class SnodeAPI : NSObject {
     private static let maxRetryCount: UInt = 8
     private static let minSwarmSnodeCount = 3
     
-    // MainNet links
-    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://38.242.196.72:19091" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    // MAINNET links
+    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    
+    // TESTNET links
+//    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
     
     private static let snodeFailureThreshold = 3
     private static let targetSwarmSnodeCount = 2
@@ -471,11 +474,11 @@ public final class SnodeAPI : NSObject {
         // Make the request
         let parameters: JSON = [
             "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey,
-           // "namespace": namespace,
-            "lastHash" : lastHash
-           // "timestamp" : timestamp,
-          //  "pubkey_ed25519" : ed25519PublicKey,
-           // "signature" : signature.toBase64()
+            "namespace": namespace,
+            "lastHash" : lastHash,
+            "timestamp" : timestamp,
+            "pubkey_ed25519" : ed25519PublicKey,
+            "signature" : signature.toBase64()
         ]
         return invoke(.getMessages, on: snode, associatedWith: publicKey, parameters: parameters)
     }
@@ -552,7 +555,7 @@ public final class SnodeAPI : NSObject {
                 }
                 
                 // Send closed group messages to default namespace as well
-                if hardfork == 19 && softfork == 0 && isClosedGroupMessage {
+                if hardfork == 18 && softfork == 0 && isClosedGroupMessage {
                     parameters["namespace"] = defaultNamespace
                     for targetSnode in targetSnodes {
                         let rawResponsePromise = attempt(maxRetryCount: maxRetryCount, recoveringOn: Threading.workQueue) {
