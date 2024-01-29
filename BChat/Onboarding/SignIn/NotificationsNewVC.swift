@@ -160,7 +160,7 @@ class NotificationTableCell: UITableViewCell {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = .blue
+        toggle.onTintColor = Colors.greenColor
         return toggle
     }()
 

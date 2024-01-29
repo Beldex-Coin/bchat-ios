@@ -178,20 +178,30 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
 //                let privacySettingsVC = PrivacySettingsTableViewController()
 //                navigationController!.pushViewController(privacySettingsVC, animated: true)
                 
-                let vc = SettingsNewVC()
+                let vc = BChatSettingsNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 2 {   //Notification
 //                let notificationSettingsVC = NotificationSettingsViewController()
 //                navigationController!.pushViewController(notificationSettingsVC, animated: true)
                 
-                let vc = NotificationsNewVC()
-                navigationController!.pushViewController(vc, animated: true)
+//                let vc = NotificationsNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
                 
 //                let vc = CustomGalleryVC()
 //                navigationController!.pushViewController(vc, animated: true)
                 
-//                let vc = WalletSendNewVC()
+//                let vc = RescanNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = WalletHomeNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = ChangeLogNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+                let vc = AboutNewVC()
+                navigationController!.pushViewController(vc, animated: true)
+                
             }else if indexPath.row == 3 {   //Message Requests
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()
                 self.navigationController?.pushViewController(viewController, animated: true)

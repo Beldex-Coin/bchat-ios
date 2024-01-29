@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icons8-connect 2.png",
+      "filename" : "share-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "share@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "share@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

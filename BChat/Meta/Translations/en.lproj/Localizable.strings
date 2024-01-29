@@ -722,3 +722,65 @@
 /* SocialGroupNewVC */
 "Enter_Group_Url_New" = "Enter Group URL";
 "Next_Button_New" = "Next";
+
+/* WalletAddressBookNewVC */
+"SEARCH_CONTACT_NEW" = "Search Contact";
+
+/* WalletNodeListVC */
+"REFRESH_BUTTON_NEW" = "Refresh";
+"ADD_NODE_BUTTON_NEW" = "Add Node +";
+
+/* WalletSettingsNewVC */
+"CURRENT_NODE_TITLE_NEW" = "Current Node";
+"ADDRESS_BOOK_TITLE_NEW" = "Address Book";
+"CHANGE_PIN_NEW" = "Change PIN";
+"SAVE_RECEIPIENT_ADDRESS" = "Save Recipient Address";
+
+/* RescanNewVC */
+"CURRENT_BLOCK_HEIGHT_NEW" = "Current Blockheight";
+"WALLET_DATE_ENTER_LABEL_NEW" = "Enter the date at which you created the wallet";
+"RESTORE_FROM_BLOCKHEIGHT" = "Restore from Blockheight";
+"RESCAN_BUTTON_TITLE" = "Rescan";
+"I_KNOW_THE_BLOCKHEIGHT" = "I Know the Blockheight";
+"I_KNOW_THE_DATE" = "I Know the Date";
+"WALLET_DATE_ENTER_LABEL_NEW2" = "Enter the blockheight at which you created\n the wallet";
+"WALLET_TITLE" = "Wallet";
+"INVALID_HEIGHT" = "Invalid BlockChainHeight";
+"OKEY_BUTTON" = "Okay";
+"PLEASE_PICK_RESTOREHEIGHT" = "Please pick a restore height or restore from date";
+
+/* ScanNewVC */
+"UPLOAD_FROM_GALLERY" = "Upload from gallery";
+"SCAN_SUB_TITLE" = "Scan a receiver’s QR Code to send BDX. QR Codes can be found by clicking on receiver button in\n Wallet Dashboard.";
+"COULDN_NOT_JOIN" = "Couldn't Join";
+"INVALID_QR_CODE" = "invalid QR Code";
+"ERROR_MSG" = "Error";
+"ERROR_SCANNING_PLS_TRY_AGAIN" = "Scanning Failed. Please try again";
+"VALID_URL_CHECKING" = "Please check the URL you entered and try again.";
+
+/* WalletReceiveNewVC */
+"BELDEX_ADDRESS" = "Beldex Address";
+"ENTER_BDX_AMOUNT" = "Enter BDX Amount";
+
+/* WalletSendNewVC */
+"TOTAL_BALANCE" = "Total Balance";
+"MAX_BUTTON" = "Max";
+"TRANSACTION_PRIORITY" = "Transaction Priority";
+"FLASH_BUTTON" = "Flash";
+"ESTIMATED_FEE" = "Estimated Fee :";
+
+/* WalletHomeNewVC */
+"TRANSACTION_LABEL" = "Transactions";
+"PLEASE_WAIT_WHILE_WALLET_SYNCING" = "Please wait while wallet getting synced";
+"NO_TRANSACTION_MSG" = "No Transactions yet!";
+"AFTER_YOUR_FIRST_TRANSATION_VIEW" = "After your first transaction,\n you will be able to view it here.";
+"INCOMING_BUTTON" = "incoming";
+"OUTGOING_BUTTON" = "outgoing";
+"BY_DATE_BUTTON" = "By date";
+"DETAILS_MSG" = "Details";
+"TRANSACTION_ID" = "Transaction ID";
+"DATE_TITLE" = "Date";
+"HEIGHT_TITLE" = "Height";
+"AMOUNT_TITLE" = "Amount";
+"RECIPIENT_ADDRESS" = "Recipient Address";
+"RECEIVED_TITLE" = "Received";
