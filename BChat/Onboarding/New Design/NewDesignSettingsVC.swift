@@ -81,13 +81,15 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         if indexPath.row == 5 {
-            let vc = PayAsYouChatPopUpVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            let vc = NewMessageRequestVC()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         if indexPath.row == 6 {
-            let vc = PINSuccessPopUp()
+            let vc = NewAlertRecoverySeedVC()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        if indexPath.row == 7 {
+            let vc = DecimalsPopUpVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
