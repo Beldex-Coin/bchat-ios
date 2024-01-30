@@ -169,14 +169,39 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
             if indexPath.row == 0 { //My Account
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
-                self.navigationController?.pushViewController(vc, animated: true)
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+                
+                let vc = MyAccountNewVC()
+                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 1 {   //Settings
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                navigationController!.pushViewController(privacySettingsVC, animated: true)
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                navigationController!.pushViewController(privacySettingsVC, animated: true)
+                
+                let vc = BChatSettingsNewVC()
+                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 2 {   //Notification
-                let notificationSettingsVC = NotificationSettingsViewController()
-                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+//                let notificationSettingsVC = NotificationSettingsViewController()
+//                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+                
+//                let vc = NotificationsNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = CustomGalleryVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = RescanNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+                let vc = WalletHomeNewVC()
+                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = ChangeLogNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
+//                let vc = AboutNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
+                
             }else if indexPath.row == 3 {   //Message Requests
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()
                 self.navigationController?.pushViewController(viewController, animated: true)
