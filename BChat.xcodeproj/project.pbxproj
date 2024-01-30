@@ -347,18 +347,50 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */; };
+		810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */; };
+		810E87882B5919ED001133F9 /* ConfirmSendingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */; };
+		81134CF92B60D16000070127 /* NewMessageRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CF82B60D16000070127 /* NewMessageRequestVC.swift */; };
+		81134CFB2B61053300070127 /* NewMessageRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */; };
+		81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */; };
+		81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */; };
+		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
+		8123878E2B5A38C7002B4EB8 /* NodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */; };
+		8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */; };
+		8129ABEB2B579EA800417EE2 /* PINSuccessPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */; };
+		8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */; };
+		8129ABEF2B57DFD700417EE2 /* SyncInfoPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEE2B57DFD700417EE2 /* SyncInfoPopUpVC.swift */; };
+		8129ABF12B57E21C00417EE2 /* SyncingOptionPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABF02B57E21C00417EE2 /* SyncingOptionPopUpVC.swift */; };
+		812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */; };
+		812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */; };
+		813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */; };
 		81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		81423AA32A29E2B6001BBBFA /* BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A6F025539DE700C340D1 /* BChatMessagingKit.framework */; };
 		81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A59F255385C100C340D1 /* BChatSnodeKit.framework */; };
 		81423AB02A29E2C4001BBBFA /* BChatUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A679255388CC00C340D1 /* BChatUtilitiesKit.framework */; };
 		81423AB42A29E2C8001BBBFA /* SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33FD9AB255A548A00E217F9 /* SignalUtilitiesKit.framework */; };
+		814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */; };
+		814712142B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */; };
+		815427BA2B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */; };
+		815427BC2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */; };
 		815A7BF12A2F2BC400A430F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
+		8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164F10B2B3C280500590775 /* RegisterVC.swift */; };
 		816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816564BE2AA729C800477BC7 /* WalletHelper.swift */; };
+		817314782B4FEB410020E333 /* NewClearDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817314772B4FEB410020E333 /* NewClearDataVC.swift */; };
+		817DC5DD2B4E586600A37CC9 /* NewHopsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */; };
+		817DC5DF2B4E965700A37CC9 /* NewBlockedContactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */; };
+		817DC5E12B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */; };
 		818C2F682AF0FE1300202F05 /* AlertForWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818C2F672AF0FE1300202F05 /* AlertForWalletVC.swift */; };
 		818C2F6A2AF10A3800202F05 /* RecoverySeedForWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818C2F692AF10A3800202F05 /* RecoverySeedForWalletVC.swift */; };
 		819AE3982A29EB4800F15166 /* NotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC01A3D241F40AB00BC7C55 /* NotificationServiceExtension.swift */; };
 		819AE3992A29EB4800F15166 /* NSENotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1D74A927BCC16E0030B423 /* NSENotificationPresenter.swift */; };
 		819AE39A2A29EB4800F15166 /* NotificationServiceExtensionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDCFC07242186E700641C39 /* NotificationServiceExtensionContext.swift */; };
+		81DBDA022B5F7C740006C404 /* DisplayBalanceOptionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA012B5F7C740006C404 /* DisplayBalanceOptionVC.swift */; };
+		81DBDA042B5FB5B80006C404 /* DecimalsPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA032B5FB5B80006C404 /* DecimalsPopUpVC.swift */; };
+		81DBDA062B5FB8BB0006C404 /* FeePriorityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA052B5FB8BB0006C404 /* FeePriorityVC.swift */; };
+		81DBDA082B5FBA950006C404 /* CurrencyPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA072B5FBA950006C404 /* CurrencyPopUpVC.swift */; };
+		81FBC2422B4D3E6300B2CA3D /* NewDesignSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */; };
+		81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A13FC3642BE5D37A004D0EC8 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19942D14DEF67D588752ADB2 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework */; };
@@ -1479,12 +1511,44 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSuccessVC.swift; sourceTree = "<group>"; };
+		810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiatingTransactionVC.swift; sourceTree = "<group>"; };
+		810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSendingVC.swift; sourceTree = "<group>"; };
+		81134CF82B60D16000070127 /* NewMessageRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestVC.swift; sourceTree = "<group>"; };
+		81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestTableViewCell.swift; sourceTree = "<group>"; };
+		81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlertRecoverySeedVC.swift; sourceTree = "<group>"; };
+		81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecoverySeedVC.swift; sourceTree = "<group>"; };
+		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
+		8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeListVC.swift; sourceTree = "<group>"; };
+		8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordVC.swift; sourceTree = "<group>"; };
+		8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINSuccessPopUp.swift; sourceTree = "<group>"; };
+		8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableWalletVC.swift; sourceTree = "<group>"; };
+		8129ABEE2B57DFD700417EE2 /* SyncInfoPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInfoPopUpVC.swift; sourceTree = "<group>"; };
+		8129ABF02B57E21C00417EE2 /* SyncingOptionPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncingOptionPopUpVC.swift; sourceTree = "<group>"; };
+		812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSecretGroupVC.swift; sourceTree = "<group>"; };
+		812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretGroupTableViewCell.swift; sourceTree = "<group>"; };
+		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
 		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayAsYouChatPopUpVC.swift; sourceTree = "<group>"; };
+		814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSuccessPopUpVC.swift; sourceTree = "<group>"; };
+		815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupScreenVC.swift; sourceTree = "<group>"; };
+		815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupTableViewCell.swift; sourceTree = "<group>"; };
+		8164F10B2B3C280500590775 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		816564BE2AA729C800477BC7 /* WalletHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHelper.swift; sourceTree = "<group>"; };
+		817314772B4FEB410020E333 /* NewClearDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClearDataVC.swift; sourceTree = "<group>"; };
+		817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHopsVC.swift; sourceTree = "<group>"; };
+		817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlockedContactVC.swift; sourceTree = "<group>"; };
+		817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlockContactTableViewCell.swift; sourceTree = "<group>"; };
 		818C2F672AF0FE1300202F05 /* AlertForWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertForWalletVC.swift; sourceTree = "<group>"; };
 		818C2F692AF10A3800202F05 /* RecoverySeedForWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverySeedForWalletVC.swift; sourceTree = "<group>"; };
 		81934DA42A304A2C00505F24 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		81934DA82A304C9400505F24 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		81DBDA012B5F7C740006C404 /* DisplayBalanceOptionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayBalanceOptionVC.swift; sourceTree = "<group>"; };
+		81DBDA032B5FB5B80006C404 /* DecimalsPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecimalsPopUpVC.swift; sourceTree = "<group>"; };
+		81DBDA052B5FB8BB0006C404 /* FeePriorityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeePriorityVC.swift; sourceTree = "<group>"; };
+		81DBDA072B5FBA950006C404 /* CurrencyPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyPopUpVC.swift; sourceTree = "<group>"; };
+		81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSettingsVC.swift; sourceTree = "<group>"; };
+		81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
@@ -2814,6 +2878,45 @@
 			path = TurnServers;
 			sourceTree = "<group>";
 		};
+		813609CA2B3AFDA5004D3FAC /* New Design */ = {
+			isa = PBXGroup;
+			children = (
+				813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */,
+				8164F10B2B3C280500590775 /* RegisterVC.swift */,
+				8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */,
+				812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */,
+				812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */,
+				812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */,
+				815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */,
+				815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */,
+				81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */,
+				81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */,
+				817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */,
+				817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */,
+				817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */,
+				817314772B4FEB410020E333 /* NewClearDataVC.swift */,
+				814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */,
+				814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */,
+				8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */,
+				8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */,
+				8129ABEE2B57DFD700417EE2 /* SyncInfoPopUpVC.swift */,
+				8129ABF02B57E21C00417EE2 /* SyncingOptionPopUpVC.swift */,
+				810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */,
+				810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */,
+				810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */,
+				8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */,
+				81DBDA012B5F7C740006C404 /* DisplayBalanceOptionVC.swift */,
+				81DBDA032B5FB5B80006C404 /* DecimalsPopUpVC.swift */,
+				81DBDA052B5FB8BB0006C404 /* FeePriorityVC.swift */,
+				81DBDA072B5FBA950006C404 /* CurrencyPopUpVC.swift */,
+				81134CF82B60D16000070127 /* NewMessageRequestVC.swift */,
+				81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */,
+				81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */,
+				81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */,
+			);
+			path = "New Design";
+			sourceTree = "<group>";
+		};
 		9404664EC513585B05DF1350 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3524,6 +3627,7 @@
 			children = (
 				6049BEF12B58E808003DD410 /* NewWallet */,
 				608D65A02B3BE09F00EB88AB /* SignIn */,
+				813609CA2B3AFDA5004D3FAC /* New Design */,
 				607DCE3028AE2578003F9288 /* LandingVC.swift */,
 				607DCE3228AE3412003F9288 /* DisplayNameVC.swift */,
 				607DCE3C28AE4258003F9288 /* RecoverySeedNameVC.swift */,
@@ -5477,13 +5581,16 @@
 				452EC6DF205E9E30000E787C /* MediaGalleryViewController.swift in Sources */,
 				604C53332AF0FBC40010B0A0 /* MyWalletInstructionsVC.swift in Sources */,
 				4C1885D2218F8E1C00B67051 /* PhotoGridViewCell.swift in Sources */,
+				815427BC2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift in Sources */,
 				34D1F0501F7D45A60066283D /* GifPickerCell.swift in Sources */,
 				7B13E1EB2811138200BD4F64 /* PrivacySettingsTableViewController.swift in Sources */,
 				60C8E17B2B1062BE00755333 /* MTSlideToOpenView.swift in Sources */,
 				C3E5C2FA251DBABB0040DFFC /* EditSecretGroupVC.swift in Sources */,
 				7BAF54D027ACCEEC003D12F8 /* EmptySearchResultCell.swift in Sources */,
+				8129ABF12B57E21C00417EE2 /* SyncingOptionPopUpVC.swift in Sources */,
 				6007B5EF28ABC9DF0004BD61 /* Colors.swift in Sources */,
 				B8783E9E23EB948D00404FB8 /* UILabel+Interaction.swift in Sources */,
+				81FBC2422B4D3E6300B2CA3D /* NewDesignSettingsVC.swift in Sources */,
 				B893063F2383961A005EAA8E /* ScanQRCodeWrapperVC.swift in Sources */,
 				B879D449247E1BE300DB3608 /* PathVC.swift in Sources */,
 				B877E24626CA13BA0007970A /* CallVC+Camera.swift in Sources */,
@@ -5492,6 +5599,7 @@
 				451A13B11E13DED2000A50FD /* AppNotifications.swift in Sources */,
 				816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */,
 				6098CA802A1DCD44005A5502 /* WKActivityIndicatorView.swift in Sources */,
+				810E87882B5919ED001133F9 /* ConfirmSendingVC.swift in Sources */,
 				34D99CE4217509C2000AFB39 /* AppEnvironment.swift in Sources */,
 				607DCE3D28AE4258003F9288 /* RecoverySeedNameVC.swift in Sources */,
 				C328255225CA64470062D0A7 /* ContextMenuVC+ActionView.swift in Sources */,
@@ -5504,8 +5612,10 @@
 				600A272828B36B44001F9FFE /* Groupcell.swift in Sources */,
 				EF764C351DB67CC5000D9A87 /* UIViewController+Permissions.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* SyncPushTokensJob.swift in Sources */,
+				813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */,
 				B83524A525C3BA4B0089A44F /* InfoMessageCell.swift in Sources */,
 				B84A89BC25DE328A0040017D /* ProfilePictureVC.swift in Sources */,
+				81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */,
 				34386A54207D271D009F5D9C /* NeverClearView.swift in Sources */,
 				451166C01FD86B98000739BA /* AccountManager.swift in Sources */,
 				6049BF012B60E759003DD410 /* WalletAddressBookNewVC.swift in Sources */,
@@ -5514,12 +5624,15 @@
 				7B1581E6271FD2A100848B49 /* VideoPreviewVC.swift in Sources */,
 				607DCE3728AE35D0003F9288 /* EnterPinVC.swift in Sources */,
 				607DCE3928AE39C2003F9288 /* RecoveryVC.swift in Sources */,
+				817DC5DF2B4E965700A37CC9 /* NewBlockedContactVC.swift in Sources */,
 				B83F2B88240CB75A000A54AB /* UIImage+Scaling.swift in Sources */,
 				3430FE181F7751D4000EC51B /* GiphyAPI.swift in Sources */,
+				81134CFB2B61053300070127 /* NewMessageRequestTableViewCell.swift in Sources */,
 				340FC8AA204DAC8D007AEB0F /* NotificationSettingsViewController.m in Sources */,
 				607DCE3528AE356D003F9288 /* DisplayBChatIDsVC.swift in Sources */,
 				6049BEF52B592BA4003DD410 /* WalletReceiveNewVC.swift in Sources */,
 				7BAF54CE27ACCEEC003D12F8 /* Storage+RecentSearchResults.swift in Sources */,
+				815427BA2B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift in Sources */,
 				6098CA4F2A1DCB68005A5502 /* Observer.swift in Sources */,
 				4C090A1B210FD9C7001FD7F9 /* HapticFeedback.swift in Sources */,
 				6098CA702A1DCC9C005A5502 /* Keys.swift in Sources */,
@@ -5534,6 +5647,7 @@
 				603864E72A6E418E002CDAF3 /* WalletHomeXibCell.swift in Sources */,
 				34B0796D1FCF46B100E248C2 /* MainAppContext.m in Sources */,
 				6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */,
+				8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */,
 				34A8B3512190A40E00218A25 /* MediaAlbumView.swift in Sources */,
 				7B7CB18B270591630079FF93 /* ShareLogsModal.swift in Sources */,
 				6098CAC12A207DAB005A5502 /* MyWalletSettingsXibCell2.swift in Sources */,
@@ -5560,6 +5674,8 @@
 				7BA68909272A27BE00EFC32F /* BChatCall.swift in Sources */,
 				B835247925C38D880089A44F /* MessageCell.swift in Sources */,
 				B86BD08623399CEF000F5AE3 /* SeedModal.swift in Sources */,
+				81DBDA082B5FBA950006C404 /* CurrencyPopUpVC.swift in Sources */,
+				810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */,
 				34E3E5681EC4B19400495BAC /* AudioProgressView.swift in Sources */,
 				B8D0A26925E4A2C200C1835E /* Onboarding.swift in Sources */,
 				34D1F0521F7E8EA30066283D /* GiphyDownloader.swift in Sources */,
@@ -5568,6 +5684,7 @@
 				6052A3872B47C1E1007C99E4 /* SocialGroupNewVC.swift in Sources */,
 				6098CA672A1DCC42005A5502 /* BeldexSubAddress.m in Sources */,
 				6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */,
+				81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */,
 				6098CA4E2A1DCB68005A5502 /* AppLanguage.swift in Sources */,
 				B82149B825D60393009C0F2A /* BlockedModal.swift in Sources */,
 				346129991FD1E4DA00532771 /* SignalApp.m in Sources */,
@@ -5578,7 +5695,9 @@
 				6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */,
 				6098CA812A1DCD44005A5502 /* String + Ext.swift in Sources */,
 				6049BEF92B5A37B4003DD410 /* RescanNewVC.swift in Sources */,
+				817DC5E12B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift in Sources */,
 				B8F5F72325F1B4CA003BF8D4 /* DownloadAttachmentModal.swift in Sources */,
+				8123878E2B5A38C7002B4EB8 /* NodeListVC.swift in Sources */,
 				C3DFFAC623E96F0D0058DAF8 /* Sheet.swift in Sources */,
 				6098CABC2A207DAB005A5502 /* MyWalletNodeVC.swift in Sources */,
 				608D65A22B3BE19C00EB88AB /* RestoreVC.swift in Sources */,
@@ -5609,9 +5728,12 @@
 				4CA485BB2232339F004B9E7D /* PhotoCaptureViewController.swift in Sources */,
 				34330AA31E79686200DF2FB9 /* OWSProgressView.m in Sources */,
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
+				814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */,
 				6040692328B4AEEB0094E74D /* RecoverySeedMenuVC.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
+				8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */,
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
+				812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
 				B8F5F71A25F1B35C003BF8D4 /* MediaPlaceholderView.swift in Sources */,
 				6098CAC62A207DAB005A5502 /* MyWalletSettingsXibCell3.swift in Sources */,
@@ -5627,6 +5749,7 @@
 				B848A4C5269EAAA200617031 /* UserDetailsSheet.swift in Sources */,
 				34B6A903218B3F63007C4606 /* TypingIndicatorView.swift in Sources */,
 				6016F9842A8214B7004C3A90 /* DateHeight + Ext.swift in Sources */,
+				810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */,
 				7BAF54CF27ACCEEC003D12F8 /* GlobalSearchViewController.swift in Sources */,
 				6040691B28B4ACCD0094E74D /* MyAccountVC.swift in Sources */,
 				B886B4A72398B23E00211ABE /* QRCodeVC.swift in Sources */,
@@ -5637,6 +5760,7 @@
 				C331FFF42558FF0300070591 /* PNOptionView.swift in Sources */,
 				4C4AE6A1224AF35700D4AF6F /* SendMediaNavigationController.swift in Sources */,
 				45F32C222057297A00A300D5 /* MediaDetailViewController.m in Sources */,
+				812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */,
 				B82149C125D605C6009C0F2A /* InfoBanner.swift in Sources */,
 				6098CA912A206F05005A5502 /* KeypadView.swift in Sources */,
 				C3DAB3242480CB2B00725F25 /* SRCopyableLabel.swift in Sources */,
@@ -5658,6 +5782,7 @@
 				60376BF22B513344004A602F /* CustomGalleryVC.swift in Sources */,
 				7B7CB190270FB2150079FF93 /* MiniCallView.swift in Sources */,
 				B875885A264503A6000E60D0 /* JoinOpenGroupModal.swift in Sources */,
+				817314782B4FEB410020E333 /* NewClearDataVC.swift in Sources */,
 				B8CCF6432397711F0091D419 /* SettingsVC.swift in Sources */,
 				60505E8529F7CB1F00B0C4E5 /* SwiftAlertView.swift in Sources */,
 				6049BF052B62229A003DD410 /* AboutNewVC.swift in Sources */,
@@ -5695,6 +5820,7 @@
 				60376BDD2B4BBE98004A602F /* ChatNewVC.swift in Sources */,
 				3488F9362191CC4000E524CC /* MediaView.swift in Sources */,
 				B8569AC325CB5D2900DBA3DB /* ConversationVC+Interaction.swift in Sources */,
+				812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */,
 				3496955C219B605E00DCFE74 /* ImagePickerController.swift in Sources */,
 				C31D1DE32521718E005D4DA8 /* UserSelectionVC.swift in Sources */,
 				6098CAB12A207DAB005A5502 /* MyWalletScannerVC.swift in Sources */,
@@ -5702,10 +5828,12 @@
 				6098CA4D2A1DCB68005A5502 /* Observable.swift in Sources */,
 				C31A6C5C247F2CF3001123EF /* CGRect+Utilities.swift in Sources */,
 				4C21D5D6223A9DC500EF8A77 /* UIAlerts+iOS9.m in Sources */,
+				8129ABEF2B57DFD700417EE2 /* SyncInfoPopUpVC.swift in Sources */,
 				6007B5ED28ABC9DF0004BD61 /* CopyLabel.swift in Sources */,
 				B8269D3325C7A8C600488AB4 /* InputViewButton.swift in Sources */,
 				6049BEFB2B5B87AA003DD410 /* WalletHomeNewVC.swift in Sources */,
 				B8269D3D25C7B34D00488AB4 /* InputTextView.swift in Sources */,
+				81DBDA022B5F7C740006C404 /* DisplayBalanceOptionVC.swift in Sources */,
 				76EB054018170B33006006FC /* AppDelegate.m in Sources */,
 				340FC8B6204DAC8D007AEB0F /* OWSQRCodeScanningViewController.m in Sources */,
 				7B0EFDF0275084AA00FFAAE7 /* CallMessageCell.swift in Sources */,
@@ -5721,6 +5849,7 @@
 				6010E9F428C86A0F00600D1A /* Section.swift in Sources */,
 				4521C3C01F59F3BA00B4C582 /* TextFieldHelper.swift in Sources */,
 				340FC8AC204DAC8D007AEB0F /* PrivacySettingsTableViewController.m in Sources */,
+				8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */,
 				7B7CB18E270D066F0079FF93 /* IncomingCallBanner.swift in Sources */,
 				6007B5EE28ABC9DF0004BD61 /* UIColor+Ext.swift in Sources */,
 				B8569AE325CBB19A00DBA3DB /* DocumentView.swift in Sources */,
@@ -5737,12 +5866,16 @@
 				6007B5EB28ABC9DF0004BD61 /* QRData.swift in Sources */,
 				7B93D06D27CF175800811CB6 /* MessageRequestsCell.swift in Sources */,
 				7B93D07727CF1A8A00811CB6 /* MockDataGenerator.swift in Sources */,
+				81DBDA042B5FB5B80006C404 /* DecimalsPopUpVC.swift in Sources */,
 				7B4C75CD26BB92060000AC89 /* DeletedMessageView.swift in Sources */,
+				81DBDA062B5FB8BB0006C404 /* FeePriorityVC.swift in Sources */,
 				6040691528B4A8340094E74D /* QRCodeScanVC.swift in Sources */,
 				60D33B6329F7D9E7003CAE13 /* StringConstants.swift in Sources */,
 				B897621C25D201F7004F83B2 /* ScrollToBottomButton.swift in Sources */,
+				817DC5DD2B4E586600A37CC9 /* NewHopsVC.swift in Sources */,
 				346B66311F4E29B200E5122F /* CropScaleImageViewController.swift in Sources */,
 				6098CAB02A207DAB005A5502 /* MyWalletAddressXibCell2.swift in Sources */,
+				81134CF92B60D16000070127 /* NewMessageRequestVC.swift in Sources */,
 				600A272228B368F3001F9FFE /* ScannerQRVC.swift in Sources */,
 				45E5A6991F61E6DE001E4A8A /* MarqueeLabel.swift in Sources */,
 				C302093E25DCBF08001F572D /* MentionSelectionView.swift in Sources */,
@@ -5757,8 +5890,11 @@
 				608D65A42B3C02C200EB88AB /* RestoreNameVC.swift in Sources */,
 				C33100092558FF6D00070591 /* UserCell.swift in Sources */,
 				6098CA732A1DCC9C005A5502 /* SubAddress.swift in Sources */,
+				814712142B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift in Sources */,
 				6098CACA2A207DAB005A5502 /* MyWalletSendVC.swift in Sources */,
 				B8269D2925C7A4B400488AB4 /* InputView.swift in Sources */,
+				8129ABEB2B579EA800417EE2 /* PINSuccessPopUp.swift in Sources */,
+				81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */,
 				C374EEE225DA26740073A857 /* LinkPreviewModal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

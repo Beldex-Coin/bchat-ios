@@ -133,7 +133,7 @@ class LandingVC: BaseVC {
     
     @IBAction func craeteAction(sender:UIButton){
         if flagvalue == true {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
+            let vc = NewDesignSettingsVC()//UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
             navigationflowTag = false
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
