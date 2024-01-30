@@ -193,14 +193,14 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
 //                let vc = RescanNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
                 
-//                let vc = WalletHomeNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
+                let vc = WalletHomeNewVC()
+                navigationController!.pushViewController(vc, animated: true)
                 
 //                let vc = ChangeLogNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
                 
-                let vc = AboutNewVC()
-                navigationController!.pushViewController(vc, animated: true)
+//                let vc = AboutNewVC()
+//                navigationController!.pushViewController(vc, animated: true)
                 
             }else if indexPath.row == 3 {   //Message Requests
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()

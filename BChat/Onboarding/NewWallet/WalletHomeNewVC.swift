@@ -2,7 +2,7 @@
 
 import UIKit
 
-class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate {
     
     private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
@@ -490,11 +490,19 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         return result
     }()
     //Date PopUp
+    private lazy var backgroundBlerView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = UIColor(hex: 0x080812).withAlphaComponent(0.8)
+        return stackView
+    }()
     private lazy var selectDateRangePopUpbackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .red//UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = UIColor(hex: 0x111119)
         stackView.layer.cornerRadius = 20
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return stackView
     }()
     lazy var selectDateRangeTitleLabel: UILabel = {
@@ -506,30 +514,94 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         result.text = NSLocalizedString("Select Date Range", comment: "")
         return result
     }()
-    
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_DATE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 12)
-        result.layer.borderColor = Colors.text.cgColor
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderWidth = 1
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 16
-        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
-        result.leftView = paddingViewLeft
+        result.layer.cornerRadius = 12
+        // Left Image
+        let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_green"))
+        leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
+        leftImageView.contentMode = .scaleAspectFit
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 45, height: 20))
+        leftPaddingView.addSubview(leftImageView)
+        result.leftView = leftPaddingView
         result.leftViewMode = .always
-        // Create an UIImageView and set its image
-        let imageView = UIImageView(image: UIImage(named: "ic_calendar"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20) // Adjust the frame as needed
-        imageView.contentMode = .scaleAspectFit // Set the content mode as needed
-        // Add some padding between the image and the text field
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
-        result.rightView = paddingView
+        // Right Image
+        let rightImageView = UIImageView(image: UIImage(named: "ic_fullCircle"))
+        rightImageView.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+        rightImageView.contentMode = .scaleAspectFit
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 8))
+        rightPaddingView.addSubview(rightImageView)
+        result.rightView = rightPaddingView
         result.rightViewMode = .always
-        // Set the rightView of the TextField to the created UIImageView
-        result.rightView?.addSubview(imageView)
         return result
     }()
+    
+    private lazy var toDateTextField: UITextField = {
+        let result = UITextField()
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderWidth = 1
+        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.layer.cornerRadius = 12
+        // Left Image
+        let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_blue"))
+        leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
+        leftImageView.contentMode = .scaleAspectFit
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 45, height: 20))
+        leftPaddingView.addSubview(leftImageView)
+        result.leftView = leftPaddingView
+        result.leftViewMode = .always
+        // Right Image
+        let rightImageView = UIImageView(image: UIImage(named: "ic_Ellipse_New"))
+        rightImageView.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+        rightImageView.contentMode = .scaleAspectFit
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 8))
+        rightPaddingView.addSubview(rightImageView)
+        result.rightView = rightPaddingView
+        result.rightViewMode = .always
+        return result
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let result = UIButton()
+        result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.addTarget(self, action: #selector(cancelButtonTapped), for: UIControl.Event.touchUpInside)
+        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    private lazy var okButton: UIButton = {
+        let result = UIButton()
+        result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
+        result.layer.cornerRadius = 16
+        result.backgroundColor = Colors.greenColor
+        result.setTitleColor(UIColor.white, for: .normal)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var buttonStackView: UIStackView = {
+        let result = UIStackView(arrangedSubviews: [ cancelButton, okButton ])
+        result.axis = .horizontal
+        result.spacing = 15
+        result.distribution = .fillEqually
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    var fromDate : String = ""
+    var toDate : String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -607,9 +679,12 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         transactionsDetailsBackgroundView.addSubview(recipientAddresscopyButton)
         
         // Date PopUp
-//        view.addSubview(selectDateRangePopUpbackgroundView)
-//        selectDateRangePopUpbackgroundView.addSubview(selectDateRangeTitleLabel)
-//        selectDateRangePopUpbackgroundView.addSubview(fromDateTextField)
+        view.addSubview(backgroundBlerView)
+        backgroundBlerView.addSubview(selectDateRangePopUpbackgroundView)
+        selectDateRangePopUpbackgroundView.addSubview(selectDateRangeTitleLabel)
+        selectDateRangePopUpbackgroundView.addSubview(fromDateTextField)
+        selectDateRangePopUpbackgroundView.addSubview(toDateTextField)
+        selectDateRangePopUpbackgroundView.addSubview(buttonStackView)
         
         // MARK: - Here Conditions based on hidden the view only
         walletSyncingBackgroundView.isHidden = true
@@ -617,7 +692,8 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         isFromFilterTransactionsHistoryBackgroundView.isHidden = false
         transactionsDetailsBackgroundView.isHidden = true
         // Date PopUp
-//        selectDateRangePopUpbackgroundView.isHidden = false
+        backgroundBlerView.isHidden = true
+        selectDateRangePopUpbackgroundView.isHidden = true
         
         
         filterStackView.isHidden = true
@@ -798,27 +874,43 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             recipientAddresscopyButton.heightAnchor.constraint(equalToConstant: 16),
         ])
         
-//        NSLayoutConstraint.activate([
-////            selectDateRangePopUpbackgroundView.heightAnchor.constraint(equalToConstant: 276),
-//            selectDateRangePopUpbackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 22),
-//            selectDateRangePopUpbackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -22),
-//            selectDateRangePopUpbackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            selectDateRangePopUpbackgroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//
-//            selectDateRangeTitleLabel.topAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.topAnchor, constant: 20),
-//            selectDateRangeTitleLabel.centerXAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.centerXAnchor),
-//            selectDateRangeTitleLabel.bottomAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.bottomAnchor, constant: -20),
-//
-//            fromDateTextField.topAnchor.constraint(equalTo: selectDateRangeTitleLabel.bottomAnchor, constant: 20),
-//            fromDateTextField.heightAnchor.constraint(equalToConstant: 54),
-//            fromDateTextField.leadingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.leadingAnchor, constant: 21),
-//            fromDateTextField.trailingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.trailingAnchor, constant: -21),
-//
-//
-//        ])
+        NSLayoutConstraint.activate([
+            backgroundBlerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            backgroundBlerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            backgroundBlerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            backgroundBlerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
+            selectDateRangePopUpbackgroundView.leadingAnchor.constraint(equalTo: backgroundBlerView.leadingAnchor, constant: 22),
+            selectDateRangePopUpbackgroundView.trailingAnchor.constraint(equalTo: backgroundBlerView.trailingAnchor, constant: -22),
+            selectDateRangePopUpbackgroundView.centerYAnchor.constraint(equalTo: backgroundBlerView.centerYAnchor),
+            selectDateRangePopUpbackgroundView.centerXAnchor.constraint(equalTo: backgroundBlerView.centerXAnchor),
+            selectDateRangeTitleLabel.topAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.topAnchor, constant: 20),
+            selectDateRangeTitleLabel.centerXAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.centerXAnchor),
+            fromDateTextField.topAnchor.constraint(equalTo: selectDateRangeTitleLabel.bottomAnchor, constant: 20),
+            fromDateTextField.heightAnchor.constraint(equalToConstant: 54),
+            fromDateTextField.leadingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.leadingAnchor, constant: 21),
+            fromDateTextField.trailingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.trailingAnchor, constant: -21),
+            toDateTextField.topAnchor.constraint(equalTo: fromDateTextField.bottomAnchor, constant: 10),
+            toDateTextField.heightAnchor.constraint(equalToConstant: 54),
+            toDateTextField.leadingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.leadingAnchor, constant: 21),
+            toDateTextField.trailingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.trailingAnchor, constant: -21),
+            buttonStackView.topAnchor.constraint(equalTo: toDateTextField.bottomAnchor, constant: 16),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 52),
+            buttonStackView.leadingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.leadingAnchor, constant: 21),
+            buttonStackView.trailingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.trailingAnchor, constant: -21),
+            buttonStackView.bottomAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.bottomAnchor, constant: -25),
+        ])
         
-        
-        
+        //from date and to date implemenation
+        fromDateTextField.delegate = self
+        toDateTextField.delegate = self
+        self.fromDateTextField.datePicker(target: self,
+                                    doneAction: #selector(fromdoneAction),
+                                    cancelAction: #selector(fromcancelAction),
+                                    datePickerMode: .date)
+        self.toDateTextField.datePicker(target: self,
+                                  doneAction: #selector(todoneAction),
+                                  cancelAction: #selector(tocancelAction),
+                                  datePickerMode: .date)
         
     }
     
@@ -826,6 +918,75 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         super.viewDidLayoutSubviews()
         isCurrencyNameTitleLabel.layer.cornerRadius = isCurrencyNameTitleLabel.frame.height/2
         isFromFilterImageButton.layer.cornerRadius = isFromFilterImageButton.frame.height/2
+        cancelButton.layer.cornerRadius = cancelButton.frame.height/2
+        okButton.layer.cornerRadius = okButton.frame.height/2
+    }
+    
+    // from date implemenation
+    @objc
+    func fromcancelAction() {
+        self.fromDateTextField.resignFirstResponder()
+    }
+    @objc
+    func fromdoneAction() {
+        if let datePickerView = self.fromDateTextField.inputView as? UIDatePicker {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d/MM/yyyy"
+            let dateString = dateFormatter.string(from: datePickerView.date)
+            self.fromDateTextField.text = dateString
+            
+            let formatter2 = DateFormatter()
+            formatter2.dateFormat = "dd-MM-yyyy"
+            let dateString2 = formatter2.string(from: datePickerView.date)
+            fromDate = dateString2
+            
+            if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
+                let dateFormatter3 = DateFormatter()
+                dateFormatter3.dateFormat = "dd-MM-yyyy"
+                let date = dateFormatter3.date(from:fromDate)!
+                datePickerView.minimumDate = date
+            }
+            self.fromDateTextField.resignFirstResponder()
+        }
+    }
+    
+    // To date implemenation
+    @objc
+    func tocancelAction() {
+        self.toDateTextField.resignFirstResponder()
+    }
+    @objc
+    func todoneAction() {
+        if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d/MM/yyyy"
+            let dateString = dateFormatter.string(from: datePickerView.date)
+            self.toDateTextField.text = dateString
+            
+            let formatter2 = DateFormatter()
+            formatter2.dateFormat = "dd-MM-yyyy"
+            let dateString2 = formatter2.string(from: datePickerView.date)
+            toDate = dateString2
+            self.toDateTextField.resignFirstResponder()
+        }
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.isUserInteractionEnabled = false
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.isUserInteractionEnabled = true
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            if hitView === self.backgroundBlerView {
+                self.backgroundBlerView.isHidden = true
+            }
+        }
     }
     
     // MARK: - Navigation
@@ -878,6 +1039,16 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         
     }
     
+    @objc func cancelButtonTapped(_ sender: UIButton){
+        backgroundBlerView.isHidden = true
+        selectDateRangePopUpbackgroundView.isHidden = true
+    }
+    
+    @objc func okButtonTapped(_ sender: UIButton){
+        backgroundBlerView.isHidden = true
+        selectDateRangePopUpbackgroundView.isHidden = true
+    }
+    
     @objc func backImageButtonTapped(_ sender: UIButton){
         walletSyncingBackgroundView.isHidden = true
         noTransactionsYetBackgroundView.isHidden = true
@@ -908,7 +1079,8 @@ class WalletHomeNewVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     @objc func byDateButtonTapped(_ sender: UIButton){
-        
+        backgroundBlerView.isHidden = false
+        selectDateRangePopUpbackgroundView.isHidden = false
     }
     
     
