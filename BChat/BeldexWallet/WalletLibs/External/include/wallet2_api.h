@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2019, The Beldex Project
+// Copyright (c) 2014-2019, The Monero Project
 //
 // All rights reserved.
 //
@@ -186,6 +186,7 @@ struct TransactionInfo
     virtual bool isMasterNodeReward() const = 0;
     virtual bool isMinerReward() const = 0;
     virtual bool isStake() const =0;
+    virtual bool isBns() const =0;
     virtual int  direction() const = 0;
     virtual bool isPending() const = 0;
     virtual bool isFailed() const = 0;
@@ -542,7 +543,7 @@ struct Wallet
      * \param upper_transaction_size_limit
      * \param daemon_username
      * \param daemon_password
-     * \param lightWallet - start wallet in light mode, connect to a openbeldex compatible server.
+     * \param lightWallet - start wallet in light mode, connect to a openmonero compatible server.
      * \return  - true on success
      */
     virtual bool init(const std::string &daemon_address, uint64_t upper_transaction_size_limit = 0, const std::string &daemon_username = "", const std::string &daemon_password = "", bool use_ssl = false, bool lightWallet = false) = 0;
@@ -618,6 +619,11 @@ struct Wallet
             result += unlockedBalance(i);
         return result;
     }
+
+    /**
+    * @brief interface for counting number of BNS
+    */
+    virtual int countBns() = 0;
 
    /**
     * @brief listCurrentStakes - returns a list of the wallets locked stakes, provides both service node address and the staked amount
@@ -864,11 +870,71 @@ struct Wallet
 
     virtual PendingTransaction *createTransaction(const std::string &dst_addr,
                                                   std::optional<uint64_t> amount,
-//                                                  uint32_t priority                  = 0,
-                                                  PendingTransaction::Priority = PendingTransaction::Priority_Low,
+                                                  uint32_t priority                  = 0,
                                                   uint32_t subaddr_account           = 0,
                                                   std::set<uint32_t> subaddr_indices = {}) = 0;
 
+    /*!
+     * \brief createBnsTransaction  creates bns transaction
+     * \param owner                 owner
+     * \param backup_owner          backup_owner
+     * \param mapping_years         years(1y,2y,5y,10y)
+     * \param value_bchat           bchat_id
+     * \param value_wallet          wallet address
+     * \param value_belnet          belnet_id
+     * \param name                  bns name
+     * \param subaddr_account       subaddress account from which the input funds are taken
+     * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
+     * \return                      PendingTransaction object. caller is responsible to check PendingTransaction::status()
+     *                              after object returned
+     */
+    virtual PendingTransaction *createBnsTransaction(std::string& owner,
+                                                  std::string& backup_owner,
+                                                  std::string& mapping_years,
+                                                  std::string &value_bchat,
+                                                  std::string &value_wallet,
+                                                  std::string &value_belnet,
+                                                  std::string &name,
+                                                  uint32_t priority                  = 0,
+                                                  uint32_t subaddr_account           = 0,
+                                                  std::set<uint32_t> subaddr_indices = {}) = 0;
+    /*!
+     * \brief bnsUpdateTransaction  creates bns update transaction
+     * \param owner                 owner
+     * \param backup_owner          backup_owner
+     * \param value_bchat           bchat_id
+     * \param value_wallet          wallet address
+     * \param value_belnet          belnet_id
+     * \param name                  bns name
+     * \param subaddr_account       subaddress account from which the input funds are taken
+     * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
+     * \return                      PendingTransaction object. caller is responsible to check PendingTransaction::status()
+     *                              after object returned
+     */
+    virtual PendingTransaction* bnsUpdateTransaction(std::string& owner,
+                                                      std::string& backup_owner,
+                                                      std::string& value_bchat,
+                                                      std::string& value_wallet,
+                                                      std::string& value_belnet,
+                                                      std::string& name,
+                                                      uint32_t priority = 0,
+                                                      uint32_t subaddr_account = 0,
+                                                      std::set<uint32_t> subaddr_indices = {}) = 0;
+    /*!
+     * \brief bnsRenewTransaction               creates bns renew transaction
+     * \param name                              bns name
+     * \param bnsyear                           years(1y,2y,5y,10y)
+     * \param m_current_subaddress_account      subaddress account from which the input funds are taken
+     * \param subaddr_indices                   set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
+     * \return                                  PendingTransaction object. caller is responsible to check PendingTransaction::status()
+     *                                          after object returned
+     */
+    virtual PendingTransaction *bnsRenewTransaction(std::string &name,
+                                                    std::string &bnsyear,
+                                                    uint32_t priority=0,
+                                                    uint32_t m_current_subaddress_account = 0,
+                                                    std::set<uint32_t> subaddr_indices = {}) = 0;
+    
     /*!
      * \brief createSweepUnmixableTransaction creates transaction with unmixable outputs.
      * \return                  PendingTransaction object. caller is responsible to check PendingTransaction::status()
