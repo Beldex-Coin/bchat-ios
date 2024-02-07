@@ -62,13 +62,13 @@ class ScannerQRVC: BaseVC, OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDe
     }
     // MARK: DIRECT SCAN for ONE to ONE
     
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            // This could be an ONS name
+            // This could be an BNS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
                         self?.startNewDM(with: bchatID)
                     }
