@@ -36,6 +36,18 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
                          "- Introduced Address book of contacts in Wallet",
                          "- Improved UI and Content",
                          "- Minor Bug fixes"],
+                expandable: false),
+        Section(genre: "1.3.1",
+                movies: ["- Feature Pay as you chat",
+                         "- Fix Crash issues in wallet",
+                         "- Minor Bug fixes"],
+                expandable: false),
+        Section(genre: "1.3.2",
+                movies: ["- Update for Hardfork 18",
+                         "- Minor bug fixes"],
+                expandable: false),
+        Section(genre: "1.3.3",
+                movies: ["- Minor bug fixes"],
                 expandable: false)
     ]
     
