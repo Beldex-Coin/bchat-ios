@@ -557,7 +557,7 @@
 "vc_link_device_scan_qr_code_explanation" = "Navigate to Settings → Recovery Phrase on your other device to show your QR code.";
 "vc_enter_recovery_phrase_title" = "Recovery Phrase";
 "vc_enter_recovery_phrase_explanation" = "To link your device, enter the recovery phrase that was given to you when you signed up.";
-"vc_enter_public_key_text_field_hint" = "Enter BChat ID or ONS name";
+"vc_enter_public_key_text_field_hint" = "Enter BChat ID or BNS name";
 "vc_home_title" = "Messages";
 "admin_group_leave_warning" = "Because you are the creator of this group it will be deleted for everyone. This cannot be undone.";
 "vc_join_open_group_suggestions_title" = "Or join one of these...";

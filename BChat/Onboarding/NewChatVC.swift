@@ -151,11 +151,11 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         self.startNewDMIfPossible(with: text)
     }
     
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            // This could be an ONS name
+            // This could be an BNS name
             self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
         }
     }
