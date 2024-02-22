@@ -636,15 +636,22 @@ static NSTimeInterval launchStartedAt;
         self.window.rootViewController = navigationController;
         [UIViewController attemptRotationToDeviceOrientation];
     } else {
-        rootViewController = [LandingNewVC new];
-        navigationBarHidden = NO;
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+               LandingVC *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LandingVC"];
+               [self.window makeKeyAndVisible];
+               // Init YourNavigationController
+               UINavigationController *navigationContoller = [[UINavigationController alloc] initWithRootViewController: loginViewController];
+               loginViewController.navigationController.navigationBarHidden = NO;
+               loginViewController.navigationController.navigationBar.backgroundColor = UIColor.blackColor;
+               // Set rootViewController
+               self.window.rootViewController = navigationContoller;
     }
-        OWSAssertDebug(rootViewController);
-        OWSNavigationController *navigationController =
-            [[OWSNavigationController alloc] initWithRootViewController:rootViewController];
-        navigationController.navigationBarHidden = navigationBarHidden;
-        self.window.rootViewController = navigationController;
-        [UIViewController attemptRotationToDeviceOrientation];
+//        OWSAssertDebug(rootViewController);
+//        OWSNavigationController *navigationController =
+//            [[OWSNavigationController alloc] initWithRootViewController:rootViewController];
+//        navigationController.navigationBarHidden = navigationBarHidden;
+//        self.window.rootViewController = navigationController;
+//        [UIViewController attemptRotationToDeviceOrientation];
 }
 
 #pragma mark - Notifications

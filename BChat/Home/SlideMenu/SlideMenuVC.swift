@@ -8,6 +8,7 @@
 import UIKit
 import SideMenu
 import BChatUIKit
+import BChatMessagingKit
 
 extension Notification.Name {
     public static let myNotificationKey_doodlechange = Notification.Name(rawValue: "myNotificationKey_doodlechange")

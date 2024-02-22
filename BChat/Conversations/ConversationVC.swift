@@ -386,6 +386,67 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return stackView
     }()
     
+    lazy var backGroundView: UIView = {
+       let stackView = UIView()
+       stackView.translatesAutoresizingMaskIntoConstraints = false
+       stackView.backgroundColor = UIColor(hex: 0x11111A)
+       stackView.layer.cornerRadius = 36
+       return stackView
+   }()
+   
+    lazy var profileImageView: UIImageView = {
+       let result = UIImageView()
+       result.image = UIImage(named: "ic_test")
+        result.set(.width, to: 40)
+        result.set(.height, to: 40)
+       result.layer.masksToBounds = true
+       result.contentMode = .scaleToFill
+        result.layer.cornerRadius = 20
+       return result
+   }()
+   
+    lazy var nameLabel: UILabel = {
+       let result = UILabel()
+       result.textColor = UIColor(hex: 0xFFFFFF)
+       result.font = Fonts.boldOpenSans(ofSize: 16)
+       result.textAlignment = .left
+       result.translatesAutoresizingMaskIntoConstraints = false
+       return result
+   }()
+   
+   lazy var lastMessageLabel: UILabel = {
+      let result = UILabel()
+      result.textColor = UIColor(hex: 0xA7A7BA)
+      result.font = Fonts.OpenSans(ofSize: 12)
+      result.textAlignment = .left
+      result.translatesAutoresizingMaskIntoConstraints = false
+      return result
+  }()
+   
+   lazy var dateLabel: UILabel = {
+      let result = UILabel()
+      result.textColor = UIColor(hex: 0xA7A7BA)
+      result.font = Fonts.OpenSans(ofSize: 12)
+      result.textAlignment = .left
+      result.translatesAutoresizingMaskIntoConstraints = false
+      return result
+  }()
+   
+   
+   lazy var messageCountLabel: UILabel = {
+      let result = PaddingLabel()
+      result.textColor = UIColor(hex: 0xFFFFFF)
+      result.font = Fonts.boldOpenSans(ofSize: 11)
+      result.textAlignment = .center
+      result.translatesAutoresizingMaskIntoConstraints = false
+       result.backgroundColor = UIColor(hex: 0x00BD40)
+       result.layer.masksToBounds = true
+       result.layer.cornerRadius = 11
+       result.paddingLeft = 5
+       result.paddingRight = 5
+      return result
+  }()
+    
     private lazy var nestedView1: UIView = {
         let view = UIView()
         view.backgroundColor = .blue
@@ -411,6 +472,94 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var threeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("3", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var fourButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("4", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var fiveButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("5", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var sixButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("6", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var sevenButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("7", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var eightButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("8", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var nineButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("9", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var zeroButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("0", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     private lazy var beldexImage: UIImageView = {
@@ -517,6 +666,104 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.layer.masksToBounds = false
         return result
     }()
+    
+    private lazy var iconView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_seed")
+        result.set(.width, to: 148)
+        result.set(.height, to: 120)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    private lazy var seedInfoLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hex: 0xF0AF13)
+        result.font = Fonts.boldOpenSans(ofSize: 17)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.lineBreakMode = .byWordWrapping
+        result.numberOfLines = 2
+        return result
+    }()
+    
+    private lazy var seedView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.layer.cornerRadius = 16
+        return stackView
+    }()
+    
+    private lazy var seedLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.lineBreakMode = .byWordWrapping
+        result.numberOfLines = 0
+        return result
+    }()
+    
+    lazy var buttonStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 6
+        result.isLayoutMarginsRelativeArrangement = true
+        
+        return result
+    }()
+    
+    
+    private lazy var saveButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Save", for: .normal)
+        button.layer.cornerRadius = 24
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var copySeedButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Copy", for: .normal)
+        button.layer.cornerRadius = 24
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(hex: 0x282836)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    
+    private lazy var infoLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.font = Fonts.OpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var continueButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Continue", for: .normal)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     private lazy var isSuccesstitleLabel: UILabel = {
         let label = UILabel()
@@ -1542,7 +1789,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         thread.reload() // Needed so that thread.isCurrentUserMemberInGroup() is up to date
         reloadInputViews()
     }
-    
+    @objc private func nextButtonTapped() {
+        
+    }
+    @objc private func continueButtonTapped() {
+        
+    }
     @objc private func handleMessageSentStatusChanged() {
         DispatchQueue.main.async {
             guard let indexPaths = self.messagesTableView.indexPathsForVisibleRows else { return }
