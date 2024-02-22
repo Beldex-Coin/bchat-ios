@@ -21,7 +21,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
     @IBOutlet weak var lblcopy:UILabel!
     
     private lazy var publicKeyTextView: TextView = {
-        let result = TextView(placeholder: NSLocalizedString("Enter BChat ID", comment: ""))
+        let result = TextView(placeholder: NSLocalizedString("Enter BChat ID or BNS name", comment: ""))
         result.autocapitalizationType = .none
         return result
     }()
@@ -156,7 +156,27 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             startNewDM(with: bnsNameOrPublicKey)
         } else {
             // This could be an BNS name
-            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
+//            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
+            ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
+                    modalActivityIndicator.dismiss {
+                        self?.startNewDM(with: bchatID)
+                    }
+                }.catch { error in
+                    modalActivityIndicator.dismiss {
+                        var messageOrNil: String?
+                        if let error = error as? SnodeAPI.Error {
+                            switch error {
+                            case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                            default: break
+                            }
+                        }
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                    }
+                }
+            }
         }
     }
     private func startNewDM(with bchatID: String) {
@@ -174,7 +194,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
 extension UITextView{
     func setPlaceholder() {
         let placeholderLabel = UILabel()
-        placeholderLabel.text = "Enter BChat ID"
+        placeholderLabel.text = "Enter BChat ID or BNS name"
         placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
