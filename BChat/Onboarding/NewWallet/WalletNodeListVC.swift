@@ -1,8 +1,10 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import Alamofire
+import BChatUIKit
 
-class WalletNodeListVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -48,6 +50,17 @@ class WalletNodeListVC: UIViewController, UITableViewDataSource, UITableViewDele
     var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]//["149.102.156.174:19095"]
     //TESTNET
 //    var nodeArray = ["149.102.156.174:19095"]
+    var randomNodeValue = ""
+    var randomValueAfterAddNewNode = ""
+    var selectedIndex : Int = 70
+    var selectedValue = ""
+    var testResultFlag = false
+    var netType = false
+    var nodePopViewInitial = 0.0
+    var currentIndexForEditNode = -1
+    var indexForStatusOfNode = -1
+    var checkedData = [String: String]()
+    var checkedDataForTimeInterval = [String: String]()
     
     
     override func viewDidLoad() {
@@ -74,13 +87,76 @@ class WalletNodeListVC: UIViewController, UITableViewDataSource, UITableViewDele
             buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
         ])
         
+        randomNodeValue = SaveUserDefaultsData.FinalWallet_node
+        randomValueAfterAddNewNode = nodeArray.randomElement()!
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
         
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+        }else{
+            nodeArray.removeAll()
+            tableView.reloadData();
+        }
+        
+        for i in 0 ..< nodeArray.count {
+            self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: Notification.Name(rawValue: "refreshNodePopUpOk"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: Notification.Name(rawValue: "switchNodePopUpVCOk"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if SaveUserDefaultsData.SaveLocalNodelist != []{
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+                nodeArray = SaveUserDefaultsData.SaveLocalNodelist
+                tableView.reloadData()
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         refreshButton.layer.cornerRadius = refreshButton.frame.height/2
         addNodeButton.layer.cornerRadius = addNodeButton.frame.height/2
+    }
+    
+    func forVerifyAllNodeURI(host_port:String) {
+        let url = "http://" + host_port + "/json_rpc"
+        let param = ["jsonrpc": "2.0", "id": "0", "method": "getlastblockheader"]
+        let dataTask = Session.default.request(url, method: .post, parameters: param, encoding: JSONEncoding.default, headers: nil)
+        dataTask.responseJSON { (response) in
+            if let json = response.value as? [String: Any],
+               let result = json["result"] as? [String: Any],
+               let status = result["status"] as? String,
+               let header = result["block_header"] as? [String: Any],
+               let timestamp = header["timestamp"] as? Int,
+               timestamp > 0
+            {
+                self.checkedData[host_port] = status
+                let date = NSDate(timeIntervalSince1970: TimeInterval(timestamp))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
+                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
+                let diffinSeconds = Date().timeIntervalSince1970 - date.timeIntervalSince1970
+                let diffinMinutes = diffinSeconds/60
+                let diffinhours = diffinSeconds / (60.0 * 60.0)
+                let diffindays = diffinSeconds / (60.0 * 60.0 * 24.0)
+                if (diffinMinutes < 2) {
+                    self.checkedDataForTimeInterval[host_port] = String(Int(diffinSeconds)) + " seconds ago"
+                } else if (diffinhours < 2) {
+                    self.checkedDataForTimeInterval[host_port] = String(Int(diffinMinutes)) + " minutes ago"
+                } else if (diffindays < 2) {
+                    self.checkedDataForTimeInterval[host_port] = String(Int(diffinhours)) + " hours ago"
+                } else {
+                    self.checkedDataForTimeInterval[host_port] = String(Int(diffindays)) + " days ago"
+                }
+            } else {
+                self.checkedData[host_port] = "FALSE"
+                self.checkedDataForTimeInterval[host_port] = "CONNECTION ERROR"
+            }
+            self.tableView.reloadData()
+        }
     }
     
     // MARK: - Navigation
@@ -97,15 +173,66 @@ class WalletNodeListVC: UIViewController, UITableViewDataSource, UITableViewDele
         let cell = NodeListTableCell(style: .default, reuseIdentifier: "NodeListTableCell")
         cell.backgroundColor = .clear
         cell.nodeNameTitleLabel.text = nodeArray[indexPath.row]
-
+        
+        if checkedData.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedData.index(forKey: nodeArray[indexPath.row])
+            let status = checkedData.values[dictionaryIndex!]
+            if status == "OK" {
+                cell.circularView.image = UIImage(named: "ic_fullCircle")
+            } else {
+                cell.circularView.image = UIImage(named: "ic_EllipseNew")
+            }
+        }
+        
+        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
+            let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
+            if notError == "CONNECTION ERROR" {
+//                cell.nodeIPLabel.textColor = .red
+                cell.nodeIPLabel.text = checkedDataForTimeInterval.values[dictionaryIndex!]
+            } else {
+//                cell.nodeIPLabel.textColor = Colors.bchatLabelNameColor
+                cell.nodeIPLabel.text = "Last Block: " +  checkedDataForTimeInterval.values[dictionaryIndex!]
+            }
+        }
+        cell.nodeNameTitleLabel.text = nodeArray[indexPath.row]
+        cell.isUserInteractionEnabled = true
+        if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
+            let selectedNodeData = SaveUserDefaultsData.SelectedNode
+            if(nodeArray[indexPath.row] == selectedNodeData) {
+                selectedIndex = indexPath.row
+                cell.backGroundView.layer.borderWidth = 1.5
+                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.isUserInteractionEnabled = false
+            }
+        } else if (nodeArray.count == 6) {
+            if(nodeArray[indexPath.row] == randomNodeValue) {
+                cell.backGroundView.layer.borderWidth = 1.5
+                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.isUserInteractionEnabled = false
+            }
+        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! NodeListTableCell
-        cell.backGroundView.layer.borderWidth = 1.5
-        cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
         cell.selectionStyle = .none
+        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
+            let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
+            if notError == "CONNECTION ERROR" {
+                self.showToastMsg(message: "Please connect some another node", seconds: 1.0)
+            }else{
+                selectedIndex = indexPath.row
+                selectedValue = self.nodeArray[indexPath.row]
+                let vc = SwitchNodePopUpVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -119,7 +246,52 @@ class WalletNodeListVC: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     @objc func refreshButtonAction(_ sender: UIButton){
-        
+        let vc = RefreshNodePopUpVC()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+            SaveUserDefaultsData.SwitchNode = true
+            //MAINNET
+            self.nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]//["149.102.156.174:19095"]
+            //TESTNET
+            //                self.nodeArray = ["149.102.156.174:19095"]
+            SaveUserDefaultsData.SaveLocalNodelist = []
+            for i in 0 ..< self.nodeArray.count {
+                self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
+            }
+            self.randomNodeValue = self.nodeArray.randomElement()!
+            SaveUserDefaultsData.SelectedNode = randomNodeValue
+//            if self.navigationController != nil{
+//                let count = self.navigationController!.viewControllers.count
+//                if count > 1
+//                {
+//                    let VC = self.navigationController!.viewControllers[count-2] as! WalletSettingsNewVC
+//                    VC.BackAPI = true
+//                }
+//            }
+            self.tableView.reloadData()
+        }else{
+            nodeArray.removeAll()
+            tableView.reloadData();
+        }
+    }
+    
+    @objc func switchNodePopUpOkeyAction(_ notification: Notification) {
+        SaveUserDefaultsData.SwitchNode = true
+        SaveUserDefaultsData.SelectedNode = selectedValue
+        if self.navigationController != nil{
+            let count = self.navigationController!.viewControllers.count
+            if count > 1
+            {
+                let VC = self.navigationController!.viewControllers[count-2] as! WalletSettingsNewVC
+                VC.backAPI = true
+            }
+        }
+        tableView.reloadData()
     }
     
     @objc func addNodeButtonAction(_ sender: UIButton){
@@ -180,10 +352,10 @@ class NodeListTableCell: UITableViewCell {
             circularView.heightAnchor.constraint(equalToConstant: 10),
             circularView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             nodeNameTitleLabel.leadingAnchor.constraint(equalTo: circularView.trailingAnchor, constant: 20),
-            nodeNameTitleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -13),
+            nodeNameTitleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -11),
             nodeNameTitleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 18),
             nodeIPLabel.leadingAnchor.constraint(equalTo: circularView.trailingAnchor, constant: 20),
-            nodeIPLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: 13),
+            nodeIPLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: 11),
             nodeIPLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -18),
         ])
     }

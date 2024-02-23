@@ -557,7 +557,7 @@
 "vc_link_device_scan_qr_code_explanation" = "Navigate to Settings → Recovery Phrase on your other device to show your QR code.";
 "vc_enter_recovery_phrase_title" = "Recovery Phrase";
 "vc_enter_recovery_phrase_explanation" = "To link your device, enter the recovery phrase that was given to you when you signed up.";
-"vc_enter_public_key_text_field_hint" = "Enter BChat ID or ONS name";
+"vc_enter_public_key_text_field_hint" = "Enter BChat ID or BNS name";
 "vc_home_title" = "Messages";
 "admin_group_leave_warning" = "Because you are the creator of this group it will be deleted for everyone. This cannot be undone.";
 "vc_join_open_group_suggestions_title" = "Or join one of these...";
@@ -673,8 +673,9 @@
 "TERMS_AND_CONDITIONS_NEW" = "Terms & Conditions";
 "WELCOME_TO_NEW" = "Welcome to";
 "HELLO_NEW"= "Hello,";
-"HELLO_SUBTITLE_NEW" = "We're thrilled to have\nyou on board!";
-"HELLO_SUBTITLE_DECSC_NEW" = "Welcome to BChat, your private haven for seamless communication and connection.";
+"HELLO_SUBTITLE_NEW1" = "We're thrilled to have";
+"HELLO_SUBTITLE_NEW2" = "you on board!";
+"HELLO_SUBTITLE_DECSC_NEW" = "Welcome to BChat, your private haven for seamless\ncommunication and connection.";
 
 /* RestoreNameVC */
 "DISPLAY_NAME_NEW" = "Display Name";
@@ -700,6 +701,7 @@
 "ENTER_YOUR_SEED_NEW" = " Enter your Seed";
 "WRONG_SEED_ERROR_NEW" = "Something went wrong.Please check your mnemonic and try again";
 "INVALID_SEED_ERROR_NEW" = "There appears to be an invalid word in your recovery phrase. Please check what you entered and try again.";
+"CLEAR_BUTTON" = "Clear";
 
 /* ChatNewVC */
 "YOUR_CHAT_ID_NEW" = "Your Chat ID";
@@ -712,7 +714,7 @@
 "SHARE_OPTION_NEW" = "Share";
 "BELDEX_ADDRESS_TITLE_NEW" = "Beldex Address";
 "BCHAT_ID_NEW" = "BChat ID";
-"NAME_TITLE_NEW" = "Name";
+"NAME_TITLE_NEW" = "Edited name";
 "PROFILE_PICTURE_NEW" = "Profile Picture";
 "REMOVE_PICTURE_ACTION_NEW" = "Remove Picture";
 "SAVA_OPTION_NEW" = "Save";
@@ -728,7 +730,7 @@
 
 /* WalletNodeListVC */
 "REFRESH_BUTTON_NEW" = "Refresh";
-"ADD_NODE_BUTTON_NEW" = "Add Node +";
+"ADD_NODE_BUTTON_NEW" = "Add Node";
 
 /* WalletSettingsNewVC */
 "CURRENT_NODE_TITLE_NEW" = "Current Node";
@@ -757,6 +759,7 @@
 "ERROR_MSG" = "Error";
 "ERROR_SCANNING_PLS_TRY_AGAIN" = "Scanning Failed. Please try again";
 "VALID_URL_CHECKING" = "Please check the URL you entered and try again.";
+"SCAN_SUB_TITLE_FOR_NEWCHAT" = "Scan a user's QR code to start a BChat.QR Code can be found by tapping the QR code icon in account settings";
 
 /* WalletReceiveNewVC */
 "BELDEX_ADDRESS" = "Beldex Address";
@@ -784,3 +787,13 @@
 "AMOUNT_TITLE" = "Amount";
 "RECIPIENT_ADDRESS" = "Recipient Address";
 "RECEIVED_TITLE" = "Received";
+
+/* HomeVC */
+"NEW_CHAT_PLUS" = "New Chat";
+"SECRET_GROUP_TITLE" = "Secret Group";
+"SOCIAL_GROUP_TITLE" = "Social Group";
+
+/* Receive */
+"MY_WALLET_TITLE" = "My Wallet";
+"PLEASE_ENTER_AMOUNT_TEXT" = "Pls Enter amount";
+"PLEASE_ENTER_PROPER_AMOUNT_TEXT" = "Pls Enter Proper amount";

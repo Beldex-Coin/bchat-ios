@@ -5,7 +5,7 @@ import SVGKit
 import BChatUIKit
 import Alamofire
 
-final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConversationButtonSetDelegate {
+final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     private var threads: YapDatabaseViewMappings!
     private var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     private var tableViewTopConstraint: NSLayoutConstraint!
@@ -21,39 +21,26 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         return count
     }
-    
     private var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
     }
-    
     private lazy var dbConnection: YapDatabaseConnection = {
         let result = OWSPrimaryStorage.shared().newDatabaseConnection()
         result.objectCacheLimit = 500
         return result
     }()
-    
     private var isReloading = false
     
     // MARK: UI Components
-    
     private lazy var tableView: UITableView = {
         let result = UITableView()
         result.backgroundColor = .clear
         result.separatorStyle = .singleLine
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
         result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
-        let bottomInset = Values.newConversationButtonBottomOffset + NewConversationButtonSet.expandedButtonSize + Values.largeSpacing + NewConversationButtonSet.collapsedButtonSize
-        result.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: bottomInset, right: 0)
         result.showsVerticalScrollIndicator = false
         return result
     }()
-    
-    private lazy var newConversationButtonSet: NewConversationButtonSet = {
-        let result = NewConversationButtonSet()
-        result.delegate = self
-        return result
-    }()
-    
     private lazy var fadeView: UIView = {
         let result = UIView()
         let gradient = Gradients.homeVCFade
@@ -61,7 +48,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         result.isUserInteractionEnabled = false
         return result
     }()
-    
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.bchatPlaceholderColor
@@ -70,7 +56,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center
         explanationLabel.text = NSLocalizedString("Much empty.Such wow.", comment: "")
-        
         let explanationLabel2 = UILabel()
         explanationLabel2.textColor = Colors.bchatPlaceholderColor
         explanationLabel2.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
@@ -78,7 +63,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         explanationLabel2.lineBreakMode = .byWordWrapping
         explanationLabel2.textAlignment = .center
         explanationLabel2.text = NSLocalizedString("Go get some friends to BChat!", comment: "")
-        
         let createNewPrivateChatButton = Button(style: .prominentFilled2, size: .large)
         createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: UIControl.State.normal)
         createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: UIControl.Event.touchUpInside)
@@ -90,7 +74,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         result.isHidden = true
         return result
     }()
-    
     var someImageView: UIImageView = {
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true
@@ -102,11 +85,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     //MARK:- Wallet References
     //========================================================================================
-//    ,"publicnode5.rpcnode.stream:29095"
+    //    ,"publicnode5.rpcnode.stream:29095"
     //MAINNET
     var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]
     //TESTNET
-//    var nodeArray = ["149.102.156.174:19095"]
+    //    var nodeArray = ["149.102.156.174:19095"]
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()
     lazy var conncetingState = { return Observable<Bool>(false) }()
@@ -131,9 +114,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         didSet {
             guard oldValue != isSyncingUI else { return }
             if isSyncingUI {
-//                RunLoop.main.add(timer, forMode: .common)
+                //                RunLoop.main.add(timer, forMode: .common)
             } else {
-//                timer.invalidate()
+                //                timer.invalidate()
             }
         }
     }
@@ -149,10 +132,118 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     var isdaemonHeight : Int64 = 0
     var backApiRescanVC = false
     
+    // NewConversation Button Set PopUpView
+    private lazy var mainButtonPopUpView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.layer.cornerRadius = 16
+        stackView.isHidden = true
+        return stackView
+    }()
+    private lazy var mainButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 8
+        button.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+        button.backgroundColor = .clear
+        button.tintColor = .clear
+        return button
+    }()
+    private lazy var newChatLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.text = NSLocalizedString("NEW_CHAT_PLUS", comment: "").uppercased()
+        result.textColor = Colors.greenColor
+        result.textAlignment = .right
+        return result
+    }()
+    private lazy var secretGroupLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.text = NSLocalizedString("SECRET_GROUP_TITLE", comment: "").uppercased()
+        result.textColor = Colors.greenColor
+        result.textAlignment = .right
+        return result
+    }()
+    private lazy var socialGroupLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.text = NSLocalizedString("SOCIAL_GROUP_TITLE", comment: "").uppercased()
+        result.textColor = Colors.greenColor
+        result.textAlignment = .right
+        return result
+    }()
+    private lazy var isFromNewChatImgBtn: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "ic_logoBubbleNew")?.scaled(to: CGSize(width: 22, height: 22))
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    private lazy var isFromSecretGroupImgBtn: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "ic_GroupNew1")?.scaled(to: CGSize(width: 22, height: 22))
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    private lazy var isFromSocialGroupImgBtn: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(named: "ic_GroupMsgNew")?.scaled(to: CGSize(width: 22, height: 22))
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    private lazy var imagesStackView: UIStackView = {
+        let result = UIStackView(arrangedSubviews: [ isFromNewChatImgBtn, isFromSecretGroupImgBtn, isFromSocialGroupImgBtn ])
+        result.axis = .vertical
+        result.spacing = 10
+        result.distribution = .fillEqually
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    private lazy var newChatButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(newChatButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    private lazy var secretGroupButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(secretGroupButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    private lazy var socialGroupButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(socialGroupButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    private lazy var stackViewButtons: UIStackView = {
+        let result = UIStackView(arrangedSubviews: [newChatButton, secretGroupButton, socialGroupButton])
+        result.axis = .vertical
+        result.spacing = 10
+        result.distribution = .fillEqually
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         // Note: This is a hack to ensure `isRTL` is initially gets run on the main thread so the value is cached (it gets
         // called on background threads and if it hasn't cached the value then it can cause odd performance issues since
         // it accesses UIKit)
@@ -186,10 +277,44 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         let verticalCenteringConstraint = emptyStateView.center(.vertical, in: view)
         verticalCenteringConstraint.constant = -16 // Makes things appear centered visually
         // New conversation button set
-        view.addSubview(newConversationButtonSet)
-        // newConversationButtonSet.center(.horizontal, in: view)
-        newConversationButtonSet.pin(.trailing, to: .trailing, of: view, withInset: -Values.newConversationButtonBottomOffset + 120)
-        newConversationButtonSet.pin(.bottom, to: .bottom, of: view, withInset: -Values.newConversationButtonBottomOffset) // Negative due to how the constraint is set up
+        view.addSubview(mainButton)
+        mainButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        mainButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -35).isActive = true
+        mainButton.heightAnchor.constraint(equalToConstant: 58).isActive = true
+        mainButton.widthAnchor.constraint(equalToConstant: 58).isActive = true
+        view.addSubview(mainButtonPopUpView)
+        mainButtonPopUpView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        mainButtonPopUpView.bottomAnchor.constraint(equalTo: mainButton.topAnchor, constant: -10).isActive = true
+        mainButtonPopUpView.heightAnchor.constraint(equalToConstant: 160).isActive = true
+        mainButtonPopUpView.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        mainButtonPopUpView.addSubview(imagesStackView)
+        imagesStackView.trailingAnchor.constraint(equalTo: mainButtonPopUpView.trailingAnchor, constant: -13).isActive = true
+        imagesStackView.bottomAnchor.constraint(equalTo: mainButtonPopUpView.bottomAnchor, constant: -14).isActive = true
+        imagesStackView.topAnchor.constraint(equalTo: mainButtonPopUpView.topAnchor, constant: 14).isActive = true
+        imagesStackView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        imagesStackView.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        mainButtonPopUpView.addSubview(newChatLabel)
+        mainButtonPopUpView.addSubview(secretGroupLabel)
+        mainButtonPopUpView.addSubview(socialGroupLabel)
+        newChatLabel.leadingAnchor.constraint(equalTo: mainButtonPopUpView.leadingAnchor, constant: 8).isActive = true
+        newChatLabel.trailingAnchor.constraint(equalTo: isFromNewChatImgBtn.leadingAnchor, constant: -8).isActive = true
+        newChatLabel.centerYAnchor.constraint(equalTo: isFromNewChatImgBtn.centerYAnchor).isActive = true
+        secretGroupLabel.leadingAnchor.constraint(equalTo: mainButtonPopUpView.leadingAnchor, constant: 8).isActive = true
+        secretGroupLabel.trailingAnchor.constraint(equalTo: isFromSecretGroupImgBtn.leadingAnchor, constant: -8).isActive = true
+        secretGroupLabel.centerYAnchor.constraint(equalTo: isFromSecretGroupImgBtn.centerYAnchor).isActive = true
+        socialGroupLabel.leadingAnchor.constraint(equalTo: mainButtonPopUpView.leadingAnchor, constant: 8).isActive = true
+        socialGroupLabel.trailingAnchor.constraint(equalTo: isFromSocialGroupImgBtn.leadingAnchor, constant: -8).isActive = true
+        socialGroupLabel.centerYAnchor.constraint(equalTo: isFromSocialGroupImgBtn.centerYAnchor).isActive = true
+        mainButtonPopUpView.addSubview(stackViewButtons)
+        stackViewButtons.leadingAnchor.constraint(equalTo: mainButtonPopUpView.leadingAnchor, constant: 8).isActive = true
+        stackViewButtons.trailingAnchor.constraint(equalTo: mainButtonPopUpView.trailingAnchor, constant: -8).isActive = true
+        stackViewButtons.bottomAnchor.constraint(equalTo: mainButtonPopUpView.bottomAnchor, constant: -14).isActive = true
+        stackViewButtons.topAnchor.constraint(equalTo: mainButtonPopUpView.topAnchor, constant: 14).isActive = true
+        stackViewButtons.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        // main Button Tapped
+        let mainButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleMainButtonTapped))
+        mainButton.addGestureRecognizer(mainButtonTapGestureRecognizer)
+        
         // Notifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleYapDatabaseModifiedNotification(_:)), name: .YapDatabaseModified, object: OWSPrimaryStorage.shared().dbNotificationObject)
@@ -222,6 +347,13 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         // Get default open group rooms if needed
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        isFromNewChatImgBtn.layer.cornerRadius = isFromNewChatImgBtn.frame.height/2
+        isFromSecretGroupImgBtn.layer.cornerRadius = isFromSecretGroupImgBtn.frame.height/2
+        isFromSocialGroupImgBtn.layer.cornerRadius = isFromSocialGroupImgBtn.frame.height/2
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -266,11 +398,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
             }else {
                 init_syncing_wallet()
             }
-            // Rescan Height Update in userdefaults work
-//            if backApiRescanVC == true {
-//                self.closeWallet()
-//                init_syncing_wallet()
-//            }
         }else {
             WalletSharedData.sharedInstance.wallet = nil
             closeWallet()
@@ -279,8 +406,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        newConversationButtonSet.collapse(withAnimation: true)
-//        self.backApiRescanVC = false
+        mainButtonPopUpView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -291,10 +417,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     override func appDidBecomeActive(_ notification: Notification) {
         reload()
     }
-    
-//    deinit {
-//        NotificationCenter.default.removeObserver(self)
-//    }
     
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
@@ -339,9 +461,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
                     }else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
-//                    if self.backApiRescanVC == true {
-//                        wallet.rescanBlockchainAsync()
-//                    }
                     wallet.start()
                 }
                 self.listening = true
@@ -357,7 +476,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
     
     private func synchronizedUI() {
         syncedflag = true
-//        WalletSharedData.sharedInstance.wallet = nil
     }
     
     // MARK: - Refresh Func
@@ -570,28 +688,28 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         // Just batch perform all the moves separately to prevent crashing.
         // Since all the changes are from the original state to the final state,
         // it will still be correct if we pick the moves out.
-//        tableView.beginUpdates()
+        //        tableView.beginUpdates()
         self.tableView.performBatchUpdates({
-        rowChanges.forEach { rowChange in
-            let rowChange = rowChange as! YapDatabaseViewRowChange
-            let key = rowChange.collectionKey.key
-            threadViewModelCache[key] = nil
-            
-            switch rowChange.type {
-            case .move:
-                // Since we are custom handling this specific movement in the above 'updates' call we need
-                // to avoid trying to handle it here
-                if rowChange.originalGroup == TSMessageRequestGroup || rowChange.finalGroup == TSMessageRequestGroup {
-                    return
+            rowChanges.forEach { rowChange in
+                let rowChange = rowChange as! YapDatabaseViewRowChange
+                let key = rowChange.collectionKey.key
+                threadViewModelCache[key] = nil
+                
+                switch rowChange.type {
+                case .move:
+                    // Since we are custom handling this specific movement in the above 'updates' call we need
+                    // to avoid trying to handle it here
+                    if rowChange.originalGroup == TSMessageRequestGroup || rowChange.finalGroup == TSMessageRequestGroup {
+                        return
+                    }
+                    
+                    tableView.moveRow(at: rowChange.indexPath!, to: rowChange.newIndexPath!)
+                    
+                default: break
                 }
-                
-                tableView.moveRow(at: rowChange.indexPath!, to: rowChange.newIndexPath!)
-                
-            default: break
             }
-        }
-        //        tableView.endUpdates()
-    }, completion: nil)
+            //        tableView.endUpdates()
+        }, completion: nil)
         emptyStateView.isHidden = (threadCount != 0)
         someImageView.isHidden = (threadCount != 0)
     }
@@ -804,17 +922,19 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
     }
     
-    //1.New Chat one to one chat
-    @objc func joinOpenGroup() {
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewChatVC") as! NewChatVC
-        if UIDevice.current.isIPad {
-            vc.modalPresentationStyle = .fullScreen
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
+    //Main NewConversationButtonSet PopUpView
+    @objc private func handleMainButtonTapped() {
+        mainButtonPopUpView.isHidden = !mainButtonPopUpView.isHidden
     }
-    
-    //2.Social group
-    @objc func createNewDM() {
+    // New Chat
+    @objc private func newChatButtonTapped(_ sender: UIButton) {
+        mainButtonPopUpView.isHidden = true
+        let vc = ChatNewVC()
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    // Secret Group
+    @objc private func secretGroupButtonTapped(_ sender: UIButton) {
+        mainButtonPopUpView.isHidden = true
         let newSecretGroupVC = NewSecretGroupVC()
         let navigationController = OWSNavigationController(rootViewController: newSecretGroupVC)
         if UIDevice.current.isIPad {
@@ -822,18 +942,20 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate, NewConv
         }
         present(navigationController, animated: true, completion: nil)
     }
+    // Social Group
+    @objc private func socialGroupButtonTapped(_ sender: UIButton) {
+        mainButtonPopUpView.isHidden = true
+        let vc = SocialGroupNewVC()
+        navigationController!.pushViewController(vc, animated: true)
+    }
     
-    //3.Group Chat
-    @objc func createClosedGroup() {
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SocialGroupVC") as! SocialGroupVC
-        if UIDevice.current.isIPad {
-            vc.modalPresentationStyle = .fullScreen
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
+    // New Chat
+    @objc func createNewDM() {
+        
     }
     
     @objc private func openSettings() {
-        newConversationButtonSet.collapse(withAnimation: true)
+        mainButtonPopUpView.isHidden = true
         let RightVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuNavigationController") as! SideMenuNavigationController
         SideMenuManager.default.leftMenuNavigationController = RightVC
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)

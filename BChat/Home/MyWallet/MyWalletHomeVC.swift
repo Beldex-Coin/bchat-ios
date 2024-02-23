@@ -801,7 +801,7 @@ class MyWalletHomeVC: UIViewController, ExpandedCellDelegate,UITextFieldDelegate
     }
     deinit {
         isSyncingUI = false
-        closeWallet()
+//        closeWallet()
     }
     
     // MARK: - BackScreen Func

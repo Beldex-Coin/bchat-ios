@@ -74,7 +74,7 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         button.backgroundColor = .clear
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(ischatIdDetailsButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(isChatIdDetailsButtonTapped), for: .touchUpInside)
         return button
     }()
     private lazy var scannerImg: UIImageView = {
@@ -82,7 +82,7 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "ic_Newqr", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scannerimageViewTapped))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scannerImageViewTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
@@ -99,7 +99,6 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         return button
     }()
     var placeholderLabel : UILabel!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,26 +154,18 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             letsBChatButton.topAnchor.constraint(equalTo: innerViewTop.bottomAnchor, constant: 10),
             innerViewTop.heightAnchor.constraint(equalTo: letsBChatButton.heightAnchor, constant: 58),
             letsBChatButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -18),
-        ])
-        NSLayoutConstraint.activate([
             rightView.topAnchor.constraint(equalTo: innerViewTop.topAnchor, constant: 0),
             rightView.bottomAnchor.constraint(equalTo: innerViewTop.bottomAnchor, constant: -0),
             rightView.trailingAnchor.constraint(equalTo: innerViewTop.trailingAnchor, constant: -0),
             rightView.widthAnchor.constraint(equalToConstant: 55),
-        ])
-        NSLayoutConstraint.activate([
             leftView.topAnchor.constraint(equalTo: innerViewTop.topAnchor, constant: 0),
             leftView.bottomAnchor.constraint(equalTo: innerViewTop.bottomAnchor, constant: -0),
             leftView.leadingAnchor.constraint(equalTo: innerViewTop.leadingAnchor, constant: 0),
             leftView.trailingAnchor.constraint(equalTo: rightView.leadingAnchor, constant: -9),
-        ])
-        NSLayoutConstraint.activate([
             chatIDTextView.topAnchor.constraint(equalTo: leftView.topAnchor, constant: 10),
             chatIDTextView.bottomAnchor.constraint(equalTo: leftView.bottomAnchor, constant: -10),
             chatIDTextView.leadingAnchor.constraint(equalTo: leftView.leadingAnchor, constant: 10),
             chatIDTextView.trailingAnchor.constraint(equalTo: leftView.trailingAnchor, constant: -10),
-        ])
-        NSLayoutConstraint.activate([
             scannerImg.centerXAnchor.constraint(equalTo: rightView.centerXAnchor),
             scannerImg.centerYAnchor.constraint(equalTo: rightView.centerYAnchor),
             scannerImg.widthAnchor.constraint(equalToConstant: 28),
@@ -185,8 +176,6 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             bottomView.heightAnchor.constraint(equalToConstant: 48),
             bottomView.widthAnchor.constraint(equalToConstant: 202),
-        ])
-        NSLayoutConstraint.activate([
             chatIdDetailsButton.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 0),
             chatIdDetailsButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -0),
             chatIdDetailsButton.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: -0),
@@ -221,13 +210,11 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             textView.resignFirstResponder()
             performAction()
             return false
-        }
-        else if text.count == 0 {
+        }else if text.count == 0{
             letsBChatButton.isUserInteractionEnabled = false
             letsBChatButton.backgroundColor = UIColor(hex: 0x282836)
             letsBChatButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        }
-        else {
+        }else{
             letsBChatButton.isUserInteractionEnabled = true
             letsBChatButton.backgroundColor = UIColor(hex: 0x00BD40)
             letsBChatButton.setTitleColor(.white, for: .normal)
@@ -243,11 +230,31 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         self.startNewDMIfPossible(with: text)
     }
     
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            self.showToastMsg(message: NSLocalizedString("INVALID_BCHAT_ID_NEW", comment: ""), seconds: 1.0)
+//            self.showToastMsg(message: NSLocalizedString("INVALID_BCHAT_ID_NEW", comment: ""), seconds: 1.0)
+            ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
+                    modalActivityIndicator.dismiss {
+                        self?.startNewDM(with: bchatID)
+                    }
+                }.catch { error in
+                    modalActivityIndicator.dismiss {
+                        var messageOrNil: String?
+                        if let error = error as? SnodeAPI.Error {
+                            switch error {
+                            case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                            default: break
+                            }
+                        }
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                    }
+                }
+            }
         }
     }
     private func startNewDM(with bchatID: String) {
@@ -261,27 +268,16 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         self.startNewDMIfPossible(with: text)
     }
     
-    @objc func scannerimageViewTapped() {
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
+    @objc func scannerImageViewTapped() {
+        let vc = ScanNewVC()
         vc.newChatScanflag = false
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func ischatIdDetailsButtonTapped() {
-        let vc = MyAccountNewVC()
-        vc.isNavigationBarHideInChatNewVC = true
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    // MARK: - Navigation
-    @objc func profilePictureImageTapped() {
-        
-    }
-    
-    @objc func shareButtonTapped() {
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
-        self.navigationController!.present(shareVC, animated: true, completion: nil)
+    @objc func isChatIdDetailsButtonTapped() {
+        let vc = MyAccountNewVC()
+        vc.isNavigationBarHideInChatNewVC = true
+        navigationController!.pushViewController(vc, animated: true)
     }
     
     

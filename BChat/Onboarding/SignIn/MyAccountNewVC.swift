@@ -1,6 +1,7 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
@@ -61,7 +62,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     private lazy var copyForBeldexAddressButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -102,6 +102,15 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_Newcopy"), for: .normal)
         button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    private lazy var doneButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = Colors.greenColor
+        button.setTitle("Done", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()
     private lazy var bchatIdBgView: UIView = {
@@ -168,7 +177,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         return result
     }()
     
-    
     //-------------------------------------------------------------------------
     
     private lazy var outerProfileView: UIView = {
@@ -186,7 +194,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         stackView.layer.borderWidth = 1
         return stackView
     }()
-    
     private lazy var profilePictureLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
@@ -235,7 +242,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-    
     private lazy var buttonStackView1: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ removePictureButton, saveButton ])
         result.axis = .horizontal
@@ -252,6 +258,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     @objc public var openGroupProfilePicture: UIImage?
     @objc public var useFallbackPicture = false
     var isNavigationBarHideInChatNewVC = false
+    var isProfileRemove = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -271,6 +278,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
+        view.addSubview(doneButton)
         
         backGroundView.addSubview(qrBackgroundView)
         qrBackgroundView.addSubview(qrCodeImage)
@@ -290,102 +298,83 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         outerProfileView.addSubview(innerProfileImageView)
         
         NSLayoutConstraint.activate([
+            doneButton.widthAnchor.constraint(equalToConstant: 80),
+            doneButton.heightAnchor.constraint(equalToConstant: 28),
+            doneButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -0),
+            doneButton.bottomAnchor.constraint(equalTo: backGroundView.topAnchor, constant: -10),
+        ])
+        
+        NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             backGroundView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -36),
             backGroundView.topAnchor.constraint(equalTo: profilePictureImage.firstBaselineAnchor, constant: 48),
-        ])
-        //Close
-        NSLayoutConstraint.activate([
+            //Close
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 15),
             closeButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: -15),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
-        ])
-        //Profile
-        NSLayoutConstraint.activate([
+            //Profile
             profilePictureImage.widthAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.heightAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             profilePictureImage.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -12),
-        ])
-        NSLayoutConstraint.activate([
             cameraImage.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
             cameraImage.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
             cameraImage.widthAnchor.constraint(equalToConstant: 30),
             cameraImage.heightAnchor.constraint(equalToConstant: 30),
-        ])
-        //Name Textfiled
-        NSLayoutConstraint.activate([
+            //Name Textfiled
             nameTextField.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
             nameTextField.heightAnchor.constraint(equalToConstant: 25),
             nameTextField.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-        ])
-        //BChat ID
-        NSLayoutConstraint.activate([
+            //BChat ID
             bchatLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             bchatLabel.bottomAnchor.constraint(equalTo: bchatIdBgView.topAnchor, constant: -7),
-        ])
-        NSLayoutConstraint.activate([
             copyForBChatIdButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             copyForBChatIdButton.centerYAnchor.constraint(equalTo: bchatIdBgView.centerYAnchor),
             copyForBChatIdButton.widthAnchor.constraint(equalToConstant: 28),
             copyForBChatIdButton.heightAnchor.constraint(equalToConstant: 28),
-        ])
-        NSLayoutConstraint.activate([
             bchatIdBgView.trailingAnchor.constraint(equalTo: copyForBChatIdButton.leadingAnchor, constant: -9),
             bchatIdBgView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             bchatIdBgView.bottomAnchor.constraint(equalTo: beldexAddressLabel.topAnchor, constant: -14),
             bchatIdBgView.heightAnchor.constraint(equalToConstant: 64),
-        ])
-        NSLayoutConstraint.activate([
             bchatIdLabel.topAnchor.constraint(equalTo: bchatIdBgView.topAnchor, constant: 10),
             bchatIdLabel.bottomAnchor.constraint(equalTo: bchatIdBgView.bottomAnchor, constant: -10),
             bchatIdLabel.leadingAnchor.constraint(equalTo: bchatIdBgView.leadingAnchor, constant: 10),
             bchatIdLabel.trailingAnchor.constraint(equalTo: bchatIdBgView.trailingAnchor, constant: -10),
-        ])
-        //Beldex Address
-        NSLayoutConstraint.activate([
+            //Beldex Address
             beldexAddressLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             beldexAddressLabel.bottomAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: -7),
-        ])
-        NSLayoutConstraint.activate([
             copyForBeldexAddressButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             copyForBeldexAddressButton.centerYAnchor.constraint(equalTo: beldexAddressBgView.centerYAnchor),
             copyForBeldexAddressButton.widthAnchor.constraint(equalToConstant: 28),
             copyForBeldexAddressButton.heightAnchor.constraint(equalToConstant: 28),
-        ])
-        NSLayoutConstraint.activate([
             beldexAddressBgView.trailingAnchor.constraint(equalTo: copyForBeldexAddressButton.leadingAnchor, constant: -9),
             beldexAddressBgView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             beldexAddressBgView.bottomAnchor.constraint(equalTo: qrBackgroundView.topAnchor, constant: -27),
             beldexAddressBgView.heightAnchor.constraint(equalToConstant: 64),
-        ])
-        NSLayoutConstraint.activate([
             beldexAddressIdLabel.topAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: 10),
             beldexAddressIdLabel.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -10),
             beldexAddressIdLabel.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 10),
             beldexAddressIdLabel.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -10),
-        ])
-        //QR Code
-        NSLayoutConstraint.activate([
+            //QR Code
             qrBackgroundView.widthAnchor.constraint(equalToConstant: 142),
             qrBackgroundView.heightAnchor.constraint(equalToConstant: 142),
             qrBackgroundView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -33),
             qrBackgroundView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-        ])
-        NSLayoutConstraint.activate([
             qrCodeImage.topAnchor.constraint(equalTo: qrBackgroundView.topAnchor, constant: 8),
             qrCodeImage.bottomAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: -8),
             qrCodeImage.leadingAnchor.constraint(equalTo: qrBackgroundView.leadingAnchor, constant: 8),
             qrCodeImage.trailingAnchor.constraint(equalTo: qrBackgroundView.trailingAnchor, constant: -8),
-        ])
-        NSLayoutConstraint.activate([
             shareButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             shareButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             shareButton.heightAnchor.constraint(equalToConstant: 58),
         ])
+        if isNavigationBarHideInChatNewVC == true {
+            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -125).isActive = true
+        }else{
+            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+        }
         
         shareButton.backgroundColor = Colors.greenColor
         shareButton.setTitleColor(.white, for: .normal)
@@ -416,39 +405,30 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             outerProfileView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             outerProfileView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
             outerProfileView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-            
             innerProfileImageView.leadingAnchor.constraint(equalTo: outerProfileView.leadingAnchor, constant: 15),
             innerProfileImageView.trailingAnchor.constraint(equalTo: outerProfileView.trailingAnchor, constant: -15),
             innerProfileImageView.centerXAnchor.constraint(equalTo: outerProfileView.centerXAnchor),
             innerProfileImageView.centerYAnchor.constraint(equalTo: outerProfileView.centerYAnchor),
-            
             profilePictureLabel.topAnchor.constraint(equalTo: innerProfileImageView.topAnchor, constant: 20),
             profilePictureLabel.centerXAnchor.constraint(equalTo: innerProfileImageView.centerXAnchor),
-            
             innerProfileCloseButton.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -10),
             innerProfileCloseButton.centerYAnchor.constraint(equalTo: profilePictureLabel.centerYAnchor),
             innerProfileCloseButton.widthAnchor.constraint(equalToConstant: 30),
             innerProfileCloseButton.heightAnchor.constraint(equalToConstant: 30),
-            
             innerProfileImage.widthAnchor.constraint(equalToConstant: 96.5),
             innerProfileImage.heightAnchor.constraint(equalToConstant: 96.5),
             innerProfileImage.centerXAnchor.constraint(equalTo: innerProfileImageView.centerXAnchor),
             innerProfileImage.topAnchor.constraint(equalTo: profilePictureLabel.bottomAnchor, constant: 15),
-            
             cameraImage2.trailingAnchor.constraint(equalTo: innerProfileImage.trailingAnchor, constant: -1),
             cameraImage2.bottomAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: -1),
             cameraImage2.widthAnchor.constraint(equalToConstant: 30),
             cameraImage2.heightAnchor.constraint(equalToConstant: 30),
-            
             buttonStackView1.heightAnchor.constraint(equalToConstant: 52),
             buttonStackView1.topAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: 20),
             buttonStackView1.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -20),
             buttonStackView1.leadingAnchor.constraint(equalTo: innerProfileImageView.leadingAnchor, constant: 20),
             buttonStackView1.bottomAnchor.constraint(equalTo: innerProfileImageView.bottomAnchor, constant: -22),
-            
         ])
-    
-    
         
     }
     
@@ -461,6 +441,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         copyForBChatIdButton.layer.cornerRadius = copyForBChatIdButton.frame.height / 2
         removePictureButton.layer.cornerRadius = removePictureButton.frame.height / 2
         saveButton.layer.cornerRadius = saveButton.frame.height / 2
+        doneButton.layer.cornerRadius = doneButton.frame.height / 2
     }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
@@ -524,7 +505,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         innerProfileImage.image = profilePictureToBeUploaded
         innerProfileImage.contentMode = .scaleAspectFit
         imagePicker.dismiss(animated: true, completion: nil)
-//        self.outerProfileView.isHidden = true
+        self.outerProfileView.isHidden = true
         updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
     
@@ -536,11 +517,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let userDefaults = UserDefaults.standard
         let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
         var profilePicture: UIImage?
-//        if self.isProfileRemove {
-//           profilePicture = openGroupProfilePicture
-//        } else {
+        if self.isProfileRemove {
+           profilePicture = openGroupProfilePicture
+        } else {
            profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
-//        }
+        }
         
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
             OWSProfileManager.shared().updateLocalProfileName(name, avatarImage: profilePicture, success: {
@@ -553,11 +534,12 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                    let publicKey = getUserHexEncodedPublicKey()
                     let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
                     self?.profilePictureImage.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: self!.size)
-//                    self?.isProfileRemove = false
+                    self?.isProfileRemove = false
                 }
                 let publicKey = getUserHexEncodedPublicKey()
                 self?.innerProfileImage.image = self!.useFallbackPicture ? nil : (self?.openGroupProfilePicture ?? self?.getProfilePicture(of: self!.size, for: publicKey))
-//                self?.outerProfileView.isHidden = true
+                self?.outerProfileView.isHidden = true
+                
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
@@ -570,7 +552,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             }, failure: { error in
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
-//                        self?.outerProfileView.isHidden = true
+                        self?.outerProfileView.isHidden = true
                         var isMaxFileSizeExceeded = false
                         if let error = error as? FileServerAPIV2.Error {
                             isMaxFileSizeExceeded = (error == .maxFileSizeExceeded)
@@ -584,14 +566,31 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                 }
             }, requiresSync: true)
         }
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     @objc func removePictureButtonAction(){
-        
+        let publicKey = getUserHexEncodedPublicKey()
+        guard !publicKey.isEmpty else { return  }
+        if OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) == nil {
+            return
+        }
+        self.isProfileRemove = true
+        self.outerProfileView.isHidden = true
+        clearAvatar()
     }
     
     @objc func saveButtonAction(){
         
+    }
+    //name Edit Save Button
+    @objc func doneButtonTapped(_ sender: UIButton){
+        
+    }
+    
+    func clearAvatar() {
+        profilePictureToBeUploaded = nil
+        updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
     
     @objc func shareButtonTapped() {

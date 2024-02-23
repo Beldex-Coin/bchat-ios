@@ -1,8 +1,9 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
-class BChatSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -37,8 +38,8 @@ class BChatSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewDe
         // Do any additional setup after loading the view.
         
         view.backgroundColor = UIColor(hex: 0x11111A)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Settings"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
+        self.title = ""
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

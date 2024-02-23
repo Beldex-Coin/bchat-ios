@@ -2,8 +2,9 @@
 
 import UIKit
 import AVFoundation
+import BChatUIKit
 
-class ScanNewVC: UIViewController,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     private lazy var scannerView: QRScannerView = {
         let stackView = QRScannerView()
@@ -32,7 +33,6 @@ class ScanNewVC: UIViewController,OWSQRScannerDelegate,AVCaptureMetadataOutputOb
     }()
     private lazy var scanDescLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
@@ -53,6 +53,9 @@ class ScanNewVC: UIViewController,OWSQRScannerDelegate,AVCaptureMetadataOutputOb
     var previewLayer: AVCaptureVideoPreviewLayer!
     private var isJoining = false
     var newChatScanflag = false
+    //Wallet Scanner
+    var isFromWallet = false
+    var wallet: BDXWallet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +84,15 @@ class ScanNewVC: UIViewController,OWSQRScannerDelegate,AVCaptureMetadataOutputOb
             scanDescLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
         ])
         
+        if newChatScanflag == false{
+            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+        }
+        if isFromWallet == true {
+            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
+        }else {
+            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,13 +113,13 @@ class ScanNewVC: UIViewController,OWSQRScannerDelegate,AVCaptureMetadataOutputOb
         }
     }
     // MARK: DIRECT SCAN for ONE to ONE
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            // This could be an ONS name
+            // This could be an BNS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
                         self?.startNewDM(with: bchatID)
                     }
@@ -226,10 +238,47 @@ extension ScanNewVC: QRScannerViewDelegate {
         presentAlert(withTitle: NSLocalizedString("ERROR_MSG", comment: ""), message: NSLocalizedString("ERROR_SCANNING_PLS_TRY_AGAIN", comment: ""))
     }
     func qrScanningSucceededWithCode(_ str: String?) {
-        if newChatScanflag == true {
+        if newChatScanflag == true { // Join Social Group QR Code Scanning
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
-        }else {
+        }
+        if isFromWallet == true { //Wallet QR Code Scanning
+            var qrString = str!
+            if qrString.contains("Beldex:") {
+                qrString = qrString.replacingOccurrences(of: "Beldex:", with: "")
+            }
+            let vc = WalletSendNewVC()
+            vc.wallet = self.wallet
+            if qrString.contains("?") {
+                let walletAddress = qrString.components(separatedBy: "?")
+                guard BChatWalletWrapper.validAddress(walletAddress[0]) else {
+                    let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                        self.scannerView.startScanning()
+                    }))
+                    present(alertController, animated: true, completion: nil)
+                    return
+                }
+                vc.walletAddress = walletAddress[0]
+            } else {
+                guard BChatWalletWrapper.validAddress(qrString) else {
+                    let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                        self.scannerView.startScanning()
+                    }))
+                    present(alertController, animated: true, completion: nil)
+                    return
+                }
+                vc.walletAddress = qrString
+            }
+            if qrString.contains("=") {
+                let walletAmount = qrString.components(separatedBy: "=")
+                vc.walletAmount = walletAmount[1]
+            } else {
+                vc.walletAmount = ""
+            }
+            navigationController!.pushViewController(vc, animated: true)
+        }else{ // new Chat QR Code Scanning
             self.qrData = QRData(codeString: str)
             startNewDMIfPossible(with: str!)
         }

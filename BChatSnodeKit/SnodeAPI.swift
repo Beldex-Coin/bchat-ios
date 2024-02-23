@@ -55,7 +55,7 @@ public final class SnodeAPI : NSObject {
         case noKeyPair
         case signingFailed
         case signatureVerificationFailed
-        // ONS
+        // BNS
         case decryptionFailed
         case hashingFailed
         case validationFailed
@@ -69,7 +69,7 @@ public final class SnodeAPI : NSObject {
             case .noKeyPair: return "Missing user key pair."
             case .signingFailed: return "Couldn't sign message."
             case . signatureVerificationFailed: return "Failed to verify the signature."
-            // ONS
+            // BNS
             case .decryptionFailed: return "Couldn't decrypt BNS name."
             case .hashingFailed: return "Couldn't compute BNS name hash."
             case .validationFailed: return "BNS name validation failed."
@@ -334,7 +334,7 @@ public final class SnodeAPI : NSObject {
         let bchatIDByteCount = 33
         // The name must be lowercased
         let onsName = onsName.lowercased()
-        // Hash the ONS name using BLAKE2b
+        // Hash the BNS name using BLAKE2b
         let nameAsData = [UInt8](onsName.data(using: String.Encoding.utf8)!)
         guard let nameHash = sodium.genericHash.hash(message: nameAsData) else { return Promise(error: Error.hashingFailed) }
         

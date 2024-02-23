@@ -1,6 +1,7 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class FeePriorityVC: BaseVC {
 
@@ -13,7 +14,6 @@ class FeePriorityVC: BaseVC {
          stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return stackView
     }()
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0x00BD40)
@@ -22,17 +22,14 @@ class FeePriorityVC: BaseVC {
         result.text = "Fee Priority"
         return result
     }()
-    
     lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_close"), for: .normal)
         return button
     }()
-    
     lazy var flashButton: UIButton = {
         let button = UIButton()
         button.setTitle("Flash", for: .normal)
@@ -43,7 +40,6 @@ class FeePriorityVC: BaseVC {
         button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     lazy var slowButton: UIButton = {
         let button = UIButton()
         button.setTitle("Slow", for: .normal)
@@ -54,10 +50,7 @@ class FeePriorityVC: BaseVC {
         button.addTarget(self, action: #selector(slowButtonButtonTapped), for: .touchUpInside)
         return button
     }()
-    
-    
-    
-    
+    var feeValue = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,60 +58,58 @@ class FeePriorityVC: BaseVC {
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, closeButton, flashButton, slowButton)
-        
-        
-        flashButton.layer.borderWidth = 2
-        flashButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-        flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        flashButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
-        
-        slowButton.layer.borderWidth = 1
-        slowButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        slowButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
-        
-        
-        
+        flashButtonUtilities()
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-         
-            
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
-            
             closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -18),
             closeButton.heightAnchor.constraint(equalToConstant: 22),
             closeButton.widthAnchor.constraint(equalToConstant: 22),
-            
             flashButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 19),
             flashButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
             flashButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             flashButton.heightAnchor.constraint(equalToConstant: 60),
-            
             slowButton.topAnchor.constraint(equalTo: flashButton.bottomAnchor, constant: 13),
             slowButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
             slowButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             slowButton.heightAnchor.constraint(equalToConstant: 60),
             slowButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -23)
-            
         ])
         
+        if !SaveUserDefaultsData.FeePriority.isEmpty {
+            if SaveUserDefaultsData.FeePriority.contains("Flash"){
+                flashButtonUtilities()
+            }else{
+                slowButtonButtonUtilities()
+            }
+        }else{
+            flashButton.setTitle("Flash", for: .normal)
+        }
         
     }
-    
-
-    
     
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
+        SaveUserDefaultsData.FeePriority = feeValue
+        NotificationCenter.default.post(name: Notification.Name("feePriorityNameKey"), object: SaveUserDefaultsData.FeePriority)
     }
     
     @objc private func flashButtonTapped(_ sender: UIButton) {
+        flashButtonUtilities()
+        feeValue = "Flash"
+    }
+    
+    @objc private func slowButtonButtonTapped(_ sender: UIButton) {
+        slowButtonButtonUtilities()
+        feeValue = "Slow"
+    }
+    
+    func flashButtonUtilities(){
         flashButton.layer.borderWidth = 2
         flashButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
         flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
@@ -128,10 +119,8 @@ class FeePriorityVC: BaseVC {
         slowButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         slowButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
-        
     }
-    
-    @objc private func slowButtonButtonTapped(_ sender: UIButton) {
+    func slowButtonButtonUtilities(){
         slowButton.layer.borderWidth = 2
         slowButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
         slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
@@ -141,9 +130,6 @@ class FeePriorityVC: BaseVC {
         flashButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         flashButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
-        
     }
-    
-   
 
 }

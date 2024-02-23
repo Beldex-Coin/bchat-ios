@@ -1,8 +1,9 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
-class AboutNewVC: UIViewController {
+class AboutNewVC: BaseVC {
 
     private lazy var backgroundView: UIView = {
         let stackView = UIView()
@@ -39,7 +40,6 @@ class AboutNewVC: UIViewController {
         
         view.addSubview(backgroundView)
         backgroundView.addSubview(aboutDetailsLabel)
-        
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
