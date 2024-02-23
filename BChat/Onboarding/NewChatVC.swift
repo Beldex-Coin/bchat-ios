@@ -105,14 +105,14 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             performAction()
             return false
         }
-        else if text.count == 0 {
-            nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
-        }
-        else {
-            nextRef.isUserInteractionEnabled = false
-            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
-        }
+//        else if text.count == 0 {
+//            nextRef.isUserInteractionEnabled = false
+//            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
+//        }
+//        else {
+//            nextRef.isUserInteractionEnabled = false
+//            nextRef.backgroundColor = Colors.bchatViewBackgroundColor
+//        }
         return true
     }
     
@@ -171,7 +171,7 @@ class NewChatVC: BaseVC,UITextViewDelegate {
                             default: break
                             }
                         }
-                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
                         _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                         })
                     }

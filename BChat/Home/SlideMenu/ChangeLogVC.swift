@@ -48,7 +48,11 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
                 expandable: false),
         Section(genre: "1.3.3",
                 movies: ["- Minor bug fixes"],
-                expandable: false)
+                expandable: false),
+        Section(genre: "1.4.0",
+                movies: ["- Integrated BNS in BChat",
+                         "- Minor Bug fixes"],
+                expandable: false),
     ]
     
     override func viewDidLoad() {
