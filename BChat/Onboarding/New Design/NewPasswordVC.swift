@@ -45,14 +45,14 @@ class NewPasswordVC: BaseVC {
         return result
     }()
     
-    lazy var passcodeDotsView: PasscodeDotsView = {
-        let result = PasscodeDotsView()
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 8
-        result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-        return result
-    }()
+//    lazy var passcodeDotsView: PasscodeDotsView = {
+//        let result = PasscodeDotsView()
+//        result.translatesAutoresizingMaskIntoConstraints = false
+//        result.layer.cornerRadius = 8
+//        result.layer.borderWidth = 1
+//        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+//        return result
+//    }()
     
     private lazy var firstPinView: UIView = {
         let result = UIView()
@@ -368,257 +368,257 @@ class NewPasswordVC: BaseVC {
     }()
     
     
-    var once = false
-    var checkText = ""
-    var twice = false
-    var checkTextNew = ""
-    var isChangePin = false
-    var isEnterPin = false
-    var isSendWalletVC = false
-    var wallet: BDXWallet?
-    var finalWalletAddress = ""
-    var finalWalletAmount = ""
-    var isSendConversionWalletVC = false
-    @objc dynamic var isfromPayasUChat: Bool = false
-    var passcodeViewMode: PasscodeViewMode = .inactive
-    
-    var passcodeText : String = "" {
-        didSet {
-            if oldValue.count < passcodeText.count {
-                passcodeDotsView.toggleDot(index: passcodeText.count - 1, filled: true)
-            } else {
-                passcodeDotsView.toggleDot(index: oldValue.count - 1, filled: false)
-            }
-            if passcodeText.count == 4 {
-                if self.isEnterPin {
-                    self.enterPin()
-                    return
-                }
-                if self.isChangePin {
-                    self.changePin()
-                    return
-                }
-                if self.isSendWalletVC {
-                    self.sendWalletVC()
-                    return
-                }
-                if self.isSendConversionWalletVC {
-                    self.sendConversionWalletVC()
-                    return
-                }
-                changedText()
-            }
-        }
-    }
-    
-    func changedText(){
-        if once == true{
-            if passcodeText != checkText{
-                let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                    self.checkText = ""
-                    self.passcodeText.removeAll()
-                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-                    self.once = false
-//                    self.lblEnterPin.text = "Create Pin"
-                })
-                alert.addAction(okayAction)
-                self.present(alert, animated: true, completion: nil)
-            }else{
-                SaveUserDefaultsData.WalletPassword = passcodeText
-                if isfromPayasUChat == true {
-                    self.navigationController?.popViewController(animated: true)
-                }else {
-                    let alert = UIAlertController(title: "", message: "Your PIN has been set up successfully!", preferredStyle: .alert)
-                    let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    })
-                    alert.addAction(okayAction)
-                    self.present(alert, animated: true, completion: nil)
-                }
-            }
-        }else{
-            checkText = passcodeText
-            passcodeText.removeAll()
-            passcodeDotsView.toggleDot(index: 0, filled: false)
-            passcodeDotsView.toggleDot(index: 1, filled: false)
-            passcodeDotsView.toggleDot(index: 2, filled: false)
-            passcodeDotsView.toggleDot(index: 3, filled: false)
-            once = true
-//            lblEnterPin.text = "Re-Enter Pin"
-        }
-    }
-    
-    func enterPin() {
-        if passcodeText != SaveUserDefaultsData.WalletPassword{
-            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                self.checkText = ""
-                self.passcodeText.removeAll()
-                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-            })
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
-        }else{
-            if isfromPayasUChat == true {
-                self.navigationController?.popViewController(animated: true)
-            }else {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-        }
-    }
-    
-    func changePin(){
-        if once == true{
-            if passcodeText == checkText{
-                let alert = UIAlertController(title: "", message: "New pin and old pin can't be same, please enter a diferent pin", preferredStyle: .alert)
-                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                    self.checkText = ""
-                    self.passcodeText.removeAll()
-                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-                    self.once = false
-//                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
-                })
-                alert.addAction(okayAction)
-                self.present(alert, animated: true, completion: nil)
-            }else{
-                if twice == true{
-                    if passcodeText != checkTextNew{
-                        let alert = UIAlertController(title: "Incorrect New pin", message: "Passcode not matched, Enter New Pin again", preferredStyle: .alert)
-                        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                            self.checkTextNew = ""
-                            self.passcodeText.removeAll()
-                            self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                            self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                            self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                            self.passcodeDotsView.toggleDot(index: 3, filled: false)
-                            self.twice = false
-//                            self.lblEnterPin.text = "Create Pin"
-                        })
-                        alert.addAction(okayAction)
-                        self.present(alert, animated: true, completion: nil)
-                    }else{
-                        SaveUserDefaultsData.WalletPassword = passcodeText
-                        if isfromPayasUChat == true {
-                            self.navigationController?.popViewController(animated: true)
-                        }else {
-                            let alert = UIAlertController(title: "", message: "Your PIN has been changed successfully!", preferredStyle: .alert)
-                            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                                self.navigationController?.pushViewController(vc, animated: true)
-                            })
-                            alert.addAction(okayAction)
-                            self.present(alert, animated: true, completion: nil)
-                        }
-                    }
-                }else{
-                    checkTextNew = passcodeText
-                    passcodeText.removeAll()
-                    passcodeDotsView.toggleDot(index: 0, filled: false)
-                    passcodeDotsView.toggleDot(index: 1, filled: false)
-                    passcodeDotsView.toggleDot(index: 2, filled: false)
-                    passcodeDotsView.toggleDot(index: 3, filled: false)
-                    twice = true
-//                    lblEnterPin.text = "Re-Enter Pin"
-                }
-            }
-        }else{
-            if passcodeText == SaveUserDefaultsData.WalletPassword{
-                checkText = passcodeText
-                passcodeText.removeAll()
-                passcodeDotsView.toggleDot(index: 0, filled: false)
-                passcodeDotsView.toggleDot(index: 1, filled: false)
-                passcodeDotsView.toggleDot(index: 2, filled: false)
-                passcodeDotsView.toggleDot(index: 3, filled: false)
-                once = true
-//                lblEnterPin.text = "Create Pin"
-            }else{
-                let alert = UIAlertController(title: "", message: "Please enter correct current pin", preferredStyle: .alert)
-                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                    self.checkText = ""
-                    self.passcodeText.removeAll()
-                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-                    self.once = false
-//                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
-                })
-                alert.addAction(okayAction)
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-    }
-    
-    func sendWalletVC() {
-        if passcodeText != SaveUserDefaultsData.WalletPassword{
-            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                self.checkText = ""
-                self.passcodeText.removeAll()
-                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-            })
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
-        }else{
-            if self.navigationController != nil{
-                let count = self.navigationController!.viewControllers.count
-                if count > 1
-                {
-                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSendVC
-                    VC.wallet = self.wallet
-                    VC.finalWalletAddress = self.finalWalletAddress
-                    VC.finalWalletAmount = self.finalWalletAmount
-                    VC.backAPI = true
-                    self.navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-    }
-    
-    func sendConversionWalletVC() {
-        if passcodeText != SaveUserDefaultsData.WalletPassword{
-            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                self.checkText = ""
-                self.passcodeText.removeAll()
-                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-            })
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
-        }else{
-            if self.navigationController != nil{
-                let count = self.navigationController!.viewControllers.count
-                if count > 1
-                {
-                    let VC = self.navigationController!.viewControllers[count-2] as! ConversationVC
-                    VC.wallet = self.wallet
-                    VC.finalWalletAddress = self.finalWalletAddress
-                    VC.finalWalletAmount = self.finalWalletAmount
-                    VC.backAPI = true
-                }
-            }
-            self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
+//    var once = false
+//    var checkText = ""
+//    var twice = false
+//    var checkTextNew = ""
+//    var isChangePin = false
+//    var isEnterPin = false
+//    var isSendWalletVC = false
+//    var wallet: BDXWallet?
+//    var finalWalletAddress = ""
+//    var finalWalletAmount = ""
+//    var isSendConversionWalletVC = false
+//    @objc dynamic var isfromPayasUChat: Bool = false
+//    var passcodeViewMode: PasscodeViewMode = .inactive
+//
+//    var passcodeText : String = "" {
+//        didSet {
+//            if oldValue.count < passcodeText.count {
+//                passcodeDotsView.toggleDot(index: passcodeText.count - 1, filled: true)
+//            } else {
+//                passcodeDotsView.toggleDot(index: oldValue.count - 1, filled: false)
+//            }
+//            if passcodeText.count == 4 {
+//                if self.isEnterPin {
+//                    self.enterPin()
+//                    return
+//                }
+//                if self.isChangePin {
+//                    self.changePin()
+//                    return
+//                }
+//                if self.isSendWalletVC {
+//                    self.sendWalletVC()
+//                    return
+//                }
+//                if self.isSendConversionWalletVC {
+//                    self.sendConversionWalletVC()
+//                    return
+//                }
+//                changedText()
+//            }
+//        }
+//    }
+//
+//    func changedText(){
+//        if once == true{
+//            if passcodeText != checkText{
+//                let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
+//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                    self.checkText = ""
+//                    self.passcodeText.removeAll()
+//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//                    self.once = false
+////                    self.lblEnterPin.text = "Create Pin"
+//                })
+//                alert.addAction(okayAction)
+//                self.present(alert, animated: true, completion: nil)
+//            }else{
+//                SaveUserDefaultsData.WalletPassword = passcodeText
+//                if isfromPayasUChat == true {
+//                    self.navigationController?.popViewController(animated: true)
+//                }else {
+//                    let alert = UIAlertController(title: "", message: "Your PIN has been set up successfully!", preferredStyle: .alert)
+//                    let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    })
+//                    alert.addAction(okayAction)
+//                    self.present(alert, animated: true, completion: nil)
+//                }
+//            }
+//        }else{
+//            checkText = passcodeText
+//            passcodeText.removeAll()
+//            passcodeDotsView.toggleDot(index: 0, filled: false)
+//            passcodeDotsView.toggleDot(index: 1, filled: false)
+//            passcodeDotsView.toggleDot(index: 2, filled: false)
+//            passcodeDotsView.toggleDot(index: 3, filled: false)
+//            once = true
+////            lblEnterPin.text = "Re-Enter Pin"
+//        }
+//    }
+//
+//    func enterPin() {
+//        if passcodeText != SaveUserDefaultsData.WalletPassword{
+//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
+//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                self.checkText = ""
+//                self.passcodeText.removeAll()
+//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//            })
+//            alert.addAction(okayAction)
+//            self.present(alert, animated: true, completion: nil)
+//        }else{
+//            if isfromPayasUChat == true {
+//                self.navigationController?.popViewController(animated: true)
+//            }else {
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }
+//        }
+//    }
+//
+//    func changePin(){
+//        if once == true{
+//            if passcodeText == checkText{
+//                let alert = UIAlertController(title: "", message: "New pin and old pin can't be same, please enter a diferent pin", preferredStyle: .alert)
+//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                    self.checkText = ""
+//                    self.passcodeText.removeAll()
+//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//                    self.once = false
+////                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
+//                })
+//                alert.addAction(okayAction)
+//                self.present(alert, animated: true, completion: nil)
+//            }else{
+//                if twice == true{
+//                    if passcodeText != checkTextNew{
+//                        let alert = UIAlertController(title: "Incorrect New pin", message: "Passcode not matched, Enter New Pin again", preferredStyle: .alert)
+//                        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                            self.checkTextNew = ""
+//                            self.passcodeText.removeAll()
+//                            self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                            self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                            self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                            self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//                            self.twice = false
+////                            self.lblEnterPin.text = "Create Pin"
+//                        })
+//                        alert.addAction(okayAction)
+//                        self.present(alert, animated: true, completion: nil)
+//                    }else{
+//                        SaveUserDefaultsData.WalletPassword = passcodeText
+//                        if isfromPayasUChat == true {
+//                            self.navigationController?.popViewController(animated: true)
+//                        }else {
+//                            let alert = UIAlertController(title: "", message: "Your PIN has been changed successfully!", preferredStyle: .alert)
+//                            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                                self.navigationController?.pushViewController(vc, animated: true)
+//                            })
+//                            alert.addAction(okayAction)
+//                            self.present(alert, animated: true, completion: nil)
+//                        }
+//                    }
+//                }else{
+//                    checkTextNew = passcodeText
+//                    passcodeText.removeAll()
+//                    passcodeDotsView.toggleDot(index: 0, filled: false)
+//                    passcodeDotsView.toggleDot(index: 1, filled: false)
+//                    passcodeDotsView.toggleDot(index: 2, filled: false)
+//                    passcodeDotsView.toggleDot(index: 3, filled: false)
+//                    twice = true
+////                    lblEnterPin.text = "Re-Enter Pin"
+//                }
+//            }
+//        }else{
+//            if passcodeText == SaveUserDefaultsData.WalletPassword{
+//                checkText = passcodeText
+//                passcodeText.removeAll()
+//                passcodeDotsView.toggleDot(index: 0, filled: false)
+//                passcodeDotsView.toggleDot(index: 1, filled: false)
+//                passcodeDotsView.toggleDot(index: 2, filled: false)
+//                passcodeDotsView.toggleDot(index: 3, filled: false)
+//                once = true
+////                lblEnterPin.text = "Create Pin"
+//            }else{
+//                let alert = UIAlertController(title: "", message: "Please enter correct current pin", preferredStyle: .alert)
+//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                    self.checkText = ""
+//                    self.passcodeText.removeAll()
+//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//                    self.once = false
+////                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
+//                })
+//                alert.addAction(okayAction)
+//                self.present(alert, animated: true, completion: nil)
+//            }
+//        }
+//    }
+//
+//    func sendWalletVC() {
+//        if passcodeText != SaveUserDefaultsData.WalletPassword{
+//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
+//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                self.checkText = ""
+//                self.passcodeText.removeAll()
+//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//            })
+//            alert.addAction(okayAction)
+//            self.present(alert, animated: true, completion: nil)
+//        }else{
+//            if self.navigationController != nil{
+//                let count = self.navigationController!.viewControllers.count
+//                if count > 1
+//                {
+//                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSendVC
+//                    VC.wallet = self.wallet
+//                    VC.finalWalletAddress = self.finalWalletAddress
+//                    VC.finalWalletAmount = self.finalWalletAmount
+//                    VC.backAPI = true
+//                    self.navigationController?.popViewController(animated: true)
+//                }
+//            }
+//        }
+//    }
+//
+//    func sendConversionWalletVC() {
+//        if passcodeText != SaveUserDefaultsData.WalletPassword{
+//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
+//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+//                self.checkText = ""
+//                self.passcodeText.removeAll()
+//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
+//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
+//            })
+//            alert.addAction(okayAction)
+//            self.present(alert, animated: true, completion: nil)
+//        }else{
+//            if self.navigationController != nil{
+//                let count = self.navigationController!.viewControllers.count
+//                if count > 1
+//                {
+//                    let VC = self.navigationController!.viewControllers[count-2] as! ConversationVC
+//                    VC.wallet = self.wallet
+//                    VC.finalWalletAddress = self.finalWalletAddress
+//                    VC.finalWalletAmount = self.finalWalletAmount
+//                    VC.backAPI = true
+//                }
+//            }
+//            self.navigationController?.popViewController(animated: true)
+//        }
+//    }
+//
 //    var motionManager: CMMotionManager = CMMotionManager()
 //    func lockedScreenViewsGroup() -> [UIView] {
 //        return []
@@ -761,38 +761,38 @@ class NewPasswordVC: BaseVC {
         self.navigationController?.pushViewController(vc, animated: true)
     }
    
-    
-    // hide the status bar on the "sleep" screen
-    override var prefersStatusBarHidden: Bool {
-        switch passcodeViewMode {
-        case .inactive:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    // Hides the home indicator on the inactive and passcode entry view
-    func prefersHomeIndicatorAutoHidden() -> Bool {
-        switch passcodeViewMode {
-        case .inactive, .passcodeEntry:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    /// Prevents the user from swiping up to dismiss the app.
-    func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
-        return UIRectEdge.bottom
-    }
-    
-    // handle the swipe up from the bottom of the screen
-    @objc func handlePan(_ sender: Any) {
-        if passcodeViewMode == .lockedScreen {
-//            setPasscodeViewMode(.passcodeEntry)
-        }
-    }
+//
+//    // hide the status bar on the "sleep" screen
+//    override var prefersStatusBarHidden: Bool {
+//        switch passcodeViewMode {
+//        case .inactive:
+//            return true
+//        default:
+//            return false
+//        }
+//    }
+//
+//    // Hides the home indicator on the inactive and passcode entry view
+//    func prefersHomeIndicatorAutoHidden() -> Bool {
+//        switch passcodeViewMode {
+//        case .inactive, .passcodeEntry:
+//            return true
+//        default:
+//            return false
+//        }
+//    }
+//
+//    /// Prevents the user from swiping up to dismiss the app.
+//    func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
+//        return UIRectEdge.bottom
+//    }
+//
+//    // handle the swipe up from the bottom of the screen
+//    @objc func handlePan(_ sender: Any) {
+//        if passcodeViewMode == .lockedScreen {
+////            setPasscodeViewMode(.passcodeEntry)
+//        }
+//    }
     
     
     

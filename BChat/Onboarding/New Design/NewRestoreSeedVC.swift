@@ -159,6 +159,29 @@ class NewRestoreSeedVC: BaseVC {
     }
     
 
+//    private lazy var apnsOptionView: OptionView = {
+//        let explanation = NSLocalizedString("fast_mode_explanation", comment: "")
+//        let result = OptionView(title: "Fast Mode", explanation: explanation, delegate: self, isRecommended: true)
+//        result.accessibilityLabel = "Fast mode option"
+//        return result
+//    }()
+//
+//    private lazy var backgroundPollingOptionView: OptionView = {
+//        let explanation = NSLocalizedString("slow_mode_explanation", comment: "")
+//        let result = OptionView(title: "Slow Mode", explanation: explanation, delegate: self)
+//        result.accessibilityLabel = "Slow mode option"
+//        return result
+//    }()
+//
+//    private let mnemonic: String = {
+//        let identityManager = OWSIdentityManager.shared()
+//        let databaseConnection = identityManager.value(forKey: "dbConnection") as! YapDatabaseConnection
+//        var hexEncodedSeed: String! = databaseConnection.object(forKey: "BeldexSeed", inCollection: OWSPrimaryStorageIdentityKeyStoreCollection) as! String?
+//        if hexEncodedSeed == nil {
+//            hexEncodedSeed = identityManager.identityKeyPair()!.hexEncodedPrivateKey // Legacy account
+//        }
+//        return Mnemonic.encode(hexEncodedString: hexEncodedSeed)
+//    }()
     
     
     
