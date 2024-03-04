@@ -1,8 +1,9 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
-class RescanNewVC: UIViewController,UITextFieldDelegate {
+class RescanNewVC: BaseVC,UITextFieldDelegate {
     
     private lazy var topView: UIView = {
         let stackView = UIView()

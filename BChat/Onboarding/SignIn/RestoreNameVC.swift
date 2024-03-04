@@ -1,6 +1,7 @@
 // Copyright © 2023 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private var spacer1HeightConstraint: NSLayoutConstraint!
@@ -42,7 +43,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         return result
     }()
     
-    private lazy var restoretitleLabel: UILabel = {
+    private lazy var restoreTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
         result.font = Fonts.OpenSans(ofSize: 14)
@@ -208,7 +209,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateViewContainer.addArrangedSubview(isRestoreFromDateButton)
         
         // Set up top stack view
-        topStackView = UIStackView(arrangedSubviews: [ titleLabel, spacer1, displayNameTextField, spacer5, spacer6, spacer7, spacer2, restoretitleLabel, spacer3, restoreHeightTextField, spacer4, spacer8, isRestoreFromDateViewContainer ])
+        topStackView = UIStackView(arrangedSubviews: [ titleLabel, spacer1, displayNameTextField, spacer5, spacer6, spacer7, spacer2, restoreTitleLabel, spacer3, restoreHeightTextField, spacer4, spacer8, isRestoreFromDateViewContainer ])
         topStackView.axis = .vertical
         topStackView.alignment = .fill
         // Set up top stack view container
@@ -393,8 +394,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
-            restoretitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
-            restoretitleLabel.isHidden = true
+            restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
+            restoreTitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
             dateTitleLabel.isHidden = false
             restoreDateHeightTextField.isHidden = false
@@ -413,11 +414,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
         }else {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
-            restoretitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
+            restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
             dateTitleLabel.isHidden = true
             restoreDateHeightTextField.isHidden = true
-            restoretitleLabel.isHidden = false
+            restoreTitleLabel.isHidden = false
             restoreHeightTextField.isHidden = false
             topStackView.addArrangedSubview(titleLabel)
             topStackView.addArrangedSubview(spacer1)
@@ -426,7 +427,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(spacer5)
             topStackView.addArrangedSubview(spacer6)
             topStackView.addArrangedSubview(spacer7)
-            topStackView.addArrangedSubview(restoretitleLabel)
+            topStackView.addArrangedSubview(restoreTitleLabel)
             topStackView.addArrangedSubview(spacer3)
             topStackView.addArrangedSubview(restoreHeightTextField)
             topStackView.addArrangedSubview(spacer4)

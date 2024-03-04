@@ -82,8 +82,12 @@ class MyWalletPasscodeVC: BaseVC {
                 }else {
                     let alert = UIAlertController(title: "", message: "Your PIN has been set up successfully!", preferredStyle: .alert)
                     let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+//                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                        let vc = WalletHomeNewVC()
+                        self.navigationController!.pushViewController(vc, animated: true)
                     })
                     alert.addAction(okayAction)
                     self.present(alert, animated: true, completion: nil)
@@ -118,8 +122,10 @@ class MyWalletPasscodeVC: BaseVC {
             if isfromPayasUChat == true {
                 self.navigationController?.popViewController(animated: true)
             }else {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                self.navigationController?.pushViewController(vc, animated: true)
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = WalletHomeNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
             }
         }
     }
@@ -163,8 +169,10 @@ class MyWalletPasscodeVC: BaseVC {
                         }else {
                             let alert = UIAlertController(title: "", message: "Your PIN has been changed successfully!", preferredStyle: .alert)
                             let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-                                self.navigationController?.pushViewController(vc, animated: true)
+//                                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
+//                                self.navigationController?.pushViewController(vc, animated: true)
+                                let vc = WalletHomeNewVC()
+                                self.navigationController!.pushViewController(vc, animated: true)
                             })
                             alert.addAction(okayAction)
                             self.present(alert, animated: true, completion: nil)
@@ -227,12 +235,13 @@ class MyWalletPasscodeVC: BaseVC {
                 let count = self.navigationController!.viewControllers.count
                 if count > 1
                 {
-                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSendVC
+                    let VC = self.navigationController!.viewControllers[count-2] as! WalletSendNewVC
                     VC.wallet = self.wallet
                     VC.finalWalletAddress = self.finalWalletAddress
                     VC.finalWalletAmount = self.finalWalletAmount
                     VC.backAPI = true
                     self.navigationController?.popViewController(animated: true)
+//                    NotificationCenter.default.post(name: Notification.Name(rawValue: "plm"), object: nil)
                 }
             }
         }

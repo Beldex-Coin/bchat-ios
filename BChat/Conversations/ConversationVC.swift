@@ -1308,32 +1308,32 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     private func updateSyncingProgress() {
-        taskQueue.async {
-            let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
-            guard total != current else { return }
-            let difference = total!.subtractingReportingOverflow(current!)
-            var progress = CGFloat(current!) / CGFloat(total!)
-            let leftBlocks: String
-            if difference.overflow || difference.partialValue <= 1 {
-                leftBlocks = "1"
-                progress = 1
-            } else {
-                leftBlocks = String(difference.partialValue)
-            }
-            if difference.overflow || difference.partialValue <= 1500 {
-                self.timer.invalidate()
-            }
-            let largeNumber = Int(leftBlocks)
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            numberFormatter.groupingSize = 3
-            numberFormatter.secondaryGroupingSize = 2
-            let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
-            let statusText = "\(formattedNumber!)" + " Blocks Remaining"
-            DispatchQueue.main.async {
-                print("----->",statusText)
-            }
-        }
+//        taskQueue.async {
+//            let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
+//            guard total != current else { return }
+//            let difference = total!.subtractingReportingOverflow(current!)
+//            var progress = CGFloat(current!) / CGFloat(total!)
+//            let leftBlocks: String
+//            if difference.overflow || difference.partialValue <= 1 {
+//                leftBlocks = "1"
+//                progress = 1
+//            } else {
+//                leftBlocks = String(difference.partialValue)
+//            }
+//            if difference.overflow || difference.partialValue <= 1500 {
+//                self.timer.invalidate()
+//            }
+//            let largeNumber = Int(leftBlocks)
+//            let numberFormatter = NumberFormatter()
+//            numberFormatter.numberStyle = .decimal
+//            numberFormatter.groupingSize = 3
+//            numberFormatter.secondaryGroupingSize = 2
+//            let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber ?? 1))
+//            let statusText = "\(formattedNumber!)" + " Blocks Remaining"
+//            DispatchQueue.main.async {
+//                print("----->",statusText)
+//            }
+//        }
     }
     
     func saveReceipeinetAddressOnAndOff(){

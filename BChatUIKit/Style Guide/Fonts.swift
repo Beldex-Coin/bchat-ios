@@ -18,7 +18,9 @@ public final class Fonts : NSObject {
     @objc public static func semiOpenSans(ofSize size: CGFloat) -> UIFont {
         return UIFont(name: "OpenSans-Semibold", size: size)!
     }
-    
+    @objc public static func lightOpenSans(ofSize size: CGFloat) -> UIFont {
+        return UIFont(name: "OpenSans-Light", size: size)!
+    }
     
 }
 

@@ -1,8 +1,10 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import Alamofire
+import BChatUIKit
 
-class WalletSendNewVC: UIViewController,UITextFieldDelegate {
+class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     
     private lazy var topView: UIView = {
         let stackView = UIView()
@@ -31,7 +33,6 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
     }()
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
-        result.text = "3.333333"
         result.textColor = .white
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.textAlignment = .left
@@ -45,10 +46,10 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
         stackView.layer.cornerRadius = 16
         return stackView
     }()
-    private lazy var bdxAmountTitleLabel: UILabel = {
+    private lazy var beldexAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
-        result.textColor = UIColor.lightGray
+        result.textColor = UIColor(hex: 0xFFFFFF)
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +66,7 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
         button.addTarget(self, action: #selector(isFromMaxButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var bdxAmountTextField: UITextField = {
+    private lazy var beldexAmountTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -81,10 +82,8 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
         result.layer.borderWidth = 0.5
         return result
     }()
-    let isCurrencyNameTitleLabel = UILabel()
     private lazy var isCurrencyResultTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = "0.0000 USD"
         result.textColor = UIColor.lightGray
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
@@ -122,17 +121,17 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
-        stackView.backgroundColor = Colors.backgroundViewColor2
+        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
         return stackView
     }()
-    private lazy var beldexAddressIDLabel: UILabel = {
-        let result = UILabel()
-        result.text = "328632bdskhj839ehdnd92dddid83993ndasoaksjhpifyaoajscqitp98wkjhaiuahhashf9ahfsdfhasdf328632bdskhj839ehdnd92dddid83993ndasoaksjhpifyaoajscqitp98wkjhaiuahhashf9ahfsdfhasdf"
+    private lazy var beldexAddressTextview: UITextView = {
+        let result = UITextView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.textAlignment = .left
         result.textColor = Colors.greenColor
         result.font = Fonts.OpenSans(ofSize: 13)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.numberOfLines = 0
+        result.delegate = self
+        result.backgroundColor = .clear
         return result
     }()
     private lazy var transationPriorityTitleLabel: UILabel = {
@@ -183,48 +182,68 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
     }()
-
+    
+    public lazy var loadingState = { Postable<Bool>() }()
+    private var currencyName = ""
+    private var bdxCurrencyValue = ""
+    private var currencyValue: Double!
+    private var refreshDuration: TimeInterval = 60
+    private var marketsDataRequest: DataRequest?
+    var walletAddress: String!
+    var walletAmount: String!
+    var wallet: BDXWallet?
+    private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
+    private var currentBlockChainHeight: UInt64 = 0
+    private var daemonBlockChainHeight: UInt64 = 0
+    lazy var conncetingState = { return Observable<Bool>(false) }()
+    private var needSynchronized = false {
+        didSet {
+            guard needSynchronized, !oldValue,
+                  let wallet = self.wallet else { return }
+            wallet.saveOnTerminate()
+        }
+    }
+    var backAPI = false
+    var hashArray = [RecipientDomainSchema]()
+    var recipientAddressON = false
+    var placeholderLabel : UILabel!
+    var finalWalletAddress = ""
+    var finalWalletAmount = ""
+    var mainBalance = ""
+    var feeValue = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor(hex: 0x1C1C26)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Send"
-        
-        isCurrencyNameTitleLabel.text = "USD"
-        isCurrencyNameTitleLabel.textColor = UIColor.white
-        isCurrencyNameTitleLabel.font = Fonts.boldOpenSans(ofSize: 12)
-        isCurrencyNameTitleLabel.textAlignment = .center
-        isCurrencyNameTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        isCurrencyNameTitleLabel.backgroundColor = UIColor(hex: 0x3A3A4B)
-        isCurrencyNameTitleLabel.clipsToBounds = true
         
         view.addSubViews(topView)
         topView.addSubview(titleOfTotalBalanceLabel)
         topView.addSubview(beldexLogoImg)
         topView.addSubview(beldexBalanceLabel)
         view.addSubview(middleView)
-        middleView.addSubview(bdxAmountTitleLabel)
+        middleView.addSubview(beldexAmountTitleLabel)
         middleView.addSubview(isFromMaxButton)
-        middleView.addSubview(bdxAmountTextField)
-        middleView.addSubview(isCurrencyNameTitleLabel)
+        middleView.addSubview(beldexAmountTextField)
         middleView.addSubview(isCurrencyResultTitleLabel)
         middleView.addSubview(isFromAddressBookButton)
         middleView.addSubview(isFromScanOptionButton)
         middleView.addSubview(beldexAddressTitleLabel)
         middleView.addSubview(beldexAddressBgView)
-        middleView.addSubview(beldexAddressIDLabel)
+        beldexAddressBgView.addSubview(beldexAddressTextview)
         middleView.addSubview(transationPriorityTitleLabel)
         middleView.addSubview(flashPriorityButton)
         middleView.addSubview(estimatedFeeBgView)
-        middleView.addSubview(estimatedFeeIDLabel)
+        estimatedFeeBgView.addSubview(estimatedFeeIDLabel)
         view.addSubview(sendButton)
         
         flashPriorityButton.addRightIcon(image: UIImage(named: "ic_dropdownNew")!.withRenderingMode(.alwaysTemplate))
         flashPriorityButton.tintColor = .white
         
-        let fullText = "Estimated Fee : 0.004596 BDX"  
+        let fullText = "Estimated Fee : 0.004596 BDX"
         if let rangeBeldex = fullText.range(of: "Estimated Fee :"),
            let rangeAddress = fullText.range(of: "0.004596 BDX") {
             let attributedString = NSMutableAttributedString(string: fullText)
@@ -232,7 +251,6 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
             attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(rangeAddress, in: fullText))
             estimatedFeeIDLabel.attributedText = attributedString
         }
-        
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 18),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
@@ -252,23 +270,20 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
             middleView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 18),
             middleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             middleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            bdxAmountTitleLabel.topAnchor.constraint(equalTo: middleView.topAnchor, constant: 32),
-            bdxAmountTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
-            bdxAmountTitleLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
+            beldexAmountTitleLabel.topAnchor.constraint(equalTo: middleView.topAnchor, constant: 32),
+            beldexAmountTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
+            beldexAmountTitleLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             isFromMaxButton.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             isFromMaxButton.widthAnchor.constraint(equalToConstant: 68),
             isFromMaxButton.heightAnchor.constraint(equalToConstant: 53),
-            isFromMaxButton.topAnchor.constraint(equalTo: bdxAmountTitleLabel.bottomAnchor, constant: 13),
-            bdxAmountTextField.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            bdxAmountTextField.topAnchor.constraint(equalTo: bdxAmountTitleLabel.bottomAnchor, constant: 13),
-            bdxAmountTextField.trailingAnchor.constraint(equalTo: isFromMaxButton.leadingAnchor, constant: -7),
-            bdxAmountTextField.heightAnchor.constraint(equalToConstant: 53),
-            isCurrencyNameTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            isCurrencyNameTitleLabel.topAnchor.constraint(equalTo: bdxAmountTextField.bottomAnchor, constant: 15),
-            isCurrencyNameTitleLabel.widthAnchor.constraint(equalToConstant: 53),
-            isCurrencyNameTitleLabel.heightAnchor.constraint(equalToConstant: 25),
-            isCurrencyResultTitleLabel.leadingAnchor.constraint(equalTo: isCurrencyNameTitleLabel.trailingAnchor, constant: 8),
-            isCurrencyResultTitleLabel.centerYAnchor.constraint(equalTo: isCurrencyNameTitleLabel.centerYAnchor),
+            isFromMaxButton.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
+            beldexAmountTextField.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
+            beldexAmountTextField.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
+            beldexAmountTextField.trailingAnchor.constraint(equalTo: isFromMaxButton.leadingAnchor, constant: -7),
+            beldexAmountTextField.heightAnchor.constraint(equalToConstant: 53),
+            isCurrencyResultTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
+            isCurrencyResultTitleLabel.topAnchor.constraint(equalTo: beldexAmountTextField.bottomAnchor, constant: 15),
+            isCurrencyResultTitleLabel.heightAnchor.constraint(equalToConstant: 25),
             isFromAddressBookButton.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             isFromAddressBookButton.widthAnchor.constraint(equalToConstant: 32),
             isFromAddressBookButton.heightAnchor.constraint(equalToConstant: 32),
@@ -283,10 +298,11 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
             beldexAddressBgView.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             beldexAddressBgView.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
             beldexAddressBgView.topAnchor.constraint(equalTo: isFromAddressBookButton.bottomAnchor, constant: 13),
-            beldexAddressIDLabel.topAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: 22),
-            beldexAddressIDLabel.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -22),
-            beldexAddressIDLabel.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 22),
-            beldexAddressIDLabel.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -22),
+            beldexAddressBgView.heightAnchor.constraint(equalToConstant: 105),
+            beldexAddressTextview.topAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: 18),
+            beldexAddressTextview.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -18),
+            beldexAddressTextview.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 22),
+            beldexAddressTextview.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -22),
             transationPriorityTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
             transationPriorityTitleLabel.topAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: 35),
             flashPriorityButton.leadingAnchor.constraint(equalTo: transationPriorityTitleLabel.trailingAnchor, constant: 10),
@@ -296,42 +312,421 @@ class WalletSendNewVC: UIViewController,UITextFieldDelegate {
             estimatedFeeBgView.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             estimatedFeeBgView.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 20),
             estimatedFeeBgView.topAnchor.constraint(equalTo: flashPriorityButton.bottomAnchor, constant: 35),
-            estimatedFeeIDLabel.topAnchor.constraint(equalTo: estimatedFeeBgView.topAnchor, constant: 12),
-            estimatedFeeIDLabel.bottomAnchor.constraint(equalTo: estimatedFeeBgView.bottomAnchor, constant: -12),
+            estimatedFeeBgView.bottomAnchor.constraint(equalTo: middleView.bottomAnchor, constant: -35),
+            estimatedFeeBgView.heightAnchor.constraint(equalToConstant: 44),
             estimatedFeeIDLabel.leadingAnchor.constraint(equalTo: estimatedFeeBgView.leadingAnchor, constant: 12),
             estimatedFeeIDLabel.trailingAnchor.constraint(equalTo: estimatedFeeBgView.trailingAnchor, constant: -12),
+            estimatedFeeIDLabel.centerYAnchor.constraint(equalTo: estimatedFeeBgView.centerYAnchor),
+            estimatedFeeIDLabel.centerXAnchor.constraint(equalTo: estimatedFeeBgView.centerXAnchor),
         ])
         NSLayoutConstraint.activate([
-            sendButton.topAnchor.constraint(equalTo: middleView.bottomAnchor, constant: 44),
             sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             sendButton.heightAnchor.constraint(equalToConstant: 58),
             sendButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
         ])
+        beldexBalanceLabel.text = mainBalance
+        beldexAmountTextField.keyboardType = .decimalPad
+        beldexAddressTextview.returnKeyType = .done
+        beldexAmountTextField.tintColor = Colors.bchatButtonColor
+        beldexAddressTextview.tintColor = Colors.bchatButtonColor
+        //Keyboard Done Option
+        beldexAmountTextField.addDoneButtonKeybord()
+        self.placeHolderSeedLabel()
+        //Save Receipent Address fun developed In Local
+        self.saveReceipeinetAddressOnAndOff()
+        if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+        }else {
+            isCurrencyResultTitleLabel.text = "0.00 USD"
+        }
         
+        // Dismiss keyboard on tap
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        // Notifications
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(handleAddressSharingToSendScreen), name: Notification.Name("selectedAddressSharingToSendScreen"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleConfirmsendingOkeyButtonTapped), name: Notification.Name("confirmsendingButtonTapped"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleTransactionSuccessfulButtonTapped), name: Notification.Name("transactionSuccessfulButtonTapped"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        isCurrencyNameTitleLabel.layer.cornerRadius = isCurrencyNameTitleLabel.frame.height/2
+    @objc private func dismissKeyboard() {
+        beldexAddressTextview.resignFirstResponder()
+    }
+    func placeHolderSeedLabel(){
+        placeholderLabel = UILabel()
+        placeholderLabel.text = "Enter Address or BNS name"
+        placeholderLabel.font = Fonts.OpenSans(ofSize: 13)
+        placeholderLabel.sizeToFit()
+        beldexAddressTextview.addSubview(placeholderLabel)
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (beldexAddressTextview.font?.pointSize)! / 2)
+        placeholderLabel.textColor = Colors.bchatPlaceholderColor
+        placeholderLabel.isHidden = !beldexAddressTextview.text.isEmpty
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        if backAPI == true{
+            let vc = InitiatingTransactionVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+            self.beldexAmountTextField.text = ""
+            self.beldexAddressTextview.text = ""
+        }
+    }
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        self.saveReceipeinetAddressOnAndOff()
+        if backAPI == true{
+            self.beldexAmountTextField.text = ""
+            self.beldexAddressTextview.text = ""
+            placeholderLabel?.isHidden = !beldexAddressTextview.text.isEmpty
+            if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
+                self.currencyName = SaveUserDefaultsData.SelectedCurrency
+                isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            }else {
+                isCurrencyResultTitleLabel.text = "0.00 USD"
+            }
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.backAPI = false
+    }
+    
+    //Here Address display
+    @objc func handleAddressSharingToSendScreen(notification: NSNotification) {
+        if let stringValue = notification.object as? NSObject {
+            if let address = stringValue as? String{
+                beldexAddressTextview.text! = address
+                //Send Button userInteraction
+                updateSendButtonStates()
+            }
+        }
+    }
+    private func updateSendButtonStates() {
+        let isAddressValid = isValidAddress(beldexAddressTextview.text)
+        let isAmountValid = isValidAmount(beldexAmountTextField.text)
+        sendButton.isEnabled = isAddressValid && isAmountValid
+        sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : UIColor(hex: 0x282836)
+        sendButton.setTitleColor(sendButton.isEnabled ? UIColor.white : UIColor(hex: 0x6E6E7C), for: .normal)
+    }
+    private func isValidAddress(_ address: String?) -> Bool {
+        // Add your validation logic for the address here
+        // Example: Check if the address is not empty
+        return !(address ?? "").isEmpty
+    }
+    private func isValidAmount(_ amount: String?) -> Bool {
+        // Add your validation logic for the amount here
+        // Example: Check if the amount is a valid decimal number
+        guard let amountString = amount else {
+            return false
+        }
+        return NSDecimalNumber(string: amountString).doubleValue > 0
+    }
+    
+    //TextView Placholder delegates
+    func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel?.isHidden = !textView.text.isEmpty
+        updateSendButtonStates()
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        placeholderLabel?.isHidden = !textView.text.isEmpty
+    }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        //        placeholderLabel?.isHidden = true
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return true
+    }
+    // txtamout only sigle . enter and txtaddress lenth fixed
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        updateSendButtonStates()
+        // Get the current text in the text field
+        guard let currentText = beldexAmountTextField.text else {
+            return true
+        }
+        // Calculate the future text if the user's input is accepted
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        // Use regular expression to validate the new text format
+        let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+        let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
+        return amountTest.evaluate(with: newText)
+    }
+    
+    // Textfiled Paste option hide
+    override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        if action == #selector(paste(_:))
+        {
+            return true
+        } else if action == Selector(("_lookup:")) || action == Selector(("_share:")) || action == Selector(("_define:")) || action == #selector(delete(_:)) || action == #selector(copy(_:)) || action == #selector(cut(_:)) {
+            return false
+        }
+        return super.canPerformAction(action, withSender: sender)
+    }
+    
+    func saveReceipeinetAddressOnAndOff(){
+        if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
+            recipientAddressON = true
+        } else {
+            recipientAddressON = false
+        }
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if beldexAmountTextField.text!.count == 0 {
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            self.bdxCurrencyValue = beldexAmountTextField.text!
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            fetchMarketsData(false)
+            reloadData([:])
+        }else if beldexAmountTextField.text == "." {
+            // print("---dot value entry----")
+        }else {
+            self.bdxCurrencyValue = beldexAmountTextField.text!
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            fetchMarketsData(false)
+            reloadData([:])
+        }
+        //Send Button userInteraction
+        updateSendButtonStates()
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if beldexAmountTextField.text!.count == 0 {
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+        }else if beldexAmountTextField.text == "." {
+            // print("---dot value entry----")
+        }else {
+            self.bdxCurrencyValue = beldexAmountTextField.text!
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            fetchMarketsData(false)
+            reloadData([:])
+        }
+    }
+    
+    private func reloadData(_ json: [String: [String: Any]]) {
+        let xmrAmount = json["beldex"]?[currencyName] as? Double
+        if xmrAmount != nil {
+            currencyValue = xmrAmount
+        }
+        if currencyValue != nil && bdxCurrencyValue != "" {
+            let tax = Double(bdxCurrencyValue)! * currencyValue
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            isCurrencyResultTitleLabel.text = "\(String(format:"%.4f",tax)) \(self.currencyName.uppercased())"
+        }
+    }
+    
+    private func fetchMarketsData(_ showHUD: Bool = false) {
+        if let req = marketsDataRequest {
+            req.cancel()
+        }
+        if showHUD { loadingState.newState(true) }
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let Url = "https://api.coingecko.com/api/v3/simple/price?ids=beldex&vs_currencies=\(currencyName.lowercased())"
+        let request = Session.default.request("\(Url)")
+        request.responseJSON(queue: .main, options: .mutableLeaves) { [weak self] (resp) in
+            guard let SELF = self else { return }
+            SELF.marketsDataRequest = nil
+            if showHUD { SELF.loadingState.newState(false) }
+            switch resp.result {
+            case .failure(_): break
+                //   HUD.showError(error.localizedDescription)
+            case .success(let value):
+                SELF.reloadData(value as? [String: [String: Any]] ?? [:])
+            }
+            let endTime = CFAbsoluteTimeGetCurrent()
+            let requestDuration = endTime - startTime
+            if requestDuration >= SELF.refreshDuration {
+                SELF.fetchMarketsData()
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + SELF.refreshDuration - requestDuration) {
+                    guard let SELF = self else { return }
+                    SELF.fetchMarketsData()
+                }
+            }
+        }
+        marketsDataRequest = request
+    }
+    
+    // Wallet Send Func
+    func connect(wallet: BDXWallet) {
+        wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
+            guard let `self` = self else { return }
+            if isConnected {
+                if let wallet = self.wallet {
+                    if SaveUserDefaultsData.WalletRestoreHeight == "" {
+                        let lastElementHeight = DateHeight.getBlockHeight.last
+                        let height = lastElementHeight!.components(separatedBy: ":")
+                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
+                        wallet.restoreHeight = UInt64("\(height[1])")!
+                    }else {
+                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
+                    }
+                    wallet.start()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    self.connect(wallet: self.wallet!)
+                }
+            }
+        }
+        let createPendingTransaction = wallet.createPendingTransaction(self.finalWalletAddress, paymentId: "", amount: self.finalWalletAmount)
+        if createPendingTransaction == true {
+            let fee = wallet.feevalue()
+            let isFromfeeValue = BChatWalletWrapper.displayAmount(fee)
+            feeValue = isFromfeeValue
+            // Here dismiss with Initiating Transaction PopUp
+            self.dismiss(animated: true)
+            // Here display Confirm Sending PopUp
+            DispatchQueue.main.async {
+                let vc = ConfirmSendingVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                vc.finalWalletAddress = self.finalWalletAddress
+                vc.finalWalletAmount = self.finalWalletAmount
+                vc.feeValue = self.feeValue
+                self.present(vc, animated: true, completion: nil)
+            }
+        }else {
+            let errMsg = wallet.commitPendingTransactionError()
+            let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
+            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
+                self.navigationController?.popViewController(animated: true)
+            })
+            alert.addAction(okayAction)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Navigation
     @objc func isFromMaxButtonTapped(_ sender: UIButton){
-        
+        beldexAmountTextField.text! = mainBalance
     }
-    
     @objc func isFromAddressBookButtonTapped(_ sender: UIButton){
-        
+        let vc = WalletAddressBookNewVC()
+        navigationController!.pushViewController(vc, animated: true)
     }
-    
     @objc func isFromScanOptionButtonTapped(_ sender: UIButton){
-        
+        let vc = ScanNewVC()
+        vc.isFromWallet = true
+        vc.wallet = self.wallet
+        navigationController!.pushViewController(vc, animated: true)
     }
-    
+    //send Transation Button Tapped 11
     @objc func sendButtonTapped(_ sender: UIButton){
-        
+        if beldexAddressTextview.text!.isEmpty || beldexAmountTextField.text!.isEmpty {
+            let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else if ((beldexAddressTextview.text.count > 106 || beldexAddressTextview.text.count < 95) && beldexAddressTextview.text.suffix(4).lowercased() != ".bdx") {
+            let alert = UIAlertController(title: "My Wallet", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else {
+            let indexOfString = beldexAmountTextField.text!
+            let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
+            if beldexAmountTextField.text?.count == 0 {
+                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count > 16 || beldexAmountTextField.text![lastString] == "." {
+                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter Proper amount", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }else {
+                if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                    self.finalWalletAddress = self.beldexAddressTextview.text!
+                    self.finalWalletAmount = self.beldexAmountTextField.text!
+                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+                    vc.isSendWalletVC = true
+                    vc.wallet = self.wallet
+                    vc.finalWalletAddress = self.finalWalletAddress
+                    vc.finalWalletAmount = self.finalWalletAmount
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                }
+            }
+        }
     }
     
+    //confirm sending Button Tapped 22
+    @objc func handleConfirmsendingOkeyButtonTapped(notification: NSNotification) {
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            let txid = self.wallet!.txid()
+            let commitPendingTransaction = self.wallet!.commitPendingTransaction()
+            if commitPendingTransaction == true {
+                //Save Receipent Address fun developed In Local
+                if recipientAddressON == true {
+                    if !UserDefaults.standard.domainSchemas.isEmpty {
+                        hashArray = UserDefaults.standard.domainSchemas
+                        hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
+                        UserDefaults.standard.domainSchemas = hashArray
+                    }else {
+                        hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
+                        UserDefaults.standard.domainSchemas = hashArray
+                    }
+                }
+                // Here dismiss with Confirm Sending PopUp
+                self.dismiss(animated: true)
+                // Here display Transaction Success PopUp
+                let vc = WalletTransactionSuccessVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
+            }
+        } else {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+    }
+    
+    //success Button Tapped 33
+    @objc func handleTransactionSuccessfulButtonTapped(notification: NSNotification) {
+        self.navigationController?.popToSpecificViewController(ofClass: WalletHomeNewVC.self, animated: true)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "syncWallet"), object: nil)
+    }
+    
+    @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
+        self.beldexAmountTextField.text = ""
+        self.beldexAddressTextview.text = ""
+        connect(wallet: self.wallet!)
+    }
+}
+
+extension WalletSendNewVC: BeldexWalletDelegate {
+    func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
+        if self.needSynchronized {
+            self.needSynchronized = !wallet.save()
+        }
+        taskQueue.async {
+            guard let wallet = self.wallet else { return }
+            let (balance, history) = (wallet.balance, wallet.history)
+            self.postData(balance: balance, history: history)
+        }
+        if daemonBlockChainHeight != 0 {
+            let difference = wallet.daemonBlockChainHeight.subtractingReportingOverflow(daemonBlockChainHeight)
+            guard !difference.overflow else { return }
+        }
+        DispatchQueue.main.async {
+            if self.conncetingState.value {
+                self.conncetingState.value = false
+            }
+        }
+    }
+    func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
+        self.currentBlockChainHeight = currentHeight
+        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
+    }
+    private func postData(balance: String, history: TransactionHistory) {
+        //        let balance_modify = Helper.displayDigitsAmount(balance)
+    }
 }

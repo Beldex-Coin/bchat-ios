@@ -151,12 +151,32 @@ class NewChatVC: BaseVC,UITextViewDelegate {
         self.startNewDMIfPossible(with: text)
     }
     
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            // This could be an ONS name
-            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
+            // This could be an BNS name
+//            self.showToastMsg(message: "invalid BChat ID", seconds: 1.0)
+            ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
+                    modalActivityIndicator.dismiss {
+                        self?.startNewDM(with: bchatID)
+                    }
+                }.catch { error in
+                    modalActivityIndicator.dismiss {
+                        var messageOrNil: String?
+                        if let error = error as? SnodeAPI.Error {
+                            switch error {
+                            case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                            default: break
+                            }
+                        }
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                    }
+                }
+            }
         }
     }
     private func startNewDM(with bchatID: String) {

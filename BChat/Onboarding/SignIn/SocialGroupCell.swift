@@ -42,25 +42,19 @@ class SocialGroupCell: UICollectionViewCell {
         contentView.addSubview(backGroundView)
         backGroundView.addSubview(titleLable)
         backGroundView.addSubview(logoImageView)
-        
         NSLayoutConstraint.activate([
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-        ])
-        NSLayoutConstraint.activate([
             titleLable.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 5),
             titleLable.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
             titleLable.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -5),
-        ])
-        NSLayoutConstraint.activate([
             logoImageView.widthAnchor.constraint(equalToConstant: 52),
             logoImageView.heightAnchor.constraint(equalToConstant: 52),
             logoImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -16),
             logoImageView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
         ])
-        
         self.update()
         
     }

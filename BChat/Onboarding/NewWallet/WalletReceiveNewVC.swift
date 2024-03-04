@@ -2,7 +2,7 @@
 
 import UIKit
 
-class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
+class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     
     private lazy var shareButton: UIButton = {
         let button = UIButton()
@@ -35,7 +35,6 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
     }()
     private lazy var beldexAddressIDLabel: UILabel = {
         let result = UILabel()
-        result.text = "bxdXXqFFk2QQWcqerE87fE5yHG5jggkNAAdxGBvQLGLg5h75ZeTAbAW31GhJPCW7kb8zagsoQ95HtfsfRnaWo49s35jrQyspZ"
         result.textColor = Colors.greenColor
         result.font = Fonts.OpenSans(ofSize: 13)
         result.textAlignment = .left
@@ -61,7 +60,7 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-    private lazy var bdxAmountTextField: UITextField = {
+    private lazy var beldexAmountTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -102,10 +101,10 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
         imageView.layer.masksToBounds = true
         return imageView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor(hex: 0x1C1C26)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -116,15 +115,11 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
         beldexAddressBgView.addSubview(beldexAddressIDLabel)
         topBackgroundView.addSubview(copyButton)
         topBackgroundView.addSubview(beldexAddressTitleLabel)
-        topBackgroundView.addSubview(bdxAmountTextField)
+        topBackgroundView.addSubview(beldexAmountTextField)
         topBackgroundView.addSubview(bdxAmountTitleLabel)
         topBackgroundView.addSubview(isFromQrCodebackgroundView)
         isFromQrCodebackgroundView.addSubview(qrCodeImage)
         view.addSubview(shareButton)
-
-        //This QR is Sample QR Code
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        qrCodeImage.image = qrCode
         
         NSLayoutConstraint.activate([
             topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
@@ -144,13 +139,13 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
             beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 26),
             beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: copyButton.centerYAnchor),
             beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: copyButton.leadingAnchor, constant: -7),
-            bdxAmountTextField.bottomAnchor.constraint(equalTo: copyButton.topAnchor, constant: -20),
-            bdxAmountTextField.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 19),
-            bdxAmountTextField.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -19),
-            bdxAmountTextField.heightAnchor.constraint(equalToConstant: 53),
+            beldexAmountTextField.bottomAnchor.constraint(equalTo: copyButton.topAnchor, constant: -20),
+            beldexAmountTextField.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 19),
+            beldexAmountTextField.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -19),
+            beldexAmountTextField.heightAnchor.constraint(equalToConstant: 53),
             bdxAmountTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 26),
             bdxAmountTitleLabel.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -7),
-            bdxAmountTitleLabel.bottomAnchor.constraint(equalTo: bdxAmountTextField.topAnchor, constant: -10),
+            bdxAmountTitleLabel.bottomAnchor.constraint(equalTo: beldexAmountTextField.topAnchor, constant: -10),
             isFromQrCodebackgroundView.widthAnchor.constraint(equalToConstant: 190),
             isFromQrCodebackgroundView.heightAnchor.constraint(equalToConstant: 190),
             isFromQrCodebackgroundView.centerXAnchor.constraint(equalTo: topBackgroundView.centerXAnchor),
@@ -168,20 +163,104 @@ class WalletReceiveNewVC: UIViewController,UITextFieldDelegate {
             shareButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
+        beldexAmountTextField.addTarget(self, action: #selector(onAmountChange), for: .editingChanged)
+        beldexAmountTextField.delegate = self
+        beldexAmountTextField.keyboardType = .decimalPad
+        beldexAmountTextField.tintColor = Colors.bchatButtonColor
+        //Keyboard Done Option
+        beldexAmountTextField.addDoneButtonKeybord()
+        if !SaveUserDefaultsData.WalletpublicAddress.isEmpty {
+            beldexAddressIDLabel.text = SaveUserDefaultsData.WalletpublicAddress
+        }
+        qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
+        qrCodeImage.contentMode = .scaleAspectFit
+        
+        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(dismiss)
     }
     
-
-    
     // MARK: - Navigation
-
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    // txtamout only sigle . enter
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Get the current text in the text field
+        guard let currentText = beldexAmountTextField.text else {
+            return true
+        }
+        // Calculate the future text if the user's input is accepted
+        let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+        // Use regular expression to validate the new text format
+        let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
+        let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
+        return amountTest.evaluate(with: newText)
+    }
+    
+    // Textfiled Paste option hide
+    override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        if action == #selector(paste(_:))
+        {
+            return true
+        } else if action == Selector(("_lookup:")) || action == Selector(("_share:")) || action == Selector(("_define:")) || action == #selector(delete(_:)) || action == #selector(copy(_:)) || action == #selector(cut(_:)) {
+            return false
+        }
+        return super.canPerformAction(action, withSender: sender)
+    }
+    
+    @objc private func onAmountChange(_ textField: UITextField) {
+        isFromUpdateQRCode()
+    }
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        isFromUpdateQRCode()
+    }
+    func isFromUpdateQRCode(){
+        if beldexAmountTextField.text!.count == 0 {
+            qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
+            qrCodeImage.contentMode = .scaleAspectFit
+        }else {
+            if let mystring = beldexAmountTextField.text {
+                qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(mystring)")
+            } else {
+                qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)")
+            }
+        }
+    }
+    
     @objc func shareButtonTapped(_ sender: UIButton) {
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
-        self.navigationController!.present(shareVC, animated: true, completion: nil)
+        if beldexAmountTextField.text!.isEmpty {
+            isFromAmountValidationAlert()
+        }else {
+            let indexOfString = beldexAmountTextField.text!
+            let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
+            if beldexAmountTextField.text?.count == 0 {
+                isFromAmountValidationAlert()
+            }
+            else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count
+                        > 16 || beldexAmountTextField.text![lastString] == "." {
+                isFromProperAmountValidationAlert()
+            }else {
+                let qrCode = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
+                let shareVC = UIActivityViewController(activityItems: [ qrCode! ], applicationActivities: nil)
+                self.navigationController!.present(shareVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func isFromAmountValidationAlert(){
+        let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    func isFromProperAmountValidationAlert(){
+        let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_PROPER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     @objc func copyButtonTapped(_ sender: UIButton){
-        
+        UIPasteboard.general.string = "\(SaveUserDefaultsData.WalletpublicAddress)"
+        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
     }
-
+    
 }

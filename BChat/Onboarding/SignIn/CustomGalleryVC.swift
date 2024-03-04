@@ -1,6 +1,7 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class CustomGalleryVC: BaseVC {
     
@@ -20,7 +21,6 @@ class CustomGalleryVC: BaseVC {
         stackView.layer.cornerRadius = 16
 //        stackView.layer.borderColor = UIColor(red: 0, green: 0.742, blue: 0.252, alpha: 1).cgColor
 //        stackView.layer.borderWidth = 1
-        
         return stackView
     }()
   

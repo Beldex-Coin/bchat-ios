@@ -137,13 +137,13 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
         startNewDMIfPossible(with: hexEncodedPublicKey)
     }
     
-    fileprivate func startNewDMIfPossible(with onsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: onsNameOrPublicKey) {
-            startNewDM(with: onsNameOrPublicKey)
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
+            startNewDM(with: bnsNameOrPublicKey)
         } else {
-            // This could be an ONS name
+            // This could be an BNS name
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: onsNameOrPublicKey).done { bchatID in
+                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
                         self?.startNewDM(with: bchatID)
                     }
@@ -156,10 +156,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
                             default: break
                             }
                         }
-                        let message = messageOrNil ?? "Please check the BChat ID or ONS name and try again"
-                        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-                        self?.presentAlert(alert)
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
                     }
                 }
             }

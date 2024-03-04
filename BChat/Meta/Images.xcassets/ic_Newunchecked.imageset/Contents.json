@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_Newunchecked.png",
+      "filename" : "Rectangle 540-1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Rectangle 540@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Rectangle 540@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

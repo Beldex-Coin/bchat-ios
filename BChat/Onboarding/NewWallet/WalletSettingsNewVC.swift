@@ -1,8 +1,9 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
-class WalletSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -15,10 +16,15 @@ class WalletSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewD
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
-    
+    //MAINNET
+    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]//["149.102.156.174:19095"]
+    //TESTNET
+//    var nodeArray = ["149.102.156.174:19095"]
     let sectionNames = [" ", "Wallet", "Personal"]
     var personalNamesArray = ["Address Book","Change PIN"]
     var personalImagesArray = ["ic_Address_book_new","ic_Change_pin_new"]
+    var backAPI = false
+    var nodeValue = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +42,21 @@ class WalletSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewD
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0)
         ])
         
+        //Here Random node and Selected node
+        if !SaveUserDefaultsData.SelectedNode.isEmpty {
+            nodeValue = SaveUserDefaultsData.SelectedNode
+        }else{
+            nodeValue = nodeArray.randomElement()!
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        //Selected node
+        if backAPI == true{
+            nodeValue = SaveUserDefaultsData.SelectedNode
+            tableView.reloadData()
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -58,7 +79,12 @@ class WalletSettingsNewVC: UIViewController, UITableViewDataSource, UITableViewD
             let cell = CurrentNodeTableCell(style: .default, reuseIdentifier: "CurrentNodeTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
-            
+            //Selected node
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+                cell.nodeNameLabel.text = nodeValue
+            }else{
+                cell.nodeNameLabel.text = "Waiting for network.."
+            }
             return cell
         }else if indexPath.section == 1 {
             let cell = WalletSettingsTableCell(style: .default, reuseIdentifier: "WalletSettingsTableCell")
@@ -304,7 +330,7 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
     
     var walletNameArray = ["Display Balance As","Decimals","Currency","Fee Priority"]
     var walletSubNameArray = ["Beldex Full Balances","2 - Two (0.00)","USD","Flash"]
-    var walletimageArray = ["ic_Display_balance_new","ic_Decimal_new","ic_currency_new","ic_fee_priority_new"]
+    var walletImageArray = ["ic_Display_balance_new","ic_Decimal_new","ic_currency_new","ic_fee_priority_new"]
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -317,10 +343,65 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             tableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0)
         ])
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleSelectedDisplayName),
+                                               name: Notification.Name("selectedDisplayNameKey"),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleSelectedDecimalName),
+                                               name: Notification.Name("selectedDecimalNameKey"),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleFeePriorityName),
+                                               name: Notification.Name("feePriorityNameKey"),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleSelectedCurrencyName),
+                                               name: Notification.Name("selectedCurrencyNameKey"),
+                                               object: nil)
+ 
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //Here Balance display
+    @objc func handleSelectedDisplayName(notification: NSNotification) {
+        if let stringValue = notification.object as? NSObject {
+            if let myMessage = stringValue as? String{
+                SaveUserDefaultsData.SelectedBalance = myMessage
+                tableView.reloadData()
+            }
+        }
+    }
+    //Here Decimal display
+    @objc func handleSelectedDecimalName(notification: NSNotification) {
+        if let stringValue = notification.object as? NSObject {
+            if let myMessage = stringValue as? String{
+                SaveUserDefaultsData.SelectedDecimal = myMessage
+                tableView.reloadData()
+            }
+        }
+    }
+    //Here Fee Priority
+    @objc func handleFeePriorityName(notification: NSNotification) {
+        if let stringValue = notification.object as? NSObject {
+            if let myMessage = stringValue as? String{
+                SaveUserDefaultsData.FeePriority = myMessage
+                tableView.reloadData()
+            }
+        }
+    }
+    //Here Currency name
+    @objc func handleSelectedCurrencyName(notification: NSNotification) {
+        if let stringValue = notification.object as? NSObject {
+            if let myMessage = stringValue as? String{
+                SaveUserDefaultsData.SelectedCurrency = myMessage
+                tableView.reloadData()
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -342,10 +423,33 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             cell.selectionStyle = .none
             cell.titleLabel.text = walletNameArray[indexPath.row]
             cell.subTitleLabel.text = walletSubNameArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: walletimageArray[indexPath.row])
+            cell.logoImage.image = UIImage(named: walletImageArray[indexPath.row])
             if indexPath.row == 0 {
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                if !SaveUserDefaultsData.SelectedBalance.isEmpty{
+                    cell.subTitleLabel.text = SaveUserDefaultsData.SelectedBalance
+                }else{
+                    cell.subTitleLabel.text = "Beldex Full Balance"
+                }
+            }else if indexPath.row == 1{
+                if !SaveUserDefaultsData.SelectedDecimal.isEmpty{
+                    cell.subTitleLabel.text = SaveUserDefaultsData.SelectedDecimal
+                }else{
+                    cell.subTitleLabel.text = "4 - Four (0.0000)"
+                }
+            }else if indexPath.row == 2 {
+                if !SaveUserDefaultsData.SelectedCurrency.isEmpty{
+                    cell.subTitleLabel.text = SaveUserDefaultsData.SelectedCurrency.uppercased()
+                }else{
+                    cell.subTitleLabel.text = "USD".uppercased()
+                }
+            }else if indexPath.row == 3 {
+                if !SaveUserDefaultsData.FeePriority.isEmpty {
+                    cell.subTitleLabel.text = SaveUserDefaultsData.FeePriority
+                }else{
+                    cell.subTitleLabel.text = "Flash"
+                }
             }
             return cell
         }else {
@@ -355,17 +459,64 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             cell.titleLabel.text = NSLocalizedString("SAVE_RECEIPIENT_ADDRESS", comment: "")
             cell.backGroundView.layer.cornerRadius = 16
             cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            
+            cell.toggleSwitch.tag = indexPath.row
+            cell.toggleSwitch.addTarget(self, action: #selector(self.saveRecipientAddressButtonTapped(_:)), for: .valueChanged)
+            if SaveUserDefaultsData.SaveReceipeinetSwitch == false {
+                cell.toggleSwitch.isOn = false
+            }else{
+                cell.toggleSwitch.isOn = true
+            }
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if indexPath.section == 0{
+            if indexPath.row == 0{
+                if let viewController = parentViewController() as? WalletSettingsNewVC {
+                    let vc = DisplayBalanceOptionVC()
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    viewController.present(vc, animated: true, completion: nil)
+                }
+            }else if indexPath.row == 1{
+                if let viewController = parentViewController() as? WalletSettingsNewVC {
+                    let vc = DecimalsPopUpVC()
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    viewController.present(vc, animated: true, completion: nil)
+                }
+            }else if indexPath.row == 2{
+                if let viewController = parentViewController() as? WalletSettingsNewVC {
+                    let vc = CurrencyPopUpVC()
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    viewController.present(vc, animated: true, completion: nil)
+                }
+            }else if indexPath.row == 3{
+                if let viewController = parentViewController() as? WalletSettingsNewVC {
+                    let vc = FeePriorityVC()
+                    vc.modalPresentationStyle = .overFullScreen
+                    vc.modalTransitionStyle = .crossDissolve
+                    viewController.present(vc, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
+    // Save Recipient Address
+     @objc func saveRecipientAddressButtonTapped(_ x: UISwitch) {
+         if (x.isOn){
+             SaveUserDefaultsData.SaveReceipeinetSwitch = true
+         }else{
+             SaveUserDefaultsData.SaveReceipeinetSwitch = false
+         }
+     }
 }
 
 
