@@ -305,7 +305,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var transactionsDetailsBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .black//UIColor(hex: 0x11111A)
+        stackView.backgroundColor = UIColor(hex: 0x11111A)
         stackView.layer.cornerRadius = 28
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
@@ -1505,6 +1505,17 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     @objc func isFromFilterImageButtonTapped(_ sender: UIButton){
+        self.noTransaction = false
+        self.isFilter = false
+        filteredAllTransactionarray = []
+        filteredOutgoingTransactionarray = []
+        filteredIncomingTransactionarray = []
+        fromDate = ""
+        toDate = ""
+        if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
+            datePickerView.minimumDate = nil
+        }
+        
         isFromFilterImageButton.isSelected = !isFromFilterImageButton.isSelected
         if isFromFilterImageButton.isSelected {
             filterStackView.isHidden = false
@@ -1518,17 +1529,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromFilterImageButton.backgroundColor = .clear
             isFromFilterImageButton.tintColor = UIColor.white
             isFromFilterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
-        }
-        
-        self.noTransaction = false
-        self.isFilter = false
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
-        fromDate = ""
-        toDate = ""
-        if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
-            datePickerView.minimumDate = nil
         }
     }
     
@@ -1886,7 +1886,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromAllTransationFlag = true
             isFromSendTransationFlag = false
             isFromReceiveTransationFlag = false
-//            isFromFilterTransactionsHistoryBackgroundView.isHidden = true
             noTransactionsYetBackgroundView.isHidden = true
             UserDefaults.standard.setValue(nil, forKey: "btnclicked")
         }
@@ -1896,7 +1895,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromAllTransationFlag = false
             isFromSendTransationFlag = true
             isFromReceiveTransationFlag = false
-//            isFromFilterTransactionsHistoryBackgroundView.isHidden = true
             noTransactionsYetBackgroundView.isHidden = true
             UserDefaults.standard.setValue("outgoing", forKey: "btnclicked")
         }
@@ -1906,7 +1904,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromAllTransationFlag = false
             isFromSendTransationFlag = false
             isFromReceiveTransationFlag = true
-//            isFromFilterTransactionsHistoryBackgroundView.isHidden = true
             noTransactionsYetBackgroundView.isHidden = true
             UserDefaults.standard.setValue("incoming", forKey: "btnclicked")
         }
@@ -1914,8 +1911,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         //no
         if !self.incomingButton.isSelected && !self.outgoingButton.isSelected {
             self.noTransaction = true
-//            isFromFilterTransactionsHistoryBackgroundView.isHidden = false
             noTransactionsYetBackgroundView.isHidden = false
+//            isFromFilterTransactionsHistoryBackgroundView.isHidden = true
         }
         self.tableView.reloadData()
     }
@@ -1982,14 +1979,16 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
 
+        //Date formate
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MMM-yyyy"
+        dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
+        
         if isFromAllTransationFlag == true {
             if filteredAllTransactionarray.count > 0{
                 let responceData = filteredAllTransactionarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
@@ -2004,9 +2003,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let responceData = transactionAllarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
@@ -2023,9 +2019,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let responceData = filteredOutgoingTransactionarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
@@ -2040,9 +2033,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let responceData = transactionSendarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
@@ -2059,9 +2049,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let responceData = filteredIncomingTransactionarray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
@@ -2076,9 +2063,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let responceData = transactionReceivearray[indexPath.row]
                 let timeInterval  = responceData.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "dd-MMM-yyyy"
-                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()

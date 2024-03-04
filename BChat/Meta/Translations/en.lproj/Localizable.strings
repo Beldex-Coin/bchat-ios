@@ -707,7 +707,7 @@
 "YOUR_CHAT_ID_NEW" = "Your Chat ID";
 "LETS_BCHAT_NEW" = "Let’s BChat";
 "NEW_CHAT_NEW" = "New Chat";
-"ENTER_CHAT_ID_NEW" = "Enter Chat ID";
+"ENTER_CHAT_ID_NEW" = "Enter BChat ID or BNS name";
 "INVALID_BCHAT_ID_NEW" = "invalid BChat ID";
 
 /* MyAccountNewVC */

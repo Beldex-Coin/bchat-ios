@@ -176,6 +176,12 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         }
         return result
     }()
+    private lazy var lineView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = UIColor(hex: 0x717194)
+        return stackView
+    }()
     
     //-------------------------------------------------------------------------
     
@@ -259,6 +265,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     @objc public var useFallbackPicture = false
     var isNavigationBarHideInChatNewVC = false
     var isProfileRemove = false
+    private var isEditingDisplayName = false { didSet { handleIsEditingDisplayNameChanged() } }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -270,16 +277,21 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             closeButton.isHidden = false
             cameraImage.isHidden = true
             profilePictureImage.isUserInteractionEnabled = false
+            lineView.isHidden = true
+            doneButton.isHidden = true
         }else {
             navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "My Account", style: .plain, target: nil, action: nil)
             closeButton.isHidden = true
             cameraImage.isHidden = false
+            lineView.isHidden = true
+            doneButton.isHidden = false
         }
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
         view.addSubview(doneButton)
         
+        backGroundView.addSubview(lineView)
         backGroundView.addSubview(qrBackgroundView)
         qrBackgroundView.addSubview(qrCodeImage)
         backGroundView.addSubview(profilePictureImage)
@@ -325,8 +337,14 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             cameraImage.heightAnchor.constraint(equalToConstant: 30),
             //Name Textfiled
             nameTextField.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
-            nameTextField.heightAnchor.constraint(equalToConstant: 25),
+            nameTextField.heightAnchor.constraint(equalToConstant: 30),
             nameTextField.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            
+            lineView.heightAnchor.constraint(equalToConstant: 1),
+            lineView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -5),
+            lineView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 3),
+            lineView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5),
+            
             //BChat ID
             bchatLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             bchatLabel.bottomAnchor.constraint(equalTo: bchatIdBgView.topAnchor, constant: -7),
@@ -393,7 +411,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         beldexAddressIdLabel.text = "\(SaveUserDefaultsData.WalletpublicAddress)"
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
         qrCodeImage.image = qrCode
-       
+        
         innerProfileImageView.addSubview(profilePictureLabel)
         innerProfileImageView.addSubview(innerProfileCloseButton)
         innerProfileImageView.addSubview(innerProfileImage)
@@ -494,6 +512,27 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         self.present(imagePicker, animated: true, completion: nil)
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isEditingDisplayName = true
+        lineView.isHidden = false
+    }
+    
+    private func handleIsEditingDisplayNameChanged() {
+        UIView.animate(withDuration: 0.25) { [self] in
+            nameTextField.text = displayNameToBeUploaded
+        }
+        if isEditingDisplayName {
+            nameTextField.becomeFirstResponder()
+            nameTextField.attributedPlaceholder = NSAttributedString(
+                string: "Enter Name",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
+            )
+            nameTextField.font = Fonts.OpenSans(ofSize: 18)
+        } else {
+            nameTextField.resignFirstResponder()
+        }
+    }
+    
     //MARK:UIImagePickerControllerDelegate
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -518,9 +557,9 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
         var profilePicture: UIImage?
         if self.isProfileRemove {
-           profilePicture = openGroupProfilePicture
+            profilePicture = openGroupProfilePicture
         } else {
-           profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
+            profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
         }
         
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
@@ -531,7 +570,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                 if profilePictureToBeUploaded != nil {
                     userDefaults[.lastProfilePictureUpdate] = Date()
                 } else {
-                   let publicKey = getUserHexEncodedPublicKey()
+                    let publicKey = getUserHexEncodedPublicKey()
                     let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
                     self?.profilePictureImage.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: self!.size)
                     self?.isProfileRemove = false
@@ -585,7 +624,24 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     }
     //name Edit Save Button
     @objc func doneButtonTapped(_ sender: UIButton){
-        
+        if isEditingDisplayName {
+            lineView.isHidden = true
+            func showError(title: String, message: String = "") {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                presentAlert(alert)
+            }
+            let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            guard !displayName.isEmpty else {
+                return showError(title: NSLocalizedString("vc_settings_display_name_missing_error", comment: ""))
+            }
+            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
+                return showError(title: NSLocalizedString("vc_settings_display_name_too_long_error", comment: ""))
+            }
+            isEditingDisplayName = false
+            displayNameToBeUploaded = displayName
+            updateProfile(isUpdatingDisplayName: true, isUpdatingProfilePicture: false)
+        }
     }
     
     func clearAvatar() {

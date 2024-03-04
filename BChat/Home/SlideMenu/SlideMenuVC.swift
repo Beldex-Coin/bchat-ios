@@ -169,9 +169,6 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
             if indexPath.row == 0 { //My Account
-//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
-//                self.navigationController?.pushViewController(vc, animated: true)
-                
                 let vc = MyAccountNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 1 {   //Settings
@@ -181,21 +178,17 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
 //                let vc = BChatSettingsNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 2 {   //Notification
-                let notificationSettingsVC = NotificationSettingsViewController()
-                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+//                let notificationSettingsVC = NotificationSettingsViewController()
+//                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+                
+                let vc = BChatSettingsNewVC()
+                navigationController!.pushViewController(vc, animated: true)
                 
 //                let vc = NotificationsNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
                 
 //                let vc = CustomGalleryVC()
 //                navigationController!.pushViewController(vc, animated: true)
-                        
-//                let vc = ChangeLogNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
-                
-//                let vc = AboutNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
-                
             }else if indexPath.row == 3 {   //Message Requests
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()
                 self.navigationController?.pushViewController(viewController, animated: true)
@@ -222,9 +215,6 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                             self.navigationController?.pushViewController(vc, animated: true)
                         }
                     }else {
-//                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletInstructionsVC") as! MyWalletInstructionsVC
-//                        self.navigationController?.pushViewController(vc, animated: true)
-                        
                         let vc = EnableWalletVC()
                         navigationController!.pushViewController(vc, animated: true)
                     }
@@ -243,8 +233,8 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let shareVC = UIActivityViewController(activityItems: [ invitation ], applicationActivities: nil)
                 navigationController!.present(shareVC, animated: true, completion: nil)
             }else if indexPath.row == 9{    //About
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AboutUs") as! AboutUs
-                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = AboutNewVC()
+                navigationController!.pushViewController(vc, animated: true)
             }
         }
     }

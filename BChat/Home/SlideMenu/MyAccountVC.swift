@@ -520,8 +520,8 @@ extension MyAccountVC: UICollectionViewDataSource, UICollectionViewDelegate, UIC
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }else {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangeLogVC") as! ChangeLogVC
-            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = ChangeLogNewVC()
+            navigationController!.pushViewController(vc, animated: true)
         }
     }
 }

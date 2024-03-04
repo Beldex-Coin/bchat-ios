@@ -3,14 +3,14 @@
 import UIKit
 
 class InitiatingTransactionVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = UIColor(hex: 0x111119)
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return stackView
     }()
     private lazy var circleView: UIView = {
@@ -39,10 +39,10 @@ class InitiatingTransactionVC: BaseVC {
         result.lineBreakMode = .byWordWrapping
         return result
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(circleView, titleLabel, discriptionLabel)
@@ -64,20 +64,10 @@ class InitiatingTransactionVC: BaseVC {
             discriptionLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -26),
         ])
         
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handledismissInitiatingTransaction),
-                                               name: Notification.Name("dismissInitiatingTransaction"),
-                                               object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         NotificationCenter.default.post(name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
     }
-
-    @objc func handledismissInitiatingTransaction(notification: NSNotification) {
-        self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name("confirmSendingPopUpView"), object: nil)
-    }
-
+    
 }

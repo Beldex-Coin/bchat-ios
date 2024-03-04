@@ -2,9 +2,12 @@
 
 import UIKit
 import BChatUIKit
+import Sodium
+import PromiseKit
+import BChatMessagingKit
 
 class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
-    
+
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -17,100 +20,179 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
+    let sectionNames = ["Notification Strategy", "Notification Sounds", "Notification Content"]
+    
+    var notificationStrategyTitleArray = ["Use Fast Mode"]
+    var notificationStrategyDescArray = ["You will be notified for messaged reliably  and immediately using googles notification servers."]
+    var notificationStrategyImages = ["ic_fast_mode"]
+    
+    var notificationSoundsTitleArray = ["Message Sound","Play while App is open"]
+    var notificationSoundsImages = ["ic_soundsp","ic_Vibrate"]
+    
+    var notificationContentTitleArray = ["Show"]
+    var notificationContentDescArray = ["The information shown in notifications when your phone is locked."]
+    var notificationContentImages = ["ic_Show"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor(hex: 0x11111A)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Notifications"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Notifications", style: .plain, target: nil, action: nil)
+        self.title = ""
         
         view.addSubview(tableView)
-        
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: -15),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0)
         ])
         
     }
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+
     // MARK: - UITableViewDataSource
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if section == 0 {
+            return notificationStrategyTitleArray.count
+        }else if section == 1{
+            return notificationSoundsTitleArray.count
+        }else {
+            return notificationContentTitleArray.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = NotificationTableCell(style: .default, reuseIdentifier: "NotificationTableCell")
+            let cell = NotificationTableCell2(style: .default, reuseIdentifier: "NotificationTableCell2")
             cell.backgroundColor = .clear
-            
-            
+            cell.selectionStyle = .none
+            cell.resultTitleLabel.isHidden = true
+            cell.titleLabel.text = notificationStrategyTitleArray[indexPath.row]
+            cell.titleDescriptionLabel.text = notificationStrategyDescArray[indexPath.row]
+            cell.logoImage.image = UIImage(named: notificationStrategyImages[indexPath.row])
+            cell.backGroundView.layer.cornerRadius = 16
+            let isUsingFullAPNs = UserDefaults.standard.bool(forKey: "isUsingFullAPNs")
+            if isUsingFullAPNs {
+                cell.toggleSwitch.isOn = true
+            } else {
+                cell.toggleSwitch.isOn = false
+            }
+            cell.toggleSwitch.tag = indexPath.row
+            cell.toggleSwitch.addTarget(self, action: #selector(isFastModeSwitchValueChanged(_:)), for: .valueChanged)
             return cell
         }else if indexPath.section == 1 {
             let cell = NotificationTableCell(style: .default, reuseIdentifier: "NotificationTableCell")
             cell.backgroundColor = .clear
-            
-            
-            return cell
-        }else if indexPath.section == 2 {
-            let cell = NotificationTableCell(style: .default, reuseIdentifier: "NotificationTableCell")
-            cell.backgroundColor = .clear
-            
+            cell.selectionStyle = .none
+            cell.titleLabel.text = notificationSoundsTitleArray[indexPath.row]
+            cell.logoImage.image = UIImage(named: notificationSoundsImages[indexPath.row])
+            if indexPath.row == 0 {
+                cell.toggleSwitch.isHidden = true
+                cell.resultTitleLabel.isHidden = false
+                cell.backGroundView.layer.cornerRadius = 16
+                cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                //display user seleted Sound Name
+                let sound = OWSSounds.globalNotificationSound()
+                let displayName = OWSSounds.displayName(for: sound)
+                cell.resultTitleLabel.text = displayName
+            }else{
+                cell.toggleSwitch.isHidden = false
+                cell.resultTitleLabel.isHidden = true
+                if Environment.shared.preferences.soundInForeground() {
+                    cell.toggleSwitch.isOn = true
+                }else{
+                    cell.toggleSwitch.isOn = false
+                }
+                cell.backGroundView.layer.cornerRadius = 16
+                cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+                cell.toggleSwitch.tag = indexPath.row
+                cell.toggleSwitch.addTarget(self, action: #selector(isSoundNotificationsSwitchValueChanged(_:)), for: .valueChanged)
+            }
             return cell
         }else {
-            let cell = NotificationTableCell(style: .default, reuseIdentifier: "NotificationTableCell")
+            let cell = NotificationTableCell2(style: .default, reuseIdentifier: "NotificationTableCell2")
             cell.backgroundColor = .clear
-            
+            cell.selectionStyle = .none
+            cell.titleLabel.text = notificationContentTitleArray[indexPath.row]
+            cell.titleDescriptionLabel.text = notificationContentDescArray[indexPath.row]
+            cell.logoImage.image = UIImage(named: notificationContentImages[indexPath.row])
+            cell.backGroundView.layer.cornerRadius = 16
+            cell.toggleSwitch.isHidden = true
+            cell.resultTitleLabel.isHidden = false
+            //display user seleted Show Name
+            let notificationType = Environment.shared.preferences.notificationPreviewType()
+            let displayName = Environment.shared.preferences.name(forNotificationPreviewType: notificationType)
+            cell.resultTitleLabel.text = displayName
             return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 { }
+        else if indexPath.section == 1 {
+            if indexPath.row == 0{
+                let vc = OWSSoundSettingsViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }else {
+            if indexPath.row == 0{
+                let vc = NotificationSettingsOptionsViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionHeader = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
-        let sectionText = UILabel()
-        sectionText.frame = CGRect(x: 32, y: 7, width: sectionHeader.frame.width - 10, height: sectionHeader.frame.height - 10)
-        sectionText.font = Fonts.boldOpenSans(ofSize: 18)
-        sectionText.textColor = Colors.greenColor
-        switch section {
-        case 0:
-            sectionText.text = " "
-        case 1:
-            sectionText.text = "Notification Strategy"
-        case 2:
-            sectionText.text = "Notification Style"
-        case 3:
-            sectionText.text = "Notification Content"
-        default:
-            sectionText.text = "Default Header"
-        }
-        sectionHeader.backgroundColor = .clear
-        sectionHeader.addSubview(sectionText)
-        return sectionHeader
+        let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
+        let footerView = UIView(frame:rect)
+        footerView.backgroundColor = UIColor(hex: 0x11111A)
+        let label = UILabel()
+        label.text = sectionNames[section]
+        label.textColor = Colors.greenColor
+        label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
+        label.font = Fonts.semiOpenSans(ofSize: 18)
+        footerView.addSubview(label)
+        return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 0
-        }else if section == 1 {
-            return 40
-        }else if section == 2 {
-            return 40
-        }else {
-            return 40
-        }
+        return 40 // Set the height of the header view as needed
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return UITableView.automaticDimension
+        }else if indexPath.section == 1 {
+            return UITableView.automaticDimension
+        }else {
+            return UITableView.automaticDimension
+        }
+    }
+    //Use Fast Mode
+    @objc func isFastModeSwitchValueChanged(_ sender: UISwitch) {
+        let isSwitchOn = sender.isOn
+        UserDefaults.standard.set(isSwitchOn, forKey: "isUsingFullAPNs")
+        let syncTokensJob = SyncPushTokensJob(accountManager: AppEnvironment.shared.accountManager, preferences: Environment.shared.preferences)
+        syncTokensJob.uploadOnlyIfStale = false
+        let _: Promise<Void> = syncTokensJob.run()
+    }
+    //Play while App is open
+    @objc func isSoundNotificationsSwitchValueChanged(_ sender: UISwitch) {
+        Environment.shared.preferences.setSoundInForeground(sender.isOn)
     }
     
 }
@@ -121,94 +203,167 @@ class NotificationTableCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor(hex: 0x1C1C26)
-        view.layer.cornerRadius = 16
         return view
     }()
-    private lazy var allNotificationsLogoImg: UIImageView = {
+    lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
-    private lazy var priorityLogoImg: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        return imageView
-    }()
-    lazy var allNotificationsLabel: UILabel = {
+    lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xEBEBEB)
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
-        result.text = "All Notifications"
-        result.translatesAutoresizingMaskIntoConstraints = false
-        return result
-    }()
-    private lazy var priorityLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
-        result.font = Fonts.OpenSans(ofSize: 14)
-        result.textAlignment = .left
-        result.text = "Priority"
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
     lazy var toggleSwitch: UISwitch = {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
-        toggle.isOn = false
         toggle.isEnabled = true
         toggle.onTintColor = Colors.greenColor
         return toggle
     }()
-
+    lazy var resultTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    lazy var bgview: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .red
+        return view
+    }()
     // MARK: - Initialization
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
         // Add subviews to the cell
         contentView.addSubview(backGroundView)
-        backGroundView.addSubview(allNotificationsLogoImg)
-        backGroundView.addSubview(priorityLogoImg)
-        backGroundView.addSubview(allNotificationsLabel)
-        backGroundView.addSubview(priorityLabel)
+        backGroundView.addSubview(logoImage)
         backGroundView.addSubview(toggleSwitch)
-
+        backGroundView.addSubview(titleLabel)
+        backGroundView.addSubview(resultTitleLabel)
+        
         // Set up constraints
         NSLayoutConstraint.activate([
-            backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-//            backGroundView.heightAnchor.constraint(equalToConstant: 100),
-            
-            allNotificationsLogoImg.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 28),
-            allNotificationsLogoImg.heightAnchor.constraint(equalToConstant: 16),
-            allNotificationsLogoImg.widthAnchor.constraint(equalToConstant: 16),
-            allNotificationsLogoImg.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 38),
-//            allNotificationsLogoImg.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -10),
-            
-            priorityLogoImg.heightAnchor.constraint(equalToConstant: 16),
-            priorityLogoImg.widthAnchor.constraint(equalToConstant: 16),
-            priorityLogoImg.topAnchor.constraint(equalTo: allNotificationsLogoImg.bottomAnchor, constant: 38),
-            priorityLogoImg.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 28),
-            priorityLogoImg.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -38),
-            
-            allNotificationsLabel.leadingAnchor.constraint(equalTo: allNotificationsLogoImg.trailingAnchor, constant: 15),
-            allNotificationsLabel.centerYAnchor.constraint(equalTo: allNotificationsLogoImg.centerYAnchor),
-            
-            priorityLabel.leadingAnchor.constraint(equalTo: priorityLogoImg.trailingAnchor, constant: 15),
-            priorityLabel.centerYAnchor.constraint(equalTo: priorityLogoImg.centerYAnchor),
-            
+            logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 24),
+            logoImage.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 24),
+            logoImage.widthAnchor.constraint(equalToConstant: 18),
+            logoImage.heightAnchor.constraint(equalToConstant: 18),
+            logoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -24),
             toggleSwitch.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
-            toggleSwitch.centerYAnchor.constraint(equalTo: allNotificationsLabel.centerYAnchor),
+            toggleSwitch.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
+            resultTitleLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
+            resultTitleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
+            titleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
         ])
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
+class NotificationTableCell2: UITableViewCell {
+    // MARK: - Properties
+    lazy var backGroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        return view
+    }()
+    lazy var logoImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        return imageView
+    }()
+    lazy var titleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    lazy var resultTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    lazy var titleDescriptionLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.numberOfLines = 0
+        return result
+    }()
+    lazy var toggleSwitch: UISwitch = {
+        let toggle = UISwitch()
+        toggle.translatesAutoresizingMaskIntoConstraints = false
+        toggle.isEnabled = true
+        toggle.onTintColor = Colors.greenColor
+        return toggle
+    }()
+    // MARK: - Initialization
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        // Add subviews to the cell
+        contentView.addSubview(backGroundView)
+        backGroundView.addSubview(logoImage)
+        backGroundView.addSubview(toggleSwitch)
+        backGroundView.addSubview(titleLabel)
+        backGroundView.addSubview(titleDescriptionLabel)
+        backGroundView.addSubview(resultTitleLabel)
+        
+        // Set up constraints
+        NSLayoutConstraint.activate([
+            backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
+            backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            logoImage.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 24),
+            logoImage.widthAnchor.constraint(equalToConstant: 18),
+            logoImage.heightAnchor.constraint(equalToConstant: 18),
+            logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 24),
+            toggleSwitch.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
+            toggleSwitch.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
+            resultTitleLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
+            resultTitleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor, constant: -20),
+            titleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
+            titleDescriptionLabel.leadingAnchor.constraint(equalTo: logoImage.leadingAnchor),
+            titleDescriptionLabel.trailingAnchor.constraint(equalTo: toggleSwitch.trailingAnchor),
+            titleDescriptionLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -24),
+            titleDescriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+        ])
+        
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

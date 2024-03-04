@@ -91,4 +91,17 @@ public final class Colors : NSObject {
     @objc public static var buttonTextColor: UIColor { UIColor(named: "buttonTextColor")! }
     @objc public static var cellBackgroundColor2: UIColor { UIColor(named: "cellBackgroundColor2")! }
     
+    @objc public static var searchViewBackgroundColor: UIColor { UIColor(named: "searchViewBackgroundColor")! }
+    @objc public static var viewBackgroundColorNew: UIColor { UIColor(named: "viewBackgroundColorNew")! }
+    @objc public static var addressBookSaveAddressLabelColor: UIColor { UIColor(named: "addressBookSaveAddressLabelColor")! }
+    @objc public static var addressBookNoContactLabelColor: UIColor { UIColor(named: "addressBookNoContactLabelColor")! }
+    @objc public static var setUpScreenBackgroundColor: UIColor { UIColor(named: "setUpScreenBackgroundColor")! }
+    @objc public static var idLabelColor: UIColor { UIColor(named: "idLabelColor")! }
+    @objc public static var aboutContentLabelColor: UIColor { UIColor(named: "aboutContentLabelColor")! }
+    @objc public static var cellBackgroundColorForChangeLog: UIColor { UIColor(named: "cellBackgroundColorForChangeLog")! }
+    @objc public static var cellBackgroundColorForNodeList: UIColor { UIColor(named: "cellBackgroundColorForNodeList")! }
+    @objc public static var cellIpLabelColor: UIColor { UIColor(named: "cellIpLabelColor")! }
+    @objc public static var cellIpLabelColor2: UIColor { UIColor(named: "cellIpLabelColor2")! }
+    @objc public static var cellNodeOffColor: UIColor { UIColor(named: "cellNodeOffColor")! }
+    
 }

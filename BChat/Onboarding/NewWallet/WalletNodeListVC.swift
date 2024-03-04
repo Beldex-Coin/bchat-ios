@@ -22,8 +22,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(refreshButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
-        result.setTitleColor(.white, for: .normal)
+        result.backgroundColor = Colors.backgroundViewColor
+        result.setTitleColor(Colors.addressBookNoContactLabelColor, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -67,14 +67,15 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x111119)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Nodes"
+        view.backgroundColor = Colors.viewBackgroundColorNew
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Nodes", style: .plain, target: nil, action: nil)
+//        self.title = ""
         
         view.addSubview(tableView)
         view.addSubview(buttonStackView)
-        refreshButton.addRightIcon(image: UIImage(named: "ic_refresh_new")!.withRenderingMode(.alwaysTemplate))
-        refreshButton.tintColor = .white
+        let logoImage = isLightMode ? "ic_refresh_new" : "ic_refresh_black"
+        refreshButton.tintColor = isLightMode ? UIColor.black : UIColor.white
+        refreshButton.addRightIcon(image: UIImage(named: logoImage)!.withRenderingMode(.alwaysTemplate))
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
@@ -173,6 +174,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let cell = NodeListTableCell(style: .default, reuseIdentifier: "NodeListTableCell")
         cell.backgroundColor = .clear
         cell.nodeNameTitleLabel.text = nodeArray[indexPath.row]
+        cell.isUserInteractionEnabled = true
         
         if checkedData.keys.contains(nodeArray[indexPath.row]) {
             let dictionaryIndex = checkedData.index(forKey: nodeArray[indexPath.row])
@@ -188,15 +190,13 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
-//                cell.nodeIPLabel.textColor = .red
+                cell.nodeNameTitleLabel.textColor = Colors.cellNodeOffColor
                 cell.nodeIPLabel.text = checkedDataForTimeInterval.values[dictionaryIndex!]
             } else {
-//                cell.nodeIPLabel.textColor = Colors.bchatLabelNameColor
                 cell.nodeIPLabel.text = "Last Block: " +  checkedDataForTimeInterval.values[dictionaryIndex!]
             }
         }
-        cell.nodeNameTitleLabel.text = nodeArray[indexPath.row]
-        cell.isUserInteractionEnabled = true
+        
         if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
             let selectedNodeData = SaveUserDefaultsData.SelectedNode
             if(nodeArray[indexPath.row] == selectedNodeData) {
@@ -204,12 +204,16 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
                 cell.isUserInteractionEnabled = false
+                cell.nodeNameTitleLabel.textColor = Colors.textColor
+                cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
             }
         } else if (nodeArray.count == 6) {
             if(nodeArray[indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
                 cell.isUserInteractionEnabled = false
+                cell.nodeNameTitleLabel.textColor = Colors.textColor
+                cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
             }
         }
         
@@ -304,7 +308,7 @@ class NodeListTableCell: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.cellBackgroundColorForNodeList
         view.layer.cornerRadius = 16
         return view
     }()
@@ -325,11 +329,10 @@ class NodeListTableCell: UITableViewCell {
     }()
     lazy var nodeIPLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.cellIpLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Testing IP : 43.204.199.139.."
         return result
     }()
     // MARK: - Initialization

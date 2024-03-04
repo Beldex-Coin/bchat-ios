@@ -10,21 +10,21 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("SEARCH_CONTACT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("SEARCH_CONTACT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.placeholderColor])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = UIColor(hex: 0x353544)
+        result.backgroundColor = Colors.searchViewBackgroundColor
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.cornerRadius = 24
-        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
+        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: result.frame.size.height))
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
         // Create an UIImageView and set its image
         let imageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20) // Adjust the frame as needed
+        imageView.frame = CGRect(x: 0, y: 0, width: 15, height: 15) // Adjust the frame as needed
         imageView.contentMode = .scaleAspectFit // Set the content mode as needed
         // Add some padding between the image and the text field
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 15))
         result.rightView = paddingView
         result.rightViewMode = UITextField.ViewMode.always
         // Set the rightView of the TextField to the created UIImageView
@@ -37,7 +37,7 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     private lazy var backgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.viewBackgroundColorNew
         stackView.layer.cornerRadius = 20
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
@@ -56,8 +56,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     private lazy var noAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "No Addresses!"
-        result.textColor = UIColor(hex: 0xA7A7BA)
-        result.font = Fonts.semiOpenSans(ofSize: 20)
+        result.textColor = Colors.placeholderColor
+        result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -65,8 +65,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     private lazy var noSubAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "Save address to show!"
-        result.textColor = UIColor(hex: 0x82828D)
-        result.font = Fonts.OpenSans(ofSize: 15)
+        result.textColor = Colors.addressBookSaveAddressLabelColor
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -75,15 +75,15 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "No_address", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        imageView.tintColor = UIColor(hex: 0x65656E)
+        let logoImage = isLightMode ? "ic_no_address_white_theme" : "ic_no_address"
+        imageView.image = UIImage(named: logoImage)
         return imageView
     }()
     private lazy var noContactsTitleLabel: UILabel = {
         let result = PaddingLabel()
         result.text = "No Contacts"
-        result.textColor = .white
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.textColor = Colors.addressBookNoContactLabelColor
+        result.backgroundColor = Colors.searchViewBackgroundColor
         result.font = Fonts.OpenSans(ofSize: 15)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = result.frame.size.height / 2
@@ -105,9 +105,9 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Address Book"
+        view.backgroundColor = Colors.setUpScreenBackgroundColor
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Address Book", style: .plain, target: nil, action: nil)
+//        self.title = ""
         
         view.addSubview(searchTextField)
         view.addSubview(backgroundView)
@@ -218,8 +218,16 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         tableView.reloadData()
         if searchfilterNameArray.isEmpty {
             noContactsTitleLabel.isHidden = false
+            tableView.isHidden = true
+            noContactsYetLogoImage.isHidden = false
+            noAddressTitleLabel.isHidden = false
+            noSubAddressTitleLabel.isHidden = false
         }else {
             noContactsTitleLabel.isHidden = true
+            tableView.isHidden = false
+            noContactsYetLogoImage.isHidden = true
+            noAddressTitleLabel.isHidden = true
+            noSubAddressTitleLabel.isHidden = true
         }
     }
     // UITextFieldDelegate method to respond to the clear button action
@@ -324,7 +332,7 @@ class AddressBookTableCell: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .clear//UIColor(hex: 0x1C1C26)
+        view.backgroundColor = .clear
         view.layer.cornerRadius = 16
         return view
     }()
@@ -338,24 +346,23 @@ class AddressBookTableCell: UITableViewCell {
     }()
     lazy var shareButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.backgroundViewColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "share"), for: .normal)
+        let logoImage = isLightMode ? "ic_black_share" : "share"
+        button.setImage(UIImage(named: logoImage), for: .normal)
         return button
     }()
     lazy var namebackgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.backgroundViewColor
         view.layer.cornerRadius = 9
-        view.layer.borderWidth = 0.5
-        view.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return view
     }()
     lazy var addressIDLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.idLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -364,7 +371,7 @@ class AddressBookTableCell: UITableViewCell {
     }()
     lazy var nameLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.addressBookNoContactLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

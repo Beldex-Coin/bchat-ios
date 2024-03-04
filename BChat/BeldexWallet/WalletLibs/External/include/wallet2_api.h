@@ -428,6 +428,21 @@ struct stakeInfo{
     bool decommissioned = false;
 };
 
+struct bnsInfo{
+    uint64_t update_height;
+    uint64_t expiration_height;
+    std::string name_hash;
+    std::string name;
+    std::string owner;
+    std::string backup_owner;
+    std::string value_bchat;
+    std::string value_wallet;
+    std::string value_belnet;
+    std::string encrypted_bchat_value;
+    std::string encrypted_wallet_value;
+    std::string encrypted_belnet_value;
+};
+
 /**
  * @brief Interface for wallet operations.
  *        TODO: check if /include/IWallet.h is still actual
@@ -543,7 +558,7 @@ struct Wallet
      * \param upper_transaction_size_limit
      * \param daemon_username
      * \param daemon_password
-     * \param lightWallet - start wallet in light mode, connect to a openbeldex compatible server.
+     * \param lightWallet - start wallet in light mode, connect to a openmonero compatible server.
      * \return  - true on success
      */
     virtual bool init(const std::string &daemon_address, uint64_t upper_transaction_size_limit = 0, const std::string &daemon_username = "", const std::string &daemon_password = "", bool use_ssl = false, bool lightWallet = false) = 0;
@@ -935,6 +950,18 @@ struct Wallet
                                                     uint32_t m_current_subaddress_account = 0,
                                                     std::set<uint32_t> subaddr_indices = {}) = 0;
     
+    /*!
+     * \brief setBnsRecord - attach an name and namehash to a wallet cache attribute
+     * \param name - the key
+     * \return true if successful, false otherwise
+     */
+    virtual bool setBnsRecord(const std::string &name) = 0;
+
+    /*!
+     * \return struct bnsInfo
+     */
+    virtual std::vector<bnsInfo>* MyBns() const = 0;
+
     /*!
      * \brief createSweepUnmixableTransaction creates transaction with unmixable outputs.
      * \return                  PendingTransaction object. caller is responsible to check PendingTransaction::status()
