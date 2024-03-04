@@ -89,7 +89,7 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         if indexPath.row == 7 {
-            let vc = DecimalsPopUpVC()
+            let vc = PayAsYouChatPopUpVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
