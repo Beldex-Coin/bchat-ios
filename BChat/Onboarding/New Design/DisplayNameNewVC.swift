@@ -1,8 +1,11 @@
 // Copyright © 2023 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
+import Sodium
 
-class DisplayNameNewVC: BaseVC {
+
+class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
     
     
@@ -48,6 +51,12 @@ class DisplayNameNewVC: BaseVC {
         return result
     }()
     
+    private var seed: Data! { didSet { updateKeyPair() } }
+    private var ed25519KeyPair: Sign.KeyPair!
+    private var x25519KeyPair: ECKeyPair! { didSet { updatePublicKeyLabel() } }
+    private var data = NewWallet()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,86 +95,148 @@ class DisplayNameNewVC: BaseVC {
         ])
         
         
+        nameTextField.delegate = self
+        nameTextField.returnKeyType = .done
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        nameTextField.becomeFirstResponder()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
         self.performAction()
-        let vc = RegisterVC()
-        self.navigationController?.pushViewController(vc, animated: true)
-
     }
     
+    // MARK: Updating
+    private func updateSeed(seedvalue: Data) {
+        seed = seedvalue
+    }
+    
+    private func updateKeyPair() {
+        (ed25519KeyPair, x25519KeyPair) = KeyPairUtilities.generate(from: seed)
+    }
+    
+    private func updatePublicKeyLabel() {
+        let hexEncodedPublicKey = x25519KeyPair.hexEncodedPublicKey
+        let characterCount = hexEncodedPublicKey.count
+        var count = 0
+        let limit = 32
+        func animate() {
+            let numberOfIndexesToShuffle = 32 - count
+            let indexesToShuffle = (0..<characterCount).shuffled()[0..<numberOfIndexesToShuffle]
+            var mangledHexEncodedPublicKey = hexEncodedPublicKey
+            for index in indexesToShuffle {
+                let startIndex = mangledHexEncodedPublicKey.index(mangledHexEncodedPublicKey.startIndex, offsetBy: index)
+                let endIndex = mangledHexEncodedPublicKey.index(after: startIndex)
+                mangledHexEncodedPublicKey.replaceSubrange(startIndex..<endIndex, with: "0123456789abcdef__".shuffled()[0..<1])
+            }
+            count += 1
+            if count < limit {
+                animate()
+            } else {
+                
+            }
+        }
+        animate()
+    }
+
+    
+    // MARK: General
+    @objc private func dismissKeyboard() {
+        nameTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()  //if desired
+        performAction()
+        return true
+    }
+
     func performAction() {
-//        func showError(title: String, message: String = "") {
-//            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//            presentAlert(alert)
-//        }
-//        if userNametxt.text!.isEmpty {
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !displayName.isEmpty else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
-//            }
-//        }
-//        if userNametxt.text!.count >= 26 {
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
-//            }
-//        }
-//        else {
-//            // MARK:- Beldex Wallet
-//            let uuid = UUID()
-//            data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            data.pwd = uuid.uuidString
-//            SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
-//            WalletService.shared.createWallet(with: .new(data: data)) { (result) in
-//                switch result {
-//                case .success(let wallet):
-//                    wallet.close()
-//                case .failure(_):
-//                    print("in case failyre")
-//                }
-//            }
-//            let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
-//            let WalletSeed = SaveUserDefaultsData.WalletSeed
-//            SaveUserDefaultsData.NameForWallet = data.name
-//            let mnemonic = WalletSeed
-//            do {
-//                let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
-//                let seed = Data(hex: hexEncodedSeed)
-//                updateSeed(seedvalue: seed)
-//            } catch let error {
-//                print("Failure: \(error)")
-//                return
-//            }
-//            // Bchat Work
-//            Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
-//            func showError(title: String, message: String = "") {
-//                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//                presentAlert(alert)
-//            }
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !displayName.isEmpty else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
-//            }
-//            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
-//            }
-//            OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: {
-//            }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
-//
+        func showError(title: String, message: String = "") {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            presentAlert(alert)
+        }
+        if nameTextField.text!.isEmpty {
+            let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            guard !displayName.isEmpty else {
+                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+            }
+        }
+        if nameTextField.text!.count >= 26 {
+            let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
+                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+            }
+        }
+        else {
+            // MARK:- Beldex Wallet
+            let uuid = UUID()
+            data.name = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            data.pwd = uuid.uuidString
+            SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
+            WalletService.shared.createWallet(with: .new(data: data)) { (result) in
+                switch result {
+                case .success(let wallet):
+                    wallet.close()
+                case .failure(_):
+                    print("in case failyre")
+                }
+            }
+            let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
+            let WalletSeed = SaveUserDefaultsData.WalletSeed
+            SaveUserDefaultsData.NameForWallet = data.name
+            let mnemonic = WalletSeed
+            do {
+                let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
+                let seed = Data(hex: hexEncodedSeed)
+                updateSeed(seedvalue: seed)
+            } catch let error {
+                print("Failure: \(error)")
+                return
+            }
+            // Bchat Work
+            Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
+            func showError(title: String, message: String = "") {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                presentAlert(alert)
+            }
+            let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            guard !displayName.isEmpty else {
+                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+            }
+            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
+                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+            }
+            OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: {
+            }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
+
 //            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayBChatIDsVC") as! DisplayBChatIDsVC
 //            vc.userNameString = displayName
 //            vc.bchatIDString = x25519KeyPair.hexEncodedPublicKey
 //            vc.beldexAddressIDString = WalletpublicAddress
 //            self.navigationController?.pushViewController(vc, animated: true)
-//        }
+            
+            let vc = RegisterVC()
+            vc.userNameString = displayName
+            vc.bchatIDString = x25519KeyPair.hexEncodedPublicKey
+            vc.beldexAddressIDString = WalletpublicAddress
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
-
+    
    
 }
 

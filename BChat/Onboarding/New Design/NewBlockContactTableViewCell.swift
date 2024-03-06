@@ -75,7 +75,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_button_normal"), for: .normal)
         button.setBackgroundImage(UIImage(named: "ic_button_selected"), for: .selected)
         return button

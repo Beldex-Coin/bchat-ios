@@ -173,9 +173,10 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let vc = MyAccountNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 1 {   //Settings
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                navigationController!.pushViewController(privacySettingsVC, animated: true)
-                
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                navigationController!.pushViewController(privacySettingsVC, animated: true)
+                let vc = NewDesignSettingsVC()
+                self.navigationController?.pushViewController(vc, animated: true)
 //                let vc = BChatSettingsNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 2 {   //Notification

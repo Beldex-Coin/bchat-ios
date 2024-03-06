@@ -4,6 +4,10 @@ import UIKit
 
 class RegisterVC: BaseVC {
     
+    var userNameString:String!
+    var bchatIDString:String!
+    var beldexAddressIDString:String!
+    
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
@@ -46,7 +50,7 @@ class RegisterVC: BaseVC {
     
     private lazy var bChatIdLabel: UILabel = {
         let result = UILabel()
-        result.text = "328632bdskhj839ehdnd92dddid83993ndasoaksjhpifyaoajscqitp98wkjhaiuahhashf9ahfsdfhasdf.."
+        result.text = ""
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -86,7 +90,7 @@ class RegisterVC: BaseVC {
     
     private lazy var beldexIdLabel: UILabel = {
         let result = UILabel()
-        result.text = "328632bdskhj839ehdnd92dddid83993ndasoaksjhpifyaoajscqitp98wkjhaiuahhashf9ahfsdfhasdf.."
+        result.text = ""
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -112,7 +116,10 @@ class RegisterVC: BaseVC {
         view.backgroundColor = UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Register"
-        self.titleLabel.text = "Hey Name, Welcome to BChat"
+        self.titleLabel.text = "Hey \(userNameString!), Welcome to BChat"
+        self.bChatIdLabel.text = bchatIDString
+        self.beldexIdLabel.text = beldexAddressIDString
+        
         
         view.addSubViews(titleLabel)
         view.addSubViews(continueButton)
@@ -174,78 +181,13 @@ class RegisterVC: BaseVC {
 
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
-        let vc = NewPasswordVC()
+//        let vc = NewPasswordVC()
+//        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
-//    func performAction() {
-//        func showError(title: String, message: String = "") {
-//            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//            presentAlert(alert)
-//        }
-//        if userNametxt.text!.isEmpty {
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !displayName.isEmpty else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
-//            }
-//        }
-//        if userNametxt.text!.count >= 26 {
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
-//            }
-//        }
-//        else {
-//            // MARK:- Beldex Wallet
-//            let uuid = UUID()
-//            data.name = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            data.pwd = uuid.uuidString
-//            SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
-//            WalletService.shared.createWallet(with: .new(data: data)) { (result) in
-//                switch result {
-//                case .success(let wallet):
-//                    wallet.close()
-//                case .failure(_):
-//                    print("in case failyre")
-//                }
-//            }
-//            let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
-//            let WalletSeed = SaveUserDefaultsData.WalletSeed
-//            SaveUserDefaultsData.NameForWallet = data.name
-//            let mnemonic = WalletSeed
-//            do {
-//                let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
-//                let seed = Data(hex: hexEncodedSeed)
-//                updateSeed(seedvalue: seed)
-//            } catch let error {
-//                print("Failure: \(error)")
-//                return
-//            }
-//            // Bchat Work
-//            Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
-//            func showError(title: String, message: String = "") {
-//                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//                presentAlert(alert)
-//            }
-//            let displayName = userNametxt.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//            guard !displayName.isEmpty else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
-//            }
-//            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-//                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
-//            }
-//            OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: {
-//            }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
-//
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayBChatIDsVC") as! DisplayBChatIDsVC
-//            vc.userNameString = displayName
-//            vc.bchatIDString = x25519KeyPair.hexEncodedPublicKey
-//            vc.beldexAddressIDString = WalletpublicAddress
-//            self.navigationController?.pushViewController(vc, animated: true)
-//        }
-//    }
+
    
 }

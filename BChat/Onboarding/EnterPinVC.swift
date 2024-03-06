@@ -164,7 +164,9 @@ class EnterPinVC: BaseVC,UITextFieldDelegate,OptionViewDelegate {
         if pin.count == 4 && pin == confirmPin {
             SaveUserDefaultsData.BChatPassword = reEnterPintxt.text!
             if navigationflowTag == false {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoveryVC") as! RecoveryVC
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecoveryVC") as! RecoveryVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = NewRestoreSeedVC()
                 self.navigationController?.pushViewController(vc, animated: true)
             }else{
                 UserDefaults.standard[.isUsingFullAPNs] = true
