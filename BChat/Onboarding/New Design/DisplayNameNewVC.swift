@@ -7,8 +7,6 @@ import Sodium
 
 class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
-    
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xEBEBEB)
@@ -26,13 +24,13 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-
+    
     private lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("Continue", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.backgroundColor = UIColor(hex: 0x00BD40)
+        //        button.backgroundColor = UIColor(hex: 0x00BD40)
         button.backgroundColor = UIColor(hex: 0x282836)
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
@@ -64,11 +62,11 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(hex: 0x11111A)
-
+        
         self.title = "Display Name"
         self.titleLabel.text = "Set your Display Name"
         self.subTitleLabel.text = "You can change it anytime :)"
-
+        
         view.addSubViews(titleLabel)
         view.addSubViews(subTitleLabel)
         view.addSubViews(continueButton)
@@ -107,7 +105,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         view.addGestureRecognizer(tapGestureRecognizer)
         
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         nameTextField.becomeFirstResponder()
@@ -154,7 +152,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
         animate()
     }
-
+    
     
     // MARK: General
     @objc private func dismissKeyboard() {
@@ -178,8 +176,8 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
-   
-
+    
+    
     func performAction() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -240,12 +238,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             }
             OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: {
             }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
-
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayBChatIDsVC") as! DisplayBChatIDsVC
-//            vc.userNameString = displayName
-//            vc.bchatIDString = x25519KeyPair.hexEncodedPublicKey
-//            vc.beldexAddressIDString = WalletpublicAddress
-//            self.navigationController?.pushViewController(vc, animated: true)
             
             let vc = RegisterVC()
             vc.userNameString = displayName
@@ -255,7 +247,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
-   
+    
 }
 
 
