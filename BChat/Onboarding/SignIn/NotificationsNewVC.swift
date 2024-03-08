@@ -24,20 +24,17 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     var notificationStrategyTitleArray = ["Use Fast Mode"]
     var notificationStrategyDescArray = ["You will be notified for messaged reliably  and immediately using googles notification servers."]
-    var notificationStrategyImages = ["ic_fast_mode"]
     
     var notificationSoundsTitleArray = ["Message Sound","Play while App is open"]
-    var notificationSoundsImages = ["ic_soundsp","ic_Vibrate"]
     
     var notificationContentTitleArray = ["Show"]
     var notificationContentDescArray = ["The information shown in notifications when your phone is locked."]
-    var notificationContentImages = ["ic_Show"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Notifications", style: .plain, target: nil, action: nil)
         self.title = ""
         
@@ -78,7 +75,8 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             cell.resultTitleLabel.isHidden = true
             cell.titleLabel.text = notificationStrategyTitleArray[indexPath.row]
             cell.titleDescriptionLabel.text = notificationStrategyDescArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: notificationStrategyImages[indexPath.row])
+            let logoImage = isLightMode ? "ic_fast_mode_dark" : "ic_fast_mode"
+            cell.logoImage.image = UIImage(named: logoImage)
             cell.backGroundView.layer.cornerRadius = 16
             let isUsingFullAPNs = UserDefaults.standard.bool(forKey: "isUsingFullAPNs")
             if isUsingFullAPNs {
@@ -94,17 +92,20 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
             cell.titleLabel.text = notificationSoundsTitleArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: notificationSoundsImages[indexPath.row])
             if indexPath.row == 0 {
                 cell.toggleSwitch.isHidden = true
                 cell.resultTitleLabel.isHidden = false
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                let logoImage = isLightMode ? "ic_Sound_dark" : "ic_soundsp"
+                cell.logoImage.image = UIImage(named: logoImage)
                 //display user seleted Sound Name
                 let sound = OWSSounds.globalNotificationSound()
                 let displayName = OWSSounds.displayName(for: sound)
                 cell.resultTitleLabel.text = displayName
             }else{
+                let logoImage = isLightMode ? "ic_Vibrate_dark" : "ic_Vibrate"
+                cell.logoImage.image = UIImage(named: logoImage)
                 cell.toggleSwitch.isHidden = false
                 cell.resultTitleLabel.isHidden = true
                 if Environment.shared.preferences.soundInForeground() {
@@ -124,7 +125,8 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .none
             cell.titleLabel.text = notificationContentTitleArray[indexPath.row]
             cell.titleDescriptionLabel.text = notificationContentDescArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: notificationContentImages[indexPath.row])
+            let logoImage = isLightMode ? "ic_show_dark" : "ic_Show"
+            cell.logoImage.image = UIImage(named: logoImage)
             cell.backGroundView.layer.cornerRadius = 16
             cell.toggleSwitch.isHidden = true
             cell.resultTitleLabel.isHidden = false
@@ -155,7 +157,7 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
         let footerView = UIView(frame:rect)
-        footerView.backgroundColor = UIColor(hex: 0x11111A)
+        footerView.backgroundColor = Colors.viewBackgroundColorNew
         let label = UILabel()
         label.text = sectionNames[section]
         label.textColor = Colors.greenColor
@@ -202,19 +204,18 @@ class NotificationTableCell: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.settingsCellBackgroundColor
         return view
     }()
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.settingsCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -229,7 +230,7 @@ class NotificationTableCell: UITableViewCell {
     }()
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsResultTitleCellLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -284,19 +285,18 @@ class NotificationTableCell2: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.settingsCellBackgroundColor
         return view
     }()
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.settingsCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -304,7 +304,7 @@ class NotificationTableCell2: UITableViewCell {
     }()
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsResultTitleCellLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -312,7 +312,7 @@ class NotificationTableCell2: UITableViewCell {
     }()
     lazy var titleDescriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsDescriptionCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

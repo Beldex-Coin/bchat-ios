@@ -22,23 +22,19 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     var appAccessTitleArray = ["Screen Lock","Disable Preview in app switcher"]
     var appAccessDescArray = ["Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications.","Prevent BChat previews from appearing in the app switcher."]
-    var appAccessImages = ["ic_Screen_securityNew","ic_surface_new"]
     
     var walletTitleArray = ["Start Wallet","Pay as you chat"]
     var walletDescArray = ["Enabling wallet will allow you to send and receive BDX","Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"]
-    var walletImages = ["ic_WalletNew","ic_GroupNew"]
     
     var communicationTitleArray = ["Read receipts","Type indicators","Send link previews","Voice and video calls","Clear conversation History"]
     var communicationDescArray = ["if read receipts are disabled, you won’t be able to see read receipts from others","if typing indicators are disabled, you won’t be able to see typing indicators from others.","Previews are supported for imgur, instagram, pinterest, Reddit, and Youtube links.","Allow access to accept voice and video calls from other users.",""]
-    var communicationImages = ["ic_Read_receipetNew","ic_Type_indicaterNew","ic_send_linkNew","ic_video_callNew","ic_clear_imgaes"]
-    var isScreenLockEnabled = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
         self.title = ""
         
@@ -49,11 +45,14 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0)
         ])
+        
     }
-
     
-    // MARK: - Navigation
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -61,10 +60,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            //            return 3//appAccessTitleArray.count
-            if isScreenLockEnabled {
+            if OWSScreenLock.shared.isScreenLockEnabled(){
                 return 3 // Include ScreenLockTableCell
-            } else {
+            }else {
                 return 2 // Exclude ScreenLockTableCell
             }
         }else if section == 1{
@@ -85,7 +83,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.resultTitleLabel.isHidden = true
                 cell.titleLabel.text = "Screen Lock"
                 cell.titleDescriptionLabel.text = "Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications."
-                cell.logoImage.image = UIImage(named: "ic_Screen_securityNew")
+                let logoImage = isLightMode ? "ic_screenLock_dark" : "ic_Screen_securityNew"
+                cell.logoImage.image = UIImage(named: logoImage)
                 //screen Lock
                 let isScreenLockEnabled = OWSScreenLock.shared.isScreenLockEnabled()
                 if isScreenLockEnabled{
@@ -96,10 +95,14 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(screenLockSwitchValueChanged(_:)), for: .valueChanged)
                 return cell
-            }else if indexPath.row == 1 && isScreenLockEnabled{
+            }else if indexPath.row == 1 && OWSScreenLock.shared.isScreenLockEnabled(){
                 let cell = ScreenLockTableCell(style: .default, reuseIdentifier: "ScreenLockTableCell")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
+                
+                let screenLockTimeout = UInt32(round(OWSScreenLock.shared.screenLockTimeout()))
+                let screenLockTimeoutString = formatScreenLockTimeout(Int(screenLockTimeout), useShortFormat: true)
+                cell.resultTitleLabel.text = screenLockTimeoutString
                 
                 return cell
             }else {
@@ -109,10 +112,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
                 cell.resultTitleLabel.isHidden = true
-                
                 cell.titleLabel.text = "Disable Preview in app switcher"
                 cell.titleDescriptionLabel.text = "Prevent BChat previews from appearing in the app switcher."
-                cell.logoImage.image = UIImage(named: "ic_surface_new")
+                let logoImage = isLightMode ? "ic_Disable_preview_dark" : "ic_Disable_preview_white"
+                cell.logoImage.image = UIImage(named: logoImage)
                 //disable Preview in App Switcher
                 let isScreenSecurityEnabled = Environment.shared.preferences.screenSecurityIsEnabled()
                 if isScreenSecurityEnabled{
@@ -128,14 +131,14 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
-            
             cell.titleLabel.text = walletTitleArray[indexPath.row]
             cell.titleDescriptionLabel.text = walletDescArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: walletImages[indexPath.row])
             
             if indexPath.row == 0 {
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                let logoImage = isLightMode ? "ic_startWallet_dark" : "ic_startWallet_white"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Start Wallet
                 let areWalletEnabled = SSKPreferences.areWalletEnabled
                 if areWalletEnabled{
@@ -148,30 +151,37 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }else{
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+                let logoImage = isLightMode ? "ic_payAsUChat_dark" : "ic_payAsUChat_white"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Pay As You Chat
-                let isPayAsYouChatEnabled = SSKPreferences.arePayAsYouChatEnabled
-                if isPayAsYouChatEnabled{
-                    cell.toggleSwitch.isOn = true
+                let areWalletEnabled = SSKPreferences.areWalletEnabled
+                if areWalletEnabled {
+                    cell.toggleSwitch.isEnabled = true
+                    let isPayAsYouChatEnabled = SSKPreferences.arePayAsYouChatEnabled
+                    if isPayAsYouChatEnabled{
+                        cell.toggleSwitch.isOn = true
+                    }else {
+                        cell.toggleSwitch.isOn = false
+                    }
+                    cell.toggleSwitch.tag = indexPath.row
+                    cell.toggleSwitch.addTarget(self, action: #selector(payAsYouChatSwitchValueChanged(_:)), for: .valueChanged)
                 }else {
-                    cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.isEnabled = false
                 }
-                cell.toggleSwitch.tag = indexPath.row
-                cell.toggleSwitch.addTarget(self, action: #selector(payAsYouChatSwitchValueChanged(_:)), for: .valueChanged)
             }
-            
             return cell
         }else {
             let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
-            
             cell.titleLabel.text = communicationTitleArray[indexPath.row]
             cell.titleDescriptionLabel.text = communicationDescArray[indexPath.row]
-            cell.logoImage.image = UIImage(named: communicationImages[indexPath.row])
             
             if indexPath.row == 0 {
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                let logoImage = isLightMode ? "ic_Read_receipet_dark" : "ic_Read_receipetNew"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Read Receipts
                 let areReadReceiptsEnabled = OWSReadReceiptManager.shared().areReadReceiptsEnabled()
                 if areReadReceiptsEnabled{
@@ -183,6 +193,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(readReceiptsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 1 {
+                let logoImage = isLightMode ? "ic_Type_indicater_dark" : "ic_Type_indicaterNew"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Type Indicators
                 let areTypingIndicatorsEnabled = SSKEnvironment.shared.typingIndicators.areTypingIndicatorsEnabled()
                 if areTypingIndicatorsEnabled{
@@ -194,6 +206,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(typeIndicatorsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 2 {
+                let logoImage = isLightMode ? "ic_send_link_dark" : "ic_send_linkNew"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Send Link Previews
                 let areLinkPreviewsEnabled = SSKPreferences.areLinkPreviewsEnabled
                 if areLinkPreviewsEnabled{
@@ -205,6 +219,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(sendLinkPreviewsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 3 {
+                let logoImage = isLightMode ? "ic_video_call_dark" : "ic_video_callNew"
+                cell.logoImage.image = UIImage(named: logoImage)
                 // Voice And Video Calls
                 let areCallsEnabled = SSKPreferences.areCallsEnabled
                 if areCallsEnabled{
@@ -216,6 +232,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(voiceAndVideoCallsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 4 {
+                let logoImage = isLightMode ? "ic_clear_convo_dark" : "ic_clear_imgaes"
+                cell.logoImage.image = UIImage(named: logoImage)
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
                 cell.toggleSwitch.isHidden = true
@@ -223,34 +241,31 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             return cell
         }
     }
-    
+        
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            if indexPath.row == 1 {
-//                let logInfo = NSLocalizedString("", comment: "")
-//                print(logInfo)
-//                let alert = UIAlertController(title: NSLocalizedString("SETTINGS_SCREEN_LOCK_ACTIVITY_TIMEOUT", comment: "Label for the 'screen lock activity timeout' setting of the privacy settings."),
-//                                              message: nil,
-//                                              preferredStyle: .actionSheet)
-//                for timeoutValue in OWSScreenLock.shared.screenLockTimeouts {
-//                    let screenLockTimeout = UInt32(round(timeoutValue))
-//                    let screenLockTimeoutString = formatScreenLockTimeout(Int(screenLockTimeout), useShortFormat: false)
-//
-//                    let action = UIAlertAction(title: screenLockTimeoutString,
-//                                               style: .default,
-//                                               handler: { _ in
-//                        OWSScreenLock.shared.setScreenLockTimeout(TimeInterval(screenLockTimeout))
-//                                               })
-//                    action.accessibilityIdentifier = "settings.privacy.timeout.\(timeoutValue)"
-//                    alert.addAction(action)
-//                }
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button title"),
-//                                              style: .cancel,
-//                                              handler: nil))
-//                if let fromViewController = UIApplication.shared.frontmostViewController {
-//                    fromViewController.present(alert, animated: true, completion: nil)
-//                }
-                
+            if indexPath.row == 1 { //Screen Lock Time func
+                let alert = UIAlertController(title: NSLocalizedString("SETTINGS_SCREEN_LOCK_ACTIVITY_TIMEOUT", comment: "Label for the 'screen lock activity timeout' setting of the privacy settings."),
+                                              message: nil,
+                                              preferredStyle: .actionSheet)
+                for timeoutValue in OWSScreenLock.shared.screenLockTimeouts {
+                    let screenLockTimeout = UInt32(round(timeoutValue))
+                    let screenLockTimeoutString = formatScreenLockTimeout(Int(screenLockTimeout), useShortFormat: false)
+                    let action = UIAlertAction(title: screenLockTimeoutString,
+                                               accessibilityIdentifier: "settings.privacy.timeout.\(timeoutValue)",
+                                               style: .default) { _ in
+                        OWSScreenLock.shared.setScreenLockTimeout(TimeInterval(screenLockTimeout))
+                        tableView.reloadData()
+                    }
+                    alert.addAction(action)
+                }
+                let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button title"),
+                                                 style: .cancel,
+                                                 handler: nil)
+                alert.addAction(cancelAction)
+                if let fromViewController = UIApplication.shared.frontmostViewController {
+                    fromViewController.present(alert, animated: true, completion: nil)
+                }
             }
         }
         if indexPath.section == 2{
@@ -279,7 +294,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
         let footerView = UIView(frame:rect)
-        footerView.backgroundColor = UIColor(hex: 0x11111A)
+        footerView.backgroundColor = Colors.viewBackgroundColorNew
         let label = UILabel()
         label.text = sectionNames[section]
         label.textColor = Colors.greenColor
@@ -310,15 +325,13 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Screen Lock
     @objc func screenLockSwitchValueChanged(_ sender: UISwitch) {
         let shouldBeEnabled = sender.isOn
-        isScreenLockEnabled = sender.isOn
-        tableView.reloadData()
-        
         if shouldBeEnabled == OWSScreenLock.shared.isScreenLockEnabled() {
             print("ignoring redundant screen lock.")
             return
         }
         print("trying to set is screen lock enabled:\(shouldBeEnabled)")
         OWSScreenLock.shared.setIsScreenLockEnabled(shouldBeEnabled)
+        tableView.reloadData()
     }
     // Disable Preview in App Switcher
     @objc func disablePreviewInAppSwitcherSwitchValueChanged(_ sender: UISwitch) {
@@ -331,6 +344,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let isEnabled = sender.isOn
         print("toggled to: \(isEnabled ? "true" : "false")")
         SSKPreferences.areWalletEnabled = isEnabled
+        tableView.reloadData()
     }
     // Pay As You Chat
     @objc func payAsYouChatSwitchValueChanged(_ sender: UISwitch) {
@@ -432,7 +446,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         ThreadUtil.deleteAllContent()
     }
     
-    
+    //Screen Lock Time func
     func formatScreenLockTimeout(_ value: Int, useShortFormat: Bool) -> String {
         if value <= 1 {
             return NSLocalizedString("SCREEN_LOCK_ACTIVITY_TIMEOUT_NONE",
@@ -440,13 +454,124 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         return String(formatDurationSeconds(UInt32(value), useShortFormat: useShortFormat))
     }
-    func formatDurationSeconds(_ value: UInt32, useShortFormat: Bool) -> String {
-        // Implement the logic for formatting duration in seconds
-        // This might involve converting seconds into a formatted string representation
-        // You can use DateComponentsFormatter or other methods based on your requirements
-        // Replace the following placeholder with the actual implementation
-        
-        return "Formatted Duration"
+    
+    func formatDurationSeconds(_ durationSeconds: UInt32, useShortFormat: Bool) -> String {
+        var amountFormat: String
+        var duration: UInt32
+        let secondsPerMinute: UInt32 = 60
+        let secondsPerHour: UInt32 = secondsPerMinute * 60
+        let secondsPerDay: UInt32 = secondsPerHour * 24
+        let secondsPerWeek: UInt32 = secondsPerDay * 7
+        if durationSeconds < secondsPerMinute { // XX Seconds
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SECONDS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of seconds}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5s' not '5 s'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SECONDS",
+                    comment: "{{number of seconds}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{5 seconds}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds
+        } else if durationSeconds < secondsPerMinute * UInt32(1.5) { // 1 Minute
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_MINUTES_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of minutes}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5m' not '5 m'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SINGLE_MINUTE",
+                    comment: "{{1 minute}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{1 minute}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerMinute
+        } else if durationSeconds < secondsPerHour { // Multiple Minutes
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_MINUTES_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of minutes}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5m' not '5 m'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_MINUTES",
+                    comment: "{{number of minutes}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{5 minutes}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerMinute
+        } else if durationSeconds < secondsPerHour * UInt32(1.5) { // 1 Hour
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_HOURS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of hours}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5h' not '5 h'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SINGLE_HOUR",
+                    comment: "{{1 hour}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{1 hour}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerHour
+        } else if durationSeconds < secondsPerDay { // Multiple Hours
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_HOURS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of hours}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5h' not '5 h'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_HOURS",
+                    comment: "{{number of hours}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{5 hours}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerHour
+        } else if durationSeconds < secondsPerDay * UInt32(1.5) { // 1 Day
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_DAYS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of days}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5d' not '5 d'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SINGLE_DAY",
+                    comment: "{{1 day}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{1 day}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerDay
+        } else if durationSeconds < secondsPerWeek { // Multiple Days
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_DAYS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of days}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5d' not '5 d'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_DAYS",
+                    comment: "{{number of days}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{5 days}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerDay
+        } else if durationSeconds < secondsPerWeek * UInt32(1.5) { // 1 Week
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_WEEKS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of weeks}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5w' not '5 w'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_SINGLE_WEEK",
+                    comment: "{{1 week}} embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{1 week}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerWeek
+        } else { // Multiple weeks
+            if useShortFormat {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_WEEKS_SHORT_FORMAT",
+                    comment: "Label text below navbar button, embeds {{number of weeks}}. Must be very short, like 1 or 2 " +
+                        "characters, The space is intentionally omitted between the text and the embedded duration so that " +
+                        "we get, e.g. '5w' not '5 w'. See other *_TIME_AMOUNT strings")
+            } else {
+                amountFormat = NSLocalizedString("TIME_AMOUNT_WEEKS",
+                    comment: "{{number of weeks}}, embedded in strings, e.g. 'Alice updated disappearing messages " +
+                        "expiration to {{5 weeks}}'. See other *_TIME_AMOUNT strings")
+            }
+            duration = durationSeconds / secondsPerWeek
+        }
+        return String(format: amountFormat, NumberFormatter.localizedString(from: NSNumber(value: duration), number: .none))
     }
 }
 
@@ -455,19 +580,18 @@ class BChatSettingsTableCell: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.settingsCellBackgroundColor
         return view
     }()
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.settingsCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -475,7 +599,7 @@ class BChatSettingsTableCell: UITableViewCell {
     }()
     lazy var titleDescriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsDescriptionCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -516,8 +640,8 @@ class BChatSettingsTableCell: UITableViewCell {
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             logoImage.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 24),
-            logoImage.widthAnchor.constraint(equalToConstant: 22),
-            logoImage.heightAnchor.constraint(equalToConstant: 22),
+            logoImage.widthAnchor.constraint(equalToConstant: 18),
+            logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -5),
             toggleSwitch.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             toggleSwitch.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
@@ -538,19 +662,18 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.settingsCellBackgroundColor
         return view
     }()
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcopy", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.settingsCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -558,7 +681,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     }()
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsResultTitleCellLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -566,7 +689,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     }()
     lazy var titleDescriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsDescriptionCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -636,12 +759,12 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.settingsCellBackgroundColor
         return view
     }()
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsCellLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.text = "Screen Lock Timeout"
@@ -650,11 +773,10 @@ class ScreenLockTableCell: UITableViewCell {
     }()
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hexValue: 0xACACAC, a: 67.45)//UIColor(hex: 0xACACAC)
+        result.textColor = Colors.settingsResultTitleCellLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "30M"
         return result
     }()
     // MARK: - Initialization

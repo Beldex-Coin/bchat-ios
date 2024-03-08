@@ -299,24 +299,25 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        if textField == displayNameTextField {
-            // displayNameTextField is mandatory, no need for additional check
-        } else if textField == restoreHeightTextField || textField == restoreDateHeightTextField {
-            // Either restoreHeightTextField or restoreDateHeightTextField is mandatory
-            let isRestoreHeightEmpty = restoreHeightTextField.text?.isEmpty ?? true
-            let isRestoreDateHeightEmpty = restoreDateHeightTextField.text?.isEmpty ?? true
-            if isRestoreHeightEmpty && isRestoreDateHeightEmpty {
-                // Display an error or take appropriate action
-                // Both restoreHeightTextField and restoreDateHeightTextField are empty
-                restoreButton.isUserInteractionEnabled = false
-                restoreButton.backgroundColor = UIColor(hex: 0x282836)
-                restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-            } else {
-                // Allow further actions
-                restoreButton.isUserInteractionEnabled = true
-                restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
-                restoreButton.setTitleColor(UIColor.white, for: .normal)
-            }
+        checkMandatoryFields()
+    }
+    func checkMandatoryFields() {
+        let displayNameText = displayNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let restoreHeightText = restoreHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let restoreDateHeightText = restoreDateHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if displayNameText.isEmpty {
+            restoreButton.isUserInteractionEnabled = false
+            restoreButton.backgroundColor = UIColor(hex: 0x282836)
+            restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        } else if restoreHeightText.isEmpty && restoreDateHeightText.isEmpty {
+            restoreButton.isUserInteractionEnabled = false
+            restoreButton.backgroundColor = UIColor(hex: 0x282836)
+            restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        } else {
+            // All fields have valid values, proceed with your logic here
+            restoreButton.isUserInteractionEnabled = true
+            restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
+            restoreButton.setTitleColor(UIColor.white, for: .normal)
         }
     }
     

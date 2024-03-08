@@ -103,5 +103,20 @@ public final class Colors : NSObject {
     @objc public static var cellIpLabelColor: UIColor { UIColor(named: "cellIpLabelColor")! }
     @objc public static var cellIpLabelColor2: UIColor { UIColor(named: "cellIpLabelColor2")! }
     @objc public static var cellNodeOffColor: UIColor { UIColor(named: "cellNodeOffColor")! }
+    @objc public static var settingsCellBackgroundColor: UIColor { UIColor(named: "settingsCellBackgroundColor")! }
+    @objc public static var settingsCellLabelColor: UIColor { UIColor(named: "settingsCellLabelColor")! }
+    @objc public static var settingsDescriptionCellLabelColor: UIColor { UIColor(named: "settingsDescriptionCellLabelColor")! }
+    @objc public static var settingsResultTitleCellLabelColor: UIColor { UIColor(named: "settingsResultTitleCellLabelColor")! }
+    @objc public static var myAccountViewBackgroundColor: UIColor { UIColor(named: "myAccountViewBackgroundColor")! }
+    @objc public static var lineViewbackgroundColor: UIColor { UIColor(named: "lineViewbackgroundColor")! }
+    @objc public static var outerProfileViewbackgroundColor: UIColor { UIColor(named: "outerProfileViewbackgroundColor")! }
+    @objc public static var innerProfileImageViewColor: UIColor { UIColor(named: "innerProfileImageViewColor")! }
+    @objc public static var profileImageViewButtonColor: UIColor { UIColor(named: "profileImageViewButtonColor")! }
+    @objc public static var profileImageViewButtonTextColor: UIColor { UIColor(named: "profileImageViewButtonTextColor")! }
+    @objc public static var cameraViewBackgroundColor: UIColor { UIColor(named: "cameraViewBackgroundColor")! }
+    @objc public static var refreshNodePopUpBackgroundColor: UIColor { UIColor(named: "refreshNodePopUpBackgroundColor")! }
+    @objc public static var popUpBackgroundColor: UIColor { UIColor(named: "popUpBackgroundColor")! }
+    
+    @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
     
 }

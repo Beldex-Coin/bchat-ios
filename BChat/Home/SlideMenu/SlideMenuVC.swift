@@ -145,7 +145,6 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let logoName = isLightMode ? "recovery_seed" : "ic_menu_recovery_seed"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 5 {   //My Wallet
-//                cell.lblbeta.isHidden = false
                 let logoName = isLightMode ? "ic_MyWalletDark" : "ic_menu_wallet"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 6 {   //Report Issue
@@ -166,45 +165,25 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
-//            self.navigationController?.pushViewController(vc, animated: true)
             let vc = MyAccountNewVC()
             navigationController!.pushViewController(vc, animated: true)
         }else {
             if indexPath.row == 0 { //My Account
                 let vc = MyAccountNewVC()
                 navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 1 {   //Settings
-//                let privacySettingsVC = PrivacySettingsTableViewController()
-//                navigationController!.pushViewController(privacySettingsVC, animated: true)
-//                let vc = NewDesignSettingsVC()
-//                self.navigationController?.pushViewController(vc, animated: true)
+            } else if indexPath.row == 1 {   //Settings
                 let vc = BChatSettingsNewVC()
                 navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 2 {   //Notification
-//                let notificationSettingsVC = NotificationSettingsViewController()
-//                navigationController!.pushViewController(notificationSettingsVC, animated: true)
-                
-//                let vc = BChatSettingsNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
-                
+            } else if indexPath.row == 2 {   //Notification
                 let vc = NotificationsNewVC()
                 navigationController!.pushViewController(vc, animated: true)
-                
-//                let vc = CustomGalleryVC()
-//                navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 3 {   //Message Requests
-//                let viewController: MessageRequestsViewController = MessageRequestsViewController()
-//                self.navigationController?.pushViewController(viewController, animated: true)
+            } else if indexPath.row == 3 {   //Message Requests
                 let vc = NewMessageRequestVC()
                 navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 4 {   //Recovery Seed
-//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImportantAlertVC") as! ImportantAlertVC
-//                self.navigationController?.pushViewController(vc, animated: true)
-                
+            } else if indexPath.row == 4 {   //Recovery Seed
                 let vc = NewAlertRecoverySeedVC()
                 navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 5 {   //My Wallet
+            } else if indexPath.row == 5 {   //My Wallet
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
                     // MARK: - Old flow (without wallet)
                     if SaveUserDefaultsData.israndomUUIDPassword == "" {
@@ -212,21 +191,14 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                         self.navigationController?.pushViewController(vc, animated: true)
                         return
                     }
-                    
                     // MARK: - New flow (with wallet)
                     if SSKPreferences.areWalletEnabled {
                         if SaveUserDefaultsData.WalletPassword.isEmpty {
-//                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-//                            self.navigationController?.pushViewController(vc, animated: true)
                             let vc = NewPasswordVC()
                             vc.isGoingWallet = true
                             vc.isVerifyPassword = true
                             navigationController!.pushViewController(vc, animated: true)
                         }else {
-//                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-//                            vc.isEnterPin = true
-//                            self.navigationController?.pushViewController(vc, animated: true)
-                            
                             let vc = NewPasswordVC()
                             vc.isGoingWallet = true
                             vc.isVerifyPassword = true

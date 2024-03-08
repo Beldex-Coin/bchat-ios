@@ -745,7 +745,7 @@
 "RESCAN_BUTTON_TITLE" = "Rescan";
 "I_KNOW_THE_BLOCKHEIGHT" = "I Know the Blockheight";
 "I_KNOW_THE_DATE" = "I Know the Date";
-"WALLET_DATE_ENTER_LABEL_NEW2" = "Enter the blockheight at which you created\n the wallet";
+"WALLET_DATE_ENTER_LABEL_NEW2" = "Enter the blockheight at which you created\nthe wallet";
 "WALLET_TITLE" = "Wallet";
 "INVALID_HEIGHT" = "Invalid BlockChainHeight";
 "OKEY_BUTTON" = "Okay";

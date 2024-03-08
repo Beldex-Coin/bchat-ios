@@ -75,8 +75,9 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "ic_no_address_white_theme" : "ic_no_address"
-        imageView.image = UIImage(named: logoImage)
+//        let logoImage = isLightMode ? "ic_no_address_white_theme" : "ic_no_address"
+        let logoImage = isLightMode ? "ic_no_transactions_light" : "ic_no_transactions"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var noContactsTitleLabel: UILabel = {

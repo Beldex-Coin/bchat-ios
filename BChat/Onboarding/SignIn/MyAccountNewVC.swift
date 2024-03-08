@@ -24,7 +24,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.viewBackgroundColor
+        stackView.backgroundColor = Colors.myAccountViewBackgroundColor
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -32,7 +32,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_userImageNew", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePictureImageTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
@@ -42,21 +41,36 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcamera", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_camera_dark" : "ic_camera_white1"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var cameraImage2: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newcamera", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_camera_dark" : "ic_camera_green"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
+    }()
+    private lazy var cameraView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.cameraViewBackgroundColor
+        return stackView
+    }()
+    private lazy var cameraView2: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.cameraViewBackgroundColor
+        return stackView
     }()
     private lazy var closeButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.viewBackgroundColor
+        button.backgroundColor = Colors.myAccountViewBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "X"), for: .normal)
+        let logoImage = isLightMode ? "ic_close_dark" : "ic_close_white"
+        button.setImage(UIImage(named: logoImage), for: .normal)
         button.layer.borderColor = Colors.borderColor.cgColor
         button.layer.borderWidth = 1
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
@@ -162,7 +176,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.OpenSans(ofSize: 18)
-        result.backgroundColor = Colors.viewBackgroundColor
+        result.backgroundColor = .clear
         result.textAlignment = .center
         if isNavigationBarHideInChatNewVC == true {
             result.isUserInteractionEnabled = false
@@ -179,7 +193,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var lineView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x717194)
+        stackView.backgroundColor = Colors.lineViewbackgroundColor
         return stackView
     }()
     
@@ -188,15 +202,15 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var outerProfileView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.outerProfileViewbackgroundColor
         return stackView
     }()
     private lazy var innerProfileImageView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.innerProfileImageViewColor
         stackView.layer.cornerRadius = 16
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 1
         return stackView
     }()
@@ -213,7 +227,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_userImageNew", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(innerProfileImageTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
@@ -223,7 +236,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let button = UIButton()
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "X"), for: .normal)
+        let logoImage = isLightMode ? "ic_close_dark" : "ic_close_white"
+        button.setImage(UIImage(named: logoImage), for: .normal)
         button.addTarget(self, action: #selector(innerProfileCloseTapped), for: .touchUpInside)
         return button
     }()
@@ -232,8 +246,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
-        result.setTitleColor(.lightGray, for: .normal)
+        result.backgroundColor = Colors.profileImageViewButtonColor
+        result.setTitleColor(Colors.profileImageViewButtonTextColor, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -271,18 +285,18 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.viewBackgroundColorNew
         if isNavigationBarHideInChatNewVC == true {
             self.navigationController?.setNavigationBarHidden(true, animated: true)
             closeButton.isHidden = false
-            cameraImage.isHidden = true
+            cameraView.isHidden = true
             profilePictureImage.isUserInteractionEnabled = false
             lineView.isHidden = true
             doneButton.isHidden = true
         }else {
             navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "My Account", style: .plain, target: nil, action: nil)
             closeButton.isHidden = true
-            cameraImage.isHidden = false
+            cameraView.isHidden = false
             lineView.isHidden = true
             doneButton.isHidden = false
         }
@@ -295,7 +309,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         backGroundView.addSubview(qrBackgroundView)
         qrBackgroundView.addSubview(qrCodeImage)
         backGroundView.addSubview(profilePictureImage)
-        backGroundView.addSubview(cameraImage)
+        backGroundView.addSubview(cameraView)
+        cameraView.addSubview(cameraImage)
         backGroundView.addSubview(closeButton)
         backGroundView.addSubview(nameTextField)
         backGroundView.addSubview(copyForBeldexAddressButton)
@@ -336,10 +351,16 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             profilePictureImage.heightAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             profilePictureImage.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -12),
-            cameraImage.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
-            cameraImage.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
-            cameraImage.widthAnchor.constraint(equalToConstant: 30),
-            cameraImage.heightAnchor.constraint(equalToConstant: 30),
+            cameraView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
+            cameraView.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
+            cameraView.widthAnchor.constraint(equalToConstant: 30),
+            cameraView.heightAnchor.constraint(equalToConstant: 30),
+            
+            cameraImage.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
+            cameraImage.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
+            cameraImage.widthAnchor.constraint(equalToConstant: 18),
+            cameraImage.heightAnchor.constraint(equalToConstant: 18),
+            
             //Name Textfiled
             nameTextField.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
             nameTextField.heightAnchor.constraint(equalToConstant: 30),
@@ -349,7 +370,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             lineView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -5),
             lineView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 3),
             lineView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5),
-            
             //BChat ID
             bchatLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             bchatLabel.bottomAnchor.constraint(equalTo: bchatIdBgView.topAnchor, constant: -7),
@@ -385,10 +405,10 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             qrBackgroundView.heightAnchor.constraint(equalToConstant: 142),
             qrBackgroundView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -33),
             qrBackgroundView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            qrCodeImage.topAnchor.constraint(equalTo: qrBackgroundView.topAnchor, constant: 8),
-            qrCodeImage.bottomAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: -8),
-            qrCodeImage.leadingAnchor.constraint(equalTo: qrBackgroundView.leadingAnchor, constant: 8),
-            qrCodeImage.trailingAnchor.constraint(equalTo: qrBackgroundView.trailingAnchor, constant: -8),
+            qrCodeImage.topAnchor.constraint(equalTo: qrBackgroundView.topAnchor, constant: 12),
+            qrCodeImage.bottomAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: -12),
+            qrCodeImage.leadingAnchor.constraint(equalTo: qrBackgroundView.leadingAnchor, constant: 12),
+            qrCodeImage.trailingAnchor.constraint(equalTo: qrBackgroundView.trailingAnchor, constant: -12),
             shareButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             shareButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             shareButton.heightAnchor.constraint(equalToConstant: 58),
@@ -420,7 +440,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         innerProfileImageView.addSubview(profilePictureLabel)
         innerProfileImageView.addSubview(innerProfileCloseButton)
         innerProfileImageView.addSubview(innerProfileImage)
-        innerProfileImageView.addSubview(cameraImage2)
+        innerProfileImageView.addSubview(cameraView2)
+        cameraView2.addSubview(cameraImage2)
         innerProfileImageView.addSubview(buttonStackView1)
         
         NSLayoutConstraint.activate([
@@ -442,10 +463,14 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             innerProfileImage.heightAnchor.constraint(equalToConstant: 96.5),
             innerProfileImage.centerXAnchor.constraint(equalTo: innerProfileImageView.centerXAnchor),
             innerProfileImage.topAnchor.constraint(equalTo: profilePictureLabel.bottomAnchor, constant: 15),
-            cameraImage2.trailingAnchor.constraint(equalTo: innerProfileImage.trailingAnchor, constant: -1),
-            cameraImage2.bottomAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: -1),
-            cameraImage2.widthAnchor.constraint(equalToConstant: 30),
-            cameraImage2.heightAnchor.constraint(equalToConstant: 30),
+            cameraView2.trailingAnchor.constraint(equalTo: innerProfileImage.trailingAnchor, constant: -1),
+            cameraView2.bottomAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: -1),
+            cameraView2.widthAnchor.constraint(equalToConstant: 30),
+            cameraView2.heightAnchor.constraint(equalToConstant: 30),
+            cameraImage2.centerYAnchor.constraint(equalTo: cameraView2.centerYAnchor),
+            cameraImage2.centerXAnchor.constraint(equalTo: cameraView2.centerXAnchor),
+            cameraImage2.widthAnchor.constraint(equalToConstant: 18),
+            cameraImage2.heightAnchor.constraint(equalToConstant: 18),
             buttonStackView1.heightAnchor.constraint(equalToConstant: 52),
             buttonStackView1.topAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: 20),
             buttonStackView1.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -20),
@@ -465,6 +490,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         removePictureButton.layer.cornerRadius = removePictureButton.frame.height / 2
         saveButton.layer.cornerRadius = saveButton.frame.height / 2
         doneButton.layer.cornerRadius = doneButton.frame.height / 2
+        cameraView.layer.cornerRadius = cameraView.frame.height / 2
+        cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
     }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
@@ -529,7 +556,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         if isEditingDisplayName {
             nameTextField.becomeFirstResponder()
             nameTextField.attributedPlaceholder = NSAttributedString(
-                string: "Enter Name",
+                string: "Enter Name   ",
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
             )
             nameTextField.font = Fonts.OpenSans(ofSize: 18)
