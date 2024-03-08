@@ -1103,6 +1103,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let progressBar = UIProgressView(progressViewStyle: .default)
                 progressBar.setProgress(0.0, animated: true)
                 progressBar.frame = CGRect(x: 10, y: 70, width: 250, height: 0)
+                progressBar.tintColor = UIColor(hex: 0x00BD40)
                 alert.view.addSubview(progressBar)
                 self.present(alert, animated: true, completion: nil)
                 var progress: Float = 0.0

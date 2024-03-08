@@ -221,7 +221,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        let str = textField.text!
+        let str = groupNameTextField.text!
         if str.count == 0 {
             createButton.backgroundColor = UIColor(hex: 0x282836)
             createButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)

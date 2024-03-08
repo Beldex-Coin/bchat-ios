@@ -44,7 +44,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
         result.set(.height, to: 36)
        result.layer.masksToBounds = true
        result.contentMode = .scaleToFill
-        result.layer.cornerRadius = 8
+        result.layer.cornerRadius = 18
        return result
    }()
    
@@ -100,8 +100,10 @@ class NewBlockContactTableViewCell: UITableViewCell {
             profileImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-//            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
-            nameLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
+            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+//            nameLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
+            nameLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -100),
+            
             
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),

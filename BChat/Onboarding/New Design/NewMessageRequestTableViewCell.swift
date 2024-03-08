@@ -91,7 +91,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x2C2C3B)
-        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(blockButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_decline"), for: .normal)
         button.layer.cornerRadius = 8
         return button
@@ -112,6 +112,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     var deleteCallback: (() -> Void)?
     var acceptCallback: (() -> Void)?
+    var blockCallback: (() -> Void)?
     
     
     func setUPLayout() {
@@ -188,6 +189,10 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     @objc private func deleteButtonTapped(_ sender: UIButton) {
         deleteCallback?()
+    }
+    
+    @objc private func blockButtonTapped(_ sender: UIButton) {
+        blockCallback?()
     }
     
 

@@ -142,7 +142,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let label = UILabel()
         label.text = sectionNames[section]
         label.textColor = Colors.greenColor
-        label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
+        label.frame = CGRect(x: 30, y: 0, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.semiOpenSans(ofSize: 18)
         footerView.addSubview(label)
         return footerView
@@ -160,9 +160,9 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             return UITableView.automaticDimension
         }else if indexPath.section == 1 {
-            return 350
+            return 350 + 28
         }else {
-            return UITableView.automaticDimension
+            return 56.5//UITableView.automaticDimension
         }
     }
 }
@@ -282,6 +282,8 @@ class PersonalSettingsTableCell: UITableViewCell {
         return imageView
     }()
     
+    var index = 0
+    
     // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -301,8 +303,8 @@ class PersonalSettingsTableCell: UITableViewCell {
             logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 28),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
-            logoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
+//            logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
+//            logoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -10),
             titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
             arrowImage.heightAnchor.constraint(equalToConstant: 15),
@@ -310,6 +312,11 @@ class PersonalSettingsTableCell: UITableViewCell {
             arrowImage.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -25),
             arrowImage.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
         ])
+//        if index == 0 {
+//            self.logoImage.bottomAnchor
+//        } else {
+//
+//        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -429,8 +436,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 cell.subTitleLabel.text = "Beldex Full Balances"//walletSubNameArray[indexPath.row]
                 let logoImage = isLightMode ? "ic_displaybalance_dark" : "ic_Display_balance_new"
                 cell.logoImage.image = UIImage(named: logoImage)
-                cell.backGroundView.layer.cornerRadius = 16
-                cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                cell.spaceView.layer.cornerRadius = 14
+                cell.spaceView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
                 if !SaveUserDefaultsData.SelectedBalance.isEmpty{
                     cell.subTitleLabel.text = SaveUserDefaultsData.SelectedBalance
                 }else{
@@ -485,8 +492,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
             cell.titleLabel.text = NSLocalizedString("SAVE_RECEIPIENT_ADDRESS", comment: "")
-            cell.backGroundView.layer.cornerRadius = 16
-            cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+            cell.spaceView.layer.cornerRadius = 16
+            cell.spaceView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
             let logoImage = isLightMode ? "ic_saverecepientaddress_dark" : "ic_save_new"
             cell.logoImage.image = UIImage(named: logoImage)
             cell.toggleSwitch.tag = indexPath.row
@@ -551,6 +558,13 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
 
 class WalletSettingsSubTableCell: UITableViewCell {
     // MARK: - Properties
+    lazy var spaceView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.cellBackgroundColorForNodeList
+        return view
+    }()
+    
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -593,13 +607,19 @@ class WalletSettingsSubTableCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // Add subviews to the cell
+        contentView.addSubview(spaceView)
         contentView.addSubview(backGroundView)
         backGroundView.addSubview(logoImage)
         backGroundView.addSubview(titleLabel)
         backGroundView.addSubview(subTitleLabel)
         backGroundView.addSubview(arrowImage)
         NSLayoutConstraint.activate([
-            backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            spaceView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            spaceView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            spaceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            spaceView.heightAnchor.constraint(equalToConstant: 14),
+            
+            backGroundView.topAnchor.constraint(equalTo: spaceView.bottomAnchor, constant: 0),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
@@ -708,6 +728,13 @@ class WalletSettingsSubTableCell33: UITableViewCell {
 
 class WalletSettingsSubTableCell2: UITableViewCell {
     // MARK: - Properties
+    
+    lazy var spaceView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.cellBackgroundColorForNodeList
+        return view
+    }()
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -742,14 +769,21 @@ class WalletSettingsSubTableCell2: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // Add subviews to the cell
+        contentView.addSubview(spaceView)
         contentView.addSubview(backGroundView)
         backGroundView.addSubview(logoImage)
         backGroundView.addSubview(titleLabel)
         backGroundView.addSubview(toggleSwitch)
         NSLayoutConstraint.activate([
+            
+            spaceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
+            spaceView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            spaceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            spaceView.heightAnchor.constraint(equalToConstant: 14),
+            
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
+            backGroundView.bottomAnchor.constraint(equalTo: spaceView.topAnchor, constant: -0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
             logoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -28),

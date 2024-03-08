@@ -133,12 +133,52 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     completion: {
                         MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                         DispatchQueue.main.async {
+                            
+                            var names = [String]()
+                            var publicKeys = [String]()
+                            for publicKey in self.contacts {
+                                let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+                                if blockedflag == true {
+                                    let userName = Storage.shared.getContact(with: publicKey)?.name
+                                    names.append(userName!)
+                                    let pukey = Storage.shared.getContact(with: publicKey)
+                                    publicKeys.append(pukey!.bchatID)
+                                }
+                                self.tableView.reloadData()
+                            }
+                            let userNames = names.joined(separator: ",")
+                            let allNames = userNames.components(separatedBy: ",")
+                            let userPublicKeys = publicKeys.joined(separator: ",")
+                            let allpublicKeys = userPublicKeys.components(separatedBy: ",")
+                            self.arrayNames = allNames.filter({ $0 != ""})
+                            self.arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+                            self.updateRighBarButton(isSelectionEnable: false)
                             self.tableView.reloadData()
-                            self.navigationController?.popViewController(animated: true)
                         }
                     }
                 )
             }
+            
+            var names = [String]()
+            var publicKeys = [String]()
+            for publicKey in self.contacts {
+                let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+                if blockedflag == true {
+                    let userName = Storage.shared.getContact(with: publicKey)?.name
+                    names.append(userName!)
+                    let pukey = Storage.shared.getContact(with: publicKey)
+                    publicKeys.append(pukey!.bchatID)
+                }
+                self.tableView.reloadData()
+            }
+            let userNames = names.joined(separator: ",")
+            let allNames = userNames.components(separatedBy: ",")
+            let userPublicKeys = publicKeys.joined(separator: ",")
+            let allpublicKeys = userPublicKeys.components(separatedBy: ",")
+            self.arrayNames = allNames.filter({ $0 != ""})
+            self.arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+            self.updateRighBarButton(isSelectionEnable: false)
+            self.tableView.reloadData()
             selectedarrayPublicKey = []
         }
     }
@@ -173,7 +213,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let publicKey = arrayPublicKey[indexPath.row]
         let isSelected = selectedarrayPublicKey.contains(publicKey)
         cell.selectionButton.isSelected = isSelected
-        
+        cell.profileImageView.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: arrayNames[indexPath.row], size: 30)
         
         cell.nameLabel.text = arrayNames[indexPath.row]
         cell.unblockCallback = {
@@ -190,10 +230,49 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                     DispatchQueue.main.async {
                         tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
-                        self.navigationController?.popViewController(animated: true)
+                        var names = [String]()
+                        var publicKeys = [String]()
+                        for publicKey in self.contacts {
+                            let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+                            if blockedflag == true {
+                                let userName = Storage.shared.getContact(with: publicKey)?.name
+                                names.append(userName!)
+                                let pukey = Storage.shared.getContact(with: publicKey)
+                                publicKeys.append(pukey!.bchatID)
+                            }
+                            self.tableView.reloadData()
+                        }
+                        let userNames = names.joined(separator: ",")
+                        let allNames = userNames.components(separatedBy: ",")
+                        let userPublicKeys = publicKeys.joined(separator: ",")
+                        let allpublicKeys = userPublicKeys.components(separatedBy: ",")
+                        self.arrayNames = allNames.filter({ $0 != ""})
+                        self.arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+                        self.updateRighBarButton(isSelectionEnable: false)
+                        self.tableView.reloadData()
                     }
                 }
             )
+            var names = [String]()
+            var publicKeys = [String]()
+            for publicKey in self.contacts {
+                let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+                if blockedflag == true {
+                    let userName = Storage.shared.getContact(with: publicKey)?.name
+                    names.append(userName!)
+                    let pukey = Storage.shared.getContact(with: publicKey)
+                    publicKeys.append(pukey!.bchatID)
+                }
+                self.tableView.reloadData()
+            }
+            let userNames = names.joined(separator: ",")
+            let allNames = userNames.components(separatedBy: ",")
+            let userPublicKeys = publicKeys.joined(separator: ",")
+            let allpublicKeys = userPublicKeys.components(separatedBy: ",")
+            self.arrayNames = allNames.filter({ $0 != ""})
+            self.arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+            self.updateRighBarButton(isSelectionEnable: false)
+            self.tableView.reloadData()
         }
         
         return cell

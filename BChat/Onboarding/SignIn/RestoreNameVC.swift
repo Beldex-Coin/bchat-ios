@@ -400,8 +400,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     @objc private func isRestoreFromDateButtonAction() {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
-            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
-            restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
+            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            restoreTitleLabel.text = "Pick a Date"//NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreTitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
             dateTitleLabel.isHidden = false
@@ -420,7 +420,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(spacer8)
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
         }else {
-            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
             restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
             dateTitleLabel.isHidden = true

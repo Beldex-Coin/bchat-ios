@@ -145,7 +145,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "ic_HomeVcLogo"), for: .normal)
+        button.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
         button.backgroundColor = .clear
         button.tintColor = .clear
         return button
@@ -926,7 +926,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func handleMainButtonTapped() {
         mainButtonPopUpView.isHidden = !mainButtonPopUpView.isHidden
         if mainButtonPopUpView.isHidden == true{
-            mainButton.setImage(UIImage(named: "ic_HomeVcLogo"), for: .normal)
+            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
         }else {
             mainButton.setImage(UIImage(named: "ic_HomeVcLogo_close"), for: .normal)
         }

@@ -202,7 +202,13 @@ class AddNodeListVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.5)
+        
+        var darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        var blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
+        
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, topStackView, testButton, resultLabel, resultImageView, buttonStackView)
         topStackView.addArrangedSubview(nodeAddressTextField)
