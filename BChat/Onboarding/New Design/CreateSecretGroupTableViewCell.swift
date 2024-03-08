@@ -3,6 +3,8 @@
 import UIKit
 
 class CreateSecretGroupTableViewCell: UITableViewCell {
+    
+    var publicKey = ""
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,16 +41,17 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
        return stackView
    }()
     
-    lazy var profileImageView: UIImageView = {
-       let result = UIImageView()
-       result.image = UIImage(named: "ic_test")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-       result.layer.masksToBounds = true
-       result.contentMode = .scaleToFill
-        result.layer.cornerRadius = 8
-       return result
-   }()
+    private lazy var profileImageView = ProfilePictureView()
+//    = {
+//       let result = UIView()
+////       result.image = UIImage(named: "")
+//        result.set(.width, to: 36)
+//        result.set(.height, to: 36)
+//       result.layer.masksToBounds = true
+//       result.contentMode = .scaleToFill
+//        result.layer.cornerRadius = 18
+//       return result
+//   }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
@@ -64,7 +67,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_button_normal"), for: .normal)
         button.setBackgroundImage(UIImage(named: "ic_button_selected"), for: .selected)
         return button
@@ -72,10 +75,15 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-        nameLabel.text = "Name"
-        
+
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton)
+        let profilePictureViewSize = CGFloat(36)
+        profileImageView.set(.width, to: profilePictureViewSize)
+        profileImageView.set(.height, to: profilePictureViewSize)
+        profileImageView.size = profilePictureViewSize
+        profileImageView.layer.masksToBounds = true
+        profileImageView.layer.cornerRadius = 18
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
@@ -88,6 +96,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
             
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 26),
+            nameLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -44),
             
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -14),
@@ -96,8 +105,16 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     
     
-    @objc private func selectionButtonTapped(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+//    @objc private func selectionButtonTapped(_ sender: UIButton) {
+//        sender.isSelected = !sender.isSelected
+//    }
+    
+    
+    // MARK: Updating
+    func update() {
+        profileImageView.publicKey = publicKey
+        profileImageView.update()
+        nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
     }
     
 

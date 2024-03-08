@@ -385,6 +385,12 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         data.pwd = uuid.uuidString
         SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
         WalletService.shared.createWallet(with: .recovery(data: data, recover: recover)) { (result) in
+            switch result {
+            case .success(let wallet):
+                wallet.close()
+            case .failure(_):
+                print("in case failyre")
+            }
         }
     }
     
@@ -474,9 +480,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 SaveUserDefaultsData.WalletRestoreHeight = ""
             }
             self.mnemonicSeedconnect()
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-            navigationflowTag = true
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
+//            navigationflowTag = true
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = NewPasswordVC()
+            vc.isGoingHome = true
+            vc.isCreatePassword = true
+            navigationController!.pushViewController(vc, animated: true)
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
             showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))
@@ -485,9 +495,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             SaveUserDefaultsData.WalletRestoreHeight = restoreHeightTextField.text!
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-            navigationflowTag = true
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
+//            navigationflowTag = true
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = NewPasswordVC()
+            vc.isGoingHome = true
+            vc.isCreatePassword = true
+            navigationController!.pushViewController(vc, animated: true)
         }
         else{
             // Wallet Seed

@@ -27,7 +27,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     }
     @IBOutlet weak var tableViewhightConst: NSLayoutConstraint!
     @IBOutlet weak var sampleSwitch: UISwitch!
-    var titlesArray = ["My Account","Settings","Notification","Message Requests","Recovery Seed","My Wallet","Report Issue","Help","Invite","About"]
+    var titlesArray = ["My Account","Settings","Notification","Message Requests","Recovery Seed","Wallet","Report Issue","Help","Invite","About"]
     @IBOutlet weak var closebtn: UIButton!
     @IBOutlet weak var lblversion: UILabel!
     private var hasTappableProfilePicture: Bool = false
@@ -39,7 +39,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        sampleSwitch.isUserInteractionEnabled = false
         self.navigationController?.isNavigationBarHidden = true
         if isLightMode {
             sampleSwitch.isOn = false
@@ -106,22 +106,22 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 statusView.removeFromSuperview()
             }
             // Path status indicator
-            let pathStatusView = PathStatusView()
-            pathStatusView.tag = 333222
-            pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-            pathStatusView.set(.width, to: PathStatusView.size)
-            pathStatusView.set(.height, to: PathStatusView.size)
-            cell.imgpic.addSubview(pathStatusView)
-            pathStatusView.layer.borderWidth = 0.8
-            pathStatusView.layer.borderColor = UIColor.white.cgColor
-            pathStatusView.pin(.trailing, to: .trailing, of: cell.imgpic)
-            pathStatusView.pin(.bottom, to: .bottom, of: cell.imgpic)
+//            let pathStatusView = PathStatusView()
+//            pathStatusView.tag = 333222
+//            pathStatusView.accessibilityLabel = "Current onion routing path indicator"
+//            pathStatusView.set(.width, to: PathStatusView.size)
+//            pathStatusView.set(.height, to: PathStatusView.size)
+//            cell.imgpic.addSubview(pathStatusView)
+//            pathStatusView.layer.borderWidth = 0.8
+//            pathStatusView.layer.borderColor = UIColor.white.cgColor
+//            pathStatusView.pin(.trailing, to: .trailing, of: cell.imgpic)
+//            pathStatusView.pin(.bottom, to: .bottom, of: cell.imgpic)
             let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             cell.scanRef.setImage(tintedImage, for: .normal)
             cell.scanRef.tintColor = isLightMode ? UIColor.black : UIColor.white
             cell.scanRef.tag = indexPath.row
-            cell.scanRef.addTarget(self, action: #selector(didSelectViewAll), for: .touchUpInside)
+//            cell.scanRef.addTarget(self, action: #selector(didSelectViewAll), for: .touchUpInside)
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SlideMenuCell", for: indexPath) as! SlideMenuCell
@@ -130,35 +130,35 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             cell.lblbeta.isHidden = true
             
             if indexPath.row == 0 { //My Account
-                let logoName = isLightMode ? "my_account" : "round-account-button-with-user-inside"
+                let logoName = isLightMode ? "my_account" : "ic_menu_account"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 1 {   //Settings
-                let logoName = isLightMode ? "ic_settings" : "ic_settings_white"
+                let logoName = isLightMode ? "ic_settings" : "ic_menu_setting"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 2 {   //Notification
-                let logoName = isLightMode ? "notification" : "icons8-notification"
+                let logoName = isLightMode ? "notification" : "ic_menu_notification"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 3 {   //Message Requests
-                let logoName = isLightMode ? "message_request" : "MsgReq"
+                let logoName = isLightMode ? "message_request" : "ic_menu_msg_rqst"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 4 {   //Recovery Seed
-                let logoName = isLightMode ? "recovery_seed" : "recovery_seed-1"
+                let logoName = isLightMode ? "recovery_seed" : "ic_menu_recovery_seed"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 5 {   //My Wallet
-                cell.lblbeta.isHidden = false
-                let logoName = isLightMode ? "ic_MyWalletDark" : "ic_MyWalletWhite"
+//                cell.lblbeta.isHidden = false
+                let logoName = isLightMode ? "ic_MyWalletDark" : "ic_menu_wallet"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 6 {   //Report Issue
-                let logoName = isLightMode ? "ic_ReportDark" : "ic_ReportWhite"
+                let logoName = isLightMode ? "ic_ReportDark" : "ic_menu_report_issue"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 7 {   //Help
-                let logoName = isLightMode ? "icons8-help" : "help-web-button"
+                let logoName = isLightMode ? "icons8-help" : "ic_menu_help"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 8{    //Invite
-                let logoName = isLightMode ? "invite" : "invite-1"
+                let logoName = isLightMode ? "invite" : "ic_menu_invite"
                 cell.img.image = UIImage(named: logoName)!
             }else { //About
-                let logoName = isLightMode ? "about_dark" : "about987"
+                let logoName = isLightMode ? "about_dark" : "ic_menu_about"
                 cell.img.image = UIImage(named: logoName)!
             }
             return cell
@@ -166,36 +166,44 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyAccountVC") as! MyAccountVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = MyAccountNewVC()
+            navigationController!.pushViewController(vc, animated: true)
         }else {
             if indexPath.row == 0 { //My Account
                 let vc = MyAccountNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 1 {   //Settings
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                navigationController!.pushViewController(privacySettingsVC, animated: true)
-                
-//                let vc = BChatSettingsNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                navigationController!.pushViewController(privacySettingsVC, animated: true)
+//                let vc = NewDesignSettingsVC()
+//                self.navigationController?.pushViewController(vc, animated: true)
+                let vc = BChatSettingsNewVC()
+                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 2 {   //Notification
 //                let notificationSettingsVC = NotificationSettingsViewController()
 //                navigationController!.pushViewController(notificationSettingsVC, animated: true)
                 
-                let vc = BChatSettingsNewVC()
-                navigationController!.pushViewController(vc, animated: true)
-                
-//                let vc = NotificationsNewVC()
+//                let vc = BChatSettingsNewVC()
 //                navigationController!.pushViewController(vc, animated: true)
+                
+                let vc = NotificationsNewVC()
+                navigationController!.pushViewController(vc, animated: true)
                 
 //                let vc = CustomGalleryVC()
 //                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 3 {   //Message Requests
-                let viewController: MessageRequestsViewController = MessageRequestsViewController()
-                self.navigationController?.pushViewController(viewController, animated: true)
+//                let viewController: MessageRequestsViewController = MessageRequestsViewController()
+//                self.navigationController?.pushViewController(viewController, animated: true)
+                let vc = NewMessageRequestVC()
+                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 4 {   //Recovery Seed
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImportantAlertVC") as! ImportantAlertVC
-                self.navigationController?.pushViewController(vc, animated: true)
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImportantAlertVC") as! ImportantAlertVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+                
+                let vc = NewAlertRecoverySeedVC()
+                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 5 {   //My Wallet
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
                     // MARK: - Old flow (without wallet)
@@ -208,12 +216,21 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                     // MARK: - New flow (with wallet)
                     if SSKPreferences.areWalletEnabled {
                         if SaveUserDefaultsData.WalletPassword.isEmpty {
-                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                            self.navigationController?.pushViewController(vc, animated: true)
+//                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+//                            self.navigationController?.pushViewController(vc, animated: true)
+                            let vc = NewPasswordVC()
+                            vc.isGoingWallet = true
+                            vc.isVerifyPassword = true
+                            navigationController!.pushViewController(vc, animated: true)
                         }else {
-                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                            vc.isEnterPin = true
-                            self.navigationController?.pushViewController(vc, animated: true)
+//                            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+//                            vc.isEnterPin = true
+//                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                            let vc = NewPasswordVC()
+                            vc.isGoingWallet = true
+                            vc.isVerifyPassword = true
+                            navigationController!.pushViewController(vc, animated: true)
                         }
                     }else {
                         let vc = EnableWalletVC()

@@ -42,13 +42,13 @@ class DisplayBChatIDsVC: BaseVC {
     }
     
     @IBAction func nextAction(sender:UIButton){
-        if navigationflowTag == false {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        }else {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+//        if navigationflowTag == false {
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }else {
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
     }
     
 }

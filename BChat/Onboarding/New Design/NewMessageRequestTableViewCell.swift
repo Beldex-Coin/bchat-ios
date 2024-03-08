@@ -4,6 +4,12 @@ import UIKit
 
 class NewMessageRequestTableViewCell: UITableViewCell {
 
+    var threadViewModel: ThreadViewModel! {
+        didSet {
+            update()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -37,16 +43,17 @@ class NewMessageRequestTableViewCell: UITableViewCell {
        return stackView
    }()
     
-    lazy var profileImageView: UIImageView = {
-       let result = UIImageView()
-       result.image = UIImage(named: "ic_test")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-       result.layer.masksToBounds = true
-       result.contentMode = .scaleToFill
-        result.layer.cornerRadius = 18
-       return result
-   }()
+    private lazy var profileImageView = ProfilePictureView()
+//    {
+//       let result = UIImageView()
+//       result.image = UIImage(named: "ic_test")
+//        result.set(.width, to: 36)
+//        result.set(.height, to: 36)
+//       result.layer.masksToBounds = true
+//       result.contentMode = .scaleToFill
+//        result.layer.cornerRadius = 18
+//       return result
+//   }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
@@ -73,7 +80,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x00BD40)
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_accept"), for: .normal)
         button.layer.cornerRadius = 8
         return button
@@ -84,7 +91,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x2C2C3B)
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_decline"), for: .normal)
         button.layer.cornerRadius = 8
         return button
@@ -95,11 +102,16 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x2C2C3B)
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_delete"), for: .normal)
         button.layer.cornerRadius = 8
         return button
     }()
+    
+    
+    
+    var deleteCallback: (() -> Void)?
+    var acceptCallback: (() -> Void)?
     
     
     func setUPLayout() {
@@ -110,6 +122,13 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         buttonStackView.addArrangedSubview(deleteButton)
         buttonStackView.addArrangedSubview(declineButton)
         buttonStackView.addArrangedSubview(acceptButton)
+        
+        let profilePictureViewSize = CGFloat(36)
+        profileImageView.set(.width, to: profilePictureViewSize)
+        profileImageView.set(.height, to: profilePictureViewSize)
+        profileImageView.size = profilePictureViewSize
+        profileImageView.layer.masksToBounds = true
+        profileImageView.layer.cornerRadius = 18
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
@@ -138,9 +157,37 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     }
     
     
-    
-    @objc private func selectionButtonTapped(_ sender: UIButton) {
+    // MARK: Updating
+    private func update() {
+        AssertIsOnMainThread()
+        guard let thread = threadViewModel?.threadRecord else { return }
         
+        
+        
+        
+        profileImageView.update(for: thread)
+        nameLabel.text = getDisplayName()
+        
+        
+        
+    }
+    
+    private func getDisplayName() -> String {
+      
+                let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
+                let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
+                let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
+                return (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
+           
+    }
+    
+    
+    @objc private func acceptButtonTapped(_ sender: UIButton) {
+        acceptCallback?()
+    }
+    
+    @objc private func deleteButtonTapped(_ sender: UIButton) {
+        deleteCallback?()
     }
     
 

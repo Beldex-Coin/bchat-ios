@@ -1,8 +1,9 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import PromiseKit
 
-class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
+class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
@@ -87,12 +88,22 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         button.setTitle("Create", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+//        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = UIColor(hex: 0x282836)
+        button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button
     }()
     
+    private let contacts = ContactUtilities.getAllContacts()
+    private var selectedContacts: Set<String> = []
+
+    var filteredContacts: [String] = []
+    var searchText: String = ""
+    var mainDict: [String: String] = [:]
+    var filterDict: [String: String] = [:]
+    var namesArray: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +116,8 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         bottomButtonView.addSubview(createButton)
         view.addSubview(tableView)
         
+        groupNameTextField.delegate = self
+        searchTextField.delegate = self
             
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 14.0).isActive = true
@@ -118,6 +131,9 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         tableView.showsVerticalScrollIndicator = false
         
         self.titleLabel.text = "Create Secret Group"
+        
+        createButton.backgroundColor = UIColor(hex: 0x282836)
+        createButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
@@ -153,11 +169,25 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             createButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
+        filteredContacts = contacts
+        
+        if contacts.count > 0 {
+            for i in 0...(contacts.count - 1) {
+                namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+            }
+            
+            mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+            filterDict = mainDict
+        }
+        
+        
+        
+        tableView.reloadData()
     }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        return filterDict.count//filteredContacts.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -166,16 +196,111 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CreateSecretGroupTableViewCell") as! CreateSecretGroupTableViewCell
-        
+        let publicKey = Array(filterDict.keys)[indexPath.row]//filteredContacts[indexPath.row]
+        cell.publicKey = publicKey
+        let isSelected = selectedContacts.contains(publicKey)
+        cell.selectionButton.isSelected = isSelected
+        cell.update()
         return cell
+    }
+    fileprivate func tableViewWasTouched(_ tableView: UITableView) {
+        if groupNameTextField.isFirstResponder {
+            groupNameTextField.resignFirstResponder()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let publicKey = Array(filterDict.keys)[indexPath.row]
+        if !selectedContacts.contains(publicKey) { selectedContacts.insert(publicKey) } else { selectedContacts.remove(publicKey) }
+        guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
+        let isSelected = selectedContacts.contains(publicKey)
+        cell.selectionButton.isSelected = isSelected
+        cell.update()
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let str = textField.text!
+        if str.count == 0 {
+            createButton.backgroundColor = UIColor(hex: 0x282836)
+            createButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        }else {
+            createButton.backgroundColor = UIColor(hex: 0x00BD40)
+            createButton.setTitleColor(.white, for: .normal)
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Get the current text in the search field
+        searchText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+        if searchText.isEmpty {
+            // If the search text is empty, show all currencies without filtering
+            filteredContacts = contacts
+            if contacts.count > 0 {
+                namesArray = []
+                for i in 0...(contacts.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+                }
+                
+                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+                filterDict = mainDict
+            }
+            
+        } else {
+            
+            // Update the filteredCurrencyArray based on the search text
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+            
+        }
+        // Reload the table view with the filtered or unfiltered data
+        tableView.reloadData()
+        return true
+    }
 
     // MARK: Button Actions :-
     @objc private func createButtonTapped() {
-        let vc = NewDesignSettingsVC()
-        self.navigationController?.pushViewController(vc, animated: true)
+//        let vc = NewDesignSettingsVC()
+//        self.navigationController?.pushViewController(vc, animated: true)
+        func showError(title: String, message: String = "") {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            presentAlert(alert)
+        }
+        guard let name = groupNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), name.count > 0 else {
+            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_missing_error", comment: ""))
+        }
+        guard name.count < 64 else {
+            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_too_long_error", comment: ""))
+        }
+        guard selectedContacts.count >= 1 else {
+            return showError(title: "Please pick at least 1 group member")
+        }
+        guard selectedContacts.count < 100 else { // Minus one because we're going to include self later
+            return showError(title: NSLocalizedString("vc_create_closed_group_too_many_group_members_error", comment: ""))
+        }
+        let selectedContacts = self.selectedContacts
+        let message: String? = (selectedContacts.count > 20) ? "Please wait while the group is created..." : nil
+        ModalActivityIndicatorViewController.present(fromViewController: navigationController!, message: message) { [weak self] _ in
+            var promise: Promise<TSGroupThread>!
+            Storage.writeSync { transaction in
+                promise = MessageSender.createClosedGroup(name: name, members: selectedContacts, transaction: transaction)
+            }
+            let _ = promise.done(on: DispatchQueue.main) { thread in
+                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                self?.presentingViewController?.dismiss(animated: true, completion: nil)
+                SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
+            }
+            promise.catch(on: DispatchQueue.main) { _ in
+                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                let title = "Couldn't Create Group"
+                let message = "Please check your internet connection and try again."
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                self?.presentAlert(alert)
+            }
+        }
     }
 
 }

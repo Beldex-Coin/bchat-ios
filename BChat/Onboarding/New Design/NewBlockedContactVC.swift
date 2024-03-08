@@ -1,6 +1,8 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
+import BChatMessagingKit
 
 class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
@@ -33,6 +35,11 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     
     var isSelectionEnable = false
+    
+    var contacts = ContactUtilities.getAllContacts()
+    var arrayNames = [String]()
+    var arrayPublicKey = [String]()
+    var selectedarrayPublicKey: Set<String> = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +76,26 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         unblockButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
         unblockButton.heightAnchor.constraint(equalToConstant: 58),
         ])
+        
+        var names = [String]()
+        var publicKeys = [String]()
+        for publicKey in contacts {
+            let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
+            if blockedflag == true {
+                let userName = Storage.shared.getContact(with: publicKey)?.name
+                names.append(userName!)
+                let pukey = Storage.shared.getContact(with: publicKey)
+                publicKeys.append(pukey!.bchatID)
+            }
+            tableView.reloadData()
+        }
+        let userNames = names.joined(separator: ",")
+        let allNames = userNames.components(separatedBy: ",")
+        let userPublicKeys = publicKeys.joined(separator: ",")
+        let allpublicKeys = userPublicKeys.components(separatedBy: ",")
+        arrayNames = allNames.filter({ $0 != ""})
+        arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+        
     }
     
 
@@ -92,7 +119,28 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: Button Actions :-
     @objc private func unblockButtonTapped() {
-        
+        if self.selectedarrayPublicKey.count > 0 {
+            for i in 0...(selectedarrayPublicKey.count - 1) {
+                let publicKey = Array(selectedarrayPublicKey)[i]//selectedarrayPublicKey[i]
+                Storage.shared.write(
+                    with: { transaction in
+                        guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
+                            return
+                        }
+                        contact.isBlocked = false
+                        Storage.shared.setContact(contact, using: transaction as Any)
+                    },
+                    completion: {
+                        MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                )
+            }
+            selectedarrayPublicKey = []
+        }
     }
     
     @objc func selectionButtonTapped() {
@@ -102,7 +150,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 14
+        return arrayNames.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -121,10 +169,45 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             cell.unblockButton.isHidden = false
         }
         
+        
+        let publicKey = arrayPublicKey[indexPath.row]
+        let isSelected = selectedarrayPublicKey.contains(publicKey)
+        cell.selectionButton.isSelected = isSelected
+        
+        
+        cell.nameLabel.text = arrayNames[indexPath.row]
+        cell.unblockCallback = {
+            let publicKey = self.arrayPublicKey[indexPath.row]
+            Storage.shared.write(
+                with: { transaction in
+                    guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
+                        return
+                    }
+                    contact.isBlocked = false
+                    Storage.shared.setContact(contact, using: transaction as Any)
+                },
+                completion: {
+                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                    DispatchQueue.main.async {
+                        tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            )
+        }
+        
         return cell
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let publicKey = arrayPublicKey[indexPath.row]
+        if !selectedarrayPublicKey.contains(publicKey) { selectedarrayPublicKey.insert(publicKey) } else { selectedarrayPublicKey.remove(publicKey) }
+        guard let cell = tableView.cellForRow(at: indexPath) as? NewBlockContactTableViewCell else { return }
+        let isSelected = selectedarrayPublicKey.contains(publicKey)
+        cell.selectionButton.isSelected = isSelected
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     
 

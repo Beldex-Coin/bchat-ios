@@ -935,12 +935,14 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Secret Group
     @objc private func secretGroupButtonTapped(_ sender: UIButton) {
         mainButtonPopUpView.isHidden = true
-        let newSecretGroupVC = NewSecretGroupVC()
-        let navigationController = OWSNavigationController(rootViewController: newSecretGroupVC)
-        if UIDevice.current.isIPad {
-            navigationController.modalPresentationStyle = .fullScreen
-        }
-        present(navigationController, animated: true, completion: nil)
+        let vc = CreateSecretGroupScreenVC()
+        self.navigationController?.pushViewController(vc, animated: true)
+//        let newSecretGroupVC = NewSecretGroupVC()
+//        let navigationController = OWSNavigationController(rootViewController: newSecretGroupVC)
+//        if UIDevice.current.isIPad {
+//            navigationController.modalPresentationStyle = .fullScreen
+//        }
+//        present(navigationController, animated: true, completion: nil)
     }
     // Social Group
     @objc private func socialGroupButtonTapped(_ sender: UIButton) {

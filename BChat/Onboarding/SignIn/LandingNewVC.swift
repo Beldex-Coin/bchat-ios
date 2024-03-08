@@ -256,7 +256,10 @@ class LandingNewVC: BaseVC {
     
     @objc private func isCreateButtonAction() {
         if isFlagValue == true {
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DisplayNameVC") as! DisplayNameVC
+//            navigationflowTag = false
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = DisplayNameNewVC()
             navigationflowTag = false
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
