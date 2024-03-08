@@ -21,6 +21,9 @@
         <array key="OpenSans-Regular.ttf">
             <string>OpenSans-Regular</string>
         </array>
+        <array key="OpenSans-SemiBold.ttf">
+            <string>OpenSans-SemiBold</string>
+        </array>
     </customFonts>
     <scenes>
         <!--Recovery SeedVC-->
@@ -633,7 +636,7 @@
                                     <action selector="CloseAction:" destination="Ebg-G6-qzM" eventType="touchUpInside" id="6Ld-3y-Zzw"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fJ2-Cq-bPZ">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="fJ2-Cq-bPZ">
                                 <rect key="frame" x="0.0" y="97" width="428" height="550"/>
                                 <color key="backgroundColor" name="SlidemenuBgcolor"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -641,16 +644,16 @@
                                     <constraint firstAttribute="height" constant="550" id="xoD-Ph-ejA"/>
                                 </constraints>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJu-GD-d2B">
-                                <rect key="frame" x="315" y="56.333333333333336" width="93" height="31.333333333333336"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJu-GD-d2B">
+                                <rect key="frame" x="342.33333333333331" y="56.333333333333336" width="65.666666666666686" height="31.333333333333336"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="23"/>
                                 <color key="textColor" name="bchat_lbl_name"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Dk-6n-yBv">
-                                <rect key="frame" x="335.66666666666669" y="647" width="72.333333333333314" height="19.333333333333371"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="14"/>
-                                <color key="textColor" name="bchat_lbl_name"/>
+                                <rect key="frame" x="283" y="678.66666666666663" width="64" height="16.666666666666629"/>
+                                <fontDescription key="fontDescription" name="OpenSans-SemiBold" family="Open Sans" pointSize="12"/>
+                                <color key="textColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tP7-Gd-soP">
@@ -662,28 +665,28 @@
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BChat V1.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="If9-Zh-oQw">
-                                <rect key="frame" x="347" y="732.33333333333337" width="61" height="16.666666666666629"/>
-                                <fontDescription key="fontDescription" name="OpenSans-Regular" family="Open Sans" pointSize="12"/>
-                                <color key="textColor" name="bchat_lbl_name"/>
+                                <rect key="frame" x="335" y="727.33333333333337" width="73" height="19.333333333333371"/>
+                                <fontDescription key="fontDescription" name="OpenSans-SemiBold" family="Open Sans" pointSize="14"/>
+                                <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="G6q-Ma-0If"/>
-                        <color key="backgroundColor" name="SlidemenuBgcolor"/>
+                        <color key="backgroundColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="G6q-Ma-0If" firstAttribute="trailing" secondItem="If9-Zh-oQw" secondAttribute="trailing" constant="20" id="ORE-Q2-mZo"/>
-                            <constraint firstItem="G6q-Ma-0If" firstAttribute="trailing" secondItem="1Dk-6n-yBv" secondAttribute="trailing" constant="20" id="PuI-Eo-Kv4"/>
                             <constraint firstItem="HCJ-9d-sxb" firstAttribute="leading" secondItem="G6q-Ma-0If" secondAttribute="leading" constant="20" id="ToK-Gj-xPP"/>
                             <constraint firstItem="fJ2-Cq-bPZ" firstAttribute="top" secondItem="HCJ-9d-sxb" secondAttribute="bottom" constant="15" id="Uen-1d-3Pz"/>
                             <constraint firstItem="HCJ-9d-sxb" firstAttribute="top" secondItem="G6q-Ma-0If" secondAttribute="top" constant="15" id="VYx-lj-set"/>
-                            <constraint firstItem="1Dk-6n-yBv" firstAttribute="top" secondItem="fJ2-Cq-bPZ" secondAttribute="bottom" id="XqM-7Y-nAt"/>
+                            <constraint firstItem="tP7-Gd-soP" firstAttribute="leading" secondItem="1Dk-6n-yBv" secondAttribute="trailing" constant="12" id="ZXW-or-LY2"/>
                             <constraint firstItem="G6q-Ma-0If" firstAttribute="trailing" secondItem="MJu-GD-d2B" secondAttribute="trailing" constant="20" id="dy9-WO-gi1"/>
                             <constraint firstItem="MJu-GD-d2B" firstAttribute="centerY" secondItem="HCJ-9d-sxb" secondAttribute="centerY" id="gNQ-rl-IDn"/>
-                            <constraint firstItem="If9-Zh-oQw" firstAttribute="top" secondItem="tP7-Gd-soP" secondAttribute="bottom" constant="30" id="gsP-jX-rL4"/>
+                            <constraint firstItem="If9-Zh-oQw" firstAttribute="top" secondItem="tP7-Gd-soP" secondAttribute="bottom" constant="25" id="gsP-jX-rL4"/>
                             <constraint firstItem="fJ2-Cq-bPZ" firstAttribute="leading" secondItem="G6q-Ma-0If" secondAttribute="leading" id="ivP-d8-lK9"/>
+                            <constraint firstItem="1Dk-6n-yBv" firstAttribute="centerY" secondItem="tP7-Gd-soP" secondAttribute="centerY" id="k8y-Y9-Lg3"/>
                             <constraint firstItem="fJ2-Cq-bPZ" firstAttribute="trailing" secondItem="G6q-Ma-0If" secondAttribute="trailing" id="nHQ-0Q-cFw"/>
                             <constraint firstItem="G6q-Ma-0If" firstAttribute="trailing" secondItem="tP7-Gd-soP" secondAttribute="trailing" constant="20" id="teS-Ez-gcO"/>
-                            <constraint firstItem="tP7-Gd-soP" firstAttribute="top" secondItem="1Dk-6n-yBv" secondAttribute="bottom" constant="5" id="tpZ-rm-0SS"/>
+                            <constraint firstItem="tP7-Gd-soP" firstAttribute="top" secondItem="fJ2-Cq-bPZ" secondAttribute="bottom" constant="24.333333333333371" id="tpZ-rm-0SS"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="kHb-PW-bS4"/>

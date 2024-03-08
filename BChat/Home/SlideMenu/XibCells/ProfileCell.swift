@@ -24,13 +24,13 @@ class ProfileCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         imgpic.layer.masksToBounds = false
-        imgpic.layer.cornerRadius = 4
+        imgpic.layer.cornerRadius = 22
         imgpic.clipsToBounds = true
         
         v1.layer.cornerRadius = 10
         
         if isLightMode {
-            let origImage = UIImage(named: "icons8-qr_code@3x")
+            let origImage = UIImage(named: "QR_menu")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             scanRef.setImage(tintedImage, for: .normal)
             scanRef.tintColor = .black

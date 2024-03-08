@@ -32,7 +32,9 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.setTitle("Continue", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+//        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = UIColor(hex: 0x282836)
+        button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
@@ -98,6 +100,9 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         nameTextField.delegate = self
         nameTextField.returnKeyType = .done
         
+        continueButton.backgroundColor = UIColor(hex: 0x282836)
+        continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
         
@@ -161,6 +166,19 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         performAction()
         return true
     }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let str = textField.text!
+        if str.count == 0 {
+            continueButton.backgroundColor = UIColor(hex: 0x282836)
+            continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        }else {
+            continueButton.backgroundColor = UIColor(hex: 0x00BD40)
+            continueButton.setTitleColor(.white, for: .normal)
+        }
+    }
+    
+   
 
     func performAction() {
         func showError(title: String, message: String = "") {

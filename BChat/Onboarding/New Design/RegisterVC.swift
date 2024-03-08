@@ -181,10 +181,12 @@ class RegisterVC: BaseVC {
 
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
-//        let vc = NewPasswordVC()
+        let vc = NewPasswordVC()
+        vc.isGoingNewRestoreSeedVC = true
+        vc.isCreatePassword = true
+        navigationController!.pushViewController(vc, animated: true)
+//        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
 //        self.navigationController?.pushViewController(vc, animated: true)
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

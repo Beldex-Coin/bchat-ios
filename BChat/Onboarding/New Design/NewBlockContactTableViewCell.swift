@@ -39,7 +39,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     
     lazy var profileImageView: UIImageView = {
        let result = UIImageView()
-       result.image = UIImage(named: "ic_test")
+       result.image = UIImage(named: "")//UIImage(named: "ic_test")
         result.set(.width, to: 36)
         result.set(.height, to: 36)
        result.layer.masksToBounds = true
@@ -63,7 +63,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
         button.titleLabel?.font = Fonts.OpenSans(ofSize: 12)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x282836)
-        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 15
         button.setTitleColor(UIColor(hex: 0xEBEBEB), for: .normal)
         return button
@@ -75,15 +75,17 @@ class NewBlockContactTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-//        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_button_normal"), for: .normal)
         button.setBackgroundImage(UIImage(named: "ic_button_selected"), for: .selected)
         return button
     }()
     
     
+    var unblockCallback: (() -> Void)?
+    
     func setUPLayout() {
-        nameLabel.text = "Contact 1"
+//        nameLabel.text = "Contact 1"
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, unblockButton)
@@ -98,7 +100,8 @@ class NewBlockContactTableViewCell: UITableViewCell {
             profileImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
+//            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
+            nameLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
             
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
@@ -110,10 +113,12 @@ class NewBlockContactTableViewCell: UITableViewCell {
         ])
     }
     
-    
+    @objc private func unblockButtonTapped(_ sender: UIButton) {
+        unblockCallback?()
+    }
     
     @objc private func selectionButtonTapped(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+//        sender.isSelected = !sender.isSelected
     }
     
 

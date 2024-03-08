@@ -134,6 +134,15 @@ class EnableWalletVC: BaseVC {
         view.backgroundColor = UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
         
+//        let yourBackImage = UIImage(named: "ic_back_newNavBar")
+//        self.navigationController?.navigationBar.backIndicatorImage = yourBackImage
+//        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = yourBackImage
+//        self.navigationController?.navigationBar.backItem?.title = "Custom"
+//
+//        navigationItem.hidesBackButton = true
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_back_newNavBar"), style: .plain, target: self, action: nil)
+
+        
         view.addSubview(backGroundView)
         backGroundView.addSubViews(greenDotView1, infoLabel1, greenDotView2, infoLabel2, greenDotView3, infoLabel3, greenDotView4, infoLabel4, bottomStackView)
         bottomStackView.addArrangedSubview(confirmationLabel)
@@ -141,8 +150,24 @@ class EnableWalletVC: BaseVC {
         backGroundView.addSubview(enableButton)
         self.enableButton.isSelected = false
         
+        let text = "You can Send and Receive BDX with the BChat integrated wallet."
+        let attributedText = text.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Send and Receive BDX")
+        infoLabel1.attributedText = attributedText
+        
+        
+        let text2 = "The 'Pay as you Chat' feature is an easy-pay feature. You can send BDX to your friends right from the chat window."
+        let attributedText2 = text2.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Pay as you Chat")
+        infoLabel2.attributedText = attributedText2
+        
+        let text4 = "You can enable or disable the wallet using the Start wallet feature under Settings > Wallet settings."
+        let attributedText4 = text4.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Settings > Wallet settings.")
+        infoLabel4.attributedText = attributedText4
+        
+        
+        
         NSLayoutConstraint.activate([
-            backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 36),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 27),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -27),
             greenDotView1.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 27),
@@ -160,7 +185,7 @@ class EnableWalletVC: BaseVC {
             infoLabel2.leadingAnchor.constraint(equalTo: greenDotView2.trailingAnchor, constant: 14),
             infoLabel2.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -26),
             greenDotView3.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 27),
-            greenDotView3.topAnchor.constraint(equalTo: greenDotView2.bottomAnchor, constant: 112),
+            greenDotView3.topAnchor.constraint(equalTo: greenDotView2.bottomAnchor, constant: 95),
             greenDotView3.widthAnchor.constraint(equalToConstant: 8),
             greenDotView3.heightAnchor.constraint(equalToConstant: 8),
             infoLabel3.topAnchor.constraint(equalTo: greenDotView3.topAnchor, constant: -10),
@@ -186,17 +211,25 @@ class EnableWalletVC: BaseVC {
         
     }
     
+    @objc func back(sender: UIBarButtonItem) {
+        self.navigationController?.popViewController(animated:true)
+    }
+    
     // MARK: Button Actions :-
     @objc private func enableButtonTapped() {
         if self.enableButton.isSelected {
-            if SaveUserDefaultsData.WalletPassword.isEmpty {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                self.navigationController?.pushViewController(vc, animated: true)
-            }else {
-                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                vc.isEnterPin = true
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+//            if SaveUserDefaultsData.WalletPassword.isEmpty {
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }else {
+//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+//                vc.isEnterPin = true
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            }
+            let vc = NewPasswordVC()
+            vc.isGoingWallet = true
+            vc.isVerifyPassword = true
+            navigationController!.pushViewController(vc, animated: true)
             SSKPreferences.areWalletEnabled = true
         }
     }
@@ -224,5 +257,15 @@ extension UILabel {
             self.attributedText = attributedString
             self.textAlignment = textAlignment
         }
+    }
+}
+
+
+public extension String {
+    func setColor(_ color: UIColor, ofSubstring substring: String) -> NSMutableAttributedString {
+        let range = (self as NSString).range(of: substring)
+        let attributedString = NSMutableAttributedString(string: self)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
+        return attributedString
     }
 }

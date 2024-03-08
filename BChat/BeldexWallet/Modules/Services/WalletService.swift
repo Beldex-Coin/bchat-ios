@@ -43,7 +43,7 @@ class WalletService {
                 SaveUserDefaultsData.WalletSeed = WalletSeed.sentence
                 SaveUserDefaultsData.WalletName = result_wallet.walletName
                 SaveUserDefaultsData.WalletRestoreHeight = String(result_wallet.restoreHeight)
-                result_wallet.close()
+//                result_wallet.close()
             }else {
                 result_wallet = BDXWalletBuilder(name: data.name, password: data.pwd).openExisting()
                 if result_wallet != nil {
@@ -66,7 +66,7 @@ class WalletService {
                         SaveUserDefaultsData.WalletpublicAddress = result_wallet.publicAddress
                         SaveUserDefaultsData.WalletSeed = WalletSeed.sentence
                         SaveUserDefaultsData.WalletName = result_wallet.walletName
-                        result_wallet.close()
+//                        result_wallet.close()
                     } else {
                         result_wallet = BDXWalletBuilder(name: data.name, password: data.pwd).openExisting()
                         if result_wallet != nil {

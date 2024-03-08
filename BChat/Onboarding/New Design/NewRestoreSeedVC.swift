@@ -66,13 +66,17 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x00BD40)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var copySeedButton: UIButton = {
         let button = UIButton()
         button.setTitle("Copy Seed", for: .normal)
+        let image = UIImage(named: "ic_copySeed")?.scaled(to: CGSize(width: 12.0, height: 12.0))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        button.semanticContentAttribute = .forceRightToLeft
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x282836)
@@ -231,6 +235,14 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     @objc private func copyButtonTapped() {
         continueButton.backgroundColor = UIColor(hex: 0x00BD40)
         self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
+        UIPasteboard.general.string = mnemonic
+        seedcopy = true
+        self.infoLabel.isHidden = true
+    }
+    
+    @objc private func saveButtonTapped() {
+        continueButton.backgroundColor = UIColor(hex: 0x00BD40)
+        self.showToastMsg(message: "Please save the seed", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true

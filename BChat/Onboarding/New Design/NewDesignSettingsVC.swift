@@ -67,8 +67,12 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         if indexPath.row == 1 { //Change password
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangepasswordVC") as! ChangepasswordVC
-            self.navigationController?.pushViewController(vc, animated: true)
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangepasswordVC") as! ChangepasswordVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = NewPasswordVC()
+            vc.isGoingBack = true
+            vc.isCreatePassword = true
+            navigationController!.pushViewController(vc, animated: true)
         }
         
         if indexPath.row == 2 {//Blocked contact
@@ -76,34 +80,28 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
-        if indexPath.row == 3 {
-            let vc = ChangeLogNewVC()
-            navigationController!.pushViewController(vc, animated: true)
-//            let vc = EnableWalletVC()
-//            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-        if indexPath.row == 4 {
+        if indexPath.row == 3 {//Clear data
             let vc = NewClearDataVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
         }
         
-        if indexPath.row == 5 {
-            let vc = NewMessageRequestVC()
-            self.navigationController?.pushViewController(vc, animated: true)
+        if indexPath.row == 4 {//Feedback
+            if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
-        if indexPath.row == 6 {
-            let vc = NewAlertRecoverySeedVC()
-            self.navigationController?.pushViewController(vc, animated: true)
+        
+        if indexPath.row == 5 {//FAQ
+            let url = URL(string: bchat_FAQ_Link)!
+            UIApplication.shared.open(url)
         }
-        if indexPath.row == 7 {
-            let vc = PayAsYouChatPopUpVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+        if indexPath.row == 6 {//Changelog
+            let vc = ChangeLogNewVC()
+            navigationController!.pushViewController(vc, animated: true)
         }
+        
         
     }
    
