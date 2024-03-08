@@ -1,8 +1,26 @@
 // Copyright © 2023 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import PromiseKit
 
 class NewPasswordVC: BaseVC {
+    
+    
+    
+    var isGoingHome = false
+    var isGoingNewRestoreSeedVC = false
+    var isGoingWallet = false
+    var isGoingSendBDX = false
+    var isGoingBack = false
+    var isGoingNewRecoverySeed = false
+    
+    var isCreatePassword = false
+    var isVerifyPassword = false
+    
+//    var isSendWalletVC = false
+    var wallet: BDXWallet?
+    var finalWalletAddress = ""
+    var finalWalletAmount = ""
     
     
     private lazy var iconView: UIImageView = {
@@ -87,6 +105,47 @@ class NewPasswordVC: BaseVC {
         result.layer.cornerRadius = 8
         result.layer.borderWidth = 1
         result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        return result
+    }()
+    
+    
+    private lazy var pin1: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_star")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    private lazy var pin2: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_star")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    private lazy var pin3: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_star")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    private lazy var pin4: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_star")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
         return result
     }()
     
@@ -245,7 +304,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 1
         return button
     }()
     
@@ -256,7 +316,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 2
         return button
     }()
     
@@ -267,7 +328,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 3
         return button
     }()
     
@@ -278,7 +340,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 4
         return button
     }()
     
@@ -289,7 +352,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 5
         return button
     }()
     
@@ -300,7 +364,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 6
         return button
     }()
     
@@ -311,7 +376,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 7
         return button
     }()
     
@@ -322,7 +388,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 8
         return button
     }()
     
@@ -333,7 +400,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 9
         return button
     }()
     
@@ -344,7 +412,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 0
         return button
     }()
     
@@ -355,7 +424,8 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
+        button.tag = 10
         return button
     }()
     
@@ -367,265 +437,11 @@ class NewPasswordVC: BaseVC {
         return result
     }()
     
+    var passwordText = ""
+    var confirmPasswordText = ""
     
-//    var once = false
-//    var checkText = ""
-//    var twice = false
-//    var checkTextNew = ""
-//    var isChangePin = false
-//    var isEnterPin = false
-//    var isSendWalletVC = false
-//    var wallet: BDXWallet?
-//    var finalWalletAddress = ""
-//    var finalWalletAmount = ""
-//    var isSendConversionWalletVC = false
-//    @objc dynamic var isfromPayasUChat: Bool = false
-//    var passcodeViewMode: PasscodeViewMode = .inactive
-//
-//    var passcodeText : String = "" {
-//        didSet {
-//            if oldValue.count < passcodeText.count {
-//                passcodeDotsView.toggleDot(index: passcodeText.count - 1, filled: true)
-//            } else {
-//                passcodeDotsView.toggleDot(index: oldValue.count - 1, filled: false)
-//            }
-//            if passcodeText.count == 4 {
-//                if self.isEnterPin {
-//                    self.enterPin()
-//                    return
-//                }
-//                if self.isChangePin {
-//                    self.changePin()
-//                    return
-//                }
-//                if self.isSendWalletVC {
-//                    self.sendWalletVC()
-//                    return
-//                }
-//                if self.isSendConversionWalletVC {
-//                    self.sendConversionWalletVC()
-//                    return
-//                }
-//                changedText()
-//            }
-//        }
-//    }
-//
-//    func changedText(){
-//        if once == true{
-//            if passcodeText != checkText{
-//                let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                    self.checkText = ""
-//                    self.passcodeText.removeAll()
-//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//                    self.once = false
-////                    self.lblEnterPin.text = "Create Pin"
-//                })
-//                alert.addAction(okayAction)
-//                self.present(alert, animated: true, completion: nil)
-//            }else{
-//                SaveUserDefaultsData.WalletPassword = passcodeText
-//                if isfromPayasUChat == true {
-//                    self.navigationController?.popViewController(animated: true)
-//                }else {
-//                    let alert = UIAlertController(title: "", message: "Your PIN has been set up successfully!", preferredStyle: .alert)
-//                    let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-//                        self.navigationController?.pushViewController(vc, animated: true)
-//                    })
-//                    alert.addAction(okayAction)
-//                    self.present(alert, animated: true, completion: nil)
-//                }
-//            }
-//        }else{
-//            checkText = passcodeText
-//            passcodeText.removeAll()
-//            passcodeDotsView.toggleDot(index: 0, filled: false)
-//            passcodeDotsView.toggleDot(index: 1, filled: false)
-//            passcodeDotsView.toggleDot(index: 2, filled: false)
-//            passcodeDotsView.toggleDot(index: 3, filled: false)
-//            once = true
-////            lblEnterPin.text = "Re-Enter Pin"
-//        }
-//    }
-//
-//    func enterPin() {
-//        if passcodeText != SaveUserDefaultsData.WalletPassword{
-//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                self.checkText = ""
-//                self.passcodeText.removeAll()
-//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//            })
-//            alert.addAction(okayAction)
-//            self.present(alert, animated: true, completion: nil)
-//        }else{
-//            if isfromPayasUChat == true {
-//                self.navigationController?.popViewController(animated: true)
-//            }else {
-//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-//                self.navigationController?.pushViewController(vc, animated: true)
-//            }
-//        }
-//    }
-//
-//    func changePin(){
-//        if once == true{
-//            if passcodeText == checkText{
-//                let alert = UIAlertController(title: "", message: "New pin and old pin can't be same, please enter a diferent pin", preferredStyle: .alert)
-//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                    self.checkText = ""
-//                    self.passcodeText.removeAll()
-//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//                    self.once = false
-////                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
-//                })
-//                alert.addAction(okayAction)
-//                self.present(alert, animated: true, completion: nil)
-//            }else{
-//                if twice == true{
-//                    if passcodeText != checkTextNew{
-//                        let alert = UIAlertController(title: "Incorrect New pin", message: "Passcode not matched, Enter New Pin again", preferredStyle: .alert)
-//                        let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                            self.checkTextNew = ""
-//                            self.passcodeText.removeAll()
-//                            self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                            self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                            self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                            self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//                            self.twice = false
-////                            self.lblEnterPin.text = "Create Pin"
-//                        })
-//                        alert.addAction(okayAction)
-//                        self.present(alert, animated: true, completion: nil)
-//                    }else{
-//                        SaveUserDefaultsData.WalletPassword = passcodeText
-//                        if isfromPayasUChat == true {
-//                            self.navigationController?.popViewController(animated: true)
-//                        }else {
-//                            let alert = UIAlertController(title: "", message: "Your PIN has been changed successfully!", preferredStyle: .alert)
-//                            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletHomeVC") as! MyWalletHomeVC
-//                                self.navigationController?.pushViewController(vc, animated: true)
-//                            })
-//                            alert.addAction(okayAction)
-//                            self.present(alert, animated: true, completion: nil)
-//                        }
-//                    }
-//                }else{
-//                    checkTextNew = passcodeText
-//                    passcodeText.removeAll()
-//                    passcodeDotsView.toggleDot(index: 0, filled: false)
-//                    passcodeDotsView.toggleDot(index: 1, filled: false)
-//                    passcodeDotsView.toggleDot(index: 2, filled: false)
-//                    passcodeDotsView.toggleDot(index: 3, filled: false)
-//                    twice = true
-////                    lblEnterPin.text = "Re-Enter Pin"
-//                }
-//            }
-//        }else{
-//            if passcodeText == SaveUserDefaultsData.WalletPassword{
-//                checkText = passcodeText
-//                passcodeText.removeAll()
-//                passcodeDotsView.toggleDot(index: 0, filled: false)
-//                passcodeDotsView.toggleDot(index: 1, filled: false)
-//                passcodeDotsView.toggleDot(index: 2, filled: false)
-//                passcodeDotsView.toggleDot(index: 3, filled: false)
-//                once = true
-////                lblEnterPin.text = "Create Pin"
-//            }else{
-//                let alert = UIAlertController(title: "", message: "Please enter correct current pin", preferredStyle: .alert)
-//                let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                    self.checkText = ""
-//                    self.passcodeText.removeAll()
-//                    self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                    self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//                    self.once = false
-////                    self.lblEnterPin.text = "Enter your current 4-digit Pin"
-//                })
-//                alert.addAction(okayAction)
-//                self.present(alert, animated: true, completion: nil)
-//            }
-//        }
-//    }
-//
-//    func sendWalletVC() {
-//        if passcodeText != SaveUserDefaultsData.WalletPassword{
-//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                self.checkText = ""
-//                self.passcodeText.removeAll()
-//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//            })
-//            alert.addAction(okayAction)
-//            self.present(alert, animated: true, completion: nil)
-//        }else{
-//            if self.navigationController != nil{
-//                let count = self.navigationController!.viewControllers.count
-//                if count > 1
-//                {
-//                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletSendVC
-//                    VC.wallet = self.wallet
-//                    VC.finalWalletAddress = self.finalWalletAddress
-//                    VC.finalWalletAmount = self.finalWalletAmount
-//                    VC.backAPI = true
-//                    self.navigationController?.popViewController(animated: true)
-//                }
-//            }
-//        }
-//    }
-//
-//    func sendConversionWalletVC() {
-//        if passcodeText != SaveUserDefaultsData.WalletPassword{
-//            let alert = UIAlertController(title: "Incorrect Pin", message: "Passcode not matched, Enter again", preferredStyle: .alert)
-//            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-//                self.checkText = ""
-//                self.passcodeText.removeAll()
-//                self.passcodeDotsView.toggleDot(index: 0, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 1, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 2, filled: false)
-//                self.passcodeDotsView.toggleDot(index: 3, filled: false)
-//            })
-//            alert.addAction(okayAction)
-//            self.present(alert, animated: true, completion: nil)
-//        }else{
-//            if self.navigationController != nil{
-//                let count = self.navigationController!.viewControllers.count
-//                if count > 1
-//                {
-//                    let VC = self.navigationController!.viewControllers[count-2] as! ConversationVC
-//                    VC.wallet = self.wallet
-//                    VC.finalWalletAddress = self.finalWalletAddress
-//                    VC.finalWalletAmount = self.finalWalletAmount
-//                    VC.backAPI = true
-//                }
-//            }
-//            self.navigationController?.popViewController(animated: true)
-//        }
-//    }
-//
-//    var motionManager: CMMotionManager = CMMotionManager()
-//    func lockedScreenViewsGroup() -> [UIView] {
-//        return []
-//    }
-//    func passcodeEntryViewsGroup() -> [UIView] {
-//        return [passcodeDotsView, passcodeKeypadView, cancelButton]
-//    }
+    
+    var isPasswordEnterFirstTime = false
 
     
     
@@ -641,11 +457,26 @@ class NewPasswordVC: BaseVC {
         
         self.pinLabel.text = "Enter your PIN"
         
+        if isCreatePassword {
+            self.title = "Create Password"
+            self.pinLabel.text = "Enter your PIN"
+        }
+        
+        if isVerifyPassword {
+            self.title = "Verify PIN"
+            self.pinLabel.text = "Enter your 4 digit PIN"
+        }
+        
         
         pinStackView.addArrangedSubview(firstPinView)
         pinStackView.addArrangedSubview(secondPinView)
         pinStackView.addArrangedSubview(thirdPinView)
         pinStackView.addArrangedSubview(fourthPinView)
+        
+        firstPinView.addSubview(pin1)
+        secondPinView.addSubview(pin2)
+        thirdPinView.addSubview(pin3)
+        fourthPinView.addSubview(pin4)
         
         view.addSubview(iconView)
         view.addSubview(pinStackView)
@@ -697,7 +528,19 @@ class NewPasswordVC: BaseVC {
         clearImageView.pin(to: clearView)
         view.addSubViews(forthStackView)
         
+        pin1.isHidden = true
+        pin2.isHidden = true
+        pin3.isHidden = true
+        pin4.isHidden = true
         
+        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        
+        
+        nextButton.backgroundColor = UIColor(hex: 0x282836)
+        nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         
         NSLayoutConstraint.activate([
             iconView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
@@ -708,6 +551,15 @@ class NewPasswordVC: BaseVC {
             pinStackView.heightAnchor.constraint(equalToConstant: 56),
             firstPinView.widthAnchor.constraint(equalToConstant: 56),
 //            pinStackView.widthAnchor.constraint(equalToConstant: 200),
+            
+            pin1.centerXAnchor.constraint(equalTo: firstPinView.centerXAnchor),
+            pin1.centerYAnchor.constraint(equalTo: firstPinView.centerYAnchor),
+            pin2.centerXAnchor.constraint(equalTo: secondPinView.centerXAnchor),
+            pin2.centerYAnchor.constraint(equalTo: secondPinView.centerYAnchor),
+            pin3.centerXAnchor.constraint(equalTo: thirdPinView.centerXAnchor),
+            pin3.centerYAnchor.constraint(equalTo: thirdPinView.centerYAnchor),
+            pin4.centerXAnchor.constraint(equalTo: fourthPinView.centerXAnchor),
+            pin4.centerYAnchor.constraint(equalTo: fourthPinView.centerYAnchor),
             
             pinLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             pinLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
@@ -750,49 +602,512 @@ class NewPasswordVC: BaseVC {
         
     }
     
-
-    
-    
-    
     
     // MARK: Button Actions :-
     @objc private func nextButtonTapped() {
-        let vc = NewRestoreSeedVC()
-        self.navigationController?.pushViewController(vc, animated: true)
+        if passwordText.count == 4 {
+//            self.pin1.isHidden = false
+//            self.pin2.isHidden = false
+//            self.pin3.isHidden = false
+//            self.pin4.isHidden = false
+            
+            if isCreatePassword {
+                isPasswordEnterFirstTime = true
+                self.pin1.isHidden = true
+                self.pin2.isHidden = true
+                self.pin3.isHidden = true
+                self.pin4.isHidden = true
+                self.pinLabel.text = "Re-Enter your PIN"
+                nextButton.backgroundColor = UIColor(hex: 0x282836)
+                nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+                firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                return
+            }
+            
+            if isPasswordEnterFirstTime {
+                if passwordText == confirmPasswordText {
+                    SaveUserDefaultsData.BChatPassword = confirmPasswordText
+                } else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    confirmPasswordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    return
+                }
+            }
+            
+            if isVerifyPassword {
+                if passwordText == SaveUserDefaultsData.BChatPassword {
+                    
+                } else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    passwordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    return
+                }
+            }
+            
+            
+            
+            if self.isGoingHome == true {
+                UserDefaults.standard[.isUsingFullAPNs] = true
+                TSAccountManager.sharedInstance().didRegister()
+                let homeVC = HomeVC()
+                navigationController!.setViewControllers([ homeVC ], animated: true)
+                let syncTokensJob = SyncPushTokensJob(accountManager: AppEnvironment.shared.accountManager, preferences: Environment.shared.preferences)
+                syncTokensJob.uploadOnlyIfStale = false
+                let _: Promise<Void> = syncTokensJob.run()
+            }
+            
+            if self.isGoingNewRestoreSeedVC == true {
+                let vc = NewRestoreSeedVC()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+            if self.isGoingWallet == true {
+                let vc = WalletHomeNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
+            }
+            
+            if self.isGoingSendBDX == true {
+                if self.navigationController != nil{
+                    let count = self.navigationController!.viewControllers.count
+                    if count > 1
+                    {
+                        let VC = self.navigationController!.viewControllers[count-2] as! WalletSendNewVC
+                        VC.wallet = self.wallet
+                        VC.finalWalletAddress = self.finalWalletAddress
+                        VC.finalWalletAmount = self.finalWalletAmount
+                        VC.backAPI = true
+                        self.navigationController?.popViewController(animated: true)
+    //                    NotificationCenter.default.post(name: Notification.Name(rawValue: "plm"), object: nil)
+                    }
+                }
+            }
+            
+            if self.isGoingBack == true {
+                self.navigationController?.popViewController(animated: true)
+            }
+            
+            if self.isGoingNewRecoverySeed == true {
+                let vc = NewRecoverySeedVC()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+        }
+    }
+    
+    @objc private func passwordButtonTapped(sender : UIButton) {
+        enterPassword(tag: sender.tag)
+    }
+    
+    func enterPassword(tag: Int) {
+        nextButton.backgroundColor = UIColor(hex: 0x282836)
+        nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        if isPasswordEnterFirstTime {
+            isCreatePassword = false
+            if confirmPasswordText.count == 4 {
+                self.pin1.isHidden = false
+                self.pin2.isHidden = false
+                self.pin3.isHidden = false
+                self.pin4.isHidden = false
+                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            }
+            
+            if confirmPasswordText.count == 4 && tag == 10 {
+                nextButton.backgroundColor = UIColor(hex: 0x282836)
+                nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+                confirmPasswordText.removeLast()
+                if confirmPasswordText.count == 0 {
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if confirmPasswordText.count == 1 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if confirmPasswordText.count == 2 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if confirmPasswordText.count == 3 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if confirmPasswordText.count == 4 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = false
+                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                    nextButton.setTitleColor(.white, for: .normal)
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                }
+                return
+            }
+            
+            if confirmPasswordText.count >= 0 && confirmPasswordText.count < 4 {
+                if tag == 10 && confirmPasswordText.count != 0 {
+                    confirmPasswordText.removeLast()
+                    if confirmPasswordText.count == 0 {
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 1 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 2 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 3 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = false
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 4 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = false
+                        self.pin4.isHidden = false
+                        nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                        nextButton.setTitleColor(.white, for: .normal)
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    }
+                } else {
+                    if tag == 10 && confirmPasswordText.count == 0 {
+                        return
+                    }
+                    confirmPasswordText += String(tag)
+                    if confirmPasswordText.count == 0 {
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 1 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 2 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 3 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = false
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    }
+                    if confirmPasswordText.count == 4 {
+                        self.pin1.isHidden = false
+                        self.pin2.isHidden = false
+                        self.pin3.isHidden = false
+                        self.pin4.isHidden = false
+                        nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                        nextButton.setTitleColor(.white, for: .normal)
+                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    }
+                    return
+                }
+                return
+            }
+        }
+        
+        
+        
+        
+        
+        if passwordText.count == 4 {
+            self.pin1.isHidden = false
+            self.pin2.isHidden = false
+            self.pin3.isHidden = false
+            self.pin4.isHidden = false
+            nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+            nextButton.setTitleColor(.white, for: .normal)
+            firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            
+        }
+        
+        if passwordText.count == 4 && tag == 10 {
+            nextButton.backgroundColor = UIColor(hex: 0x282836)
+            nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            passwordText.removeLast()
+            if passwordText.count == 0 {
+                self.pin1.isHidden = true
+                self.pin2.isHidden = true
+                self.pin3.isHidden = true
+                self.pin4.isHidden = true
+                firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+            }
+            if passwordText.count == 1 {
+                self.pin1.isHidden = false
+                self.pin2.isHidden = true
+                self.pin3.isHidden = true
+                self.pin4.isHidden = true
+                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+            }
+            if passwordText.count == 2 {
+                self.pin1.isHidden = false
+                self.pin2.isHidden = false
+                self.pin3.isHidden = true
+                self.pin4.isHidden = true
+                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+            }
+            if passwordText.count == 3 {
+                self.pin1.isHidden = false
+                self.pin2.isHidden = false
+                self.pin3.isHidden = false
+                self.pin4.isHidden = true
+                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+            }
+            if passwordText.count == 4 {
+                self.pin1.isHidden = false
+                self.pin2.isHidden = false
+                self.pin3.isHidden = false
+                self.pin4.isHidden = false
+                nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                nextButton.setTitleColor(.white, for: .normal)
+                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            }
+            return
+        }
+        
+        if passwordText.count >= 0 && passwordText.count < 4 {
+            if tag == 10 && passwordText.count != 0 {
+                passwordText.removeLast()
+                if passwordText.count == 0 {
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 1 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 2 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 3 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 4 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = false
+                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                    nextButton.setTitleColor(.white, for: .normal)
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                }
+            } else {
+                if tag == 10 && passwordText.count == 0 {
+                    return
+                }
+                passwordText += String(tag)
+                if passwordText.count == 0 {
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 1 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 2 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 3 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                }
+                if passwordText.count == 4 {
+                    self.pin1.isHidden = false
+                    self.pin2.isHidden = false
+                    self.pin3.isHidden = false
+                    self.pin4.isHidden = false
+                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
+                    nextButton.setTitleColor(.white, for: .normal)
+                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                }
+                
+            }
+            
+        }
+        
     }
    
-//
-//    // hide the status bar on the "sleep" screen
-//    override var prefersStatusBarHidden: Bool {
-//        switch passcodeViewMode {
-//        case .inactive:
-//            return true
-//        default:
-//            return false
-//        }
-//    }
-//
-//    // Hides the home indicator on the inactive and passcode entry view
-//    func prefersHomeIndicatorAutoHidden() -> Bool {
-//        switch passcodeViewMode {
-//        case .inactive, .passcodeEntry:
-//            return true
-//        default:
-//            return false
-//        }
-//    }
-//
-//    /// Prevents the user from swiping up to dismiss the app.
-//    func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
-//        return UIRectEdge.bottom
-//    }
-//
-//    // handle the swipe up from the bottom of the screen
-//    @objc func handlePan(_ sender: Any) {
-//        if passcodeViewMode == .lockedScreen {
-////            setPasscodeViewMode(.passcodeEntry)
-//        }
-//    }
     
     
     

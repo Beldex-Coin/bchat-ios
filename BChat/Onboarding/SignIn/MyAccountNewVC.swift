@@ -324,6 +324,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         view.addSubview(outerProfileView)
         outerProfileView.addSubview(innerProfileImageView)
         
+        
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: self, action: #selector(showSettingsVC))
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+        
+        
         NSLayoutConstraint.activate([
             doneButton.widthAnchor.constraint(equalToConstant: 80),
             doneButton.heightAnchor.constraint(equalToConstant: 28),
@@ -697,6 +702,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
         self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
+    @objc private func showSettingsVC() {
+        let vc = NewDesignSettingsVC()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

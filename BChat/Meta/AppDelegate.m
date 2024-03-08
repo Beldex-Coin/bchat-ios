@@ -629,12 +629,6 @@ static NSTimeInterval launchStartedAt;
     BOOL navigationBarHidden = NO;
     if ([self.tsAccountManager isRegistered]) {
         rootViewController = [HomeVC new];
-        OWSAssertDebug(rootViewController);
-        OWSNavigationController *navigationController =
-        [[OWSNavigationController alloc] initWithRootViewController:rootViewController];
-        navigationController.navigationBarHidden = navigationBarHidden;
-        self.window.rootViewController = navigationController;
-        [UIViewController attemptRotationToDeviceOrientation];
     } else {
         rootViewController = [LandingNewVC new];
         navigationBarHidden = NO;

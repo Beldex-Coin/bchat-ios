@@ -12,8 +12,8 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     
     
-    let imageArray = ["ic_hops", "ic_change_password",/*"ic_app_lock"*/ "ic_chat_settings", "ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
-    let titleArray = ["Hops", "Change Password",/*"App Lock"*/ "Chat Settings", "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
+    let imageArray = ["ic_hops", "ic_change_password",/*"ic_app_lock"*/ /*"ic_chat_settings",*/ "ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
+    let titleArray = ["Hops", "Change Password",/*"App Lock"*/ /*"Chat Settings",*/ "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
     
 
     override func viewDidLoad() {
@@ -61,39 +61,47 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if indexPath.row == 2 {
-            let vc = SyncingOptionPopUpVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
-        
-        if indexPath.row == 3 {
-            let vc = EnableWalletVC()
+        if indexPath.row == 0 { //Hops
+            let vc = NewHopsVC()
             self.navigationController?.pushViewController(vc, animated: true)
         }
         
-        if indexPath.row == 4 {
+        if indexPath.row == 1 { //Change password
+//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangepasswordVC") as! ChangepasswordVC
+//            self.navigationController?.pushViewController(vc, animated: true)
+            let vc = NewPasswordVC()
+            vc.isGoingBack = true
+            vc.isCreatePassword = true
+            navigationController!.pushViewController(vc, animated: true)
+        }
+        
+        if indexPath.row == 2 {//Blocked contact
+            let vc = NewBlockedContactVC()
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
+        if indexPath.row == 3 {//Clear data
             let vc = NewClearDataVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
         }
         
-        if indexPath.row == 5 {
-            let vc = NewMessageRequestVC()
-            self.navigationController?.pushViewController(vc, animated: true)
+        if indexPath.row == 4 {//Feedback
+            if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
-        if indexPath.row == 6 {
-            let vc = NewAlertRecoverySeedVC()
-            self.navigationController?.pushViewController(vc, animated: true)
+        
+        if indexPath.row == 5 {//FAQ
+            let url = URL(string: bchat_FAQ_Link)!
+            UIApplication.shared.open(url)
         }
-        if indexPath.row == 7 {
-            let vc = PayAsYouChatPopUpVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+        if indexPath.row == 6 {//Changelog
+            let vc = ChangeLogNewVC()
+            navigationController!.pushViewController(vc, animated: true)
         }
+        
         
     }
    

@@ -126,7 +126,10 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let vc = WalletAddressBookNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else {
-                
+                let vc = NewPasswordVC()
+                vc.isGoingBack = true
+                vc.isCreatePassword = true
+                navigationController!.pushViewController(vc, animated: true)
             }
         }
     }

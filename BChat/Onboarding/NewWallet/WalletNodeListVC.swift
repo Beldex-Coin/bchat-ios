@@ -299,7 +299,10 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func addNodeButtonAction(_ sender: UIButton){
-        
+        let vc = AddNodeListVC()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
     }
     
 }

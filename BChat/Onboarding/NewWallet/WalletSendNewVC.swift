@@ -666,12 +666,20 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                     self.finalWalletAddress = self.beldexAddressTextview.text!
                     self.finalWalletAmount = self.beldexAmountTextField.text!
-                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-                    vc.isSendWalletVC = true
+//                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
+//                    vc.isSendWalletVC = true
+//                    vc.wallet = self.wallet
+//                    vc.finalWalletAddress = self.finalWalletAddress
+//                    vc.finalWalletAmount = self.finalWalletAmount
+//                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                    let vc = NewPasswordVC()
+                    vc.isGoingSendBDX = true
+                    vc.isVerifyPassword = true
                     vc.wallet = self.wallet
                     vc.finalWalletAddress = self.finalWalletAddress
                     vc.finalWalletAmount = self.finalWalletAmount
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    navigationController!.pushViewController(vc, animated: true)
                 } else {
                     self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
                 }

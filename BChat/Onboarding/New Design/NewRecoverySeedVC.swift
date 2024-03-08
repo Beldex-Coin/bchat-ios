@@ -43,7 +43,7 @@ class NewRecoverySeedVC: BaseVC {
         result.textColor = UIColor(hex: 0x00BD40)
         result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur,."
+        result.text = ""
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -54,6 +54,10 @@ class NewRecoverySeedVC: BaseVC {
     private lazy var copyButton: UIButton = {
         let button = UIButton()
         button.setTitle("Copy", for: .normal)
+        let image = UIImage(named: "ic_copy_recovery")?.scaled(to: CGSize(width: 18.0, height: 18.0))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 0, right: 0)
+        button.semanticContentAttribute = .forceRightToLeft
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x00BD40)
@@ -74,6 +78,16 @@ class NewRecoverySeedVC: BaseVC {
     }()
     
     
+    private let mnemonic: String = {
+        let identityManager = OWSIdentityManager.shared()
+        let databaseConnection = identityManager.value(forKey: "dbConnection") as! YapDatabaseConnection
+        var hexEncodedSeed: String! = databaseConnection.object(forKey: "BeldexSeed", inCollection: OWSPrimaryStorageIdentityKeyStoreCollection) as! String?
+        if hexEncodedSeed == nil {
+            hexEncodedSeed = identityManager.identityKeyPair()!.hexEncodedPrivateKey // Legacy account
+        }
+        return Mnemonic.encode(hexEncodedString: hexEncodedSeed)
+    }()
+    
     
 
     override func viewDidLoad() {
@@ -85,7 +99,7 @@ class NewRecoverySeedVC: BaseVC {
         view.addSubViews(iconImageView, infoLabel, seedView)
         seedView.addSubview(seedLabel)
         view.addSubview(copyButton)
-        
+        self.seedLabel.text = mnemonic
         
         NSLayoutConstraint.activate([
             iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -113,9 +127,20 @@ class NewRecoverySeedVC: BaseVC {
     
     
     @objc private func copyButtonTapped(_ sender: UIButton) {
-        
+        UIPasteboard.general.string = mnemonic
+        copyButton.isUserInteractionEnabled = false
+        UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.copyButton.setTitle(NSLocalizedString("Copied", comment: ""), for: UIControl.State.normal)
+        }, completion: nil)
+        Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(enableCopyButton), userInfo: nil, repeats: false)
     }
 
+    @objc private func enableCopyButton() {
+        copyButton.isUserInteractionEnabled = true
+        UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
+            self.copyButton.setTitle(NSLocalizedString("Copy", comment: ""), for: UIControl.State.normal)
+        }, completion: nil)
+    }
     
 
 }
