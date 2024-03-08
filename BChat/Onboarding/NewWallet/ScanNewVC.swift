@@ -93,6 +93,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
         }
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

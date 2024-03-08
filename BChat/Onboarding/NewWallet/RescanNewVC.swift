@@ -9,7 +9,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = UIColor(hex: 0x1C1C26)
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 0.5
         return stackView
     }()
@@ -109,7 +109,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Rescan"
         

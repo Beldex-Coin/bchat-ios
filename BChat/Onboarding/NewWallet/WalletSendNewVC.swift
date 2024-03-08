@@ -325,7 +325,12 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             sendButton.heightAnchor.constraint(equalToConstant: 58),
             sendButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
         ])
-        beldexBalanceLabel.text = mainBalance
+        if !mainBalance.isEmpty{
+            beldexBalanceLabel.text = mainBalance
+        }else {
+            beldexBalanceLabel.text = "-.----"
+        }
+        
         beldexAmountTextField.keyboardType = .decimalPad
         beldexAddressTextview.returnKeyType = .done
         beldexAmountTextField.tintColor = Colors.bchatButtonColor
@@ -333,6 +338,21 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         //Keyboard Done Option
         beldexAmountTextField.addDoneButtonKeybord()
         self.placeHolderSeedLabel()
+        
+        if walletAddress != nil {
+            placeholderLabel?.isHidden = true
+            self.beldexAddressTextview.text = "\(walletAddress!)"
+            updateSendButtonStates()
+        }
+        if walletAmount != nil {
+            self.beldexAmountTextField.text = "\(walletAmount!)"
+            self.bdxCurrencyValue = beldexAmountTextField.text!
+            self.currencyName = SaveUserDefaultsData.SelectedCurrency
+            fetchMarketsData(false)
+            reloadData([:])
+            updateSendButtonStates()
+        }
+        
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
         if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
@@ -727,6 +747,7 @@ extension WalletSendNewVC: BeldexWalletDelegate {
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
     }
     private func postData(balance: String, history: TransactionHistory) {
-        //        let balance_modify = Helper.displayDigitsAmount(balance)
+        let balance_modify = Helper.displayDigitsAmount(balance)
+        self.mainBalance = balance_modify
     }
 }

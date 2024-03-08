@@ -4,19 +4,19 @@ import UIKit
 import BChatUIKit
 
 class SwitchNodePopUpVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.popUpBackgroundColor
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return stackView
     }()
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.OpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to switch to another node?"
@@ -29,7 +29,8 @@ class SwitchNodePopUpVC: BaseVC {
         button.setTitle("Yes", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.greenColor
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -39,7 +40,7 @@ class SwitchNodePopUpVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.profileImageViewButtonColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -55,11 +56,11 @@ class SwitchNodePopUpVC: BaseVC {
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        
+        view.backgroundColor = Colors.refreshNodePopUpBackgroundColor
         view.addSubview(backGroundView)
         backGroundView.addSubViews(discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
@@ -91,7 +92,7 @@ class SwitchNodePopUpVC: BaseVC {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-
-   
-
+    
+    
+    
 }

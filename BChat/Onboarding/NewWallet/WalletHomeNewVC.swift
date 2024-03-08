@@ -1534,6 +1534,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     @objc func isFromScanButtonTapped(_ sender: UIButton){
         let vc = ScanNewVC()
+        vc.isFromWallet = true
+        vc.wallet = self.wallet
         navigationController!.pushViewController(vc, animated: true)
     }
     
@@ -1927,7 +1929,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return transactionAllarray.count
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.noTransaction {
@@ -2304,8 +2306,16 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         footerView.layer.cornerRadius = 28
         footerView.layer.masksToBounds = true
         footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+       
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MMM-yyyy"
+        dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
+        let timeInterval  = transactionAllarray[section].timestamp
+        let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
+        let dateString = dateFormatter.string(from: date as Date)
+        
         let label = UILabel()
-        label.text = "Feb 2024"//timestampToDate(Int(groupedTransactions[section].timestamp))
+        label.text = formatDateString(dateString)
         label.textColor = .white
         label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.semiOpenSans(ofSize: 14)
@@ -2341,6 +2351,23 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         dateFormatter.dateFormat = "MMM yyyy" // Customize the date format
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
         return dateFormatter.string(from: date)
+    }
+    
+    func formatDateString(_ dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MMM-yyyy"  // Adjust the format based on your date string
+        guard let date = dateFormatter.date(from: dateString) else {
+            return "Invalid Date"
+        }
+        let calendar = Calendar.current
+        if calendar.isDateInToday(date) {
+            return "Today"
+        } else if calendar.isDateInYesterday(date) {
+            return "Yesterday"
+        } else {
+            dateFormatter.dateFormat = "MMM, yyyy"
+            return dateFormatter.string(from: date)
+        }
     }
     
 }

@@ -173,23 +173,18 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
                 let vc = MyAccountNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 1 {   //Settings
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                navigationController!.pushViewController(privacySettingsVC, animated: true)
-                
-//                let vc = BChatSettingsNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
-            }else if indexPath.row == 2 {   //Notification
-//                let notificationSettingsVC = NotificationSettingsViewController()
-//                navigationController!.pushViewController(notificationSettingsVC, animated: true)
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                navigationController!.pushViewController(privacySettingsVC, animated: true)
                 
                 let vc = BChatSettingsNewVC()
                 navigationController!.pushViewController(vc, animated: true)
+            }else if indexPath.row == 2 {   //Notification
+                //                let notificationSettingsVC = NotificationSettingsViewController()
+                //                navigationController!.pushViewController(notificationSettingsVC, animated: true)
                 
-//                let vc = NotificationsNewVC()
-//                navigationController!.pushViewController(vc, animated: true)
+                let vc = NotificationsNewVC()
+                navigationController!.pushViewController(vc, animated: true)
                 
-//                let vc = CustomGalleryVC()
-//                navigationController!.pushViewController(vc, animated: true)
             }else if indexPath.row == 3 {   //Message Requests
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()
                 self.navigationController?.pushViewController(viewController, animated: true)

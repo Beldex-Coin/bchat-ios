@@ -65,13 +65,14 @@ class SocialGroupCell: UICollectionViewCell {
     
     private func update() {
         guard let room = allroom else { return }
+        let placeholderImage = UIImage(named: "placeholder_image_name")
         let promise = OpenGroupAPIV2.getGroupImage(for: room.id, on: OpenGroupAPIV2.defaultServer)
         if let imageData: Data = promise.value {
             logoImageView.image = UIImage(data: imageData)
             logoImageView.isHidden = (logoImageView.image == nil)
-        }
-        else {
-            logoImageView.isHidden = true
+        } else {
+            logoImageView.image = placeholderImage
+            logoImageView.isHidden = false
             _ = promise.done { [weak self] imageData in
                 DispatchQueue.main.async {
                     self?.logoImageView.image = UIImage(data: imageData)
