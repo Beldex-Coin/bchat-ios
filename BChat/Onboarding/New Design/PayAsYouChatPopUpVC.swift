@@ -102,13 +102,8 @@ class PayAsYouChatPopUpVC: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
-            
         ])
-        
-        
     }
-    
-    
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {

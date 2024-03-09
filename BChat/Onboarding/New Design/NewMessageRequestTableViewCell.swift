@@ -116,7 +116,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-        nameLabel.text = "Contact 1"
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, buttonStackView)

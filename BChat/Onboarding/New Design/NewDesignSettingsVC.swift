@@ -67,8 +67,6 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         if indexPath.row == 1 { //Change password
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChangepasswordVC") as! ChangepasswordVC
-//            self.navigationController?.pushViewController(vc, animated: true)
             let vc = NewPasswordVC()
             vc.isGoingBack = true
             vc.isCreatePassword = true

@@ -107,7 +107,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Secret Group"
@@ -118,7 +118,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         groupNameTextField.delegate = self
         searchTextField.delegate = self
-            
+        
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 14.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -179,9 +179,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
             filterDict = mainDict
         }
-        
-        
-        
         tableView.reloadData()
     }
     
@@ -261,8 +258,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
 
     // MARK: Button Actions :-
     @objc private func createButtonTapped() {
-//        let vc = NewDesignSettingsVC()
-//        self.navigationController?.pushViewController(vc, animated: true)
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))

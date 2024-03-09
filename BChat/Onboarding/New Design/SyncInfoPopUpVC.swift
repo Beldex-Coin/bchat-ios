@@ -89,13 +89,8 @@ class SyncInfoPopUpVC: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             okButton.widthAnchor.constraint(equalToConstant: 158),
-            
         ])
-        
-        
     }
-    
-    
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {

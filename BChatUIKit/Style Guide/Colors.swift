@@ -118,5 +118,13 @@ public final class Colors : NSObject {
     @objc public static var popUpBackgroundColor: UIColor { UIColor(named: "popUpBackgroundColor")! }
     
     @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
+
+    @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
+    @objc public static var titleColour: UIColor { UIColor(named: "EBEBEB-333333")! }
+    @objc public static var mainBackGroundColour: UIColor { UIColor(named: "111119-EBEBEB")! }
+    @objc public static var cellGroundColour: UIColor { UIColor(named: "1C1C26-F4F4F4")! }
+    @objc public static var borderColour: UIColor { UIColor(named: "4B4B64-A7A7BA")! }
+    @objc public static var cancelButtonBackgroundColour: UIColor { UIColor(named: "1C1C26-F0F0F0")! }
+    @objc public static var cancelButtonTitleColour: UIColor { UIColor(named: "ACACAC")! }
     
 }

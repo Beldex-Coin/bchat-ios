@@ -224,14 +224,9 @@ class DeleteMessageRequestPopUp: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
-            
         ])
-        
-        
     }
-    
-    
-    
+ 
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
@@ -364,8 +359,4 @@ class BlockMessageRequestPopUp: BaseVC {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
-
-    
-
 }

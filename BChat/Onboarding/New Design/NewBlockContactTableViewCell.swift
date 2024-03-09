@@ -85,7 +85,6 @@ class NewBlockContactTableViewCell: UITableViewCell {
     var unblockCallback: (() -> Void)?
     
     func setUPLayout() {
-//        nameLabel.text = "Contact 1"
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, unblockButton)
@@ -120,7 +119,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     }
     
     @objc private func selectionButtonTapped(_ sender: UIButton) {
-//        sender.isSelected = !sender.isSelected
+
     }
     
 

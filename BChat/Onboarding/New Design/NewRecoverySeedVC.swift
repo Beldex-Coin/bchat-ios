@@ -4,8 +4,6 @@ import UIKit
 
 class NewRecoverySeedVC: BaseVC {
     
-    
-    
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
         result.image = UIImage(named: "ic_recovery_seed")

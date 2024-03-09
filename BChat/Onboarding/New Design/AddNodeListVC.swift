@@ -4,14 +4,14 @@ import UIKit
 import Alamofire
 
 class AddNodeListVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = UIColor(hex: 0x111119)
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return stackView
     }()
     
@@ -182,30 +182,30 @@ class AddNodeListVC: BaseVC {
     }()
     
     lazy var resultImageView: UIImageView = {
-       let result = UIImageView()
-       result.image = UIImage(named: "ic_success_node")//ic_error_node
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_success_node")//ic_error_node
         result.set(.width, to: 11)
         result.set(.height, to: 11)
-       result.layer.masksToBounds = true
-       result.contentMode = .scaleAspectFit
-       return result
-   }()
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
     
     var testResultFlag = false
     
     //MAINNET
     var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
     //TESTNET
-//    var nodeArray = ["149.102.156.174:19095"]
+    //    var nodeArray = ["149.102.156.174:19095"]
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.5)
         
-        var darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        var blurView = UIVisualEffectView(effect: darkBlur)
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = view.bounds
         view.addSubview(blurView)
         
@@ -223,7 +223,7 @@ class AddNodeListVC: BaseVC {
         resultImageView.isHidden = true
         
         NSLayoutConstraint.activate([
-//            backGroundView.heightAnchor.constraint(equalToConstant: 600),
+            //            backGroundView.heightAnchor.constraint(equalToConstant: 600),
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
@@ -256,7 +256,7 @@ class AddNodeListVC: BaseVC {
             resultImageView.leadingAnchor.constraint(equalTo: resultLabel.trailingAnchor, constant: 4.56),
             resultImageView.centerYAnchor.constraint(equalTo: resultLabel.centerYAnchor),
             
-//            buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 21),
+            //            buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 21),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -21),
@@ -322,7 +322,7 @@ class AddNodeListVC: BaseVC {
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {
-
+        
         if (nodeAddressTextField.text == "") {
             let alert = UIAlertController(title: "", message: "Please Enter Node Address", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -361,7 +361,7 @@ class AddNodeListVC: BaseVC {
                 self.present(alert, animated: true, completion: nil)
             }else {
                 
-                    self.nodeArray.append(host_port)
+                self.nodeArray.append(host_port)
                 
                 
                 SaveUserDefaultsData.SaveLocalNodelist = self.nodeArray
@@ -379,10 +379,4 @@ class AddNodeListVC: BaseVC {
     }
     
     
-    
-    
-    
-
-    
-
 }

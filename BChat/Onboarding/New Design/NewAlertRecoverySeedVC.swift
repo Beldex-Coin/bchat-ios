@@ -127,8 +127,6 @@ class NewAlertRecoverySeedVC: BaseVC {
     
 
     @objc private func nextButtonTapped(_ sender: UIButton) {
-//        let vc = NewRecoverySeedVC()
-//        self.navigationController?.pushViewController(vc, animated: true)
         let vc = NewPasswordVC()
         vc.isGoingNewRecoverySeed = true
         vc.isVerifyPassword = true
