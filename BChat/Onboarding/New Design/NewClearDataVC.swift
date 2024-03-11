@@ -8,34 +8,34 @@ class NewClearDataVC: BaseVC {
    private lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
-       stackView.backgroundColor = UIColor(hex: 0x111119)
+       stackView.backgroundColor = Colors.smallBackGroundColor
        stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+       stackView.layer.borderColor = Colors.borderColorNew.cgColor
        return stackView
    }()
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Clear all data"
+        result.text = NSLocalizedString("CLEAR_ALL_DATA", comment: "")
         return result
     }()
     
     private lazy var clearDataLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Clear Data From Device"
+        result.text = NSLocalizedString("CLEAR_DATA_FROM_DEVICE", comment: "")
         return result
     }()
     
     private lazy var clearDataDiscriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x6A6A77)
+        result.textColor = Colors.smallTitleColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete data on this device"
@@ -44,7 +44,7 @@ class NewClearDataVC: BaseVC {
     
     private lazy var deleteLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete Entire Account"
@@ -53,7 +53,7 @@ class NewClearDataVC: BaseVC {
     
     private lazy var deleteDiscriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x6A6A77)
+        result.textColor = Colors.smallTitleColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete data from the network"
@@ -88,7 +88,7 @@ class NewClearDataVC: BaseVC {
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 23
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -99,9 +99,9 @@ class NewClearDataVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 23
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -121,7 +121,7 @@ class NewClearDataVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, clearDataButton, clearDataLabel, clearDataDiscriptionLabel, deleteAccountButton, deleteLabel, deleteDiscriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)

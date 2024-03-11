@@ -120,11 +120,35 @@ public final class Colors : NSObject {
     @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
 
     @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
-    @objc public static var titleColour: UIColor { UIColor(named: "EBEBEB-333333")! }
-    @objc public static var mainBackGroundColour: UIColor { UIColor(named: "111119-EBEBEB")! }
-    @objc public static var cellGroundColour: UIColor { UIColor(named: "1C1C26-F4F4F4")! }
-    @objc public static var borderColour: UIColor { UIColor(named: "4B4B64-A7A7BA")! }
-    @objc public static var cancelButtonBackgroundColour: UIColor { UIColor(named: "1C1C26-F0F0F0")! }
-    @objc public static var cancelButtonTitleColour: UIColor { UIColor(named: "ACACAC")! }
+    @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
+    @objc public static var titleColor: UIColor { UIColor(named: "EBEBEB-333333")! }
+    @objc public static var titleColor2: UIColor { UIColor(named: "EBEBEB-222222")! }
+    @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }
+    @objc public static var titleColor4: UIColor { UIColor(named: "FFFFFF-222222")! }
+    @objc public static var mainBackGroundColor: UIColor { UIColor(named: "111119-EBEBEB")! }
+    @objc public static var mainBackGroundColor2: UIColor { UIColor(named: "11111A-EBEBEB")! }
+    @objc public static var mainBackGroundColor3: UIColor { UIColor(named: "11111A-F8F8F8")! }
+    @objc public static var mainBackGroundColor4: UIColor { UIColor(named: "11111A-F0F0F0")! }
+    @objc public static var backGroundColorWithAlpha: UIColor { UIColor(named: "080812-E0E0E0")! }
+    @objc public static var cellGroundColor: UIColor { UIColor(named: "1C1C26-F4F4F4")! }
+    @objc public static var cellGroundColor2: UIColor { UIColor(named: "1C1C26-F8F8F8")! }
+    @objc public static var cellGroundColor3: UIColor { UIColor(named: "282836-F8F8F8")! }
+    @objc public static var borderColorNew: UIColor { UIColor(named: "4B4B64-A7A7BA")! }
+    @objc public static var noBorderColor: UIColor { UIColor(named: "4B4B64-F8F8F8")! }
+    @objc public static var noBorderColor2: UIColor { UIColor(named: "4B4B64-FFFFFF")! }
+    @objc public static var noBorderColor3: UIColor { UIColor(named: "24242F-FFFFFF")! }
+    @objc public static var cancelButtonBackgroundColor: UIColor { UIColor(named: "1C1C26-F0F0F0")! }
+    @objc public static var cancelButtonBackgroundColor2: UIColor { UIColor(named: "282836-ECECEC")! }
+    @objc public static var cancelButtonTitleColor: UIColor { UIColor(named: "ACACAC")! }
+    @objc public static var smallBackGroundColor: UIColor { UIColor(named: "111119-F8F8F8")! }
+    @objc public static var smallTitleColor: UIColor { UIColor(named: "6A6A77")! }
+    @objc public static var yellowColor: UIColor { UIColor(named: "F0AF13-ECAB0F")! }
+    @objc public static var seedBackgroundColor: UIColor { UIColor(named: "111119-FFFFFF")! }
+    @objc public static var unlockButtonBackgroundColor: UIColor { UIColor(named: "282836-F4F4F4")! }
+    @objc public static var unlockButtonBackgroundColor2: UIColor { UIColor(named: "282836-FFFFFF")! }
+    @objc public static var textFieldPlaceHolderColor: UIColor { UIColor(named: "A7A7BA-8A8A9D")! }
+    @objc public static var noDataLabelColor: UIColor { UIColor(named: "A7A7BA")! }
+    @objc public static var placeHolderColor: UIColor { UIColor(named: "77778B-A7A7BA")! }
+    @objc public static var buttonDisableColor: UIColor { UIColor(named: "6C6C78-A7A7BA")! }
     
 }

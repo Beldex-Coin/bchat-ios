@@ -35,7 +35,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     private lazy var messageLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "No Pending message Requests!"
@@ -73,7 +73,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x111119)
+        view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Message Request", style: .plain, target: nil, action: nil)
         
         
