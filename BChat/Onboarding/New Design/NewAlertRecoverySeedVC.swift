@@ -8,10 +8,10 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.noBorderColor.cgColor
         return stackView
     }()
      
@@ -28,7 +28,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     
     private lazy var importantLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Important"
@@ -38,20 +38,20 @@ class NewAlertRecoverySeedVC: BaseVC {
     
     private lazy var label1: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Never share your seed with anyone!"
+        result.text = NSLocalizedString("NEVER_SHARE_YOUR_SEED_WITH_ANYONE", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
     
     private lazy var label2: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.cancelButtonTitleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Your seed can be used to restore your account. Never share it with anyone or store a digital copy of it. Never enter your seed in any other website or application other than BChat or Beldex official wallet."
+        result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION", comment: "")
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -61,10 +61,10 @@ class NewAlertRecoverySeedVC: BaseVC {
     
     private lazy var label3: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Check your surroundings to ensure no one is overlooking. Do you want to proceed?"
+        result.text = "RECOVERY_SEED_DISCRIPTION2"
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -77,7 +77,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         button.setTitle("Yes, I’m Safe :)", for: .normal)
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
@@ -88,7 +88,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Recovery Seed", style: .plain, target: nil, action: nil)
         
         view.addSubview(backGroundView)

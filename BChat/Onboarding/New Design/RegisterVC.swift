@@ -11,7 +11,7 @@ class RegisterVC: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 22)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +23,7 @@ class RegisterVC: BaseVC {
         button.setTitle("Continue", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
@@ -33,7 +33,7 @@ class RegisterVC: BaseVC {
     private lazy var topView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -41,7 +41,7 @@ class RegisterVC: BaseVC {
     private lazy var bChatLabel: UILabel = {
         let result = UILabel()
         result.text = "BChat ID"
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -51,7 +51,7 @@ class RegisterVC: BaseVC {
     private lazy var bChatIdLabel: UILabel = {
         let result = UILabel()
         result.text = ""
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class RegisterVC: BaseVC {
     private lazy var bChatInfoLabel: UILabel = {
         let result = UILabel()
         result.text = "Your BChat ID is like your username. You can share it with your friends to begin a conversation."
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +73,7 @@ class RegisterVC: BaseVC {
     private lazy var bottomView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -81,7 +81,7 @@ class RegisterVC: BaseVC {
     private lazy var beldexLabel: UILabel = {
         let result = UILabel()
         result.text = "Beldex Address"
-        result.textColor = UIColor(hex: 0x0085FF)
+        result.textColor = Colors.bothBlueColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -91,7 +91,7 @@ class RegisterVC: BaseVC {
     private lazy var beldexIdLabel: UILabel = {
         let result = UILabel()
         result.text = ""
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +102,7 @@ class RegisterVC: BaseVC {
     private lazy var beldexInfoLabel: UILabel = {
         let result = UILabel()
         result.text = "Your Beldex address is connected to your BChat ID. You can use this address to receive BDX."
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +113,7 @@ class RegisterVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Register"
         self.titleLabel.text = "Hey \(userNameString!), Welcome to BChat"
@@ -174,7 +174,6 @@ class RegisterVC: BaseVC {
             beldexInfoLabel.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 16),
             beldexInfoLabel.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -9),
         ])
-        
     }
     
 
@@ -185,11 +184,5 @@ class RegisterVC: BaseVC {
         vc.isGoingNewRestoreSeedVC = true
         vc.isCreatePassword = true
         navigationController!.pushViewController(vc, animated: true)
-//        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-//        self.navigationController?.pushViewController(vc, animated: true)
     }
-    
-    
-
-   
 }

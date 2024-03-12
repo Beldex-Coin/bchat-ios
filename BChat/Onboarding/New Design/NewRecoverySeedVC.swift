@@ -16,7 +16,7 @@ class NewRecoverySeedVC: BaseVC {
     
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xF0AF13)
+        result.textColor = Colors.yellowColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Copy your Recovery Seed and\nkeep it safe."
@@ -29,16 +29,16 @@ class NewRecoverySeedVC: BaseVC {
     private lazy var seedView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.seedBackgroundColor
         stackView.layer.cornerRadius = 16
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.noBorderColor2.cgColor
         return stackView
     }()
     
     private lazy var seedLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = ""
@@ -58,7 +58,7 @@ class NewRecoverySeedVC: BaseVC {
         button.semanticContentAttribute = .forceRightToLeft
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
         button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
@@ -91,7 +91,7 @@ class NewRecoverySeedVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Recovery Seed", style: .plain, target: nil, action: nil)
         
         view.addSubViews(iconImageView, infoLabel, seedView)
