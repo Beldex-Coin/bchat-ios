@@ -34,10 +34,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     // MARK: UI Components
     private lazy var tableView: UITableView = {
         let result = UITableView()
-        result.backgroundColor = .clear
-        result.separatorStyle = .singleLine
+        result.backgroundColor = Colors.mainBackGroundColor2//.clear
+        result.separatorStyle = .none//.singleLine
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
-        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
+//        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
+        result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         result.showsVerticalScrollIndicator = false
         return result
     }()
@@ -240,6 +241,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     
     
+    var messageCollectionView: UICollectionView!
+    
+    
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -260,17 +264,46 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         updateNavBarButtons()
         setUpNavBarSessionHeading()
+                
+        
+        // CollectionView
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        messageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        messageCollectionView.dataSource = self
+        messageCollectionView.delegate = self
+        messageCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        messageCollectionView.showsHorizontalScrollIndicator = false
+        messageCollectionView.backgroundColor = .clear
+        messageCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(messageCollectionView)
+        // Add constraints for collectionView
+        NSLayoutConstraint.activate([
+            messageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            messageCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            messageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            messageCollectionView.heightAnchor.constraint(equalToConstant: 80),
+        ])
+        messageCollectionView.reloadData()
+        
+        
+      
+        
+        
         // Table view
         tableView.dataSource = self
         tableView.delegate = self
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
-        view.addSubview(someImageView)
-        someImageView.pin(to: view)
+        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
+        tableView.layer.cornerRadius = 22
+        tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+//        view.addSubview(someImageView)
+//        someImageView.pin(to: view)
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -363,10 +396,10 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
-        someImageView.layer.masksToBounds = true
-        let logoName = isLightMode ? "svg_light" : "svg_dark"
-        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-        someImageView.image = namSvgImgVar.uiImage
+//        someImageView.layer.masksToBounds = true
+//        let logoName = isLightMode ? "svg_light" : "svg_dark"
+//        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
+//        someImageView.image = namSvgImgVar.uiImage
     }
     @objc func tappedMe() {
         let searchController = GlobalSearchViewController()
@@ -524,7 +557,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 return 1
             }
             return 0
-        case 1: return Int(threadCount)
+        case 1: return 5//Int(threadCount)
         default: return 0
         }
     }
@@ -543,8 +576,15 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return cell
             
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-            cell.threadViewModel = threadViewModel(at: indexPath.row)
+//            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+//            cell.threadViewModel = threadViewModel(at: indexPath.row)
+//            return cell
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
+//            cell.threadViewModel = threadViewModel(at: indexPath.row)
+            
+            
+            
             return cell
         }
     }
@@ -562,7 +602,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         threadViewModelCache.removeAll()
         tableView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
-        someImageView.isHidden = (threadCount != 0)
+//        someImageView.isHidden = (threadCount != 0)
         isReloading = false
     }
     
@@ -711,7 +751,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             //        tableView.endUpdates()
         }, completion: nil)
         emptyStateView.isHidden = (threadCount != 0)
-        someImageView.isHidden = (threadCount != 0)
+//        someImageView.isHidden = (threadCount != 0)
     }
     
     @objc private func handleProfileDidChangeNotification(_ notification: Notification) {
@@ -724,7 +764,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
         tableViewTopConstraint.isActive = false
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 88/*Values.smallSpacing*/)
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -968,12 +1008,22 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
+    var isOpen = false
     @objc private func showSearchUI() {
-        if let presentedVC = self.presentedViewController {
-            presentedVC.dismiss(animated: false, completion: nil)
+//        if let presentedVC = self.presentedViewController {
+//            presentedVC.dismiss(animated: false, completion: nil)
+//        }
+//        let searchController = GlobalSearchViewController()
+//        self.navigationController?.setViewControllers([ self, searchController ], animated: true)
+        if !isOpen {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0/*Values.smallSpacing*/)
+        } else {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80/*Values.smallSpacing*/)
         }
-        let searchController = GlobalSearchViewController()
-        self.navigationController?.setViewControllers([ self, searchController ], animated: true)
+        isOpen = !isOpen
+        
     }
     
     @objc(createNewDMFromDeepLink:)
@@ -1058,4 +1108,45 @@ extension HomeVC: BeldexWalletDelegate {
             self.tableView.reloadData()
         }
     }
+}
+
+
+
+
+extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
+        cell.backgroundColor = .red
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let noOfCellsInRow = 6  //number of column you want
+        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
+        let totalSpace = flowLayout.sectionInset.left
+        + flowLayout.sectionInset.right
+        + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
+        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
+        return CGSize(width: 65, height: 80)
+    }
+}
+
+
+class CollectionViewCell: UICollectionViewCell {
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
