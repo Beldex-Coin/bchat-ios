@@ -240,6 +240,43 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
+    lazy var messageRequestLabel: UILabel = {
+       let result = UILabel()
+        result.textColor = Colors.titleColor3
+       result.font = Fonts.boldOpenSans(ofSize: 16)
+       result.textAlignment = .left
+       result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Message Request"
+       return result
+   }()
+    
+    lazy var messageRequestCountLabel: UILabel = {
+       let result = PaddingLabel()
+        result.textColor = UIColor(hex: 0x1C1C26)
+       result.font = Fonts.boldOpenSans(ofSize: 12)
+       result.textAlignment = .center
+       result.translatesAutoresizingMaskIntoConstraints = false
+        result.paddingTop = 3
+        result.paddingBottom = 3
+        result.paddingLeft = 5
+        result.paddingRight = 5
+        result.layer.masksToBounds = true
+        result.layer.cornerRadius = 11
+        result.backgroundColor = Colors.messageRequestBackgroundColor
+       return result
+   }()
+    
+    lazy var showOrHideMessageRequestCollectionViewButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(showOrHideMessageRequestCollectionViewButtonTapped), for: .touchUpInside)
+        button.setBackgroundImage(UIImage(named: "ic_downArrow"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "ic_upArrow"), for: .selected)
+        return button
+    }()
+    
     
     var messageCollectionView: UICollectionView!
     
@@ -264,7 +301,30 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         updateNavBarButtons()
         setUpNavBarSessionHeading()
-                
+               
+        view.addSubview(messageRequestLabel)
+        view.addSubview(messageRequestCountLabel)
+        view.addSubview(showOrHideMessageRequestCollectionViewButton)
+        messageRequestCountLabel.text = "3"
+        
+        NSLayoutConstraint.activate([
+            messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
+            messageRequestLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            
+            messageRequestCountLabel.leadingAnchor.constraint(equalTo: messageRequestLabel.trailingAnchor, constant: 6),
+            messageRequestCountLabel.centerYAnchor.constraint(equalTo: messageRequestLabel.centerYAnchor),
+            messageRequestCountLabel.heightAnchor.constraint(equalToConstant: 22),
+            messageRequestCountLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 22),
+            
+            showOrHideMessageRequestCollectionViewButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            showOrHideMessageRequestCollectionViewButton.centerYAnchor.constraint(equalTo: messageRequestLabel.centerYAnchor),
+            showOrHideMessageRequestCollectionViewButton.heightAnchor.constraint(equalToConstant: 24),
+            showOrHideMessageRequestCollectionViewButton.widthAnchor.constraint(equalToConstant: 24),
+
+            
+        ])
+        
+        
         
         // CollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -272,7 +332,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         messageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         messageCollectionView.dataSource = self
         messageCollectionView.delegate = self
-        messageCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        messageCollectionView.register(MessageRequestCollectionViewCell.self, forCellWithReuseIdentifier: "MessageRequestCollectionViewCell")
         messageCollectionView.showsHorizontalScrollIndicator = false
         messageCollectionView.backgroundColor = .clear
         messageCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -280,10 +340,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         // Add constraints for collectionView
         NSLayoutConstraint.activate([
             messageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            messageCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            messageCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 + 38 + 8),
             messageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             messageCollectionView.heightAnchor.constraint(equalToConstant: 80),
         ])
+        self.messageCollectionView.isHidden = true
         messageCollectionView.reloadData()
         
         
@@ -296,7 +357,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
@@ -583,6 +644,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
 //            cell.threadViewModel = threadViewModel(at: indexPath.row)
             
+            if indexPath.row == 0 || indexPath.row == 2 {
+                cell.backGroundView.backgroundColor = Colors.cellGroundColor3
+            }
             
             
             return cell
@@ -764,11 +828,26 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
         tableViewTopConstraint.isActive = false
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 88/*Values.smallSpacing*/)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+        self.messageCollectionView.isHidden = false
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
         self.tableView.reloadData() // TODO: Just reload the affected cell
+    }
+    
+    @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        isOpen = !isOpen
+        if isOpen {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 8/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = false
+        } else {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = true
+        }
     }
     
     private func updateNavBarButtons() {
@@ -1010,20 +1089,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     var isOpen = false
     @objc private func showSearchUI() {
-//        if let presentedVC = self.presentedViewController {
-//            presentedVC.dismiss(animated: false, completion: nil)
-//        }
-//        let searchController = GlobalSearchViewController()
-//        self.navigationController?.setViewControllers([ self, searchController ], animated: true)
-        if !isOpen {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0/*Values.smallSpacing*/)
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80/*Values.smallSpacing*/)
+        if let presentedVC = self.presentedViewController {
+            presentedVC.dismiss(animated: false, completion: nil)
         }
-        isOpen = !isOpen
-        
+        let searchController = GlobalSearchViewController()
+        self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
     @objc(createNewDMFromDeepLink:)
@@ -1119,8 +1189,8 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
-        cell.backgroundColor = .red
+        let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "MessageRequestCollectionViewCell", for: indexPath) as! MessageRequestCollectionViewCell
+//        cell.backgroundColor = .red
         return cell
     }
     

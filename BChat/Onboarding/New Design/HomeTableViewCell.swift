@@ -32,7 +32,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = Colors.cellGroundColor3
+        View.backgroundColor = .clear//Colors.cellGroundColor3
         View.layer.cornerRadius = 36
        return View
    }()
@@ -124,7 +124,6 @@ class HomeTableViewCell: UITableViewCell {
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             
-            
             iconImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             iconImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
             
@@ -134,7 +133,6 @@ class HomeTableViewCell: UITableViewCell {
             lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor),
             lastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             lastMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
-            
             
             messageCountLabel.heightAnchor.constraint(equalToConstant: 22),
             messageCountLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 22),
@@ -149,5 +147,85 @@ class HomeTableViewCell: UITableViewCell {
     
     
     
+
+}
+
+
+
+
+
+
+class MessageRequestCollectionViewCell: UICollectionViewCell {
+
+
+    private lazy var profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 22
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "ic_test", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        return imageView
+    }()
+    
+    
+    lazy var removeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+        button.setBackgroundImage(UIImage(named: "ic_close_new"), for: .normal)
+        return button
+    }()
+    
+    lazy var nameLabel: UILabel = {
+       let result = UILabel()
+        result.textColor = Colors.titleColor3
+       result.font = Fonts.boldOpenSans(ofSize: 12)
+       result.textAlignment = .center
+       result.translatesAutoresizingMaskIntoConstraints = false
+       return result
+   }()
+    
+    var removeCallback: (() -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        contentView.addSubview(profileImageView)
+        contentView.addSubview(removeButton)
+        contentView.addSubview(nameLabel)
+        
+        nameLabel.text = "john"
+        
+        NSLayoutConstraint.activate([
+            profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            profileImageView.heightAnchor.constraint(equalToConstant: 44),
+            profileImageView.widthAnchor.constraint(equalToConstant: 44),
+            
+            removeButton.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -4),
+            removeButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 6),
+//            removeButton.heightAnchor.constraint(equalToConstant: 16),
+//            removeButton.widthAnchor.constraint(equalToConstant: 16),
+            
+            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8),
+            nameLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+            
+        ])
+        
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func removeButtonTapped(_ sender: UIButton) {
+        removeCallback?()
+    }
+
 
 }
