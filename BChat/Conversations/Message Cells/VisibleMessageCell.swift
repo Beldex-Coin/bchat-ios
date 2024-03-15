@@ -243,7 +243,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewTopConstraint.constant = (viewItem.senderName == nil) ? 0 : VisibleMessageCell.authorLabelBottomSpacing
         bubbleViewRightConstraint1.isActive = (direction == .outgoing)
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
-        bubbleView.backgroundColor = (direction == .incoming) ? Colors.bchatMessageRequestsBubble : Colors.sentMessageBackground
+        bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor/*Colors.bchatMessageRequestsBubble*/ : Colors.bothGreenColor/*Colors.sentMessageBackground*/
         updateBubbleViewCorners()
         // Content view
         populateContentView(for: viewItem, message: message)

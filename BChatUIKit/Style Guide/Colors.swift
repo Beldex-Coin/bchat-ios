@@ -154,4 +154,6 @@ public final class Colors : NSObject {
     @objc public static var placeHolderColor: UIColor { UIColor(named: "77778B-A7A7BA")! }
     @objc public static var buttonDisableColor: UIColor { UIColor(named: "6C6C78-A7A7BA")! }
     @objc public static var messageRequestBackgroundColor: UIColor { UIColor(named: "EBEBEB-FFFFFF")! }
+    @objc public static var incomingMessageColor: UIColor { UIColor(named: "2C2C3B-E0E0E0")! }
+    
 }

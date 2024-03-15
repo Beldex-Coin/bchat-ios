@@ -37,8 +37,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.backgroundColor = Colors.mainBackGroundColor2//.clear
         result.separatorStyle = .none//.singleLine
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
-//        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
-        result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
+//        result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         result.showsVerticalScrollIndicator = false
         return result
     }()
@@ -618,7 +618,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 return 1
             }
             return 0
-        case 1: return 5//Int(threadCount)
+        case 1: return Int(threadCount)//5
         default: return 0
         }
     }
@@ -637,19 +637,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return cell
             
         default:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-//            cell.threadViewModel = threadViewModel(at: indexPath.row)
-//            return cell
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-//            cell.threadViewModel = threadViewModel(at: indexPath.row)
-            
-            if indexPath.row == 0 || indexPath.row == 2 {
-                cell.backGroundView.backgroundColor = Colors.cellGroundColor3
-            }
-            
-            
+            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+            cell.threadViewModel = threadViewModel(at: indexPath.row)
             return cell
+            
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
+//
+//            if indexPath.row == 0 || indexPath.row == 2 {
+//                cell.backGroundView.backgroundColor = Colors.cellGroundColor3
+//            }
+//
+//
+//            return cell
         }
     }
     
