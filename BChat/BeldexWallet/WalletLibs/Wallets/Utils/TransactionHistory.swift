@@ -15,6 +15,7 @@ public struct TransactionItem {
     public let amount: String
     public let networkFee: String
     public let timestamp: UInt64
+    public let newtimestamp: String
     public let confirmations: UInt64
     public let paymentId: String
     public let hash: String
@@ -28,6 +29,7 @@ public struct TransactionItem {
                 amount: UInt64,
                 networkFee: UInt64,
                 timestamp: UInt64,
+                newtimestamp: String,
                 paymentId: String,
                 hash: String,
                 label: String,
@@ -40,6 +42,7 @@ public struct TransactionItem {
         self.amount = BChatWalletWrapper.displayAmount(amount)
         self.networkFee = BChatWalletWrapper.displayAmount(networkFee)
         self.timestamp = timestamp
+        self.newtimestamp = newtimestamp
         self.confirmations = confirmations
         self.paymentId = paymentId
         self.hash = hash
@@ -63,6 +66,7 @@ public struct TransactionItem {
         self.amount = BChatWalletWrapper.displayAmount(model.amount)
         self.networkFee = BChatWalletWrapper.displayAmount(model.fee)
         self.timestamp = UInt64(model.timestamp)
+        self.newtimestamp = int64ToDateformateTimestamp(timestamp: UInt64(model.timestamp))//UInt64(model.timestamp)
         self.confirmations = model.confirmations
         self.paymentId = model.paymentId
         self.hash = model.hashValue
@@ -70,6 +74,15 @@ public struct TransactionItem {
         self.blockHeight = model.blockHeight
         self.token = "BDX"
     }
+}
+
+func int64ToDateformateTimestamp(timestamp: UInt64) -> String{
+    // Convert UInt64 timestamp to Date
+    let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+    // Format the Date to a string
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd-MM-yyyy" // Customize the format as needed
+    return dateFormatter.string(from: date)
 }
 
 public class TransactionHistory {
