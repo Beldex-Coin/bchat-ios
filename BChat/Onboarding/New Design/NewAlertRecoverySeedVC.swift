@@ -90,6 +90,7 @@ class NewAlertRecoverySeedVC: BaseVC {
 
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Recovery Seed", style: .plain, target: nil, action: nil)
+//        self.title = "Recovery Seed"
         
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconImageView, importantLabel, label1, label2, label3, nextButton)

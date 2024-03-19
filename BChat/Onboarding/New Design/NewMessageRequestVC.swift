@@ -75,7 +75,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
         view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Message Request", style: .plain, target: nil, action: nil)
-        
+//        self.title = "Message Request"
         
         view.addSubview(tableView)
         
@@ -191,6 +191,15 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let thread = self.thread(at: indexPath.row) else { return }
+        
+        let conversationVC = ConversationVC(thread: thread)
+        self.navigationController?.pushViewController(conversationVC, animated: true)
     }
     
     

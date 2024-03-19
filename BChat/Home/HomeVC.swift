@@ -31,14 +31,30 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     private var isReloading = false
     
+    
+    
+    private var threadsForMessageRequest: YapDatabaseViewMappings! =  {
+        let result = YapDatabaseViewMappings(groups: [ TSMessageRequestGroup ], view: TSThreadDatabaseViewExtensionName)
+        result.setIsReversed(true, forGroup: TSMessageRequestGroup)
+        return result
+    }()
+    private var threadViewModelCacheForMessageRequest: [String: ThreadViewModel] = [:] // Thread ID to ThreadViewModel
+    
+    private var messageRequestCountForMessageRequest: UInt {
+        threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
+    }
+    
+    
+    
+    
     // MARK: UI Components
     private lazy var tableView: UITableView = {
         let result = UITableView()
         result.backgroundColor = Colors.mainBackGroundColor2//.clear
         result.separatorStyle = .none//.singleLine
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
-        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
-//        result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+//        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
+        result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         result.showsVerticalScrollIndicator = false
         return result
     }()
@@ -305,7 +321,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
         view.addSubview(showOrHideMessageRequestCollectionViewButton)
-        messageRequestCountLabel.text = "3"
+//        messageRequestCountLabel.text = "3"
         
         NSLayoutConstraint.activate([
             messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
@@ -467,6 +483,105 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
+    private func reloadForMessageRequest() {
+        AssertIsOnMainThread()
+        dbConnection.beginLongLivedReadTransaction() // Jump to the latest commit
+        dbConnection.read { transaction in
+            self.threadsForMessageRequest.update(with: transaction)
+        }
+        threadViewModelCacheForMessageRequest.removeAll()
+        messageCollectionView.reloadData()
+    }
+    
+    private func updateContactAndThread(thread: TSThread, with transaction: YapDatabaseReadWriteTransaction, onComplete: ((Bool) -> ())? = nil) {
+        guard let contactThread: TSContactThread = thread as? TSContactThread else {
+            onComplete?(false)
+            return
+        }
+        
+        var needsSync: Bool = false
+        
+        // Update the contact
+        let bchatId: String = contactThread.contactBChatID()
+        
+        if let contact: Contact = Storage.shared.getContact(with: bchatId), (contact.isApproved || !contact.isBlocked) {
+            contact.isApproved = false
+            contact.isBlocked = true
+            
+            Storage.shared.setContact(contact, using: transaction)
+            needsSync = true
+        }
+        
+        // Delete all thread content
+        thread.removeAllThreadInteractions(with: transaction)
+        thread.remove(with: transaction)
+        
+        onComplete?(needsSync)
+    }
+    
+    private func deleteForMessageRequest(_ thread: TSThread) {
+        guard let uniqueId: String = thread.uniqueId else { return }
+        
+        let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
+            Storage.write(
+                with: { [weak self] transaction in
+                    Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
+                    self?.updateContactAndThread(thread: thread, with: transaction)
+                    
+                    // Block the contact
+                    if
+                        let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
+                        !thread.isBlocked(),
+                        let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
+                    {
+                        contact.isBlocked = true
+                        Storage.shared.setContact(contact, using: transaction)
+                        self?.tableView.reloadData()
+                    }
+                },
+                completion: {
+                    // Force a config sync
+                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                }
+            )
+        })
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
+        self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    
+    private func threadForMessageRequest(at index: Int) -> TSThread? {
+        var thread: TSThread? = nil
+        
+        dbConnection.read { transaction in
+            let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
+            thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
+        }
+        
+        return thread
+    }
+    
+    private func threadViewModelForMessageRequest(at index: Int) -> ThreadViewModel? {
+        guard let thread = threadForMessageRequest(at: index), let uniqueId: String = thread.uniqueId else { return nil }
+        
+        if let cachedThreadViewModel = threadViewModelCacheForMessageRequest[uniqueId] {
+            return cachedThreadViewModel
+        }
+        else {
+            var threadViewModel: ThreadViewModel? = nil
+            dbConnection.read { transaction in
+                threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
+            }
+            threadViewModelCacheForMessageRequest[uniqueId] = threadViewModel
+            
+            return threadViewModel
+        }
+    }
+    
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
@@ -612,11 +727,17 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        messageRequestCountLabel.text = "\(Int(unreadMessageRequestCount))"
+        messageRequestCountLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
+        messageRequestLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
+        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(unreadMessageRequestCount) <= 0)
+        
         switch section {
         case 0:
-            if unreadMessageRequestCount > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-                return 1
-            }
+//            if unreadMessageRequestCount > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
+//                return 1
+//            }
             return 0
         case 1: return Int(threadCount)//5
         default: return 0
@@ -637,18 +758,13 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return cell
             
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+//            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+//            cell.threadViewModel = threadViewModel(at: indexPath.row)
+//            return cell
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
             cell.threadViewModel = threadViewModel(at: indexPath.row)
             return cell
-            
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-//
-//            if indexPath.row == 0 || indexPath.row == 2 {
-//                cell.backGroundView.backgroundColor = Colors.cellGroundColor3
-//            }
-//
-//
-//            return cell
         }
     }
     
@@ -663,6 +779,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             self.threads.update(with: transaction)
         }
         threadViewModelCache.removeAll()
+        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
 //        someImageView.isHidden = (threadCount != 0)
@@ -737,7 +854,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
         
-        //        tableView.beginUpdates()
+                tableView.beginUpdates()
         self.tableView.performBatchUpdates({
             // If we need to unhide the message request row and then re-insert it
             if !messageRequestChanges.isEmpty {
@@ -785,7 +902,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 default: break
                 }
             }
-            //        tableView.endUpdates()
+                    tableView.endUpdates()
         }, completion: nil)
         // HACK: Moves can have conflicts with the other 3 types of change.
         // Just batch perform all the moves separately to prevent crashing.
@@ -838,6 +955,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         isOpen = !isOpen
+        reloadForMessageRequest()
         if isOpen {
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 8/*Values.smallSpacing*/)
@@ -850,10 +968,27 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     private func updateNavBarButtons() {
-        let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
-        backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
-        backButton.isAccessibilityElement = true
-        self.navigationItem.leftBarButtonItem = backButton
+//        let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
+//        backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
+//        backButton.isAccessibilityElement = true
+//        self.navigationItem.leftBarButtonItem = backButton
+                
+        let publicKey = getUserHexEncodedPublicKey()
+        
+        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                //set image for button
+        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+                //add function for button
+        button.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+                //set frame
+                button.frame = CGRectMake(0, 0, 42, 42)
+        button.layer.cornerRadius = 21
+        button.layer.masksToBounds = true
+
+                let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.leftBarButtonItem = barButton
+        
+        
         
         // Right bar button item - search button
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchUI))
@@ -861,6 +996,19 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         rightBarButtonItem.isAccessibilityElement  = true
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
+    
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
+    }
+    
+    
     
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {
         super.handleAppModeChangedNotification(notification)
@@ -926,8 +1074,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 // guard let self = self else { return }
                 self.presentAlert(alert)
             })
-            delete.backgroundColor = Colors.destructive
-            delete.image = UIImage(named: "delete-1")
+            delete.backgroundColor = Colors.mainBackGroundColor2//Colors.destructive
+            delete.image = UIImage(named: "ic_delete_new")
             let isPinned = thread.isPinned
             let pin = UIContextualAction(style: .destructive, title: "Pin", handler: { (action, view, success) in
                 thread.isPinned = true
@@ -935,8 +1083,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
                 tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
             })
-            pin.backgroundColor = Colors.pathsBuilding
-            pin.image = UIImage(named: "pin_big")
+            pin.backgroundColor = Colors.mainBackGroundColor2
+            pin.image = UIImage(named: "Pin_menu")
             //UnPin Option
             let unpin = UIContextualAction(style: .destructive, title: "Unpin", handler: { (action, view, success) in
                 thread.isPinned = false
@@ -944,8 +1092,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
                 tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
             })
-            unpin.backgroundColor = Colors.pathsBuilding
-            unpin.image = UIImage(named: "unpin")
+            unpin.backgroundColor = Colors.mainBackGroundColor2
+            unpin.image = UIImage(named: "UnPin")
             
             if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                 let publicKey = thread.contactBChatID()
@@ -967,7 +1115,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                         }
                     )
                 })
-                block.backgroundColor = Colors.unimportant
+                block.backgroundColor = Colors.mainBackGroundColor2
                 block.image = UIImage(named: "block")
                 
                 let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: { (action, view, success) in
@@ -990,7 +1138,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                         }
                     )
                 })
-                unblock.backgroundColor = Colors.unimportant
+                unblock.backgroundColor = Colors.mainBackGroundColor2
                 unblock.image = UIImage(named: "unblock_big")
                 
                 return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isPinned ? unpin : pin) ])
@@ -1184,12 +1332,40 @@ extension HomeVC: BeldexWalletDelegate {
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return Int(messageRequestCountForMessageRequest)//10
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "MessageRequestCollectionViewCell", for: indexPath) as! MessageRequestCollectionViewCell
 //        cell.backgroundColor = .red
+        cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
+        
+        if threadViewModelForMessageRequest(at: indexPath.row)!.isGroupThread {
+            if threadViewModelForMessageRequest(at: indexPath.row)!.name.isEmpty {
+                cell.nameLabel.text =  "Unknown Group"
+            }
+            else {
+                cell.nameLabel.text = threadViewModelForMessageRequest(at: indexPath.row)?.name
+            }
+        }
+        else {
+            if threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord.isNoteToSelf() {
+                cell.nameLabel.text = NSLocalizedString("NOTE_TO_SELF", comment: "")
+            }
+            else {
+                let hexEncodedPublicKey: String = threadViewModelForMessageRequest(at: indexPath.row)!.contactBChatID!
+                let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
+                let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
+                cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
+            }
+        }
+        
+        cell.removeCallback = {
+            guard let thread = self.threadForMessageRequest(at: indexPath.row) else { return }
+            self.deleteForMessageRequest(thread)
+        }
+        
+        
         return cell
     }
     

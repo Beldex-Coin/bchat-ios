@@ -39,7 +39,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "Microphone"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
@@ -60,7 +60,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     private lazy var sendButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendNew"), isSendButton: true, delegate: self)
         result.isHidden = true
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
@@ -138,8 +138,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         autoresizingMask = .flexibleHeight
         // Background & blur
         let backgroundView = UIView()
-        backgroundView.backgroundColor = isLightMode ? .white : .black
-        backgroundView.alpha = Values.lowOpacity
+        backgroundView.backgroundColor = Colors.mainBackGroundColor2//isLightMode ? .white : .black
+//        backgroundView.alpha = Values.lowOpacity
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
@@ -155,12 +155,14 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), container(for: sendButton) ])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
+        bottomStackView.backgroundColor = Colors.textViewColor
+        bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView ])
         mainStackView.axis = .vertical
-        mainStackView.backgroundColor = Colors.bchatViewBackgroundColor
+        mainStackView.backgroundColor = Colors.mainBackGroundColor2//Colors.bchatViewBackgroundColor
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
         mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)
