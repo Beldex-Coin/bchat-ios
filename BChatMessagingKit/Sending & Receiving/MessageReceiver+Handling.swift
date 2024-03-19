@@ -494,6 +494,17 @@ extension MessageReceiver {
                     userDefaults[.lastDisplayNameUpdate] = Date(timeIntervalSince1970: TimeInterval(sentTimestamp / 1000))
                 }
                 contact.name = name
+                if let contactUpdate: Contact = Storage.shared.getContact(with: publicKey) {
+                    Storage.write(
+                        with: { transaction in
+                            contactUpdate.name = name
+                            Storage.shared.setContact(contactUpdate, using: transaction)
+                        },
+                        completion: {
+                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                        }
+                    )
+                }
             }
         }
         // Profile picture & profile key

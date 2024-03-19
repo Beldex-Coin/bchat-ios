@@ -91,6 +91,26 @@ final class ConversationTitleView : UIView {
                 let displayName: String = ((Storage.shared.getContact(with: bchatID)?.displayName(for: .regular)) ?? bchatID)
                 let middleTruncatedHexKey: String = "\(bchatID.prefix(4))...\(bchatID.suffix(4))"
                 result = (displayName == bchatID ? middleTruncatedHexKey : displayName)
+                
+                if BNSBool.isFromBNS {
+                    result = (displayName == bchatID) ? BNSBool.bnsName : displayName
+                    if displayName == bchatID {
+                        if let contact: Contact = Storage.shared.getContact(with: bchatID) {
+                            Storage.write(
+                                with: { transaction in
+                                    contact.name = BNSBool.bnsName
+                                    Storage.shared.setContact(contact, using: transaction)
+                                    BNSBool.isFromBNS = false
+                                    BNSBool.bnsName = ""
+                                },
+                                completion: {
+                                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                                }
+                            )
+                        }
+                    }
+                }
+                
             }
             return result
         }

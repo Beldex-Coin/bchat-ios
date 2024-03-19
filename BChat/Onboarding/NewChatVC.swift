@@ -160,6 +160,8 @@ class NewChatVC: BaseVC,UITextViewDelegate {
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
                 SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
                     modalActivityIndicator.dismiss {
+                        BNSBool.isFromBNS = true
+                        BNSBool.bnsName = bnsNameOrPublicKey
                         self?.startNewDM(with: bchatID)
                     }
                 }.catch { error in
@@ -207,4 +209,9 @@ extension UITextView{
         let placeholderLabel = self.viewWithTag(222) as! UILabel
         placeholderLabel.isHidden = !self.text.isEmpty
     }
+}
+
+struct BNSBool {
+    static var isFromBNS = false
+    static var bnsName = ""
 }
