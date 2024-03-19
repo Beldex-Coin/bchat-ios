@@ -39,7 +39,7 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sampleSwitch.isUserInteractionEnabled = false
+//        sampleSwitch.isUserInteractionEnabled = false
         self.navigationController?.isNavigationBarHidden = true
         if isLightMode {
             sampleSwitch.isOn = false

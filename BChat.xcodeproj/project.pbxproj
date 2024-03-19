@@ -351,6 +351,7 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		810B9A742BA177AA008CB61A /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B9A732BA177AA008CB61A /* HomeTableViewCell.swift */; };
 		810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */; };
 		810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */; };
 		810E87882B5919ED001133F9 /* ConfirmSendingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */; };
@@ -1521,6 +1522,7 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		810B9A732BA177AA008CB61A /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSuccessVC.swift; sourceTree = "<group>"; };
 		810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiatingTransactionVC.swift; sourceTree = "<group>"; };
 		810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSendingVC.swift; sourceTree = "<group>"; };
@@ -2931,6 +2933,7 @@
 				81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */,
 				8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */,
 				8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */,
+				810B9A732BA177AA008CB61A /* HomeTableViewCell.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5780,6 +5783,7 @@
 				4C586926224FAB83003FD070 /* AVAudioSession+OWS.m in Sources */,
 				6098CAB72A207DAB005A5502 /* MyWalletSettingsVC.swift in Sources */,
 				C331FFF42558FF0300070591 /* PNOptionView.swift in Sources */,
+				810B9A742BA177AA008CB61A /* HomeTableViewCell.swift in Sources */,
 				4C4AE6A1224AF35700D4AF6F /* SendMediaNavigationController.swift in Sources */,
 				45F32C222057297A00A300D5 /* MediaDetailViewController.m in Sources */,
 				812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */,

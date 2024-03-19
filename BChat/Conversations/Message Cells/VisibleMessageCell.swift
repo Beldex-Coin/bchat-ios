@@ -138,9 +138,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         switch (direction, AppModeManager.shared.currentAppMode) {
       //  case (.outgoing, .dark), (.incoming, .light): return .black
         case (.outgoing, .dark): return .white
-        case (.incoming, .dark): return .white
+        case (.incoming, .dark): return Colors.titleColor5//.white
         case (.outgoing, .light): return .white
-        case (.incoming, .light): return .black
+        case (.incoming, .light): return Colors.titleColor5//.black
         default: return .white
         }
     }
@@ -243,7 +243,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewTopConstraint.constant = (viewItem.senderName == nil) ? 0 : VisibleMessageCell.authorLabelBottomSpacing
         bubbleViewRightConstraint1.isActive = (direction == .outgoing)
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
-        bubbleView.backgroundColor = (direction == .incoming) ? Colors.bchatMessageRequestsBubble : Colors.sentMessageBackground
+        bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor/*Colors.bchatMessageRequestsBubble*/ : Colors.bothGreenColor/*Colors.sentMessageBackground*/
         updateBubbleViewCorners()
         // Content view
         populateContentView(for: viewItem, message: message)
@@ -462,8 +462,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath
-        bubbleView.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
-        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
+        bubbleView.layer.cornerRadius = 22//VisibleMessageCell.largeCornerRadius
+//        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
     }
     
     override func prepareForReuse() {

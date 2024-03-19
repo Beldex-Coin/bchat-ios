@@ -211,8 +211,6 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
-//        let vc = NewDesignSecretGroupVC()
-//        self.navigationController?.pushViewController(vc, animated: true)
         if seedcopy == true {
 //            guard selectedOptionView != nil else {
 //                let title = NSLocalizedString("vc_pn_mode_no_option_picked_modal_title", comment: "")

@@ -46,7 +46,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     }()
     lazy var cameraButtonContainer = container(for: cameraButton)
     lazy var mainButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "attachment"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_attachment_new"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("accessibility_expanding_attachments_button", comment: "")
         return result
     }()

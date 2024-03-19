@@ -7,7 +7,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 22)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -17,16 +17,16 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     private lazy var groupNameTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(23)
         result.attributedPlaceholder = NSAttributedString(
             string: "Enter Group name",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         return result
     }()
@@ -34,25 +34,25 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     private lazy var separatorView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColorNew
         return stackView
     }()
     
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.layer.cornerRadius = 24
         result.setLeftPaddingPoints(23)
         result.attributedPlaceholder = NSAttributedString(
             string: "Search Contact",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.rightViewMode = UITextField.ViewMode.always
         return result
     }()
@@ -67,19 +67,16 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
        return result
    }()
     
-    
-    
     let tableView : UITableView = {
         let t = UITableView()
         t.translatesAutoresizingMaskIntoConstraints = false
         return t
     }()
     
-    
     private lazy var bottomButtonView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x000000)
+        stackView.backgroundColor = Colors.mainBackGroundColor3
         return stackView
     }()
     
@@ -89,7 +86,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
 //        button.backgroundColor = UIColor(hex: 0x00BD40)
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -107,8 +104,8 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        
+        view.backgroundColor = Colors.mainBackGroundColor4
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Secret Group"
         
@@ -118,7 +115,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         groupNameTextField.delegate = self
         searchTextField.delegate = self
-            
+        
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 14.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -179,9 +176,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
             filterDict = mainDict
         }
-        
-        
-        
         tableView.reloadData()
     }
     
@@ -196,13 +190,14 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CreateSecretGroupTableViewCell") as! CreateSecretGroupTableViewCell
-        let publicKey = Array(filterDict.keys)[indexPath.row]//filteredContacts[indexPath.row]
+        let publicKey = Array(filterDict.keys)[indexPath.row]
         cell.publicKey = publicKey
         let isSelected = selectedContacts.contains(publicKey)
         cell.selectionButton.isSelected = isSelected
         cell.update()
         return cell
     }
+    
     fileprivate func tableViewWasTouched(_ tableView: UITableView) {
         if groupNameTextField.isFirstResponder {
             groupNameTextField.resignFirstResponder()
@@ -218,7 +213,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         cell.update()
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = groupNameTextField.text!
@@ -261,8 +255,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
 
     // MARK: Button Actions :-
     @objc private func createButtonTapped() {
-//        let vc = NewDesignSettingsVC()
-//        self.navigationController?.pushViewController(vc, animated: true)
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))

@@ -797,3 +797,13 @@
 "MY_WALLET_TITLE" = "My Wallet";
 "PLEASE_ENTER_AMOUNT_TEXT" = "Pls Enter amount";
 "PLEASE_ENTER_PROPER_AMOUNT_TEXT" = "Pls Enter Proper amount";
+
+
+// Clear Data
+"CLEAR_ALL_DATA" = "Clear all data";
+"CLEAR_DATA_FROM_DEVICE" = "Clear Data From Device";
+
+// Alert Recovery Seed
+"NEVER_SHARE_YOUR_SEED_WITH_ANYONE" = "Never share your seed with anyone!";
+"RECOVERY_SEED_DISCRIPTION" = "Your seed can be used to restore your account. Never share it with anyone or store a digital copy of it. Never enter your seed in any other website or application other than BChat or Beldex official wallet.";
+"RECOVERY_SEED_DISCRIPTION2" = "Check your surroundings to ensure no one is overlooking. Do you want to proceed?";

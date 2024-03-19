@@ -282,7 +282,6 @@ class PersonalSettingsTableCell: UITableViewCell {
         return imageView
     }()
     
-    var index = 0
     
     // MARK: - Initialization
     
@@ -312,11 +311,6 @@ class PersonalSettingsTableCell: UITableViewCell {
             arrowImage.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -25),
             arrowImage.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
         ])
-//        if index == 0 {
-//            self.logoImage.bottomAnchor
-//        } else {
-//
-//        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

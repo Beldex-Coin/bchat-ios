@@ -35,7 +35,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     private lazy var messageLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "No Pending message Requests!"
@@ -73,9 +73,9 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x111119)
+        view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Message Request", style: .plain, target: nil, action: nil)
-        
+//        self.title = "Message Request"
         
         view.addSubview(tableView)
         
@@ -191,6 +191,15 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let thread = self.thread(at: indexPath.row) else { return }
+        
+        let conversationVC = ConversationVC(thread: thread)
+        self.navigationController?.pushViewController(conversationVC, animated: true)
     }
     
     
@@ -513,132 +522,7 @@ extension NewMessageRequestVC {
                 // Send a sync message with the details of the contact
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                 
-                // Hide the 'messageRequestView' since the request has been approved and force a config
-                // sync to propagate the contact approval state (both must run on the main thread)
-//                DispatchQueue.main.async { [weak self] in
-//                    let messageRequestViewWasVisible: Bool = (self?.messageRequestView.isHidden == false)
-//
-////                    UIView.animate(withDuration: 0.3) {
-////                        self?.messageRequestView.isHidden = true
-////                        self?.scrollButtonMessageRequestsBottomConstraint?.isActive = false
-////                        self?.scrollButtonBottomConstraint?.isActive = true
-////
-////                        // Update the table content inset and offset to account for the dissapearance of
-////                        // the messageRequestsView
-////                        if messageRequestViewWasVisible {
-////                            let messageRequestsOffset: CGFloat = ((self?.messageRequestView.bounds.height ?? 0) + 16)
-////                            let oldContentInset: UIEdgeInsets = (self?.messagesTableView.contentInset ?? UIEdgeInsets.zero)
-////                            self?.messagesTableView.contentInset = UIEdgeInsets(
-////                                top: 0,
-////                                leading: 0,
-////                                bottom: max(oldContentInset.bottom - messageRequestsOffset, 0),
-////                                trailing: 0
-////                            )
-////                        }
-////                    }
-//
-//                    // Update UI
-//                    self?.updateNavBarButtons()
-//                    if let viewControllers: [UIViewController] = self?.navigationController?.viewControllers,
-//                       let messageRequestsIndex = viewControllers.firstIndex(where: { $0 is MessageRequestsViewController }),
-//                       messageRequestsIndex > 0 {
-//                        var newViewControllers = viewControllers
-//                        newViewControllers.remove(at: messageRequestsIndex)
-//                        self?.navigationController?.setViewControllers(newViewControllers, animated: false)
-//                    }
-//                }
             }
     }
-
-//    @objc func acceptMessageRequest() {
-//        let alert = UIAlertController(title: "", message: "Are you sure you want to accept this request?", preferredStyle: .alert)
-//        let Cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-//        })
-//        alert.addAction(Cancel)
-//        let Accept = UIAlertAction(title: "Accept", style: .default, handler: { action in
-//
-//            let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
-//                for: self.thread,
-//                isNewThread: false,
-//                timestamp: NSDate.millisecondTimestamp()
-//            )
-//
-//            // Show an error indicating that approving the thread failed
-//            promise.catch(on: DispatchQueue.main) { [weak self] _ in
-//                let alert = UIAlertController(title: "BChat", message: NSLocalizedString("MESSAGE_REQUESTS_APPROVAL_ERROR_MESSAGE", comment: ""), preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//                self?.present(alert, animated: true, completion: nil)
-//            }
-//            promise.retainUntilComplete()
-//
-//        })
-//        Cancel.setValue(UIColor.lightGray, forKey: "titleTextColor")
-//        Accept.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
-//        alert.addAction(Accept)
-//        DispatchQueue.main.async(execute: {
-//            self.present(alert, animated: true)
-//        })
-//    }
-    
-//    @objc func deleteMessageRequest() {
-//        guard let uniqueId: String = thread.uniqueId else { return }
-//        let alert = UIAlertController(title: "", message: "Declining this request will permanently block this user, are you sure?", preferredStyle: .alert)
-//        let ok = UIAlertAction(title: "Cancel", style: .default, handler: { action in
-//        })
-//        alert.addAction(ok)
-//        let cancel = UIAlertAction(title: "Decline", style: .default, handler: { action in
-//            // Delete the request
-//            Storage.write(
-//                with: { [weak self] transaction in
-//                    Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
-//                    
-//                    // Update the contact
-//                    if let contactThread: TSContactThread = self?.thread as? TSContactThread {
-//                        let bchatId: String = contactThread.contactBChatID()
-//                        
-//                        if let contact: Contact = Storage.shared.getContact(with: bchatId) {
-//                            // Stop observing the `BlockListDidChange` notification (we are about to pop the screen
-//                            // so showing the banner just looks buggy)
-//                            if let strongSelf = self {
-//                                NotificationCenter.default.removeObserver(strongSelf, name: .contactBlockedStateChanged, object: nil)
-//                            }
-//                            
-//                            contact.isApproved = false
-//                            contact.isBlocked = true
-//                            
-//                            // Note: We set this to true so the current user will be able to send a
-//                            // message to the person who originally sent them the message request in
-//                            // the future if they unblock them
-//                            contact.didApproveMe = true
-//                            
-//                            Storage.shared.setContact(contact, using: transaction)
-//                        }
-//                    }
-//                    
-//                    // Delete all thread content
-//                    self?.thread.removeAllThreadInteractions(with: transaction)
-//                },
-//                completion: { [weak self] in
-//                    // Force a config sync and pop to the previous screen
-//                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-//                    
-//                    // Remove the thread after the config message is sent.
-//                    // Otherwise the blocked user won't be included in the
-//                    // config message.
-//                    self?.thread.remove()
-//                    
-//                    DispatchQueue.main.async {
-//                        self?.navigationController?.popViewController(animated: true)
-//                    }
-//                }
-//            )
-//        })
-//        ok.setValue(UIColor.lightGray, forKey: "titleTextColor")
-//        cancel.setValue(UIColor.red, forKey: "titleTextColor")
-//        alert.addAction(cancel)
-//        DispatchQueue.main.async(execute: {
-//            self.present(alert, animated: true)
-//        })
-//    }
     
 }

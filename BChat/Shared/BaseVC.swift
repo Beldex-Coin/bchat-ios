@@ -51,7 +51,7 @@ class BaseVC : UIViewController {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.navigationBarBackground
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance

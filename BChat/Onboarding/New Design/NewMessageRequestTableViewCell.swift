@@ -38,26 +38,16 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
-       stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor
        stackView.layer.cornerRadius = 30
        return stackView
    }()
     
     private lazy var profileImageView = ProfilePictureView()
-//    {
-//       let result = UIImageView()
-//       result.image = UIImage(named: "ic_test")
-//        result.set(.width, to: 36)
-//        result.set(.height, to: 36)
-//       result.layer.masksToBounds = true
-//       result.contentMode = .scaleToFill
-//        result.layer.cornerRadius = 18
-//       return result
-//   }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
-       result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
        result.font = Fonts.boldOpenSans(ofSize: 14)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -116,7 +106,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-        nameLabel.text = "Contact 1"
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, buttonStackView)
@@ -152,8 +141,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
             declineButton.widthAnchor.constraint(equalToConstant: 32),
             acceptButton.heightAnchor.constraint(equalToConstant: 32),
             acceptButton.widthAnchor.constraint(equalToConstant: 32)
-            
-            
         ])
     }
     
@@ -162,24 +149,15 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     private func update() {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
-        
-        
-        
-        
         profileImageView.update(for: thread)
         nameLabel.text = getDisplayName()
-        
-        
-        
     }
     
     private func getDisplayName() -> String {
-      
-                let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
-                let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
-                let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
-                return (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
-           
+        let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
+        let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
+        let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
+        return (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
     }
     
     

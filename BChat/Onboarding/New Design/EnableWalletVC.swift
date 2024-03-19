@@ -9,10 +9,10 @@ class EnableWalletVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.seedBackgroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x24242F).cgColor
+        stackView.layer.borderColor = Colors.noBorderColor3.cgColor
         return stackView
     }()
     lazy var greenDotView1: UIView = {
@@ -25,7 +25,7 @@ class EnableWalletVC: BaseVC {
     private lazy var infoLabel1: UILabel = {
         let result = UILabel()
         result.text = "You can Send and Receive BDX with the BChat integrated wallet."
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +43,7 @@ class EnableWalletVC: BaseVC {
     private lazy var infoLabel2: UILabel = {
         let result = UILabel()
         result.text = "The 'Pay as you Chat' feature is an easy-pay feature. You can send BDX to your friends right from the chat window."
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +61,7 @@ class EnableWalletVC: BaseVC {
     private lazy var infoLabel3: UILabel = {
         let result = UILabel()
         result.text = "The BChat wallet is beta. Constant updates are released in newer versions of the app to enhance the integrated wallet functionality."
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +79,7 @@ class EnableWalletVC: BaseVC {
     private lazy var infoLabel4: UILabel = {
         let result = UILabel()
         result.text = "You can enable or disable the wallet using the Start wallet feature under Settings > Wallet settings."
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -100,7 +100,7 @@ class EnableWalletVC: BaseVC {
     private lazy var confirmationLabel: UILabel = {
         let result = UILabel()
         result.text = "Yes, I Understand"
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 15)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -120,9 +120,9 @@ class EnableWalletVC: BaseVC {
         button.setTitle("Enable Wallet", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 15)
-        button.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+        button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .selected)
         button.addTarget(self, action: #selector(enableButtonTapped), for: .touchUpInside)
         return button
@@ -131,7 +131,7 @@ class EnableWalletVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor4
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
         
 //        let yourBackImage = UIImage(named: "ic_back_newNavBar")
@@ -151,16 +151,16 @@ class EnableWalletVC: BaseVC {
         self.enableButton.isSelected = false
         
         let text = "You can Send and Receive BDX with the BChat integrated wallet."
-        let attributedText = text.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Send and Receive BDX")
+        let attributedText = text.setColor(Colors.bothGreenColor, ofSubstring: "Send and Receive BDX")
         infoLabel1.attributedText = attributedText
         
         
         let text2 = "The 'Pay as you Chat' feature is an easy-pay feature. You can send BDX to your friends right from the chat window."
-        let attributedText2 = text2.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Pay as you Chat")
+        let attributedText2 = text2.setColor(Colors.bothGreenColor, ofSubstring: "Pay as you Chat")
         infoLabel2.attributedText = attributedText2
         
         let text4 = "You can enable or disable the wallet using the Start wallet feature under Settings > Wallet settings."
-        let attributedText4 = text4.setColor(UIColor(hex: 0x00BD40), ofSubstring: "Settings > Wallet settings.")
+        let attributedText4 = text4.setColor(Colors.bothGreenColor, ofSubstring: "Settings > Wallet settings.")
         infoLabel4.attributedText = attributedText4
         
         
@@ -238,9 +238,9 @@ class EnableWalletVC: BaseVC {
         sender.isSelected = !sender.isSelected
         self.enableButton.isSelected = self.selectionButton.isSelected
         if self.enableButton.isSelected {
-            self.enableButton.backgroundColor = UIColor(hex: 0x00BD40)
+            self.enableButton.backgroundColor = Colors.bothGreenColor
         } else {
-            self.enableButton.backgroundColor = UIColor(hex: 0x1C1C26)
+            self.enableButton.backgroundColor = Colors.cellGroundColor2
         }
     }
    

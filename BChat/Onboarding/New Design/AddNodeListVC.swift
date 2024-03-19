@@ -4,35 +4,32 @@ import UIKit
 import Alamofire
 
 class AddNodeListVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Add Node"
         return result
     }()
     
-    
-    
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -43,9 +40,9 @@ class AddNodeListVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -61,7 +58,6 @@ class AddNodeListVC: BaseVC {
         return result
     }()
     
-    
     lazy var topStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -75,84 +71,84 @@ class AddNodeListVC: BaseVC {
     
     private lazy var nodeAddressTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Address",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor]
         )
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         return result
     }()
     
     private lazy var nodePortTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Port",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor]
         )
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         return result
     }()
     
     private lazy var nodeNameTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Name (optional)",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x77778B)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeHolderColor]
         )
         return result
     }()
     
     private lazy var userNameTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "User Name (optional)",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x77778B)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeHolderColor]
         )
         return result
     }()
     
     private lazy var passwordTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Password (optional)",
-            attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0x77778B)]
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.placeHolderColor]
         )
         return result
     }()
@@ -164,17 +160,17 @@ class AddNodeListVC: BaseVC {
         button.setTitle("Test", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var resultLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Success"
@@ -182,30 +178,30 @@ class AddNodeListVC: BaseVC {
     }()
     
     lazy var resultImageView: UIImageView = {
-       let result = UIImageView()
-       result.image = UIImage(named: "ic_success_node")//ic_error_node
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_success_node")//ic_error_node
         result.set(.width, to: 11)
         result.set(.height, to: 11)
-       result.layer.masksToBounds = true
-       result.contentMode = .scaleAspectFit
-       return result
-   }()
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
     
     var testResultFlag = false
     
     //MAINNET
     var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
     //TESTNET
-//    var nodeArray = ["149.102.156.174:19095"]
+    //    var nodeArray = ["149.102.156.174:19095"]
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.5)
         
-        var darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        var blurView = UIVisualEffectView(effect: darkBlur)
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = view.bounds
         view.addSubview(blurView)
         
@@ -223,7 +219,6 @@ class AddNodeListVC: BaseVC {
         resultImageView.isHidden = true
         
         NSLayoutConstraint.activate([
-//            backGroundView.heightAnchor.constraint(equalToConstant: 600),
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
@@ -256,17 +251,13 @@ class AddNodeListVC: BaseVC {
             resultImageView.leadingAnchor.constraint(equalTo: resultLabel.trailingAnchor, constant: 4.56),
             resultImageView.centerYAnchor.constraint(equalTo: resultLabel.centerYAnchor),
             
-//            buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 21),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -21),
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
-            
         ])
-        
-        
     }
     
     
@@ -298,7 +289,7 @@ class AddNodeListVC: BaseVC {
                     if let timestamp = responseObject.result?.block_header?.timestamp, timestamp > 0 {
                         self.resultLabel.isHidden = false
                         self.resultImageView.isHidden = false
-                        self.resultLabel.textColor = UIColor(hex: 0x00BD40)
+                        self.resultLabel.textColor = Colors.bothGreenColor
                         self.resultLabel.text = "Success"
                         self.resultImageView.image = UIImage(named: "ic_success_node")
                         
@@ -306,7 +297,7 @@ class AddNodeListVC: BaseVC {
                     } else {
                         self.resultLabel.isHidden = false
                         self.resultImageView.isHidden = false
-                        self.resultLabel.textColor = UIColor(hex: 0xFF3E3E)
+                        self.resultLabel.textColor = Colors.bothRedColor
                         self.resultLabel.text = "Connection Error"
                         self.resultImageView.image = UIImage(named: "ic_error_node")
                         
@@ -322,7 +313,7 @@ class AddNodeListVC: BaseVC {
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {
-
+        
         if (nodeAddressTextField.text == "") {
             let alert = UIAlertController(title: "", message: "Please Enter Node Address", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -361,8 +352,7 @@ class AddNodeListVC: BaseVC {
                 self.present(alert, animated: true, completion: nil)
             }else {
                 
-                    self.nodeArray.append(host_port)
-                
+                self.nodeArray.append(host_port)
                 
                 SaveUserDefaultsData.SaveLocalNodelist = self.nodeArray
                 SaveUserDefaultsData.SelectedNode = self.nodeArray.last!
@@ -379,10 +369,4 @@ class AddNodeListVC: BaseVC {
     }
     
     
-    
-    
-    
-
-    
-
 }

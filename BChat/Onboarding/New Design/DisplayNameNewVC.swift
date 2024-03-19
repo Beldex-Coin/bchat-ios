@@ -9,7 +9,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 22)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -18,7 +18,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var subTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         //        button.backgroundColor = UIColor(hex: 0x00BD40)
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cellGroundColor3
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
@@ -40,12 +40,12 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.placeholder = "Enter name"
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(20)
         return result
@@ -61,7 +61,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
         
         self.title = "Display Name"
         self.titleLabel.text = "Set your Display Name"
@@ -98,7 +98,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         nameTextField.delegate = self
         nameTextField.returnKeyType = .done
         
-        continueButton.backgroundColor = UIColor(hex: 0x282836)
+        continueButton.backgroundColor = Colors.cellGroundColor3
         continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -168,10 +168,10 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = textField.text!
         if str.count == 0 {
-            continueButton.backgroundColor = UIColor(hex: 0x282836)
+            continueButton.backgroundColor = Colors.cellGroundColor3
             continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         }else {
-            continueButton.backgroundColor = UIColor(hex: 0x00BD40)
+            continueButton.backgroundColor = Colors.bothGreenColor
             continueButton.setTitleColor(.white, for: .normal)
         }
     }

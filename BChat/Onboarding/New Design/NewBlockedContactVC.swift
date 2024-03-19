@@ -26,9 +26,9 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.setTitle("Unblock selected", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.unlockButtonBackgroundColor//UIColor(hex: 0x282836)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0x00BD40), for: .normal)
+        button.setTitleColor(Colors.bothGreenColor, for: .normal)
         button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -44,7 +44,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Blocked contacts", style: .plain, target: nil, action: nil)
 
         self.updateRighBarButton(isSelectionEnable: self.isSelectionEnable)

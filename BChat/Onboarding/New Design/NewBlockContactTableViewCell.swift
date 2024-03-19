@@ -32,7 +32,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
-       stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor2
        stackView.layer.cornerRadius = 29
        return stackView
    }()
@@ -50,7 +50,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
-       result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor
        result.font = Fonts.boldOpenSans(ofSize: 14)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +62,10 @@ class NewBlockContactTableViewCell: UITableViewCell {
         button.setTitle("Unblock", for: .normal)
         button.titleLabel?.font = Fonts.OpenSans(ofSize: 12)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.unlockButtonBackgroundColor2
         button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)
         button.layer.cornerRadius = 15
-        button.setTitleColor(UIColor(hex: 0xEBEBEB), for: .normal)
+        button.setTitleColor(Colors.titleColor, for: .normal)
         return button
     }()
     
@@ -85,7 +85,6 @@ class NewBlockContactTableViewCell: UITableViewCell {
     var unblockCallback: (() -> Void)?
     
     func setUPLayout() {
-//        nameLabel.text = "Contact 1"
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, unblockButton)
@@ -120,7 +119,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     }
     
     @objc private func selectionButtonTapped(_ sender: UIButton) {
-//        sender.isSelected = !sender.isSelected
+
     }
     
 
