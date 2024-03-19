@@ -45,7 +45,8 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     private lazy var scannerImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "ic_Newqr") // Set the image if you have one
+        let logoImage = isLightMode ? "ic_scanner_dark" : "ic_Newqr"
+        imageView.image = UIImage(named: logoImage) // Set the image if you have one
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scannerimageViewTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
@@ -81,8 +82,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
-        view.backgroundColor = Colors.viewBackgroundColor
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Social group"
         self.titleLabel.text = "Join Social Group"
@@ -195,7 +195,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         }else {
             nextButton.isUserInteractionEnabled = true
             nextButton.backgroundColor = Colors.greenColor
-            nextButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+            nextButton.setTitleColor(UIColor.white, for: .normal)
         }
     }
     

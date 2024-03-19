@@ -9,7 +9,7 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.textColor
         result.font = Fonts.extraBoldOpenSans(ofSize: 24)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -18,9 +18,9 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
     private lazy var topView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.viewBackgroundColorSocialGroup
         stackView.layer.cornerRadius = 16
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 1
         return stackView
     }()
@@ -35,21 +35,21 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 16
-        stackView.backgroundColor = UIColor(hex: 0x282836)
+        stackView.backgroundColor = Colors.backgroundViewColor
         return stackView
     }()
     private lazy var rightView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 16
-        stackView.backgroundColor = UIColor(hex: 0x282836)
+        stackView.backgroundColor = Colors.backgroundViewColor
         return stackView
     }()
     private lazy var bottomView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x282836)
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.backgroundColor = Colors.backgroundViewColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 1
         return stackView
     }()
@@ -58,21 +58,21 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 16
         result.backgroundColor = .clear
-        result.textColor = UIColor(hex: 0xEBEBEB)
         result.font = Fonts.OpenSans(ofSize: 14)
         return result
     }()
     private lazy var chatIdDetailsButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("YOUR_CHAT_ID_NEW", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_NewID")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let logoImage = isLightMode ? "ic_yourChatid_details" : "ic_NewID"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 16, height: 13))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 9)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = Colors.backgroundViewColor
+        button.setTitleColor(Colors.textColor, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(isChatIdDetailsButtonTapped), for: .touchUpInside)
         return button
@@ -81,7 +81,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_Newqr", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_scanner_dark" : "ic_Newqr"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scannerImageViewTapped))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
@@ -92,8 +93,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         button.setTitle(NSLocalizedString("LETS_BCHAT_NEW", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
-        button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        button.backgroundColor = Colors.backgroundViewColor
+        button.setTitleColor(Colors.buttonTextColor, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(letsBChatButtonTapped), for: .touchUpInside)
         return button
@@ -104,7 +105,7 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "New Chat"
         self.titleLabel.text = NSLocalizedString("NEW_CHAT_NEW", comment: "")
@@ -175,8 +176,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         chatIdTextView.setPlaceholderChatNew()
         //Button Action
         letsBChatButton.isUserInteractionEnabled = false
-        letsBChatButton.backgroundColor = UIColor(hex: 0x282836)
-        letsBChatButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        letsBChatButton.backgroundColor = Colors.backgroundViewColor
+        letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -195,12 +196,12 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         let str = textView.text!
         if str.count == 0 {
             letsBChatButton.isUserInteractionEnabled = false
-            letsBChatButton.backgroundColor = UIColor(hex: 0x282836)
-            letsBChatButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            letsBChatButton.backgroundColor = Colors.backgroundViewColor
+            letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
             chatIdTextView.checkPlaceholderChatNew()
         }else {
             letsBChatButton.isUserInteractionEnabled = true
-            letsBChatButton.backgroundColor = UIColor(hex: 0x00BD40)
+            letsBChatButton.backgroundColor = Colors.greenColor
             letsBChatButton.setTitleColor(.white, for: .normal)
             chatIdTextView.checkPlaceholderChatNew()
         }

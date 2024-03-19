@@ -19,7 +19,7 @@ class SocialGroupCell: UICollectionViewCell {
     }()
     lazy var titleLable: UILabel = {
         let label = UILabel()
-        label.font = Fonts.OpenSans(ofSize: 12)
+        label.font = Fonts.semiOpenSans(ofSize: 11)
         label.textAlignment = .center
         label.textColor = Colors.textColor
         label.translatesAutoresizingMaskIntoConstraints = false
