@@ -116,7 +116,9 @@ public final class Colors : NSObject {
     @objc public static var cameraViewBackgroundColor: UIColor { UIColor(named: "cameraViewBackgroundColor")! }
     @objc public static var refreshNodePopUpBackgroundColor: UIColor { UIColor(named: "refreshNodePopUpBackgroundColor")! }
     @objc public static var popUpBackgroundColor: UIColor { UIColor(named: "popUpBackgroundColor")! }
-    
     @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
+    
+    @objc public static var viewBackgroundColorSocialGroup: UIColor { UIColor(named: "viewBackgroundColorSocialGroup")! }
+    @objc public static var letsBChatButtonColor: UIColor { UIColor(named: "letsBChatButtonColor")! }
     
 }

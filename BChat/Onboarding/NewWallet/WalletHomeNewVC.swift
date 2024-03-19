@@ -644,14 +644,23 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     var filteredAllTransactionarray : [TransactionItem] = []
     var filteredOutgoingTransactionarray : [TransactionItem] = []
     var filteredIncomingTransactionarray : [TransactionItem] = []
-    var transactionAllarray = [TransactionItem]()
-    var transactionSendarray = [TransactionItem]()
-    var transactionReceivearray = [TransactionItem]()
+    var transactionAllArray = [TransactionItem]()
+    var transactionSendArray = [TransactionItem]()
+    var transactionReceiveArray = [TransactionItem]()
     var isFilter = false
     var noTransaction = false
     
-    var groupedTransactions : [TransactionItem] = []
+    var groupedItemsAll: [String: [TransactionItem]] = [:]
+    var groupedItemsSend: [String: [TransactionItem]] = [:]
+    var groupedItemsReceived: [String: [TransactionItem]] = [:]
     
+    var sortedGroupedTransactionAllArray: [(key: String, value: [TransactionItem])] = []
+    var sortedGroupedTransactionSendArray: [(key: String, value: [TransactionItem])] = []
+    var sortedGroupedTransactionReceiveArray: [(key: String, value: [TransactionItem])] = []
+    
+    var filteredAllTransactionSortingArray: [(key: String, value: [TransactionItem])] = []
+    var filteredOutgoingTransactionSortingArray: [(key: String, value: [TransactionItem])] = []
+    var filteredIncomingTransactionSortingArray: [(key: String, value: [TransactionItem])] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1026,9 +1035,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
             datePickerView.minimumDate = nil
         }
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         
         walletSyncingBackgroundView.isHidden = false
         noTransactionsYetBackgroundView.isHidden = true
@@ -1086,9 +1095,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.closeWallet()
             init_syncing_wallet()
         }
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         tableView.reloadData()
     }
     
@@ -1357,7 +1366,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.isFromProgressStatusLabel.text = "Synchronized 100%"
             beldexLogoImg.image = UIImage(named: "ic_beldex_green")
             walletSyncingBackgroundView.isHidden = true
-            if self.transactionAllarray.count == 0 {
+            if self.transactionAllArray.count == 0 {
                 noTransactionsYetBackgroundView.isHidden = false
                 isFromFilterTransactionsHistoryBackgroundView.isHidden = true
             }else {
@@ -1508,9 +1517,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     @objc func isFromFilterImageButtonTapped(_ sender: UIButton){
         self.noTransaction = false
         self.isFilter = false
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         fromDate = ""
         toDate = ""
         if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
@@ -1599,9 +1608,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         toDateTextField.placeholder = "To Date"
         fromDateTextField.text = ""
         toDateTextField.text = ""
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         self.isFilter = false
         fromDate = ""
         toDate = ""
@@ -1618,9 +1627,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.fromcancelAction()
         self.tocancelAction()
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         if fromDate == "" || toDate == "" {
             self.isFilter = false
             let alert = UIAlertController(title: "", message: "Please select both From and To dates", preferredStyle: UIAlertController.Style.alert)
@@ -1634,7 +1643,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.isFilter = true
             if UserDefaults.standard.value(forKey: "btnclicked") != nil {
                 if UserDefaults.standard.value(forKey: "btnclicked")as! String == "outgoing" { // outgoing filter
-                    for element in transactionSendarray {
+                    for element in transactionSendArray {
                         let timeInterval = element.timestamp
                         let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                         let dateFormatter = DateFormatter()
@@ -1678,6 +1687,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                             }
                         }
                     }
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "dd-MM-yyyy"
+                    groupedItemsSend.removeAll()
+                    for item in filteredOutgoingTransactionarray {
+                        guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                            continue
+                        }
+                        let key = dateFormatter.string(from: date)
+                        if groupedItemsSend[key] == nil {
+                            groupedItemsSend[key] = [item]
+                        } else {
+                            groupedItemsSend[key]?.append(item)
+                        }
+                    }
+                    // Sort grouped items by keys (dates) in descending order
+                    filteredOutgoingTransactionSortingArray = groupedItemsSend.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+                    
                     self.tableView.reloadData()
                     let fromDateArray = fromDate.components(separatedBy: "-")
                     let FromDate = fromDateArray[0]
@@ -1697,7 +1724,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         }
                     }
                 } else  if UserDefaults.standard.value(forKey: "btnclicked")as! String == "incoming" { // income filetr
-                    for element in transactionReceivearray {
+                    for element in transactionReceiveArray {
                         let timeInterval = element.timestamp
                         let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                         let dateFormatter = DateFormatter()
@@ -1741,6 +1768,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                             }
                         }
                     }
+                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "dd-MM-yyyy"
+                    groupedItemsReceived.removeAll()
+                    for item in filteredIncomingTransactionarray {
+                        guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                            continue
+                        }
+                        let key = dateFormatter.string(from: date)
+                        if groupedItemsReceived[key] == nil {
+                            groupedItemsReceived[key] = [item]
+                        } else {
+                            groupedItemsReceived[key]?.append(item)
+                        }
+                    }
+                    // Sort grouped items by keys (dates) in descending order
+                    filteredIncomingTransactionSortingArray = groupedItemsReceived.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+                    
                     self.tableView.reloadData()
                     let fromDateArray = fromDate.components(separatedBy: "-")
                     let FromDate = fromDateArray[0]
@@ -1763,7 +1808,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     
                 }
             } else { // all filter
-                for element in transactionAllarray {
+                for element in transactionAllArray {
                     let timeInterval = element.timestamp
                     let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                     let dateFormatter = DateFormatter()
@@ -1807,6 +1852,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         }
                     }
                 }
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd-MM-yyyy"
+                groupedItemsAll.removeAll()
+                for item in filteredAllTransactionarray {
+                    guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                        continue
+                    }
+                    let key = dateFormatter.string(from: date)
+                    if groupedItemsAll[key] == nil {
+                        groupedItemsAll[key] = [item]
+                    } else {
+                        groupedItemsAll[key]?.append(item)
+                    }
+                }
+                // Sort grouped items by keys (dates) in descending order
+                filteredAllTransactionSortingArray = groupedItemsAll.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+                
                 self.tableView.reloadData()
                 let fromDateArray = fromDate.components(separatedBy: "-")
                 let FromDate = fromDateArray[0]
@@ -1880,9 +1943,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
             datePickerView.minimumDate = nil
         }
-        filteredAllTransactionarray = []
-        filteredOutgoingTransactionarray = []
-        filteredIncomingTransactionarray = []
+        filteredAllTransactionSortingArray = []
+        filteredOutgoingTransactionSortingArray = []
+        filteredIncomingTransactionSortingArray = []
         
         //All
         if self.incomingButton.isSelected && self.outgoingButton.isSelected {
@@ -1930,7 +1993,26 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return transactionAllarray.count
+        if self.noTransaction {
+            return 0
+        }else {
+            if isFromAllTransationFlag == true {
+                if self.isFilter {
+                    return filteredAllTransactionSortingArray.count
+                }
+                return sortedGroupedTransactionAllArray.count
+            }else if isFromSendTransationFlag == true{
+                if self.isFilter {
+                    return filteredOutgoingTransactionSortingArray.count
+                }
+                return sortedGroupedTransactionSendArray.count
+            }else{
+                if self.isFilter {
+                    return filteredIncomingTransactionSortingArray.count
+                }
+                return sortedGroupedTransactionReceiveArray.count
+            }
+        }
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.noTransaction {
@@ -1938,42 +2020,45 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
         if isFromAllTransationFlag == true {
             if self.isFilter {
-                if filteredAllTransactionarray.count == 0 {
+                if filteredAllTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
                 }
-                return filteredAllTransactionarray.count
+                return filteredAllTransactionSortingArray[section].value.count
             } else {
-                if transactionAllarray.count == 0 {
+                if sortedGroupedTransactionAllArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
                 }
-                return transactionAllarray.count
+                return sortedGroupedTransactionAllArray[section].value.count
             }
         }else if isFromSendTransationFlag == true {
             if self.isFilter {
-                if filteredOutgoingTransactionarray.count == 0 {
+                if filteredOutgoingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
                 }
-                return filteredOutgoingTransactionarray.count
+                return filteredOutgoingTransactionSortingArray[section].value.count
             } else {
-                if transactionSendarray.count == 0 {
+                if sortedGroupedTransactionSendArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
                 }
-                return transactionSendarray.count
+                return sortedGroupedTransactionSendArray[section].value.count
             }
         }else {
             if self.isFilter {
-                if filteredIncomingTransactionarray.count == 0 {
+                if filteredIncomingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
                 }
-                return filteredIncomingTransactionarray.count
+                return filteredIncomingTransactionSortingArray[section].value.count
             } else {
-                if transactionReceivearray.count == 0 {}
-                return transactionReceivearray.count
+                if sortedGroupedTransactionReceiveArray[section].value.count == 0 {
+                    noTransactionsYetBackgroundView.isHidden = false
+                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                }
+                return sortedGroupedTransactionReceiveArray[section].value.count
             }
         }
     }
@@ -1988,14 +2073,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
         
         if isFromAllTransationFlag == true {
-            if filteredAllTransactionarray.count > 0{
-                let responceData = filteredAllTransactionarray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+            if filteredAllTransactionSortingArray.count > 0{
+                let responceData = filteredAllTransactionSortingArray[indexPath.section].value
+                let valueResponce = responceData[indexPath.row]
+                let timeInterval  = valueResponce.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.received{
+                cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
                 }else{
@@ -2003,13 +2089,17 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.directionLogoImage.image = UIImage(named: "ic_receive")
                 }
             }else{
-                let responceData = transactionAllarray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+                let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
+                let valueResponce = responceData[indexPath.row]
+                let timeInterval  = valueResponce.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "dd-MMM-yyyy"
+                dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.received{
+                cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
                 }else{
@@ -2018,14 +2108,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         }else if isFromSendTransationFlag == true {
-            if filteredOutgoingTransactionarray.count > 0{
-                let responceData = filteredOutgoingTransactionarray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+            if filteredOutgoingTransactionSortingArray.count > 0{
+                let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
+                let valueResponce = responceData[indexPath.row]
+                let timeInterval  = valueResponce.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.sent{
+                cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.sent{
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
                 }else{
@@ -2033,13 +2124,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
                 }
             } else {
-                let responceData = transactionSendarray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+                let responceData = sortedGroupedTransactionSendArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
+                let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.sent{
+                cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
+                if transaction.direction != BChat_Messenger.TransactionDirection.sent{
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
                 }else{
@@ -2048,14 +2140,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         }else {
-            if filteredIncomingTransactionarray.count > 0{
-                let responceData = filteredIncomingTransactionarray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+            if filteredIncomingTransactionSortingArray.count > 0{
+                let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
+                let valueResponce = responceData[indexPath.row]
+                let timeInterval  = valueResponce.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.received{
+                cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: "ic_receive")
                 }else{
@@ -2063,13 +2156,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.directionLogoImage.image = UIImage(named: "ic_receive")
                 }
             } else {
-                let responceData = transactionReceivearray[indexPath.row]
-                let timeInterval  = responceData.timestamp
+                let responceData = sortedGroupedTransactionReceiveArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
+                let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
-                cell.balanceAmountLabel.text = Double(responceData.amount)!.removeZerosFromEnd()
-                if responceData.direction != BChat_Messenger.TransactionDirection.received{
+                cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
+                if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: "ic_receive")
                 }else{
@@ -2094,8 +2188,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         LongdateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
         
         if isFromAllTransationFlag == true{
-            if filteredAllTransactionarray.count > 0{
-                let transaction = filteredAllTransactionarray[indexPath.row]
+            if filteredAllTransactionSortingArray.count > 0{
+                let responceData = filteredAllTransactionSortingArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2127,7 +2222,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
                 }
             }else{
-                let transaction = transactionAllarray[indexPath.row]
+                let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2160,8 +2256,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         }else if isFromSendTransationFlag == true{
-            if filteredOutgoingTransactionarray.count > 0{
-                let transaction = filteredOutgoingTransactionarray[indexPath.row]
+            if filteredOutgoingTransactionSortingArray.count > 0{
+                let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2193,7 +2290,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
                 }
             }else{
-                let transaction = transactionSendarray[indexPath.row]
+                let responceData = sortedGroupedTransactionSendArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2226,8 +2324,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         }else{
-            if filteredIncomingTransactionarray.count > 0{
-                let transaction = filteredIncomingTransactionarray[indexPath.row]
+            if filteredIncomingTransactionSortingArray.count > 0{
+                let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2259,7 +2358,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
                 }
             }else{
-                let transaction = transactionReceivearray[indexPath.row]
+                let responceData = sortedGroupedTransactionReceiveArray[indexPath.section].value
+                let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
                 let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
                 let dateString = dateFormatter.string(from: date as Date)
@@ -2307,16 +2407,26 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         footerView.layer.cornerRadius = 28
         footerView.layer.masksToBounds = true
         footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-       
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yyyy"
-        dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
-        let timeInterval  = transactionAllarray[section].timestamp
-        let date = NSDate(timeIntervalSince1970: TimeInterval(timeInterval))
-        let dateString = dateFormatter.string(from: date as Date)
-        
         let label = UILabel()
-        label.text = formatDateString(dateString)
+        if isFromAllTransationFlag == true {
+            if self.isFilter {
+                label.text = formatDateString(filteredAllTransactionSortingArray[section].key)
+            }else {
+                label.text = formatDateString(sortedGroupedTransactionAllArray[section].key)
+            }
+        }else if isFromSendTransationFlag == true{
+            if self.isFilter {
+                label.text = formatDateString(filteredOutgoingTransactionSortingArray[section].key)
+            }else {
+                label.text = formatDateString(sortedGroupedTransactionSendArray[section].key)
+            }
+        }else{
+            if self.isFilter {
+                label.text = formatDateString(filteredIncomingTransactionSortingArray[section].key)
+            }else {
+                label.text = formatDateString(sortedGroupedTransactionReceiveArray[section].key)
+            }
+        }
         label.textColor = .white
         label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.semiOpenSans(ofSize: 14)
@@ -2331,43 +2441,92 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     func sortAndGroupTransactions() {
-//        groupedTransactions = Dictionary(grouping: transactionAllarray, by: { timestampToDate(Int($0.timestamp)) }).values.map { $0 }
-        // Reload your table view data
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
         
-        groupedTransactions = transactionAllarray.sorted { $0.timestamp > $1.timestamp }
-        for timestmp in groupedTransactions {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd-MMM-yyyy"
-            dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
-            let date = NSDate(timeIntervalSince1970: TimeInterval(timestmp.timestamp))
-            let dateString = dateFormatter.string(from: date as Date)
-//            print("--Date-->",dateString)
+        //All
+        groupedItemsAll.removeAll()
+        for item in transactionAllArray {
+            guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                continue
+            }
+            let key = dateFormatter.string(from: date)
+            if groupedItemsAll[key] == nil {
+                groupedItemsAll[key] = [item]
+            } else {
+                groupedItemsAll[key]?.append(item)
+            }
         }
+        // Sort grouped items by keys (dates) in descending order
+        sortedGroupedTransactionAllArray = groupedItemsAll.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+        // Print and display the sorted grouped items
+        for (key, items) in sortedGroupedTransactionAllArray {
+            for item in items {
+                print("Date list-------->:", item.newtimestamp)
+            }
+        }
+        
+        //Received
+        groupedItemsReceived.removeAll()
+        for item in transactionReceiveArray {
+            guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                continue
+            }
+            let key = dateFormatter.string(from: date)
+            if groupedItemsReceived[key] == nil {
+                groupedItemsReceived[key] = [item]
+            } else {
+                groupedItemsReceived[key]?.append(item)
+            }
+        }
+        sortedGroupedTransactionReceiveArray = groupedItemsReceived.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+        
+        //Sending
+        groupedItemsSend.removeAll()
+        for item in transactionSendArray {
+            guard let date = dateFormatter.date(from: item.newtimestamp) else {
+                continue
+            }
+            let key = dateFormatter.string(from: date)
+            if groupedItemsSend[key] == nil {
+                groupedItemsSend[key] = [item]
+            } else {
+                groupedItemsSend[key]?.append(item)
+            }
+        }
+        sortedGroupedTransactionSendArray = groupedItemsSend.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
+        
+        
         tableView.reloadData()
     }
 
-    // Helper function to convert timestamp to date (customize based on your needs)
-    func timestampToDate(_ timestamp: Int) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM yyyy" // Customize the date format
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        return dateFormatter.string(from: date)
-    }
-    
     func formatDateString(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-yyyy"  // Adjust the format based on your date string
+        dateFormatter.dateFormat = "dd-MM-yyyy"  // Adjust the format based on your date string
         guard let date = dateFormatter.date(from: dateString) else {
             return "Invalid Date"
         }
         let calendar = Calendar.current
+        let currentDate = Date()
         if calendar.isDateInToday(date) {
             return "Today"
         } else if calendar.isDateInYesterday(date) {
             return "Yesterday"
         } else {
-            dateFormatter.dateFormat = "MMM, yyyy"
-            return dateFormatter.string(from: date)
+            let components = calendar.dateComponents([.year, .month, .day], from: date, to: currentDate)
+            if let year = components.year, year == 0, let month = components.month, month == 0 {
+                // Dates within the current month, calculate the number of days ago
+                if let day = components.day {
+                    return "\(day) days ago"
+                } else {
+                    return "Invalid Date"
+                }
+            } else {
+                // Dates in previous months, display month and year only
+                let monthYearFormatter = DateFormatter()
+                monthYearFormatter.dateFormat = "MMM,yyyy"
+                return monthYearFormatter.string(from: date)
+            }
         }
     }
     
@@ -2544,25 +2703,26 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
     
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
-        transactionAllarray = history.all
-        transactionSendarray = history.send
-        transactionReceivearray = history.receive
+        transactionAllArray = history.all
+        transactionSendArray = history.send
+        transactionReceiveArray = history.receive
+        print("+++++",transactionAllArray)
         self.mainBalance = balance_modify
         DispatchQueue.main.async { [self] in
-            self.transactionAllarray = history.all
-            self.transactionSendarray = history.send
-            self.transactionReceivearray = history.receive
+            self.transactionAllArray = history.all
+            self.transactionSendArray = history.send
+            self.transactionReceiveArray = history.receive
             if SaveUserDefaultsData.WalletRestoreHeight == "" {
                 let lastElementHeight = DateHeight.getBlockHeight.last
                 let height = lastElementHeight!.components(separatedBy: ":")
                 let restoreHeightempty = UInt64("\(height[1])")!
-                self.transactionAllarray = self.transactionAllarray.filter{$0.blockHeight >= restoreHeightempty}
-                self.transactionSendarray = self.transactionSendarray.filter{$0.blockHeight >= restoreHeightempty}
-                self.transactionReceivearray = self.transactionReceivearray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionAllArray = self.transactionAllArray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionSendArray = self.transactionSendArray.filter{$0.blockHeight >= restoreHeightempty}
+                self.transactionReceiveArray = self.transactionReceiveArray.filter{$0.blockHeight >= restoreHeightempty}
             } else {
-                self.transactionAllarray = self.transactionAllarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
-                self.transactionSendarray = self.transactionSendarray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
-                self.transactionReceivearray = self.transactionReceivearray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionAllArray = self.transactionAllArray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionSendArray = self.transactionSendArray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
+                self.transactionReceiveArray = self.transactionReceiveArray.filter{$0.blockHeight >= UInt64(SaveUserDefaultsData.WalletRestoreHeight)!}
             }
             if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                 selectedDecimal = SaveUserDefaultsData.SelectedDecimal
@@ -2604,7 +2764,7 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
             
 //            self.tableView.reloadData()
             sortAndGroupTransactions()
-            if self.transactionAllarray.count == 0 {
+            if self.transactionAllArray.count == 0 {
                 noTransactionsYetBackgroundView.isHidden = false
                 isFromFilterTransactionsHistoryBackgroundView.isHidden = true
             }else {
