@@ -20,9 +20,9 @@ public final class VoiceMessageView : UIView {
     }()
 
     private lazy var toggleImageView: UIImageView = {
-        let result = UIImageView(image: UIImage(named: "Play"))
-        result.set(.width, to: 8)
-        result.set(.height, to: 8)
+        let result = UIImageView(image: UIImage(named: "ic_playNew"))
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
         result.contentMode = .scaleAspectFit
         return result
     }()
@@ -36,7 +36,7 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabelContainer: UIView = {
         let result = UIView()
-        result.backgroundColor = .white
+        result.backgroundColor = .clear//.white
         result.layer.masksToBounds = true
         result.set(.height, to: VoiceMessageView.toggleContainerSize)
         result.set(.width, to: 44)
@@ -45,8 +45,8 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabel: UILabel = {
         let result = UILabel()
-        result.textColor = .black
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.textColor = .white//.black
+        result.font = Fonts.OpenSans(ofSize: 11)
         result.text = "0:00"
         return result
     }()
@@ -60,9 +60,18 @@ public final class VoiceMessageView : UIView {
         result.textAlignment = .center
         return result
     }()
+    
+    private lazy var audioWavesImageView: UIImageView = {
+        let result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        result.set(.height, to: 24)
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    
 
     // MARK: Settings
-    private static let width: CGFloat = 160
+    private static let width: CGFloat = 200//160
     private static let toggleContainerSize: CGFloat = 20
     private static let inset = Values.smallSpacing
 
@@ -88,18 +97,21 @@ public final class VoiceMessageView : UIView {
         let inset = VoiceMessageView.inset
         // Width & height
         set(.width, to: VoiceMessageView.width)
+        set(.height, to: 44)
         // Toggle
         let toggleContainer = UIView()
-        toggleContainer.backgroundColor = .white
+        toggleContainer.backgroundColor = .clear//.white
         toggleContainer.set(.width, to: toggleContainerSize)
         toggleContainer.set(.height, to: toggleContainerSize)
         toggleContainer.addSubview(toggleImageView)
         toggleImageView.center(in: toggleContainer)
         toggleContainer.layer.cornerRadius = toggleContainerSize / 2
         toggleContainer.layer.masksToBounds = true
+        
+        addSubview(audioWavesImageView)
         // Line
         let lineView = UIView()
-        lineView.backgroundColor = .white
+        lineView.backgroundColor = .clear//.white
         lineView.set(.height, to: 1)
         // Countdown label
         countdownLabelContainer.addSubview(countdownLabel)
@@ -120,8 +132,11 @@ public final class VoiceMessageView : UIView {
         addSubview(lineView)
         lineView.pin(.left, to: .right, of: toggleContainer)
         lineView.center(.vertical, in: self)
+        audioWavesImageView.pin(.left, to: .right, of: toggleContainer)
+        audioWavesImageView.center(.vertical, in: self)
         addSubview(countdownLabelContainer)
         countdownLabelContainer.pin(.left, to: .right, of: lineView)
+        countdownLabelContainer.pin(.left, to: .right, of: audioWavesImageView)
         countdownLabelContainer.pin(.right, to: .right, of: self, withInset: -inset)
         countdownLabelContainer.center(.vertical, in: self)
         addSubview(loader)
@@ -135,7 +150,7 @@ public final class VoiceMessageView : UIView {
     }
 
     private func handleIsPlayingChanged() {
-        toggleImageView.image = isPlaying ? UIImage(named: "Pause") : UIImage(named: "Play")
+        toggleImageView.image = isPlaying ? UIImage(named: "ic_pauseNew") : UIImage(named: "ic_playNew")
         if !isPlaying { progress = 0 }
     }
 

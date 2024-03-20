@@ -65,7 +65,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     lazy var bubbleView: UIView = {
         let result = UIView()
         result.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
-        result.set(.width, greaterThanOrEqualTo: VisibleMessageCell.largeCornerRadius * 2)
+        result.set(.width, greaterThanOrEqualTo: VisibleMessageCell.largeCornerRadius * 2 + 22)
         return result
     }()
     
@@ -95,7 +95,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.set(.width, to: size)
         result.set(.height, to: size)
         result.layer.borderWidth = 1
-        result.layer.borderColor = Colors.text.cgColor
+        result.layer.borderColor = UIColor.clear.cgColor//Colors.text.cgColor
         result.layer.cornerRadius = size / 2
         result.layer.masksToBounds = true
         result.alpha = 0
@@ -107,7 +107,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = VisibleMessageCell.replyButtonSize
         result.set(.width, to: size)
         result.set(.height, to: size)
-        result.image = UIImage(named: "ic_reply")!.withTint(Colors.text)
+        result.image = UIImage(named: "Forward")//!.withTint(Colors.text)
         return result
     }()
     
@@ -119,7 +119,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private static let groupThreadHSpacing: CGFloat = 12
     private static let profilePictureSize = Values.verySmallProfilePictureSize
     private static let authorLabelInset: CGFloat = 12
-    private static let replyButtonSize: CGFloat = 24
+    private static let replyButtonSize: CGFloat = 18//24
     private static let maxBubbleTranslationX: CGFloat = 40
     private static let swipeToReplyThreshold: CGFloat = 110
     static let smallCornerRadius: CGFloat = 4
@@ -292,15 +292,22 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
+    func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM yyyy, h:mm a"
+        return dateFormatter.string(from: date)
+    }
+    
     private func populateHeader(for viewItem: ConversationViewItem) {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
-        dateBreakLabel.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        dateBreakLabel.textColor = Colors.text
+        dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)//Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
+        dateBreakLabel.textColor = UIColor(hex: 0xEBEBEB)//Colors.text
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
-        let description = DateUtil.formatDate(forDisplay: date)
-        dateBreakLabel.text = description
+//        let description = DateUtil.formatDate(forDisplay: date)
+        let formattedDate = formatDate(date)
+        dateBreakLabel.text = formattedDate//description
         headerView.addSubview(dateBreakLabel)
         dateBreakLabel.pin(.top, to: .top, of: headerView, withInset: Values.smallSpacing)
         let additionalBottomInset = shouldInsetHeader ? Values.mediumSpacing : 1

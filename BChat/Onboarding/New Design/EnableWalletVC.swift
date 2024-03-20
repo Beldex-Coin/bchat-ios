@@ -132,8 +132,8 @@ class EnableWalletVC: BaseVC {
         super.viewDidLoad()
 
         view.backgroundColor = Colors.mainBackGroundColor4
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
-        
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Settings"
 //        let yourBackImage = UIImage(named: "ic_back_newNavBar")
 //        self.navigationController?.navigationBar.backIndicatorImage = yourBackImage
 //        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = yourBackImage

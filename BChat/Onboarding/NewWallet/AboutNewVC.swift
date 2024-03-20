@@ -35,8 +35,8 @@ class AboutNewVC: BaseVC {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.setUpScreenBackgroundColor
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "About", style: .plain, target: nil, action: nil)
-//        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "About"
         
         view.addSubview(backgroundView)
         backgroundView.addSubview(aboutDetailsLabel)

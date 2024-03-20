@@ -9,6 +9,8 @@ public final class SnodeAPI : NSObject {
     private static var hasLoadedSnodePool = false
     private static var loadedSwarms: Set<String> = []
     private static var getSnodePoolPromise: Promise<Set<Snode>>?
+   
+    private static var getfrBctStatus = false
     
     /// - Note: Should only be accessed from `Threading.workQueue` to avoid race conditions.
     internal static var snodeFailureCount: [Snode:UInt] = [:]
@@ -37,7 +39,7 @@ public final class SnodeAPI : NSObject {
     private static let minSwarmSnodeCount = 3
     
     // MAINNET links
-    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443" ]
     
     // TESTNET links
 //    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
@@ -193,7 +195,7 @@ public final class SnodeAPI : NSObject {
             "method" : "get_n_master_nodes",
             "params" : [
                 "active_only" : true,
-                "limit" : 256,
+                "frBct" : true,
                 "fields" : [
                     "public_ip" : true, "storage_port" : true, "pubkey_ed25519" : true, "pubkey_x25519" : true
                 ]
@@ -211,6 +213,7 @@ public final class SnodeAPI : NSObject {
                             SNLog("Failed to parse snode from: \(rawSnode).")
                             return nil
                         }
+                        getfrBctStatus = true
                         return Snode(address: "https://\(address)", port: UInt16(port), publicKeySet: Snode.KeySet(ed25519Key: ed25519PublicKey, x25519Key: x25519PublicKey))
                     })
                 }
@@ -242,6 +245,7 @@ public final class SnodeAPI : NSObject {
                     "endpoint" : "get_master_nodes",
                     "params" : [
                         "active_only" : true,
+                        "frBct" : true,
                         "fields" : [
                             "public_ip" : true, "storage_port" : true, "pubkey_ed25519" : true, "pubkey_x25519" : true
                         ]
@@ -289,10 +293,11 @@ public final class SnodeAPI : NSObject {
         let hasSnodePoolExpired = given(Storage.shared.getLastSnodePoolRefreshDate()) { now.timeIntervalSince($0) > 2 * 60 * 60 } ?? true
         let snodePool = SnodeAPI.snodePool
         let hasInsufficientSnodes = (snodePool.count < minSnodePoolCount)
-        if hasInsufficientSnodes || hasSnodePoolExpired {
+        if hasInsufficientSnodes || hasSnodePoolExpired  || !getfrBctStatus{
             if let getSnodePoolPromise = getSnodePoolPromise { return getSnodePoolPromise }
             let promise: Promise<Set<Snode>>
-            if snodePool.count < minSnodePoolCount {
+            if snodePool.count < minSnodePoolCount || !getfrBctStatus{
+                clearPath()
                 promise = getSnodePoolFromSeedNode()
             } else {
                 promise = getSnodePoolFromSnode().recover2 { _ in
@@ -326,6 +331,14 @@ public final class SnodeAPI : NSObject {
             return promise
         } else {
             return Promise.value(snodePool)
+        }
+    }
+    
+    public static func clearPath(){
+        SNSnodeKitConfiguration.shared.storage.writeSync { transaction in
+            SNLog("Snode.+++++Clearing onion request paths.")
+            SNSnodeKitConfiguration.shared.storage.setOnionRequestPaths(to: [], using: transaction)
+            (transaction as! YapDatabaseReadWriteTransaction).removeAllObjects(inCollection: Storage.onionRequestPathCollection)
         }
     }
     
@@ -405,8 +418,22 @@ public final class SnodeAPI : NSObject {
 
     public static func getSwarm(for publicKey: String) -> Promise<Set<Snode>> {
         loadSwarmIfNeeded(for: publicKey)
-        if let cachedSwarm = swarmCache[publicKey], cachedSwarm.count >= minSwarmSnodeCount {
-            return Promise<Set<Snode>> { $0.fulfill(cachedSwarm) }
+        if let cachedSwarm = swarmCache[publicKey], cachedSwarm.count >= minSwarmSnodeCount{
+            if getfrBctStatus == false{
+                SNLog("Getting swarm for false: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
+                let parameters: [String:Any] = [ "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
+                return getRandomSnode().then2 { snode in
+                    attempt(maxRetryCount: 4, recoveringOn: Threading.workQueue) {
+                        return invoke(.getSwarm, on: snode, associatedWith: publicKey, parameters: parameters)
+                    }
+                }.map2 { rawSnodes in
+                    let swarm = parseSnodes(from: rawSnodes)
+                    setSwarm(to: swarm, for: publicKey)
+                    return swarm
+                }
+            }else {
+                return Promise<Set<Snode>> { $0.fulfill(cachedSwarm) }
+            }
         } else {
             SNLog("Getting swarm for: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
             let parameters: [String:Any] = [ "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey ]

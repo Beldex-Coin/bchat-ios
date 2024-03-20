@@ -20,7 +20,8 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(hex: 0x11111A)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Settings"
         
         view.addSubview(tableView)
         

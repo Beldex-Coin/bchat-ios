@@ -7,7 +7,7 @@ final class ContextMenuVC : UIViewController {
     private weak var delegate: ContextMenuActionDelegate?
 
     // MARK: UI Components
-    private lazy var blurView = UIVisualEffectView(effect: nil)
+//    private lazy var blurView = UIVisualEffectView(effect: nil)
 
     private lazy var menuView: UIView = {
         let result = UIView()
@@ -18,14 +18,14 @@ final class ContextMenuVC : UIViewController {
         return result
     }()
     
-    private lazy var timestampLabel: UILabel = {
-        let result = UILabel()
-        let date = viewItem.interaction.dateForUI()
-        result.text = DateUtil.formatDate(forDisplay: date)
-        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
-        result.textColor = isLightMode ? .black : .white
-        return result
-    }()
+//    private lazy var timestampLabel: UILabel = {
+//        let result = UILabel()
+//        let date = viewItem.interaction.dateForUI()
+//        result.text = DateUtil.formatDate(forDisplay: date)
+//        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+//        result.textColor = isLightMode ? .black : .white
+//        return result
+//    }()
     
     // MARK: Settings
     private static let actionViewHeight: CGFloat = 40
@@ -54,8 +54,8 @@ final class ContextMenuVC : UIViewController {
         // Background color
         view.backgroundColor = .clear
         // Blur
-        view.addSubview(blurView)
-        blurView.pin(to: view)
+//        view.addSubview(blurView)
+//        blurView.pin(to: view)
         // Snapshot
         snapshot.layer.shadowColor = UIColor.black.cgColor
         snapshot.layer.shadowOffset = CGSize.zero
@@ -67,17 +67,17 @@ final class ContextMenuVC : UIViewController {
         snapshot.set(.width, to: frame.width)
         snapshot.set(.height, to: frame.height)
         // Timestamp
-        view.addSubview(timestampLabel)
-        timestampLabel.center(.vertical, in: snapshot)
-        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-        if isOutgoing {
-            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
-        } else {
-            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
-        }
+//        view.addSubview(timestampLabel)
+//        timestampLabel.center(.vertical, in: snapshot)
+//        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+//        if isOutgoing {
+//            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
+//        } else {
+//            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
+//        }
         // Menu
         let menuBackgroundView = UIView()
-        menuBackgroundView.backgroundColor = Colors.receivedMessageBackground
+        menuBackgroundView.backgroundColor = UIColor(hex: 0x2C2C3B)//Colors.receivedMessageBackground
         menuBackgroundView.layer.cornerRadius = ContextMenuVC.menuCornerRadius
         menuBackgroundView.layer.masksToBounds = true
         menuView.addSubview(menuBackgroundView)
@@ -109,7 +109,7 @@ final class ContextMenuVC : UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         UIView.animate(withDuration: 0.25) {
-            self.blurView.effect = UIBlurEffect(style: .regular)
+//            self.blurView.effect = UIBlurEffect(style: .regular)
             self.menuView.alpha = 1
         }
     }
@@ -127,9 +127,9 @@ final class ContextMenuVC : UIViewController {
     
     func snDismiss() {
         UIView.animate(withDuration: 0.25, animations: {
-            self.blurView.effect = nil
+//            self.blurView.effect = nil
             self.menuView.alpha = 0
-            self.timestampLabel.alpha = 0
+//            self.timestampLabel.alpha = 0
         }, completion: { _ in
             self.dismiss()
             self.delegate?.contextMenuDismissed()

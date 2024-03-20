@@ -30,8 +30,8 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Wallet Settings", style: .plain, target: nil, action: nil)
-//        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Wallet Settings"
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

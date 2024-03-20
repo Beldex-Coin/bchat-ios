@@ -35,8 +35,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         // Do any additional setup after loading the view.
         
         view.backgroundColor = Colors.viewBackgroundColorNew
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Settings", style: .plain, target: nil, action: nil)
-        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Settings"
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -372,11 +372,16 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 style: .default,
                 handler: { action in
                     print("User tapped Yes")
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    if let controller = storyboard.instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as? MyWalletPasscodeVC {
-                        controller.isfromPayasUChat = true
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }
+//                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                    if let controller = storyboard.instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as? MyWalletPasscodeVC {
+//                        controller.isfromPayasUChat = true
+//                        self.navigationController?.pushViewController(controller, animated: true)
+//                    }
+                        let vc = NewPasswordVC()
+                        vc.isGoingHome = true
+                        vc.isVerifyPassword = true
+                    self.navigationController!.pushViewController(vc, animated: true)
+                    
                 }
             )
             alertController.addAction(yesAction)

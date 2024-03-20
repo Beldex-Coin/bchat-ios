@@ -8,22 +8,22 @@ extension ContextMenuVC {
 
         static func reply(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
             let title = NSLocalizedString("context_menu_reply", comment: "")
-            return Action(icon: UIImage(named: "ic_reply")!, title: title) { delegate?.reply(viewItem) }
+            return Action(icon: UIImage(named: "reply")!, title: title) { delegate?.reply(viewItem) }
         }
 
         static func copy(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
             let title = NSLocalizedString("copy", comment: "")
-            return Action(icon: UIImage(named: "ic_copy")!, title: title) { delegate?.copy(viewItem) }
+            return Action(icon: UIImage(named: "copy 1")!, title: title) { delegate?.copy(viewItem) }
         }
 
         static func copyBChatID(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
             let title = NSLocalizedString("vc_conversation_settings_copy_bchat_id_button_title", comment: "")
-            return Action(icon: UIImage(named: "ic_copy")!, title: title) { delegate?.copyBChatID(viewItem) }
+            return Action(icon: UIImage(named: "copy 1")!, title: title) { delegate?.copyBChatID(viewItem) }
         }
 
         static func delete(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
             let title = NSLocalizedString("Delete", comment: "")
-            return Action(icon: UIImage(named: "ic_trash")!, title: title) { delegate?.delete(viewItem) }
+            return Action(icon: UIImage(named: "delete")!, title: title) { delegate?.delete(viewItem) }
         }
         
         static func report(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {

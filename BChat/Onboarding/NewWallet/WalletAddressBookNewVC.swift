@@ -107,8 +107,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.setUpScreenBackgroundColor
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Address Book", style: .plain, target: nil, action: nil)
-//        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Address Book"
         
         view.addSubview(searchTextField)
         view.addSubview(backgroundView)

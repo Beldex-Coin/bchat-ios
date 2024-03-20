@@ -45,7 +45,8 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Blocked contacts", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Blocked contacts"
 
         self.updateRighBarButton(isSelectionEnable: self.isSelectionEnable)
         

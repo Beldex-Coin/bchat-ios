@@ -74,8 +74,8 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLoad()
 
         view.backgroundColor = Colors.mainBackGroundColor
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Message Request", style: .plain, target: nil, action: nil)
-//        self.title = "Message Request"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Message Request"
         
         view.addSubview(tableView)
         
@@ -487,7 +487,7 @@ extension NewMessageRequestVC {
                     isApproved: true
                 )
                 messageRequestResponse.sentTimestamp = timestamp
-                
+                self?.tableView.reloadData()
                 // Show a loading indicator
                 ModalActivityIndicatorViewController.present(fromViewController: strongSelf, canCancel: false) { _ in
                     seal.fulfill(())
@@ -508,6 +508,8 @@ extension NewMessageRequestVC {
                     .map { _ in
                         if self?.presentedViewController is ModalActivityIndicatorViewController {
                             self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                            let conversationVC = ConversationVC(thread: thread!)
+                            self?.navigationController?.pushViewController(conversationVC, animated: true)
                         }
                     }
             }

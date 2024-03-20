@@ -117,13 +117,13 @@ class LandingNewVC: BaseVC {
         let hellotitleLabel = UILabel()
         hellotitleLabel.translatesAutoresizingMaskIntoConstraints = false
         hellotitleLabel.textColor = UIColor(hex: 0xFFFFFF)
-        hellotitleLabel.font = Fonts.boldOpenSans(ofSize: 28)
+        hellotitleLabel.font = Fonts.extraBoldOpenSans(ofSize: 28)
         hellotitleLabel.text = NSLocalizedString("HELLO_NEW", comment: "")
         
         let titleLabel2 = UILabel()
         titleLabel2.translatesAutoresizingMaskIntoConstraints = false
         titleLabel2.textColor = UIColor(hex: 0xFFFFFF)
-        titleLabel2.font = Fonts.boldOpenSans(ofSize: 28)
+        titleLabel2.font = Fonts.extraBoldOpenSans(ofSize: 28)
         titleLabel2.text = NSLocalizedString("HELLO_SUBTITLE_NEW1", comment: "")
         titleLabel2.numberOfLines = 0
         titleLabel2.lineBreakMode = .byWordWrapping
@@ -208,7 +208,7 @@ class LandingNewVC: BaseVC {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackgroundColor
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -216,9 +216,8 @@ class LandingNewVC: BaseVC {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
             navigationBar.isTranslucent = false
-            navigationBar.barTintColor = Colors.navigationBarBackgroundColor
+            navigationBar.barTintColor = Colors.cancelButtonBackgroundColor
         }
-        isFlagValue = false
     }
     
     override func viewDidLayoutSubviews() {

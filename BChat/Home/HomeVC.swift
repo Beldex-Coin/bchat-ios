@@ -311,7 +311,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         // Preparation
         SignalApp.shared().homeViewController = self
         // Gradient & nav bar
-        setUpGradientBackground()
+//        setUpGradientBackground()
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         if navigationController?.navigationBar != nil {
             setUpNavBarStyle()
         }
@@ -538,6 +539,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)
                         self?.tableView.reloadData()
+                        self?.messageCollectionView.reloadData()
                     }
                 },
                 completion: {
@@ -789,149 +791,153 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
         // NOTE: This code is very finicky and crashes easily. Modify with care.
         AssertIsOnMainThread()
+        reloadForMessageRequest()
+        reload()
         // If we don't capture `threads` here, a race condition can occur where the
         // `thread.snapshotOfLastUpdate != firstSnapshot - 1` check below evaluates to
         // `false`, but `threads` then changes between that check and the
         // `ext.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notifications, with: threads)`
         // line. This causes `tableView.endUpdates()` to crash with an `NSInternalInconsistencyException`.
-        let threads = threads!
-        // Create a stable state for the connection and jump to the latest commit
-        let notifications = dbConnection.beginLongLivedReadTransaction()
-        guard !notifications.isEmpty else { return }
-        let ext = dbConnection.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewConnection
-        let hasChanges = (
-            ext.hasChanges(forGroup: TSMessageRequestGroup, in: notifications) ||
-            ext.hasChanges(forGroup: TSInboxGroup, in: notifications)
-        )
-        
-        guard hasChanges else { return }
-        
-        if let firstChangeSet = notifications[0].userInfo {
-            let firstSnapshot = firstChangeSet[YapDatabaseSnapshotKey] as! UInt64
-            
-            // The 'getSectionChanges' code below will crash if we try to process multiple commits at once
-            // so just force a full reload
-            if threads.snapshotOfLastUpdate != firstSnapshot - 1 {
-                // Check if we inserted a new message request (if so then unhide the message request banner)
-                if
-                    let extensions: [String: Any] = firstChangeSet[YapDatabaseExtensionsKey] as? [String: Any],
-                    let viewExtensions: [String: Any] = extensions[TSThreadDatabaseViewExtensionName] as? [String: Any]
-                {
-                    // Note: We do a 'flatMap' here rather than explicitly grab the desired key because
-                    // the key we need is 'changeset_key_changes' in 'YapDatabaseViewPrivate.h' so could
-                    // change due to an update and silently break this - this approach is a bit safer
-                    let allChanges: [Any] = Array(viewExtensions.values).compactMap { $0 as? [Any] }.flatMap { $0 }
-                    let messageRequestInserts = allChanges
-                        .compactMap { $0 as? YapDatabaseViewRowChange }
-                        .filter { $0.finalGroup == TSMessageRequestGroup && $0.type == .insert }
-                    
-                    if !messageRequestInserts.isEmpty && CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-                        CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = false
-                    }
-                }
-                
-                // If there are no unread message requests then hide the message request banner
-                if unreadMessageRequestCount == 0 {
-                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-                }
-                
-                return reload()
-            }
-        }
-        
-        var sectionChanges = NSArray()
-        var rowChanges = NSArray()
-        ext.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notifications, with: threads)
-        
-        // Separate out the changes for new message requests and the inbox (so we can avoid updating for
-        // new messages within an existing message request)
-        let messageRequestChanges = rowChanges
-            .compactMap { $0 as? YapDatabaseViewRowChange }
-            .filter { $0.originalGroup == TSMessageRequestGroup || $0.finalGroup == TSMessageRequestGroup }
-        let inboxRowChanges = rowChanges
-            .compactMap { $0 as? YapDatabaseViewRowChange }
-            .filter { $0.originalGroup == TSInboxGroup || $0.finalGroup == TSInboxGroup }
-        
-        guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
-        
-                tableView.beginUpdates()
-        self.tableView.performBatchUpdates({
-            // If we need to unhide the message request row and then re-insert it
-            if !messageRequestChanges.isEmpty {
-                
-                // If there are no unread message requests then hide the message request banner
-                if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
-                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-                    tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                }
-                else {
-                    if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
-                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                    }
-                    else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-                        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                    }
-                }
-            }
-            
-            inboxRowChanges.forEach { rowChange in
-                let key = rowChange.collectionKey.key
-                threadViewModelCache[key] = nil
-                
-                switch rowChange.type {
-                case .delete:
-                    tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
-                    
-                case .insert:
-                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                    
-                case .update:
-                    tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
-                    
-                case .move:
-                    // Note: We need to handle the move from the message requests section to the inbox (since
-                    // we are only showing a single row for message requests we need to custom handle this as
-                    // an insert as the change won't be defined correctly)
-                    if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
-                        tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-                    }
-                    else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
-                        tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
-                    }
-                    
-                default: break
-                }
-            }
-                    tableView.endUpdates()
-        }, completion: nil)
-        // HACK: Moves can have conflicts with the other 3 types of change.
-        // Just batch perform all the moves separately to prevent crashing.
-        // Since all the changes are from the original state to the final state,
-        // it will still be correct if we pick the moves out.
-        //        tableView.beginUpdates()
-        self.tableView.performBatchUpdates({
-            rowChanges.forEach { rowChange in
-                let rowChange = rowChange as! YapDatabaseViewRowChange
-                let key = rowChange.collectionKey.key
-                threadViewModelCache[key] = nil
-                
-                switch rowChange.type {
-                case .move:
-                    // Since we are custom handling this specific movement in the above 'updates' call we need
-                    // to avoid trying to handle it here
-                    if rowChange.originalGroup == TSMessageRequestGroup || rowChange.finalGroup == TSMessageRequestGroup {
-                        return
-                    }
-                    
-                    tableView.moveRow(at: rowChange.indexPath!, to: rowChange.newIndexPath!)
-                    
-                default: break
-                }
-            }
-            //        tableView.endUpdates()
-        }, completion: nil)
-        emptyStateView.isHidden = (threadCount != 0)
+//        let threads = threads!
+//        // Create a stable state for the connection and jump to the latest commit
+//        let notifications = dbConnection.beginLongLivedReadTransaction()
+//        guard !notifications.isEmpty else { return }
+//        let ext = dbConnection.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewConnection
+//        let hasChanges = (
+//            ext.hasChanges(forGroup: TSMessageRequestGroup, in: notifications) ||
+//            ext.hasChanges(forGroup: TSInboxGroup, in: notifications)
+//        )
+//
+//        guard hasChanges else { return }
+//
+//        if let firstChangeSet = notifications[0].userInfo {
+//            let firstSnapshot = firstChangeSet[YapDatabaseSnapshotKey] as! UInt64
+//
+//            // The 'getSectionChanges' code below will crash if we try to process multiple commits at once
+//            // so just force a full reload
+//            if threads.snapshotOfLastUpdate != firstSnapshot - 1 {
+//                // Check if we inserted a new message request (if so then unhide the message request banner)
+//                if
+//                    let extensions: [String: Any] = firstChangeSet[YapDatabaseExtensionsKey] as? [String: Any],
+//                    let viewExtensions: [String: Any] = extensions[TSThreadDatabaseViewExtensionName] as? [String: Any]
+//                {
+//                    // Note: We do a 'flatMap' here rather than explicitly grab the desired key because
+//                    // the key we need is 'changeset_key_changes' in 'YapDatabaseViewPrivate.h' so could
+//                    // change due to an update and silently break this - this approach is a bit safer
+//                    let allChanges: [Any] = Array(viewExtensions.values).compactMap { $0 as? [Any] }.flatMap { $0 }
+//                    let messageRequestInserts = allChanges
+//                        .compactMap { $0 as? YapDatabaseViewRowChange }
+//                        .filter { $0.finalGroup == TSMessageRequestGroup && $0.type == .insert }
+//
+//                    if !messageRequestInserts.isEmpty && CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
+//                        CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = false
+//                    }
+//                }
+//
+//                // If there are no unread message requests then hide the message request banner
+//                if unreadMessageRequestCount == 0 {
+//                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
+//                }
+//
+//                return reload()
+//            }
+//        }
+//
+//        var sectionChanges = NSArray()
+//        var rowChanges = NSArray()
+//        ext.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notifications, with: threads)
+//
+//        // Separate out the changes for new message requests and the inbox (so we can avoid updating for
+//        // new messages within an existing message request)
+//        let messageRequestChanges = rowChanges
+//            .compactMap { $0 as? YapDatabaseViewRowChange }
+//            .filter { $0.originalGroup == TSMessageRequestGroup || $0.finalGroup == TSMessageRequestGroup }
+//        let inboxRowChanges = rowChanges
+//            .compactMap { $0 as? YapDatabaseViewRowChange }
+//            .filter { $0.originalGroup == TSInboxGroup || $0.finalGroup == TSInboxGroup }
+//
+//        guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
+//
+//                tableView.beginUpdates()
+//        self.tableView.performBatchUpdates({
+//            // If we need to unhide the message request row and then re-insert it
+//            if !messageRequestChanges.isEmpty {
+//
+//                // If there are no unread message requests then hide the message request banner
+//                if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
+//                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
+//                    tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+//                }
+//                else {
+//                    if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
+//                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+//                    }
+//                    else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
+//                        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+//                    }
+//                }
+//            }
+//
+//            inboxRowChanges.forEach { rowChange in
+//                let key = rowChange.collectionKey.key
+//                threadViewModelCache[key] = nil
+//
+//                switch rowChange.type {
+//                case .delete:
+//                    tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+//
+//                case .insert:
+//                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+//
+//                case .update:
+//                    tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
+//
+//                case .move:
+//                    // Note: We need to handle the move from the message requests section to the inbox (since
+//                    // we are only showing a single row for message requests we need to custom handle this as
+//                    // an insert as the change won't be defined correctly)
+//                    if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
+//                        tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
+//                    }
+//                    else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
+//                        tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
+//                    }
+//
+//                default: break
+//                }
+//            }
+//                    tableView.endUpdates()
+//        }, completion: nil)
+//        // HACK: Moves can have conflicts with the other 3 types of change.
+//        // Just batch perform all the moves separately to prevent crashing.
+//        // Since all the changes are from the original state to the final state,
+//        // it will still be correct if we pick the moves out.
+//        //        tableView.beginUpdates()
+//        self.tableView.performBatchUpdates({
+//            rowChanges.forEach { rowChange in
+//                let rowChange = rowChange as! YapDatabaseViewRowChange
+//                let key = rowChange.collectionKey.key
+//                threadViewModelCache[key] = nil
+//
+//                switch rowChange.type {
+//                case .move:
+//                    // Since we are custom handling this specific movement in the above 'updates' call we need
+//                    // to avoid trying to handle it here
+//                    if rowChange.originalGroup == TSMessageRequestGroup || rowChange.finalGroup == TSMessageRequestGroup {
+//                        return
+//                    }
+//
+//                    tableView.moveRow(at: rowChange.indexPath!, to: rowChange.newIndexPath!)
+//
+//                default: break
+//                }
+//            }
+//            //        tableView.endUpdates()
+//        }, completion: nil)
+//        emptyStateView.isHidden = (threadCount != 0)
 //        someImageView.isHidden = (threadCount != 0)
+        self.tableView.reloadData()
+        self.messageCollectionView.reloadData()
     }
     
     @objc private func handleProfileDidChangeNotification(_ notification: Notification) {
@@ -990,11 +996,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         
         
+        var rightBarButtonItems: [UIBarButtonItem] = []
+        
         // Right bar button item - search button
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchUI))
         rightBarButtonItem.accessibilityLabel = "Search button"
         rightBarButtonItem.isAccessibilityElement  = true
-        navigationItem.rightBarButtonItem = rightBarButtonItem
+        rightBarButtonItems.append(rightBarButtonItem)
+        
+        let rightBarButtonItemWallet =  UIBarButtonItem(image: UIImage(named: "ic_walletHomeNew"), style: .plain, target: self, action: #selector(showWallet))
+        rightBarButtonItems.append(rightBarButtonItemWallet)
+        
+        navigationItem.rightBarButtonItems = rightBarButtonItems
     }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
@@ -1014,6 +1027,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.handleAppModeChangedNotification(notification)
         //        let gradient = Gradients.homeVCFade
         //        fadeView.setGradient(gradient) // Re-do the gradient
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         tableView.reloadData()
     }
     
@@ -1243,6 +1257,37 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
+    @objc private func showWallet() {
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+            // MARK: - Old flow (without wallet)
+            if SaveUserDefaultsData.israndomUUIDPassword == "" {
+                let vc = EnableWalletVC()
+                navigationController!.pushViewController(vc, animated: true)
+                return
+            }
+            // MARK: - New flow (with wallet)
+            if SSKPreferences.areWalletEnabled {
+                if SaveUserDefaultsData.WalletPassword.isEmpty {
+                    let vc = NewPasswordVC()
+                    vc.isGoingWallet = true
+                    vc.isVerifyPassword = true
+                    navigationController!.pushViewController(vc, animated: true)
+                }else {
+                    let vc = NewPasswordVC()
+                    vc.isGoingWallet = true
+                    vc.isVerifyPassword = true
+                    navigationController!.pushViewController(vc, animated: true)
+                }
+            }else {
+                let vc = EnableWalletVC()
+                navigationController!.pushViewController(vc, animated: true)
+            }
+        }else {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+
+    }
+    
     @objc(createNewDMFromDeepLink:)
     func createNewDMFromDeepLink(bchatID: String) {
         let newDMVC = NewDMVC(bchatID: bchatID)
@@ -1332,6 +1377,14 @@ extension HomeVC: BeldexWalletDelegate {
 
 extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if messageRequestCountForMessageRequest == 0 {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = true
+            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+        }
+
         return Int(messageRequestCountForMessageRequest)//10
     }
     
@@ -1378,6 +1431,12 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
         return CGSize(width: 65, height: 80)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = NewMessageRequestVC()
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
 }
 
 

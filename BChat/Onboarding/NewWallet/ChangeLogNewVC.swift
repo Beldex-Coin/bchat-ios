@@ -33,8 +33,8 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Changelog", style: .plain, target: nil, action: nil)
-//        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Changelog"
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

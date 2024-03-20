@@ -882,6 +882,23 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        self.navigationItem.leftItemsSupplementBackButton = true
+        let contactThread: TSContactThread = (thread as? TSContactThread)!
+        let publicKey = contactThread.contactBChatID()//getUserHexEncodedPublicKey()
+        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                //set image for button
+        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+                //add function for button
+//        button.addTarget(self, action: nil, for: UIControl.Event.touchUpInside)
+                //set frame
+                button.frame = CGRectMake(0, 0, 42, 42)
+        button.layer.cornerRadius = 21
+        button.layer.masksToBounds = true
+                let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.leftBarButtonItem = barButton
+        
+        
         if !didFinishInitialLayout {
             // Scroll to the last unread message if possible; otherwise scroll to the bottom.
             // When the unread message count is more than the number of view items of a page,
@@ -1296,10 +1313,37 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return cell
     }
     
+    
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
+    }
+    
     // MARK: Updating
     
     func updateNavBarButtons() {
         navigationItem.hidesBackButton = isShowingSearchUI
+        // get profile image
+        self.navigationItem.leftItemsSupplementBackButton = true
+        let contactThread: TSContactThread = (thread as? TSContactThread)!
+        let publicKey = contactThread.contactBChatID()//getUserHexEncodedPublicKey()
+        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+                //set image for button
+        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+                //add function for button
+//        button.addTarget(self, action: nil, for: UIControl.Event.touchUpInside)
+                //set frame
+                button.frame = CGRectMake(0, 0, 42, 42)
+        button.layer.cornerRadius = 21
+        button.layer.masksToBounds = true
+                let barButton = UIBarButtonItem(customView: button)
+        self.navigationItem.leftBarButtonItem = barButton
         
         if isShowingSearchUI {
             navigationItem.leftBarButtonItem = nil

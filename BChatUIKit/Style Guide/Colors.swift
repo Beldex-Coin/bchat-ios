@@ -155,6 +155,7 @@ public final class Colors : NSObject {
     @objc public static var messageRequestBackgroundColor: UIColor { UIColor(named: "EBEBEB-FFFFFF")! }
     @objc public static var incomingMessageColor: UIColor { UIColor(named: "2C2C3B-E0E0E0")! }
     @objc public static var textViewColor: UIColor { UIColor(named: "2C2C3B-F4F4F4")! }
+    @objc public static var holdViewbackgroundColor: UIColor { UIColor(named: "2C2C3B-ECECEC")! }
     
     @objc public static var viewBackgroundColorSocialGroup: UIColor { UIColor(named: "viewBackgroundColorSocialGroup")! }
     @objc public static var letsBChatButtonColor: UIColor { UIColor(named: "letsBChatButtonColor")! }

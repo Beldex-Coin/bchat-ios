@@ -35,8 +35,8 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Notifications", style: .plain, target: nil, action: nil)
-        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Notifications"
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

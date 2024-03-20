@@ -36,6 +36,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // MARK: UI Components
     
     private var bottomStackView: UIStackView?
+    private var finalBottomStack: UIStackView?
     private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
@@ -46,6 +47,16 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }()
     
     private lazy var payAsChatButton: InputViewButton = {
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
+        result.accessibilityLabel = NSLocalizedString("", comment: "")
+        result.accessibilityHint = NSLocalizedString("", comment: "")
+        // Create and add the circular progress view
+        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        result.addSubview(progressView)
+        return result
+    }()
+    
+    private lazy var payAsChatButtonFinal: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
@@ -152,15 +163,27 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), container(for: sendButton) ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), voiceMessageButtonContainer ])
         bottomStackView.axis = .horizontal
-        bottomStackView.spacing = Values.smallSpacing
+        bottomStackView.spacing = 2//Values.smallSpacing
         bottomStackView.backgroundColor = Colors.textViewColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
+        
+        
+        let bottomStackView2 = UIStackView(arrangedSubviews: [ bottomStackView, container(for: sendButton) ])
+        bottomStackView2.axis = .horizontal
+        bottomStackView2.spacing = 4
+        bottomStackView2.backgroundColor = .clear//Colors.textViewColor
+        bottomStackView2.layer.cornerRadius = 24
+        bottomStackView2.alignment = .center
+        self.finalBottomStack = bottomStackView2
+        
+        
+        
         // Main stack view
-        let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView ])
+        let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView2 ])
         mainStackView.axis = .vertical
         mainStackView.backgroundColor = Colors.mainBackGroundColor2//Colors.bchatViewBackgroundColor
         mainStackView.isLayoutMarginsRelativeArrangement = true
@@ -186,8 +209,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mentionsView.pin(to: mentionsViewContainer)
         mentionsViewHeightConstraint.isActive = true
         // Voice message button
-        addSubview(voiceMessageButtonContainer)
-        voiceMessageButtonContainer.center(in: sendButton)
+//        addSubview(voiceMessageButtonContainer)
+//        voiceMessageButtonContainer.center(in: sendButton)
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
         self.hideOrShowPayAsYouChatButton()
@@ -253,8 +276,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
 
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
         let hasText = !text.isEmpty
-        sendButton.isHidden = !hasText
-        voiceMessageButtonContainer.isHidden = hasText
+        sendButton.isHidden = false
+        voiceMessageButtonContainer.isHidden = false
         autoGenerateLinkPreviewIfPossible()
         delegate?.inputTextViewDidChangeContent(inputTextView)
     }

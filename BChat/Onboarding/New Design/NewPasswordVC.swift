@@ -630,6 +630,7 @@ class NewPasswordVC: BaseVC {
             if isPasswordEnterFirstTime {
                 if passwordText == confirmPasswordText {
                     SaveUserDefaultsData.BChatPassword = confirmPasswordText
+                    SaveUserDefaultsData.WalletPassword = confirmPasswordText
                 } else {
                     _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                     })

@@ -68,8 +68,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Nodes", style: .plain, target: nil, action: nil)
-//        self.title = ""
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Nodes"
         
         view.addSubview(tableView)
         view.addSubview(buttonStackView)

@@ -16,7 +16,7 @@ final class MessagesTableView : UITableView {
         register(TypingIndicatorCell.self, forCellReuseIdentifier: TypingIndicatorCell.identifier)
         register(CallMessageCell.self, forCellReuseIdentifier: CallMessageCell.identifier)
         separatorStyle = .none
-        backgroundColor = .clear
+        backgroundColor = Colors.mainBackGroundColor2//.clear
         showsVerticalScrollIndicator = false
         contentInsetAdjustmentBehavior = .never
         keyboardDismissMode = .interactive

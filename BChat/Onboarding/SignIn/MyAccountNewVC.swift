@@ -294,7 +294,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             lineView.isHidden = true
             doneButton.isHidden = true
         }else {
-            navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "My Account", style: .plain, target: nil, action: nil)
+            navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            self.title = "My Account"
             closeButton.isHidden = true
             cameraView.isHidden = false
             lineView.isHidden = true

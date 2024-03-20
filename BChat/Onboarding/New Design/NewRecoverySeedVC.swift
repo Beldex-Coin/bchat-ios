@@ -92,8 +92,8 @@ class NewRecoverySeedVC: BaseVC {
         super.viewDidLoad()
 
         view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
-        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "Recovery Seed", style: .plain, target: nil, action: nil)
-//        self.title = "Recovery Seed"
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Recovery Seed"
         
         view.addSubViews(iconImageView, infoLabel, seedView)
         seedView.addSubview(seedLabel)

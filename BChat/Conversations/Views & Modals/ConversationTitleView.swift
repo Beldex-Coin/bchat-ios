@@ -27,7 +27,7 @@ final class ConversationTitleView : UIView {
     private lazy var stackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ titleLabel, subtitleLabel ])
         result.axis = .vertical
-        result.alignment = .center
+        result.alignment = .leading
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
