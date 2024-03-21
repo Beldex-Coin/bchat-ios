@@ -376,6 +376,13 @@ static NSString *const DATE_FORMAT_WEEKDAY = @"EEEE";
     }
 }
 
++ (NSString *)formatDateForDisplay2:(NSDate *)date
+{
+    OWSAssertDebug(date);
+
+    return [self.displayDateTodayFormatter stringFromDate:date];
+}
+
 + (NSString *)formatTimestampAsTime:(uint64_t)timestamp
 {
     return [self formatDateAsTime:[NSDate ows_dateWithMillisecondsSince1970:timestamp]];

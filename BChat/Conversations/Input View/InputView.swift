@@ -40,7 +40,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self, isAudioButton: true)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
@@ -71,8 +71,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     private lazy var sendButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendNew"), isSendButton: true, delegate: self)
-        result.isHidden = true
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendMessage_new"), isSendButton: true, delegate: self)
+        result.isHidden = false
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
     }()
@@ -158,7 +158,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         blurView.pin(to: self)
         // Separator
         let separator = UIView()
-        separator.backgroundColor = Colors.text.withAlphaComponent(0.2)
+        separator.backgroundColor = .clear//Colors.text.withAlphaComponent(0.2)
         separator.set(.height, to: 1 / UIScreen.main.scale)
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
@@ -465,14 +465,14 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageRecordingView.pin(to: self)
         self.voiceMessageRecordingView = voiceMessageRecordingView
         voiceMessageRecordingView.animate()
-        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
+        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer, payAsChatButton ]
         UIView.animate(withDuration: 0.25) {
             allOtherViews.forEach { $0.alpha = 0 }
         }
     }
 
     func hideVoiceMessageUI() {
-        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
+        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer, payAsChatButton ]
         UIView.animate(withDuration: 0.25, animations: {
             allOtherViews.forEach { $0.alpha = 1 }
             self.voiceMessageRecordingView?.alpha = 0

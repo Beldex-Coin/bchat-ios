@@ -301,7 +301,7 @@ final class VoiceMessageRecordingView : UIView {
     }
 }
 
-// MARK: Lock View
+// MARK: Lock Vie
 extension VoiceMessageRecordingView {
 
     fileprivate final class LockView : UIView {

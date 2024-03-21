@@ -322,11 +322,10 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
         view.addSubview(showOrHideMessageRequestCollectionViewButton)
-//        messageRequestCountLabel.text = "3"
         
         NSLayoutConstraint.activate([
             messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
-            messageRequestLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 8),
+            messageRequestLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             
             messageRequestCountLabel.leadingAnchor.constraint(equalTo: messageRequestLabel.trailingAnchor, constant: 6),
             messageRequestCountLabel.centerYAnchor.constraint(equalTo: messageRequestLabel.centerYAnchor),
@@ -374,7 +373,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
@@ -735,6 +734,14 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         messageRequestLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
         showOrHideMessageRequestCollectionViewButton.isHidden = (Int(unreadMessageRequestCount) <= 0)
         
+        if !messageRequestLabel.isHidden {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
+        } else {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+        }
+        
         switch section {
         case 0:
 //            if unreadMessageRequestCount > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
@@ -950,7 +957,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
         tableViewTopConstraint.isActive = false
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
         self.messageCollectionView.isHidden = false
     }
     
@@ -964,11 +971,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         reloadForMessageRequest()
         if isOpen {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 8/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = false
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = true
         }
     }
@@ -1380,7 +1387,7 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         if messageRequestCountForMessageRequest == 0 {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 8/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         }

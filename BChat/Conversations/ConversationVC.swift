@@ -623,7 +623,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         // Constraints
         view.addSubview(messagesTableView)
-        messagesTableView.pin(to: view)
+//        messagesTableView.pin(to: view)
+        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
+        messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
+        messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
+        messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
+        
+        messagesTableView.layer.cornerRadius = 20
+        messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
         // Blocked banner
         addOrRemoveBlockedBanner()
@@ -882,21 +889,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        self.navigationItem.leftItemsSupplementBackButton = true
-        let contactThread: TSContactThread = (thread as? TSContactThread)!
-        let publicKey = contactThread.contactBChatID()//getUserHexEncodedPublicKey()
-        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
-                //set image for button
-        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
-                //add function for button
-//        button.addTarget(self, action: nil, for: UIControl.Event.touchUpInside)
-                //set frame
-                button.frame = CGRectMake(0, 0, 42, 42)
-        button.layer.cornerRadius = 21
-        button.layer.masksToBounds = true
-                let barButton = UIBarButtonItem(customView: button)
-        self.navigationItem.leftBarButtonItem = barButton
         
         
         if !didFinishInitialLayout {
@@ -1357,12 +1349,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
                     settingsButton.accessibilityLabel = "Settings button"
                     settingsButton.isAccessibilityElement = true
+                    settingsButton.imageInsets = .init(top: 0, left: 0, bottom: 0, right: 8)
                     rightBarButtonItems.append(settingsButton)
                     let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isMessageRequest()
                     if shouldShowCallButton {
                         let callButton = UIBarButtonItem(image: UIImage(named: "ic_call_new")!, style: .plain, target: self, action: #selector(startCall))
                         rightBarButtonItems.append(callButton)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+                        callButton.imageInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
                     }
                 }
                 else {

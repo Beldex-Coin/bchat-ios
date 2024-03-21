@@ -79,6 +79,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
+    lazy var messageTimeLabel: UILabel = {
+        let result = UILabel()
+        result.font = Fonts.OpenSans(ofSize: 10)
+        result.textColor = UIColor(hex: 0x5F5F76)
+        return result
+    }()
+    
     private lazy var snContentView = UIView()
     
     internal lazy var messageStatusImageView: UIImageView = {
@@ -198,6 +205,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         replyIconImageView.center(in: replyButton)
         replyButton.pin(.left, to: .right, of: bubbleView, withInset: Values.smallSpacing)
         replyButton.center(.vertical, in: bubbleView)
+        addSubview(messageTimeLabel)
+        messageTimeLabel.text = ""
+//        messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
+//        messageTimeLabel.center(.vertical, in: bubbleView)
         // Remaining constraints
         authorLabel.pin(.left, to: .left, of: bubbleView, withInset: VisibleMessageCell.authorLabelInset)
     }
@@ -329,6 +340,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         albumView = nil
         bodyTextView = nil
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+        
+        
+        let direction = isOutgoing ? "send" : "receive"
+        if direction == "send" {
+            messageTimeLabel.pin(.right, to: .left, of: bubbleView, withInset: -10)
+            messageTimeLabel.center(.vertical, in: bubbleView)
+        } else {
+            messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
+            messageTimeLabel.center(.vertical, in: bubbleView)
+        }
+        
+        let date = viewItem.interaction.dateForUI()
+        let description = DateUtil.formatDate(forDisplay2: date)
+        print("--Date Print---->",description)
+        messageTimeLabel.text = description
+        
+        
         switch viewItem.messageCellType {
         case .textOnlyMessage:
             let inset: CGFloat = 12

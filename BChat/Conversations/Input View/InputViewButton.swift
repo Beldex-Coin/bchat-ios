@@ -3,6 +3,7 @@ import UIKit
 final class InputViewButton : UIView {
     private let icon: UIImage
     private let isSendButton: Bool
+    private let isAudioButton: Bool
     private weak var delegate: InputViewButtonDelegate?
     private let hasOpaqueBackground: Bool
     private lazy var widthConstraint = set(.width, to: InputViewButton.size)
@@ -21,12 +22,13 @@ final class InputViewButton : UIView {
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
-    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false) {
+    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false, isAudioButton: Bool = false) {
         self.icon = icon
         self.isSendButton = isSendButton
         self.delegate = delegate
         self.hasOpaqueBackground = hasOpaqueBackground
         self.isPayButton = isPayButton
+        self.isAudioButton = isAudioButton
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         self.isAccessibilityElement = true
@@ -55,7 +57,7 @@ final class InputViewButton : UIView {
             let borderColor = (isLightMode ? UIColor.black : UIColor.white).withAlphaComponent(Values.veryLowOpacity)
             layer.borderColor = borderColor.cgColor
         }
-        backgroundView.backgroundColor = isSendButton ? Colors.accent : UIColor.clear
+        backgroundView.backgroundColor = isSendButton ? Colors.bothGreenColor : UIColor.clear//Colors.accent : UIColor.clear
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         layer.cornerRadius = isSendButton ? 20 : 6
@@ -70,7 +72,14 @@ final class InputViewButton : UIView {
         iconImageView.set(.width, to: iconSize)
         iconImageView.set(.height, to: iconSize)
         addSubview(iconImageView)
-        iconImageView.center(in: self)
+        if isAudioButton {
+            iconImageView.pin(.left, to: .left, of: self)
+            iconImageView.pin(.top, to: .top, of: self, withInset: 10)
+        } else {
+            iconImageView.center(in: self)
+        }
+//        iconImageView.center(in: self)
+        
     }
     
     // MARK: Animation
@@ -89,11 +98,12 @@ final class InputViewButton : UIView {
     }
     
     private func expand() {
-        animate(to: isPayButton ? InputViewButton.size : InputViewButton.expandedSize, glowColor: isPayButton ? UIColor.clear : Colors.expandedButtonGlowColor, backgroundColor: isPayButton ? UIColor.clear : Colors.accent)
+        let size = InputViewButton.size
+        animate(to: size, glowColor: UIColor.clear, backgroundColor: UIColor.clear)
     }
     
     private func collapse() {
-        let backgroundColor = isSendButton ? Colors.accent : Colors.text.withAlphaComponent(0)
+        let backgroundColor = isSendButton ? Colors.bothGreenColor : Colors.text.withAlphaComponent(0)
         animate(to: InputViewButton.size, glowColor: .clear, backgroundColor: backgroundColor)
     }
     
