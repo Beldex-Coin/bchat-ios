@@ -322,6 +322,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
         view.addSubview(showOrHideMessageRequestCollectionViewButton)
+        showOrHideMessageRequestCollectionViewButton.isSelected = true
         
         NSLayoutConstraint.activate([
             messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
@@ -527,7 +528,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             Storage.write(
                 with: { [weak self] transaction in
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
-                    self?.updateContactAndThread(thread: thread, with: transaction)
+//                    self?.updateContactAndThread(thread: thread, with: transaction)
                     
                     // Block the contact
                     if
@@ -537,8 +538,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                     {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)
-                        self?.tableView.reloadData()
-                        self?.messageCollectionView.reloadData()
+                        DispatchQueue.main.async {
+                            self?.tableView.reloadData()
+                            self?.messageCollectionView.reloadData()
+                        }
+                        
                     }
                 },
                 completion: {
@@ -956,9 +960,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
-        tableViewTopConstraint.isActive = false
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
-        self.messageCollectionView.isHidden = false
+//        tableViewTopConstraint.isActive = false
+//        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+//        self.messageCollectionView.isHidden = false
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -968,8 +972,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         isOpen = !isOpen
-        reloadForMessageRequest()
-        if isOpen {
+//        reloadForMessageRequest()
+        if !isOpen {
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = false
@@ -1390,7 +1394,52 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+            self.isOpen = false
+        } else {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = false
+            self.showOrHideMessageRequestCollectionViewButton.isSelected = true
+            self.isOpen = true
         }
+        
+        
+        messageRequestCountLabel.text = "\(Int(messageRequestCountForMessageRequest))"
+        messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+//        if !messageRequestLabel.isHidden {
+//            tableViewTopConstraint.isActive = false
+//            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
+//        } else {
+//            tableViewTopConstraint.isActive = false
+//            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+//        }
+        
+        
+        if messageRequestCountForMessageRequest == 0 {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = true
+            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+            self.isOpen = false
+            messageRequestCountLabel.isHidden = true
+            messageRequestLabel.isHidden = true
+            showOrHideMessageRequestCollectionViewButton.isHidden = true
+            
+            
+        } else {
+            tableViewTopConstraint.isActive = false
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            self.messageCollectionView.isHidden = false
+            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+            self.isOpen = false
+            messageRequestCountLabel.isHidden = false
+            messageRequestLabel.isHidden = false
+            showOrHideMessageRequestCollectionViewButton.isHidden = false
+        }
+        
+        
 
         return Int(messageRequestCountForMessageRequest)//10
     }

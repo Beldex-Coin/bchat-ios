@@ -604,6 +604,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
             }
             previousX = translationX
+            messageTimeLabel.alpha = 0
         case .ended, .cancelled:
             if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold {
                 delegate?.handleViewItemSwiped(viewItem, state: .ended)
@@ -612,6 +613,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
                 resetReply()
             }
+            messageTimeLabel.alpha = 1
         default: break
         }
     }
