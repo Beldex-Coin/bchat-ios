@@ -14,7 +14,7 @@ class NewDesignSecretGroupVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     
     private lazy var createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Create a Secret Group +", for: .normal)
+        button.setTitle(NSLocalizedString("CREATE_GROUP", comment: ""), for: .normal)
         button.layer.cornerRadius = 20
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = UIColor(hex: 0x00BD40)

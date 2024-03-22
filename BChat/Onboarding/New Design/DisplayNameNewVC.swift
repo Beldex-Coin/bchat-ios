@@ -30,7 +30,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.setTitle("Continue", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        //        button.backgroundColor = UIColor(hex: 0x00BD40)
         button.backgroundColor = Colors.cellGroundColor3
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
@@ -57,7 +56,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private var data = NewWallet()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,8 +69,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         view.addSubViews(subTitleLabel)
         view.addSubViews(continueButton)
         view.addSubViews(nameTextField)
-        
-        
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 39),
@@ -93,7 +89,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
             continueButton.heightAnchor.constraint(equalToConstant: 58),
         ])
-        
         
         nameTextField.delegate = self
         nameTextField.returnKeyType = .done

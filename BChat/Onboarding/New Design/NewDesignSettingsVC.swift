@@ -19,7 +19,9 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
+        view.layer.cornerRadius = 18
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Settings"
         
@@ -39,7 +41,7 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
 
     
-    
+    // TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.titleArray.count
@@ -96,12 +98,11 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let url = URL(string: bchat_FAQ_Link)!
             UIApplication.shared.open(url)
         }
+        
         if indexPath.row == 6 {//Changelog
             let vc = ChangeLogNewVC()
             navigationController!.pushViewController(vc, animated: true)
         }
-        
-        
     }
    
 

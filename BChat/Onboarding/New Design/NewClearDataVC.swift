@@ -120,13 +120,16 @@ class NewClearDataVC: BaseVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, clearDataButton, clearDataLabel, clearDataDiscriptionLabel, deleteAccountButton, deleteLabel, deleteDiscriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(okButton)
-        
         
         self.clearDataButton.isSelected = true
         
@@ -167,13 +170,12 @@ class NewClearDataVC: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 46),
             okButton.heightAnchor.constraint(equalToConstant: 46),
             cancelButton.heightAnchor.constraint(equalToConstant: 46),
-            
-            
         ])
         
     }
     
     
+    //MARK: - Buttons Actions -
     @objc private func clearDataButtonTapped(_ sender: UIButton) {
         sender.isSelected = true
         self.deleteAccountButton.isSelected = false

@@ -4,22 +4,19 @@ import UIKit
 
 class PayAsYouChatPopUpVC: BaseVC {
     
-    
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Pay as you chat"
@@ -28,10 +25,10 @@ class PayAsYouChatPopUpVC: BaseVC {
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "To display pay as you chat, go to My Account -> Chat Settings -> Pay as you Chat to use this option"
+        result.text = NSLocalizedString("PAY_AS_YOU_CHAT_DISCRIPTION_LABEL", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
         return result
@@ -42,8 +39,9 @@ class PayAsYouChatPopUpVC: BaseVC {
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -53,9 +51,9 @@ class PayAsYouChatPopUpVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -74,8 +72,13 @@ class PayAsYouChatPopUpVC: BaseVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
+        
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
@@ -105,7 +108,6 @@ class PayAsYouChatPopUpVC: BaseVC {
         ])
     }
     
-    
     @objc private func okButtonTapped(_ sender: UIButton) {
         let vc = TransactionSuccessPopUpVC()
         vc.modalPresentationStyle = .overFullScreen
@@ -116,7 +118,5 @@ class PayAsYouChatPopUpVC: BaseVC {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-
-   
 
 }

@@ -82,7 +82,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     lazy var messageTimeLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.OpenSans(ofSize: 10)
-        result.textColor = UIColor(hex: 0x5F5F76)
+        result.textColor = Colors.messageTimeLabelColor
         return result
     }()
     

@@ -61,7 +61,7 @@ class RegisterVC: BaseVC {
     
     private lazy var bChatInfoLabel: UILabel = {
         let result = UILabel()
-        result.text = "Your BChat ID is like your username. You can share it with your friends to begin a conversation."
+        result.text = NSLocalizedString("BCHAT_INFO_TITLE_LABEL", comment: "")
         result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -101,7 +101,7 @@ class RegisterVC: BaseVC {
     
     private lazy var beldexInfoLabel: UILabel = {
         let result = UILabel()
-        result.text = "Your Beldex address is connected to your BChat ID. You can use this address to receive BDX."
+        result.text = NSLocalizedString("BELDEX_INFO_TITLE_LABEL", comment: "")
         result.textColor = Colors.titleColor5
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left

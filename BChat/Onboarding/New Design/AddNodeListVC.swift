@@ -154,7 +154,6 @@ class AddNodeListVC: BaseVC {
     }()
     
     
-    
     private lazy var testButton: UIButton = {
         let button = UIButton()
         button.setTitle("Test", for: .normal)

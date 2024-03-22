@@ -123,12 +123,6 @@ class HomeTableViewCell: UITableViewCell {
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         
         
-//        nameLabel.text = "john"
-//        lastMessageLabel.text = "Lorem ipsum dolor sit amet..."
-//        messageCountLabel.text = "2"
-//        dateLabel.text = "2/2/23"
-        
-        
         let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
@@ -450,9 +444,6 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 22
         
-        
-        nameLabel.text = "john"
-        
         NSLayoutConstraint.activate([
             profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
@@ -468,7 +459,6 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
             nameLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
-            
         ])
         
     }

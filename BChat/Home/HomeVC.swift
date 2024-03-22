@@ -153,7 +153,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var mainButtonPopUpView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         stackView.layer.cornerRadius = 16
         stackView.isHidden = true
         return stackView
@@ -196,7 +196,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     private lazy var isFromNewChatImgBtn: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.backgroundColor = Colors.textViewColor
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "ic_logoBubbleNew")?.scaled(to: CGSize(width: 22, height: 22))
         button.setImage(image, for: .normal)
@@ -204,7 +204,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     private lazy var isFromSecretGroupImgBtn: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.backgroundColor = Colors.textViewColor
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "ic_GroupNew1")?.scaled(to: CGSize(width: 22, height: 22))
         button.setImage(image, for: .normal)
@@ -212,7 +212,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     private lazy var isFromSocialGroupImgBtn: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x2C2C3B)
+        button.backgroundColor = Colors.textViewColor
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "ic_GroupMsgNew")?.scaled(to: CGSize(width: 22, height: 22))
         button.setImage(image, for: .normal)
@@ -268,7 +268,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     lazy var messageRequestCountLabel: UILabel = {
        let result = PaddingLabel()
-        result.textColor = UIColor(hex: 0x1C1C26)
+        result.textColor = Colors.darkThemeTextBoxColor
        result.font = Fonts.boldOpenSans(ofSize: 12)
        result.textAlignment = .center
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -337,12 +337,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             showOrHideMessageRequestCollectionViewButton.centerYAnchor.constraint(equalTo: messageRequestLabel.centerYAnchor),
             showOrHideMessageRequestCollectionViewButton.heightAnchor.constraint(equalToConstant: 24),
             showOrHideMessageRequestCollectionViewButton.widthAnchor.constraint(equalToConstant: 24),
-
-            
         ])
-        
-        
-        
+                
         // CollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -363,9 +359,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         ])
         self.messageCollectionView.isHidden = true
         messageCollectionView.reloadData()
-        
-        
-      
         
         
         // Table view
@@ -1118,7 +1111,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
             })
             unpin.backgroundColor = Colors.mainBackGroundColor2
-            unpin.image = UIImage(named: "UnPin")
+            unpin.image = UIImage(named: "ic_unpin")
             
             if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                 let publicKey = thread.contactBChatID()

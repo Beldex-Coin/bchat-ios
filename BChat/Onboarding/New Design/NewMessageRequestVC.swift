@@ -112,11 +112,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             
             ])
         
-//        if array.count == 0 {
-//            self.tableView.isHidden = true
-//            self.backGroundView.isHidden = false
-//        }
-        
         // Notifications
         NotificationCenter.default.addObserver(
             self,
@@ -138,8 +133,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         )
         
         reload()
-        
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

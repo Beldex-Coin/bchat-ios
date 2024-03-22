@@ -18,7 +18,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     private lazy var seedInfoLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xF0AF13)
+        result.textColor = Colors.yellowColor
         result.font = Fonts.boldOpenSans(ofSize: 17)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -30,14 +30,14 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var seedView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
     
     private lazy var seedLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.setTitle("Save", for: .normal)
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
@@ -79,17 +79,15 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.semanticContentAttribute = .forceRightToLeft
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cellGroundColor3
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
-    }()
-    
-    
+    }()    
     
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.textFieldPlaceHolderColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +99,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.setTitle("Continue", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
@@ -150,14 +148,14 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        
+        view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Restore Seed"
         
         self.seedInfoLabel.text = "Copy your Recovery Seed and\nkeep it safe."
         self.infoLabel.text = "Copy and save the seed to continue"
-        self.seedLabel.text = "\(mnemonic)"//"Ut34co m56m 77odo8 6ve66ne natis023 3diam0id 5accum s3an3 6383ut7 purus eges tas34f acilisis is0233 diam0 id5acc ums3an36383ut7p"
+        self.seedLabel.text = "\(mnemonic)"
         
         view.addSubViews(seedInfoLabel, iconView, seedView)
         seedView.addSubview(seedLabel)
@@ -199,25 +197,14 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
             continueButton.heightAnchor.constraint(equalToConstant: 58),
-
         ])
         
     }
-    
-
-
-    
-    
+     
     
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
         if seedcopy == true {
-//            guard selectedOptionView != nil else {
-//                let title = NSLocalizedString("vc_pn_mode_no_option_picked_modal_title", comment: "")
-//                let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-//                return present(alert, animated: true, completion: nil)
-//            }
             UserDefaults.standard[.isUsingFullAPNs] = true//(selectedOptionView == apnsOptionView)
             TSAccountManager.sharedInstance().didRegister()
             let homeVC = HomeVC()
@@ -231,7 +218,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     }
     
     @objc private func copyButtonTapped() {
-        continueButton.backgroundColor = UIColor(hex: 0x00BD40)
+        continueButton.backgroundColor = Colors.bothGreenColor
         self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
@@ -239,7 +226,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     }
     
     @objc private func saveButtonTapped() {
-        continueButton.backgroundColor = UIColor(hex: 0x00BD40)
+        continueButton.backgroundColor = Colors.bothGreenColor
         self.showToastMsg(message: "Please save the seed", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
