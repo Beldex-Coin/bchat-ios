@@ -6,10 +6,7 @@ import BChatMessagingKit
 import PromiseKit
 
 class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
-    
-    
-    
-    
+  
     let tableView : UITableView = {
         let t = UITableView()
         t.translatesAutoresizingMaskIntoConstraints = false
@@ -42,15 +39,13 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
-
-    
-    
     
     private var threads: YapDatabaseViewMappings! =  {
         let result = YapDatabaseViewMappings(groups: [ TSMessageRequestGroup ], view: TSThreadDatabaseViewExtensionName)
         result.setIsReversed(true, forGroup: TSMessageRequestGroup)
         return result
     }()
+    
     private var threadViewModelCache: [String: ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     private var tableViewTopConstraint: NSLayoutConstraint!
     
@@ -67,7 +62,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     
     var tappedIndex = 0
-    
     
     
     override func viewDidLoad() {
@@ -109,7 +103,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             messageLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 22),
             messageLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             messageLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 0),
-            
             ])
         
         // Notifications

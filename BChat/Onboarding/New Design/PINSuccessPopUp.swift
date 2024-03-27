@@ -40,7 +40,7 @@ class PINSuccessPopUp: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -56,7 +56,6 @@ class PINSuccessPopUp: BaseVC {
         view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconView, titleLabel, okButton)
-        
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),

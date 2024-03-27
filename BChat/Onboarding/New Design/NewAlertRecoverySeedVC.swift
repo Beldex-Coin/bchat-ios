@@ -4,7 +4,6 @@ import UIKit
 
 class NewAlertRecoverySeedVC: BaseVC {
     
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +78,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -125,7 +124,6 @@ class NewAlertRecoverySeedVC: BaseVC {
             
             ])
     }
-    
 
     @objc private func nextButtonTapped(_ sender: UIButton) {
         let vc = NewPasswordVC()
@@ -133,8 +131,5 @@ class NewAlertRecoverySeedVC: BaseVC {
         vc.isVerifyPassword = true
         navigationController!.pushViewController(vc, animated: true)
     }
-    
-    
-   
 
 }

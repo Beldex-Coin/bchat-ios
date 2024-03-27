@@ -4,7 +4,6 @@ import UIKit
 
 class NewClearDataVC: BaseVC {
     
-    
    private lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +81,6 @@ class NewClearDataVC: BaseVC {
         return button
     }()
     
-    
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
@@ -151,7 +149,6 @@ class NewClearDataVC: BaseVC {
             clearDataButton.heightAnchor.constraint(equalToConstant: 18),
             clearDataButton.topAnchor.constraint(equalTo: clearDataLabel.topAnchor, constant: 5),
             
-            
             deleteLabel.topAnchor.constraint(equalTo: clearDataDiscriptionLabel.bottomAnchor, constant: 16),
             deleteDiscriptionLabel.topAnchor.constraint(equalTo: deleteLabel.bottomAnchor, constant: 2),
             deleteDiscriptionLabel.leadingAnchor.constraint(equalTo: deleteLabel.leadingAnchor),
@@ -162,7 +159,6 @@ class NewClearDataVC: BaseVC {
             deleteAccountButton.heightAnchor.constraint(equalToConstant: 18),
             deleteAccountButton.topAnchor.constraint(equalTo: deleteLabel.topAnchor, constant: 5),
             
-            
             buttonStackView.topAnchor.constraint(equalTo: deleteDiscriptionLabel.bottomAnchor, constant: 26),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -22),
@@ -171,7 +167,6 @@ class NewClearDataVC: BaseVC {
             okButton.heightAnchor.constraint(equalToConstant: 46),
             cancelButton.heightAnchor.constraint(equalToConstant: 46),
         ])
-        
     }
     
     

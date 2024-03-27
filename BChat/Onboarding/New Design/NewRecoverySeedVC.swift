@@ -60,7 +60,7 @@ class NewRecoverySeedVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -74,7 +74,6 @@ class NewRecoverySeedVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
-    
     
     private let mnemonic: String = {
         let identityManager = OWSIdentityManager.shared()
@@ -141,5 +140,4 @@ class NewRecoverySeedVC: BaseVC {
         }, completion: nil)
     }
     
-
 }

@@ -153,7 +153,6 @@ class AddNodeListVC: BaseVC {
         return result
     }()
     
-    
     private lazy var testButton: UIButton = {
         let button = UIButton()
         button.setTitle("Test", for: .normal)
@@ -225,19 +224,16 @@ class AddNodeListVC: BaseVC {
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 19),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
-            
             nodePortTextField.heightAnchor.constraint(equalToConstant: 56),
             nodeNameTextField.heightAnchor.constraint(equalToConstant: 56),
             userNameTextField.heightAnchor.constraint(equalToConstant: 56),
             passwordTextField.heightAnchor.constraint(equalToConstant: 56),
             nodeAddressTextField.heightAnchor.constraint(equalToConstant: 56),
             
-            
             topStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             topStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
             topStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -22),
             topStackView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -66),
-            
             
             testButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 26),
             testButton.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -16),
@@ -275,7 +271,6 @@ class AddNodeListVC: BaseVC {
         }
     }
     
-    
     // Node validation cheking
     func verifyNodeURI(host_port:String) {
         let url = "http://" + host_port + "/json_rpc"
@@ -308,8 +303,6 @@ class AddNodeListVC: BaseVC {
                 }
             }
     }
-    
-    
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         
@@ -365,7 +358,5 @@ class AddNodeListVC: BaseVC {
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-    }
-    
-    
+    }    
 }

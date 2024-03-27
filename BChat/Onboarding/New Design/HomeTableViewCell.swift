@@ -122,7 +122,6 @@ class HomeTableViewCell: UITableViewCell {
         messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         
-        
         let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
@@ -130,14 +129,12 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.layer.masksToBounds = true
         iconImageView.layer.cornerRadius = 21
         
-        
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            
             
             pinImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             pinImageView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 14),
@@ -391,23 +388,9 @@ class HomeTableViewCell: UITableViewCell {
 
 
 
-
-
-
 class MessageRequestCollectionViewCell: UICollectionViewCell {
 
-
     lazy var profileImageView = ProfilePictureView()
-//    UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.layer.cornerRadius = 22
-//        imageView.clipsToBounds = true
-//        imageView.image = UIImage(named: "ic_test", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-//        return imageView
-//    }()
-    
     
     lazy var removeButton: UIButton = {
         let button = UIButton()
@@ -460,7 +443,6 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
-        
     }
 
     required init?(coder: NSCoder) {
@@ -470,6 +452,4 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
     @objc private func removeButtonTapped(_ sender: UIButton) {
         removeCallback?()
     }
-
-
 }

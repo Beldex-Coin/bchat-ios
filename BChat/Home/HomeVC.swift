@@ -576,9 +576,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return threadViewModel
         }
     }
-    
-    
-    
+        
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -1024,7 +1022,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
         }
     }
-    
     
     
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {

@@ -121,6 +121,7 @@ public final class Colors : NSObject {
     @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
     @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
     @objc public static var bothBlueColor: UIColor { UIColor(named: "0085FF")! }
+    @objc public static var bothWhiteColor: UIColor { UIColor(named: "FFFFFF")! }
     @objc public static var titleColor: UIColor { UIColor(named: "EBEBEB-333333")! }
     @objc public static var titleColor2: UIColor { UIColor(named: "EBEBEB-222222")! }
     @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }

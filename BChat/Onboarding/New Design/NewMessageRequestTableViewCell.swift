@@ -99,7 +99,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     }()
     
     
-    
     var deleteCallback: (() -> Void)?
     var acceptCallback: (() -> Void)?
     var blockCallback: (() -> Void)?
@@ -172,6 +171,5 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     @objc private func blockButtonTapped(_ sender: UIButton) {
         blockCallback?()
     }
-    
 
 }
