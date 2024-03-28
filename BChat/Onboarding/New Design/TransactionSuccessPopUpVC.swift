@@ -5,14 +5,13 @@ import BChatUIKit
 
 class TransactionSuccessPopUpVC: BaseVC {
     
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
@@ -28,7 +27,7 @@ class TransactionSuccessPopUpVC: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Transaction initiated Successfully"
@@ -40,8 +39,9 @@ class TransactionSuccessPopUpVC: BaseVC {
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -50,23 +50,23 @@ class TransactionSuccessPopUpVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconView, titleLabel, okButton)
-        
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
-            
             iconView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             iconView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 32),
-            
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 7),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: okButton.topAnchor, constant: -20),
-            
             okButton.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             okButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -24),
             okButton.heightAnchor.constraint(equalToConstant: 52),
@@ -74,11 +74,8 @@ class TransactionSuccessPopUpVC: BaseVC {
         ])
     }
     
-
-    
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
     
-
 }

@@ -20,8 +20,6 @@ class SecretGroupTableViewCell: UITableViewCell {
         super.init(coder: coder)
         
     }
-
-    
     
      lazy var backGroundView: UIView = {
         let stackView = UIView()
@@ -69,7 +67,6 @@ class SecretGroupTableViewCell: UITableViewCell {
        return result
    }()
     
-    
     lazy var messageCountLabel: UILabel = {
        let result = PaddingLabel()
        result.textColor = UIColor(hex: 0xFFFFFF)
@@ -83,7 +80,6 @@ class SecretGroupTableViewCell: UITableViewCell {
         result.paddingRight = 5
        return result
    }()
-
     
     
     func setUPLayout() {
@@ -120,8 +116,4 @@ class SecretGroupTableViewCell: UITableViewCell {
             messageCountLabel.heightAnchor.constraint(equalToConstant: 22),
         ])
     }
-    
-    
-    
-
 }

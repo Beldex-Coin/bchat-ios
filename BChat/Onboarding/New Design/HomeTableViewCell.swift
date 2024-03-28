@@ -34,7 +34,6 @@ class HomeTableViewCell: UITableViewCell {
             isShowingGlobalSearchResult ? updateForSearchResult() : update()
         }
     }
-        
     
     lazy var backGroundView: UIView = {
        let View = UIView()
@@ -64,7 +63,6 @@ class HomeTableViewCell: UITableViewCell {
        return result
    }()
     
-    
     lazy var messageCountAndDateStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +76,7 @@ class HomeTableViewCell: UITableViewCell {
     
     lazy var messageCountLabel: UILabel = {
        let result = PaddingLabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.bothWhiteColor
        result.font = Fonts.boldOpenSans(ofSize: 11)
        result.textAlignment = .center
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -111,9 +109,7 @@ class HomeTableViewCell: UITableViewCell {
         return result
     }()
     
-    
     func setUPLayout() {
-        
         contentView.addSubview(backGroundView)
         contentView.addSubview(pinImageView)
         pinImageView.image = UIImage(named: "ic_pinned")
@@ -122,13 +118,6 @@ class HomeTableViewCell: UITableViewCell {
         messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         
-        
-//        nameLabel.text = "john"
-//        lastMessageLabel.text = "Lorem ipsum dolor sit amet..."
-//        messageCountLabel.text = "2"
-//        dateLabel.text = "2/2/23"
-        
-        
         let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
@@ -136,14 +125,12 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.layer.masksToBounds = true
         iconImageView.layer.cornerRadius = 21
         
-        
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            
             
             pinImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             pinImageView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 14),
@@ -165,7 +152,6 @@ class HomeTableViewCell: UITableViewCell {
             messageCountAndDateStackView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 15),
             messageCountAndDateStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
             messageCountAndDateStackView.widthAnchor.constraint(equalToConstant: 56),
-            
         ])
     }
     
@@ -397,23 +383,9 @@ class HomeTableViewCell: UITableViewCell {
 
 
 
-
-
-
 class MessageRequestCollectionViewCell: UICollectionViewCell {
 
-
     lazy var profileImageView = ProfilePictureView()
-//    UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.layer.cornerRadius = 22
-//        imageView.clipsToBounds = true
-//        imageView.image = UIImage(named: "ic_test", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-//        return imageView
-//    }()
-    
     
     lazy var removeButton: UIButton = {
         let button = UIButton()
@@ -450,9 +422,6 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 22
         
-        
-        nameLabel.text = "john"
-        
         NSLayoutConstraint.activate([
             profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
@@ -468,9 +437,7 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
             nameLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
-            
         ])
-        
     }
 
     required init?(coder: NSCoder) {
@@ -480,6 +447,4 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
     @objc private func removeButtonTapped(_ sender: UIButton) {
         removeCallback?()
     }
-
-
 }

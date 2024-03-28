@@ -7,10 +7,10 @@ class WalletTransactionSuccessVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.viewBackgroundColorNew2
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
-        stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = Colors.borderColor.cgColor
+         stackView.layer.borderWidth = 1
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var iconView: UIImageView = {
@@ -24,7 +24,7 @@ class WalletTransactionSuccessVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Transaction Successful!"
@@ -35,17 +35,20 @@ class WalletTransactionSuccessVC: BaseVC {
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconView, titleLabel, okButton)
         

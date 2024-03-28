@@ -154,8 +154,6 @@ class AddNodeListVC: BaseVC {
         return result
     }()
     
-    
-    
     private lazy var testButton: UIButton = {
         let button = UIButton()
         button.setTitle("Test", for: .normal)
@@ -199,13 +197,11 @@ class AddNodeListVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.5)
-        
+        view.backgroundColor = Colors.backGroundColorWithAlpha
         let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = view.bounds
         view.addSubview(blurView)
-        
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, topStackView, testButton, resultLabel, resultImageView, buttonStackView)
         topStackView.addArrangedSubview(nodeAddressTextField)
@@ -215,7 +211,6 @@ class AddNodeListVC: BaseVC {
         topStackView.addArrangedSubview(passwordTextField)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(okButton)
-        
         resultLabel.isHidden = true
         resultImageView.isHidden = true
         
@@ -227,19 +222,16 @@ class AddNodeListVC: BaseVC {
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 19),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
-            
             nodePortTextField.heightAnchor.constraint(equalToConstant: 56),
             nodeNameTextField.heightAnchor.constraint(equalToConstant: 56),
             userNameTextField.heightAnchor.constraint(equalToConstant: 56),
             passwordTextField.heightAnchor.constraint(equalToConstant: 56),
             nodeAddressTextField.heightAnchor.constraint(equalToConstant: 56),
             
-            
             topStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             topStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
             topStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -22),
             topStackView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -66),
-            
             
             testButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 26),
             testButton.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: -16),
@@ -261,7 +253,6 @@ class AddNodeListVC: BaseVC {
         ])
     }
     
-    
     @objc private func testButtonTapped(_ sender: UIButton) {
         if (nodeAddressTextField.text == "") {
             let alert = UIAlertController(title: "", message: "Please Enter Node Address", preferredStyle: UIAlertController.Style.alert)
@@ -276,7 +267,6 @@ class AddNodeListVC: BaseVC {
             verifyNodeURI(host_port: txtfldStr)
         }
     }
-    
     
     // Node validation cheking
     func verifyNodeURI(host_port:String) {
@@ -310,8 +300,6 @@ class AddNodeListVC: BaseVC {
                 }
             }
     }
-    
-    
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         
@@ -352,12 +340,9 @@ class AddNodeListVC: BaseVC {
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }else {
-                
                 self.nodeArray.append(host_port)
-                
                 SaveUserDefaultsData.SaveLocalNodelist = self.nodeArray
                 SaveUserDefaultsData.SelectedNode = self.nodeArray.last!
-                
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now()+5) {
@@ -367,7 +352,5 @@ class AddNodeListVC: BaseVC {
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-    }
-    
-    
+    }    
 }

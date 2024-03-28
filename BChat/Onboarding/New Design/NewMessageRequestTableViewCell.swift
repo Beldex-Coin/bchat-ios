@@ -69,7 +69,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         let button = UIButton()
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.addTarget(self, action: #selector(acceptButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_accept"), for: .normal)
         button.layer.cornerRadius = 8
@@ -97,7 +97,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
         button.layer.cornerRadius = 8
         return button
     }()
-    
     
     
     var deleteCallback: (() -> Void)?
@@ -172,6 +171,5 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     @objc private func blockButtonTapped(_ sender: UIButton) {
         blockCallback?()
     }
-    
 
 }

@@ -1006,7 +1006,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     hashArray = UserDefaults.standard.domainSchemas
                     hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                     UserDefaults.standard.domainSchemas = hashArray
-                }else {
+                } else {
                     hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                     UserDefaults.standard.domainSchemas = hashArray
                 }
@@ -1248,7 +1248,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64("\(height[1])")!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     wallet.start()
@@ -1275,7 +1275,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             attributedString.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: Values.verySmallFontSize), range: boldRange)
             inChatPaymentFeelabel.attributedText = attributedString
             initiatingTransactionPopView.isHidden = true
-        }else {
+        } else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }

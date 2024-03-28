@@ -39,7 +39,7 @@ class NewSettingsTableViewCell: UITableViewCell {
     lazy var smallDotView: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00BD40)
+        View.backgroundColor = Colors.bothGreenColor
         View.isHidden = true
         View.layer.cornerRadius = 4
         return View
@@ -56,7 +56,7 @@ class NewSettingsTableViewCell: UITableViewCell {
     
     lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

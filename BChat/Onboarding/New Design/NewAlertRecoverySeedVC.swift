@@ -4,7 +4,6 @@ import UIKit
 
 class NewAlertRecoverySeedVC: BaseVC {
     
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,7 +78,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -99,33 +98,25 @@ class NewAlertRecoverySeedVC: BaseVC {
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            
             iconImageView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 38),
             iconImageView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
             importantLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 7),
             importantLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
             label1.topAnchor.constraint(equalTo: importantLabel.bottomAnchor, constant: 26),
             label1.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
             label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 0),
             label2.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 26),
             label2.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -21),
-            
             label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 24),
             label3.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 49),
             label3.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -44),
-            
             nextButton.topAnchor.constraint(equalTo: label3.bottomAnchor, constant: 19),
             nextButton.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             nextButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -42),
             nextButton.heightAnchor.constraint(equalToConstant: 48),
             nextButton.widthAnchor.constraint(equalToConstant: 180)
-            
             ])
     }
-    
 
     @objc private func nextButtonTapped(_ sender: UIButton) {
         let vc = NewPasswordVC()
@@ -133,8 +124,5 @@ class NewAlertRecoverySeedVC: BaseVC {
         vc.isVerifyPassword = true
         navigationController!.pushViewController(vc, animated: true)
     }
-    
-    
-   
 
 }

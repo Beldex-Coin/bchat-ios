@@ -34,28 +34,18 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
-       stackView.backgroundColor = UIColor(hex: 0x11111A)
+       stackView.backgroundColor = Colors.viewBackgroundColorSocialGroup
        stackView.layer.cornerRadius = 26
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x353544).cgColor
+        stackView.layer.borderColor = Colors.borderColor3.cgColor
        return stackView
    }()
     
     private lazy var profileImageView = ProfilePictureView()
-//    = {
-//       let result = UIView()
-////       result.image = UIImage(named: "")
-//        result.set(.width, to: 36)
-//        result.set(.height, to: 36)
-//       result.layer.masksToBounds = true
-//       result.contentMode = .scaleToFill
-//        result.layer.cornerRadius = 18
-//       return result
-//   }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
-       result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.titleColor3
        result.font = Fonts.boldOpenSans(ofSize: 16)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +57,6 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-//        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         button.setBackgroundImage(UIImage(named: "ic_button_normal"), for: .normal)
         button.setBackgroundImage(UIImage(named: "ic_button_selected"), for: .selected)
         return button
@@ -75,7 +64,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-
+        
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton)
         let profilePictureViewSize = CGFloat(36)
@@ -102,13 +91,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -14),
         ])
     }
-    
-    
-    
-//    @objc private func selectionButtonTapped(_ sender: UIButton) {
-//        sender.isSelected = !sender.isSelected
-//    }
-    
+       
     
     // MARK: Updating
     func update() {
@@ -117,5 +100,4 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
         nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
     }
     
-
 }

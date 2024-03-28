@@ -40,10 +40,11 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        sampleSwitch.isUserInteractionEnabled = false
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         self.navigationController?.isNavigationBarHidden = true
         if isLightMode {
             sampleSwitch.isOn = false
-        }else {
+        } else {
             sampleSwitch.isOn = true
         }
         let origImage = UIImage(named: isLightMode ? "X" : "X")
@@ -95,9 +96,12 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as! ProfileCell
             cell.selectionStyle = .none
-            
+            cell.contentView.backgroundColor = Colors.cancelButtonBackgroundColor
+            cell.v1.backgroundColor = Colors.cellGroundColor3
             cell.lblname.text = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             cell.lblIDName.text = "ID: \(getUserHexEncodedPublicKey())"
+            cell.lblname.textColor = Colors.titleColor
+            cell.lblIDName.textColor = Colors.noDataLabelColor
             
             let publicKey = getUserHexEncodedPublicKey()
             cell.imgpic.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
@@ -125,39 +129,41 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             return cell
         }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SlideMenuCell", for: indexPath) as! SlideMenuCell
+            cell.contentView.backgroundColor = Colors.cancelButtonBackgroundColor
             cell.selectionStyle = .none
             cell.lblname.text = titlesArray[indexPath.row]
+            cell.lblname.textColor = Colors.titleColor2
             cell.lblbeta.isHidden = true
             
             if indexPath.row == 0 { //My Account
-                let logoName = isLightMode ? "my_account" : "ic_menu_account"
+                let logoName = "ic_menu_account"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 1 {   //Settings
-                let logoName = isLightMode ? "ic_settings" : "ic_menu_setting"
+                let logoName = "ic_menu_setting"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 2 {   //Notification
-                let logoName = isLightMode ? "notification" : "ic_menu_notification"
+                let logoName = "ic_menu_notification"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 3 {   //Message Requests
-                let logoName = isLightMode ? "message_request" : "ic_menu_msg_rqst"
+                let logoName = "ic_menu_msg_rqst"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 4 {   //Recovery Seed
-                let logoName = isLightMode ? "recovery_seed" : "ic_menu_recovery_seed"
+                let logoName = "ic_menu_recovery_seed"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 5 {   //My Wallet
-                let logoName = isLightMode ? "ic_MyWalletDark" : "ic_menu_wallet"
+                let logoName = "ic_menu_wallet"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 6 {   //Report Issue
-                let logoName = isLightMode ? "ic_ReportDark" : "ic_menu_report_issue"
+                let logoName = "ic_menu_report_issue"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 7 {   //Help
-                let logoName = isLightMode ? "icons8-help" : "ic_menu_help"
+                let logoName = "ic_menu_help"
                 cell.img.image = UIImage(named: logoName)!
             }else if indexPath.row == 8{    //Invite
-                let logoName = isLightMode ? "invite" : "ic_menu_invite"
+                let logoName = "ic_menu_invite"
                 cell.img.image = UIImage(named: logoName)!
             }else { //About
-                let logoName = isLightMode ? "about_dark" : "ic_menu_about"
+                let logoName = "ic_menu_about"
                 cell.img.image = UIImage(named: logoName)!
             }
             return cell

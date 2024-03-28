@@ -85,7 +85,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         button.setTitle("Create", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-//        button.backgroundColor = UIColor(hex: 0x00BD40)
         button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
@@ -105,7 +104,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Colors.mainBackGroundColor4
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup//Colors.mainBackGroundColor4
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Secret Group"
         

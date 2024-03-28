@@ -121,6 +121,8 @@ public final class Colors : NSObject {
     @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
     @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
     @objc public static var bothBlueColor: UIColor { UIColor(named: "0085FF")! }
+    @objc public static var bothWhiteColor: UIColor { UIColor(named: "FFFFFF")! }
+    @objc public static var bothGrayColor: UIColor { UIColor(named: "ACACAC")! }
     @objc public static var titleColor: UIColor { UIColor(named: "EBEBEB-333333")! }
     @objc public static var titleColor2: UIColor { UIColor(named: "EBEBEB-222222")! }
     @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }
@@ -139,6 +141,8 @@ public final class Colors : NSObject {
     @objc public static var noBorderColor: UIColor { UIColor(named: "4B4B64-F8F8F8")! }
     @objc public static var noBorderColor2: UIColor { UIColor(named: "4B4B64-FFFFFF")! }
     @objc public static var noBorderColor3: UIColor { UIColor(named: "24242F-FFFFFF")! }
+    @objc public static var borderColor3: UIColor { UIColor(named: "353544-A7A7BA")! }
+    
     @objc public static var cancelButtonBackgroundColor: UIColor { UIColor(named: "1C1C26-F0F0F0")! }
     @objc public static var cancelButtonBackgroundColor2: UIColor { UIColor(named: "282836-ECECEC")! }
     @objc public static var cancelButtonTitleColor: UIColor { UIColor(named: "ACACAC")! }
@@ -172,4 +176,11 @@ public final class Colors : NSObject {
     @objc public static var walletHomeDateViewBackgroundColor: UIColor { UIColor(named: "walletHomeDateViewBackgroundColor")! }
     
     
+    @objc public static var darkThemeTextBoxColor: UIColor { UIColor(named: "1C1C26")! }
+    @objc public static var homeScreenFloatingbackgroundColor: UIColor { UIColor(named: "1C1C26-ECECEC")! }
+    @objc public static var newChatbackgroundColor: UIColor { UIColor(named: "2C2C3B-F4F4F4")! }
+    @objc public static var messageRequestBackGroundColor: UIColor { UIColor(named: "111119-F8F8F8")! }
+    @objc public static var alertBackGroundColor: UIColor { UIColor(named: "080812-E0E0E0")! }
+    @objc public static var messageTimeLabelColor: UIColor { UIColor(named: "5F5F76-A7A7BA")! }
+    @objc public static var titleNewColor: UIColor { UIColor(named: "ACACAC-8A8A9D")! }
 }

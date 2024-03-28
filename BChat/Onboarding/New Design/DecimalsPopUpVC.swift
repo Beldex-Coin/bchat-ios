@@ -8,15 +8,15 @@ class DecimalsPopUpVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Decimals"
@@ -36,7 +36,7 @@ class DecimalsPopUpVC: BaseVC {
         button.setTitle("4 - Four (0.0000)", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(fourButtonTapped), for: .touchUpInside)
         return button
@@ -46,7 +46,7 @@ class DecimalsPopUpVC: BaseVC {
         button.setTitle("3 - Three (0.000)", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(threeButtonTapped), for: .touchUpInside)
         return button
@@ -56,7 +56,7 @@ class DecimalsPopUpVC: BaseVC {
         button.setTitle("2 - Two (0.00)", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(twoButtonTapped), for: .touchUpInside)
         return button
@@ -66,7 +66,7 @@ class DecimalsPopUpVC: BaseVC {
         button.setTitle("0 - Zero (0)", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(zeroButtonTapped), for: .touchUpInside)
         return button
@@ -76,7 +76,11 @@ class DecimalsPopUpVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, closeButton, fourButton, threeButton, twoButton, zeroButton)
         
@@ -152,87 +156,87 @@ class DecimalsPopUpVC: BaseVC {
     
     func fourButtonUtilities(){
         fourButton.layer.borderWidth = 2
-        fourButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        fourButton.layer.borderColor = Colors.bothGreenColor.cgColor
         fourButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        fourButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        fourButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         threeButton.layer.borderWidth = 1
-        threeButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        threeButton.layer.borderColor = Colors.borderColorNew.cgColor
         threeButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        threeButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         twoButton.layer.borderWidth = 1
-        twoButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        twoButton.layer.borderColor = Colors.borderColorNew.cgColor
         twoButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        twoButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
-        zeroButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
         zeroButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        zeroButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func threeButtonUtilities(){
         threeButton.layer.borderWidth = 2
-        threeButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        threeButton.layer.borderColor = Colors.bothGreenColor.cgColor
         threeButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        threeButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        threeButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         fourButton.layer.borderWidth = 1
-        fourButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        fourButton.layer.borderColor = Colors.borderColorNew.cgColor
         fourButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        fourButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         twoButton.layer.borderWidth = 1
-        twoButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        twoButton.layer.borderColor = Colors.borderColorNew.cgColor
         twoButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        twoButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
-        zeroButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
         zeroButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        zeroButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func twoButtonUtilities(){
         twoButton.layer.borderWidth = 2
-        twoButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        twoButton.layer.borderColor = Colors.bothGreenColor.cgColor
         twoButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        twoButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        twoButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         threeButton.layer.borderWidth = 1
-        threeButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        threeButton.layer.borderColor = Colors.borderColorNew.cgColor
         threeButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        threeButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         fourButton.layer.borderWidth = 1
-        fourButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        fourButton.layer.borderColor = Colors.borderColorNew.cgColor
         fourButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        fourButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
-        zeroButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
         zeroButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        zeroButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func zeroButtonUtilities(){
         zeroButton.layer.borderWidth = 2
-        zeroButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        zeroButton.layer.borderColor = Colors.bothGreenColor.cgColor
         zeroButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        zeroButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        zeroButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         twoButton.layer.borderWidth = 1
-        twoButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        twoButton.layer.borderColor = Colors.borderColorNew.cgColor
         twoButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        twoButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         threeButton.layer.borderWidth = 1
-        threeButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        threeButton.layer.borderColor = Colors.borderColorNew.cgColor
         threeButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        threeButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         fourButton.layer.borderWidth = 1
-        fourButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        fourButton.layer.borderColor = Colors.borderColorNew.cgColor
         fourButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        fourButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     
 

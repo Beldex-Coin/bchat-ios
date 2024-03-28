@@ -8,17 +8,16 @@ class AcceptMessageRequestPopUp: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -27,7 +26,7 @@ class AcceptMessageRequestPopUp: BaseVC {
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to accept this request?"
@@ -41,7 +40,7 @@ class AcceptMessageRequestPopUp: BaseVC {
         button.setTitle("Yes", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -52,9 +51,9 @@ class AcceptMessageRequestPopUp: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -74,7 +73,11 @@ class AcceptMessageRequestPopUp: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
@@ -85,15 +88,12 @@ class AcceptMessageRequestPopUp: BaseVC {
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
-            
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
             discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 11),
             discriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 32),
             discriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -32),
-            
-            
             buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 21),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
@@ -101,14 +101,8 @@ class AcceptMessageRequestPopUp: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
-            
         ])
-        
-        
     }
-    
-    
-    
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "acceptMessageRequestTapped"), object: nil)
@@ -118,9 +112,6 @@ class AcceptMessageRequestPopUp: BaseVC {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
-
-    
 
 }
 
@@ -132,17 +123,17 @@ class DeleteMessageRequestPopUp: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -151,7 +142,7 @@ class DeleteMessageRequestPopUp: BaseVC {
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to delete this request?"
@@ -165,7 +156,7 @@ class DeleteMessageRequestPopUp: BaseVC {
         button.setTitle("Yes", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -176,9 +167,9 @@ class DeleteMessageRequestPopUp: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -198,7 +189,11 @@ class DeleteMessageRequestPopUp: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
@@ -250,17 +245,17 @@ class BlockMessageRequestPopUp: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -269,7 +264,7 @@ class BlockMessageRequestPopUp: BaseVC {
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to Block this user?"
@@ -283,7 +278,7 @@ class BlockMessageRequestPopUp: BaseVC {
         button.setTitle("Yes", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -294,9 +289,9 @@ class BlockMessageRequestPopUp: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -316,7 +311,11 @@ class BlockMessageRequestPopUp: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)

@@ -7,10 +7,10 @@ class InitiatingTransactionVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.viewBackgroundColorNew2
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var circleView: UIView = {
@@ -30,7 +30,7 @@ class InitiatingTransactionVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Initiating Transaction.."
@@ -38,7 +38,7 @@ class InitiatingTransactionVC: BaseVC {
     }()
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Please don’t close the window or attend calls or negative to another app until the transaction gets initiated"
@@ -51,7 +51,11 @@ class InitiatingTransactionVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(circleView, titleLabel, discriptionLabel)
         circleView.addSubview(iconView)

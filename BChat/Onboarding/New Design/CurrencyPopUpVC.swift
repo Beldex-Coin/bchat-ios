@@ -8,15 +8,15 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Currency"
@@ -46,11 +46,11 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Search Currency", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Search Currency", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.layer.cornerRadius = 24
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
@@ -78,7 +78,11 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, closeButton)
         backGroundView.addSubview(tableView)
@@ -152,14 +156,14 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! CurrencyPopUpTableCell
         cell.selectionStyle = .none
-        cell.nameLabel.textColor = UIColor(hex: 0x00BD40)
+        cell.nameLabel.textColor = Colors.bothGreenColor
         cell.nameLabel.font = Fonts.boldOpenSans(ofSize: 16)
         currencyNameString = filteredCurrencyArray[indexPath.row]
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! CurrencyPopUpTableCell
         cell.selectionStyle = .none
-        cell.nameLabel.textColor = UIColor(hex: 0xACACAC)
+        cell.nameLabel.textColor = Colors.bothGrayColor
         cell.nameLabel.font = Fonts.OpenSans(ofSize: 16)
     }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -179,12 +183,12 @@ class CurrencyPopUpTableCell: UITableViewCell {
     lazy var lineView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: 0x4B4B64)
+        view.backgroundColor = Colors.borderColorNew
         return view
     }()
     lazy var nameLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.bothGrayColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false

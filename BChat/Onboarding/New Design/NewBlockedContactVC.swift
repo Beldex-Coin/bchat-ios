@@ -113,9 +113,6 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         navigationItem.rightBarButtonItems = rightBarButtonItems
         
     }
-
-    
-    
     
     
     // MARK: Button Actions :-
@@ -288,7 +285,5 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         cell.selectionButton.isSelected = isSelected
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
 
 }

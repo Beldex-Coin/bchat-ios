@@ -28,7 +28,6 @@ class NewBlockContactTableViewCell: UITableViewCell {
         
     }
     
-    
     lazy var backGroundView: UIView = {
        let stackView = UIView()
        stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +38,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     
     lazy var profileImageView: UIImageView = {
        let result = UIImageView()
-       result.image = UIImage(named: "")//UIImage(named: "ic_test")
+       result.image = UIImage(named: "")
         result.set(.width, to: 36)
         result.set(.height, to: 36)
        result.layer.masksToBounds = true

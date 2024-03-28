@@ -8,15 +8,15 @@ class FeePriorityVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
          stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Fee Priority"
@@ -35,7 +35,7 @@ class FeePriorityVC: BaseVC {
         button.setTitle("Flash", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         return button
@@ -45,7 +45,7 @@ class FeePriorityVC: BaseVC {
         button.setTitle("Slow", for: .normal)
         button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x1C1C26)
+        button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = 16
         button.addTarget(self, action: #selector(slowButtonButtonTapped), for: .touchUpInside)
         return button
@@ -55,7 +55,11 @@ class FeePriorityVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, closeButton, flashButton, slowButton)
         flashButtonUtilities()
@@ -111,25 +115,25 @@ class FeePriorityVC: BaseVC {
     
     func flashButtonUtilities(){
         flashButton.layer.borderWidth = 2
-        flashButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        flashButton.layer.borderColor = Colors.bothGreenColor.cgColor
         flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        flashButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        flashButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         slowButton.layer.borderWidth = 1
-        slowButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        slowButton.layer.borderColor = Colors.borderColorNew.cgColor
         slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        slowButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        slowButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func slowButtonButtonUtilities(){
         slowButton.layer.borderWidth = 2
-        slowButton.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        slowButton.layer.borderColor = Colors.bothGreenColor.cgColor
         slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
-        slowButton.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        slowButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         flashButton.layer.borderWidth = 1
-        flashButton.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        flashButton.layer.borderColor = Colors.borderColorNew.cgColor
         flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        flashButton.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        flashButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
 
 }

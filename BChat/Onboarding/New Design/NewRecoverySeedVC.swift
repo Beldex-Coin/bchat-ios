@@ -60,7 +60,7 @@ class NewRecoverySeedVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -75,7 +75,6 @@ class NewRecoverySeedVC: BaseVC {
         return result
     }()
     
-    
     private let mnemonic: String = {
         let identityManager = OWSIdentityManager.shared()
         let databaseConnection = identityManager.value(forKey: "dbConnection") as! YapDatabaseConnection
@@ -85,7 +84,6 @@ class NewRecoverySeedVC: BaseVC {
         }
         return Mnemonic.encode(hexEncodedString: hexEncodedSeed)
     }()
-    
     
 
     override func viewDidLoad() {
@@ -103,27 +101,21 @@ class NewRecoverySeedVC: BaseVC {
         NSLayoutConstraint.activate([
             iconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             iconImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            
             infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             infoLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 33),
-            
             seedView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 19),
             seedView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             seedView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            
             seedLabel.topAnchor.constraint(equalTo: seedView.topAnchor, constant: 16),
             seedLabel.leadingAnchor.constraint(equalTo: seedView.leadingAnchor, constant: 26),
             seedLabel.trailingAnchor.constraint(equalTo: seedView.trailingAnchor, constant: -25),
             seedLabel.bottomAnchor.constraint(equalTo: seedView.bottomAnchor, constant: -26),
-            
             copyButton.topAnchor.constraint(equalTo: seedView.bottomAnchor, constant: 14),
             copyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             copyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             copyButton.heightAnchor.constraint(equalToConstant: 58)
-            
             ])
     }
-    
     
     @objc private func copyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = mnemonic
@@ -141,5 +133,4 @@ class NewRecoverySeedVC: BaseVC {
         }, completion: nil)
     }
     
-
 }
