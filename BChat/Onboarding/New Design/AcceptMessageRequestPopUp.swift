@@ -1,6 +1,7 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class AcceptMessageRequestPopUp: BaseVC {
 
@@ -352,7 +353,7 @@ class BlockMessageRequestPopUp: BaseVC {
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "blockMessageRequestTapped"), object: nil)
         self.dismiss(animated: true)
     }
     

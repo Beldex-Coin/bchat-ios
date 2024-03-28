@@ -9,15 +9,15 @@ class SyncingOptionPopUpVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.viewBackgroundColorNew2
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.greenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Syncing Option"
@@ -28,10 +28,10 @@ class SyncingOptionPopUpVC: BaseVC {
         button.setTitle("Reconnect", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(reconnectButtonTapped), for: .touchUpInside)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         return button
     }()
     private lazy var reScaneButton: UIButton = {
@@ -39,10 +39,10 @@ class SyncingOptionPopUpVC: BaseVC {
         button.setTitle("Rescan", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(reScaneButtonTapped), for: .touchUpInside)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         return button
     }()
     lazy var buttonStackView: UIStackView = {

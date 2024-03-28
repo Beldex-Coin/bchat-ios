@@ -3,14 +3,14 @@
 import UIKit
 
 class WalletTransactionSuccessVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.viewBackgroundColorNew2
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
     private lazy var iconView: UIImageView = {
@@ -24,7 +24,7 @@ class WalletTransactionSuccessVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.greenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Transaction Successful!"
@@ -35,19 +35,19 @@ class WalletTransactionSuccessVC: BaseVC {
         button.setTitle("OK", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.greenColor
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconView, titleLabel, okButton)
-        
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -70,5 +70,4 @@ class WalletTransactionSuccessVC: BaseVC {
         NotificationCenter.default.post(name: Notification.Name("transactionSuccessfulButtonTapped"), object: nil)
     }
     
-
 }

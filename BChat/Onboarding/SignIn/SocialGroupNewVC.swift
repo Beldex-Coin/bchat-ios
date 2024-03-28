@@ -206,10 +206,9 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     }
     
     @objc func scannerimageViewTapped() {
-        // Handle the tap on the imageView here
-        let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ScannerQRVC") as! ScannerQRVC
-        vc.newChatScanflag = true
-        self.navigationController?.pushViewController(vc, animated: true)
+        let vc = ScanNewVC()
+        vc.newChatScanflag = false
+        navigationController!.pushViewController(vc, animated: true)
     }
     
     @objc func handleTap(_ sender: UITapGestureRecognizer) {

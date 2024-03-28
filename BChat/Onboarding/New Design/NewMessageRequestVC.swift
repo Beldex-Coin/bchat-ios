@@ -79,8 +79,9 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.addSubview(tableView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(blockMessageRequestTapped(_:)), name: Notification.Name(rawValue: "blockMessageRequestTapped"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: Notification.Name(rawValue: "acceptMessageRequestTapped"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
         
             
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
@@ -221,13 +222,49 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
+    @objc func blockMessageRequestTapped(_ notification: Notification) {
+        guard let thread = self.thread(at: self.tappedIndex) else { return }
+        let thread2 = thread as? TSContactThread
+        let publicKey = thread2!.contactBChatID()
+        if let contact: Contact = Storage.shared.getContact(with: publicKey) {
+            Storage.shared.write(
+                with: { transaction in
+                    guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
+                    contact.isBlocked = true
+                    Storage.shared.setContact(contact, using: transaction)
+                },
+                completion: {
+                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                }
+            )
+        }
+        self.tableView.reloadData()
+    }
+    
     @objc func deleteMessageRequestTapped(_ notification: Notification) {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         self.delete(thread)
         self.tableView.reloadData()
     }
     
-    
+    private func delete(_ thread: TSThread) {
+        let openGroupV2 = Storage.shared.getV2OpenGroup(for: thread.uniqueId!)
+        Storage.write { transaction in
+            Storage.shared.cancelPendingMessageSendJobs(for: thread.uniqueId!, using: transaction)
+            if let openGroupV2 = openGroupV2 {
+                OpenGroupManagerV2.shared.delete(openGroupV2, associatedWith: thread, using: transaction)
+            } else if let thread = thread as? TSGroupThread, thread.isClosedGroup == true {
+                let groupID = thread.groupModel.groupId
+                let groupPublicKey = LKGroupUtilities.getDecodedGroupID(groupID)
+                MessageSender.leave(groupPublicKey, using: transaction).retainUntilComplete()
+                thread.removeAllThreadInteractions(with: transaction)
+                thread.remove(with: transaction)
+            } else {
+                thread.removeAllThreadInteractions(with: transaction)
+                thread.remove(with: transaction)
+            }
+        }
+    }
     
     // MARK: - Updating
     
@@ -398,31 +435,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         })
         alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
-    }
-    
-    private func delete(_ thread: TSThread) {
-        guard let uniqueId: String = thread.uniqueId else { return }
-        
-        Storage.write(
-            with: { [weak self] transaction in
-                Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
-                self?.updateContactAndThread(thread: thread, with: transaction)
-                
-                // Block the contact
-                if
-                    let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
-                    !thread.isBlocked(),
-                    let contact: Contact = Storage.shared.getContact(with: bchatId, using: transaction)
-                {
-                    contact.isBlocked = true
-                    Storage.shared.setContact(contact, using: transaction)
-                }
-            },
-            completion: {
-                // Force a config sync
-                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-            }
-        )
     }
     
     // MARK: - Convenience

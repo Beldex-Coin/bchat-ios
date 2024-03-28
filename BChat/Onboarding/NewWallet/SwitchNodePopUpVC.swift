@@ -11,7 +11,7 @@ class SwitchNodePopUpVC: BaseVC {
         stackView.backgroundColor = Colors.popUpBackgroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
     private lazy var discriptionLabel: UILabel = {
@@ -30,7 +30,7 @@ class SwitchNodePopUpVC: BaseVC {
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.greenColor
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -92,7 +92,5 @@ class SwitchNodePopUpVC: BaseVC {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
-    
     
 }

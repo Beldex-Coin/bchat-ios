@@ -9,12 +9,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 18
-        stackView.backgroundColor = Colors.backgroundViewColor2
+        stackView.backgroundColor = Colors.walletHomeTopViewBackgroundColor
         return stackView
     }()
     private lazy var isFromProgressStatusLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor.lightGray
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -22,7 +22,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     private lazy var isCurrencyResultLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor.lightGray
+        result.textColor = Colors.cancelButtonTitleColor
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +32,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.center = view.center
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.trackTintColor = .lightGray
+        progressView.trackTintColor = Colors.borderColor
         progressView.tintColor = Colors.greenColor
         return progressView
     }()
@@ -40,12 +40,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_beldex", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_beldex_green" : "ic_beldex_green"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 26)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -55,12 +56,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 16
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cancelButtonBackgroundColor
         return stackView
     }()
     private lazy var isFromScanButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0xEBEBEB)
+        button.backgroundColor = Colors.messageRequestBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
         let image = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate)
@@ -91,10 +92,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     private lazy var isFromReConnectButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x333343)
+        button.backgroundColor = Colors.walletHomeReconnectBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
-        let image = UIImage(named: "ic_rotate_new")?.scaled(to: CGSize(width: 25, height: 25))
+        let logoImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 25, height: 25))
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(isFromReConnectButtonTapped), for: .touchUpInside)
         return button
@@ -112,7 +114,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var transationTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_LABEL", comment: "")
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -120,9 +122,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     private lazy var isFromFilterImageButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0xEBEBEB)
+        button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "ic_Filter_New")?.scaled(to: CGSize(width: 20, height: 20))
+        let logoImage = isLightMode ? "ic_Filter_New" : "ic_Filter_New"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 20, height: 20))
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(isFromFilterImageButtonTapped), for: .touchUpInside)
         return button
@@ -131,7 +134,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var walletSyncingBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 28
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
@@ -140,14 +143,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_wallet_syncing_new", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        imageView.tintColor = UIColor(hex: 0x65656E)
+        let logoImage = isLightMode ? "ic_wallet_syncing_dark" : "ic_wallet_syncing_new"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var walletSyncingTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "Wallet Syncing.."
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +159,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var walletSyncingSubTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PLEASE_WAIT_WHILE_WALLET_SYNCING", comment: "")
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -166,7 +169,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var noTransactionsYetBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 28
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
@@ -175,14 +178,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_no_transactions", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        imageView.tintColor = UIColor(hex: 0x65656E)
+        let logoImage = isLightMode ? "ic_no_transactions_white" : "ic_no_transactions"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var noTransactionsYetTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("NO_TRANSACTION_MSG", comment: "")
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -191,7 +194,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var noTransactionsYetSubTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("AFTER_YOUR_FIRST_TRANSATION_VIEW", comment: "")
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .center
         result.numberOfLines = 0
@@ -202,20 +205,22 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var isFromFilterTransactionsHistoryBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 28
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
+    //ic_checked_black
     private lazy var incomingButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("INCOMING_BUTTON", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_Uncheck_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let logoImage = isLightMode ? "ic_uncheck_white_Theme" : "ic_uncheck"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.walletHomeFilterLabelColor, for: .normal)
         button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(incomingButtonTapped), for: .touchUpInside)
         return button
@@ -223,12 +228,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var outgoingButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("OUTGOING_BUTTON", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_Uncheck_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let logoImage = isLightMode ? "ic_uncheck_white_Theme" : "ic_uncheck"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.walletHomeFilterLabelColor, for: .normal)
         button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(outgoingButtonTapped), for: .touchUpInside)
         return button
@@ -236,12 +242,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var byDateButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("BY_DATE_BUTTON", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_by_date_New")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let logoImage = isLightMode ? "ic_by_date_dark" : "ic_by_date_New"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.walletHomeFilterLabelColor, for: .normal)
         button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(byDateButtonTapped), for: .touchUpInside)
         return button
@@ -257,37 +264,49 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var lineBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     private lazy var lineBackgroundView2: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     private lazy var lineBackgroundView3: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     private lazy var lineBackgroundView4: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     private lazy var lineBackgroundView5: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     private lazy var lineBackgroundView6: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x4B4B64)
+        stackView.backgroundColor = Colors.borderColor
+        return stackView
+    }()
+    private lazy var lineBackgroundView7: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.borderColor
+        return stackView
+    }()
+    private lazy var lineBackgroundView8: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
     @objc private lazy var tableView: UITableView = {
@@ -305,7 +324,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var transactionsDetailsBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 28
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
@@ -313,7 +332,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var detailsTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("DETAILS_MSG", comment: "")
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -322,7 +341,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var backImageButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        let image = UIImage(named: "ic_transation_back_new")?.scaled(to: CGSize(width: 35, height: 25))
+        let logoImage = isLightMode ? "ic_transation_back_dark" : "ic_transation_back_new"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 35, height: 25))
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(backImageButtonTapped), for: .touchUpInside)
         return button
@@ -331,12 +351,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_receive_New 1", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var balanceAmountForDetailsPageLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 15)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -344,7 +363,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     lazy var dateForDetailsPageLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -352,67 +371,18 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     lazy var transationDetailsTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("TRANSACTION_ID", comment: "")
         return result
     }()
-    lazy var dateDetailsTitleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("DATE_TITLE", comment: "")
-        return result
-    }()
-    lazy var dateDetailsIDLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        return result
-    }()
-    lazy var heightDetailsTitleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("HEIGHT_TITLE", comment: "")
-        return result
-    }()
-    lazy var heightDetailsIDLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        return result
-    }()
-    lazy var amountDetailsTitleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("AMOUNT_TITLE", comment: "")
-        return result
-    }()
-    lazy var amountDetailsIDLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.greenColor
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        return result
-    }()
+    
+    //===========================================================================
     lazy var transationDetailsIDLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
@@ -423,14 +393,220 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "copy_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setImage(UIImage(named: "ic_copy_green"), for: .normal)
         button.addTarget(self, action: #selector(transationIDcopyButtonTapped), for: .touchUpInside)
         button.tintColor = Colors.greenColor
         return button
     }()
+    private lazy var outerBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear//Colors.mainBackGroundColor2
+        return stackView
+    }()
+    lazy var subStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var transationIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var subStackView2: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .fill
+        result.distribution = .fillEqually
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var dateIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var dateDetailsTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("DATE_TITLE", comment: "")
+        return result
+    }()
+    lazy var dateDetailsIDLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    lazy var subStackView3: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .fill
+        result.distribution = .fillEqually
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var paymentIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var paymentTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("Payment ID", comment: "")
+        return result
+    }()
+    lazy var paymentIDLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "000000000000"
+        return result
+    }()
+    lazy var subStackView4: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .fill
+        result.distribution = .fillEqually
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var heightIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var subStackView5: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .fill
+        result.distribution = .fillEqually
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var amountIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var subStackView6: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var recipientAddressStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var mainStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    lazy var heightDetailsTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("HEIGHT_TITLE", comment: "")
+        return result
+    }()
+    lazy var heightDetailsIDLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    lazy var amountDetailsTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("AMOUNT_TITLE", comment: "")
+        return result
+    }()
+    lazy var amountDetailsIDLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.greenColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
     lazy var isFromSendDetailsTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x0085FF)
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -439,7 +615,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     lazy var recipientAddressDetailsTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -448,7 +624,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     lazy var recipientAddressDetailsIDLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
@@ -459,7 +635,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "copy_white")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.setImage(UIImage(named: "ic_copy_green"), for: .normal)
         button.addTarget(self, action: #selector(recipientAddresscopyButtonTapped), for: .touchUpInside)
         button.tintColor = Colors.greenColor
         return button
@@ -476,21 +653,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var backgroundBlerView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x080812).withAlphaComponent(0.8)
+        stackView.backgroundColor = Colors.walletHomeDateViewBackgroundColor
         return stackView
     }()
     private lazy var selectDateRangePopUpbackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
     lazy var selectDateRangeTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -501,9 +678,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 12
         // Left Image
@@ -529,9 +706,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 12
         // Left Image
@@ -558,8 +735,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(cancelButtonTapped), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
-        result.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
+        result.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -623,7 +800,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     lazy var progressState = { return Observable<CGFloat>(0) }()
     // MAINNET
-    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"] //["149.102.156.174:19095"]
+    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
     // TESTNET
 //    var nodeArray = ["149.102.156.174:19095"]
     var randomNodeValue = ""
@@ -666,7 +843,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "My Wallet"
         
@@ -714,22 +891,64 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         transactionsDetailsBackgroundView.addSubview(dateForDetailsPageLabel)
         transactionsDetailsBackgroundView.addSubview(transationDetailsTitleLabel)
         transactionsDetailsBackgroundView.addSubview(isFromSendDetailsTitleLabel)
-        transactionsDetailsBackgroundView.addSubview(transationDetailsIDLabel)
-        transactionsDetailsBackgroundView.addSubview(transationIDcopyButton)
-        transactionsDetailsBackgroundView.addSubview(lineBackgroundView3)
-        transactionsDetailsBackgroundView.addSubview(dateDetailsTitleLabel)
-        transactionsDetailsBackgroundView.addSubview(dateDetailsIDLabel)
-        transactionsDetailsBackgroundView.addSubview(lineBackgroundView4)
-        transactionsDetailsBackgroundView.addSubview(heightDetailsTitleLabel)
-        transactionsDetailsBackgroundView.addSubview(heightDetailsIDLabel)
-        transactionsDetailsBackgroundView.addSubview(lineBackgroundView5)
-        transactionsDetailsBackgroundView.addSubview(amountDetailsTitleLabel)
-        transactionsDetailsBackgroundView.addSubview(amountDetailsIDLabel)
-        transactionsDetailsBackgroundView.addSubview(lineBackgroundView6)
-        transactionsDetailsBackgroundView.addSubview(recipientAddressDetailsTitleLabel)
-        transactionsDetailsBackgroundView.addSubview(recipientAddressDetailsIDLabel)
-        transactionsDetailsBackgroundView.addSubview(recipientAddresscopyButton)
+        transactionsDetailsBackgroundView.addSubview(outerBackgroundView)
         
+        outerBackgroundView.addSubview(subStackView)
+        subStackView.addArrangedSubview(transationDetailsIDLabel)
+        subStackView.addArrangedSubview(transationIDcopyButton)
+        outerBackgroundView.addSubview(lineBackgroundView3)
+        outerBackgroundView.addSubview(transationIDStackView)
+        transationIDStackView.addArrangedSubview(subStackView)
+        transationIDStackView.addArrangedSubview(lineBackgroundView3)
+        
+        outerBackgroundView.addSubview(subStackView2)
+        subStackView2.addArrangedSubview(dateDetailsTitleLabel)
+        subStackView2.addArrangedSubview(dateDetailsIDLabel)
+        outerBackgroundView.addSubview(lineBackgroundView4)
+        outerBackgroundView.addSubview(dateIDStackView)
+        dateIDStackView.addArrangedSubview(subStackView2)
+        dateIDStackView.addArrangedSubview(lineBackgroundView4)
+        
+        outerBackgroundView.addSubview(subStackView3)
+        subStackView3.addArrangedSubview(paymentTitleLabel)
+        subStackView3.addArrangedSubview(paymentIDLabel)
+        outerBackgroundView.addSubview(lineBackgroundView5)
+        outerBackgroundView.addSubview(paymentIDStackView)
+        paymentIDStackView.addArrangedSubview(subStackView3)
+        paymentIDStackView.addArrangedSubview(lineBackgroundView5)
+        
+        outerBackgroundView.addSubview(subStackView4)
+        subStackView4.addArrangedSubview(heightDetailsTitleLabel)
+        subStackView4.addArrangedSubview(heightDetailsIDLabel)
+        outerBackgroundView.addSubview(lineBackgroundView6)
+        outerBackgroundView.addSubview(heightIDStackView)
+        heightIDStackView.addArrangedSubview(subStackView4)
+        heightIDStackView.addArrangedSubview(lineBackgroundView6)
+        
+        outerBackgroundView.addSubview(subStackView5)
+        subStackView5.addArrangedSubview(amountDetailsTitleLabel)
+        subStackView5.addArrangedSubview(amountDetailsIDLabel)
+        outerBackgroundView.addSubview(lineBackgroundView7)
+        outerBackgroundView.addSubview(amountIDStackView)
+        amountIDStackView.addArrangedSubview(subStackView5)
+        amountIDStackView.addArrangedSubview(lineBackgroundView7)
+        
+      //  recipient Address
+        outerBackgroundView.addSubview(subStackView6)
+        subStackView6.addArrangedSubview(recipientAddressDetailsIDLabel)
+        subStackView6.addArrangedSubview(recipientAddresscopyButton)
+        outerBackgroundView.addSubview(recipientAddressDetailsTitleLabel)
+        outerBackgroundView.addSubview(recipientAddressStackView)
+        recipientAddressStackView.addArrangedSubview(recipientAddressDetailsTitleLabel)
+        recipientAddressStackView.addArrangedSubview(subStackView6)
+        
+        outerBackgroundView.addSubview(mainStackView)
+        mainStackView.addArrangedSubview(transationIDStackView)
+        mainStackView.addArrangedSubview(dateIDStackView)
+        mainStackView.addArrangedSubview(paymentIDStackView)
+        mainStackView.addArrangedSubview(heightIDStackView)
+        mainStackView.addArrangedSubview(amountIDStackView)
+        mainStackView.addArrangedSubview(recipientAddressStackView)
         // Date PopUp
         view.addSubview(backgroundBlerView)
         backgroundBlerView.addSubview(selectDateRangePopUpbackgroundView)
@@ -744,8 +963,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         
         filterStackView.isHidden = true
         lineBackgroundView.isHidden = true
-        isFromFilterImageButton.backgroundColor = .clear
-        isFromFilterImageButton.tintColor = UIColor.white
         
         NSLayoutConstraint.activate([
             topBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
@@ -780,8 +997,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromSendButton.widthAnchor.constraint(equalToConstant: 50),
             isFromReceiveButton.widthAnchor.constraint(equalToConstant: 50),
             isFromReConnectButton.widthAnchor.constraint(equalToConstant: 50),
-            buttonsStackView.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -32),
-            buttonsStackView.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 32),
+//            buttonsStackView.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -32),
+//            buttonsStackView.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 32),
             buttonsStackView.centerXAnchor.constraint(equalTo: middleBackgroundView.centerXAnchor),
             buttonsStackView.centerYAnchor.constraint(equalTo: middleBackgroundView.centerYAnchor),
             transationTitleLabel.topAnchor.constraint(equalTo: middleBackgroundView.bottomAnchor, constant: 13),
@@ -866,53 +1083,36 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             transationDetailsTitleLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
             isFromSendDetailsTitleLabel.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
             isFromSendDetailsTitleLabel.centerYAnchor.constraint(equalTo: directionLogoForDetailsPageImage.centerYAnchor),
-            transationDetailsIDLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            transationDetailsIDLabel.trailingAnchor.constraint(equalTo: transationIDcopyButton.leadingAnchor, constant: -15),
-            transationDetailsIDLabel.heightAnchor.constraint(equalToConstant: 50),
-            transationDetailsIDLabel.centerYAnchor.constraint(equalTo: transationIDcopyButton.centerYAnchor),
-            transationIDcopyButton.topAnchor.constraint(equalTo: transationDetailsTitleLabel.bottomAnchor, constant: 18),
-            transationIDcopyButton.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
+            
+            outerBackgroundView.topAnchor.constraint(equalTo: transationDetailsTitleLabel.bottomAnchor, constant: 10),
+            outerBackgroundView.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
+            outerBackgroundView.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
+            
             transationIDcopyButton.widthAnchor.constraint(equalToConstant: 16),
             transationIDcopyButton.heightAnchor.constraint(equalToConstant: 16),
-            lineBackgroundView3.topAnchor.constraint(equalTo: transationDetailsIDLabel.bottomAnchor, constant: 14),
-            lineBackgroundView3.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            lineBackgroundView3.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 23),
             lineBackgroundView3.heightAnchor.constraint(equalToConstant: 1),
-            dateDetailsTitleLabel.topAnchor.constraint(equalTo: lineBackgroundView3.bottomAnchor, constant: 14),
-            dateDetailsTitleLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            dateDetailsIDLabel.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            dateDetailsIDLabel.centerYAnchor.constraint(equalTo: dateDetailsTitleLabel.centerYAnchor),
-            lineBackgroundView4.topAnchor.constraint(equalTo: dateDetailsIDLabel.bottomAnchor, constant: 14),
-            lineBackgroundView4.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            lineBackgroundView4.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 23),
+            lineBackgroundView3.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView3.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
             lineBackgroundView4.heightAnchor.constraint(equalToConstant: 1),
-            heightDetailsTitleLabel.topAnchor.constraint(equalTo: lineBackgroundView4.bottomAnchor, constant: 14),
-            heightDetailsTitleLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            heightDetailsIDLabel.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            heightDetailsIDLabel.centerYAnchor.constraint(equalTo: heightDetailsTitleLabel.centerYAnchor),
-            lineBackgroundView5.topAnchor.constraint(equalTo: heightDetailsIDLabel.bottomAnchor, constant: 14),
-            lineBackgroundView5.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            lineBackgroundView5.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 23),
+            lineBackgroundView4.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView4.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
             lineBackgroundView5.heightAnchor.constraint(equalToConstant: 1),
-            amountDetailsTitleLabel.topAnchor.constraint(equalTo: lineBackgroundView5.bottomAnchor, constant: 14),
-            amountDetailsTitleLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            amountDetailsIDLabel.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            amountDetailsIDLabel.centerYAnchor.constraint(equalTo: amountDetailsTitleLabel.centerYAnchor),
-            lineBackgroundView6.topAnchor.constraint(equalTo: amountDetailsIDLabel.bottomAnchor, constant: 14),
-            lineBackgroundView6.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
-            lineBackgroundView6.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 23),
+            lineBackgroundView5.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView5.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
             lineBackgroundView6.heightAnchor.constraint(equalToConstant: 1),
-            recipientAddressDetailsTitleLabel.topAnchor.constraint(equalTo: lineBackgroundView6.bottomAnchor, constant: 14),
-            recipientAddressDetailsTitleLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            recipientAddressDetailsTitleLabel.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -0),
-            recipientAddressDetailsIDLabel.leadingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.leadingAnchor, constant: 25),
-            recipientAddressDetailsIDLabel.trailingAnchor.constraint(equalTo: recipientAddresscopyButton.leadingAnchor, constant: -15),
-            recipientAddressDetailsIDLabel.heightAnchor.constraint(equalToConstant: 50),
-            recipientAddressDetailsIDLabel.centerYAnchor.constraint(equalTo: recipientAddresscopyButton.centerYAnchor),
-            recipientAddresscopyButton.topAnchor.constraint(equalTo: recipientAddressDetailsTitleLabel.bottomAnchor, constant: 18),
-            recipientAddresscopyButton.trailingAnchor.constraint(equalTo: transactionsDetailsBackgroundView.trailingAnchor, constant: -23),
+            lineBackgroundView6.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView6.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
+            lineBackgroundView7.heightAnchor.constraint(equalToConstant: 1),
+            lineBackgroundView7.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView7.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
             recipientAddresscopyButton.widthAnchor.constraint(equalToConstant: 16),
             recipientAddresscopyButton.heightAnchor.constraint(equalToConstant: 16),
+            recipientAddressDetailsTitleLabel.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            recipientAddressDetailsTitleLabel.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
+            mainStackView.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            mainStackView.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
+            mainStackView.topAnchor.constraint(equalTo: outerBackgroundView.topAnchor, constant: 10),
+            mainStackView.bottomAnchor.constraint(equalTo: outerBackgroundView.bottomAnchor, constant: -10),
         ])
         NSLayoutConstraint.activate([
             backgroundBlerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -947,8 +1147,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         isFromReceiveTransationFlag = false
         self.incomingButton.isSelected = true
         self.outgoingButton.isSelected = true
-        incomingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
-        outgoingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+        outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
         
         isFromScanButton.isUserInteractionEnabled = false
@@ -1026,8 +1227,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         isFromReceiveTransationFlag = false
         self.incomingButton.isSelected = true
         self.outgoingButton.isSelected = true
-        incomingButton.setImage(UIImage(named: "ic_Check_box_white"), for: .normal)
-        outgoingButton.setImage(UIImage(named: "ic_Check_box_white"), for: .normal)
+        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        incomingButton.setImage(UIImage(named: logoImage), for: .normal)
+        outgoingButton.setImage(UIImage(named: logoImage), for: .normal)
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
         
         self.noTransaction = false
@@ -1047,8 +1249,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         UIApplication.shared.isIdleTimerDisabled = true
-        incomingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
-        outgoingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+        outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         if BackAPI == true{
             self.closeWallet()
             init_syncing_wallet()
@@ -1181,7 +1384,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             conncetingState.value = true
             walletSyncingBackgroundView.isHidden = false
             noTransactionsYetBackgroundView.isHidden = true
-            isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
+            isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
             isFromProgressStatusLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             let pwd = SaveUserDefaultsData.israndomUUIDPassword
@@ -1221,7 +1424,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             DispatchQueue.main.async {
                 self.walletSyncingBackgroundView.isHidden = false
                 self.noTransactionsYetBackgroundView.isHidden = true
-                self.isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
+                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
             }
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
@@ -1282,13 +1485,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         DispatchQueue.main.async {
                             if self.conncetingState.value {
                                 self.conncetingState.value = false
+                                self.walletSyncingBackgroundView.isHidden = false
+                                self.noTransactionsYetBackgroundView.isHidden = true
+                                self.syncedflag = false
+                                self.progressView.progress = Float(progress)
+                                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+                                self.isFromProgressStatusLabel.text = statusText
                             }
-                            self.walletSyncingBackgroundView.isHidden = false
-                            self.noTransactionsYetBackgroundView.isHidden = true
-                            self.syncedflag = false
-                            self.progressView.progress = Float(progress)
-                            self.isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
-                            self.isFromProgressStatusLabel.text = statusText
                         }
                     }
                 }
@@ -1320,13 +1523,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     DispatchQueue.main.async {
                         if self.conncetingState.value {
                             self.conncetingState.value = false
+                            self.walletSyncingBackgroundView.isHidden = false
+                            self.noTransactionsYetBackgroundView.isHidden = true
+                            self.syncedflag = false
+                            self.progressView.progress = Float(progress)
+                            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+                            self.isFromProgressStatusLabel.text = statusText
                         }
-                        self.walletSyncingBackgroundView.isHidden = false
-                        self.noTransactionsYetBackgroundView.isHidden = true
-                        self.syncedflag = false
-                        self.progressView.progress = Float(progress)
-                        self.isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
-                        self.isFromProgressStatusLabel.text = statusText
                     }
                 }
             }
@@ -1357,7 +1560,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         syncedflag = true
         isFromScanButton.isUserInteractionEnabled = true
         isFromSendButton.isUserInteractionEnabled = true
-        self.isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
+        self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
         if self.backApiRescanVC == true{
             self.isFromProgressStatusLabel.text = "Connecting..."
             walletSyncingBackgroundView.isHidden = false
@@ -1530,14 +1733,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if isFromFilterImageButton.isSelected {
             filterStackView.isHidden = false
             lineBackgroundView.isHidden = false
-            isFromFilterImageButton.backgroundColor = UIColor(hex: 0xEBEBEB)
-            isFromFilterImageButton.tintColor = UIColor.black
-            isFromFilterImageButton.setImage(UIImage(named: "ic_funnel_black"), for: .normal)
+            isFromFilterImageButton.backgroundColor = Colors.titleColor
+            let logoImage2 = isLightMode ? "ic_filter_white" : "ic_filter_black"
+            isFromFilterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
         }else{
             filterStackView.isHidden = true
             lineBackgroundView.isHidden = true
             isFromFilterImageButton.backgroundColor = .clear
-            isFromFilterImageButton.tintColor = UIColor.white
             isFromFilterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
         }
     }
@@ -1924,16 +2126,18 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     func filterTransaction() {
+        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        let logoImageWhite = isLightMode ? "ic_uncheck_white_Theme" : "ic_uncheck"
         if self.incomingButton.isSelected {
-            incomingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+            incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         } else {
-            incomingButton.setImage(UIImage(named: "ic_Uncheck_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+            incomingButton.setImage(UIImage(named: logoImageWhite)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         }
         
         if self.outgoingButton.isSelected {
-            outgoingButton.setImage(UIImage(named: "ic_Check_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+            outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         } else {
-            outgoingButton.setImage(UIImage(named: "ic_Uncheck_box_white")?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+            outgoingButton.setImage(UIImage(named: logoImageWhite)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         }
         
         self.noTransaction = false
@@ -1978,7 +2182,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if !self.incomingButton.isSelected && !self.outgoingButton.isSelected {
             self.noTransaction = true
             noTransactionsYetBackgroundView.isHidden = false
-//            isFromFilterTransactionsHistoryBackgroundView.isHidden = true
         }
         self.tableView.reloadData()
     }
@@ -2083,10 +2286,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }else{
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
@@ -2101,10 +2306,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
         }else if isFromSendTransationFlag == true {
@@ -2116,12 +2323,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.sent{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             } else {
                 let responceData = sortedGroupedTransactionSendArray[indexPath.section].value
@@ -2131,12 +2339,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
+                let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if transaction.direction != BChat_Messenger.TransactionDirection.sent{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Send"
-                    cell.directionLogoImage.image = UIImage(named: "ic_send_icon")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
         }else {
@@ -2148,12 +2357,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
+                let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             } else {
                 let responceData = sortedGroupedTransactionReceiveArray[indexPath.section].value
@@ -2163,12 +2373,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
+                let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }else{
                     cell.isFromSendandReceiveLabel.text = "Received"
-                    cell.directionLogoImage.image = UIImage(named: "ic_receive")
+                    cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
         }
@@ -2197,6 +2408,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2207,19 +2424,22 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }else{
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
@@ -2230,6 +2450,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2240,19 +2466,22 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
         }else if isFromSendTransationFlag == true{
@@ -2265,6 +2494,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2275,19 +2510,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
+                let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if transaction.direction != BChat_Messenger.TransactionDirection.sent{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }else{
                 let responceData = sortedGroupedTransactionSendArray[indexPath.section].value
@@ -2298,6 +2535,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2308,19 +2551,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
+                let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if transaction.direction != BChat_Messenger.TransactionDirection.sent{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_send_icon")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
         }else{
@@ -2333,6 +2578,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2343,19 +2594,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
+                let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }else{
                 let responceData = sortedGroupedTransactionReceiveArray[indexPath.section].value
@@ -2366,6 +2619,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 balanceAmountForDetailsPageLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 dateForDetailsPageLabel.text = dateString
                 transationDetailsIDLabel.text = transaction.hash
+                if transaction.paymentId == "0000000000000000" {
+                    paymentIDStackView.isHidden = true
+                }else {
+                    recipientAddressDetailsIDLabel.text = transaction.paymentId
+                    paymentIDStackView.isHidden = false
+                }
                 amountDetailsIDLabel.text = "\(Double(transaction.amount)!.removeZerosFromEnd()) BDX"
                 heightDetailsIDLabel.text = "\(transaction.blockHeight)"
                 let dateString2 = LongdateFormatter.string(from: date as Date)
@@ -2376,26 +2635,27 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
                 if hashbool == true{
+                    recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
                 }else{
-                    recipientAddressDetailsIDLabel.text = "---"
+                    recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
+                let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }else{
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
-                    directionLogoForDetailsPageImage.image = UIImage(named: "ic_receive")
+                    directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
         }
         //Hide the Views
         walletSyncingBackgroundView.isHidden = true
         noTransactionsYetBackgroundView.isHidden = true
-//        isFromFilterTransactionsHistoryBackgroundView.isHidden = true
         transactionsDetailsBackgroundView.isHidden = false
     }
     
@@ -2403,7 +2663,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
         let footerView = UIView(frame:rect)
-        footerView.backgroundColor = UIColor(hex: 0x11111A)
+        footerView.backgroundColor = Colors.mainBackGroundColor2
         footerView.layer.cornerRadius = 28
         footerView.layer.masksToBounds = true
         footerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -2427,7 +2687,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 label.text = formatDateString(sortedGroupedTransactionReceiveArray[section].key)
             }
         }
-        label.textColor = .white
+        label.textColor = Colors.aboutContentLabelColor
         label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.semiOpenSans(ofSize: 14)
         footerView.addSubview(label)
@@ -2514,19 +2774,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             return "Yesterday"
         } else {
             let components = calendar.dateComponents([.year, .month, .day], from: date, to: currentDate)
-            if let year = components.year, year == 0, let month = components.month, month == 0 {
-                // Dates within the current month, calculate the number of days ago
-                if let day = components.day {
-                    return "\(day) days ago"
-                } else {
-                    return "Invalid Date"
+            if let year = components.year, year == 0, let month = components.month, abs(month) < 1 {
+                // Dates within the past week, display day name (EEEE) if within last 7 days
+                if let day = components.day, day <= 7 {
+                    let dayNameFormatter = DateFormatter()
+                    dayNameFormatter.dateFormat = "EEEE"
+                    let dayName = dayNameFormatter.string(from: date)
+                    return dayName
                 }
-            } else {
-                // Dates in previous months, display month and year only
-                let monthYearFormatter = DateFormatter()
-                monthYearFormatter.dateFormat = "MMM,yyyy"
-                return monthYearFormatter.string(from: date)
             }
+            // Display the full date and month for dates older than 7 days
+            let monthYearFormatter = DateFormatter()
+            monthYearFormatter.dateFormat = "dd MMM"
+            return monthYearFormatter.string(from: date)
         }
     }
     
@@ -2545,12 +2805,11 @@ class TransationHistoryTableCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_receive_New 1", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     lazy var balanceAmountLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 15)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -2558,7 +2817,7 @@ class TransationHistoryTableCell: UITableViewCell {
     }()
     lazy var dateLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -2566,18 +2825,19 @@ class TransationHistoryTableCell: UITableViewCell {
     }()
     lazy var isFromSendandReceiveLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xA7A7BA)
+        result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("RECEIVED_TITLE", comment: "")
         return result
-    }()
+    }()//ic_arrow_whitethem
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_back_New", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_expand_arrow_dark" : "ic_back_New"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     
@@ -2695,7 +2955,7 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
                 self.noTransactionsYetBackgroundView.isHidden = true
                 self.syncedflag = false
                 self.progressView.progress = Float(progress)
-                self.isFromProgressStatusLabel.textColor = Colors.bchatButtonColor
+                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
                 self.isFromProgressStatusLabel.text = statusText
             }
         }

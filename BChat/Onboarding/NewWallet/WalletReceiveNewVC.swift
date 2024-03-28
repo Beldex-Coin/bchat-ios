@@ -1,19 +1,19 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     
     private lazy var shareButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_shareNew")?.scaled(to: CGSize(width: 25.0, height: 25.0))
+        let image = UIImage(named: "ic_share_new")?.scaled(to: CGSize(width: 16, height: 16))
         button.setImage(image, for: .normal)
-        button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
@@ -22,7 +22,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -30,7 +30,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
-        stackView.backgroundColor = Colors.backgroundViewColor2
+        stackView.backgroundColor = Colors.cellGroundColor2
         return stackView
     }()
     private lazy var beldexAddressIDLabel: UILabel = {
@@ -54,7 +54,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -66,20 +66,20 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 16)
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.layer.borderColor = Colors.borderColor.cgColor
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 10
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
         result.leftViewMode = .always
         result.layer.borderColor = UIColor.lightGray.cgColor
-        result.layer.borderWidth = 0.5
+        result.layer.borderWidth = 1
         return result
     }()
     private lazy var bdxAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +89,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
-        stackView.backgroundColor = Colors.backgroundViewColor2
+        stackView.backgroundColor = Colors.qrCodeBackgroundColor
         return stackView
     }()
     private lazy var qrCodeImage: UIImageView = {
@@ -106,7 +106,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Receive"
         
@@ -162,7 +162,6 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
             shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90),
             shareButton.heightAnchor.constraint(equalToConstant: 58),
         ])
-        
         beldexAmountTextField.addTarget(self, action: #selector(onAmountChange), for: .editingChanged)
         beldexAmountTextField.delegate = self
         beldexAmountTextField.keyboardType = .decimalPad
@@ -216,9 +215,15 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     }
     func isFromUpdateQRCode(){
         if beldexAmountTextField.text!.count == 0 {
+            shareButton.isUserInteractionEnabled = false
+            shareButton.backgroundColor = Colors.backgroundViewColor
+            shareButton.setTitleColor(.white, for: .normal)
             qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
             qrCodeImage.contentMode = .scaleAspectFit
         }else {
+            shareButton.isUserInteractionEnabled = true
+            shareButton.backgroundColor = Colors.greenColor
+            shareButton.setTitleColor(.white, for: .normal)
             if let mystring = beldexAmountTextField.text {
                 qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(mystring)")
             } else {

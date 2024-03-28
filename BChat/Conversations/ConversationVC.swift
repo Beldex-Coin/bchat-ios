@@ -1410,6 +1410,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
         if keyboardTop <= 100 {
+            messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
             newSlidePositionY = UIScreen.main.bounds.height / 1.4
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
         } else {

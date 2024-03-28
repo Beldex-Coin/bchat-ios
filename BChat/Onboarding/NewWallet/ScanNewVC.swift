@@ -17,14 +17,14 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
     private lazy var isFromUploadGalleryOptionButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("UPLOAD_FROM_GALLERY", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_scanlogo_New")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let logoImage = isLightMode ? "ic_scanimge_dark" : "ic_scanlogo_New"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 15, height: 15))
         button.setImage(image, for: .normal)
-        button.tintColor = UIColor.white // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 9)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         button.layer.borderColor = Colors.greenColor.cgColor
         button.layer.borderWidth = 1
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
@@ -33,7 +33,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
     }()
     private lazy var scanDescLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +61,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Scan"
         

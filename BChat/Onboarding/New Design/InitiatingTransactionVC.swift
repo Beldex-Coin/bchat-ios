@@ -7,22 +7,30 @@ class InitiatingTransactionVC: BaseVC {
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x111119)
+        stackView.backgroundColor = Colors.viewBackgroundColorNew2
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
     private lazy var circleView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x30303F)
+        stackView.backgroundColor = Colors.confirmSendingViewBackgroundColor
         stackView.layer.cornerRadius = 35
         return stackView
     }()
+    private lazy var iconView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_initiating_transaction")
+        result.set(.width, to: 42)
+        result.set(.height, to: 42)
+        result.layer.masksToBounds = true
+        return result
+    }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.greenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Initiating Transaction.."
@@ -30,7 +38,7 @@ class InitiatingTransactionVC: BaseVC {
     }()
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Please don’t close the window or attend calls or negative to another app until the transaction gets initiated"
@@ -46,7 +54,7 @@ class InitiatingTransactionVC: BaseVC {
         view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(circleView, titleLabel, discriptionLabel)
-        
+        circleView.addSubview(iconView)
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -56,6 +64,8 @@ class InitiatingTransactionVC: BaseVC {
             circleView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             circleView.heightAnchor.constraint(equalToConstant: 70),
             circleView.widthAnchor.constraint(equalToConstant: 70),
+            iconView.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
+            iconView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 14),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),

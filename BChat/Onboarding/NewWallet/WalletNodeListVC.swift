@@ -47,7 +47,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     
     //MAINNET
-    var nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]//["149.102.156.174:19095"]
+    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
     //TESTNET
 //    var nodeArray = ["149.102.156.174:19095"]
     var randomNodeValue = ""
@@ -207,7 +207,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
             }
-        } else if (nodeArray.count == 6) {
+        } else if (nodeArray.count == 5) {
             if(nodeArray[indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
@@ -260,7 +260,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
             SaveUserDefaultsData.SwitchNode = true
             //MAINNET
-            self.nodeArray = ["explorer.beldex.io:19091","mainnet.beldex.io:29095","publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095"]//["149.102.156.174:19095"]
+            self.nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
             //TESTNET
             //                self.nodeArray = ["149.102.156.174:19095"]
             SaveUserDefaultsData.SaveLocalNodelist = []

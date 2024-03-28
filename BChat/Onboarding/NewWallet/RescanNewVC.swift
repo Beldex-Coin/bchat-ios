@@ -8,15 +8,15 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
     private lazy var topView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellBackgroundColorForNodeList
         stackView.layer.borderColor = Colors.borderColor.cgColor
-        stackView.layer.borderWidth = 0.5
+        stackView.layer.borderWidth = 1
         return stackView
     }()
     private lazy var currentBlockheightTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("CURRENT_BLOCK_HEIGHT_NEW", comment: "")
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -24,7 +24,6 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
     }()
     private lazy var currentBlockheightIDTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = "9872364"
         result.textColor = Colors.greenColor
         result.font = Fonts.boldOpenSans(ofSize: 20)
         result.textAlignment = .left
@@ -34,7 +33,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
     private lazy var subTitleWalletLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW", comment: "")
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.cancelButtonTitleColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.numberOfLines = 0
@@ -47,7 +46,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
@@ -70,7 +69,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_FROM_BLOCKHEIGHT", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
@@ -92,9 +91,9 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         let button = UIButton()
         button.setTitle(NSLocalizedString("I_KNOW_THE_BLOCKHEIGHT", comment: ""), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        button.backgroundColor = Colors.cellGroundColor3
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
+        button.layer.borderColor = Colors.borderColor.cgColor
         button.layer.borderWidth = 1
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(isFromIKnowTheHeightButtonTapped), for: .touchUpInside)
@@ -119,6 +118,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         restoreDateHeightTextField.isHidden = false
         
         currentBlockheightIDTitleLabel.text = "\(daemonBlockChainHeight)"
+        restoreFromBlockHeightTextField.addDoneButtonKeybord()
+        restoreFromBlockHeightTextField.keyboardType = .numberPad
         
         view.addSubViews(topView)
         topView.addSubview(currentBlockheightTitleLabel)
@@ -159,6 +160,14 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
             isFromIKnowTheHeightButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
+        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(dismiss)
+        
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     override func viewDidLayoutSubviews() {

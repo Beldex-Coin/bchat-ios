@@ -68,11 +68,12 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.myAccountViewBackgroundColor
+        button.layer.borderWidth = 1
+        button.layer.borderColor = Colors.borderColor.cgColor
         button.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_close_dark" : "ic_close_white"
-        button.setImage(UIImage(named: logoImage), for: .normal)
-        button.layer.borderColor = Colors.borderColor.cgColor
-        button.layer.borderWidth = 1
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 15, height: 14))
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -617,6 +618,9 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                     modalActivityIndicator.dismiss {
                         guard let self = self else { return }
                         self.nameTextField.text = name
+                        //get the Profile picture
+                        let publicKey = getUserHexEncodedPublicKey()
+                        self.profilePictureImage.image = self.useFallbackPicture ? nil : (self.openGroupProfilePicture ?? self.getProfilePicture(of: self.size, for: publicKey))
                         self.profilePictureToBeUploaded = nil
                         self.displayNameToBeUploaded = nil
                     }

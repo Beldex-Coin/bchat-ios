@@ -159,5 +159,17 @@ public final class Colors : NSObject {
     
     @objc public static var viewBackgroundColorSocialGroup: UIColor { UIColor(named: "viewBackgroundColorSocialGroup")! }
     @objc public static var letsBChatButtonColor: UIColor { UIColor(named: "letsBChatButtonColor")! }
+    @objc public static var scanButtonBackgroundColor: UIColor { UIColor(named: "scanButtonBackgroundColor")! }
+    @objc public static var qrCodeBackgroundColor: UIColor { UIColor(named: "qrCodeBackgroundColor")! }
+    @objc public static var confirmSendingViewBackgroundColor: UIColor { UIColor(named: "confirmSendingViewBackgroundColor")! }
+    @objc public static var viewBackgroundColorNew2: UIColor { UIColor(named: "viewBackgroundColorNew2")! }
+    
+    
+    
+    @objc public static var walletHomeTopViewBackgroundColor: UIColor { UIColor(named: "walletHomeTopViewBackgroundColor")! }
+    @objc public static var walletHomeReconnectBackgroundColor: UIColor { UIColor(named: "walletHomeReconnectBackgroundColor")! }
+    @objc public static var walletHomeFilterLabelColor: UIColor { UIColor(named: "walletHomeFilterLabelColor")! }
+    @objc public static var walletHomeDateViewBackgroundColor: UIColor { UIColor(named: "walletHomeDateViewBackgroundColor")! }
+    
     
 }

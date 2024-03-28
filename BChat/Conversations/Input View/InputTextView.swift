@@ -64,7 +64,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         keyboardAppearance = isLightMode ? .light : .dark
         heightConstraint.isActive = true
         let horizontalInset: CGFloat = 2
-        textContainerInset = UIEdgeInsets(top: -horizontalInset, left: horizontalInset, bottom: 0, right: horizontalInset)
+        textContainerInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
         addSubview(placeholderLabel)
         placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 3) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)
@@ -79,9 +79,10 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private func handleTextChanged() {
         defer { snDelegate?.inputTextViewDidChangeContent(self) }
-        placeholderLabel.isHidden = !text.isEmpty
+        placeholderLabel.isHidden = !(text ?? "").isEmpty
         let height = frame.height
-        let size = sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
+        let contentSize = self.contentSize
+        let size = CGSize(width: contentSize.width, height: contentSize.height)
         // `textView.contentSize` isn't accurate when restoring a multiline draft, so we set it here manually
         self.contentSize = size
         let newHeight = size.height.clamp(minHeight, maxHeight)

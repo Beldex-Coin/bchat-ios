@@ -9,7 +9,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     private lazy var topView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = .clear
         stackView.layer.cornerRadius = 16
         stackView.layer.borderColor = Colors.greenColor.cgColor
         stackView.layer.borderWidth = 1
@@ -18,7 +18,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     private lazy var titleOfTotalBalanceLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TOTAL_BALANCE", comment: "")
-        result.textColor = UIColor.lightGray
+        result.textColor = Colors.cancelButtonTitleColor
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -28,28 +28,46 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "ic_beldex", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let logoImage = isLightMode ? "ic_beldex_blackimg" : "ic_beldex"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    private lazy var paymentIDTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.greenColor
+        result.font = Fonts.OpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.text = "Payment ID integrated"
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    lazy var paymentIDImg: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let logoImage = isLightMode ? "ic_payment_ID_Image" : "ic_payment_ID_Image"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        return imageView
+    }()
     private lazy var middleView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
     private lazy var beldexAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +78,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         button.setTitle(NSLocalizedString("MAX_BUTTON", comment: ""), for: .normal)
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.blueColor
+        button.backgroundColor = Colors.bothBlueColor
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(isFromMaxButtonTapped), for: .touchUpInside)
@@ -72,19 +90,18 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 16)
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.layer.borderColor = Colors.borderColor.cgColor
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 10
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
         result.leftViewMode = .always
-        result.layer.borderColor = UIColor.lightGray.cgColor
-        result.layer.borderWidth = 0.5
+        result.layer.borderWidth = 1
         return result
     }()
     private lazy var isCurrencyResultTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor.lightGray
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -99,19 +116,26 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         button.addTarget(self, action: #selector(isFromAddressBookButtonTapped), for: .touchUpInside)
         return button
     }()
+    private lazy var isFromScanOptionButtonView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.layer.cornerRadius = 8
+        stackView.backgroundColor = Colors.scanButtonBackgroundColor
+        return stackView
+    }()
     private lazy var isFromScanOptionButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x282836)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "ic_QR_scan_send"), for: .normal)
+        let logoImage = isLightMode ? "ic_scan_blackimage" : "ic_QR_scan_send"
+        button.setImage(UIImage(named: logoImage), for: .normal)
         button.addTarget(self, action: #selector(isFromScanOptionButtonTapped), for: .touchUpInside)
         return button
     }()
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +145,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.cellGroundColor2
         return stackView
     }()
     private lazy var beldexAddressTextview: UITextView = {
@@ -137,7 +161,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     private lazy var transationPriorityTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_PRIORITY", comment: "")
-        result.textColor = .white
+        result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -146,9 +170,9 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     private lazy var flashPriorityButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
-        button.backgroundColor = UIColor(hex: 0x282836)
+        button.backgroundColor = Colors.cellGroundColor2
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         return button
@@ -158,8 +182,8 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 8
         stackView.backgroundColor = .clear
-        stackView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        stackView.layer.borderWidth = 0.5
+        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderWidth = 1
         return stackView
     }()
     private lazy var estimatedFeeIDLabel: UILabel = {
@@ -176,8 +200,8 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         button.setTitle(NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x282836)
-        button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        button.backgroundColor = Colors.backgroundViewColor
+        button.setTitleColor(Colors.buttonTextColor, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
@@ -216,7 +240,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Send"
         
@@ -230,25 +254,30 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         middleView.addSubview(beldexAmountTextField)
         middleView.addSubview(isCurrencyResultTitleLabel)
         middleView.addSubview(isFromAddressBookButton)
-        middleView.addSubview(isFromScanOptionButton)
+        middleView.addSubview(isFromScanOptionButtonView)
+        isFromScanOptionButtonView.addSubview(isFromScanOptionButton)
         middleView.addSubview(beldexAddressTitleLabel)
         middleView.addSubview(beldexAddressBgView)
         beldexAddressBgView.addSubview(beldexAddressTextview)
+        middleView.addSubview(paymentIDImg)
+        middleView.addSubview(paymentIDTitleLabel)
+        
         middleView.addSubview(transationPriorityTitleLabel)
+        
         middleView.addSubview(flashPriorityButton)
         middleView.addSubview(estimatedFeeBgView)
         estimatedFeeBgView.addSubview(estimatedFeeIDLabel)
         view.addSubview(sendButton)
         
         flashPriorityButton.addRightIcon(image: UIImage(named: "ic_dropdownNew")!.withRenderingMode(.alwaysTemplate))
-        flashPriorityButton.tintColor = .white
+        flashPriorityButton.tintColor = isLightMode ? UIColor.lightGray : UIColor.white
         
         let fullText = "Estimated Fee : 0.004596 BDX"
         if let rangeBeldex = fullText.range(of: "Estimated Fee :"),
            let rangeAddress = fullText.range(of: "0.004596 BDX") {
             let attributedString = NSMutableAttributedString(string: fullText)
-            attributedString.addAttribute(.foregroundColor, value: UIColor.lightGray, range: NSRange(rangeBeldex, in: fullText))
-            attributedString.addAttribute(.foregroundColor, value: UIColor.white, range: NSRange(rangeAddress, in: fullText))
+            attributedString.addAttribute(.foregroundColor, value: Colors.cancelButtonTitleColor, range: NSRange(rangeBeldex, in: fullText))
+            attributedString.addAttribute(.foregroundColor, value: Colors.aboutContentLabelColor, range: NSRange(rangeAddress, in: fullText))
             estimatedFeeIDLabel.attributedText = attributedString
         }
         NSLayoutConstraint.activate([
@@ -288,13 +317,17 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             isFromAddressBookButton.widthAnchor.constraint(equalToConstant: 32),
             isFromAddressBookButton.heightAnchor.constraint(equalToConstant: 32),
             isFromAddressBookButton.topAnchor.constraint(equalTo: isCurrencyResultTitleLabel.bottomAnchor, constant: 35),
-            isFromScanOptionButton.trailingAnchor.constraint(equalTo: isFromAddressBookButton.leadingAnchor, constant: -7),
-            isFromScanOptionButton.widthAnchor.constraint(equalToConstant: 32),
-            isFromScanOptionButton.heightAnchor.constraint(equalToConstant: 32),
-            isFromScanOptionButton.centerYAnchor.constraint(equalTo: isFromAddressBookButton.centerYAnchor),
+            isFromScanOptionButtonView.trailingAnchor.constraint(equalTo: isFromAddressBookButton.leadingAnchor, constant: -7),
+            isFromScanOptionButtonView.widthAnchor.constraint(equalToConstant: 32),
+            isFromScanOptionButtonView.heightAnchor.constraint(equalToConstant: 32),
+            isFromScanOptionButtonView.centerYAnchor.constraint(equalTo: isFromAddressBookButton.centerYAnchor),
             beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
-            beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: isFromScanOptionButton.centerYAnchor),
-            beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: isFromScanOptionButton.leadingAnchor, constant: -7),
+            beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: isFromScanOptionButtonView.centerYAnchor),
+            beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: isFromScanOptionButtonView.leadingAnchor, constant: -7),
+            isFromScanOptionButton.heightAnchor.constraint(equalToConstant: 14),
+            isFromScanOptionButton.widthAnchor.constraint(equalToConstant: 14),
+            isFromScanOptionButton.centerYAnchor.constraint(equalTo: isFromScanOptionButtonView.centerYAnchor),
+            isFromScanOptionButton.centerXAnchor.constraint(equalTo: isFromScanOptionButtonView.centerXAnchor),
             beldexAddressBgView.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -20),
             beldexAddressBgView.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
             beldexAddressBgView.topAnchor.constraint(equalTo: isFromAddressBookButton.bottomAnchor, constant: 13),
@@ -303,6 +336,15 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             beldexAddressTextview.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -18),
             beldexAddressTextview.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 22),
             beldexAddressTextview.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -22),
+          
+            paymentIDImg.heightAnchor.constraint(equalToConstant: 15),
+            paymentIDImg.widthAnchor.constraint(equalToConstant: 15),
+            paymentIDImg.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
+            paymentIDImg.topAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: 5),
+            
+            paymentIDTitleLabel.leadingAnchor.constraint(equalTo: paymentIDImg.trailingAnchor, constant: 5),
+            paymentIDTitleLabel.centerYAnchor.constraint(equalTo: paymentIDImg.centerYAnchor),
+            
             transationPriorityTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 26),
             transationPriorityTitleLabel.topAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: 35),
             flashPriorityButton.leadingAnchor.constraint(equalTo: transationPriorityTitleLabel.trailingAnchor, constant: 10),
@@ -331,6 +373,9 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             beldexBalanceLabel.text = "-.----"
         }
         
+        sendButton.backgroundColor = Colors.backgroundViewColor
+        sendButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+        
         beldexAmountTextField.keyboardType = .decimalPad
         beldexAddressTextview.returnKeyType = .done
         beldexAmountTextField.tintColor = Colors.bchatButtonColor
@@ -352,6 +397,9 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             reloadData([:])
             updateSendButtonStates()
         }
+        
+        paymentIDImg.isHidden = true
+        paymentIDTitleLabel.isHidden = true
         
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
@@ -430,7 +478,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         let isAddressValid = isValidAddress(beldexAddressTextview.text)
         let isAmountValid = isValidAmount(beldexAmountTextField.text)
         sendButton.isEnabled = isAddressValid && isAmountValid
-        sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : UIColor(hex: 0x282836)
+        sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : Colors.backgroundViewColor
         sendButton.setTitleColor(sendButton.isEnabled ? UIColor.white : UIColor(hex: 0x6E6E7C), for: .normal)
     }
     private func isValidAddress(_ address: String?) -> Bool {
@@ -450,6 +498,19 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     //TextView Placholder delegates
     func textViewDidChange(_ textView: UITextView) {
         placeholderLabel?.isHidden = !textView.text.isEmpty
+        let currentAddress: NSString = beldexAddressTextview.text! as NSString
+        if BChatWalletWrapper.validAddress(beldexAddressTextview.text!) {
+            if currentAddress.length == 106 {
+                paymentIDImg.isHidden = false
+                paymentIDTitleLabel.isHidden = false
+            }else{
+                paymentIDImg.isHidden = true
+                paymentIDTitleLabel.isHidden = true
+            }
+        }else{
+            paymentIDImg.isHidden = true
+            paymentIDTitleLabel.isHidden = true
+        }
         updateSendButtonStates()
     }
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -666,13 +727,6 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                     self.finalWalletAddress = self.beldexAddressTextview.text!
                     self.finalWalletAmount = self.beldexAmountTextField.text!
-//                    let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-//                    vc.isSendWalletVC = true
-//                    vc.wallet = self.wallet
-//                    vc.finalWalletAddress = self.finalWalletAddress
-//                    vc.finalWalletAmount = self.finalWalletAmount
-//                    self.navigationController?.pushViewController(vc, animated: true)
-                    
                     let vc = NewPasswordVC()
                     vc.isGoingSendBDX = true
                     vc.isVerifyPassword = true
