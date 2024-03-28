@@ -313,7 +313,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
         dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)//Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        dateBreakLabel.textColor = UIColor(hex: 0xEBEBEB)//Colors.text
+        dateBreakLabel.textColor = Colors.titleColor//Colors.text
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
 //        let description = DateUtil.formatDate(forDisplay: date)
@@ -375,7 +375,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 snContentView.addSubview(openGroupInvitationView)
                 openGroupInvitationView.pin(to: snContentView)
                 openGroupInvitationView.layer.mask = bubbleViewMaskLayer
-            }else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+            } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
                 let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
                 paymentView.layer.mask = bubbleViewMaskLayer
                 snContentView.addSubview(paymentView)

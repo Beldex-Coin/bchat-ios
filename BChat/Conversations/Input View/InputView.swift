@@ -115,7 +115,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0
-        
         return label
     }()
 
@@ -171,7 +170,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
         
-        
         let bottomStackView2 = UIStackView(arrangedSubviews: [ bottomStackView, container(for: sendButton) ])
         bottomStackView2.axis = .horizontal
         bottomStackView2.spacing = 4
@@ -179,8 +177,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         bottomStackView2.layer.cornerRadius = 24
         bottomStackView2.alignment = .center
         self.finalBottomStack = bottomStackView2
-        
-        
         
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView2 ])
@@ -372,7 +368,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                 1 :
                 (messageTypes == .textOnly ? 0.4 : 0)
             )
-            self?.voiceMessageButton.alpha =  (messageTypes == .all ?
+            self?.voiceMessageButton.alpha = (messageTypes == .all ?
                 1 :
                 (messageTypes == .textOnly ? 0.4 : 0)
             )
@@ -417,11 +413,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
 
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
-        
         if inputViewButton == payAsChatButton {
             delegate?.payAsYouChatLongPress()
         }
-        
         guard inputViewButton == voiceMessageButton else { return }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()

@@ -34,7 +34,6 @@ class HomeTableViewCell: UITableViewCell {
             isShowingGlobalSearchResult ? updateForSearchResult() : update()
         }
     }
-        
     
     lazy var backGroundView: UIView = {
        let View = UIView()
@@ -64,7 +63,6 @@ class HomeTableViewCell: UITableViewCell {
        return result
    }()
     
-    
     lazy var messageCountAndDateStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +76,7 @@ class HomeTableViewCell: UITableViewCell {
     
     lazy var messageCountLabel: UILabel = {
        let result = PaddingLabel()
-        result.textColor = UIColor(hex: 0xFFFFFF)
+        result.textColor = Colors.bothWhiteColor
        result.font = Fonts.boldOpenSans(ofSize: 11)
        result.textAlignment = .center
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -111,9 +109,7 @@ class HomeTableViewCell: UITableViewCell {
         return result
     }()
     
-    
     func setUPLayout() {
-        
         contentView.addSubview(backGroundView)
         contentView.addSubview(pinImageView)
         pinImageView.image = UIImage(named: "ic_pinned")
@@ -156,7 +152,6 @@ class HomeTableViewCell: UITableViewCell {
             messageCountAndDateStackView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 15),
             messageCountAndDateStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
             messageCountAndDateStackView.widthAnchor.constraint(equalToConstant: 56),
-            
         ])
     }
     

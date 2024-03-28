@@ -196,13 +196,11 @@ class AddNodeListVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.5)
-        
+        view.backgroundColor = Colors.backGroundColorWithAlpha
         let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = view.bounds
         view.addSubview(blurView)
-        
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, topStackView, testButton, resultLabel, resultImageView, buttonStackView)
         topStackView.addArrangedSubview(nodeAddressTextField)
@@ -212,7 +210,6 @@ class AddNodeListVC: BaseVC {
         topStackView.addArrangedSubview(passwordTextField)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(okButton)
-        
         resultLabel.isHidden = true
         resultImageView.isHidden = true
         
@@ -254,7 +251,6 @@ class AddNodeListVC: BaseVC {
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
         ])
     }
-    
     
     @objc private func testButtonTapped(_ sender: UIButton) {
         if (nodeAddressTextField.text == "") {
@@ -343,12 +339,9 @@ class AddNodeListVC: BaseVC {
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }else {
-                
                 self.nodeArray.append(host_port)
-                
                 SaveUserDefaultsData.SaveLocalNodelist = self.nodeArray
                 SaveUserDefaultsData.SelectedNode = self.nodeArray.last!
-                
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now()+5) {

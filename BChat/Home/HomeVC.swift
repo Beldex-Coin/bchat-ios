@@ -158,6 +158,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         stackView.isHidden = true
         return stackView
     }()
+    
     private lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -167,6 +168,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.tintColor = .clear
         return button
     }()
+    
     private lazy var newChatLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -176,6 +178,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.textAlignment = .right
         return result
     }()
+    
     private lazy var secretGroupLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -185,6 +188,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.textAlignment = .right
         return result
     }()
+    
     private lazy var socialGroupLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -194,6 +198,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.textAlignment = .right
         return result
     }()
+    
     private lazy var isFromNewChatImgBtn: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.textViewColor
@@ -202,6 +207,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.setImage(image, for: .normal)
         return button
     }()
+    
     private lazy var isFromSecretGroupImgBtn: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.textViewColor
@@ -210,6 +216,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.setImage(image, for: .normal)
         return button
     }()
+    
     private lazy var isFromSocialGroupImgBtn: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.textViewColor
@@ -218,6 +225,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.setImage(image, for: .normal)
         return button
     }()
+    
     private lazy var imagesStackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ isFromNewChatImgBtn, isFromSecretGroupImgBtn, isFromSocialGroupImgBtn ])
         result.axis = .vertical
@@ -226,6 +234,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var newChatButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -233,6 +242,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: #selector(newChatButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var secretGroupButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -240,6 +250,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: #selector(secretGroupButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var socialGroupButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -247,6 +258,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.addTarget(self, action: #selector(socialGroupButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var stackViewButtons: UIStackView = {
         let result = UIStackView(arrangedSubviews: [newChatButton, secretGroupButton, socialGroupButton])
         result.axis = .vertical
@@ -292,7 +304,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.setBackgroundImage(UIImage(named: "ic_upArrow"), for: .selected)
         return button
     }()
-    
     
     var messageCollectionView: UICollectionView!
     
@@ -590,7 +601,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             // randomElement node And Selected Node
             if !SaveUserDefaultsData.SelectedNode.isEmpty {
                 randomNodeValue = SaveUserDefaultsData.SelectedNode
-            }else {
+            } else {
                 randomNodeValue = nodeArray.randomElement()!
             }
             SaveUserDefaultsData.FinalWallet_node = randomNodeValue
@@ -982,7 +993,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
 //        self.navigationItem.leftBarButtonItem = backButton
                 
         let publicKey = getUserHexEncodedPublicKey()
-        
         let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
                 //set image for button
         button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
@@ -995,7 +1005,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
 
                 let barButton = UIBarButtonItem(customView: button)
         self.navigationItem.leftBarButtonItem = barButton
-        
         
         
         var rightBarButtonItems: [UIBarButtonItem] = []
@@ -1181,7 +1190,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         transition.subtype = CATransitionSubtype.fromRight
         self.navigationController?.view.layer.add(transition, forKey: kCATransition)
         self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
-        
     }
     
     private func delete(_ thread: TSThread) {
@@ -1259,7 +1267,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc private func showWallet() {
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             // MARK: - Old flow (without wallet)
             if SaveUserDefaultsData.israndomUUIDPassword == "" {
                 let vc = EnableWalletVC()
@@ -1273,17 +1281,17 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                     vc.isGoingWallet = true
                     vc.isVerifyPassword = true
                     navigationController!.pushViewController(vc, animated: true)
-                }else {
+                } else {
                     let vc = NewPasswordVC()
                     vc.isGoingWallet = true
                     vc.isVerifyPassword = true
                     navigationController!.pushViewController(vc, animated: true)
                 }
-            }else {
+            } else {
                 let vc = EnableWalletVC()
                 navigationController!.pushViewController(vc, animated: true)
             }
-        }else {
+        } else {
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
         }
 
@@ -1416,8 +1424,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             messageRequestCountLabel.isHidden = true
             messageRequestLabel.isHidden = true
             showOrHideMessageRequestCollectionViewButton.isHidden = true
-            
-            
         } else {
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)

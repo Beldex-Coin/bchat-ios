@@ -60,13 +60,12 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    
     var tappedIndex = 0
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Message Request"
@@ -76,7 +75,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: Notification.Name(rawValue: "acceptMessageRequestTapped"), object: nil)
         
-            
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 22.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -96,14 +94,12 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            
             iconImageView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 0),
             iconImageView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
             messageLabel.topAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 22),
             messageLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             messageLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 0),
-            ])
+        ])
         
         // Notifications
         NotificationCenter.default.addObserver(
@@ -159,7 +155,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
         }
-        
         cell.deleteCallback = {
             self.tappedIndex = indexPath.row
             let vc = DeleteMessageRequestPopUp()
@@ -167,7 +162,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
         }
-        
         cell.blockCallback = {
             self.tappedIndex = indexPath.row
             let vc = BlockMessageRequestPopUp()
@@ -181,9 +175,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         guard let thread = self.thread(at: indexPath.row) else { return }
-        
         let conversationVC = ConversationVC(thread: thread)
         self.navigationController?.pushViewController(conversationVC, animated: true)
     }
@@ -196,7 +188,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             isNewThread: false,
             timestamp: NSDate.millisecondTimestamp()
         )
-        
         // Show an error indicating that approving the thread failed
         promise.catch(on: DispatchQueue.main) { [weak self] _ in
             let alert = UIAlertController(title: "BChat", message: NSLocalizedString("MESSAGE_REQUESTS_APPROVAL_ERROR_MESSAGE", comment: ""), preferredStyle: .alert)
@@ -212,8 +203,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.delete(thread)
         self.tableView.reloadData()
     }
-    
-    
     
     // MARK: - Updating
     
@@ -310,8 +299,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {
         super.handleAppModeChangedNotification(notification)
-        
-       
         tableView.reloadData()
     }
     
@@ -440,11 +427,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             return threadViewModel
         }
     }
- 
-
 }
-
-
 
 
 extension NewMessageRequestVC {
@@ -509,7 +492,6 @@ extension NewMessageRequestVC {
                 
                 // Send a sync message with the details of the contact
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                
             }
     }
     

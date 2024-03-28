@@ -123,7 +123,7 @@ class EnableWalletVC: BaseVC {
         button.backgroundColor = Colors.cellGroundColor2
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 15)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        button.setTitleColor(UIColor(hex: 0xFFFFFF), for: .selected)
+        button.setTitleColor(Colors.bothWhiteColor, for: .selected)
         button.addTarget(self, action: #selector(enableButtonTapped), for: .touchUpInside)
         return button
     }()

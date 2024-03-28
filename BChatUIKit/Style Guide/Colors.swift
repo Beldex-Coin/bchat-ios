@@ -122,6 +122,7 @@ public final class Colors : NSObject {
     @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
     @objc public static var bothBlueColor: UIColor { UIColor(named: "0085FF")! }
     @objc public static var bothWhiteColor: UIColor { UIColor(named: "FFFFFF")! }
+    @objc public static var bothGrayColor: UIColor { UIColor(named: "ACACAC")! }
     @objc public static var titleColor: UIColor { UIColor(named: "EBEBEB-333333")! }
     @objc public static var titleColor2: UIColor { UIColor(named: "EBEBEB-222222")! }
     @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }
@@ -168,6 +169,6 @@ public final class Colors : NSObject {
     @objc public static var newChatbackgroundColor: UIColor { UIColor(named: "2C2C3B-F4F4F4")! }
     @objc public static var messageRequestBackGroundColor: UIColor { UIColor(named: "111119-F8F8F8")! }
     @objc public static var alertBackGroundColor: UIColor { UIColor(named: "080812-E0E0E0")! }
-    
     @objc public static var messageTimeLabelColor: UIColor { UIColor(named: "5F5F76-A7A7BA")! }
+    @objc public static var titleNewColor: UIColor { UIColor(named: "ACACAC-8A8A9D")! }
 }

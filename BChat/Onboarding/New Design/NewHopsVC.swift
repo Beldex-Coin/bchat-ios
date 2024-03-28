@@ -8,7 +8,7 @@ class NewHopsVC: BaseVC {
     
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.titleNewColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -22,7 +22,7 @@ class NewHopsVC: BaseVC {
     
     private lazy var youLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "You"
@@ -32,7 +32,7 @@ class NewHopsVC: BaseVC {
     lazy var filledDotView1: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00BD40)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 8
         return View
     }()
@@ -52,14 +52,14 @@ class NewHopsVC: BaseVC {
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
         View.layer.borderWidth = 2
-        View.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        View.layer.borderColor = Colors.bothGreenColor.cgColor
         View.layer.cornerRadius = 6
         return View
     }()
     
     private lazy var entryNodeLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Entry Node"
@@ -89,14 +89,14 @@ class NewHopsVC: BaseVC {
     lazy var filledDotView2: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00BD40)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 6
         return View
     }()
     
     private lazy var masterNodeLabel1: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Masternode"
@@ -128,14 +128,14 @@ class NewHopsVC: BaseVC {
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
         View.layer.borderWidth = 2
-        View.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        View.layer.borderColor = Colors.bothGreenColor.cgColor
         View.layer.cornerRadius = 6
         return View
     }()
     
     private lazy var masterNodeLabel2: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Masternode"
@@ -164,14 +164,14 @@ class NewHopsVC: BaseVC {
     lazy var filledDotView3: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00BD40)
+        View.backgroundColor = Colors.greenColor
         View.layer.cornerRadius = 8
         return View
     }()
     
     private lazy var destinationLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Destination"
@@ -181,7 +181,7 @@ class NewHopsVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Hops"
         

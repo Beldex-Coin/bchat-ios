@@ -180,16 +180,13 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             seedLabel.trailingAnchor.constraint(equalTo: seedView.trailingAnchor, constant: -12),
             seedLabel.bottomAnchor.constraint(equalTo: seedView.bottomAnchor, constant: -25),
             
-            
             buttonStackView.topAnchor.constraint(equalTo: seedView.bottomAnchor, constant: 14),
             buttonStackView.leadingAnchor.constraint(equalTo: seedView.leadingAnchor, constant: 0),
             buttonStackView.trailingAnchor.constraint(equalTo: seedView.trailingAnchor, constant: 0),
             buttonStackView.heightAnchor.constraint(equalToConstant: 48),
             saveButton.heightAnchor.constraint(equalToConstant: 48),
             copySeedButton.heightAnchor.constraint(equalToConstant: 48),
-            
-            
-            
+                        
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             infoLabel.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: -14),

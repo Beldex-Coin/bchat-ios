@@ -38,8 +38,9 @@ class NewPasswordVC: BaseVC {
         button.setTitle("Next", for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -48,7 +49,7 @@ class NewPasswordVC: BaseVC {
     private lazy var bottomView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 28
         return stackView
     }()
@@ -63,21 +64,12 @@ class NewPasswordVC: BaseVC {
         return result
     }()
     
-//    lazy var passcodeDotsView: PasscodeDotsView = {
-//        let result = PasscodeDotsView()
-//        result.translatesAutoresizingMaskIntoConstraints = false
-//        result.layer.cornerRadius = 8
-//        result.layer.borderWidth = 1
-//        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-//        return result
-//    }()
-    
     private lazy var firstPinView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 8
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
     }()
     
@@ -86,7 +78,7 @@ class NewPasswordVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 8
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
     }()
     
@@ -95,7 +87,7 @@ class NewPasswordVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 8
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
     }()
     
@@ -104,7 +96,7 @@ class NewPasswordVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 8
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
     }()
     
@@ -152,7 +144,7 @@ class NewPasswordVC: BaseVC {
     
     private lazy var pinLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xACACAC)
+        result.textColor = Colors.titleNewColor
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +155,7 @@ class NewPasswordVC: BaseVC {
     private lazy var oneView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -171,7 +163,7 @@ class NewPasswordVC: BaseVC {
     private lazy var twoView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -179,7 +171,7 @@ class NewPasswordVC: BaseVC {
     private lazy var threeView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -187,7 +179,7 @@ class NewPasswordVC: BaseVC {
     private lazy var fourView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -195,7 +187,7 @@ class NewPasswordVC: BaseVC {
     private lazy var fiveView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -203,7 +195,7 @@ class NewPasswordVC: BaseVC {
     private lazy var sixView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -211,7 +203,7 @@ class NewPasswordVC: BaseVC {
     private lazy var sevenView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -219,7 +211,7 @@ class NewPasswordVC: BaseVC {
     private lazy var eightView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -227,7 +219,7 @@ class NewPasswordVC: BaseVC {
     private lazy var nineView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -235,7 +227,7 @@ class NewPasswordVC: BaseVC {
     private lazy var zeroView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -243,7 +235,7 @@ class NewPasswordVC: BaseVC {
     private lazy var clearView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 13
         return result
     }()
@@ -304,6 +296,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 1
         return button
@@ -316,6 +309,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 2
         return button
@@ -328,6 +322,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 3
         return button
@@ -340,6 +335,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 4
         return button
@@ -352,6 +348,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 5
         return button
@@ -364,6 +361,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 6
         return button
@@ -376,6 +374,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 7
         return button
@@ -388,6 +387,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 8
         return button
@@ -400,6 +400,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 9
         return button
@@ -412,6 +413,7 @@ class NewPasswordVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 0
         return button
@@ -451,7 +453,7 @@ class NewPasswordVC: BaseVC {
         super.viewDidLoad()
 
         
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Create Password"
         
@@ -533,14 +535,14 @@ class NewPasswordVC: BaseVC {
         pin3.isHidden = true
         pin4.isHidden = true
         
-        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
         
         
-        nextButton.backgroundColor = UIColor(hex: 0x282836)
-        nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        nextButton.backgroundColor = Colors.cellGroundColor2
+        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         
         NSLayoutConstraint.activate([
             iconView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
@@ -618,12 +620,12 @@ class NewPasswordVC: BaseVC {
                 self.pin3.isHidden = true
                 self.pin4.isHidden = true
                 self.pinLabel.text = "Re-Enter your PIN"
-                nextButton.backgroundColor = UIColor(hex: 0x282836)
-                nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-                firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                nextButton.backgroundColor = Colors.cellGroundColor2
+                nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 return
             }
             
@@ -639,10 +641,10 @@ class NewPasswordVC: BaseVC {
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     return
                 }
             }
@@ -658,10 +660,10 @@ class NewPasswordVC: BaseVC {
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     return
                 }
             }
@@ -721,8 +723,8 @@ class NewPasswordVC: BaseVC {
     }
     
     func enterPassword(tag: Int) {
-        nextButton.backgroundColor = UIColor(hex: 0x282836)
-        nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        nextButton.backgroundColor = Colors.cellGroundColor2
+        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         if isPasswordEnterFirstTime {
             isCreatePassword = false
             if confirmPasswordText.count == 4 {
@@ -730,67 +732,67 @@ class NewPasswordVC: BaseVC {
                 self.pin2.isHidden = false
                 self.pin3.isHidden = false
                 self.pin4.isHidden = false
-                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
             }
             
             if confirmPasswordText.count == 4 && tag == 10 {
-                nextButton.backgroundColor = UIColor(hex: 0x282836)
-                nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+                nextButton.backgroundColor = Colors.cellGroundColor2
+                nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
                 confirmPasswordText.removeLast()
                 if confirmPasswordText.count == 0 {
                     self.pin1.isHidden = true
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if confirmPasswordText.count == 1 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if confirmPasswordText.count == 2 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if confirmPasswordText.count == 3 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if confirmPasswordText.count == 4 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = false
-                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                    nextButton.setTitleColor(.white, for: .normal)
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    nextButton.backgroundColor = Colors.bothGreenColor
+                    nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                 }
                 return
             }
@@ -803,52 +805,52 @@ class NewPasswordVC: BaseVC {
                         self.pin2.isHidden = true
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 1 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = true
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 2 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 3 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = false
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 4 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = false
                         self.pin4.isHidden = false
-                        nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                        nextButton.setTitleColor(.white, for: .normal)
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        nextButton.backgroundColor = Colors.bothGreenColor
+                        nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                     }
                 } else {
                     if tag == 10 && confirmPasswordText.count == 0 {
@@ -860,52 +862,52 @@ class NewPasswordVC: BaseVC {
                         self.pin2.isHidden = true
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 1 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = true
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 2 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = true
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 3 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = false
                         self.pin4.isHidden = true
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     }
                     if confirmPasswordText.count == 4 {
                         self.pin1.isHidden = false
                         self.pin2.isHidden = false
                         self.pin3.isHidden = false
                         self.pin4.isHidden = false
-                        nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                        nextButton.setTitleColor(.white, for: .normal)
-                        firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                        fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                        nextButton.backgroundColor = Colors.bothGreenColor
+                        nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                        fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                     }
                     return
                 }
@@ -922,70 +924,70 @@ class NewPasswordVC: BaseVC {
             self.pin2.isHidden = false
             self.pin3.isHidden = false
             self.pin4.isHidden = false
-            nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-            nextButton.setTitleColor(.white, for: .normal)
-            firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-            secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-            thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-            fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+            nextButton.backgroundColor = Colors.bothGreenColor
+            nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+            secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+            thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+            fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
             
         }
         
         if passwordText.count == 4 && tag == 10 {
-            nextButton.backgroundColor = UIColor(hex: 0x282836)
-            nextButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            nextButton.backgroundColor = Colors.cellGroundColor2
+            nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
             passwordText.removeLast()
             if passwordText.count == 0 {
                 self.pin1.isHidden = true
                 self.pin2.isHidden = true
                 self.pin3.isHidden = true
                 self.pin4.isHidden = true
-                firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
             }
             if passwordText.count == 1 {
                 self.pin1.isHidden = false
                 self.pin2.isHidden = true
                 self.pin3.isHidden = true
                 self.pin4.isHidden = true
-                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
             }
             if passwordText.count == 2 {
                 self.pin1.isHidden = false
                 self.pin2.isHidden = false
                 self.pin3.isHidden = true
                 self.pin4.isHidden = true
-                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
             }
             if passwordText.count == 3 {
                 self.pin1.isHidden = false
                 self.pin2.isHidden = false
                 self.pin3.isHidden = false
                 self.pin4.isHidden = true
-                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
             }
             if passwordText.count == 4 {
                 self.pin1.isHidden = false
                 self.pin2.isHidden = false
                 self.pin3.isHidden = false
                 self.pin4.isHidden = false
-                nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                nextButton.setTitleColor(.white, for: .normal)
-                firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                nextButton.backgroundColor = Colors.bothGreenColor
+                nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
             }
             return
         }
@@ -998,52 +1000,52 @@ class NewPasswordVC: BaseVC {
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 1 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 2 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 3 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 4 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = false
-                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                    nextButton.setTitleColor(.white, for: .normal)
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    nextButton.backgroundColor = Colors.bothGreenColor
+                    nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                 }
             } else {
                 if tag == 10 && passwordText.count == 0 {
@@ -1055,52 +1057,52 @@ class NewPasswordVC: BaseVC {
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 1 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = true
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 2 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = true
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 3 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                 }
                 if passwordText.count == 4 {
                     self.pin1.isHidden = false
                     self.pin2.isHidden = false
                     self.pin3.isHidden = false
                     self.pin4.isHidden = false
-                    nextButton.backgroundColor = UIColor(hex: 0x00BD40)
-                    nextButton.setTitleColor(.white, for: .normal)
-                    firstPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    secondPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    thirdPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
-                    fourthPinView.layer.borderColor = UIColor(hex: 0x00BD40).cgColor
+                    nextButton.backgroundColor = Colors.bothGreenColor
+                    nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                    firstPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                 }
                 
             }
