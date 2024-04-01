@@ -31,7 +31,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor3
-        button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
@@ -94,7 +94,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         nameTextField.returnKeyType = .done
         
         continueButton.backgroundColor = Colors.cellGroundColor3
-        continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -164,10 +164,10 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         let str = textField.text!
         if str.count == 0 {
             continueButton.backgroundColor = Colors.cellGroundColor3
-            continueButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        }else {
+            continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        } else {
             continueButton.backgroundColor = Colors.bothGreenColor
-            continueButton.setTitleColor(.white, for: .normal)
+            continueButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         }
     }
     

@@ -209,14 +209,14 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             let syncTokensJob = SyncPushTokensJob(accountManager: AppEnvironment.shared.accountManager, preferences: Environment.shared.preferences)
             syncTokensJob.uploadOnlyIfStale = false
             let _: Promise<Void> = syncTokensJob.run()
-        }else {
+        } else {
             self.showToastMsg(message: "Please copy the Seed...", seconds: 1.0)
         }
     }
     
     @objc private func copyButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
-        self.showToastMsg(message: "Please copy the seed and save it", seconds: 1.0)
+        self.showToastMsg(message: "Copied", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true
@@ -224,10 +224,21 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     @objc private func saveButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
-        self.showToastMsg(message: "Please save the seed", seconds: 1.0)
+//        self.showToastMsg(message: "Please save the seed", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true
+        
+        let shareVC = UIActivityViewController(activityItems: [ mnemonic ], applicationActivities: nil)
+        if UIDevice.current.isIPad {
+            shareVC.excludedActivityTypes = []
+            shareVC.popoverPresentationController?.permittedArrowDirections = []
+            shareVC.popoverPresentationController?.sourceView = self.view
+            shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+        }
+        self.navigationController!.present(shareVC, animated: true, completion: nil)
+        
+        
     }
     
 

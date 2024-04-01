@@ -26,9 +26,9 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
 //        }else {
 //            result.backgroundColor = UIColor.lightGray
 //        }
-        result.backgroundColor = UIColor(hex: 0x282836)
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.setTitleColor(UIColor(hex: 0xACACAC), for: UIControl.State.normal)
+        result.setTitleColor(Colors.bothGrayColor, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         return result
     }()

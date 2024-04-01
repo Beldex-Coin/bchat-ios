@@ -117,6 +117,16 @@ class NewRecoverySeedVC: BaseVC {
             ])
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: NewAlertRecoverySeedVC.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                break
+            }
+        }
+    }
+    
+    
     @objc private func copyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = mnemonic
         copyButton.isUserInteractionEnabled = false

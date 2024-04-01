@@ -63,7 +63,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "RECOVERY_SEED_DISCRIPTION2"
+        result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION2", comment: "")
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0

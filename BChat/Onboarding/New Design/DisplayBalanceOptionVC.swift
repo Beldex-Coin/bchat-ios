@@ -28,7 +28,7 @@ class DisplayBalanceOptionVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        button.setBackgroundImage(UIImage(named: "ic_close"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "ic_closeNew"), for: .normal)
         return button
     }()
     lazy var fullBalanceButton: UIButton = {

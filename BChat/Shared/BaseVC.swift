@@ -88,9 +88,15 @@ class BaseVC : UIViewController {
         headingImageView.tintColor = Colors.text
         headingImageView.image = UIImage(named: "BChat_")?.withRenderingMode(.alwaysTemplate)
         headingImageView.contentMode = .scaleAspectFit
-        headingImageView.set(.width, to: 175)
+        headingImageView.set(.width, to: 90)
         headingImageView.set(.height, to: Values.mediumFontSize)
-        navigationItem.titleView = headingImageView
+        let spacer = UIView()
+        spacer.set(.width, to: UIScreen.main.bounds.width - 261)
+        spacer.set(.height, to: Values.mediumFontSize)
+        let stack = UIStackView(arrangedSubviews: [headingImageView, spacer])
+        stack.axis = .horizontal
+        stack.alignment = .leading        
+        navigationItem.titleView = stack
     }
 
     internal func setUpNavBarSessionIcon() {

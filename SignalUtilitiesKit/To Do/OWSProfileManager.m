@@ -659,7 +659,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
     OWSAssertIsOnMainThread();
 
     NSData *nameData = [profileName dataUsingEncoding:NSUTF8StringEncoding];
-    return nameData.length > kOWSProfileManager_NameDataLength;
+    return nameData.length >= kOWSProfileManager_NameDataLength;
 }
 
 - (nullable NSData *)encryptProfileNameWithUnpaddedName:(NSString *)name

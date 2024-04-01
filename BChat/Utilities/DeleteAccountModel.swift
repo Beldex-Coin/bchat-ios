@@ -7,7 +7,7 @@ final class DeleteAccountModel : Modal {
     // MARK: Components
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)//Colors.text
+        result.textColor = Colors.titleColor2//Colors.text
         result.font = Fonts.boldOpenSans(ofSize: 18)//Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         result.text = "Delete entire account"//NSLocalizedString("Delete Entire Account", comment: "")
         result.numberOfLines = 0
@@ -29,7 +29,7 @@ final class DeleteAccountModel : Modal {
     
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)//Colors.text.withAlphaComponent(Values.mediumOpacity)
+        result.textColor = Colors.titleColor2//Colors.text.withAlphaComponent(Values.mediumOpacity)
         result.font = Fonts.OpenSans(ofSize: 14)//Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.text = "Are you sure you want to Permanently clear all data from the Beldex Network?"//NSLocalizedString("You're initiating an account deletion. Upon initiation, your account will be deleted.However if you change your mind, you can still restore your account using your recovery seed within 14 days.After 14 days, your account will be permanently deleted.", comment: "")
         result.numberOfLines = 0
@@ -45,11 +45,11 @@ final class DeleteAccountModel : Modal {
 //        if isDarkMode {
 //            result.backgroundColor = Colors.destructive
 //        }
-        result.backgroundColor = UIColor(hex: 0x1C1C26)//Colors.destructive
+        result.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.destructive
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)//Fonts.OpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(UIColor(hex: 0xFF3E3E), for: UIControl.State.normal)
+        result.setTitleColor(Colors.bothRedColor, for: UIControl.State.normal)
         result.setTitle("Delete", for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(clearAllData), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
         return result
     }()
     
@@ -122,6 +122,7 @@ final class DeleteAccountModel : Modal {
     // MARK: Lifecycle
     override func populateContentView() {
         contentView.addSubview(mainStackView)
+        contentView.backgroundColor = Colors.smallBackGroundColor
         mainStackView.pin(.leading, to: .leading, of: contentView, withInset: Values.largeSpacing)
         mainStackView.pin(.top, to: .top, of: contentView, withInset: Values.largeSpacing)
         contentView.pin(.trailing, to: .trailing, of: mainStackView, withInset: Values.largeSpacing)

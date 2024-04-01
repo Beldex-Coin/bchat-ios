@@ -386,6 +386,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
 //        view.addSubview(someImageView)
 //        someImageView.pin(to: view)
+        self.messageCollectionView.isHidden = true
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -747,6 +748,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
         }
+        self.messageCollectionView.isHidden = true
         
         switch section {
         case 0:
@@ -992,9 +994,15 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
 //        backButton.isAccessibilityElement = true
 //        self.navigationItem.leftBarButtonItem = backButton
                 
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem = nil
+        
         let publicKey = getUserHexEncodedPublicKey()
         let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
                 //set image for button
+        button.widthAnchor.constraint(equalToConstant: 42).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+
         button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
                 //add function for button
         button.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)

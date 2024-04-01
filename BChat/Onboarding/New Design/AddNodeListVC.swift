@@ -4,7 +4,7 @@ import UIKit
 import Alamofire
 import BChatUIKit
 
-class AddNodeListVC: BaseVC {
+class AddNodeListVC: BaseVC, UITextFieldDelegate {
     
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
@@ -214,6 +214,17 @@ class AddNodeListVC: BaseVC {
         resultLabel.isHidden = true
         resultImageView.isHidden = true
         
+        nodeAddressTextField.delegate = self
+        nodePortTextField.delegate = self
+        nodeNameTextField.delegate = self
+        userNameTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+            view.addGestureRecognizer(tap)
+        
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
@@ -348,6 +359,15 @@ class AddNodeListVC: BaseVC {
         DispatchQueue.main.asyncAfter(deadline: .now()+5) {
             dataTask.cancel()
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
