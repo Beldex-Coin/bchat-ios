@@ -624,6 +624,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         mainButtonPopUpView.isHidden = true
+        mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1010,8 +1011,36 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 button.frame = CGRectMake(0, 0, 42, 42)
         button.layer.cornerRadius = 21
         button.layer.masksToBounds = true
+        
+        
+        lazy var outerView: UIView = {
+            let View = UIView()
+            View.translatesAutoresizingMaskIntoConstraints = false
+            View.backgroundColor = .clear
+            View.widthAnchor.constraint(equalToConstant: 42).isActive = true
+            View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+            return View
+        }()
+        outerView.addSubview(button)
+        
+        if let statusView = view.viewWithTag(333222) {
+            statusView.removeFromSuperview()
+        }
+        // Path status indicator
+            let pathStatusView = PathStatusView()
+            pathStatusView.tag = 333222
+            pathStatusView.accessibilityLabel = "Current onion routing path indicator"
+            pathStatusView.set(.width, to: PathStatusView.size)
+            pathStatusView.set(.height, to: PathStatusView.size)
+            outerView.addSubview(pathStatusView)
+            pathStatusView.layer.borderWidth = 2
+        pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
+            pathStatusView.pin(.trailing, to: .trailing, of: outerView)
+            pathStatusView.pin(.top, to: .top, of: outerView)
+        
+        
 
-                let barButton = UIBarButtonItem(customView: button)
+        let barButton = UIBarButtonItem(customView: outerView)
         self.navigationItem.leftBarButtonItem = barButton
         
         
@@ -1222,9 +1251,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     //Main NewConversationButtonSet PopUpView
     @objc private func handleMainButtonTapped() {
         mainButtonPopUpView.isHidden = !mainButtonPopUpView.isHidden
-        if mainButtonPopUpView.isHidden == true{
+        if mainButtonPopUpView.isHidden == true {
             mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-        }else {
+        } else {
             mainButton.setImage(UIImage(named: "ic_HomeVcLogo_close"), for: .normal)
         }
     }

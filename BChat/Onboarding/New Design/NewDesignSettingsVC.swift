@@ -73,6 +73,7 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let vc = NewPasswordVC()
             vc.isGoingBack = true
             vc.isCreatePassword = true
+            vc.isChangePassword = true
             navigationController!.pushViewController(vc, animated: true)
         }
         

@@ -16,6 +16,7 @@ class NewPasswordVC: BaseVC {
     
     var isCreatePassword = false
     var isVerifyPassword = false
+    var isChangePassword = false
     
 //    var isSendWalletVC = false
     var wallet: BDXWallet?
@@ -463,6 +464,9 @@ class NewPasswordVC: BaseVC {
             self.title = "Create Password"
             self.pinLabel.text = "Enter your PIN"
         }
+        if isChangePassword {
+            self.pinLabel.text = "Enter Old PIN"
+        }
         
         if isVerifyPassword {
             self.title = "Verify PIN"
@@ -613,6 +617,47 @@ class NewPasswordVC: BaseVC {
 //            self.pin3.isHidden = false
 //            self.pin4.isHidden = false
             
+            
+            if isChangePassword {
+                if passwordText == SaveUserDefaultsData.BChatPassword {
+                    isChangePassword = false
+                    self.pinLabel.text = "Enter New PIN"
+                    passwordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    return
+                    
+                } else {
+                    isChangePassword = true
+                    self.pinLabel.text = "Enter Old PIN"
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    passwordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                    return
+                }
+                
+            }
+            
+            
+            
             if isCreatePassword {
                 isPasswordEnterFirstTime = true
                 self.pin1.isHidden = true
@@ -645,6 +690,8 @@ class NewPasswordVC: BaseVC {
                     secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
                     return
                 }
             }
@@ -664,6 +711,8 @@ class NewPasswordVC: BaseVC {
                     secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
                     return
                 }
             }
