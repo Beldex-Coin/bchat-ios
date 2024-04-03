@@ -62,6 +62,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     private lazy var moderatorIconImageView = UIImageView(image: #imageLiteral(resourceName: "Crown"))
     
+    private lazy var messageTimeLableIncoming = messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
+    private lazy var messageTimeLableOutgoing = messageTimeLabel.pin(.right, to: .left, of: bubbleView, withInset: -10)
+    
+    
     lazy var bubbleView: UIView = {
         let result = UIView()
         result.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
@@ -211,6 +215,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 //        messageTimeLabel.center(.vertical, in: bubbleView)
         // Remaining constraints
         authorLabel.pin(.left, to: .left, of: bubbleView, withInset: VisibleMessageCell.authorLabelInset)
+        messageTimeLableIncoming.isActive = true
+        messageTimeLableOutgoing.isActive = true
+        messageTimeLabel.center(.vertical, in: bubbleView)
     }
     
     override func setUpGestureRecognizers() {
@@ -344,11 +351,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         let direction = isOutgoing ? "send" : "receive"
         if direction == "send" {
-            messageTimeLabel.pin(.right, to: .left, of: bubbleView, withInset: -10)
-            messageTimeLabel.center(.vertical, in: bubbleView)
+            messageTimeLableIncoming.isActive = false
+            messageTimeLableOutgoing.isActive = true
         } else {
-            messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
-            messageTimeLabel.center(.vertical, in: bubbleView)
+            messageTimeLableOutgoing.isActive = false
+            messageTimeLableIncoming.isActive = true
         }
         
         let date = viewItem.interaction.dateForUI()

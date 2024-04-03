@@ -15,7 +15,7 @@ class RegisterVC: BaseVC {
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.adjustsFontSizeToFitWidth = true
+        result.numberOfLines = 0
         return result
     }()
     
