@@ -1,6 +1,7 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class InitiatingTransactionVC: BaseVC {
     
@@ -78,6 +79,14 @@ class InitiatingTransactionVC: BaseVC {
             discriptionLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -26),
         ])
         
+        rotateIconView()
+        
+    }
+    // iconView animation
+    func rotateIconView() {
+        UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .curveLinear], animations: {
+            self.iconView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        }, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {

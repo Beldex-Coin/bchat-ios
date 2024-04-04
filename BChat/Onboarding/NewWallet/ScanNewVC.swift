@@ -56,6 +56,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
     //Wallet Scanner
     var isFromWallet = false
     var wallet: BDXWallet?
+    var mainBalanceForScan = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,12 +85,13 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             scanDescLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
         ])
         
+        if newChatScanflag == true{
+            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+        }
         if newChatScanflag == false{
             scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
         }
         if isFromWallet == true {
-            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
-        }else {
             scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
         }
         
@@ -243,6 +245,10 @@ extension ScanNewVC: QRScannerViewDelegate {
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
         }
+        if newChatScanflag == false {
+            self.qrData = QRData(codeString: str)
+            startNewDMIfPossible(with: str!)
+        }
         if isFromWallet == true { //Wallet QR Code Scanning
             var qrString = str!
             if qrString.contains("Beldex:") {
@@ -278,6 +284,7 @@ extension ScanNewVC: QRScannerViewDelegate {
             } else {
                 vc.walletAmount = ""
             }
+            vc.mainBalance = mainBalanceForScan
             navigationController!.pushViewController(vc, animated: true)
         }else{ // new Chat QR Code Scanning
             self.qrData = QRData(codeString: str)

@@ -252,7 +252,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
                 let count = self.navigationController!.viewControllers.count
                 if count > 1
                 {
-                    let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
+                    let VC = self.navigationController!.viewControllers[count-2] as! WalletHomeNewVC
                     VC.backApiRescanVC = true
                 }
             }
@@ -271,7 +271,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
                     let count = self.navigationController!.viewControllers.count
                     if count > 1
                     {
-                        let VC = self.navigationController!.viewControllers[count-2] as! MyWalletHomeVC
+                        let VC = self.navigationController!.viewControllers[count-2] as! WalletHomeNewVC
                         VC.backApiRescanVC = true
                     }
                 }

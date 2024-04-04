@@ -103,24 +103,33 @@ class PayAsYouChatPopUpVC: BaseVC {
         ])
     }
     
+//    @objc private func okButtonTapped(_ sender: UIButton) {
+////        let vc = TransactionSuccessPopUpVC()
+////        vc.modalPresentationStyle = .overFullScreen
+////        vc.modalTransitionStyle = .crossDissolve
+////        self.present(vc, animated: true, completion: nil)
+//        dismiss(animated: true, completion: {
+//            if let vc = CurrentAppContext().frontmostViewController() {
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                privacySettingsVC.shouldShowCloseButton = true
+//                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
+//                nav.modalPresentationStyle = .fullScreen
+//                vc.present(nav, animated: true, completion: nil)
+//            }
+////            let vc = BChatSettingsNewVC()
+////            self.navigationController!.pushViewController(vc, animated: true)
+//        })
+//
+//
+//    }
+    
     @objc private func okButtonTapped(_ sender: UIButton) {
-//        let vc = TransactionSuccessPopUpVC()
-//        vc.modalPresentationStyle = .overFullScreen
-//        vc.modalTransitionStyle = .crossDissolve
-//        self.present(vc, animated: true, completion: nil)
         dismiss(animated: true, completion: {
-            if let vc = CurrentAppContext().frontmostViewController() {
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                privacySettingsVC.shouldShowCloseButton = true
-                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
-                nav.modalPresentationStyle = .fullScreen
-                vc.present(nav, animated: true, completion: nil)
+            if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
             }
-//            let vc = BChatSettingsNewVC()
-//            self.navigationController!.pushViewController(vc, animated: true)
         })
-        
-        
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {

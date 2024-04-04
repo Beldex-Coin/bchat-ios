@@ -150,6 +150,9 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         cell.nameLabel.text = filteredCurrencyArray[indexPath.row].uppercased()
+        if filteredCurrencyArray[indexPath.row].contains(SaveUserDefaultsData.SelectedCurrency) {
+            cell.nameLabel.textColor = Colors.bothGreenColor
+        }
         return cell
     }
     

@@ -84,14 +84,23 @@ final class CallPermissionRequestModal : Modal {
     }
 
     // MARK: Interaction
+//    @objc func goToSettings(_ sender: Any) {
+//        dismiss(animated: true, completion: {
+//            if let vc = CurrentAppContext().frontmostViewController() {
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                privacySettingsVC.shouldShowCloseButton = true
+//                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
+//                nav.modalPresentationStyle = .fullScreen
+//                vc.present(nav, animated: true, completion: nil)
+//            }
+//        })
+//    }
+    
     @objc func goToSettings(_ sender: Any) {
         dismiss(animated: true, completion: {
-            if let vc = CurrentAppContext().frontmostViewController() {
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                privacySettingsVC.shouldShowCloseButton = true
-                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
-                nav.modalPresentationStyle = .fullScreen
-                vc.present(nav, animated: true, completion: nil)
+            if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
             }
         })
     }
@@ -197,14 +206,23 @@ final class PayAsYouChatPermissionRequestModal : Modal {
     }
 
     // MARK: Interaction
+//    @objc func goToSettings(_ sender: Any) {
+//        dismiss(animated: true, completion: {
+//            if let vc = CurrentAppContext().frontmostViewController() {
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                privacySettingsVC.shouldShowCloseButton = true
+//                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
+//                nav.modalPresentationStyle = .fullScreen
+//                vc.present(nav, animated: true, completion: nil)
+//            }
+//        })
+//    }
+    
     @objc func goToSettings(_ sender: Any) {
         dismiss(animated: true, completion: {
-            if let vc = CurrentAppContext().frontmostViewController() {
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                privacySettingsVC.shouldShowCloseButton = true
-                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
-                nav.modalPresentationStyle = .fullScreen
-                vc.present(nav, animated: true, completion: nil)
+            if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
             }
         })
     }

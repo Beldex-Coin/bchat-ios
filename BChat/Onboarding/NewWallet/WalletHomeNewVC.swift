@@ -387,6 +387,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.textAlignment = .left
         result.numberOfLines = 0
         result.translatesAutoresizingMaskIntoConstraints = false
+        // Add tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(transationDetailsIDLabelTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGesture)
         return result
     }()
     private lazy var transationIDcopyButton: UIButton = {
@@ -419,7 +423,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.axis = .vertical
-        result.alignment = .center
+        result.alignment = .fill
         result.distribution = .fill
         result.spacing = 10
         result.isLayoutMarginsRelativeArrangement = true
@@ -1556,29 +1560,34 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     private func synchronizedUI() {
-        progressView.progress = 1
-        syncedflag = true
-        isFromScanButton.isUserInteractionEnabled = true
-        isFromSendButton.isUserInteractionEnabled = true
-        self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-        if self.backApiRescanVC == true{
-            self.isFromProgressStatusLabel.text = "Connecting..."
-            walletSyncingBackgroundView.isHidden = false
-            noTransactionsYetBackgroundView.isHidden = true
-        }else {
-            self.isFromProgressStatusLabel.text = "Synchronized 100%"
-            beldexLogoImg.image = UIImage(named: "ic_beldex_green")
-            walletSyncingBackgroundView.isHidden = true
-            if self.transactionAllArray.count == 0 {
-                noTransactionsYetBackgroundView.isHidden = false
-                isFromFilterTransactionsHistoryBackgroundView.isHidden = true
-            }else {
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            progressView.progress = 1
+            syncedflag = true
+            isFromScanButton.isUserInteractionEnabled = true
+            isFromSendButton.isUserInteractionEnabled = true
+            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+            if self.backApiRescanVC == true{
+                self.isFromProgressStatusLabel.text = "Connecting..."
+                walletSyncingBackgroundView.isHidden = false
                 noTransactionsYetBackgroundView.isHidden = true
-                isFromFilterTransactionsHistoryBackgroundView.isHidden = false
+            }else {
+                self.isFromProgressStatusLabel.text = "Synchronized 100%"
+                beldexLogoImg.image = UIImage(named: "ic_beldex_green")
+                walletSyncingBackgroundView.isHidden = true
+                if self.transactionAllArray.count == 0 {
+                    noTransactionsYetBackgroundView.isHidden = false
+                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                }else {
+                    noTransactionsYetBackgroundView.isHidden = true
+                    isFromFilterTransactionsHistoryBackgroundView.isHidden = false
+                }
             }
+            self.tableView.reloadData()
+            WalletSharedData.sharedInstance.wallet = nil
+        }else {
+            self.isFromProgressStatusLabel.textColor = .red
+            self.isFromProgressStatusLabel.text = "Check your internet"
         }
-        self.tableView.reloadData()
-        WalletSharedData.sharedInstance.wallet = nil
     }
     
     //MARK:- Balance currency conversion
@@ -1718,29 +1727,32 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     @objc func isFromFilterImageButtonTapped(_ sender: UIButton){
-        self.noTransaction = false
-        self.isFilter = false
-        filteredAllTransactionSortingArray = []
-        filteredOutgoingTransactionSortingArray = []
-        filteredIncomingTransactionSortingArray = []
-        fromDate = ""
-        toDate = ""
-        if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
-            datePickerView.minimumDate = nil
-        }
-        
-        isFromFilterImageButton.isSelected = !isFromFilterImageButton.isSelected
-        if isFromFilterImageButton.isSelected {
-            filterStackView.isHidden = false
-            lineBackgroundView.isHidden = false
-            isFromFilterImageButton.backgroundColor = Colors.titleColor
-            let logoImage2 = isLightMode ? "ic_filter_white" : "ic_filter_black"
-            isFromFilterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
-        }else{
-            filterStackView.isHidden = true
-            lineBackgroundView.isHidden = true
-            isFromFilterImageButton.backgroundColor = .clear
-            isFromFilterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
+        if self.transactionAllArray.count == 0 {
+            isFromFilterImageButton.isUserInteractionEnabled = true
+        }else {
+            self.noTransaction = false
+            self.isFilter = false
+            filteredAllTransactionSortingArray = []
+            filteredOutgoingTransactionSortingArray = []
+            filteredIncomingTransactionSortingArray = []
+            fromDate = ""
+            toDate = ""
+            if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
+                datePickerView.minimumDate = nil
+            }
+            isFromFilterImageButton.isSelected = !isFromFilterImageButton.isSelected
+            if isFromFilterImageButton.isSelected {
+                filterStackView.isHidden = false
+                lineBackgroundView.isHidden = false
+                isFromFilterImageButton.backgroundColor = Colors.titleColor
+                let logoImage2 = isLightMode ? "ic_filter_white" : "ic_filter_black"
+                isFromFilterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
+            }else{
+                filterStackView.isHidden = true
+                lineBackgroundView.isHidden = true
+                isFromFilterImageButton.backgroundColor = .clear
+                isFromFilterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
+            }
         }
     }
     
@@ -1748,6 +1760,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let vc = ScanNewVC()
         vc.isFromWallet = true
         vc.wallet = self.wallet
+        vc.mainBalanceForScan = beldexBalanceLabel.text!
         navigationController!.pushViewController(vc, animated: true)
     }
     
@@ -1772,6 +1785,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let vc = SyncingOptionPopUpVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
+        vc.isPresented = true // Set the flag to true
         self.present(vc, animated: true, completion: nil)
     }
     //Rescan
@@ -1798,6 +1812,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.showToastMsg(message: "Copied to Recipient Address", seconds: 1.0)
     }
 
+    //Explorer after clicking the transaction ID
+    @objc func transationDetailsIDLabelTapped() {
+        let trID = transationDetailsIDLabel.text
+        if let url = URL(string: "https://explorer.beldex.io/tx/\(trID!)") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
     //By Date Filter Cancel action
     @objc func cancelButtonTapped(_ sender: UIButton){
         backgroundBlerView.isHidden = true

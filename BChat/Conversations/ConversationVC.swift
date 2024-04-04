@@ -610,7 +610,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     override func viewDidLoad() {
         super.viewDidLoad()
         // Gradient
-        setUpGradientBackground()
+//        setUpGradientBackground()
         // Nav bar
         setUpNavBarStyle()
         navigationItem.titleView = titleView
@@ -1140,8 +1140,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+                let vc = BChatSettingsNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
             }))
             alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 
@@ -1224,8 +1226,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+                let vc = BChatSettingsNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
             }))
             alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 

@@ -55,6 +55,7 @@ class SyncingOptionPopUpVC: BaseVC {
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    var isPresented: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,6 +82,24 @@ class SyncingOptionPopUpVC: BaseVC {
             buttonStackView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
         ])
         
+        // Add tap gesture recognizer to dismiss the pop-up
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapOutside))
+        view.addGestureRecognizer(tapGesture)
+        
+    }
+    
+    @objc private func handleTapOutside() {
+        if isPresented {
+            dismiss(animated: true, completion: nil)
+            isPresented = false
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            hitView?.isHidden = true // Hide the hitView
+        }
     }
     
     @objc private func reconnectButtonTapped(_ sender: UIButton) {

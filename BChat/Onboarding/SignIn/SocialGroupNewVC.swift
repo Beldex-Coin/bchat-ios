@@ -207,7 +207,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     
     @objc func scannerimageViewTapped() {
         let vc = ScanNewVC()
-        vc.newChatScanflag = false
+        vc.newChatScanflag = true
         navigationController!.pushViewController(vc, animated: true)
     }
     

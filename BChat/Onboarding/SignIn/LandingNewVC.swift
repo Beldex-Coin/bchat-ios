@@ -11,7 +11,7 @@ class LandingNewVC: BaseVC {
     private lazy var createButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x3B3946)
+        result.backgroundColor = Colors.bchatButtonColor
         result.layer.cornerRadius = result.frame.height / 2
         result.clipsToBounds = true
         result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
@@ -78,7 +78,7 @@ class LandingNewVC: BaseVC {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setUpGradientBackground()
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         self.navigationItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         WalletSharedData.sharedInstance.isCleardataStarting = false
@@ -239,7 +239,7 @@ class LandingNewVC: BaseVC {
             isFlagValue = false
             let img = UIImage(named: "ic_Newunchecked")!
             isCheckedOrNotButton.tintColor = .white
-            createButton.backgroundColor = UIColor(hex: 0x3B3946)
+            createButton.backgroundColor = Colors.bchatButtonColor
             isCheckedOrNotButton.setImage(img, for: .normal)
         }
     }

@@ -17,7 +17,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.greenColor
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 18) : Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -36,6 +36,13 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
+    }()
+    private lazy var profilePictureImageButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(profilePictureImageButtonTapped), for: .touchUpInside)
+        return button
     }()
     private lazy var cameraImage: UIImageView = {
         let imageView = UIImageView()
@@ -96,7 +103,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS_TITLE_NEW", comment: "")
         result.textColor = Colors.blueColor
-        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.semiOpenSans(ofSize: 14) : Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -104,7 +111,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 14) : Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -121,8 +128,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     }()
     private lazy var doneButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
-        button.setTitle("Done", for: .normal)
+        button.backgroundColor = .clear
+        button.setTitle("", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
@@ -139,7 +146,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let result = UILabel()
         result.text = NSLocalizedString("BCHAT_ID_NEW", comment: "")
         result.textColor = Colors.greenColor
-        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.semiOpenSans(ofSize: 14) : Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -147,7 +154,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     private lazy var bchatIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 14) : Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -176,7 +183,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 18)
+        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 20) : Fonts.OpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
         if isNavigationBarHideInChatNewVC == true {
@@ -219,7 +226,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let result = UILabel()
         result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
         result.textColor = Colors.greenColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 20) : Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -292,6 +299,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             closeButton.isHidden = false
             cameraView.isHidden = true
             profilePictureImage.isUserInteractionEnabled = false
+            profilePictureImageButton.isUserInteractionEnabled = false
             lineView.isHidden = true
             doneButton.isHidden = true
         }else {
@@ -306,6 +314,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
         view.addSubview(doneButton)
+        view.addSubview(profilePictureImageButton)
         
         backGroundView.addSubview(lineView)
         backGroundView.addSubview(qrBackgroundView)
@@ -341,7 +350,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            backGroundView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -36),
+//            backGroundView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -36),
             backGroundView.topAnchor.constraint(equalTo: profilePictureImage.firstBaselineAnchor, constant: 48),
             //Close
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 15),
@@ -357,6 +366,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             cameraView.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
             cameraView.widthAnchor.constraint(equalToConstant: 30),
             cameraView.heightAnchor.constraint(equalToConstant: 30),
+            
+            profilePictureImageButton.widthAnchor.constraint(equalToConstant: 96.5),
+            profilePictureImageButton.heightAnchor.constraint(equalToConstant: 96.5),
+            profilePictureImageButton.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
+            profilePictureImageButton.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
             
             cameraImage.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
             cameraImage.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
@@ -416,8 +430,10 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             shareButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         if isNavigationBarHideInChatNewVC == true {
-            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -125).isActive = true
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
+            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
         }else{
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
             shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
         }
         
@@ -485,6 +501,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
+        profilePictureImageButton.layer.cornerRadius = profilePictureImageButton.frame.height / 2
         innerProfileImage.layer.cornerRadius = innerProfileImage.frame.height / 2
         closeButton.layer.cornerRadius = closeButton.frame.height / 2
         copyForBeldexAddressButton.layer.cornerRadius = copyForBeldexAddressButton.frame.height / 2
@@ -511,6 +528,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     
     // MARK: General
     @objc func profilePictureImageTapped(){
+        self.outerProfileView.isHidden = false
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    //Profile pic action
+    @objc func profilePictureImageButtonTapped(){
         self.outerProfileView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
@@ -562,6 +584,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                 attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
             )
             nameTextField.font = Fonts.OpenSans(ofSize: 18)
+            doneButton.backgroundColor = Colors.greenColor
+            doneButton.setTitle("Done", for: .normal)
         } else {
             nameTextField.resignFirstResponder()
         }
@@ -679,6 +703,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             displayNameToBeUploaded = displayName
             updateProfile(isUpdatingDisplayName: true, isUpdatingProfilePicture: false)
         }
+        doneButton.backgroundColor = .clear
+        doneButton.setTitle("", for: .normal)
     }
     
     func clearAvatar() {

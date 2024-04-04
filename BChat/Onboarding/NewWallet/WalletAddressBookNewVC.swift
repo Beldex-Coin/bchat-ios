@@ -75,7 +75,6 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-//        let logoImage = isLightMode ? "ic_no_address_white_theme" : "ic_no_address"
         let logoImage = isLightMode ? "ic_no_transactions_light" : "ic_no_transactions"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
@@ -323,7 +322,10 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
                 addressshare = filterBeldexAddressArray[indexPath.item]
             }
             NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
-            self.navigationController?.popViewController(animated: true)
+//            self.navigationController?.popViewController(animated: true)
+            let qrCode = QRCode.generate(for: addressshare, hasBackground: true)
+            let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+            self.navigationController!.present(shareVC, animated: true, completion: nil)
         }
     }
     

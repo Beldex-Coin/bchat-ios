@@ -187,6 +187,14 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         bottomView.layer.cornerRadius = bottomView.frame.height / 2
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
     // MARK: General
     @objc private func dismissKeyboard() {
         chatIdTextView.resignFirstResponder()
