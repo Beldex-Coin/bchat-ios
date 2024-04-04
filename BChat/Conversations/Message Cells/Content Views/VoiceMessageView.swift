@@ -16,11 +16,16 @@ public final class VoiceMessageView : UIView {
     private lazy var progressView: UIView = {
         let result = UIView()
         result.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        result.layer.cornerRadius = 22
         return result
     }()
 
     private lazy var toggleImageView: UIImageView = {
-        let result = UIImageView(image: UIImage(named: "ic_playNew"))
+        var result = UIImageView(image: UIImage(named: "ic_playNew"))
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result = UIImageView(image: UIImage(named: "ic_playNew")?.withTint(tint))
+        }
         result.set(.width, to: 14)
         result.set(.height, to: 14)
         result.contentMode = .scaleAspectFit
@@ -46,6 +51,10 @@ public final class VoiceMessageView : UIView {
     private lazy var countdownLabel: UILabel = {
         let result = UILabel()
         result.textColor = .white//.black
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result.textColor = tint
+        }
         result.font = Fonts.OpenSans(ofSize: 11)
         result.text = "0:00"
         return result
@@ -62,7 +71,11 @@ public final class VoiceMessageView : UIView {
     }()
     
     private lazy var audioWavesImageView: UIImageView = {
-        let result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result = UIImageView(image: UIImage(named: "ic_audioWaves")?.withTint(tint))
+        }
         result.set(.height, to: 24)
         result.contentMode = .scaleAspectFit
         return result
@@ -151,6 +164,12 @@ public final class VoiceMessageView : UIView {
 
     private func handleIsPlayingChanged() {
         toggleImageView.image = isPlaying ? UIImage(named: "ic_pauseNew") : UIImage(named: "ic_playNew")
+        if viewItem.interaction is TSIncomingMessage {
+            if isLightMode {
+                let tint = UIColor(hex: 0x333333)
+                toggleImageView.image = isPlaying ? UIImage(named: "ic_pauseNew")?.withTint(tint) : UIImage(named: "ic_playNew")?.withTint(tint)
+            }
+        }
         if !isPlaying { progress = 0 }
     }
 

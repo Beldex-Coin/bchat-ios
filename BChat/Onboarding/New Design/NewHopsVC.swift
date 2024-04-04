@@ -2,6 +2,7 @@
 
 import UIKit
 import BChatUIKit
+import NVActivityIndicatorView
 
 class NewHopsVC: BaseVC {
     
@@ -16,6 +17,13 @@ class NewHopsVC: BaseVC {
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.22
         result.attributedText = NSMutableAttributedString(string: "BChat masks your IP address by routing your messages through several masternodes in the Beldex decentralized network. your connection is currently routed through the following masternodes", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        return result
+    }()
+    
+    private lazy var spinner: NVActivityIndicatorView = {
+        let result = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: Colors.text, padding: nil)
+        result.set(.width, to: 64)
+        result.set(.height, to: 64)
         return result
     }()
     
@@ -177,6 +185,8 @@ class NewHopsVC: BaseVC {
         result.text = "Destination"
         return result
     }()
+    
+    var count = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,13 +265,192 @@ class NewHopsVC: BaseVC {
             
             destinationLabel.topAnchor.constraint(equalTo: filledDotView3.bottomAnchor, constant: 3),
             destinationLabel.leadingAnchor.constraint(equalTo: youLabel.leadingAnchor, constant: 0),
-            
         ])
-        
-        
+        update()
+        registerObservers()
     }
     
+    
+    
+    private func registerObservers() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(handleBuildingPathsNotification), name: .buildingPaths, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handlePathsBuiltNotification), name: .pathsBuilt, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleOnionRequestPathCountriesLoadedNotification), name: .onionRequestPathCountriesLoaded, object: nil)
+    }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    // MARK: Updating
+    @objc private func handleBuildingPathsNotification() { update() }
+    @objc private func handlePathsBuiltNotification() { update() }
+    @objc private func handleOnionRequestPathCountriesLoadedNotification() { update() }
+
+    
+    private func update() {
+//        pathStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        if !OnionRequestAPI.paths.isEmpty {
+            let pathToDisplay = OnionRequestAPI.paths.first!
+            let dotAnimationRepeatInterval = Double(pathToDisplay.count) + 2
+            let snodeRows: [UIStackView] = pathToDisplay.enumerated().map { index, snode in
+                let isGuardSnode = (snode == pathToDisplay.first!)
+                 getPathRow(snode: snode, location: .middle, dotAnimationStartDelay: Double(index) + 2, dotAnimationRepeatInterval: dotAnimationRepeatInterval, isGuardSnode: isGuardSnode)
+                return UIStackView()
+            }
+//            let youRow = getPathRow(title: NSLocalizedString("vc_path_device_row_title", comment: ""), subtitle: nil, location: .top, dotAnimationStartDelay: 1, dotAnimationRepeatInterval: dotAnimationRepeatInterval)
+//            let destinationRow = getPathRow(title: NSLocalizedString("vc_path_destination_row_title", comment: ""), subtitle: nil, location: .bottom, dotAnimationStartDelay: Double(pathToDisplay.count) + 2, dotAnimationRepeatInterval: dotAnimationRepeatInterval)
+//            let rows = [ youRow ] + snodeRows + [ destinationRow ]
+//            rows.forEach { pathStackView.addArrangedSubview($0) }
+//            gifimageView.isHidden = true
+            //spinner.stopAnimating()
+            UIView.animate(withDuration: 0.25) {
+                self.spinner.alpha = 0
+            }
+        } else {
+//            gifimageView.isHidden = false
+//            spinner.startAnimating()
+            UIView.animate(withDuration: 0.25) {
+                self.spinner.alpha = 1
+            }
+        }
+    }
+
+    private func getPathRow(snode: Snode, location: LineView2.Location, dotAnimationStartDelay: Double, dotAnimationRepeatInterval: Double, isGuardSnode: Bool) {
+        let country = IP2Country.isInitialized ? (IP2Country.shared.countryNamesCache[snode.ip] ?? "Resolving...") : "Resolving..."
+        let title = isGuardSnode ? NSLocalizedString("vc_path_guard_node_row_title", comment: "") : NSLocalizedString("Master Node", comment: "")
+        
+        
+        count += 1
+        if count == 1 {
+            entryNodeLabel.text = title
+            entryNodeInfoLabel.text = country
+            return
+        }
+        
+        if count == 2 {
+            masterNodeLabel1.text = title
+            masterNodeInfoLabel1.text = country
+            return
+        }
+        
+        if count == 3 {
+            masterNodeLabel2.text = title
+            masterNodeInfoLabel2.text = country
+            return
+        }
+        
+    }
    
 
+}
+
+
+private final class LineView2 : UIView {
+    private let location: Location
+    private let dotAnimationStartDelay: Double
+    private let dotAnimationRepeatInterval: Double
+    private var dotViewWidthConstraint: NSLayoutConstraint!
+    private var dotViewHeightConstraint: NSLayoutConstraint!
+    private var dotViewAnimationTimer: Timer!
+
+    enum Location {
+        case top, middle, bottom
+    }
+
+    private lazy var dotView: UIView = {
+        let result = UIView()
+        result.layer.cornerRadius = PathVC.dotSize / 2
+        let glowRadius: CGFloat = isLightMode ? 1 : 2
+        let glowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
+        let glowConfiguration = UIView.CircularGlowConfiguration(size: PathVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
+        result.setCircularGlow(with: glowConfiguration)
+        result.backgroundColor = Colors.accent
+        return result
+    }()
+    
+    init(location: Location, dotAnimationStartDelay: Double, dotAnimationRepeatInterval: Double) {
+        self.location = location
+        self.dotAnimationStartDelay = dotAnimationStartDelay
+        self.dotAnimationRepeatInterval = dotAnimationRepeatInterval
+        super.init(frame: CGRect.zero)
+        setUpViewHierarchy()
+    }
+    
+    override init(frame: CGRect) {
+        preconditionFailure("Use init(location:dotAnimationStartDelay:dotAnimationRepeatInterval:) instead.")
+    }
+    
+    required init?(coder: NSCoder) {
+        preconditionFailure("Use init(location:dotAnimationStartDelay:dotAnimationRepeatInterval:) instead.")
+    }
+    
+    private func setUpViewHierarchy() {
+        let lineView = UIView()
+        lineView.set(.width, to: Values.separatorThickness)
+        lineView.backgroundColor = Colors.text
+        addSubview(lineView)
+        lineView.center(.horizontal, in: self)
+        switch location {
+        case .top: lineView.topAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        case .middle, .bottom: lineView.pin(.top, to: .top, of: self)
+        }
+        switch location {
+        case .top, .middle: lineView.pin(.bottom, to: .bottom, of: self)
+        case .bottom: lineView.bottomAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        }
+        let dotSize = PathVC.dotSize
+        dotViewWidthConstraint = dotView.set(.width, to: dotSize)
+        dotViewHeightConstraint = dotView.set(.height, to: dotSize)
+        addSubview(dotView)
+        dotView.center(in: self)
+        Timer.scheduledTimer(withTimeInterval: dotAnimationStartDelay, repeats: false) { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.animate()
+            strongSelf.dotViewAnimationTimer = Timer.scheduledTimer(withTimeInterval: strongSelf.dotAnimationRepeatInterval, repeats: true) { _ in
+                guard let strongSelf = self else { return }
+                strongSelf.animate()
+            }
+        }
+    }
+
+    deinit {
+        dotViewAnimationTimer?.invalidate()
+    }
+
+    private func animate() {
+        expandDot()
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+            self?.collapseDot()
+        }
+    }
+
+    private func expandDot() {
+        let newSize = PathVC.expandedDotSize
+        let newGlowRadius: CGFloat = isLightMode ? 4 : 6
+        let newGlowColor = Colors.accent.withAlphaComponent(0.6)
+        updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
+    }
+
+    private func collapseDot() {
+        let newSize = PathVC.dotSize
+        let newGlowRadius: CGFloat = isLightMode ? 1 : 2
+        let newGlowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
+        updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
+    }
+
+    private func updateDotView(size: CGFloat, glowRadius: CGFloat, glowColor: UIColor) {
+        let frame = CGRect(center: dotView.center, size: CGSize(width: size, height: size))
+        dotViewWidthConstraint.constant = size
+        dotViewHeightConstraint.constant = size
+        UIView.animate(withDuration: 0.5) {
+            self.layoutIfNeeded()
+            self.dotView.frame = frame
+            self.dotView.layer.cornerRadius = size / 2
+            let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
+            self.dotView.setCircularGlow(with: glowConfiguration)
+            self.dotView.backgroundColor = Colors.accent
+        }
+    }
 }

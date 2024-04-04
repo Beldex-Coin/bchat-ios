@@ -23,7 +23,7 @@ final class CallMessageCell : MessageCell {
     
     private lazy var label: UILabel = {
         let result = UILabel()
-        result.numberOfLines = 0
+        result.numberOfLines = 1
         result.lineBreakMode = .byWordWrapping
         result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
@@ -44,6 +44,8 @@ final class CallMessageCell : MessageCell {
         result.addSubview(infoImageView)
         infoImageView.autoVCenterInSuperview()
         infoImageView.pin(.right, to: .right, of: result, withInset: -CallMessageCell.inset)
+        label.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8).isActive = true
+        label.trailingAnchor.constraint(equalTo: infoImageView.leadingAnchor, constant: -8).isActive = true
         return result
     }()
     

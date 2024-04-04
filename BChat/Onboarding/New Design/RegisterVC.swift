@@ -12,9 +12,10 @@ class RegisterVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 22)
+        result.font = Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
+        result.numberOfLines = 0
         return result
     }()
     
@@ -136,7 +137,7 @@ class RegisterVC: BaseVC {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 39),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             continueButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),

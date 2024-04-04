@@ -52,7 +52,7 @@ final class ConversationTitleView : UIView {
         stackView.pin(to: self)
         let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isGroupThread()
         let leftMargin: CGFloat = shouldShowCallButton ? 54 : 8 // Contact threads also have the call button to compensate for
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: leftMargin, bottom: 0, right: 0)
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGestureRecognizer)

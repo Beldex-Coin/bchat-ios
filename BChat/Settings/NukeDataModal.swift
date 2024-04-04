@@ -10,7 +10,7 @@ final class NukeDataModal : Modal {
     // MARK: Components
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.text = "Clear all data"//NSLocalizedString("Clear All Data", comment: "")
         result.numberOfLines = 0
@@ -32,7 +32,7 @@ final class NukeDataModal : Modal {
     
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 14)
         result.text = "Are you sure you want to Permanently clear all data from this device?"//NSLocalizedString("This will clear all your BChat data from device.", comment: "")
         result.numberOfLines = 0
@@ -48,11 +48,11 @@ final class NukeDataModal : Modal {
 //        if isDarkMode {
 //            result.backgroundColor = Colors.destructive
 //        }
-        result.backgroundColor = UIColor(hex: 0x1C1C26)//Colors.destructive
+        result.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.destructive
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.setTitleColor(UIColor(hex: 0xFF3E3E), for: UIControl.State.normal)
+        result.setTitleColor(Colors.bothRedColor, for: UIControl.State.normal)
         result.setTitle("Clear", for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(clearAllData), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
         return result
     }()
     
@@ -130,7 +130,7 @@ final class NukeDataModal : Modal {
     // MARK: Lifecycle
     override func populateContentView() {
         contentView.addSubview(mainStackView)
-        contentView.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        contentView.backgroundColor = Colors.smallBackGroundColor
         mainStackView.pin(.leading, to: .leading, of: contentView, withInset: 18)
         mainStackView.pin(.top, to: .top, of: contentView, withInset: Values.largeSpacing)
         contentView.pin(.trailing, to: .trailing, of: mainStackView, withInset: 18)

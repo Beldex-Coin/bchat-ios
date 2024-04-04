@@ -128,8 +128,14 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         self.titleLabel.text = "Create Secret Group"
         
-        createButton.backgroundColor = UIColor(hex: 0x282836)
-        createButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+        createButton.backgroundColor = Colors.cellGroundColor2
+        createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+            view.addGestureRecognizer(tap)
+        
+        
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
@@ -216,40 +222,51 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = groupNameTextField.text!
         if str.count == 0 {
-            createButton.backgroundColor = UIColor(hex: 0x282836)
-            createButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        }else {
-            createButton.backgroundColor = UIColor(hex: 0x00BD40)
-            createButton.setTitleColor(.white, for: .normal)
+            createButton.backgroundColor = Colors.cellGroundColor2
+            createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        } else {
+            createButton.backgroundColor = Colors.bothGreenColor
+            createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Get the current text in the search field
-        searchText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
-        if searchText.isEmpty {
-            // If the search text is empty, show all currencies without filtering
-            filteredContacts = contacts
-            if contacts.count > 0 {
-                namesArray = []
-                for i in 0...(contacts.count - 1) {
-                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+        if textField == searchTextField {
+            searchText = (textField.text! as NSString).replacingCharacters(in: range, with: string)
+            if searchText.isEmpty {
+                // If the search text is empty, show all currencies without filtering
+                filteredContacts = contacts
+                if contacts.count > 0 {
+                    namesArray = []
+                    for i in 0...(contacts.count - 1) {
+                        namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+                    }
+                    
+                    mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+                    filterDict = mainDict
                 }
                 
-                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
-                filterDict = mainDict
+            } else {
+                
+                // Update the filteredCurrencyArray based on the search text
+                let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+                filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+                
             }
-            
-        } else {
-            
-            // Update the filteredCurrencyArray based on the search text
-            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
-            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
-            
         }
         // Reload the table view with the filtered or unfiltered data
         tableView.reloadData()
         return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 
     // MARK: Button Actions :-

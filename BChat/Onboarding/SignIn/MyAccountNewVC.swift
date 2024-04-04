@@ -315,6 +315,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         view.addSubview(shareButton)
         view.addSubview(doneButton)
         view.addSubview(profilePictureImageButton)
+        view.addSubview(closeButton)
         
         backGroundView.addSubview(lineView)
         backGroundView.addSubview(qrBackgroundView)
@@ -322,7 +323,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         backGroundView.addSubview(profilePictureImage)
         backGroundView.addSubview(cameraView)
         cameraView.addSubview(cameraImage)
-        backGroundView.addSubview(closeButton)
         backGroundView.addSubview(nameTextField)
         backGroundView.addSubview(copyForBeldexAddressButton)
         backGroundView.addSubview(copyForBChatIdButton)

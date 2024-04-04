@@ -89,7 +89,7 @@ class NewRecoverySeedVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Recovery Seed"
         
@@ -116,6 +116,16 @@ class NewRecoverySeedVC: BaseVC {
             copyButton.heightAnchor.constraint(equalToConstant: 58)
             ])
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: NewAlertRecoverySeedVC.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                break
+            }
+        }
+    }
+    
     
     @objc private func copyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = mnemonic

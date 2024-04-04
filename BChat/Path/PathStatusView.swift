@@ -59,7 +59,7 @@ final class PathStatusView : UIView {
     }
 
     @objc private func handlePathsBuiltNotification() {
-        setColor(to: Colors.accent, isAnimated: true)
+        setColor(to: UIColor(hex: 0x00FF05), isAnimated: true)
     }
 }
 public class NetworkReachabilityStatus {
