@@ -164,6 +164,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         button.layer.borderWidth = 1
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.addTarget(self, action: #selector(testButtonTapped), for: .touchUpInside)
+        button.setTitleColor(Colors.titleColor4, for: .normal)
         return button
     }()
     
@@ -308,6 +309,13 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
                 case .failure(let error):
                     // Handle the error here
                     print("Request failed with error: \(error)")
+                    self.resultLabel.isHidden = false
+                    self.resultImageView.isHidden = false
+                    self.resultLabel.textColor = Colors.bothRedColor
+                    self.resultLabel.text = "Connection Error"
+                    self.resultImageView.image = UIImage(named: "ic_error_node")
+                    
+                    self.testResultFlag = false
                 }
             }
     }

@@ -1342,6 +1342,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.layer.masksToBounds = true
             let barButton = UIBarButtonItem(customView: button)
             self.navigationItem.leftBarButtonItem = barButton
+        } else {
+            var iconImageView = ProfilePictureView()
+            iconImageView.update(for: thread)
+            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+            button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+            button.frame = CGRectMake(0, 0, 42, 42)
+            button.layer.cornerRadius = 21
+            button.layer.masksToBounds = true
+            let barButton = UIBarButtonItem(customView: button)
+            self.navigationItem.leftBarButtonItem = barButton
         }
         
         if isShowingSearchUI {

@@ -111,10 +111,30 @@ class EnableWalletVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
-        button.setBackgroundImage(UIImage(named: "ic_buttonBorder"), for: .normal)
-        button.setBackgroundImage(UIImage(named: "ic_buttonFill"), for: .selected)
+        button.setBackgroundImage(UIImage(named: ""), for: .normal)
+        button.setBackgroundImage(UIImage(named: ""), for: .selected)
         return button
     }()
+    
+    private lazy var iconView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_buttonBorder")
+        result.set(.width, to: 15)
+        result.set(.height, to: 15)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    
+    lazy var tempView: UIView = {
+        let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = .clear
+        return View
+    }()
+    
+    
     private lazy var enableButton: UIButton = {
         let button = UIButton()
         button.setTitle("Enable Wallet", for: .normal)
@@ -145,8 +165,12 @@ class EnableWalletVC: BaseVC {
         
         view.addSubview(backGroundView)
         backGroundView.addSubViews(greenDotView1, infoLabel1, greenDotView2, infoLabel2, greenDotView3, infoLabel3, greenDotView4, infoLabel4, bottomStackView)
+        
+        
+        tempView.addSubViews(iconView, selectionButton)
+        
         bottomStackView.addArrangedSubview(confirmationLabel)
-        bottomStackView.addArrangedSubview(selectionButton)
+        bottomStackView.addArrangedSubview(tempView)
         backGroundView.addSubview(enableButton)
         self.enableButton.isSelected = false
         
@@ -200,15 +224,24 @@ class EnableWalletVC: BaseVC {
             infoLabel4.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -26),
             bottomStackView.topAnchor.constraint(equalTo: infoLabel4.bottomAnchor, constant: 60),
             bottomStackView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor, constant: 0),
-            selectionButton.widthAnchor.constraint(equalToConstant: 15),
-            selectionButton.heightAnchor.constraint(equalToConstant: 15),
+            
+            tempView.widthAnchor.constraint(equalToConstant: 25),
+            tempView.heightAnchor.constraint(equalToConstant: 25),
+            
+            iconView.centerXAnchor.constraint(equalTo: tempView.centerXAnchor, constant: 0),
+            iconView.centerYAnchor.constraint(equalTo: tempView.centerYAnchor, constant: 0),
+            
+            selectionButton.widthAnchor.constraint(equalToConstant: 25),
+            selectionButton.heightAnchor.constraint(equalToConstant: 25),
             enableButton.topAnchor.constraint(equalTo: bottomStackView.bottomAnchor, constant: 18),
             enableButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -26),
             enableButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             enableButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
             enableButton.heightAnchor.constraint(equalToConstant: 58),
         ])
-        
+//        selectionButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//        selectionButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+
     }
     
     @objc func back(sender: UIBarButtonItem) {
@@ -238,8 +271,10 @@ class EnableWalletVC: BaseVC {
         sender.isSelected = !sender.isSelected
         self.enableButton.isSelected = self.selectionButton.isSelected
         if self.enableButton.isSelected {
+            iconView.image = UIImage(named: "ic_buttonFill")
             self.enableButton.backgroundColor = Colors.bothGreenColor
         } else {
+            iconView.image = UIImage(named: "ic_buttonBorder")
             self.enableButton.backgroundColor = Colors.cellGroundColor2
         }
     }

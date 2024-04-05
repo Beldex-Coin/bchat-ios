@@ -594,7 +594,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
         reload()
-
+        updateNavBarButtons()
         if SSKPreferences.areWalletEnabled{
             if UserDefaults.standard.domainSchemas.isEmpty {}else {
                 hashArray2 = UserDefaults.standard.domainSchemas

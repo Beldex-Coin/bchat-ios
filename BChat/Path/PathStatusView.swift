@@ -30,10 +30,10 @@ final class PathStatusView : UIView {
         layer.cornerRadius = PathStatusView.size / 2
         layer.masksToBounds = false
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-            setColor(to: UIColor(red: 0.07, green: 0.55, blue: 0.08, alpha: 1.00), isAnimated: true)
+            setColor(to: UIColor(hex: 0x00FF05), isAnimated: true)
         }else{
             OnionRequestAPI.paths = Storage.shared.getOnionRequestPaths()
-            setColor(to: UIColor(red: 1.00, green: 0.81, blue: 0.23, alpha: 1.00), isAnimated: true)
+            setColor(to: UIColor(hex: 0xFF3E3E), isAnimated: true)
         }
     }
 

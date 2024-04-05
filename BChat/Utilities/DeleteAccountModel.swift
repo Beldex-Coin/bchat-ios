@@ -148,15 +148,42 @@ final class DeleteAccountModel : Modal {
         UIApplication.shared.applicationIconBadgeNumber = 0
         WalletSharedData.sharedInstance.isCleardataStarting = true
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
-            guard let strongSelf = self else { return }
-            MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
-                strongSelf.dismiss(animated: true, completion: nil) // Dismiss the loader
-                strongSelf.deleteAllWalletFiles()
-                AppEnvironment.shared.notificationPresenter.clearAllNotifications()
-                UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
-                General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
-                NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
-            }.retainUntilComplete()
+            SnodeAPI.clearAllData().done(on: DispatchQueue.main) { confirmations in
+                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                let potentiallyMaliciousSnodes = confirmations.compactMap { $0.value == false ? $0.key : nil }
+                if potentiallyMaliciousSnodes.isEmpty {
+                    General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
+                    UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
+                    NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
+                    self?.deleteAllWalletFiles()
+                    AppEnvironment.shared.notificationPresenter.clearAllNotifications()
+                } else {
+                    let message: String
+                    if potentiallyMaliciousSnodes.count == 1 {
+                        message = String(format: NSLocalizedString("dialog_clear_all_data_deletion_failed_1", comment: ""), potentiallyMaliciousSnodes[0])
+                    } else {
+                        message = String(format: NSLocalizedString("dialog_clear_all_data_deletion_failed_2", comment: ""), String(potentiallyMaliciousSnodes.count), potentiallyMaliciousSnodes.joined(separator: ", "))
+                    }
+                    let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                    self?.presentAlert(alert)
+                }
+            }.catch(on: DispatchQueue.main) { error in
+                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                self?.presentAlert(alert)
+            }
+                        
+//            guard let strongSelf = self else { return }
+//            MessageSender.syncConfiguration(forceSyncNow: true).ensure(on: DispatchQueue.main) {
+//                strongSelf.dismiss(animated: true, completion: nil) // Dismiss the loader
+//                strongSelf.deleteAllWalletFiles()
+//                AppEnvironment.shared.notificationPresenter.clearAllNotifications()
+//                UserDefaults.removeAll() // Not done in the nuke data implementation as unlinking requires this to happen later
+//                General.Cache.cachedEncodedPublicKey.mutate { $0 = nil } // Remove the cached key so it gets re-cached on next access
+//                NotificationCenter.default.post(name: .dataNukeRequested, object: nil)
+//            }.retainUntilComplete()
         }
     }
     
