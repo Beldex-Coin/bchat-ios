@@ -45,7 +45,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
             nodeValue = SaveUserDefaultsData.SelectedNode
         }else{
-            nodeValue = nodeArray.randomElement()!
+            nodeValue = SaveUserDefaultsData.FinalWallet_node
         }
     }
     

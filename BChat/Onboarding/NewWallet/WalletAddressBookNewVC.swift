@@ -323,9 +323,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             }
             NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
 //            self.navigationController?.popViewController(animated: true)
-            let qrCode = QRCode.generate(for: addressshare, hasBackground: true)
-            let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
-            self.navigationController!.present(shareVC, animated: true, completion: nil)
+            let shareVC = UIActivityViewController(activityItems: [ addressshare ], applicationActivities: nil)
+            navigationController!.present(shareVC, animated: true, completion: nil)
         }
     }
     

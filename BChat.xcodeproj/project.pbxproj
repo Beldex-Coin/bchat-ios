@@ -117,8 +117,6 @@
 		6010E9F828C86A5800600D1A /* ChangeLogVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6010E9F728C86A5800600D1A /* ChangeLogVC.swift */; };
 		6016F9842A8214B7004C3A90 /* DateHeight + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6016F9832A8214B7004C3A90 /* DateHeight + Ext.swift */; };
 		6016F9862A822646004C3A90 /* Date + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6016F9852A822646004C3A90 /* Date + Ext.swift */; };
-		601946DE2BB286AC001B23AB /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 601946DD2BB286AC001B23AB /* libwallet_api.a */; };
-		601946E02BB286CC001B23AB /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 601946DF2BB286CC001B23AB /* wallet2_api.h */; };
 		6036B3FF28E32C7100ABA398 /* MyAccountXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */; };
 		6036B40028E32C7100ABA398 /* MyAccountXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */; };
 		60376BDD2B4BBE98004A602F /* ChatNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60376BDC2B4BBE98004A602F /* ChatNewVC.swift */; };
@@ -204,6 +202,8 @@
 		605528302BB446020098387A /* SelectDateRangePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */; };
 		605ED50A2A3B329500C2B5A9 /* MyWalletPasscodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605ED5092A3B329500C2B5A9 /* MyWalletPasscodeVC.swift */; };
 		6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */ = {isa = PBXBuildFile; fileRef = 6061624629BEFE7B00B20546 /* BChat-Turn-Server */; };
+		606BB6492BBFC73000D4EB83 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 606BB6482BBFC73000D4EB83 /* libwallet_api.a */; };
+		606BB64B2BBFC75000D4EB83 /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 606BB64A2BBFC75000D4EB83 /* wallet2_api.h */; };
 		60712E982B440D1F00457FCE /* LandingNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60712E972B440D1F00457FCE /* LandingNewVC.swift */; };
 		607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607DCE2E28AE2511003F9288 /* Main.storyboard */; };
 		607DCE3128AE2578003F9288 /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCE3028AE2578003F9288 /* LandingVC.swift */; };
@@ -1271,8 +1271,6 @@
 		6010E9F728C86A5800600D1A /* ChangeLogVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLogVC.swift; sourceTree = "<group>"; };
 		6016F9832A8214B7004C3A90 /* DateHeight + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateHeight + Ext.swift"; sourceTree = "<group>"; };
 		6016F9852A822646004C3A90 /* Date + Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date + Ext.swift"; sourceTree = "<group>"; };
-		601946DD2BB286AC001B23AB /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
-		601946DF2BB286CC001B23AB /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		6036B3FD28E32C7100ABA398 /* MyAccountXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountXibCell.swift; sourceTree = "<group>"; };
 		6036B3FE28E32C7100ABA398 /* MyAccountXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyAccountXibCell.xib; sourceTree = "<group>"; };
 		60376BDC2B4BBE98004A602F /* ChatNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNewVC.swift; sourceTree = "<group>"; };
@@ -1358,6 +1356,8 @@
 		6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateRangePopUpVC.swift; sourceTree = "<group>"; };
 		605ED5092A3B329500C2B5A9 /* MyWalletPasscodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWalletPasscodeVC.swift; sourceTree = "<group>"; };
 		6061624629BEFE7B00B20546 /* BChat-Turn-Server */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BChat-Turn-Server"; sourceTree = "<group>"; };
+		606BB6482BBFC73000D4EB83 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
+		606BB64A2BBFC75000D4EB83 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		60712E972B440D1F00457FCE /* LandingNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingNewVC.swift; sourceTree = "<group>"; };
 		607DCE2E28AE2511003F9288 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		607DCE3028AE2578003F9288 /* LandingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
@@ -2273,7 +2273,7 @@
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				601946DE2BB286AC001B23AB /* libwallet_api.a in Frameworks */,
+				606BB6492BBFC73000D4EB83 /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -2452,7 +2452,7 @@
 		6007B5A428A4D5B60004BD61 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				601946DF2BB286CC001B23AB /* wallet2_api.h */,
+				606BB64A2BBFC75000D4EB83 /* wallet2_api.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -2750,7 +2750,7 @@
 		60D3A49A29ED312D0059472A /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				601946DD2BB286AC001B23AB /* libwallet_api.a */,
+				606BB6482BBFC73000D4EB83 /* libwallet_api.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -4441,7 +4441,7 @@
 				C33FDC95255A582000E217F9 /* OWSFailedMessagesJob.h in Headers */,
 				C38EF277255B6D7A007E1867 /* OWSDatabaseMigration.h in Headers */,
 				C38EF3F5255B6DF7007E1867 /* OWSTextField.h in Headers */,
-				601946E02BB286CC001B23AB /* wallet2_api.h in Headers */,
+				606BB64B2BBFC75000D4EB83 /* wallet2_api.h in Headers */,
 				C38EF275255B6D7A007E1867 /* OWSDatabaseMigrationRunner.h in Headers */,
 				C38EF366255B6DCC007E1867 /* ScreenLockViewController.h in Headers */,
 				C33FDDD3255A582000E217F9 /* OWSQueues.h in Headers */,
@@ -6088,6 +6088,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChatShareExtension/Meta/SignalShareExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6167,6 +6171,10 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "BChatShareExtension/Meta/SignalShareExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -6364,6 +6372,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6440,6 +6452,10 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -7205,7 +7221,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7291,7 +7307,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (

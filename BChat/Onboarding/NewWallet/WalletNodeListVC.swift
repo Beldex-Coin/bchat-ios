@@ -89,7 +89,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         ])
         
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
-        randomValueAfterAddNewNode = nodeArray.randomElement()!
+//        randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
@@ -267,7 +267,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             for i in 0 ..< self.nodeArray.count {
                 self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
             }
-            self.randomNodeValue = self.nodeArray.randomElement()!
+//            self.randomNodeValue = self.nodeArray.randomElement()!
             SaveUserDefaultsData.SelectedNode = randomNodeValue
 //            if self.navigationController != nil{
 //                let count = self.navigationController!.viewControllers.count
