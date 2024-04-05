@@ -245,10 +245,10 @@ extension ScanNewVC: QRScannerViewDelegate {
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
         }
-        if newChatScanflag == false {
-            self.qrData = QRData(codeString: str)
-            startNewDMIfPossible(with: str!)
-        }
+//        if newChatScanflag == false {
+//            self.qrData = QRData(codeString: str)
+//            startNewDMIfPossible(with: str!)
+//        }
         if isFromWallet == true { //Wallet QR Code Scanning
             var qrString = str!
             if qrString.contains("Beldex:") {
@@ -261,7 +261,8 @@ extension ScanNewVC: QRScannerViewDelegate {
                 guard BChatWalletWrapper.validAddress(walletAddress[0]) else {
                     let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                        self.scannerView.startScanning()
+//                        self.scannerView.startScanning()
+                        self.navigationController?.popViewController(animated: true)
                     }))
                     present(alertController, animated: true, completion: nil)
                     return
@@ -271,7 +272,8 @@ extension ScanNewVC: QRScannerViewDelegate {
                 guard BChatWalletWrapper.validAddress(qrString) else {
                     let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                        self.scannerView.startScanning()
+//                        self.scannerView.startScanning()
+                        self.navigationController?.popViewController(animated: true)
                     }))
                     present(alertController, animated: true, completion: nil)
                     return

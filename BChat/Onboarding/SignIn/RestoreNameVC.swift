@@ -42,7 +42,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.lineBreakMode = .byWordWrapping
         return result
     }()
-    
     private lazy var restoreTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
@@ -52,7 +51,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.lineBreakMode = .byWordWrapping
         return result
     }()
-    
     private lazy var dateTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
@@ -62,7 +60,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.lineBreakMode = .byWordWrapping
         return result
     }()
-    
     private lazy var displayNameTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -76,7 +73,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.leftViewMode = .always
         return result
     }()
-    
     private lazy var restoreHeightTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_BLOCK_HEIGHT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -90,7 +86,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.leftViewMode = .always
         return result
     }()
-    
     private lazy var restoreDateHeightTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_DATE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -118,7 +113,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.rightView?.addSubview(imageView)
         return result
     }()
-    
     private lazy var isRestoreFromDateButton: UIButton = {
         let result = UIButton(type: .custom)
         result.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
@@ -135,7 +129,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.set(.width, to: 189)
         return result
     }()
-    
     private lazy var isRestoreFromDateViewContainer: UIStackView = {
         let result = UIStackView()
         result.axis = .horizontal
@@ -147,7 +140,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         }
         return result
     }()
-    
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: UIControl.State.normal)
@@ -257,6 +249,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 formatter.dateFormat = "yyyy-MM-dd"
                 formatter.timeZone = TimeZone(identifier: "UTC")
                 self.restoreDateHeightTextField.text = formatter.string(from: dt)
+                checkMandatoryFields()
                 let dateString = formatter.string(from: dt)
                 print("selected date---------String Formate--------------------->: ",dateString)
                 let formatter2 = DateFormatter()
@@ -480,10 +473,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             }else {
                 SaveUserDefaultsData.WalletRestoreHeight = ""
             }
+            SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-//            navigationflowTag = true
-//            self.navigationController?.pushViewController(vc, animated: true)
             let vc = NewPasswordVC()
             vc.isGoingHome = true
             vc.isCreatePassword = true
@@ -496,19 +487,16 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             SaveUserDefaultsData.WalletRestoreHeight = restoreHeightTextField.text!
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
-//            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EnterPinVC") as! EnterPinVC
-//            navigationflowTag = true
-//            self.navigationController?.pushViewController(vc, animated: true)
             let vc = NewPasswordVC()
             vc.isGoingHome = true
             vc.isCreatePassword = true
             navigationController!.pushViewController(vc, animated: true)
         }
-        else{
-            // Wallet Seed
-            self.mnemonicSeedconnect()
-            SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        }
+//        else{
+//            // Wallet Seed
+//            self.mnemonicSeedconnect()
+//            SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+//        }
     }
     
 }
