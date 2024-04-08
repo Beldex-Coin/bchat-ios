@@ -45,29 +45,43 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     }()
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
-        result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Search Currency", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = Colors.cellGroundColor2
-        result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColorNew.cgColor
+        result.backgroundColor = Colors.cellGroundColor2
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 24
+        result.layer.borderWidth = 1
+        
+        // Add left padding
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
-        // Create an UIImageView and set its image
-        let imageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20) // Adjust the frame as needed
-        imageView.contentMode = .scaleAspectFit // Set the content mode as needed
-        // Add some padding between the image and the text field
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
-        result.rightView = paddingView
-        result.rightViewMode = UITextField.ViewMode.always
-        // Set the rightView of the TextField to the created UIImageView
-        result.rightView?.addSubview(imageView)
-        result.delegate = self
-        result.returnKeyType = .done
-        result.clearButtonMode = .whileEditing
+        
+        // Add right padding
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 12))
+        result.rightView = paddingViewRight
+        result.rightViewMode = .always
+        
+        // Create an UIImageView and set its image for search icon
+        let searchIconImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
+        searchIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        searchIconImageView.contentMode = .scaleAspectFit
+        paddingViewRight.addSubview(searchIconImageView)
+        
+        // Create an UIImageView for close icon initially hidden
+        let closeIconImageView = UIImageView(image: UIImage(named: "ic_closeNew"))
+        closeIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        closeIconImageView.contentMode = .scaleAspectFit
+        closeIconImageView.tag = 1 // Set a tag to distinguish it from the search icon
+        closeIconImageView.isHidden = true
+        paddingViewRight.addSubview(closeIconImageView)
+        
+        // Add tap gesture recognizer to closeIconImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeIconTapped))
+        closeIconImageView.isUserInteractionEnabled = true
+        closeIconImageView.addGestureRecognizer(tapGestureRecognizer)
+        result.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return result
     }()
     var currencyNameArray = ["aud","brl","cad","chf","cny","czk","eur","dkk","gbp","hkd","huf","idr","ils","inr","jpy","krw","mxn","myr","nok","nzd","php","pln","rub","sek","sgd","thb","usd","vef","zar"]
@@ -110,11 +124,80 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
         ])
         
         filteredCurrencyArray = currencyNameArray
-       
         if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
             currencyNameString = SaveUserDefaultsData.SelectedCurrency
         }
         
+    }
+    
+    @objc func closeIconTapped() {
+        searchTextField.text = ""
+        filteredCurrencyArray = currencyNameArray
+        tableView.reloadData()
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the close icon image view
+            for subview in rightView.subviews {
+                if let closeIconImageView = subview as? UIImageView, closeIconImageView.tag == 1 {
+                    // Hide the close icon image view
+                    closeIconImageView.isHidden = true
+                }
+            }
+        }
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the search icon image view
+            for subview in rightView.subviews {
+                if let searchIconImageView = subview as? UIImageView, searchIconImageView.tag != 1 {
+                    // Show the search icon image view
+                    searchIconImageView.isHidden = false
+                }
+            }
+        }
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        // Show/hide search and close icons based on text
+        if let rightView = textField.rightView {
+            if let searchIconImageView = rightView.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
+                searchIconImageView.isHidden = !textField.text!.isEmpty
+                let currentText = textField.text ?? ""
+                if currentText != searchText {
+                    // Update searchText
+                    searchText = currentText
+                    // Update filteredCurrencyArray based on the search text
+                    if searchText.isEmpty {
+                        // If the search text is empty, show all currencies without filtering
+                        filteredCurrencyArray = currencyNameArray
+                    } else {
+                        // Update the filteredCurrencyArray based on the search text
+                        let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+                        filteredCurrencyArray = currencyNameArray.filter { predicate.evaluate(with: $0) }
+                    }
+                    // Reload the table view with the filtered or unfiltered data
+                    tableView.reloadData()
+                }
+            }
+            if let closeIconImageView = rightView.subviews.first(where: { $0 is UIImageView && $0.tag == 1 }) as? UIImageView {
+                closeIconImageView.isHidden = textField.text!.isEmpty
+                let currentText = textField.text ?? ""
+                if currentText != searchText {
+                    // Update searchText
+                    searchText = currentText
+                    // Update filteredCurrencyArray based on the search text
+                    if searchText.isEmpty {
+                        // If the search text is empty, show all currencies without filtering
+                        filteredCurrencyArray = currencyNameArray
+                    } else {
+                        // Update the filteredCurrencyArray based on the search text
+                        let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+                        filteredCurrencyArray = currencyNameArray.filter { predicate.evaluate(with: $0) }
+                    }
+                    // Reload the table view with the filtered or unfiltered data
+                    tableView.reloadData()
+                }
+            }
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

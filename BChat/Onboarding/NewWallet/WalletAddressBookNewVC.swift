@@ -9,29 +9,43 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
-        result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("SEARCH_CONTACT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.placeholderColor])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.backgroundColor = Colors.searchViewBackgroundColor
-        result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColor.cgColor
+        result.backgroundColor = Colors.searchViewBackgroundColor
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 24
-        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 24, height: result.frame.size.height))
+        result.layer.borderWidth = 1
+        
+        // Add left padding
+        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
-        // Create an UIImageView and set its image
-        let imageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
-        imageView.frame = CGRect(x: 0, y: 0, width: 15, height: 15) // Adjust the frame as needed
-        imageView.contentMode = .scaleAspectFit // Set the content mode as needed
-        // Add some padding between the image and the text field
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 35, height: 15))
-        result.rightView = paddingView
-        result.rightViewMode = UITextField.ViewMode.always
-        // Set the rightView of the TextField to the created UIImageView
-        result.rightView?.addSubview(imageView)
-        result.delegate = self
-        result.returnKeyType = .done
-        result.clearButtonMode = .whileEditing
+        
+        // Add right padding
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 12))
+        result.rightView = paddingViewRight
+        result.rightViewMode = .always
+        
+        // Create an UIImageView and set its image for search icon
+        let searchIconImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
+        searchIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        searchIconImageView.contentMode = .scaleAspectFit
+        paddingViewRight.addSubview(searchIconImageView)
+        
+        // Create an UIImageView for close icon initially hidden
+        let closeIconImageView = UIImageView(image: UIImage(named: "ic_closeNew"))
+        closeIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        closeIconImageView.contentMode = .scaleAspectFit
+        closeIconImageView.tag = 1 // Set a tag to distinguish it from the search icon
+        closeIconImageView.isHidden = true
+        paddingViewRight.addSubview(closeIconImageView)
+        
+        // Add tap gesture recognizer to closeIconImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeIconTapped))
+        closeIconImageView.isUserInteractionEnabled = true
+        closeIconImageView.addGestureRecognizer(tapGestureRecognizer)
+        result.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return result
     }()
     private lazy var backgroundView: UIView = {
@@ -186,6 +200,76 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         }
     }
     
+    @objc func closeIconTapped() {
+        searchTextField.text = ""
+        guard let searchText = searchTextField.text else {
+            return
+        }
+        if searchText.isEmpty {
+            isSearched = true
+            tableView.reloadData() // Reload the tableView with original data
+            noContactsTitleLabel.isHidden = true
+            getSearchArrayContains(searchText)
+        } else {
+            getSearchArrayContains(searchText) // Update filtered data based on search text
+        }
+        tableView.reloadData()
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the close icon image view
+            for subview in rightView.subviews {
+                if let closeIconImageView = subview as? UIImageView, closeIconImageView.tag == 1 {
+                    // Hide the close icon image view
+                    closeIconImageView.isHidden = true
+                }
+            }
+        }
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the search icon image view
+            for subview in rightView.subviews {
+                if let searchIconImageView = subview as? UIImageView, searchIconImageView.tag != 1 {
+                    // Show the search icon image view
+                    searchIconImageView.isHidden = false
+                }
+            }
+        }
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        // Show/hide search and close icons based on text
+        if let rightView = textField.rightView {
+            if let searchIconImageView = rightView.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
+                searchIconImageView.isHidden = !textField.text!.isEmpty
+                guard let searchText = textField.text else {
+                    return
+                }
+                if searchText.isEmpty {
+                    isSearched = true
+                    tableView.reloadData() // Reload the tableView with original data
+                    noContactsTitleLabel.isHidden = true
+                    getSearchArrayContains(searchText)
+                } else {
+                    getSearchArrayContains(searchText) // Update filtered data based on search text
+                }
+            }
+            if let closeIconImageView = rightView.subviews.first(where: { $0 is UIImageView && $0.tag == 1 }) as? UIImageView {
+                closeIconImageView.isHidden = textField.text!.isEmpty
+                guard let searchText = textField.text else {
+                    return
+                }
+                if searchText.isEmpty {
+                    isSearched = true
+                    tableView.reloadData() // Reload the tableView with original data
+                    noContactsTitleLabel.isHidden = true
+                    getSearchArrayContains(searchText)
+                } else {
+                    getSearchArrayContains(searchText) // Update filtered data based on search text
+                }
+            }
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         noContactsTitleLabel.layer.cornerRadius = noContactsTitleLabel.frame.height/2
@@ -196,33 +280,56 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         textField.resignFirstResponder()
         return true
     }
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
-        var searchText  = textField.text! + string
-        if string  == "" {
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        // This method will be called whenever the text field's text changes
+        // Get the current text from the text field
+        guard let searchText = textField.text else {
+            return
+        }
+        if searchText.isEmpty {
+            textField.clearButtonMode = .never
+            isSearched = true
+            tableView.reloadData() // Reload the tableView with original data
+            noContactsTitleLabel.isHidden = true
+            getSearchArrayContains(searchText)
+        } else {
+            textField.clearButtonMode = .whileEditing
+            getSearchArrayContains(searchText) // Update filtered data based on search text
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var searchText = (textField.text ?? "") + string
+        if string == "" {
             searchText = String(searchText.prefix(searchText.count - 1))
         }
-        if searchText == "" {
-            isSearched = false
-            tableView.reloadData()
+        if searchText.isEmpty {
+            textField.clearButtonMode = .never
+            isSearched = true
+            tableView.reloadData() // Reload the tableView with original data
             noContactsTitleLabel.isHidden = true
-        }
-        else{
             getSearchArrayContains(searchText)
+        } else {
+            textField.clearButtonMode = .whileEditing
+            getSearchArrayContains(searchText) // Update filtered data based on search text
         }
         return true
     }
     // Predicate to filter data
-    func getSearchArrayContains(_ text : String) {
-        searchfilterNameArray = self.allFilterData.filter({$0.key.lowercased().hasPrefix(text.lowercased())})
+    func getSearchArrayContains(_ text: String) {
+        searchfilterNameArray = self.allFilterData.filter({ $0.key.lowercased().hasPrefix(text.lowercased()) })
         isSearched = true
-        tableView.reloadData()
+        tableView.reloadData() // Reload tableView with filtered data
         if searchfilterNameArray.isEmpty {
+            // Show appropriate UI elements based on search results
             noContactsTitleLabel.isHidden = false
             tableView.isHidden = true
             noContactsYetLogoImage.isHidden = false
             noAddressTitleLabel.isHidden = false
             noSubAddressTitleLabel.isHidden = false
-        }else {
+        } else {
+            // Hide no results UI elements if there are search results
             noContactsTitleLabel.isHidden = true
             tableView.isHidden = false
             noContactsYetLogoImage.isHidden = true
