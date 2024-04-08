@@ -1343,15 +1343,28 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let barButton = UIBarButtonItem(customView: button)
             self.navigationItem.leftBarButtonItem = barButton
         } else {
-            var iconImageView = ProfilePictureView()
-            iconImageView.update(for: thread)
+            let iconImageView = ProfilePictureView()
+            iconImageView.update(for: self.thread)
+            let profilePictureViewSize = CGFloat(42)
+            iconImageView.set(.width, to: profilePictureViewSize)
+            iconImageView.set(.height, to: profilePictureViewSize)
+            iconImageView.size = profilePictureViewSize
+            iconImageView.layer.masksToBounds = true
+            iconImageView.layer.cornerRadius = 21
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+//            button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
+            if let thread = thread as? TSGroupThread {
+                if thread.groupModel.groupType == .closedGroup {
+                    button.addSubview(iconImageView)
+                } else {
+                    button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+                }
+            }
             let barButton = UIBarButtonItem(customView: button)
             self.navigationItem.leftBarButtonItem = barButton
         }

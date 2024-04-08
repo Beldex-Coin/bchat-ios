@@ -924,7 +924,7 @@ CGFloat kIconViewLength = 24;
                                                 from:self
                                      completionBlock:^(BOOL isBlocked) {
                                          // Update switch state if user cancels action.
-                                         blockConversationSwitch.on = isBlocked;
+//                                         blockConversationSwitch.on = isBlocked;
             
                                          // If we successfully blocked then force a config sync
                                          if (isBlocked) {
@@ -943,7 +943,7 @@ CGFloat kIconViewLength = 24;
                                                   from:self
                                        completionBlock:^(BOOL isBlocked) {
                                            // Update switch state if user cancels action.
-                                           blockConversationSwitch.on = isBlocked;
+//                                           blockConversationSwitch.on = isBlocked;
             
                                            // If we successfully unblocked then force a config sync
                                            if (!isBlocked) {

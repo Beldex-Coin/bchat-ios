@@ -39,7 +39,7 @@ final class CallPermissionRequestModal : Modal {
         // Cancel button
         let cancelButtonForCall = UIButton()
         cancelButtonForCall.set(.height, to: Values.mediumButtonHeight)
-        cancelButtonForCall.layer.cornerRadius = Modal.buttonCornerRadius
+        cancelButtonForCall.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             cancelButtonForCall.backgroundColor = Colors.buttonBackground
         }else {
@@ -52,7 +52,7 @@ final class CallPermissionRequestModal : Modal {
         // Enable button
         let goToSettingsButton = UIButton()
         goToSettingsButton.set(.height, to: Values.mediumButtonHeight)
-        goToSettingsButton.layer.cornerRadius = Modal.buttonCornerRadius
+        goToSettingsButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             goToSettingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             goToSettingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -70,6 +70,7 @@ final class CallPermissionRequestModal : Modal {
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButtonForCall, goToSettingsButton ])
         buttonStackView.axis = .horizontal
+        buttonStackView.spacing = Values.mediumSpacing
         buttonStackView.distribution = .fillEqually
         // Main stack view
         let spacing = Values.largeSpacing - Values.smallFontSize / 2

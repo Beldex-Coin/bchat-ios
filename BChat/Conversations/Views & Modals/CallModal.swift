@@ -39,7 +39,7 @@ final class CallModal : Modal {
         // Enable button
         let enableButton = UIButton()
         enableButton.set(.height, to: Values.mediumButtonHeight)
-        enableButton.layer.cornerRadius = Modal.buttonCornerRadius
+        enableButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             enableButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             enableButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -51,6 +51,7 @@ final class CallModal : Modal {
         enableButton.setTitle(NSLocalizedString("modal_link_previews_button_title", comment: ""), for: UIControl.State.normal)
         enableButton.addTarget(self, action: #selector(enable), for: UIControl.Event.touchUpInside)
         // Button stack view
+        cancelButton.layer.cornerRadius = 17
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, enableButton ])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = Values.mediumSpacing
