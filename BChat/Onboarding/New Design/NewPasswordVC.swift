@@ -756,6 +756,10 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingBack == true {
+                let vc = PINSuccessPopUp()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
             }
             

@@ -1378,17 +1378,30 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
-                    let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
-                    settingsButton.accessibilityLabel = "Settings button"
-                    settingsButton.isAccessibilityElement = true
-                    settingsButton.imageInsets = .init(top: 0, left: 0, bottom: 0, right: 8)
-                    rightBarButtonItems.append(settingsButton)
+//                    let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
+//                    settingsButton.accessibilityLabel = "Settings button"
+//                    settingsButton.isAccessibilityElement = true
+//                    settingsButton.imageInsets = .init(top: 0, left: 0, bottom: 0, right: 8)
+//                    rightBarButtonItems.append(settingsButton)
+                    
+                    let setting = UIButton(type: .custom)
+                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
+                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+                      let settingBarItem = UIBarButtonItem(customView: setting)
+                    rightBarButtonItems.append(settingBarItem)
+                    
                     let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isMessageRequest()
                     if shouldShowCallButton {
-                        let callButton = UIBarButtonItem(image: UIImage(named: "ic_call_new")!, style: .plain, target: self, action: #selector(startCall))
-                        rightBarButtonItems.append(callButton)
+                        let callBtn = UIButton(type: .custom)
+                        callBtn.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        callBtn.setImage(UIImage(named:"ic_call_new"), for: .normal)
+                        callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
+                        let callBarItem = UIBarButtonItem(customView: callBtn)
+                        //                        let callButton = UIBarButtonItem(image: UIImage(named: "ic_call_new")!, style: .plain, target: self, action: #selector(startCall))
+                        rightBarButtonItems.append(callBarItem)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
-                        callButton.imageInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
+                        //                        callButton.imageInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
                     }
                 }
                 else {

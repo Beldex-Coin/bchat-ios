@@ -1082,6 +1082,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        if !mainButtonPopUpView.isHidden {
+            mainButtonPopUpView.isHidden = true
+            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+            return
+        }
         switch indexPath.section {
         case 0:
             let viewController: MessageRequestsViewController = MessageRequestsViewController()

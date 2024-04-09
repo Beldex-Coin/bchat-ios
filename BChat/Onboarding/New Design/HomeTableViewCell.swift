@@ -48,7 +48,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.boldOpenSans(ofSize: 16)
+       result.font = Fonts.boldOpenSans(ofSize: 15)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result
@@ -56,7 +56,7 @@ class HomeTableViewCell: UITableViewCell {
     
     lazy var lastMessageLabel: UILabel = {
        let result = UILabel()
-        result.textColor = Colors.titleColor3
+        result.textColor = Colors.textFieldPlaceHolderColor
        result.font = Fonts.OpenSans(ofSize: 12)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
@@ -167,10 +167,10 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     public func configureForRecent() {
-        nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.text])
+        nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.titleColor3])
 //        bottomLabelStackView.isHidden = false
         let snippet = String(format: NSLocalizedString("RECENT_SEARCH_LAST_MESSAGE_DATETIME", comment: ""), DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate))
-        lastMessageLabel.attributedText = NSMutableAttributedString(string: snippet, attributes: [.foregroundColor:Colors.text.withAlphaComponent(Values.lowOpacity)])
+        lastMessageLabel.attributedText = NSMutableAttributedString(string: snippet, attributes: [.foregroundColor:Colors.textFieldPlaceHolderColor.withAlphaComponent(Values.lowOpacity)])
         dateLabel.isHidden = true
     }
     
@@ -180,7 +180,7 @@ class HomeTableViewCell: UITableViewCell {
         if let messageTimestamp = message?.timestamp, let snippet = snippet {
             // Message
             let messageDate = NSDate.ows_date(withMillisecondsSince1970: messageTimestamp)
-            nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.text])
+            nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.titleColor3])
             dateLabel.isHidden = false
             dateLabel.text = DateUtil.formatDate(forDisplay: messageDate)
 //            bottomLabelStackView.isHidden = false
@@ -188,11 +188,11 @@ class HomeTableViewCell: UITableViewCell {
             if let message = message, let name = getMessageAuthorName(message: message) {
                 rawSnippet = "\(name): \(snippet)"
             }
-            lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: Values.smallFontSize)
+            lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: 12)
         } else {
             // Contact
             if threadViewModel.isGroupThread, let thread = threadViewModel.threadRecord as? TSGroupThread {
-                nameLabel.attributedText = getHighlightedSnippet(snippet: getDisplayName(), searchText: normalizedSearchText, fontSize: Values.mediumFontSize)
+                nameLabel.attributedText = getHighlightedSnippet(snippet: getDisplayName(), searchText: normalizedSearchText, fontSize: 15)
                 let context: Contact.Context = thread.isOpenGroup ? .openGroup : .regular
                 var rawSnippet: String = ""
                 thread.groupModel.groupMemberIds.forEach{ id in
@@ -209,10 +209,10 @@ class HomeTableViewCell: UITableViewCell {
 //                    bottomLabelStackView.isHidden = true
                 } else {
 //                    bottomLabelStackView.isHidden = false
-                    lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: Values.smallFontSize)
+                    lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: 12)
                 }
             } else {
-                nameLabel.attributedText = getHighlightedSnippet(snippet: getDisplayNameForSearch(threadViewModel.contactBChatID!), searchText: normalizedSearchText, fontSize: Values.mediumFontSize)
+                nameLabel.attributedText = getHighlightedSnippet(snippet: getDisplayNameForSearch(threadViewModel.contactBChatID!), searchText: normalizedSearchText, fontSize: 15)
 //                bottomLabelStackView.isHidden = true
             }
             dateLabel.isHidden = true
@@ -370,11 +370,11 @@ class HomeTableViewCell: UITableViewCell {
         }
         let font = threadViewModel.hasUnreadMessages ? Fonts.OpenSans(ofSize: Values.smallFontSize) : Fonts.OpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
-            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.text ]))
+            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }
         if let rawSnippet = threadViewModel.lastMessageText {
             let snippet = MentionUtilities.highlightMentions(in: rawSnippet, threadID: threadViewModel.threadRecord.uniqueId!)
-            result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.text ]))
+            result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }
         return result
     }
