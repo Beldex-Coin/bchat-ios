@@ -294,6 +294,7 @@
 		60E6122428BE1E3A00EEE73B /* BlockedXibCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E6122228BE1E3A00EEE73B /* BlockedXibCell.swift */; };
 		60E6122528BE1E3A00EEE73B /* BlockedXibCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 60E6122328BE1E3A00EEE73B /* BlockedXibCell.xib */; };
 		60E8A50E2A4EB24200BA996C /* UITextField + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E8A50D2A4EB24200BA996C /* UITextField + Ext.swift */; };
+		60EBEC242BC507CE001D0B20 /* SwitchingNodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EBEC232BC507CE001D0B20 /* SwitchingNodeVC.swift */; };
 		60F0F18029FA3513000BEF3F /* BChatUIKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 60F0F17F29FA3513000BEF3F /* BChatUIKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		60F0F18329FA3513000BEF3F /* BChatUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */; };
 		60F0F18429FA3513000BEF3F /* BChatUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1452,6 +1453,7 @@
 		60E6122228BE1E3A00EEE73B /* BlockedXibCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedXibCell.swift; sourceTree = "<group>"; };
 		60E6122328BE1E3A00EEE73B /* BlockedXibCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockedXibCell.xib; sourceTree = "<group>"; };
 		60E8A50D2A4EB24200BA996C /* UITextField + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField + Ext.swift"; sourceTree = "<group>"; };
+		60EBEC232BC507CE001D0B20 /* SwitchingNodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchingNodeVC.swift; sourceTree = "<group>"; };
 		60F0F17D29FA3513000BEF3F /* BChatUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BChatUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60F0F17F29FA3513000BEF3F /* BChatUIKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BChatUIKit.h; sourceTree = "<group>"; };
 		61E41C68B2D65001F7E61193 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GlobalDependencies_FrameworkAndExtensionDependencies_BChatNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2630,6 +2632,7 @@
 				6049BF022B60FF15003DD410 /* ChangeLogNewVC.swift */,
 				6049BF042B62229A003DD410 /* AboutNewVC.swift */,
 				6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */,
+				60EBEC232BC507CE001D0B20 /* SwitchingNodeVC.swift */,
 			);
 			path = NewWallet;
 			sourceTree = "<group>";
@@ -5895,6 +5898,7 @@
 				B894D0752339EDCF00B4D94D /* NukeDataModal.swift in Sources */,
 				6042B0E729EE46D3005FC06B /* MediaPageViewController.swift in Sources */,
 				6007B5EB28ABC9DF0004BD61 /* QRData.swift in Sources */,
+				60EBEC242BC507CE001D0B20 /* SwitchingNodeVC.swift in Sources */,
 				7B93D06D27CF175800811CB6 /* MessageRequestsCell.swift in Sources */,
 				7B93D07727CF1A8A00811CB6 /* MockDataGenerator.swift in Sources */,
 				81DBDA042B5FB5B80006C404 /* DecimalsPopUpVC.swift in Sources */,

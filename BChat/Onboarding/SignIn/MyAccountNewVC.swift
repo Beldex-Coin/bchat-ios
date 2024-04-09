@@ -195,6 +195,13 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: result.frame.height)
             result.rightView = rightImageView
             result.rightViewMode = .always
+            //Here left view Empty i display
+            let leftView = UIView()//UIImageView(image: UIImage(named: "ic_newedit"))
+            leftView.contentMode = .center
+            let viewWidth = 14.0
+            leftView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: result.frame.height)
+            result.leftView = leftView
+            result.leftViewMode = .always
         }
         return result
     }()

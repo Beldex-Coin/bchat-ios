@@ -199,8 +199,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         // Message status image view
         addSubview(messageStatusImageView)
         messageStatusImageViewTopConstraint.isActive = true
-        messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -1)
-        messageStatusImageView.pin(.bottom, to: .bottom, of: self, withInset: -1)
+        messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -5)
+        messageStatusImageView.pin(.bottom, to: .bottom, of: self, withInset: -5)
         messageStatusImageViewWidthConstraint.isActive = true
         messageStatusImageViewHeightConstraint.isActive = true
         // Reply button

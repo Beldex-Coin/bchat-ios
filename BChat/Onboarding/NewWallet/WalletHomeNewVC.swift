@@ -852,7 +852,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.title = "My Wallet"
         
         let leftBarItem = UIBarButtonItem(image: UIImage(named: "NavBarBack")!, style: .plain, target: self, action: #selector(isGoingToBChatHomeScreen))
-        let rightBarButtonItems2 = [leftBarItem]
         navigationItem.leftBarButtonItem = leftBarItem
         
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "icsettings1_New")!, style: .plain, target: self, action: #selector(settingsOptionTapped))
@@ -1315,28 +1314,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.closeWallet()
             init_syncing_wallet()
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "", message: "Switching Node", preferredStyle: .alert)
-                let progressBar = UIProgressView(progressViewStyle: .default)
-                progressBar.setProgress(0.0, animated: true)
-                progressBar.frame = CGRect(x: 10, y: 70, width: 250, height: 0)
-                progressBar.tintColor = UIColor(hex: 0x00BD40)
-                alert.view.addSubview(progressBar)
-                self.present(alert, animated: true, completion: nil)
-                var progress: Float = 0.0
-                // Do the time critical stuff asynchronously
-                DispatchQueue.global(qos: .background).async {
-                    repeat {
-                        progress += 0.1
-                        Thread.sleep(forTimeInterval: 0.25)
-                        print (progress)
-                        DispatchQueue.main.async(flags: .barrier) {
-                            progressBar.setProgress(progress, animated: true)
-                        }
-                    } while progress < 1.0
-                    DispatchQueue.main.async {
-                        alert.dismiss(animated: true, completion: nil);
-                    }
-                }
+                let vc = SwitchingNodeVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
             }
         }
     }
