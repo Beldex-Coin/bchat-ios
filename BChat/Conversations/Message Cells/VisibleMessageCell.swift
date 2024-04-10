@@ -389,9 +389,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 paymentView.pin(to: snContentView)
                 let direction = isOutgoing ? "send" : "receive"
                 if direction == "send" {
-                    paymentView.backgroundColor = UIColor(red: 0.15, green: 0.44, blue: 0.92, alpha: 1.00)
+                    paymentView.backgroundColor = Colors.incomingMessageColor
                 }else {
-                    paymentView.backgroundColor = UIColor(red: 0.07, green: 0.55, blue: 0.09, alpha: 1.00)
+                    paymentView.backgroundColor = Colors.greenColor
                 }
                 paymentView.layer.mask = bubbleViewMaskLayer
             } else {

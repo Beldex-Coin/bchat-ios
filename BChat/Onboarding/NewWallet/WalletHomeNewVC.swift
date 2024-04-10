@@ -1309,6 +1309,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if WalletSharedData.sharedInstance.wallet != nil {
+            connect(wallet: WalletSharedData.sharedInstance.wallet!)
+        }
         if SaveUserDefaultsData.SwitchNode == true {
             SaveUserDefaultsData.SwitchNode = false
             self.closeWallet()
@@ -1470,13 +1473,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         DispatchQueue.main.async {
                             if self.conncetingState.value {
                                 self.conncetingState.value = false
-                                self.walletSyncingBackgroundView.isHidden = false
-                                self.noTransactionsYetBackgroundView.isHidden = true
-                                self.syncedflag = false
-                                self.progressView.progress = Float(progress)
-                                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-                                self.isFromProgressStatusLabel.text = statusText
                             }
+                            self.walletSyncingBackgroundView.isHidden = false
+                            self.noTransactionsYetBackgroundView.isHidden = true
+                            self.syncedflag = false
+                            self.progressView.progress = Float(progress)
+                            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+                            self.isFromProgressStatusLabel.text = statusText
                         }
                     }
                 }
@@ -1508,13 +1511,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     DispatchQueue.main.async {
                         if self.conncetingState.value {
                             self.conncetingState.value = false
-                            self.walletSyncingBackgroundView.isHidden = false
-                            self.noTransactionsYetBackgroundView.isHidden = true
-                            self.syncedflag = false
-                            self.progressView.progress = Float(progress)
-                            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-                            self.isFromProgressStatusLabel.text = statusText
                         }
+                        self.walletSyncingBackgroundView.isHidden = false
+                        self.noTransactionsYetBackgroundView.isHidden = true
+                        self.syncedflag = false
+                        self.progressView.progress = Float(progress)
+                        self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+                        self.isFromProgressStatusLabel.text = statusText
                     }
                 }
             }
