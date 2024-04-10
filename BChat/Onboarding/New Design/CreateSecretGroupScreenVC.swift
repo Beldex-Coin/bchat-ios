@@ -38,25 +38,70 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         return stackView
     }()
     
+//    private lazy var searchTextField: UITextField = {
+//        let result = UITextField()
+//        result.textColor = Colors.titleColor3
+//        result.font = Fonts.OpenSans(ofSize: 14)
+//        result.textAlignment = .left
+//        result.translatesAutoresizingMaskIntoConstraints = false
+//        result.backgroundColor = Colors.unlockButtonBackgroundColor
+//        result.layer.cornerRadius = 24
+//        result.setLeftPaddingPoints(23)
+//        result.attributedPlaceholder = NSAttributedString(
+//            string: "Search Contact",
+//            attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
+//        )
+//        result.layer.borderWidth = 1
+//        result.layer.borderColor = Colors.borderColorNew.cgColor
+//        result.rightViewMode = UITextField.ViewMode.always
+//        return result
+//    }()
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
-        result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 14)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.unlockButtonBackgroundColor
-        result.layer.cornerRadius = 24
-        result.setLeftPaddingPoints(23)
         result.attributedPlaceholder = NSAttributedString(
             string: "Search Contact",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.layer.borderWidth = 1
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
-        result.rightViewMode = UITextField.ViewMode.always
+        result.backgroundColor = Colors.unlockButtonBackgroundColor
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.layer.cornerRadius = 24
+        result.layer.borderWidth = 1
+        result.textColor = Colors.titleColor3
+        result.textAlignment = .left
+        
+        // Add left padding
+        let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 23, height: result.frame.size.height))
+        result.leftView = paddingViewLeft
+        result.leftViewMode = .always
+        
+        // Add right padding
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 12))
+        result.rightView = paddingViewRight
+        result.rightViewMode = .always
+        
+        // Create an UIImageView and set its image for search icon
+        let searchIconImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
+        searchIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        searchIconImageView.contentMode = .scaleAspectFit
+        paddingViewRight.addSubview(searchIconImageView)
+        
+        // Create an UIImageView for close icon initially hidden
+        let closeIconImageView = UIImageView(image: UIImage(named: "ic_closeNew"))
+        closeIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        closeIconImageView.contentMode = .scaleAspectFit
+        closeIconImageView.tag = 1 // Set a tag to distinguish it from the search icon
+        closeIconImageView.isHidden = true
+        paddingViewRight.addSubview(closeIconImageView)
+        
+        // Add tap gesture recognizer to closeIconImageView
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closeIconTapped))
+        closeIconImageView.isUserInteractionEnabled = true
+        closeIconImageView.addGestureRecognizer(tapGestureRecognizer)
+        result.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return result
     }()
-    
     lazy var searchImageView: UIImageView = {
        let result = UIImageView()
        result.image = UIImage(named: "ic_search")
@@ -134,7 +179,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
             view.addGestureRecognizer(tap)
-        
+        searchImageView.isHidden = true
         
         
         NSLayoutConstraint.activate([
@@ -180,6 +225,89 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             
             mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
             filterDict = mainDict
+        }
+        tableView.reloadData()
+    }
+    
+    //Close Action
+    @objc func closeIconTapped() {
+        searchTextField.text = ""
+        tableView.reloadData()
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the close icon image view
+            for subview in rightView.subviews {
+                if let closeIconImageView = subview as? UIImageView, closeIconImageView.tag == 1 {
+                    // Hide the close icon image view
+                    closeIconImageView.isHidden = true
+                    isFilterContacts()
+                }
+            }
+        }
+        // Get the right view of the search text field
+        if let rightView = searchTextField.rightView {
+            // Iterate through subviews of the right view to find the search icon image view
+            for subview in rightView.subviews {
+                if let searchIconImageView = subview as? UIImageView, searchIconImageView.tag != 1 {
+                    // Show the search icon image view
+                    searchIconImageView.isHidden = false
+                    isFilterContacts()
+                }
+            }
+        }
+    }
+    
+    func isFilterContacts(){
+        let currentText = searchTextField.text ?? ""
+        searchText = currentText
+        if searchText.isEmpty {
+            filteredContacts = contacts
+            if contacts.count > 0 {
+                namesArray = []
+                for i in 0...(contacts.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+                }
+                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+                filterDict = mainDict
+            }
+        } else {
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+        }
+        tableView.reloadData()
+    }
+    
+    //Text Enter Action
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        // Show/hide search and close icons based on text
+        if let rightView = textField.rightView {
+            if let searchIconImageView = rightView.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
+                searchIconImageView.isHidden = !textField.text!.isEmpty
+                isFilterSearchContact(text:textField.text!)
+            }
+            if let closeIconImageView = rightView.subviews.first(where: { $0 is UIImageView && $0.tag == 1 }) as? UIImageView {
+                closeIconImageView.isHidden = textField.text!.isEmpty
+                isFilterSearchContact(text:textField.text!)
+            }
+        }
+    }
+    
+    func isFilterSearchContact(text:String){
+        let currentText = text
+        searchText = currentText
+        if searchText.isEmpty {
+            filteredContacts = contacts
+            if contacts.count > 0 {
+                namesArray = []
+                for i in 0...(contacts.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+                }
+                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+                filterDict = mainDict
+            }
+        } else {
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
         }
         tableView.reloadData()
     }

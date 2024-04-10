@@ -199,8 +199,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         // Message status image view
         addSubview(messageStatusImageView)
         messageStatusImageViewTopConstraint.isActive = true
-        messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -1)
-        messageStatusImageView.pin(.bottom, to: .bottom, of: self, withInset: -1)
+        messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -5)
+        messageStatusImageView.pin(.bottom, to: .bottom, of: self, withInset: -5)
         messageStatusImageViewWidthConstraint.isActive = true
         messageStatusImageViewHeightConstraint.isActive = true
         // Reply button
@@ -389,9 +389,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 paymentView.pin(to: snContentView)
                 let direction = isOutgoing ? "send" : "receive"
                 if direction == "send" {
-                    paymentView.backgroundColor = UIColor(red: 0.15, green: 0.44, blue: 0.92, alpha: 1.00)
+                    paymentView.backgroundColor = Colors.incomingMessageColor
                 }else {
-                    paymentView.backgroundColor = UIColor(red: 0.07, green: 0.55, blue: 0.09, alpha: 1.00)
+                    paymentView.backgroundColor = Colors.greenColor
                 }
                 paymentView.layer.mask = bubbleViewMaskLayer
             } else {

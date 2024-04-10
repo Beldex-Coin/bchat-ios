@@ -183,4 +183,8 @@ public final class Colors : NSObject {
     @objc public static var alertBackGroundColor: UIColor { UIColor(named: "080812-E0E0E0")! }
     @objc public static var messageTimeLabelColor: UIColor { UIColor(named: "5F5F76-A7A7BA")! }
     @objc public static var titleNewColor: UIColor { UIColor(named: "ACACAC-8A8A9D")! }
+    
+    @objc public static var paymentViewInsideColor: UIColor { UIColor(named: "3F3F56-EBEBEB")! }
+    @objc public static var paymentViewInsideReciverColor: UIColor { UIColor(named: "00A939")! }
+    @objc public static var bdxColor: UIColor { UIColor(named: "ACACAC-ACACAC")! }
 }
