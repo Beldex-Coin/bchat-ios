@@ -1052,8 +1052,16 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         rightBarButtonItem.isAccessibilityElement  = true
         rightBarButtonItems.append(rightBarButtonItem)
         
-        let rightBarButtonItemWallet =  UIBarButtonItem(image: UIImage(named: "ic_walletHomeNew"), style: .plain, target: self, action: #selector(showWallet))
-        rightBarButtonItems.append(rightBarButtonItemWallet)
+//        let rightBarButtonItemWallet =  UIBarButtonItem(image: UIImage(named: "ic_walletHomeNew"), style: .plain, target: self, action: #selector(showWallet))
+        let wallet = UIButton(type: .custom)
+        wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
+        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
+        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
+        wallet.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+          let walletBarItem = UIBarButtonItem(customView: wallet)
+        
+        rightBarButtonItems.append(walletBarItem)
         
         navigationItem.rightBarButtonItems = rightBarButtonItems
     }

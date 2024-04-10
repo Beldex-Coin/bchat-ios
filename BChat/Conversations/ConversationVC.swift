@@ -619,7 +619,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         //adding Bg Image
 //        view.addSubview(someImageView)
 //        someImageView.pin(to: view)
-        view.backgroundColor = Colors.mainBackGroundColor2
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         
         // Constraints
         view.addSubview(messagesTableView)
@@ -845,6 +845,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
         notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleMessageSentStatusChanged), name: .messageSentStatusDidChange, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
+        
+        notificationCenter.addObserver(self, selector: #selector(inChatPaymentOkButtonTapped), name: Notification.Name("confirmsendingButtonTapped"), object: nil)
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
         // Draft
@@ -915,8 +918,21 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
+    @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
+        if WalletSharedData.sharedInstance.wallet != nil {
+            connect(wallet: WalletSharedData.sharedInstance.wallet!)
+        }
+    }
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if backAPI == true{
+            let vc = InitiatingTransactionVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
         highlightFocusedMessageIfNeeded()
         didFinishInitialLayout = true
         markAllAsRead()
@@ -926,9 +942,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
-            if WalletSharedData.sharedInstance.wallet != nil {
-                connect(wallet: WalletSharedData.sharedInstance.wallet!)
-            }
+//            if WalletSharedData.sharedInstance.wallet != nil {
+//                connect(wallet: WalletSharedData.sharedInstance.wallet!)
+//            }
             if HiddenView.isHidden == false{
                 navigationController?.navigationBar.isHidden = true
                 snInputView.isUserInteractionEnabled = false
@@ -960,7 +976,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         self.saveReceipeinetAddressOnAndOff()
         if backAPI == true{
-            initiatingTransactionPopView.isHidden = false
+//            initiatingTransactionPopView.isHidden = false
         }
     }
     
@@ -995,9 +1011,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc private func inChatPaymentOkButtonTapped() {
         // Handle ok button tap
         print("OK button tapped!")
+        self.dismiss(animated: true)
         HiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
-        var txid = self.wallet!.txid()
+        var txid = WalletSharedData.sharedInstance.wallet!.txid()//self.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
@@ -1013,7 +1030,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
             
             initiatingTransactionPopView.isHidden = true
-            isSuccessPopView.isHidden = false
+//            isSuccessPopView.isHidden = false
+            let vc = WalletTransactionSuccessVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
             
             //Message and BDX display
             let thread = self.thread
@@ -1130,8 +1151,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.customizeSlideToOpen.isHidden = true
             }
             snInputView.text = ""
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-            vc.isSendConversionWalletVC = true
+            let vc = NewPasswordVC()
+            vc.isGoingConversionVC = true
+            vc.isVerifyPassword = true
             vc.wallet = WalletSharedData.sharedInstance.wallet
             vc.finalWalletAddress = self.finalWalletAddress
             vc.finalWalletAmount = self.finalWalletAmount
@@ -1270,8 +1292,24 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
-            isPaymentDetailsView.isHidden = false
-            HiddenView.isHidden = false
+//            isPaymentDetailsView.isHidden = false
+//            HiddenView.isHidden = false
+            
+            // Here dismiss with Initiating Transaction PopUp
+            self.dismiss(animated: true)
+            // Here display Confirm Sending PopUp
+            DispatchQueue.main.async {
+                let vc = ConfirmSendingVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                vc.finalWalletAddress = self.finalWalletAddress
+                vc.finalWalletAmount = self.finalWalletAmount
+                vc.feeValue = feeValue
+                self.present(vc, animated: true, completion: nil)
+            }
+            
+            
+            
             inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
             inChatPaymentAddresslabel.text = "\(finalWalletAddress)"
             let attributedString = NSMutableAttributedString(string: "Fee : \(feeValue)")
@@ -1340,6 +1378,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
+            button.transform = CGAffineTransformMakeTranslation(-12, 0)
             let barButton = UIBarButtonItem(customView: button)
             self.navigationItem.leftBarButtonItem = barButton
         } else {
@@ -1358,6 +1397,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
+            button.transform = CGAffineTransformMakeTranslation(-12, 0)
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)

@@ -270,6 +270,20 @@ class HomeTableViewCell: UITableViewCell {
         messageCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
 //        hasMentionView.isHidden = !(threadViewModel.hasUnreadMentions && thread.isGroupThread())
         iconImageView.update(for: thread)
+        iconImageView.layer.borderWidth = 0
+        if let thread = thread as? TSGroupThread {
+            if thread.groupModel.groupImage != nil { // An open group with a profile picture
+                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+                iconImageView.layer.borderWidth = 1
+            } else if thread.groupModel.groupType == .openGroup { // An open group without a profile picture or an RSS feed
+                
+            }
+        } else {
+            // one-to-one chat
+        }
+        
+        
+        
         nameLabel.text = getDisplayName()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {

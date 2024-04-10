@@ -13,6 +13,7 @@ class NewPasswordVC: BaseVC {
     var isGoingSendBDX = false
     var isGoingBack = false
     var isGoingNewRecoverySeed = false
+    var isGoingConversionVC = false
     
     var isCreatePassword = false
     var isVerifyPassword = false
@@ -754,6 +755,22 @@ class NewPasswordVC: BaseVC {
                     }
                 }
             }
+            
+            if self.isGoingConversionVC == true {
+                if self.navigationController != nil{
+                    let count = self.navigationController!.viewControllers.count
+                    if count > 1
+                    {
+                        let VC = self.navigationController!.viewControllers[count-2] as! ConversationVC
+                        VC.wallet = self.wallet
+                        VC.finalWalletAddress = self.finalWalletAddress
+                        VC.finalWalletAmount = self.finalWalletAmount
+                        VC.backAPI = true
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }
+            
             
             if self.isGoingBack == true {
                 let vc = PINSuccessPopUp()

@@ -504,7 +504,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath
-        bubbleView.layer.cornerRadius = 22//VisibleMessageCell.largeCornerRadius
+        bubbleView.layer.cornerRadius = 18//VisibleMessageCell.largeCornerRadius
 //        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
     }
     
