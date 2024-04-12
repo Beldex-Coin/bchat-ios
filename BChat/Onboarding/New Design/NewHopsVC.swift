@@ -266,6 +266,9 @@ class NewHopsVC: BaseVC {
             destinationLabel.topAnchor.constraint(equalTo: filledDotView3.bottomAnchor, constant: 3),
             destinationLabel.leadingAnchor.constraint(equalTo: youLabel.leadingAnchor, constant: 0),
         ])
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
         update()
         registerObservers()
     }

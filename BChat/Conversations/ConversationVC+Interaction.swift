@@ -680,8 +680,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
-            let callMissedTipsModal = CallMissedTipsModal(caller: caller)
-            present(callMissedTipsModal, animated: true, completion: nil)
+//            let callMissedTipsModal = CallMissedTipsModal(caller: caller)
+//            present(callMissedTipsModal, animated: true, completion: nil)
+            let vc = MissedCallPopUp(caller: caller)
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            present(vc, animated: true, completion: nil)
         } else if let message = viewItem.interaction as? TSOutgoingMessage, message.messageState == .failed {
             // Show the failed message sheet
             showFailedMessageSheet(for: message)

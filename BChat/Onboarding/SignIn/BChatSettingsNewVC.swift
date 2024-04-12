@@ -38,6 +38,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Settings"
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: Notification.Name("reloadSettingScreenTable"), object: nil)
+        
         view.addSubview(tableView)
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: -15),
@@ -50,6 +52,11 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     
     override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
+    
+    @objc func handleCallPermissionCancelTapped(notification: NSNotification) {
         tableView.reloadData()
     }
     
@@ -413,7 +420,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let isEnabled = sender.isOn
         if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
             userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
-            let modal = CallModal { [weak self] in
+            let modal = CallPermissionPopUp { [weak self] in
                 guard let self = self else { return }
                 print("toggled to: \(isEnabled ? "true" : "OFF")")
                 let audioSession = AVAudioSession.sharedInstance()

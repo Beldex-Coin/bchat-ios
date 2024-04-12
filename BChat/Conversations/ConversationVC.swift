@@ -970,6 +970,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+        
+        
         snInputView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
