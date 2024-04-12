@@ -65,8 +65,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 present(callVC, animated: true, completion: nil)
             } else {
                 snInputView.isHidden = true
-                let callPermissionRequestModal = CallPermissionRequestModal()
-                self.navigationController?.present(callPermissionRequestModal, animated: true, completion: nil)
+                let vc = CallPermissionRequestModalNewVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
             }
         }
     }
@@ -673,10 +675,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
         func confirmDownload() {
-            let modal = DownloadAttachmentModal(viewItem: viewItem)
-            modal.modalPresentationStyle = .overFullScreen
-            modal.modalTransitionStyle = .crossDissolve
-            present(modal, animated: true, completion: nil)
+            let vc = DownloadAttachmentModalNewVC(viewItem: viewItem)
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
         }
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
