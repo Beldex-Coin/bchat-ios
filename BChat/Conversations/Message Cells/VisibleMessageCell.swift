@@ -408,7 +408,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     stackView.addArrangedSubview(quoteViewContainer)
                 }
                 // Body text view
-                let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self)
+                let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                 self.bodyTextView = bodyTextView
                 stackView.addArrangedSubview(bodyTextView)
                 // Constraints
@@ -440,7 +440,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
                     let inset: CGFloat = 12
                     let maxWidth = size.width - 2 * inset
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self)
+                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     stackView.addArrangedSubview(UIView(wrapping: bodyTextView, withInsets: UIEdgeInsets(top: 0, left: inset, bottom: inset, right: inset)))
                 }
@@ -478,7 +478,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stackView.addArrangedSubview(documentView)
                 // Body text view
                 if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self)
+                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     stackView.addArrangedSubview(bodyTextView)
                 }
@@ -770,7 +770,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return isGroupThread && viewItem.shouldShowSenderProfilePicture && senderBChatID != nil
     }
     
-    static func getBodyTextView(for viewItem: ConversationViewItem, with availableWidth: CGFloat, textColor: UIColor, delegate: UITextViewDelegate & BodyTextViewDelegate) -> UITextView {
+    static func getBodyTextView(for viewItem: ConversationViewItem, with availableWidth: CGFloat, textColor: UIColor, delegate: UITextViewDelegate & BodyTextViewDelegate, lastString: String?) -> UITextView {
         // Take care of:
         // • Highlighting mentions
         // • Linkification
@@ -784,6 +784,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             .font : Fonts.OpenSans(ofSize: getFontSize(for: viewItem))
         ]
         let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: message.body ?? "", isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
+        
+        let range = NSString(string: message.body ?? "").range(of: lastString ?? "", options: .caseInsensitive)
+        let highlightColor = UIColor.systemOrange
+        let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
+        attributedText.addAttributes(highlightedAttributes, range: range)
+        
         result.attributedText = attributedText
         result.dataDetectorTypes = .link
         result.backgroundColor = .clear
