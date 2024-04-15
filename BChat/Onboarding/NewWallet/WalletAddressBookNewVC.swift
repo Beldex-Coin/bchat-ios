@@ -198,6 +198,14 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             noAddressTitleLabel.isHidden = true
             noSubAddressTitleLabel.isHidden = true
         }
+        
+        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(dismiss)
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     @objc func closeIconTapped() {
