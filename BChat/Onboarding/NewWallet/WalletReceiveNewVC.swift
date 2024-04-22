@@ -8,12 +8,13 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var shareButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_share_new")?.scaled(to: CGSize(width: 16, height: 16))
+        let logoImage = isLightMode ? "ic_share_new" : "ic_share_new"
+        let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 16, height: 16))
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.backgroundViewColor
+        button.backgroundColor = Colors.greenColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)

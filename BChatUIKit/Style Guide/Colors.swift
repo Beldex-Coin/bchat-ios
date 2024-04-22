@@ -190,4 +190,7 @@ public final class Colors : NSObject {
     @objc public static var paymentViewInsideColor: UIColor { UIColor(named: "3F3F56-EBEBEB")! }
     @objc public static var paymentViewInsideReciverColor: UIColor { UIColor(named: "00A939")! }
     @objc public static var bdxColor: UIColor { UIColor(named: "ACACAC-ACACAC")! }
+    
+    @objc public static var callPermissionCancelbtnColor: UIColor { UIColor(named: "333333-ACACAC")! }
+    
 }

@@ -202,8 +202,6 @@
 		605528302BB446020098387A /* SelectDateRangePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */; };
 		605ED50A2A3B329500C2B5A9 /* MyWalletPasscodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 605ED5092A3B329500C2B5A9 /* MyWalletPasscodeVC.swift */; };
 		6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */ = {isa = PBXBuildFile; fileRef = 6061624629BEFE7B00B20546 /* BChat-Turn-Server */; };
-		606BB6492BBFC73000D4EB83 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 606BB6482BBFC73000D4EB83 /* libwallet_api.a */; };
-		606BB64B2BBFC75000D4EB83 /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 606BB64A2BBFC75000D4EB83 /* wallet2_api.h */; };
 		60712E982B440D1F00457FCE /* LandingNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60712E972B440D1F00457FCE /* LandingNewVC.swift */; };
 		607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607DCE2E28AE2511003F9288 /* Main.storyboard */; };
 		607DCE3128AE2578003F9288 /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCE3028AE2578003F9288 /* LandingVC.swift */; };
@@ -284,6 +282,10 @@
 		60BE18AA29FA3CCB00048350 /* UIImage+Tinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */; };
 		60BE18AE29FA782100048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60BE18AF29FA782700048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
+		60C51BAA2BC6BBFE0051C05F /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60C51BA92BC6BBFE0051C05F /* libwallet_api.a */; };
+		60C51BAC2BC6BC1A0051C05F /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */; };
+		60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */; };
+		60C51BB02BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */; };
 		60C8E17B2B1062BE00755333 /* MTSlideToOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C8E17A2B1062BE00755333 /* MTSlideToOpenView.swift */; };
 		60D33B6329F7D9E7003CAE13 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
 		60D882442B69E7BA00CA2CC2 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60D882432B69E79F00CA2CC2 /* OpenSans-Light.ttf */; };
@@ -1359,8 +1361,6 @@
 		6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateRangePopUpVC.swift; sourceTree = "<group>"; };
 		605ED5092A3B329500C2B5A9 /* MyWalletPasscodeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWalletPasscodeVC.swift; sourceTree = "<group>"; };
 		6061624629BEFE7B00B20546 /* BChat-Turn-Server */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BChat-Turn-Server"; sourceTree = "<group>"; };
-		606BB6482BBFC73000D4EB83 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
-		606BB64A2BBFC75000D4EB83 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		60712E972B440D1F00457FCE /* LandingNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingNewVC.swift; sourceTree = "<group>"; };
 		607DCE2E28AE2511003F9288 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		607DCE3028AE2578003F9288 /* LandingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
@@ -1445,6 +1445,10 @@
 		60BE18A429FA3CC700048350 /* DeviceUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceUtilities.swift; sourceTree = "<group>"; };
 		60BE18A529FA3CC900048350 /* UIView+Constraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tinting.swift"; sourceTree = "<group>"; };
+		60C51BA92BC6BBFE0051C05F /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
+		60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
+		60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAttachmentModalNewVC.swift; sourceTree = "<group>"; };
+		60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModalNewVC.swift; sourceTree = "<group>"; };
 		60C8E17A2B1062BE00755333 /* MTSlideToOpenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTSlideToOpenView.swift; sourceTree = "<group>"; };
 		60D33B6229F7D9E7003CAE13 /* StringConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
 		60D882432B69E79F00CA2CC2 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -2279,7 +2283,7 @@
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				606BB6492BBFC73000D4EB83 /* libwallet_api.a in Frameworks */,
+				60C51BAA2BC6BBFE0051C05F /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -2458,7 +2462,7 @@
 		6007B5A428A4D5B60004BD61 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				606BB64A2BBFC75000D4EB83 /* wallet2_api.h */,
+				60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */,
 			);
 			path = include;
 			sourceTree = "<group>";
@@ -2637,6 +2641,8 @@
 				6049BF042B62229A003DD410 /* AboutNewVC.swift */,
 				6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */,
 				60EBEC232BC507CE001D0B20 /* SwitchingNodeVC.swift */,
+				60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */,
+				60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */,
 			);
 			path = NewWallet;
 			sourceTree = "<group>";
@@ -2757,7 +2763,7 @@
 		60D3A49A29ED312D0059472A /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				606BB6482BBFC73000D4EB83 /* libwallet_api.a */,
+				60C51BA92BC6BBFE0051C05F /* libwallet_api.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -4450,7 +4456,7 @@
 				C33FDC95255A582000E217F9 /* OWSFailedMessagesJob.h in Headers */,
 				C38EF277255B6D7A007E1867 /* OWSDatabaseMigration.h in Headers */,
 				C38EF3F5255B6DF7007E1867 /* OWSTextField.h in Headers */,
-				606BB64B2BBFC75000D4EB83 /* wallet2_api.h in Headers */,
+				60C51BAC2BC6BC1A0051C05F /* wallet2_api.h in Headers */,
 				C38EF275255B6D7A007E1867 /* OWSDatabaseMigrationRunner.h in Headers */,
 				C38EF366255B6DCC007E1867 /* ScreenLockViewController.h in Headers */,
 				C33FDDD3255A582000E217F9 /* OWSQueues.h in Headers */,
@@ -5690,6 +5696,8 @@
 				4C4AEC4520EC343B0020E72B /* DismissableTextField.swift in Sources */,
 				60E6122428BE1E3A00EEE73B /* BlockedXibCell.swift in Sources */,
 				3496955E219B605E00DCFE74 /* PhotoLibrary.swift in Sources */,
+				60C51BB02BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift in Sources */,
+				60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift in Sources */,
 				6007B5B228A4D7400004BD61 /* Seed.swift in Sources */,
 				C3A76A8D25DB83F90074CB90 /* PermissionMissingModal.swift in Sources */,
 				60E6122128BE1BFD00EEE73B /* BlockedContactVC.swift in Sources */,
@@ -7233,7 +7241,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7319,7 +7327,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
