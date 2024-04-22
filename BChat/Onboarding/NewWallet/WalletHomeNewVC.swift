@@ -807,6 +807,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
     // TESTNET
 //    var nodeArray = ["149.102.156.174:19095"]
+    var nodeArrayDynamic : [String]?
+    let myGroup = DispatchGroup()
     var randomNodeValue = ""
     var hashArray = [RecipientDomainSchema]()
     var BackAPI = false
@@ -1180,11 +1182,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             init_syncing_wallet()
         }
         
+        if globalDynamicNodeArray.count == 0 {
+            globalDynamicNodeArray = self.nodeArray
+        }
         // randomElement node And Selected Node
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
-            randomNodeValue = SaveUserDefaultsData.SelectedNode
-        }else{
-            randomNodeValue = nodeArray.randomElement()!
+            //            randomNodeValue = SaveUserDefaultsData.SelectedNode
+            if globalDynamicNodeArray.contains(SaveUserDefaultsData.SelectedNode) {
+                self.randomNodeValue = SaveUserDefaultsData.SelectedNode
+            } else {
+                self.randomNodeValue = globalDynamicNodeArray.randomElement()!
+                SaveUserDefaultsData.SelectedNode = self.randomNodeValue
+            }
+        }else {
+            randomNodeValue = globalDynamicNodeArray.randomElement()!
+            SaveUserDefaultsData.SelectedNode = self.randomNodeValue
         }
         SaveUserDefaultsData.FinalWallet_node = randomNodeValue
         
@@ -1264,13 +1276,26 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if UserDefaults.standard.domainSchemas.isEmpty {}else {
             hashArray = UserDefaults.standard.domainSchemas
         }
-        // randomElement node And Selected Node
-        if !SaveUserDefaultsData.SelectedNode.isEmpty {
-            randomNodeValue = SaveUserDefaultsData.SelectedNode
-        }else{
-            randomNodeValue = nodeArray.randomElement()!
+        //Dynamic node array
+        getDynamicNodesFromAPI()
+        
+        myGroup.notify(queue: .main) {
+            print("Finished all requests.")
+            // randomElement node And Selected Node
+            if !SaveUserDefaultsData.SelectedNode.isEmpty {
+                //                self.randomNodeValue = SaveUserDefaultsData.SelectedNode
+                if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
+                    self.randomNodeValue = SaveUserDefaultsData.SelectedNode
+                } else {
+                    self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
+                    SaveUserDefaultsData.SelectedNode = self.randomNodeValue
+                }
+            }else {
+                self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
+                SaveUserDefaultsData.SelectedNode = self.randomNodeValue
+            }
+            SaveUserDefaultsData.FinalWallet_node = self.randomNodeValue
         }
-        SaveUserDefaultsData.FinalWallet_node = randomNodeValue
         
         // Selected Currency Code Implement
         if backAPISelectedCurrency == true {
@@ -1324,6 +1349,31 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
     }
+    
+    func getDynamicNodesFromAPI() {
+        let url = globalDynamicNodeUrl
+        // Create a custom URLRequest with cache policy
+        var request = URLRequest(url: URL(string: url)!)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        myGroup.enter()
+        AF.request(request).responseDecodable(of: [NodeResponceModel].self) { response in
+            switch response.result {
+            case .success(let nodes):
+                let uriArray = nodes.map { $0.uri }
+                // Use the 'uriArray' here
+                print(uriArray)
+                self.nodeArrayDynamic = uriArray
+                globalDynamicNodeArray = uriArray
+                self.myGroup.leave()
+            case .failure(let error):
+                print("Error fetching data: \(error)")
+                self.nodeArrayDynamic = self.nodeArray
+                globalDynamicNodeArray = self.nodeArray
+                self.myGroup.leave()
+            }
+        }
+    }
+    
     
     // MARK: - going To BChat Home
     @objc func isGoingToBChatHomeScreen() {
