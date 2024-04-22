@@ -148,6 +148,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     var syncingIsFromDelegateMethod = true
     var isdaemonHeight : Int64 = 0
     var backApiRescanVC = false
+    var isTapped = false
     
     // NewConversation Button Set PopUpView
     private lazy var mainButtonPopUpView: UIView = {
@@ -463,6 +464,22 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         // Get default open group rooms if needed
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        
+        
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        if !mainButtonPopUpView.isHidden {
+            self.isTapped = true
+            mainButtonPopUpView.isHidden = true
+            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+        } else {
+            self.isTapped = false
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -592,6 +609,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
         reload()
         updateNavBarButtons()
@@ -623,6 +641,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
@@ -1090,11 +1109,17 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if !mainButtonPopUpView.isHidden {
+        if !mainButtonPopUpView.isHidden && !self.isTapped {
+            isTapped = false
             mainButtonPopUpView.isHidden = true
             mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
             return
         }
+        if mainButtonPopUpView.isHidden && self.isTapped {
+            isTapped = false
+            return
+        }
+        isTapped = false
         switch indexPath.section {
         case 0:
             let viewController: MessageRequestsViewController = MessageRequestsViewController()

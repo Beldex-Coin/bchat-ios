@@ -173,8 +173,10 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         self.titleLabel.text = "Create Secret Group"
         
-        createButton.backgroundColor = Colors.cancelButtonBackgroundColor
-        createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+//        createButton.backgroundColor = Colors.cancelButtonBackgroundColor
+//        createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        createButton.backgroundColor = Colors.bothGreenColor
+        createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -350,8 +352,10 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = groupNameTextField.text!
         if str.count == 0 {
-            createButton.backgroundColor = Colors.cancelButtonBackgroundColor
-            createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+//            createButton.backgroundColor = Colors.cancelButtonBackgroundColor
+//            createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            createButton.backgroundColor = Colors.bothGreenColor
+            createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         } else {
             createButton.backgroundColor = Colors.bothGreenColor
             createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
