@@ -3,6 +3,7 @@
 import UIKit
 import BChatUIKit
 import BChatMessagingKit
+import Alamofire
 
 class EnableWalletVC: BaseVC {
     
@@ -115,7 +116,6 @@ class EnableWalletVC: BaseVC {
         button.setBackgroundImage(UIImage(named: ""), for: .selected)
         return button
     }()
-    
     private lazy var iconView: UIImageView = {
         let result = UIImageView()
         result.image = UIImage(named: "ic_buttonBorder")
@@ -125,16 +125,12 @@ class EnableWalletVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
-    
-    
     lazy var tempView: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
         return View
     }()
-    
-    
     private lazy var enableButton: UIButton = {
         let button = UIButton()
         button.setTitle("Enable Wallet", for: .normal)
@@ -147,6 +143,11 @@ class EnableWalletVC: BaseVC {
         button.addTarget(self, action: #selector(enableButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    //MAINNET
+    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
+    //TESTNET
+    //    var nodeArray = ["149.102.156.174:19095"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -251,18 +252,11 @@ class EnableWalletVC: BaseVC {
     // MARK: Button Actions :-
     @objc private func enableButtonTapped() {
         if self.enableButton.isSelected {
-//            if SaveUserDefaultsData.WalletPassword.isEmpty {
-//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-//                self.navigationController?.pushViewController(vc, animated: true)
-//            }else {
-//                let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-//                vc.isEnterPin = true
-//                self.navigationController?.pushViewController(vc, animated: true)
-//            }
             let vc = NewPasswordVC()
             vc.isGoingWallet = true
             vc.isVerifyPassword = true
             navigationController!.pushViewController(vc, animated: true)
+            getDynamicNodesFromAPI()
             SSKPreferences.areWalletEnabled = true
         }
     }
@@ -276,6 +270,24 @@ class EnableWalletVC: BaseVC {
         } else {
             iconView.image = UIImage(named: "ic_buttonBorder")
             self.enableButton.backgroundColor = Colors.cellGroundColor2
+        }
+    }
+    
+    func getDynamicNodesFromAPI() {
+        let url = globalDynamicNodeUrl
+        var request = URLRequest(url: URL(string: url)!)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        AF.request(request).responseDecodable(of: [NodeResponceModel].self) { response in
+            switch response.result {
+            case .success(let nodes):
+                let uriArray = nodes.map { $0.uri }
+                // Use the 'uriArray' here
+                print(uriArray)
+                globalDynamicNodeArray = uriArray
+            case .failure(let error):
+                print("Error fetching data: \(error)")
+                globalDynamicNodeArray = self.nodeArray
+            }
         }
     }
    
@@ -294,7 +306,6 @@ extension UILabel {
         }
     }
 }
-
 
 public extension String {
     func setColor(_ color: UIColor, ofSubstring substring: String) -> NSMutableAttributedString {

@@ -61,7 +61,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     var indexForStatusOfNode = -1
     var checkedData = [String: String]()
     var checkedDataForTimeInterval = [String: String]()
-    
+    var nodeArrayDynamic : [String]?
+    let myGroup = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,18 +89,26 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             buttonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40)
         ])
         
+        //Dynamic node array
+        getDynamicNodesFromAPI()
+        
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
 //        randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
         }else{
-            nodeArray.removeAll()
+            nodeArrayDynamic = []
             tableView.reloadData();
         }
         
-        for i in 0 ..< nodeArray.count {
-            self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
+        myGroup.notify(queue: .main) {
+            print("Finished all requests.")
+            if self.nodeArrayDynamic!.count > 0 {
+                for i in 0 ..< self.nodeArrayDynamic!.count {
+                    self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])
+                }
+            }
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: Notification.Name(rawValue: "refreshNodePopUpOk"), object: nil)
@@ -110,7 +119,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewWillAppear(animated)
         if SaveUserDefaultsData.SaveLocalNodelist != []{
             if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-                nodeArray = SaveUserDefaultsData.SaveLocalNodelist
+                getDynamicNodesFromAPI()
+//                nodeArray = SaveUserDefaultsData.SaveLocalNodelist
                 tableView.reloadData()
             }
         }
@@ -121,6 +131,33 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         refreshButton.layer.cornerRadius = refreshButton.frame.height/2
         addNodeButton.layer.cornerRadius = addNodeButton.frame.height/2
     }
+    
+    func getDynamicNodesFromAPI() {
+        self.nodeArrayDynamic = self.nodeArray
+        let url = globalDynamicNodeUrl
+        var request = URLRequest(url: URL(string: url)!)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        myGroup.enter()
+        AF.request(request).responseDecodable(of: [NodeResponceModel].self) { response in
+            switch response.result {
+            case .success(let nodes):
+                let uriArray = nodes.map { $0.uri }
+                // Use the 'uriArray' here
+                print(uriArray)
+                self.nodeArrayDynamic = uriArray
+                globalDynamicNodeArray = uriArray
+                self.myGroup.leave()
+                self.tableView.reloadData()
+            case .failure(let error):
+                print("Error fetching data: \(error)")
+                self.nodeArrayDynamic = self.nodeArray
+                globalDynamicNodeArray = self.nodeArray
+                self.myGroup.leave()
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     
     func forVerifyAllNodeURI(host_port:String) {
         let url = "http://" + host_port + "/json_rpc"
@@ -167,17 +204,17 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return nodeArray.count
+        return nodeArrayDynamic!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = NodeListTableCell(style: .default, reuseIdentifier: "NodeListTableCell")
         cell.backgroundColor = .clear
-        cell.nodeNameTitleLabel.text = nodeArray[indexPath.row]
+        cell.nodeNameTitleLabel.text = nodeArrayDynamic![indexPath.row]
         cell.isUserInteractionEnabled = true
         
-        if checkedData.keys.contains(nodeArray[indexPath.row]) {
-            let dictionaryIndex = checkedData.index(forKey: nodeArray[indexPath.row])
+        if checkedData.keys.contains(nodeArrayDynamic![indexPath.row]) {
+            let dictionaryIndex = checkedData.index(forKey: nodeArrayDynamic![indexPath.row])
             let status = checkedData.values[dictionaryIndex!]
             if status == "OK" {
                 cell.circularView.image = UIImage(named: "ic_fullCircle")
@@ -186,8 +223,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
-            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
+        if checkedDataForTimeInterval.keys.contains(nodeArrayDynamic![indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArrayDynamic![indexPath.row])
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
                 cell.nodeNameTitleLabel.textColor = Colors.cellNodeOffColor
@@ -199,7 +236,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
             let selectedNodeData = SaveUserDefaultsData.SelectedNode
-            if(nodeArray[indexPath.row] == selectedNodeData) {
+            if(nodeArrayDynamic![indexPath.row] == selectedNodeData) {
                 selectedIndex = indexPath.row
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
@@ -207,8 +244,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
             }
-        } else if (nodeArray.count == 5) {
-            if(nodeArray[indexPath.row] == randomNodeValue) {
+        } else {
+            if(nodeArrayDynamic![indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
                 cell.isUserInteractionEnabled = false
@@ -223,14 +260,14 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! NodeListTableCell
         cell.selectionStyle = .none
-        if checkedDataForTimeInterval.keys.contains(nodeArray[indexPath.row]) {
-            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArray[indexPath.row])
+        if checkedDataForTimeInterval.keys.contains(nodeArrayDynamic![indexPath.row]) {
+            let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArrayDynamic![indexPath.row])
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
                 self.showToastMsg(message: "Please connect some another node", seconds: 1.0)
             }else{
                 selectedIndex = indexPath.row
-                selectedValue = self.nodeArray[indexPath.row]
+                selectedValue = self.nodeArrayDynamic![indexPath.row]
                 let vc = SwitchNodePopUpVC()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
@@ -264,8 +301,10 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             //TESTNET
             //                self.nodeArray = ["149.102.156.174:19095"]
             SaveUserDefaultsData.SaveLocalNodelist = []
-            for i in 0 ..< self.nodeArray.count {
-                self.forVerifyAllNodeURI(host_port: self.nodeArray[i])
+            if self.nodeArrayDynamic!.count > 0 {
+                for i in 0 ..< self.nodeArrayDynamic!.count {
+                    self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])
+                }
             }
 //            self.randomNodeValue = self.nodeArray.randomElement()!
             SaveUserDefaultsData.SelectedNode = randomNodeValue
@@ -279,7 +318,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 //            }
             self.tableView.reloadData()
         }else{
-            nodeArray.removeAll()
+            nodeArrayDynamic = []
             tableView.reloadData();
         }
     }
