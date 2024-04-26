@@ -16,7 +16,7 @@ final class CallMessageCell : MessageCell {
     private lazy var timestampLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        result.textColor = Colors.text
+        result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
     }()
@@ -26,7 +26,7 @@ final class CallMessageCell : MessageCell {
         result.numberOfLines = 1
         result.lineBreakMode = .byWordWrapping
         result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.textColor = Colors.text
+        result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
     }()

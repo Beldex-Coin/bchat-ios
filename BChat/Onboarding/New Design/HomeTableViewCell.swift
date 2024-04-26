@@ -273,8 +273,8 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.layer.borderWidth = 0
         if let thread = thread as? TSGroupThread {
             if thread.groupModel.groupImage != nil { // An open group with a profile picture
-                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-                iconImageView.layer.borderWidth = 1
+//                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+//                iconImageView.layer.borderWidth = 1
             } else if thread.groupModel.groupType == .openGroup { // An open group without a profile picture or an RSS feed
                 
             }
@@ -284,7 +284,7 @@ class HomeTableViewCell: UITableViewCell {
         
         
         
-        nameLabel.text = getDisplayName()
+        nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {
             lastMessageLabel.text = ""

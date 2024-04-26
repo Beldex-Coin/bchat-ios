@@ -128,6 +128,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         self.delegate = delegate
         self.thread = thread
         super.init(frame: CGRect.zero)
+        sendButton.isHidden = false
         setUpViewHierarchy()
     }
     

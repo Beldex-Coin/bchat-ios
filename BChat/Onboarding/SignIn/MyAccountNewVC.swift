@@ -593,8 +593,20 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             nameTextField.font = Fonts.OpenSans(ofSize: 18)
             doneButton.backgroundColor = Colors.greenColor
             doneButton.setTitle("Done", for: .normal)
+            // Set rightView to nil
+            nameTextField.rightView = nil
+            nameTextField.rightViewMode = .never
+            // Set leftView to nil
+            nameTextField.leftView = nil
+            nameTextField.leftViewMode = .never
         } else {
-            nameTextField.resignFirstResponder()
+            // Reset rightView to the default state
+            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
+            rightImageView.contentMode = .center
+            let imageWidth = 14.0
+            rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: nameTextField.frame.height)
+            nameTextField.rightView = rightImageView
+            nameTextField.rightViewMode = .always
         }
     }
     

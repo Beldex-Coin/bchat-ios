@@ -320,7 +320,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
         dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)//Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        dateBreakLabel.textColor = Colors.titleColor//Colors.text
+        dateBreakLabel.textColor = Colors.messageTimeLabelColor//Colors.titleColor//Colors.text
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
 //        let description = DateUtil.formatDate(forDisplay: date)
