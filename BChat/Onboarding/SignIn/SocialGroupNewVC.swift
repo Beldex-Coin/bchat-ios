@@ -75,7 +75,6 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     var collectionview: UICollectionView!
     var cellId = "SocialGroupCell"
     private var allRooms: [OpenGroupAPIV2.Info] = [] { didSet { update() } }
-    weak var joinOpenGroupVC: SocialGroupVC!
     private var isJoining = false
     
     override func viewDidLoad() {

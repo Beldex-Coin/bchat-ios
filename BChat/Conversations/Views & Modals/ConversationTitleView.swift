@@ -160,3 +160,9 @@ protocol ConversationTitleViewDelegate : AnyObject {
     
     func handleTitleViewTapped()
 }
+
+
+struct BNSBool {
+    static var isFromBNS = false
+    static var bnsName = ""
+}

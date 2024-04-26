@@ -60,7 +60,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
-        
         self.title = "Display Name"
         self.titleLabel.text = "Set your Display Name"
         self.subTitleLabel.text = "You can change it anytime :)"
@@ -171,8 +170,6 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
-    
-    
     func performAction() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -242,21 +239,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
-    
 }
 
 
 
-
-extension UITextField {
-    func setLeftPaddingPoints(_ amount:CGFloat){
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
-        self.leftView = paddingView
-        self.leftViewMode = .always
-    }
-    func setRightPaddingPoints(_ amount:CGFloat) {
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
-        self.rightView = paddingView
-        self.rightViewMode = .always
-    }
-}

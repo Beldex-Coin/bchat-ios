@@ -27,9 +27,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
     }
-    
     
     lazy var backGroundView: UIView = {
        let stackView = UIView()
@@ -64,7 +62,6 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-        
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, selectionButton)
         let profilePictureViewSize = CGFloat(36)
@@ -79,19 +76,15 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2.5),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2.5),
-            
             profileImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 10),
             profileImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 26),
             nameLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -44),
-            
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -14),
         ])
     }
-       
     
     // MARK: Updating
     func update() {

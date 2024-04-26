@@ -1362,8 +1362,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
-        let RightVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuNavigationController") as! SideMenuNavigationController
-        SideMenuManager.default.leftMenuNavigationController = RightVC
+        let menu = UISideMenuNavigationController(rootViewController: SideMenuVC())
+        SideMenuManager.default.leftMenuNavigationController = menu
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     

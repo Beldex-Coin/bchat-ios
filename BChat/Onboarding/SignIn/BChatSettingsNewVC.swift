@@ -379,11 +379,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 style: .default,
                 handler: { action in
                     print("User tapped Yes")
-//                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                    if let controller = storyboard.instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as? MyWalletPasscodeVC {
-//                        controller.isfromPayasUChat = true
-//                        self.navigationController?.pushViewController(controller, animated: true)
-//                    }
                         let vc = NewPasswordVC()
                         vc.isGoingHome = true
                         vc.isVerifyPassword = true

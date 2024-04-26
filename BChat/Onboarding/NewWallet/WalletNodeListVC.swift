@@ -409,3 +409,14 @@ class NodeListTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
+struct ApiResponseType: Decodable {
+    let result: ResultType?
+}
+struct ResultType: Decodable {
+    let block_header: BlockHeaderType?
+}
+struct BlockHeaderType: Decodable {
+    let timestamp: Int?
+}
