@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Settings 1.png",
+      "filename" : "settings_wallet_white_theme.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Settings.png",
+      "filename" : "settings_wallet.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Settings@2x 1.png",
+      "filename" : "settings_wallet_white_theme@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Settings@2x.png",
+      "filename" : "settings_wallet@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Settings@3x 1.png",
+      "filename" : "settings_wallet_white_theme@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Settings@3x.png",
+      "filename" : "settings_wallet@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
