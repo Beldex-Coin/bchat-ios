@@ -180,7 +180,6 @@
 		605528302BB446020098387A /* SelectDateRangePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */; };
 		6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */ = {isa = PBXBuildFile; fileRef = 6061624629BEFE7B00B20546 /* BChat-Turn-Server */; };
 		60712E982B440D1F00457FCE /* LandingNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60712E972B440D1F00457FCE /* LandingNewVC.swift */; };
-		607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607DCE2E28AE2511003F9288 /* Main.storyboard */; };
 		6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6086250629DA89B200CBF0D2 /* PaymentView.swift */; };
 		6086250929DA8F0900CBF0D2 /* VisibleMessage+Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6086250829DA8F0800CBF0D2 /* VisibleMessage+Payment.swift */; };
 		608D65A42B3C02C200EB88AB /* RestoreNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608D65A32B3C02C200EB88AB /* RestoreNameVC.swift */; };
@@ -1276,7 +1275,6 @@
 		6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateRangePopUpVC.swift; sourceTree = "<group>"; };
 		6061624629BEFE7B00B20546 /* BChat-Turn-Server */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "BChat-Turn-Server"; sourceTree = "<group>"; };
 		60712E972B440D1F00457FCE /* LandingNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingNewVC.swift; sourceTree = "<group>"; };
-		607DCE2E28AE2511003F9288 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		6086250629DA89B200CBF0D2 /* PaymentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
 		6086250829DA8F0800CBF0D2 /* VisibleMessage+Payment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+Payment.swift"; sourceTree = "<group>"; };
 		608D65A32B3C02C200EB88AB /* RestoreNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreNameVC.swift; sourceTree = "<group>"; };
@@ -4097,7 +4095,6 @@
 				34330A581E7875FB00DF2FB9 /* Fonts */,
 				B66DBF4919D5BBC8006EA940 /* Images.xcassets */,
 				6042B0F129EE50D3005FC06B /* LaunchScreen.storyboard */,
-				607DCE2E28AE2511003F9288 /* Main.storyboard */,
 				D221A099169C9E5E00537ABF /* main.m */,
 				34B0796C1FCF46B000E248C2 /* MainAppContext.h */,
 				34B0796B1FCF46B000E248C2 /* MainAppContext.m */,
@@ -4733,7 +4730,6 @@
 				6098CA852A1DFDF5005A5502 /* webrtc_call_end.mp3 in Resources */,
 				6007B5DC28ABC75B0004BD61 /* gifAnimation_dark.gif in Resources */,
 				6042B17929EE548C005FC06B /* bamboo-quiet.aifc in Resources */,
-				607DCE2F28AE2511003F9288 /* Main.storyboard in Resources */,
 				6042B0F229EE50D3005FC06B /* LaunchScreen.storyboard in Resources */,
 				6042B0F829EE51F4005FC06B /* Setting.bundle in Resources */,
 				6042B18229EE548C005FC06B /* keys-quiet.aifc in Resources */,

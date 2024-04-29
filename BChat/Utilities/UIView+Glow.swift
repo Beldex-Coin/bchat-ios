@@ -31,7 +31,7 @@ extension UIView {
             pathAnimation.duration = configuration.animationDuration
             layer.add(pathAnimation, forKey: pathAnimation.keyPath)
         }
-        layer.shadowPath = newPath
+//        layer.shadowPath = newPath
         let newColor = configuration.color.cgColor
         if configuration.isAnimated {
             let colorAnimation = CABasicAnimation(keyPath: "shadowColor")
@@ -40,9 +40,9 @@ extension UIView {
             colorAnimation.duration = configuration.animationDuration
             layer.add(colorAnimation, forKey: colorAnimation.keyPath)
         }
-        layer.shadowColor = newColor
-        layer.shadowOffset = configuration.offset
-        layer.shadowOpacity = configuration.opacity
-        layer.shadowRadius = configuration.radius
+//        layer.shadowColor = newColor
+//        layer.shadowOffset = configuration.offset
+//        layer.shadowOpacity = configuration.opacity
+//        layer.shadowRadius = configuration.radius
     }
 }
