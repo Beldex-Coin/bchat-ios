@@ -257,7 +257,8 @@ class HomeTableViewCell: UITableViewCell {
         } else {
             backGroundView.backgroundColor = .clear
         }
-        
+        backGroundView.layer.borderWidth = 1
+        backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         pinImageView.isHidden = true
         if threadViewModel.isPinned {
             backGroundView.backgroundColor = Colors.cellGroundColor3
