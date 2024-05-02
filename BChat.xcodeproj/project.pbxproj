@@ -327,6 +327,8 @@
 		814712142B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */; };
 		815427BA2B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */; };
 		815427BC2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */; };
+		8156B3F62BE37E3400D96158 /* NewMyAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156B3F52BE37E3400D96158 /* NewMyAccountVC.swift */; };
+		8156B3F82BE3832400D96158 /* ChatSettingsNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */; };
 		815A7BF12A2F2BC400A430F9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B6F509951AA53F760068F56A /* Localizable.strings */; };
 		8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164F10B2B3C280500590775 /* RegisterVC.swift */; };
 		816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816564BE2AA729C800477BC7 /* WalletHelper.swift */; };
@@ -1436,6 +1438,8 @@
 		814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSuccessPopUpVC.swift; sourceTree = "<group>"; };
 		815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupScreenVC.swift; sourceTree = "<group>"; };
 		815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupTableViewCell.swift; sourceTree = "<group>"; };
+		8156B3F52BE37E3400D96158 /* NewMyAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMyAccountVC.swift; sourceTree = "<group>"; };
+		8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsNewVC.swift; sourceTree = "<group>"; };
 		8164F10B2B3C280500590775 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		816564BE2AA729C800477BC7 /* WalletHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHelper.swift; sourceTree = "<group>"; };
 		817314772B4FEB410020E333 /* NewClearDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClearDataVC.swift; sourceTree = "<group>"; };
@@ -2755,6 +2759,8 @@
 				8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */,
 				81179E582BDA0A8E00B5C820 /* SideMenuVC.swift */,
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
+				8156B3F52BE37E3400D96158 /* NewMyAccountVC.swift */,
+				8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5616,6 +5622,7 @@
 				81DBDA022B5F7C740006C404 /* DisplayBalanceOptionVC.swift in Sources */,
 				76EB054018170B33006006FC /* AppDelegate.m in Sources */,
 				340FC8B6204DAC8D007AEB0F /* OWSQRCodeScanningViewController.m in Sources */,
+				8156B3F82BE3832400D96158 /* ChatSettingsNewVC.swift in Sources */,
 				7B0EFDF0275084AA00FFAAE7 /* CallMessageCell.swift in Sources */,
 				7B93D06A27CF173D00811CB6 /* MessageRequestsViewController.swift in Sources */,
 				C33100082558FF6D00070591 /* NewConversationButtonSet.swift in Sources */,
@@ -5640,6 +5647,7 @@
 				B894D0752339EDCF00B4D94D /* NukeDataModal.swift in Sources */,
 				6042B0E729EE46D3005FC06B /* MediaPageViewController.swift in Sources */,
 				6007B5EB28ABC9DF0004BD61 /* QRData.swift in Sources */,
+				8156B3F62BE37E3400D96158 /* NewMyAccountVC.swift in Sources */,
 				60EBEC242BC507CE001D0B20 /* SwitchingNodeVC.swift in Sources */,
 				7B93D06D27CF175800811CB6 /* MessageRequestsCell.swift in Sources */,
 				7B93D07727CF1A8A00811CB6 /* MockDataGenerator.swift in Sources */,
