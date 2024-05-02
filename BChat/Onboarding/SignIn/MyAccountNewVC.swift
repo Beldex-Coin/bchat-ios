@@ -183,27 +183,49 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 20) : Fonts.OpenSans(ofSize: 18)
+        result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
         if isNavigationBarHideInChatNewVC == true {
             result.isUserInteractionEnabled = false
         }else {
-            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
-            rightImageView.contentMode = .center
-            let imageWidth = 14.0
-            rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: result.frame.height)
-            result.rightView = rightImageView
-            result.rightViewMode = .always
-            //Here left view Empty i display
-            let leftView = UIView()//UIImageView(image: UIImage(named: "ic_newedit"))
-            leftView.contentMode = .center
-            let viewWidth = 14.0
-            leftView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: result.frame.height)
-            result.leftView = leftView
-            result.leftViewMode = .always
+//            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
+//            rightImageView.contentMode = .center
+//            let imageWidth = 14.0
+//            rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: result.frame.height)
+//            result.rightView = rightImageView
+//            result.rightViewMode = .always
+//            //Here left view Empty i display
+//            let leftView = UIView()//UIImageView(image: UIImage(named: "ic_newedit"))
+//            leftView.contentMode = .center
+//            let viewWidth = 14.0
+//            leftView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: result.frame.height)
+//            result.leftView = leftView
+//            result.leftViewMode = .always
         }
         return result
+    }()
+    private lazy var nameIdLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.textColor
+        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.textAlignment = .center
+        result.numberOfLines = 0
+        result.lineBreakMode = .byCharWrapping
+        result.translatesAutoresizingMaskIntoConstraints = false
+        // Add tap gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGesture)
+        return result
+    }()
+    private lazy var editIconImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let logoImage = isLightMode ? "ic_newedit" : "ic_newedit"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        return imageView
     }()
     private lazy var lineView: UIView = {
         let stackView = UIView()
@@ -309,6 +331,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             profilePictureImageButton.isUserInteractionEnabled = false
             lineView.isHidden = true
             doneButton.isHidden = true
+            nameTextField.isHidden = true
+            editIconImage.isHidden = true
         }else {
             navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             self.title = "My Account"
@@ -316,6 +340,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             cameraView.isHidden = false
             lineView.isHidden = true
             doneButton.isHidden = false
+            nameTextField.isHidden = true
+            editIconImage.isHidden = false
         }
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
@@ -330,6 +356,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         backGroundView.addSubview(profilePictureImage)
         backGroundView.addSubview(cameraView)
         cameraView.addSubview(cameraImage)
+        backGroundView.addSubview(nameIdLabel)
+        backGroundView.addSubview(editIconImage)
         backGroundView.addSubview(nameTextField)
         backGroundView.addSubview(copyForBeldexAddressButton)
         backGroundView.addSubview(copyForBChatIdButton)
@@ -368,7 +396,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             profilePictureImage.widthAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.heightAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            profilePictureImage.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -12),
+            profilePictureImage.bottomAnchor.constraint(equalTo: nameIdLabel.topAnchor, constant: -12),
             cameraView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
             cameraView.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
             cameraView.widthAnchor.constraint(equalToConstant: 30),
@@ -385,9 +413,18 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             cameraImage.heightAnchor.constraint(equalToConstant: 18),
             
             //Name Textfiled
+            nameIdLabel.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
+            nameIdLabel.heightAnchor.constraint(equalToConstant: 30),
+            nameIdLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            
             nameTextField.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
             nameTextField.heightAnchor.constraint(equalToConstant: 30),
             nameTextField.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            
+            editIconImage.widthAnchor.constraint(equalToConstant: 14),
+            editIconImage.heightAnchor.constraint(equalToConstant: 14),
+            editIconImage.leadingAnchor.constraint(equalTo: nameIdLabel.trailingAnchor, constant: 4),
+            editIconImage.centerYAnchor.constraint(equalTo: nameIdLabel.centerYAnchor),
             
             lineView.heightAnchor.constraint(equalToConstant: 1),
             lineView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -5),
@@ -438,7 +475,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         ])
         if isNavigationBarHideInChatNewVC == true {
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
-            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+            shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
         }else{
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80).isActive = true
             shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
@@ -455,7 +492,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         innerProfileImage.clipsToBounds = true
         // Display name label
         let nam = Storage.shared.getUser()?.name
-        nameTextField.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        nameIdLabel.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         nameTextField.delegate = self
         bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
         beldexAddressIdLabel.text = "\(SaveUserDefaultsData.WalletpublicAddress)"
@@ -503,6 +540,9 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             buttonStackView1.bottomAnchor.constraint(equalTo: innerProfileImageView.bottomAnchor, constant: -22),
         ])
         
+        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(dismiss)
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -518,6 +558,11 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         doneButton.layer.cornerRadius = doneButton.frame.height / 2
         cameraView.layer.cornerRadius = cameraView.frame.height / 2
         cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
@@ -581,33 +626,37 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     }
     
     private func handleIsEditingDisplayNameChanged() {
+//        UIView.animate(withDuration: 0.25) { [self] in
+//            nameIdLabel.text = displayNameToBeUploaded
+//        }
+//        if isEditingDisplayName {
+//            nameTextField.becomeFirstResponder()
+//            nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
+//            doneButton.backgroundColor = Colors.greenColor
+//            doneButton.setTitle("Done", for: .normal)
+//            editIconImage.isHidden = true
+//        } else {
+//            editIconImage.isHidden = false
+//            // Reset rightView to the default state
+//        }
+    }
+    
+    // Action to perform when label is tapped
+    @objc private func nameIdLabelTapped() {
         UIView.animate(withDuration: 0.25) { [self] in
-            nameTextField.text = displayNameToBeUploaded
+            nameIdLabel.text = displayNameToBeUploaded
         }
-        if isEditingDisplayName {
-            nameTextField.becomeFirstResponder()
-            nameTextField.attributedPlaceholder = NSAttributedString(
-                string: "Enter Name   ",
-                attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray]
-            )
-            nameTextField.font = Fonts.OpenSans(ofSize: 18)
-            doneButton.backgroundColor = Colors.greenColor
-            doneButton.setTitle("Done", for: .normal)
-            // Set rightView to nil
-            nameTextField.rightView = nil
-            nameTextField.rightViewMode = .never
-            // Set leftView to nil
-            nameTextField.leftView = nil
-            nameTextField.leftViewMode = .never
-        } else {
-            // Reset rightView to the default state
-            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
-            rightImageView.contentMode = .center
-            let imageWidth = 14.0
-            rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: nameTextField.frame.height)
-            nameTextField.rightView = rightImageView
-            nameTextField.rightViewMode = .always
-        }
+        print("Name ID label tapped!")
+        nameTextField.becomeFirstResponder()
+        nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
+        doneButton.backgroundColor = Colors.greenColor
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.titleLabel?.font = Fonts.semiOpenSans(ofSize: 14)
+        isEditingDisplayName = true
+        nameTextField.isHidden = false
+        nameIdLabel.isHidden = true
+        editIconImage.isHidden = true
+        lineView.isHidden = false
     }
     
     //MARK:UIImagePickerControllerDelegate
@@ -660,7 +709,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
                 DispatchQueue.main.async {
                     modalActivityIndicator.dismiss {
                         guard let self = self else { return }
-                        self.nameTextField.text = name
+                        self.nameIdLabel.text = name
                         //get the Profile picture
                         let publicKey = getUserHexEncodedPublicKey()
                         self.profilePictureImage.image = self.useFallbackPicture ? nil : (self.openGroupProfilePicture ?? self.getProfilePicture(of: self.size, for: publicKey))
@@ -724,6 +773,9 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         }
         doneButton.backgroundColor = .clear
         doneButton.setTitle("", for: .normal)
+        nameTextField.isHidden = true
+        nameIdLabel.isHidden = false
+        editIconImage.isHidden = false
     }
     
     func clearAvatar() {

@@ -207,7 +207,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         addSubview(replyButton)
         replyButton.addSubview(replyIconImageView)
         replyIconImageView.center(in: replyButton)
-        replyButton.pin(.left, to: .right, of: bubbleView, withInset: Values.smallSpacing)
+        replyButton.pin(.right, to: .left, of: bubbleView, withInset: -5)
         replyButton.center(.vertical, in: bubbleView)
         addSubview(messageTimeLabel)
         messageTimeLabel.text = ""
@@ -534,14 +534,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer == panGestureRecognizer {
-            let v = panGestureRecognizer.velocity(in: self)
-            // Only allow swipes to the left; allowing swipes to the right gets in the way of the default
-            // iOS swipe to go back gesture
-            guard v.x < 0 else { return false }
-            return abs(v.x) > abs(v.y) // It has to be more horizontal than vertical
+            let translation = panGestureRecognizer.translation(in: self)
+            // Only allow swipes from left to right
+            return translation.x > 0 && abs(translation.x) > abs(translation.y)
         } else {
             return true
-            
         }
     }
     
@@ -592,14 +589,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             return
         }
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageView ]
-        let translationX = gestureRecognizer.translation(in: self).x.clamp(-CGFloat.greatestFiniteMagnitude, 0)
+        let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
         case .began:
             delegate?.handleViewItemSwiped(viewItem, state: .began)
         case .changed:
             // The idea here is to asymptotically approach a maximum drag distance
             let damping: CGFloat = 20
-            let sign: CGFloat = -1
+            let sign: CGFloat = 1
             let x = (damping * (sqrt(abs(translationX)) / sqrt(damping))) * sign
             viewsToMove.forEach { $0.transform = CGAffineTransform(translationX: x, y: 0) }
             if timerView.isHidden {

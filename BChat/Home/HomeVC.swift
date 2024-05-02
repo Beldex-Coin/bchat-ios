@@ -174,7 +174,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("NEW_CHAT_PLUS", comment: "").uppercased()
+        result.text = NSLocalizedString("NEW_CHAT_PLUS", comment: "")
         result.textColor = Colors.greenColor
         result.textAlignment = .right
         return result
@@ -184,7 +184,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("SECRET_GROUP_TITLE", comment: "").uppercased()
+        result.text = NSLocalizedString("SECRET_GROUP_TITLE", comment: "")
         result.textColor = Colors.greenColor
         result.textAlignment = .right
         return result
@@ -194,7 +194,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("SOCIAL_GROUP_TITLE", comment: "").uppercased()
+        result.text = NSLocalizedString("SOCIAL_GROUP_TITLE", comment: "")
         result.textColor = Colors.greenColor
         result.textAlignment = .right
         return result
