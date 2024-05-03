@@ -1362,7 +1362,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
-        let menu = UISideMenuNavigationController(rootViewController: SideMenuVC())
+        let menu = SideMenuNavigationController(rootViewController: SideMenuVC())
         SideMenuManager.default.leftMenuNavigationController = menu
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }

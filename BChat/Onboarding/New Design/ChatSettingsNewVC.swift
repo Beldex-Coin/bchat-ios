@@ -13,14 +13,20 @@ class ChatSettingsNewVC: BaseVC {
     }()
     
     
-    private lazy var profilePictureImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 43
-        imageView.image = UIImage(named: "ic_test")
-        return imageView
-    }()
+    private lazy var profilePictureImageView = ProfilePictureView()
+    
+//    : UIImageView = {
+//        let imageView = UIImageView()
+//        imageView.contentMode = .scaleAspectFit
+//        imageView.translatesAutoresizingMaskIntoConstraints = false
+//        imageView.layer.cornerRadius = 43
+//        imageView.image = UIImage(named: "ic_test")
+//        return imageView
+//    }()
+    
+
+
+
     
     private lazy var userNameLabel: UILabel = {
         let result = UILabel()
@@ -264,6 +270,146 @@ class ChatSettingsNewVC: BaseVC {
         return imageView
     }()
     
+    private lazy var searchButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var allMediaButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(allMediaButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var messageSoundButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(messageSoundButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var blockButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(blockButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var reportButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(reportButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    var thread: TSThread?
+    var uiDatabaseConnection: YapDatabaseConnection?
+//    var editingDatabaseConnection: YapDatabaseConnection?
+    var disappearingMessagesDurations: [NSNumber]?
+    var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
+//    var mediaGallery: MediaGallery?
+//    var avatarView: UIImageView
+//    var disappearingMessagesDurationLabel: UILabel
+//    var displayNameLabel: UILabel
+//    var displayNameTextField: TextField
+//    var displayNameContainer: UIView
+    var isEditingDisplayName: Bool?
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    
+    func tsAccountManager() -> TSAccountManager? {
+        return SSKEnvironment.shared.tsAccountManager
+    }
+    
+    func profileManager() -> OWSProfileManager? {
+        return OWSProfileManager.shared()
+    }
+    
+    
+    func observeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
+    }
+
+    
+    func editingDatabaseConnection() -> YapDatabaseConnection? {
+        return OWSPrimaryStorage.shared().dbReadWriteConnection
+    }
+    
+//    func threadName() -> String? {
+//        var threadName = self.thread.name
+//        if self.thread is TSContactThread {
+//            let thread = self.thread as? TSContactThread
+//            return LKStorage.shared.getContactWithBChatID(thread?.contactBChatID).displayName(for: SNContactContextRegular) ?? "Anonymous"
+//        } else if threadName.count == 0 && isGroupThread() {
+//            threadName = MessageStrings.newGroupDefaultTitle
+//        }
+//        return threadName
+//    }
+    
+    func isGroupThread() -> Bool {
+        return thread is TSGroupThread
+    }
+    
+    func isOpenGroup() -> Bool {
+        if isGroupThread() {
+            let thread = self.thread as? TSGroupThread
+            return thread?.isOpenGroup ?? false
+        }
+        return false
+    }
+    
+    func isClosedGroup() -> Bool {
+        if isGroupThread() {
+            let thread = self.thread as? TSGroupThread
+            return thread?.groupModel.groupType == .closedGroup
+        }
+        return false
+    }
+    
+    
+    func configure(with thread: TSThread?, uiDatabaseConnection: YapDatabaseConnection?) {
+        self.thread = thread
+        self.uiDatabaseConnection = uiDatabaseConnection
+    }
+    
+    func didFinishEditingContact() {
+//        updateTableContents()
+        dismiss(animated: false)
+    }
+    
+//    func contactViewController(
+//        _ viewController: CNContactViewController,
+//        didCompleteWith contact: CNContact?
+//    ) {
+////        updateTableContents()
+//
+//        if contact {
+//            dismiss(animated: false)
+//        } else {
+//            dismiss(animated: true)
+//        }
+//
+//    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -277,6 +423,22 @@ class ChatSettingsNewVC: BaseVC {
         backGroundViewTwo.addSubViews(allMediaImageView, allMediaLabel, searchImageView, searchLabel, disappearingMessagesImageView, disappearingMessagesLabel, disappearingMessagesDiscriptionLabel, disappearingMessagesSwitch)
         backGroundViewThree.addSubViews(messageSoundImageView, messageSoundLabel, messageSoundTypeLabel, muteImageView, muteLabel, muteSwitch)
         backGroundViewFour.addSubViews(blockImageView, blockLabel, reportImageView, reportLabel)
+        
+        
+        
+        let profilePictureTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showProfilePicture(_:)))
+        let size = CGFloat(86)
+        profilePictureImageView.set(.width, to: size)
+        profilePictureImageView.set(.height, to: size)
+        profilePictureImageView.size = size
+        profilePictureImageView.layer.masksToBounds = true
+        profilePictureImageView.layer.cornerRadius = 43
+        profilePictureImageView.addGestureRecognizer(profilePictureTapGestureRecognizer)
+        
+//        [profilePictureView updateForThread:self.thread];
+        profilePictureImageView.update(for: self.thread!)
+
+        
         
         
         NSLayoutConstraint.activate([
@@ -374,12 +536,25 @@ class ChatSettingsNewVC: BaseVC {
     }
     
     
-    
+    @objc func showProfilePicture(_ tapGesture: UITapGestureRecognizer) {
+        guard let profilePictureView = tapGesture.view as? ProfilePictureView,
+              let image = profilePictureView.getProfilePicture() else {
+            return
+        }
+        
+//        let title = (threadName?.isEmpty == false) ? threadName : "Anonymous"
+//        let profilePictureVC = ProfilePictureVC(image: image, title: title)
+//        let navController = UINavigationController(rootViewController: profilePictureVC)
+//        navController.modalPresentationStyle = .fullScreen
+//        present(navController, animated: true, completion: nil)
+    }
+
+
     
     
     @objc func copyBChatIdButtonTapped() {
-        UIPasteboard.general.string = getUserHexEncodedPublicKey()
-        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+//        UIPasteboard.general.string = getUserHexEncodedPublicKey()
+        self.showToastMsg(message: NSLocalizedString("Your BChat ID copied to clipboard", comment: ""), seconds: 1.0)
     }
     
     @objc func disappearingMessagesSwitchValueChanged(_ x: UISwitch) {
@@ -390,5 +565,35 @@ class ChatSettingsNewVC: BaseVC {
         
     }
     
+    @objc private func searchButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc private func allMediaButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc private func messageSoundButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc private func blockButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc private func reportButtonTapped(_ sender: UIButton) {
+        
+    }
+    
+    
+    // MARK: - Notification Observers -
+    
+    @objc func identityStateDidChange(_ notification: Notification) {
+        
+    }
+    
+    @objc func otherUsersProfileDidChange(_ notification: Notification) {
+        
+    }
 
 }

@@ -252,16 +252,20 @@ class HomeTableViewCell: UITableViewCell {
 //        isPinnedIcon.isHidden = !threadViewModel.isPinned
         messageCountLabel.isHidden = !threadViewModel.hasUnreadMessages
         backgroundColor = .clear
+        backGroundView.layer.borderWidth = 1
         if !messageCountLabel.isHidden {
-            backGroundView.backgroundColor = Colors.cellGroundColor3
+//            backGroundView.backgroundColor = Colors.cellGroundColor3
+            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
         } else {
-            backGroundView.backgroundColor = .clear
+//            backGroundView.backgroundColor = .clear
+            backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         }
 //        backGroundView.layer.borderWidth = 1
 //        backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         pinImageView.isHidden = true
         if threadViewModel.isPinned {
-            backGroundView.backgroundColor = Colors.cellGroundColor3
+//            backGroundView.backgroundColor = Colors.cellGroundColor3
+            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
             pinImageView.isHidden = false
         }
         
