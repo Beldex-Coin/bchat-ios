@@ -60,7 +60,13 @@ class SyncingOptionPopUpVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
+        view.backgroundColor = Colors.backGroundColorWithAlpha
+        let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
+        let blurView = UIVisualEffectView(effect: darkBlur)
+        blurView.frame = view.bounds
+        view.addSubview(blurView)
+        
+//        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, buttonStackView)
         buttonStackView.addArrangedSubview(reconnectButton)

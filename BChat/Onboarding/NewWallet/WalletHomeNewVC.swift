@@ -2717,7 +2717,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
+        let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 25)
         let footerView = UIView(frame:rect)
         footerView.backgroundColor = Colors.mainBackGroundColor2
         footerView.layer.cornerRadius = 28
@@ -2744,13 +2744,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
         label.textColor = Colors.aboutContentLabelColor
-        label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
+        label.frame = CGRect(x: 30, y: -5, width: tableView.frame.width - 30, height: 25)
         label.font = Fonts.semiOpenSans(ofSize: 14)
         footerView.addSubview(label)
         return footerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40 // Set the height of the header view as needed
+        return 25 // Set the height of the header view as needed
     }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
@@ -2918,8 +2918,8 @@ class TransationHistoryTableCell: UITableViewCell {
             directionLogoImage.widthAnchor.constraint(equalToConstant: 24),
             directionLogoImage.heightAnchor.constraint(equalToConstant: 24),
             directionLogoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            directionLogoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
-            directionLogoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
+            directionLogoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 18),
+            directionLogoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -18),
             balanceAmountLabel.leadingAnchor.constraint(equalTo: directionLogoImage.trailingAnchor, constant: 13),
             balanceAmountLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -10),
             dateLabel.leadingAnchor.constraint(equalTo: directionLogoImage.trailingAnchor, constant: 13),

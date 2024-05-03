@@ -62,8 +62,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     private lazy var moderatorIconImageView = UIImageView(image: #imageLiteral(resourceName: "Crown"))
     
-    private lazy var messageTimeLableIncoming = messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
-    private lazy var messageTimeLableOutgoing = messageTimeLabel.pin(.right, to: .left, of: bubbleView, withInset: -10)
+    private lazy var messageTimeLableIncoming = messageTimeLabel.pin(.left, to: .right, of: messageStatusImageViewNew, withInset: 7)
+    private lazy var messageTimeLableOutgoing = messageTimeLabel.pin(.right, to: .left, of: messageStatusImageViewNew, withInset: -7)
+    
+    private lazy var statusImageIncoming = messageStatusImageViewNew.pin(.left, to: .right, of: bubbleView, withInset: 7)
+    private lazy var statusImageOutgoing = messageStatusImageViewNew.pin(.right, to: .left, of: bubbleView, withInset: -7)
+    
     
     
     lazy var bubbleView: UIView = {
@@ -100,6 +104,15 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
+    internal lazy var messageStatusImageViewNew: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_radioButton_selected")
+        result.contentMode = .scaleAspectFit
+        result.layer.cornerRadius = VisibleMessageCell.messageStatusImageViewSize / 2
+        result.layer.masksToBounds = true
+        return result
+    }()
+    
     private lazy var replyButton: UIView = {
         let result = UIView()
         let size = VisibleMessageCell.replyButtonSize + 8
@@ -125,7 +138,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var timerView = OWSMessageTimerView()
     
     // MARK: Settings
-    private static let messageStatusImageViewSize: CGFloat = 16
+    private static let messageStatusImageViewSize: CGFloat = 0//16
     private static let authorLabelBottomSpacing: CGFloat = 4
     private static let groupThreadHSpacing: CGFloat = 12
     private static let profilePictureSize = Values.verySmallProfilePictureSize
@@ -135,7 +148,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private static let swipeToReplyThreshold: CGFloat = 110
     static let smallCornerRadius: CGFloat = 4
     static let largeCornerRadius: CGFloat = 10
-    static let contactThreadHSpacing = Values.mediumSpacing
+    static let contactThreadHSpacing = Values.mediumSpacingBChat
     
     static var gutterSize: CGFloat = {
         var result = groupThreadHSpacing + profilePictureSize + groupThreadHSpacing
@@ -211,13 +224,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         replyButton.center(.vertical, in: bubbleView)
         addSubview(messageTimeLabel)
         messageTimeLabel.text = ""
+        addSubview(messageStatusImageViewNew)
 //        messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
 //        messageTimeLabel.center(.vertical, in: bubbleView)
         // Remaining constraints
         authorLabel.pin(.left, to: .left, of: bubbleView, withInset: VisibleMessageCell.authorLabelInset)
         messageTimeLableIncoming.isActive = true
         messageTimeLableOutgoing.isActive = true
-        messageTimeLabel.center(.vertical, in: bubbleView)
+        messageTimeLabel.center(.vertical, in: messageStatusImageViewNew)
+
+        statusImageIncoming.isActive = true
+        statusImageOutgoing.isActive = true
+        messageStatusImageViewNew.center(.vertical, in: bubbleView)
     }
     
     override func setUpGestureRecognizers() {
@@ -289,10 +307,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else {
             messageStatusImageView.isHidden = true
         }
-        messageStatusImageViewTopConstraint.constant = (messageStatusImageView.isHidden) ? 0 : 5
+//        messageStatusImageViewTopConstraint.constant = (messageStatusImageView.isHidden) ? 0 : 5
         [ messageStatusImageViewWidthConstraint, messageStatusImageViewHeightConstraint ].forEach {
             $0.constant = (messageStatusImageView.isHidden) ? 0 : VisibleMessageCell.messageStatusImageViewSize
         }
+        
+        messageStatusImageViewNew.image = image
+        messageStatusImageViewNew.tintColor = tintColor
+        messageStatusImageViewNew.backgroundColor = backgroundColor
+        if let message = message as? TSOutgoingMessage {
+            messageStatusImageViewNew.isHidden = (message.isCallMessage || message.messageState == .sent && thread?.lastInteraction != message && thread?.lastInteraction == message)
+        } else {
+            messageStatusImageViewNew.isHidden = true
+        }
+        [ messageStatusImageViewWidthConstraint, messageStatusImageViewHeightConstraint ].forEach {
+            $0.constant = (messageStatusImageViewNew.isHidden) ? 0 : VisibleMessageCell.messageStatusImageViewSize
+        }
+        
         // Timer
         if viewItem.isExpiringMessage {
             let expirationTimestamp = message.expiresAt
@@ -353,9 +384,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if direction == "send" {
             messageTimeLableIncoming.isActive = false
             messageTimeLableOutgoing.isActive = true
+            
+            statusImageIncoming.isActive = false
+            statusImageOutgoing.isActive = true
+            
         } else {
             messageTimeLableOutgoing.isActive = false
             messageTimeLableIncoming.isActive = true
+            
+            statusImageOutgoing.isActive = false
+            statusImageIncoming.isActive = true
         }
         
         let date = viewItem.interaction.dateForUI()
@@ -511,7 +549,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -588,7 +626,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
         case .began:
@@ -609,6 +647,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             }
             previousX = translationX
             messageTimeLabel.alpha = 0
+            messageStatusImageViewNew.alpha = 0
         case .ended, .cancelled:
             if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold {
                 delegate?.handleViewItemSwiped(viewItem, state: .ended)
@@ -618,6 +657,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 resetReply()
             }
             messageTimeLabel.alpha = 1
+            messageStatusImageViewNew.alpha = 1
         default: break
         }
     }
@@ -628,7 +668,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
@@ -675,7 +715,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private static func getFontSize(for viewItem: ConversationViewItem) -> CGFloat {
-        let baselineFontSize = Values.mediumFontSize
+        let baselineFontSize = Values.smallFontSize
         switch viewItem.displayableBodyText?.jumbomojiCount {
         case 1: return baselineFontSize + 30
         case 2: return baselineFontSize + 24
@@ -699,7 +739,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 
             case .sent, .skipped, .delivered:
                 image = #imageLiteral(resourceName: "CircleCheck").withRenderingMode(.alwaysTemplate)
-                tintColor = Colors.text
+                tintColor = Colors.greenColor
                 
             case .read:
                 image = isLightMode ? #imageLiteral(resourceName: "FilledCircleCheckLightMode") : #imageLiteral(resourceName: "FilledCircleCheckDarkMode")
