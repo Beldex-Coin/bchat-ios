@@ -6,6 +6,7 @@ class CallPermissionPopUp: BaseVC {
     
     private let onCallEnabled: () -> Void
 
+    
     // MARK: Lifecycle
     @objc
     init(onCallEnabled: @escaping () -> Void) {

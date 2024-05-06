@@ -536,6 +536,73 @@ class ChatSettingsNewVC: BaseVC {
     }
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        if disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled {
+            // don't save defaults, else we'll unintentionally save the configuration and notify the contact.
+            return
+        }
+        
+        
+        if disappearingMessagesConfiguration!.dictionaryValueDidChange {
+            Storage.write() { [self] transaction in
+                disappearingMessagesConfiguration!.save(with: transaction as! YapDatabaseReadWriteTransaction)
+
+                let infoMessage = OWSDisappearingConfigurationUpdateInfoMessage(
+                    timestamp: NSDate.ows_millisecondTimeStamp(),
+                    thread: thread!,
+                    configuration: disappearingMessagesConfiguration!,
+                    createdByRemoteName: nil,
+                    createdInExistingGroup: false)
+                infoMessage.save(with: transaction as! YapDatabaseReadWriteTransaction )
+                
+                let expirationTimerUpdate = ExpirationTimerUpdate()
+                let isEnabled = disappearingMessagesConfiguration!.isEnabled
+                expirationTimerUpdate.duration = isEnabled ? disappearingMessagesConfiguration!.durationSeconds : 0
+                MessageSender.send(expirationTimerUpdate, in: thread!, using: transaction)
+
+            }
+        }
+        
+        
+    }
+    
+    
+    func editGroup() {
+        let editSecretGroupVC = EditSecretGroupVC(with: thread!.uniqueId!)
+        navigationController?.pushViewController(editSecretGroupVC, animated: true, completion: nil)
+    }
+    
+    func hasLeftGroup() -> Bool {
+        if isGroupThread() {
+            let groupThread = thread as? TSGroupThread
+            return !groupThread!.isCurrentUserMemberInGroup()
+        }
+        return false
+    }
+    
+    func leaveGroup() {
+        let gThread = thread as? TSGroupThread
+        if gThread!.isClosedGroup {
+            let groupPublicKey = LKGroupUtilities.getDecodedGroupID(gThread!.groupModel.groupId)
+            Storage.writeSync() { transaction in
+                MessageSender.objc_leave(groupPublicKey, using: transaction).retainUntilComplete()
+            }
+        }
+
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+    func disappearingMessagesSwitchValueDidChange(_ sender: UISwitch?) {
+        let disappearingMessagesSwitch = sender
+
+//        toggleDisappearingMessages(disappearingMessagesSwitch?.isOn)
+
+//        updateTableContents()
+    }
+    
+    
     @objc func showProfilePicture(_ tapGesture: UITapGestureRecognizer) {
         guard let profilePictureView = tapGesture.view as? ProfilePictureView,
               let image = profilePictureView.getProfilePicture() else {
@@ -549,7 +616,9 @@ class ChatSettingsNewVC: BaseVC {
 //        present(navController, animated: true, completion: nil)
     }
 
-
+    func sheetViewControllerRequestedDismiss(_ sheetViewController: SheetViewController?) {
+        dismiss(animated: true)
+    }
     
     
     @objc func copyBChatIdButtonTapped() {

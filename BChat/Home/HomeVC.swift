@@ -1294,7 +1294,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let conversationVC = ConversationVC(thread: thread)
         conversationVC.isSyncingStatus = syncedflag
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = 0.4
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
