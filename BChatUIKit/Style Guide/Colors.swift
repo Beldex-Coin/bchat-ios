@@ -192,5 +192,6 @@ public final class Colors : NSObject {
     @objc public static var bdxColor: UIColor { UIColor(named: "ACACAC-ACACAC")! }
     
     @objc public static var callPermissionCancelbtnColor: UIColor { UIColor(named: "333333-ACACAC")! }
+    @objc public static var attachmentViewBackgroundColor: UIColor { UIColor(named: "21212C-EBEBEB")! }
     
 }

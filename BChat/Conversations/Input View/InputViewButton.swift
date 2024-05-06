@@ -19,6 +19,7 @@ final class InputViewButton : UIView {
     static let size = CGFloat(40)
     static let circularSize = CGFloat(33)
     static let expandedSize = CGFloat(48)
+    static let expandedNewSize = CGFloat(15)
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
@@ -60,7 +61,7 @@ final class InputViewButton : UIView {
         backgroundView.backgroundColor = isSendButton ? Colors.bothGreenColor : UIColor.clear//Colors.accent : UIColor.clear
         addSubview(backgroundView)
         backgroundView.pin(to: self)
-        layer.cornerRadius = isSendButton ? 20 : 6
+        layer.cornerRadius = isSendButton ? 20 : 20//isSendButton ? 20 : 6
         layer.masksToBounds = true
         isUserInteractionEnabled = true
         widthConstraint.isActive = true
@@ -90,7 +91,7 @@ final class InputViewButton : UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
             self.frame = frame
-            self.layer.cornerRadius = self.isSendButton ? 20 : 7
+            self.layer.cornerRadius = self.isSendButton ? 20 : 20//self.isSendButton ? 20 : 7
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, radius: isLightMode ? 4 : 6)
             self.setCircularGlow(with: glowConfiguration)
             self.backgroundView.backgroundColor = backgroundColor
