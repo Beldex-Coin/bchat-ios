@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ic_clear.png",
+      "filename" : "Clear_pin.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -28,7 +28,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ic_clear@2x.png",
+      "filename" : "Clear_pin@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "ic_clear@3x.png",
+      "filename" : "Clear_pin@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

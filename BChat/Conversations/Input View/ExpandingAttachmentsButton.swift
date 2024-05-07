@@ -15,7 +15,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private lazy var attachmentBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.bchatMessageRequestsBubble
+        stackView.backgroundColor = Colors.attachmentViewBackgroundColor
         return stackView
     }()
     // MARK: Constraints
@@ -102,7 +102,18 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
             $0.isActive = true
         }
         
-        
+        mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
+        let expandedButtonSize = InputViewButton.expandedSize//InputViewButton.expandedSize
+        let spacing: CGFloat = 4
+        cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        UIView.animate(withDuration: 0.25) {
+            [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+                $0.alpha = 0
+            }
+            self.layoutIfNeeded()
+        }
         
         // Add attachment background view to each button container
         let documentAttachmentBackgroundView = UIView()

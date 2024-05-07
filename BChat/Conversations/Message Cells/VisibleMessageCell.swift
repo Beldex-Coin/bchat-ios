@@ -106,7 +106,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     internal lazy var messageStatusImageViewNew: UIImageView = {
         let result = UIImageView()
-        result.image = UIImage(named: "ic_radioButton_selected")
         result.contentMode = .scaleAspectFit
         result.layer.cornerRadius = VisibleMessageCell.messageStatusImageViewSize / 2
         result.layer.masksToBounds = true
@@ -738,7 +737,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 tintColor = Colors.text
                 
             case .sent, .skipped, .delivered:
-                image = #imageLiteral(resourceName: "CircleCheck").withRenderingMode(.alwaysTemplate)
+                image = #imageLiteral(resourceName: "newTickmark").withRenderingMode(.alwaysTemplate)
                 tintColor = Colors.greenColor
                 
             case .read:
