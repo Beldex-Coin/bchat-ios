@@ -55,7 +55,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.cancelButtonTitleColor1
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var bdxAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.cancelButtonTitleColor1
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

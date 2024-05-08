@@ -19,9 +19,10 @@ class SocialGroupCell: UICollectionViewCell {
     }()
     lazy var titleLable: UILabel = {
         let label = UILabel()
-        label.font = Fonts.semiOpenSans(ofSize: 11)
+        label.font = Fonts.semiOpenSans(ofSize: 12)
         label.textAlignment = .center
         label.textColor = Colors.textColor
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -47,13 +48,13 @@ class SocialGroupCell: UICollectionViewCell {
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-            titleLable.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 5),
-            titleLable.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
-            titleLable.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -5),
             logoImageView.widthAnchor.constraint(equalToConstant: 52),
             logoImageView.heightAnchor.constraint(equalToConstant: 52),
             logoImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -16),
             logoImageView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            titleLable.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 5),
+            titleLable.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 13),
+            titleLable.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -5),
         ])
         self.update()
         

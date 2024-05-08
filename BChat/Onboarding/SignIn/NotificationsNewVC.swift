@@ -7,7 +7,7 @@ import PromiseKit
 import BChatMessagingKit
 
 class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
-
+    
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -32,7 +32,7 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -51,7 +51,7 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
     }
-
+    
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -81,8 +81,10 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let isUsingFullAPNs = UserDefaults.standard.bool(forKey: "isUsingFullAPNs")
             if isUsingFullAPNs {
                 cell.toggleSwitch.isOn = true
+                cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
             } else {
                 cell.toggleSwitch.isOn = false
+                cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
             }
             cell.toggleSwitch.tag = indexPath.row
             cell.toggleSwitch.addTarget(self, action: #selector(isFastModeSwitchValueChanged(_:)), for: .valueChanged)
@@ -110,8 +112,10 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.resultTitleLabel.isHidden = true
                 if Environment.shared.preferences.soundInForeground() {
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else{
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -187,6 +191,11 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     //Use Fast Mode
     @objc func isFastModeSwitchValueChanged(_ sender: UISwitch) {
         let isSwitchOn = sender.isOn
+        if isSwitchOn == true {
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else {
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         UserDefaults.standard.set(isSwitchOn, forKey: "isUsingFullAPNs")
         let syncTokensJob = SyncPushTokensJob(accountManager: AppEnvironment.shared.accountManager, preferences: Environment.shared.preferences)
         syncTokensJob.uploadOnlyIfStale = false
@@ -194,6 +203,11 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     //Play while App is open
     @objc func isSoundNotificationsSwitchValueChanged(_ sender: UISwitch) {
+        if sender.isOn == true {
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else {
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         Environment.shared.preferences.setSoundInForeground(sender.isOn)
     }
     
@@ -225,7 +239,8 @@ class NotificationTableCell: UITableViewCell {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     lazy var resultTitleLabel: UILabel = {
@@ -254,6 +269,12 @@ class NotificationTableCell: UITableViewCell {
         backGroundView.addSubview(toggleSwitch)
         backGroundView.addSubview(titleLabel)
         backGroundView.addSubview(resultTitleLabel)
+        
+        if toggleSwitch.isOn == true {
+            toggleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         
         // Set up constraints
         NSLayoutConstraint.activate([
@@ -323,7 +344,8 @@ class NotificationTableCell2: UITableViewCell {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     // MARK: - Initialization
@@ -338,6 +360,12 @@ class NotificationTableCell2: UITableViewCell {
         backGroundView.addSubview(titleLabel)
         backGroundView.addSubview(titleDescriptionLabel)
         backGroundView.addSubview(resultTitleLabel)
+        
+        if toggleSwitch.isOn == true {
+            toggleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         
         // Set up constraints
         NSLayoutConstraint.activate([

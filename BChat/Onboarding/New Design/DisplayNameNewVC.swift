@@ -32,7 +32,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor3
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()

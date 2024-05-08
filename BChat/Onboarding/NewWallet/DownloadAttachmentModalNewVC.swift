@@ -25,7 +25,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
         result.textAlignment = .center

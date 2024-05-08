@@ -121,7 +121,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         // Set the image
         let image = UIImage(named: "ic_calendar")?.withRenderingMode(.alwaysTemplate)
         result.setImage(image, for: .normal)
-        result.tintColor = Colors.accentColor
+        result.tintColor = .white
         result.backgroundColor = Colors.bchatmeassgeReq
         result.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 9)
         result.layer.cornerRadius = result.frame.height/2
@@ -132,7 +132,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var isRestoreFromDateViewContainer: UIStackView = {
         let result = UIStackView()
         result.axis = .horizontal
-        result.spacing = UIDevice.current.isIPad ? Values.iPadButtonSpacing : Values.verySmallSpacing
+        result.spacing = -35
         result.distribution = .fillEqually
         if (UIDevice.current.isIPad) {
             result.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -147,8 +147,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.addTarget(self, action: #selector(restoreButtonAction), for: UIControl.Event.touchUpInside)
         result.layer.cornerRadius = 16
         result.set(.height, to: 58)
-        result.backgroundColor = UIColor(hex: 0x1C1C26)
-        result.setTitleColor(.lightGray, for: .normal)
+        result.backgroundColor = Colors.cellGroundColor3
+        result.setTitleColor(Colors.buttonDisableColor, for: .normal)
         return result
     }()
     
@@ -165,6 +165,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         restoreHeightTextField.delegate = self
         restoreDateHeightTextField.delegate = self
         restoreHeightTextField.keyboardType = .numberPad
+        restoreButton.backgroundColor = Colors.cellGroundColor3
+        restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         
         isRestoreFromDateButton.addRightIcon(image: UIImage(named: "ic-Newarrow")!.withRenderingMode(.alwaysTemplate))
         isRestoreFromDateButton.tintColor = .white
@@ -300,17 +302,17 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         let restoreDateHeightText = restoreDateHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if displayNameText.isEmpty {
             restoreButton.isUserInteractionEnabled = false
-            restoreButton.backgroundColor = UIColor(hex: 0x282836)
-            restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            restoreButton.backgroundColor = Colors.cellGroundColor3
+            restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         } else if restoreHeightText.isEmpty && restoreDateHeightText.isEmpty {
             restoreButton.isUserInteractionEnabled = false
-            restoreButton.backgroundColor = UIColor(hex: 0x282836)
-            restoreButton.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
+            restoreButton.backgroundColor = Colors.cellGroundColor3
+            restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         } else {
             // All fields have valid values, proceed with your logic here
             restoreButton.isUserInteractionEnabled = true
-            restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
-            restoreButton.setTitleColor(UIColor.white, for: .normal)
+            restoreButton.backgroundColor = Colors.bothGreenColor
+            restoreButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         }
     }
     

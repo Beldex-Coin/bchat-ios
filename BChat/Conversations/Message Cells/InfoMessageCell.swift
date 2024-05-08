@@ -11,7 +11,7 @@ final class InfoMessageCell : MessageCell {
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        result.textColor = Colors.text
+        result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
     }()

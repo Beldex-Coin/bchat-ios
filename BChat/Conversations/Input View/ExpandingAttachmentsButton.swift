@@ -1,3 +1,4 @@
+import BChatUIKit
 
 final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private weak var delegate: ExpandingAttachmentsButtonDelegate?
@@ -5,42 +6,38 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     
     override var isUserInteractionEnabled: Bool {
         didSet {
-          //  gifButton.isUserInteractionEnabled = isUserInteractionEnabled
             documentButton.isUserInteractionEnabled = isUserInteractionEnabled
             libraryButton.isUserInteractionEnabled = isUserInteractionEnabled
             cameraButton.isUserInteractionEnabled = isUserInteractionEnabled
             mainButton.isUserInteractionEnabled = isUserInteractionEnabled
         }
     }
-    
+    private lazy var attachmentBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.attachmentViewBackgroundColor
+        return stackView
+    }()
     // MARK: Constraints
-  //  private lazy var gifButtonContainerBottomConstraint = gifButtonContainer.pin(.bottom, to: .bottom, of: self)
     private lazy var documentButtonContainerBottomConstraint = documentButtonContainer.pin(.bottom, to: .bottom, of: self)
     private lazy var libraryButtonContainerBottomConstraint = libraryButtonContainer.pin(.bottom, to: .bottom, of: self)
     private lazy var cameraButtonContainerBottomConstraint = cameraButtonContainer.pin(.bottom, to: .bottom, of: self)
-    
     // MARK: UI Components
-//    lazy var gifButton: InputViewButton = {
-//        let result = InputViewButton(icon: #imageLiteral(resourceName: "actionsheet_gif_black"), delegate: self, hasOpaqueBackground: true)
-//        result.accessibilityLabel = NSLocalizedString("accessibility_gif_button", comment: "")
-//        return result
-//    }()
-//    lazy var gifButtonContainer = container(for: gifButton)
     lazy var documentButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "icons8-file"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_doc_new"), delegate: self, hasOpaqueBackground: false)
         result.tintColor = UIColor.white
         result.accessibilityLabel = NSLocalizedString("accessibility_document_button", comment: "")
         return result
     }()
     lazy var documentButtonContainer = container(for: documentButton)
     lazy var libraryButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "icons8-gallery"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_lib_new"), delegate: self, hasOpaqueBackground: false)
         result.accessibilityLabel = NSLocalizedString("accessibility_library_button", comment: "")
         return result
     }()
     lazy var libraryButtonContainer = container(for: libraryButton)
     lazy var cameraButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "icons8-slr_camera"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_camera_new"), delegate: self, hasOpaqueBackground: false)
         result.accessibilityLabel = NSLocalizedString("accessibility_camera_button", comment: "")
         return result
     }()
@@ -72,10 +69,12 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         libraryButton.backgroundColor = Colors.bchatButtonColor
         cameraButton.backgroundColor = Colors.bchatButtonColor
         
+        cameraButton.backgroundColor = Colors.newChatbackgroundColor
+        documentButton.backgroundColor = Colors.newChatbackgroundColor
+        libraryButton.backgroundColor = Colors.newChatbackgroundColor
+        
         backgroundColor = .clear
-        // GIF button
-//        addSubview(gifButtonContainer)
-//        gifButtonContainer.alpha = 0
+        
         // Document button
         addSubview(documentButtonContainer)
         documentButtonContainer.alpha = 0
@@ -89,25 +88,96 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         addSubview(mainButtonContainer)
         // Constraints
         mainButtonContainer.pin(to: self)
-      //  gifButtonContainer.center(.horizontal, in: self)
-        documentButtonContainer.center(.horizontal, in: self)
-        libraryButtonContainer.center(.horizontal, in: self)
-        cameraButtonContainer.center(.horizontal, in: self)
+        
+        NSLayoutConstraint.activate([
+            libraryButtonContainer.centerYAnchor.constraint(equalTo: cameraButtonContainer.centerYAnchor),
+            libraryButtonContainer.leadingAnchor.constraint(equalTo: cameraButtonContainer.trailingAnchor),
+            documentButtonContainer.centerYAnchor.constraint(equalTo: libraryButtonContainer.centerYAnchor),
+            documentButtonContainer.leadingAnchor.constraint(equalTo: libraryButtonContainer.trailingAnchor),
+        ])
+        //        documentButtonContainer.center(.horizontal, in: self)
+        //        libraryButtonContainer.center(.horizontal, in: self)
+        //        cameraButtonContainer.center(.horizontal, in: self)
         [ documentButtonContainerBottomConstraint, libraryButtonContainerBottomConstraint, cameraButtonContainerBottomConstraint ].forEach {
             $0.isActive = true
         }
+        
+        mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
+        let expandedButtonSize = InputViewButton.expandedSize//InputViewButton.expandedSize
+        let spacing: CGFloat = 4
+        cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+        UIView.animate(withDuration: 0.25) {
+            [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+                $0.alpha = 0
+            }
+            self.layoutIfNeeded()
+        }
+        
+        // Add attachment background view to each button container
+        let documentAttachmentBackgroundView = UIView()
+        documentAttachmentBackgroundView.backgroundColor = attachmentBackgroundView.backgroundColor // Copy background color if needed
+        documentAttachmentBackgroundView.layer.cornerRadius = 22
+        documentAttachmentBackgroundView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        documentAttachmentBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        documentButtonContainer.addSubview(documentAttachmentBackgroundView)
+        NSLayoutConstraint.activate([
+            documentAttachmentBackgroundView.topAnchor.constraint(equalTo: documentButtonContainer.topAnchor),
+            documentAttachmentBackgroundView.leadingAnchor.constraint(equalTo: documentButtonContainer.leadingAnchor),
+            documentAttachmentBackgroundView.trailingAnchor.constraint(equalTo: documentButtonContainer.trailingAnchor),
+            documentAttachmentBackgroundView.bottomAnchor.constraint(equalTo: documentButtonContainer.bottomAnchor)
+        ])
+        documentButtonContainer.sendSubviewToBack(documentAttachmentBackgroundView)
+        let libraryAttachmentBackgroundView = UIView()
+        libraryAttachmentBackgroundView.backgroundColor = attachmentBackgroundView.backgroundColor // Copy background color if needed
+        libraryAttachmentBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        libraryButtonContainer.addSubview(libraryAttachmentBackgroundView)
+        NSLayoutConstraint.activate([
+            libraryAttachmentBackgroundView.topAnchor.constraint(equalTo: libraryButtonContainer.topAnchor),
+            libraryAttachmentBackgroundView.leadingAnchor.constraint(equalTo: libraryButtonContainer.leadingAnchor),
+            libraryAttachmentBackgroundView.trailingAnchor.constraint(equalTo: libraryButtonContainer.trailingAnchor),
+            libraryAttachmentBackgroundView.bottomAnchor.constraint(equalTo: libraryButtonContainer.bottomAnchor)
+        ])
+        libraryButtonContainer.sendSubviewToBack(libraryAttachmentBackgroundView)
+        let cameraAttachmentBackgroundView = UIView()
+        cameraAttachmentBackgroundView.backgroundColor = attachmentBackgroundView.backgroundColor // Copy background color if needed
+        cameraAttachmentBackgroundView.layer.cornerRadius = 22
+        cameraAttachmentBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        cameraAttachmentBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        cameraButtonContainer.addSubview(cameraAttachmentBackgroundView)
+        NSLayoutConstraint.activate([
+            cameraAttachmentBackgroundView.topAnchor.constraint(equalTo: cameraButtonContainer.topAnchor),
+            cameraAttachmentBackgroundView.leadingAnchor.constraint(equalTo: cameraButtonContainer.leadingAnchor),
+            cameraAttachmentBackgroundView.trailingAnchor.constraint(equalTo: cameraButtonContainer.trailingAnchor),
+            cameraAttachmentBackgroundView.bottomAnchor.constraint(equalTo: cameraButtonContainer.bottomAnchor)
+        ])
+        cameraButtonContainer.sendSubviewToBack(cameraAttachmentBackgroundView)
+        // Ensure equal width and equal height for all background views
+        NSLayoutConstraint.activate([
+            documentAttachmentBackgroundView.widthAnchor.constraint(equalTo: libraryAttachmentBackgroundView.widthAnchor),
+            libraryAttachmentBackgroundView.widthAnchor.constraint(equalTo: cameraAttachmentBackgroundView.widthAnchor),
+            documentAttachmentBackgroundView.heightAnchor.constraint(equalTo: libraryAttachmentBackgroundView.heightAnchor),
+            libraryAttachmentBackgroundView.heightAnchor.constraint(equalTo: cameraAttachmentBackgroundView.heightAnchor)
+        ])
+        // Set the constraints for buttons inside containers
+        [documentButton, libraryButton, cameraButton].forEach { button in
+            button.set(.width, to: InputViewButton.expandedSize)
+            button.set(.height, to: InputViewButton.expandedSize)
+            button.center(in: button.superview!)
+        }
+        
     }
     
     // MARK: Animation
     private func expandOrCollapse() {
         if isExpanded {
             mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
-            let expandedButtonSize = InputViewButton.expandedSize
+            let expandedButtonSize = InputViewButton.expandedSize//InputViewButton.expandedSize
             let spacing: CGFloat = 4
             cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
-            libraryButtonContainerBottomConstraint.constant = -2 * (expandedButtonSize + spacing)
-            documentButtonContainerBottomConstraint.constant = -3 * (expandedButtonSize + spacing)
-         //   gifButtonContainerBottomConstraint.constant = -4 * (expandedButtonSize + spacing)
+            libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+            documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
             UIView.animate(withDuration: 0.25) {
                 [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
                     $0.alpha = 1
@@ -130,7 +200,6 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     
     // MARK: Interaction
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
-      //  if inputViewButton == gifButton { delegate?.handleGIFButtonTapped(); isExpanded = false }
         if inputViewButton == documentButton { delegate?.handleDocumentButtonTapped(); isExpanded = false }
         if inputViewButton == libraryButton { delegate?.handleLibraryButtonTapped(); isExpanded = false }
         if inputViewButton == cameraButton { delegate?.handleCameraButtonTapped(); isExpanded = false }
@@ -151,7 +220,6 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
 // MARK: Delegate
 
 protocol ExpandingAttachmentsButtonDelegate: AnyObject {
-
     func handleGIFButtonTapped()
     func handleDocumentButtonTapped()
     func handleLibraryButtonTapped()
