@@ -157,6 +157,19 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         return result
     }()
     
+    // Speaker Option Button - Speaker image not display properly that's way i take one more option for here
+    private lazy var speakerOptionButton: UIButton = {
+        let result = UIButton(type: .custom)
+        let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
+        result.setImage(image, for: UIControl.State.normal)
+        result.set(.width, to: 60)
+        result.set(.height, to: 60)
+        result.tintColor = .white
+        result.backgroundColor = UIColor(hex: 0x1F1F1F)
+        result.layer.cornerRadius = 30
+        return result
+    }()
+    
     //Speaker Btn
     private lazy var volumeView: MPVolumeView = {
         let result = MPVolumeView()
@@ -173,7 +186,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }()
     
     private lazy var operationPanel: UIStackView = {
-        let result = UIStackView(arrangedSubviews: [switchCameraButton, videoButton, switchAudioButton, volumeView])
+        let result = UIStackView(arrangedSubviews: [switchCameraButton, videoButton, switchAudioButton, volumeView, speakerOptionButton])
         result.axis = .horizontal
         result.spacing = Values.veryLargeSpacing
         return result
@@ -217,6 +230,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     
     func setupStateChangeCallbacks() {
         self.call.remoteVideoStateDidChange = { isEnabled in
+            self.volumeView.isHidden = true
+            self.speakerOptionButton.isHidden = false
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25) {
                     self.remoteVideoView.alpha = isEnabled ? 1 : 0
@@ -233,6 +248,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.call.hasStartedConnectingDidChange = {
             DispatchQueue.main.async {
                 self.callInfoLabel.text = "Connecting..."
+                self.volumeView.isHidden = true
+                self.speakerOptionButton.isHidden = false
                 self.answerButton.alpha = 0
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                     self.answerButton.isHidden = true
@@ -243,6 +260,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callInfoLabel.text = "Connected"
+                self.volumeView.isHidden = false
+                self.speakerOptionButton.isHidden = true
                 self.backButton.isHidden = true
                 self.minimizeButton.isHidden = false
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -279,6 +298,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        self.speakerOptionButton.isHidden = false
+        self.volumeView.isHidden = true
         setUpViewHierarchy()
         if shouldRestartCamera { cameraManager.prepare() }
         touch(call.videoCapturer)
@@ -291,6 +312,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 } else {
                     self.callInfoLabel.text = "Ringing..."
                     self.answerButton.isHidden = true
+                    self.volumeView.isHidden = false
+                    self.speakerOptionButton.isHidden = true
                 }
             }
         }
@@ -410,6 +433,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 self.switchCameraButton.transform = transform
                 self.videoButton.transform = transform
                 self.volumeView.transform = transform
+                self.speakerOptionButton.transform = transform
             }
         }
         
@@ -437,6 +461,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.callInfoLabel.isHidden = false
         self.callDurationLabel.isHidden = true
         callInfoLabel.text = "Call Ended"
+        self.volumeView.isHidden = true
+        self.speakerOptionButton.isHidden = false
         self.alertOnCallEnding()
         UIView.animate(withDuration: 0.25) {
             self.remoteVideoView.alpha = 0
@@ -451,6 +477,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func answerCall() {
+        self.volumeView.isHidden = false
+        self.speakerOptionButton.isHidden = true
         UIApplication.shared.isIdleTimerDisabled = true
         AppEnvironment.shared.callManager.answerCall(call) { error in
             DispatchQueue.main.async {
@@ -496,6 +524,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func updateDuration() {
+        self.volumeView.isHidden = false
+        self.speakerOptionButton.isHidden = true
         callDurationLabel.text = String(format: "%.2d:%.2d", duration/60, duration%60)
         duration += 1
     }
@@ -524,12 +554,6 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
             switchCameraButton.isEnabled = false
             call.isVideoEnabled = false
-            
-//            let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
-//            volumeView.setRouteButtonImage(image, for: .normal)
-//            volumeView.tintColor = UIColor(hex: 0x1F1F1F)
-//            volumeView.backgroundColor = .white
-            
         } else {
             guard requestCameraPermissionIfNeeded() else { return }
             let previewVC = VideoPreviewVC()
