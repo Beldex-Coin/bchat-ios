@@ -220,19 +220,19 @@ extension GlobalSearchViewController {
         tableView.deselectRow(at: indexPath, animated: false)
         guard let searchSection = SearchSection(rawValue: indexPath.section) else { return }
         switch searchSection {
-        case .noResults:
-            SNLog("shouldn't be able to tap 'no results' section")
-        case .contacts:
-            let sectionResults = searchResultSet.conversations
-            guard let searchResult = sectionResults[safe: indexPath.row] else { return }
-            show(searchResult.thread.threadRecord, highlightedMessageID: nil, animated: true)
-        case .messages:
-            let sectionResults = searchResultSet.messages
-            guard let searchResult = sectionResults[safe: indexPath.row] else { return }
-            show(searchResult.thread.threadRecord, highlightedMessageID: searchResult.message?.uniqueId, animated: true)
-        case .recent:
-            guard let threadId = recentSearchResults[safe: indexPath.row], let thread = TSThread.fetch(uniqueId: threadId) else { return }
-            show(thread, highlightedMessageID: nil, animated: true, isFromRecent: true)
+            case .noResults:
+                SNLog("shouldn't be able to tap 'no results' section")
+            case .contacts:
+                let sectionResults = searchResultSet.conversations
+                guard let searchResult = sectionResults[safe: indexPath.row] else { return }
+                show(searchResult.thread.threadRecord, highlightedMessageID: nil, animated: true)
+            case .messages:
+                let sectionResults = searchResultSet.messages
+                guard let searchResult = sectionResults[safe: indexPath.row] else { return }
+                show(searchResult.thread.threadRecord, highlightedMessageID: searchResult.message?.uniqueId, animated: true)
+            case .recent:
+                guard let threadId = recentSearchResults[safe: indexPath.row], let thread = TSThread.fetch(uniqueId: threadId) else { return }
+                show(thread, highlightedMessageID: nil, animated: true, isFromRecent: true)
         }
     }
     
@@ -310,40 +310,40 @@ extension GlobalSearchViewController {
         guard let searchSection = SearchSection(rawValue: section) else { return nil }
 
         switch searchSection {
-        case .noResults:
-            return nil
-        case .contacts:
-            if searchResultSet.conversations.count > 0 {
-                return NSLocalizedString("SEARCH_SECTION_CONTACTS", comment: "")
-            } else {
+            case .noResults:
                 return nil
-            }
-        case .messages:
-            if searchResultSet.messages.count > 0 {
-                return NSLocalizedString("SEARCH_SECTION_MESSAGES", comment: "")
-            } else {
-                return nil
-            }
-        case .recent:
-            if recentSearchResults.count > 0  && searchText.isEmpty && isRecentSearchResultsEnabled {
-                return NSLocalizedString("SEARCH_SECTION_RECENT", comment: "")
-            } else {
-                return nil
-            }
+            case .contacts:
+                if searchResultSet.conversations.count > 0 {
+                    return NSLocalizedString("SEARCH_SECTION_CONTACTS", comment: "")
+                } else {
+                    return nil
+                }
+            case .messages:
+                if searchResultSet.messages.count > 0 {
+                    return NSLocalizedString("SEARCH_SECTION_MESSAGES", comment: "")
+                } else {
+                    return nil
+                }
+            case .recent:
+                if recentSearchResults.count > 0  && searchText.isEmpty && isRecentSearchResultsEnabled {
+                    return NSLocalizedString("SEARCH_SECTION_RECENT", comment: "")
+                } else {
+                    return nil
+                }
         }
     }
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let searchSection = SearchSection(rawValue: section) else { return 0 }
         switch searchSection {
-        case .noResults:
-            return (searchText.count > 0 && searchResultSet.isEmpty) ? 1 : 0
-        case .contacts:
-            return searchResultSet.conversations.count
-        case .messages:
-            return searchResultSet.messages.count
-        case .recent:
-            return searchText.isEmpty && isRecentSearchResultsEnabled ? recentSearchResults.count : 0
+            case .noResults:
+                return (searchText.count > 0 && searchResultSet.isEmpty) ? 1 : 0
+            case .contacts:
+                return searchResultSet.conversations.count
+            case .messages:
+                return searchResultSet.messages.count
+            case .recent:
+                return searchText.isEmpty && isRecentSearchResultsEnabled ? recentSearchResults.count : 0
         }
     }
 
