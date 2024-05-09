@@ -536,6 +536,22 @@ class ChatSettingsNewVC: BaseVC {
     }
     
     
+    
+    
+    
+//    func updateDisappearingMessagesDurationLabel() {
+//        if disappearingMessagesConfiguration!.isEnabled {
+//            let keepForFormat = "Disappear after %@"
+//            disappearingMessagesDurationLabel.text = String(format: keepForFormat, disappearingMessagesConfiguration.durationString)
+//        } else {
+//            disappearingMessagesDurationLabel.text = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
+//        }
+//
+//        disappearingMessagesDurationLabel.setNeedsLayout()
+//        disappearingMessagesDurationLabel.superview.setNeedsLayout()
+//    }
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         
         if disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled {
@@ -565,6 +581,32 @@ class ChatSettingsNewVC: BaseVC {
         }
         
         
+    }
+    
+    
+    func copyBChatID() {
+        UIPasteboard.general.string = (thread as! TSContactThread).contactBChatID()
+        let toast = UIAlertController(title: nil, message: "Your BChat ID copied to clipboard", preferredStyle: .alert)
+        present(toast, animated: true)
+                                                                             
+        let duration = Int(1.0)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Double(duration) * Double(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
+            toast.dismiss(animated: true)
+        })
+    }
+    
+    
+//    func tappedConversationSearch() {
+//        conversationSettingsViewDelegate.conversationSettingsDidRequestConversationSearch(self)
+//    }
+    
+    
+    func notify(forMentionsOnlySwitchValueDidChange sender: Any?) {
+        let uiSwitch = sender as? UISwitch
+        let isEnabled = uiSwitch?.isOn ?? false
+        Storage.write() { [self] transaction in
+            (thread as? TSGroupThread)?.setIsOnlyNotifyingForMentions(isEnabled, with: transaction)
+        }
     }
     
     
@@ -602,6 +644,19 @@ class ChatSettingsNewVC: BaseVC {
 //        updateTableContents()
     }
     
+    func handleMuteSwitchToggled(_ sender: Any?) {
+        let uiSwitch = sender as? UISwitch
+        if uiSwitch?.isOn ?? false {
+            Storage.write() { [self] transaction in
+                thread!.updateWithMuted(until: Date.distantFuture, transaction: transaction)
+            }
+        } else {
+            Storage.write() { [self] transaction in
+                thread!.updateWithMuted(until: nil, transaction: transaction)
+            }
+        }
+    }
+    
     
     @objc func showProfilePicture(_ tapGesture: UITapGestureRecognizer) {
         guard let profilePictureView = tapGesture.view as? ProfilePictureView,
@@ -619,6 +674,53 @@ class ChatSettingsNewVC: BaseVC {
     func sheetViewControllerRequestedDismiss(_ sheetViewController: SheetViewController?) {
         dismiss(animated: true)
     }
+    
+    func hideEditNameUI() {
+        isEditingDisplayName = false
+    }
+
+    func showEditNameUI() {
+        isEditingDisplayName = true
+    }
+    
+    
+//    func setIsEditingDisplayName(_ isEditingDisplayName: Bool) {
+//        self.isEditingDisplayName = isEditingDisplayName
+//
+//        UIView.animate(withDuration: 0.25, animations: { [self] in
+//            displayNameLabel.alpha = self.isEditingDisplayName ? 0 : 1
+//            displayNameTextField.alpha = self.isEditingDisplayName ? 1 : 0
+//        })
+//
+//        if isEditingDisplayName {
+//            displayNameTextField.becomeFirstResponder()
+//        } else {
+//            displayNameTextField.resignFirstResponder()
+//        }
+//
+//    }
+    
+    
+    
+//    func saveName() {
+//        if !(thread is TSContactThread) {
+//            return
+//        }
+//        let bchatID = (thread as? TSContactThread)?.contactBChatID
+//        var contact = Storage.shared.getContactWithBChatID(bchatID)
+//        if contact == nil {
+//            contact = SNContact(bchatID: bchatID)
+//        }
+//        let text = displayNameTextField.text.trimmingCharacters(in: .whitespacesAndNewlines)
+//        contact.nickname = text.count > 0 ? text : nil
+//        LKStorage.write() { transaction in
+//            LKStorage.shared.setContact(contact, using: transaction)
+//        }
+//        displayNameLabel.text = text.count > 0 ? text : contact.name
+//        hideEditNameUI()
+//
+//    }
+    
     
     
     @objc func copyBChatIdButtonTapped() {
@@ -658,11 +760,14 @@ class ChatSettingsNewVC: BaseVC {
     // MARK: - Notification Observers -
     
     @objc func identityStateDidChange(_ notification: Notification) {
-        
+//        updateTableContents()
     }
     
     @objc func otherUsersProfileDidChange(_ notification: Notification) {
-        
+        let recipientId = notification.userInfo![kNSNotificationKey_ProfileRecipientId] as? String
+        if (recipientId?.count ?? 0) > 0 && (thread is TSContactThread) && ((thread as? TSContactThread)!.contactBChatID() == recipientId) {
+//            updateTableContents()
+        }
     }
 
 }
