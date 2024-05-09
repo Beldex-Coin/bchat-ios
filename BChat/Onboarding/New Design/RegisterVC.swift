@@ -8,7 +8,6 @@ class RegisterVC: BaseVC {
     var bchatIDString:String!
     var beldexAddressIDString:String!
     
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
@@ -29,7 +28,6 @@ class RegisterVC: BaseVC {
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     
     private lazy var topView: UIView = {
         let stackView = UIView()
@@ -121,7 +119,6 @@ class RegisterVC: BaseVC {
         self.bChatIdLabel.text = bchatIDString
         self.beldexIdLabel.text = beldexAddressIDString
         
-        
         view.addSubViews(titleLabel)
         view.addSubViews(continueButton)
         view.addSubViews(topView)
@@ -142,7 +139,6 @@ class RegisterVC: BaseVC {
             continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             continueButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
             continueButton.heightAnchor.constraint(equalToConstant: 58),
-
         ])
         
         NSLayoutConstraint.activate([

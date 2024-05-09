@@ -6,6 +6,7 @@ class CallPermissionPopUp: BaseVC {
     
     private let onCallEnabled: () -> Void
 
+    
     // MARK: Lifecycle
     @objc
     init(onCallEnabled: @escaping () -> Void) {
@@ -63,7 +64,6 @@ class CallPermissionPopUp: BaseVC {
         return result
     }()
     
-    
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Enable", for: .normal)
@@ -99,8 +99,6 @@ class CallPermissionPopUp: BaseVC {
         return result
     }()
     
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,10 +113,7 @@ class CallPermissionPopUp: BaseVC {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(okButton)
         
-        
         discriptionLabel.attributedText = "The current implementation of Voice/Video calls will expose your IP Address to the Beldex Foundation serves and the Calling/Called User.".withBoldText(text: "Voice/Video calls")
-       
-        
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -153,18 +148,6 @@ class CallPermissionPopUp: BaseVC {
         NotificationCenter.default.post(name: Notification.Name("reloadSettingScreenTable"), object: nil)
         self.dismiss(animated: true)
     }
-    
 
 }
 
-
-extension String {
-    func withBoldText(text: String, font: UIFont? = nil) -> NSAttributedString {
-        let _font = font ?? Fonts.OpenSans(ofSize: 14)
-        let fullString = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: _font])
-        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
-        let range = (self as NSString).range(of: text)
-        fullString.addAttributes(boldFontAttribute, range: range)
-        return fullString
-    }
-}

@@ -107,9 +107,9 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var lockView = LockView()
 
     // MARK: Settings
-    private static let circleSize: CGFloat = 96
+    private static let circleSize: CGFloat = 46//96
     private static let pulseSize: CGFloat = 24
-    private static let iconSize: CGFloat = 28
+    private static let iconSize: CGFloat = 20//28
     private static let chevronSize: CGFloat = 16
     private static let dotSize: CGFloat = 16
     private static let lockViewHitMargin: CGFloat = 40

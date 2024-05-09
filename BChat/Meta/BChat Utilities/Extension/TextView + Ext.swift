@@ -19,3 +19,21 @@ extension UITextView{
         placeholderLabel.isHidden = !self.text.isEmpty
     }
 }
+
+extension UITextView{
+    func setPlaceholder() {
+        let placeholderLabel = UILabel()
+        placeholderLabel.text = "Enter BChat ID"
+        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        placeholderLabel.sizeToFit()
+        placeholderLabel.tag = 222
+        placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)
+        placeholderLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
+        placeholderLabel.isHidden = !self.text.isEmpty
+        self.addSubview(placeholderLabel)
+    }
+    func checkPlaceholder() {
+        let placeholderLabel = self.viewWithTag(222) as! UILabel
+        placeholderLabel.isHidden = !self.text.isEmpty
+    }
+}

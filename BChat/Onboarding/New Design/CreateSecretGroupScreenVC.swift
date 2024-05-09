@@ -38,24 +38,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         return stackView
     }()
     
-//    private lazy var searchTextField: UITextField = {
-//        let result = UITextField()
-//        result.textColor = Colors.titleColor3
-//        result.font = Fonts.OpenSans(ofSize: 14)
-//        result.textAlignment = .left
-//        result.translatesAutoresizingMaskIntoConstraints = false
-//        result.backgroundColor = Colors.unlockButtonBackgroundColor
-//        result.layer.cornerRadius = 24
-//        result.setLeftPaddingPoints(23)
-//        result.attributedPlaceholder = NSAttributedString(
-//            string: "Search Contact",
-//            attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
-//        )
-//        result.layer.borderWidth = 1
-//        result.layer.borderColor = Colors.borderColorNew.cgColor
-//        result.rightViewMode = UITextField.ViewMode.always
-//        return result
-//    }()
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(

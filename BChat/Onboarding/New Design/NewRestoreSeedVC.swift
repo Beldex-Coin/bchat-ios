@@ -58,7 +58,6 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         return result
     }()
     
-    
     private lazy var saveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Save", for: .normal)
@@ -144,7 +143,6 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     }()
     
     var seedcopy = false
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,9 +234,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             shareVC.popoverPresentationController?.sourceView = self.view
             shareVC.popoverPresentationController?.sourceRect = self.view.bounds
         }
-        self.navigationController!.present(shareVC, animated: true, completion: nil)
-        
-        
+        self.navigationController!.present(shareVC, animated: true, completion: nil)        
     }
     
 

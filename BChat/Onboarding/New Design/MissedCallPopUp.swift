@@ -62,7 +62,6 @@ class MissedCallPopUp: BaseVC {
         return result
     }()
     
-    
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
@@ -74,8 +73,6 @@ class MissedCallPopUp: BaseVC {
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
-    
-    
     
 
     override func viewDidLoad() {
@@ -91,9 +88,7 @@ class MissedCallPopUp: BaseVC {
         
         let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
         discriptionLabel.text = message
-        
-        
-        
+                
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
@@ -114,9 +109,9 @@ class MissedCallPopUp: BaseVC {
         
     }
     
+    
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
 
 }

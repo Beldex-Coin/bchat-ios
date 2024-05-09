@@ -394,10 +394,10 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
                                                           handler:^(UIAlertAction * _Nonnull action) {
             NSLog(@"User tapped Yes");
             
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            MyWalletPasscodeVC *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyWalletPasscodeVC"];
-            controller.isfromPayasUChat = YES;
-            [self.navigationController pushViewController:controller animated:YES];
+//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//            MyWalletPasscodeVC *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyWalletPasscodeVC"];
+//            controller.isfromPayasUChat = YES;
+//            [self.navigationController pushViewController:controller animated:YES];
             
         }];
         [alertController addAction:yesAction];

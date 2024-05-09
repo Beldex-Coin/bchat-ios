@@ -853,6 +853,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
         notificationCenter.addObserver(self, selector: #selector(inChatPaymentOkButtonTapped), name: Notification.Name("confirmsendingButtonTapped"), object: nil)
+        
+        notificationCenter.addObserver(self, selector: #selector(cancelVoiceMessageRecordingWhenDeviceLock), name: Notification.Name("cancelVoiceMessageRecordingWhenDeviceLock"), object: nil)
+                
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
         // Draft
@@ -964,10 +967,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        let text = snInputView.text
-        Storage.write { transaction in
-            self.thread.setDraft(text, transaction: transaction)
-        }
+//        let text = snInputView.text
+//        Storage.write { transaction in
+//            self.thread.setDraft(text, transaction: transaction)
+//        }
         self.backAPI = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
@@ -977,21 +980,20 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     override func viewWillAppear(_ animated: Bool) {
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
-        }
-        
-        
+        }        
         snInputView.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
         }
         self.saveReceipeinetAddressOnAndOff()
-        if backAPI == true{
-//            initiatingTransactionPopView.isHidden = false
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        let text = snInputView.text
+        Storage.write { transaction in
+            self.thread.setDraft(text, transaction: transaction)
+        }
         mediaCache.removeAllObjects()
         self.resignFirstResponder()
     }
@@ -1096,6 +1098,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         snInputView.isUserInteractionEnabled = true
         navigationController?.navigationBar.isHidden = false
     }
+    
+    @objc private func cancelVoiceMessageRecordingWhenDeviceLock() {
+        cancelVoiceMessageRecording()
+    }
+    
+    
     
     @objc func isSuccessPopTappedButton() {
         // Handle button tap action
@@ -1971,8 +1979,6 @@ extension ConversationVC: BeldexWalletDelegate {
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
-        DispatchQueue.main.async {
-        }
     }
 }
 

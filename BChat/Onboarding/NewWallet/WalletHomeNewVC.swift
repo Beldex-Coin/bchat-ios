@@ -75,8 +75,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.backgroundColor = UIColor(hex: 0x2979FB)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
-        let image = UIImage(named: "ic_send_new")?.scaled(to: CGSize(width: 25, height: 25))
+        let image = UIImage(named: "ic_send_new")//?.scaled(to: CGSize(width: 25, height: 25))
         button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 1)
         button.addTarget(self, action: #selector(isFromSendButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -85,9 +86,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.backgroundColor = Colors.greenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
-        let image = UIImage(named: "ic_Receive_New")?.scaled(to: CGSize(width: 25, height: 25))
+        let image = UIImage(named: "ic_receive_wallet")//?.scaled(to: CGSize(width: 25, height: 25))
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(isFromReceiveButtonTapped), for: .touchUpInside)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
+
         return button
     }()
     private lazy var isFromReConnectButton: UIButton = {
