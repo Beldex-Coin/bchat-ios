@@ -64,7 +64,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -79,7 +79,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor3
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()    
@@ -99,7 +99,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()

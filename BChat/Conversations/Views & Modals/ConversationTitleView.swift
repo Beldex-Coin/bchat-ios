@@ -69,7 +69,7 @@ final class ConversationTitleView : UIView {
 
     // MARK: Updating
     @objc private func update() {
-        titleLabel.text = getTitle()
+        titleLabel.text = getTitle().firstCharacterUpperCase()
         let subtitle = getSubtitle()
         subtitleLabel.attributedText = subtitle
         let titleFontSize = (subtitle != nil) ? Values.mediumFontSize : Values.mediumFontSize

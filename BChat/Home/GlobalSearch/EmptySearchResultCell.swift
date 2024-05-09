@@ -20,6 +20,7 @@ class EmptySearchResultCell: UITableViewCell {
         result.set(.height, to: 40)
         return result
     }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear

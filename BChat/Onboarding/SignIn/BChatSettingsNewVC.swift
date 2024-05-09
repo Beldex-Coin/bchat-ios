@@ -3,6 +3,7 @@
 import UIKit
 import BChatUIKit
 import SignalUtilitiesKit
+import AVFAudio
 
 class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
@@ -96,8 +97,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let isScreenLockEnabled = OWSScreenLock.shared.isScreenLockEnabled()
                 if isScreenLockEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(screenLockSwitchValueChanged(_:)), for: .valueChanged)
@@ -127,8 +130,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let isScreenSecurityEnabled = Environment.shared.preferences.screenSecurityIsEnabled()
                 if isScreenSecurityEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(disablePreviewInAppSwitcherSwitchValueChanged(_:)), for: .valueChanged)
@@ -150,8 +155,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let areWalletEnabled = SSKPreferences.areWalletEnabled
                 if areWalletEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(startWalletSwitchValueChanged(_:)), for: .valueChanged)
@@ -167,8 +174,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     let isPayAsYouChatEnabled = SSKPreferences.arePayAsYouChatEnabled
                     if isPayAsYouChatEnabled{
                         cell.toggleSwitch.isOn = true
+                        cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                     }else {
                         cell.toggleSwitch.isOn = false
+                        cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                     }
                     cell.toggleSwitch.tag = indexPath.row
                     cell.toggleSwitch.addTarget(self, action: #selector(payAsYouChatSwitchValueChanged(_:)), for: .valueChanged)
@@ -193,8 +202,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let areReadReceiptsEnabled = OWSReadReceiptManager.shared().areReadReceiptsEnabled()
                 if areReadReceiptsEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(readReceiptsSwitchValueChanged(_:)), for: .valueChanged)
@@ -206,8 +217,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let areTypingIndicatorsEnabled = SSKEnvironment.shared.typingIndicators.areTypingIndicatorsEnabled()
                 if areTypingIndicatorsEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(typeIndicatorsSwitchValueChanged(_:)), for: .valueChanged)
@@ -219,8 +232,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let areLinkPreviewsEnabled = SSKPreferences.areLinkPreviewsEnabled
                 if areLinkPreviewsEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(sendLinkPreviewsSwitchValueChanged(_:)), for: .valueChanged)
@@ -232,8 +247,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let areCallsEnabled = SSKPreferences.areCallsEnabled
                 if areCallsEnabled{
                     cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
                 }else {
                     cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(voiceAndVideoCallsSwitchValueChanged(_:)), for: .valueChanged)
@@ -332,6 +349,11 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Screen Lock
     @objc func screenLockSwitchValueChanged(_ sender: UISwitch) {
         let shouldBeEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         if shouldBeEnabled == OWSScreenLock.shared.isScreenLockEnabled() {
             print("ignoring redundant screen lock.")
             return
@@ -343,18 +365,33 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Disable Preview in App Switcher
     @objc func disablePreviewInAppSwitcherSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         print("toggled screen security: \(isEnabled ? "true" : "false")")
         Environment.shared.preferences.setScreenSecurity(isEnabled)
     }
     // Start Wallet
     @objc func startWalletSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         print("toggled to: \(isEnabled ? "true" : "false")")
         SSKPreferences.areWalletEnabled = isEnabled
         tableView.reloadData()
     }
     // Pay As You Chat
     @objc func payAsYouChatSwitchValueChanged(_ sender: UISwitch) {
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         let prefs = UserDefaults.standard
         if let myString = prefs.string(forKey: "WalletPassword"), !myString.isEmpty {
             let isEnabled = sender.isOn
@@ -379,11 +416,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 style: .default,
                 handler: { action in
                     print("User tapped Yes")
-                        let vc = NewPasswordVC()
-                        vc.isGoingHome = true
-                        vc.isVerifyPassword = true
+                    let vc = NewPasswordVC()
+                    vc.isGoingHome = true
+                    vc.isVerifyPassword = true
                     self.navigationController!.pushViewController(vc, animated: true)
-                    
                 }
             )
             alertController.addAction(yesAction)
@@ -394,18 +430,33 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Read Receipts
     @objc func readReceiptsSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         print("toggled areReadReceiptsEnabled: \(isEnabled ? "true" : "false")")
         OWSReadReceiptManager.shared().setAreReadReceiptsEnabled(isEnabled)
     }
     // Type Indicators
     @objc func typeIndicatorsSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         print("toggled areTypingIndicatorsEnabled: \(isEnabled ? "true" : "false")")
         SSKEnvironment.shared.typingIndicators.setTypingIndicatorsEnabled(value: isEnabled)
     }
     // Send Link Previews
     @objc func sendLinkPreviewsSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         print("toggled to: \(isEnabled ? "true" : "false")")
         SSKPreferences.areLinkPreviewsEnabled = isEnabled
     }
@@ -413,6 +464,11 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc func voiceAndVideoCallsSwitchValueChanged(_ sender: UISwitch) {
         let userDefaults = UserDefaults.standard
         let isEnabled = sender.isOn
+        if (sender.isOn){
+            sender.thumbTintColor = Colors.bothGreenColor
+        }else{
+            sender.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
             userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
             let modal = CallPermissionPopUp { [weak self] in
@@ -617,7 +673,8 @@ class BChatSettingsTableCell: UITableViewCell {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     private lazy var stackView: UIStackView = {
@@ -639,6 +696,12 @@ class BChatSettingsTableCell: UITableViewCell {
         backGroundView.addSubview(logoImage)
         backGroundView.addSubview(toggleSwitch)
         backGroundView.addSubview(stackView)
+        
+        if toggleSwitch.isOn == true {
+            toggleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         
         // Set up constraints
         NSLayoutConstraint.activate([
@@ -707,7 +770,8 @@ class BChatSettingsTableCell2: UITableViewCell {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     lazy var dropDownView: UIView = {
@@ -730,6 +794,12 @@ class BChatSettingsTableCell2: UITableViewCell {
         backGroundView.addSubview(titleDescriptionLabel)
         backGroundView.addSubview(resultTitleLabel)
         backGroundView.addSubview(dropDownView)
+        
+        if toggleSwitch.isOn == true {
+            toggleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
         
         // Set up constraints
         NSLayoutConstraint.activate([

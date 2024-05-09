@@ -491,8 +491,10 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             cell.toggleSwitch.addTarget(self, action: #selector(self.saveRecipientAddressButtonTapped(_:)), for: .valueChanged)
             if SaveUserDefaultsData.SaveReceipeinetSwitch == false {
                 cell.toggleSwitch.isOn = false
+                cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
             }else{
                 cell.toggleSwitch.isOn = true
+                cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
             }
             return cell
         }
@@ -540,8 +542,10 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
      @objc func saveRecipientAddressButtonTapped(_ x: UISwitch) {
          if (x.isOn){
              SaveUserDefaultsData.SaveReceipeinetSwitch = true
+             x.thumbTintColor = Colors.bothGreenColor
          }else{
              SaveUserDefaultsData.SaveReceipeinetSwitch = false
+             x.thumbTintColor = Colors.switchOffBackgroundColor
          }
      }
 }
@@ -751,7 +755,8 @@ class WalletSettingsSubTableCell2: UITableViewCell {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     
@@ -765,13 +770,18 @@ class WalletSettingsSubTableCell2: UITableViewCell {
         backGroundView.addSubview(logoImage)
         backGroundView.addSubview(titleLabel)
         backGroundView.addSubview(toggleSwitch)
+        
+        if toggleSwitch.isOn == true {
+            toggleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
+        
         NSLayoutConstraint.activate([
-            
             spaceView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0),
             spaceView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             spaceView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             spaceView.heightAnchor.constraint(equalToConstant: 14),
-            
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             backGroundView.bottomAnchor.constraint(equalTo: spaceView.topAnchor, constant: -0),

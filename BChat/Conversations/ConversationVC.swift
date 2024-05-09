@@ -318,11 +318,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             } else {
                 self.timer.invalidate()
             }
-            
         }
     }()
     
     lazy var snInputView: InputView = InputView(delegate: self, thread: thread)
+    private lazy var attachmentBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.incomingMessageColor
+        return stackView
+    }()
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {

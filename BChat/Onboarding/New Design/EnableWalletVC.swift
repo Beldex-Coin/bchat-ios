@@ -195,6 +195,7 @@ class EnableWalletVC: BaseVC {
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 36),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 27),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -27),
+            backGroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -84),
             greenDotView1.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 27),
             greenDotView1.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 40),
             greenDotView1.widthAnchor.constraint(equalToConstant: 8),
@@ -223,7 +224,7 @@ class EnableWalletVC: BaseVC {
             infoLabel4.topAnchor.constraint(equalTo: greenDotView4.topAnchor, constant: -10),
             infoLabel4.leadingAnchor.constraint(equalTo: greenDotView4.trailingAnchor, constant: 14),
             infoLabel4.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -26),
-            bottomStackView.topAnchor.constraint(equalTo: infoLabel4.bottomAnchor, constant: 60),
+            bottomStackView.bottomAnchor.constraint(equalTo: enableButton.topAnchor, constant: -18),
             bottomStackView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor, constant: 0),
             
             tempView.widthAnchor.constraint(equalToConstant: 25),
