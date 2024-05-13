@@ -1363,6 +1363,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
         let menu = SideMenuNavigationController(rootViewController: SideMenuVC())
+        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let minimumSize = min(appScreenRect.width, appScreenRect.height)
+        menu.menuWidth = round(minimumSize * 0.80)
         SideMenuManager.default.leftMenuNavigationController = menu
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
