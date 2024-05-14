@@ -477,8 +477,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
         }else{
-            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
-            shareButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+            shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
         }
         
         shareButton.backgroundColor = Colors.greenColor

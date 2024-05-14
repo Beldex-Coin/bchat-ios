@@ -40,14 +40,14 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self, isAudioButton: true)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
     }()
     
     private lazy var payAsChatButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "pay_as_you_chat_new"), delegate: self, isPayButton: true)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
@@ -72,7 +72,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     private lazy var sendButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendMessage_new"), isSendButton: true, delegate: self)
-        result.isHidden = false
+        result.isHidden = true
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
     }()
@@ -128,7 +128,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         self.delegate = delegate
         self.thread = thread
         super.init(frame: CGRect.zero)
-        sendButton.isHidden = false
+//        sendButton.isHidden = false
         setUpViewHierarchy()
     }
     
@@ -163,9 +163,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), voiceMessageButtonContainer ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton)])
         bottomStackView.axis = .horizontal
-        bottomStackView.spacing = 2//Values.smallSpacing
+        bottomStackView.spacing = Values.smallSpacing
         bottomStackView.backgroundColor = Colors.textViewColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
@@ -206,8 +206,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mentionsView.pin(to: mentionsViewContainer)
         mentionsViewHeightConstraint.isActive = true
         // Voice message button
-//        addSubview(voiceMessageButtonContainer)
-//        voiceMessageButtonContainer.center(in: sendButton)
+        addSubview(voiceMessageButtonContainer)
+        voiceMessageButtonContainer.center(in: sendButton)
+        voiceMessageButtonContainer.backgroundColor = Colors.bothGreenColor
+        voiceMessageButtonContainer.layer.cornerRadius = 24
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
         self.hideOrShowPayAsYouChatButton()
@@ -273,8 +275,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
 
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
         let hasText = !text.isEmpty
-        sendButton.isHidden = false
-        voiceMessageButtonContainer.isHidden = false
+//        sendButton.isHidden = false
+//        voiceMessageButtonContainer.isHidden = false
+        sendButton.isHidden = !hasText
+        voiceMessageButtonContainer.isHidden = hasText
         autoGenerateLinkPreviewIfPossible()
         delegate?.inputTextViewDidChangeContent(inputTextView)
     }
@@ -460,14 +464,14 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageRecordingView.pin(to: self)
         self.voiceMessageRecordingView = voiceMessageRecordingView
         voiceMessageRecordingView.animate()
-        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer, payAsChatButton ]
+        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25) {
             allOtherViews.forEach { $0.alpha = 0 }
         }
     }
 
     func hideVoiceMessageUI() {
-        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer, payAsChatButton ]
+        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25, animations: {
             allOtherViews.forEach { $0.alpha = 1 }
             self.voiceMessageRecordingView?.alpha = 0
