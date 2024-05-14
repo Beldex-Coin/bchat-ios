@@ -1,8 +1,22 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import ContactsUI
+import PromiseKit
+import Foundation
 
-class ChatSettingsNewVC: BaseVC {
+
+let kIconViewLength: CGFloat = 24
+
+
+protocol OWSConversationSettingsViewDelegate: AnyObject {
+    func groupWasUpdated(_ groupModel: TSGroupModel)
+    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC)
+    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?)
+}
+
+
+class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
     
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
@@ -12,21 +26,7 @@ class ChatSettingsNewVC: BaseVC {
         return stackView
     }()
     
-    
     private lazy var profilePictureImageView = ProfilePictureView()
-    
-//    : UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.translatesAutoresizingMaskIntoConstraints = false
-//        imageView.layer.cornerRadius = 43
-//        imageView.image = UIImage(named: "ic_test")
-//        return imageView
-//    }()
-    
-
-
-
     
     private lazy var userNameLabel: UILabel = {
         let result = UILabel()
@@ -76,7 +76,6 @@ class ChatSettingsNewVC: BaseVC {
         button.addTarget(self, action: #selector(copyBChatIdButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     
     private lazy var backGroundViewTwo: UIView = {
         let stackView = UIView()
@@ -225,7 +224,6 @@ class ChatSettingsNewVC: BaseVC {
         return toggle
     }()
     
-    
     private lazy var backGroundViewFour: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -316,23 +314,61 @@ class ChatSettingsNewVC: BaseVC {
     }()
     
     
+//    var thread: TSThread?
+//    var uiDatabaseConnection: YapDatabaseConnection?
+////    var editingDatabaseConnection: YapDatabaseConnection?
+//    var disappearingMessagesDurations: [NSNumber]?
+//    var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
+////    var mediaGallery: MediaGallery?
+////    var avatarView: UIImageView
+////    var disappearingMessagesDurationLabel: UILabel
+////    var displayNameLabel: UILabel
+////    var displayNameTextField: TextField
+////    var displayNameContainer: UIView
+//    var isEditingDisplayName: Bool?
+    
     var thread: TSThread?
-    var uiDatabaseConnection: YapDatabaseConnection?
-//    var editingDatabaseConnection: YapDatabaseConnection?
-    var disappearingMessagesDurations: [NSNumber]?
-    var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
-//    var mediaGallery: MediaGallery?
-//    var avatarView: UIImageView
-//    var disappearingMessagesDurationLabel: UILabel
-//    var displayNameLabel: UILabel
-//    var displayNameTextField: TextField
-//    var displayNameContainer: UIView
-    var isEditingDisplayName: Bool?
+        var uiDatabaseConnection: YapDatabaseConnection?
+//        private(set) var editingDatabaseConnection: YapDatabaseConnection?
+        var disappearingMessagesDurations: [NSNumber]?
+        var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
+        var mediaGallery: MediaGallery?
+        private(set) var avatarView: UIImageView?
+        private(set) var disappearingMessagesDurationLabel: UILabel?
+        var displayNameLabel: UILabel?
+    var displayNameTextField: TextField?
+        var displayNameContainer: UIView?
+        var isEditingDisplayName: Bool = false
     
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+          super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+          commonInit()
+      }
+
+      required init?(coder aDecoder: NSCoder) {
+          super.init(coder: aDecoder)
+          commonInit()
+      }
+
+      private func commonInit() {
+          observeNotifications()
+      }
+
+
+    
+    weak var conversationSettingsViewDelegate: OWSConversationSettingsViewDelegate?
+
+        var showVerificationOnAppear: Bool = false
+
+        func configureWithThread(thread: TSThread, uiDatabaseConnection: YapDatabaseConnection) {
+            self.thread = thread
+            self.uiDatabaseConnection = uiDatabaseConnection
+        }
 
     
     func tsAccountManager() -> TSAccountManager? {
@@ -390,7 +426,7 @@ class ChatSettingsNewVC: BaseVC {
         self.thread = thread
         self.uiDatabaseConnection = uiDatabaseConnection
     }
-    
+
     func didFinishEditingContact() {
 //        updateTableContents()
         dismiss(animated: false)
@@ -435,7 +471,6 @@ class ChatSettingsNewVC: BaseVC {
         profilePictureImageView.layer.cornerRadius = 43
         profilePictureImageView.addGestureRecognizer(profilePictureTapGestureRecognizer)
         
-//        [profilePictureView updateForThread:self.thread];
         profilePictureImageView.update(for: self.thread!)
 
         
@@ -596,11 +631,6 @@ class ChatSettingsNewVC: BaseVC {
     }
     
     
-//    func tappedConversationSearch() {
-//        conversationSettingsViewDelegate.conversationSettingsDidRequestConversationSearch(self)
-//    }
-    
-    
     func notify(forMentionsOnlySwitchValueDidChange sender: Any?) {
         let uiSwitch = sender as? UISwitch
         let isEnabled = uiSwitch?.isOn ?? false
@@ -655,6 +685,20 @@ class ChatSettingsNewVC: BaseVC {
                 thread!.updateWithMuted(until: nil, transaction: transaction)
             }
         }
+    }
+    
+    func showMediaGallery() {
+        print("")
+
+        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
+        self.mediaGallery = mediaGallery
+
+        assert(self.navigationController is OWSNavigationController)
+        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
+    }
+    
+    func tappedConversationSearch() {
+        conversationSettingsViewDelegate?.conversationSettingsDidRequestConversationSearch(self)
     }
     
     
@@ -724,8 +768,7 @@ class ChatSettingsNewVC: BaseVC {
     
     
     @objc func copyBChatIdButtonTapped() {
-//        UIPasteboard.general.string = getUserHexEncodedPublicKey()
-        self.showToastMsg(message: NSLocalizedString("Your BChat ID copied to clipboard", comment: ""), seconds: 1.0)
+        self.copyBChatID()
     }
     
     @objc func disappearingMessagesSwitchValueChanged(_ x: UISwitch) {
@@ -733,19 +776,30 @@ class ChatSettingsNewVC: BaseVC {
     }
     
     @objc func muteSwitchValueChanged(_ x: UISwitch) {
-        
+        let uiSwitch = x
+        if uiSwitch.isOn {
+            Storage.write() { [self] transaction in
+                self.thread!.updateWithMuted(until: Date.distantFuture, transaction: transaction)
+            }
+        } else {
+            Storage.write() { [self] transaction in
+                self.thread!.updateWithMuted(until: nil, transaction: transaction)
+            }
+        }
     }
     
     @objc private func searchButtonTapped(_ sender: UIButton) {
-        
+        self.tappedConversationSearch()
     }
     
     @objc private func allMediaButtonTapped(_ sender: UIButton) {
-        
+        self.showMediaGallery()
     }
     
     @objc private func messageSoundButtonTapped(_ sender: UIButton) {
-        
+        let vc = OWSSoundSettingsViewController()
+        vc.thread = self.thread
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func blockButtonTapped(_ sender: UIButton) {

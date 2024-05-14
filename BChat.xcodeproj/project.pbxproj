@@ -299,6 +299,7 @@
 		810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */; };
 		810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */; };
 		810E87882B5919ED001133F9 /* ConfirmSendingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */; };
+		810EA2D42BF3228C00642ED6 /* LinkBNSVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */; };
 		81134CF92B60D16000070127 /* NewMessageRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CF82B60D16000070127 /* NewMessageRequestVC.swift */; };
 		81134CFB2B61053300070127 /* NewMessageRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */; };
 		81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */; };
@@ -315,6 +316,7 @@
 		8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */; };
 		8129ABEF2B57DFD700417EE2 /* SyncInfoPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEE2B57DFD700417EE2 /* SyncInfoPopUpVC.swift */; };
 		8129ABF12B57E21C00417EE2 /* SyncingOptionPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABF02B57E21C00417EE2 /* SyncingOptionPopUpVC.swift */; };
+		812C9A312BF2007B00175FA3 /* BNSLinkSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */; };
 		812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */; };
 		812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */; };
 		813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */; };
@@ -1414,6 +1416,7 @@
 		810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSuccessVC.swift; sourceTree = "<group>"; };
 		810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiatingTransactionVC.swift; sourceTree = "<group>"; };
 		810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSendingVC.swift; sourceTree = "<group>"; };
+		810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkBNSVC.swift; sourceTree = "<group>"; };
 		81134CF82B60D16000070127 /* NewMessageRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestVC.swift; sourceTree = "<group>"; };
 		81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestTableViewCell.swift; sourceTree = "<group>"; };
 		81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlertRecoverySeedVC.swift; sourceTree = "<group>"; };
@@ -1430,6 +1433,7 @@
 		8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableWalletVC.swift; sourceTree = "<group>"; };
 		8129ABEE2B57DFD700417EE2 /* SyncInfoPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncInfoPopUpVC.swift; sourceTree = "<group>"; };
 		8129ABF02B57E21C00417EE2 /* SyncingOptionPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncingOptionPopUpVC.swift; sourceTree = "<group>"; };
+		812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNSLinkSuccessVC.swift; sourceTree = "<group>"; };
 		812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSecretGroupVC.swift; sourceTree = "<group>"; };
 		812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretGroupTableViewCell.swift; sourceTree = "<group>"; };
 		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
@@ -2761,6 +2765,8 @@
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
 				8156B3F52BE37E3400D96158 /* NewMyAccountVC.swift */,
 				8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */,
+				810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */,
+				812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5423,6 +5429,7 @@
 				6098CA772A1DCD0B005A5502 /* LocalAuthOptions.swift in Sources */,
 				6049BF072B6544EB003DD410 /* BChatSettingsNewVC.swift in Sources */,
 				6010E9F628C86A1700600D1A /* ExpandableHeaderView.swift in Sources */,
+				812C9A312BF2007B00175FA3 /* BNSLinkSuccessVC.swift in Sources */,
 				6049BF032B60FF15003DD410 /* ChangeLogNewVC.swift in Sources */,
 				450DF2091E0DD2C6003D14BE /* UserNotificationsAdaptee.swift in Sources */,
 				C3548F0824456AB6009433A8 /* UIView+Wrapping.swift in Sources */,
@@ -5539,6 +5546,7 @@
 				812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
 				B8F5F71A25F1B35C003BF8D4 /* MediaPlaceholderView.swift in Sources */,
+				810EA2D42BF3228C00642ED6 /* LinkBNSVC.swift in Sources */,
 				341341EF2187467A00192D59 /* ConversationViewModel.m in Sources */,
 				4C21D5D8223AC60F00EF8A77 /* PhotoCapture.swift in Sources */,
 				6098CA7E2A1DCD44005A5502 /* Decimal + Ext.swift in Sources */,
