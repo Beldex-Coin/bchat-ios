@@ -610,6 +610,16 @@ class NewPasswordVC: BaseVC {
             self.nextButton.isHidden = true
         }
         
+        if self.isGoingNewRestoreSeedVC && self.isCreatePassword {
+            self.nextButton.isHidden = true
+        }
+        
+        if self.isGoingHome && self.isCreatePassword {
+            self.nextButton.isHidden = true
+        }
+        
+       
+        
     }
     
     
@@ -637,6 +647,7 @@ class NewPasswordVC: BaseVC {
                     secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
                     fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    self.nextButton.isHidden = true
                     return
                     
                 } else {
@@ -1197,6 +1208,58 @@ class NewPasswordVC: BaseVC {
                             nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
                             return
                         }
+                    }
+                    
+                    
+                    if self.isGoingNewRestoreSeedVC && self.isCreatePassword {
+                        self.nextButton.isHidden = false
+                        isPasswordEnterFirstTime = true
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        self.pinLabel.text = "Re-Enter your PIN"
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        return
+                    }
+                    
+                    if self.isGoingHome && self.isCreatePassword {
+                        self.nextButton.isHidden = false
+                        isPasswordEnterFirstTime = true
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        self.pinLabel.text = "Re-Enter your PIN"
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        return
+                    }
+                    
+                    if self.isGoingBack && self.isCreatePassword && !isChangePassword {
+                        self.nextButton.isHidden = false
+                        isPasswordEnterFirstTime = true
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        self.pinLabel.text = "Re-Enter your PIN"
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        return
                     }
                     
                     

@@ -132,40 +132,32 @@ class LinkBNSVC: BaseVC {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(verifyButton)
         
+        bchatIdLabel.text = "bxcALKJHSakhdsadhaskdhHHHDJADHUAWasasgjhrewrb6asdnkawo…"
         
         NSLayoutConstraint.activate([
-            
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            
             bchatIdTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             bchatIdTitleLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 25),
-            
             bchatIdLabel.topAnchor.constraint(equalTo: bchatIdTitleLabel.bottomAnchor, constant: 6),
             bchatIdLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             bchatIdLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -15),
-            
             bnsNameTitleLabel.topAnchor.constraint(equalTo: bchatIdLabel.bottomAnchor, constant: 13),
             bnsNameTitleLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
-            
             bnsNameTextField.topAnchor.constraint(equalTo: bnsNameTitleLabel.bottomAnchor, constant: 9),
             bnsNameTextField.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             bnsNameTextField.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -15),
-            
+            bnsNameTextField.heightAnchor.constraint(equalToConstant: 50),
             buttonStackView.topAnchor.constraint(equalTo: bnsNameTextField.bottomAnchor, constant: 23),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
-            
             linkButton.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 13),
             linkButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             linkButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             linkButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -22),
-            
-            
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
             verifyButton.heightAnchor.constraint(equalToConstant: 52),
             linkButton.heightAnchor.constraint(equalToConstant: 52),
@@ -182,6 +174,41 @@ class LinkBNSVC: BaseVC {
     }
     
     @objc private func verifyButtonTapped(_ sender: UIButton) {
+        
+        // Red
+        bnsNameTextField.layer.borderWidth = 1
+        bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
+        
+        // Green
+        bnsNameTextField.layer.borderWidth = 1
+        bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
+        
+        // No Border
+        bnsNameTextField.layer.borderWidth = 0
+        bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
+        
+        
+        // link button disable color
+        linkButton.backgroundColor = Colors.cellGroundColor2
+        linkButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        
+        // link button enable color
+        linkButton.backgroundColor = Colors.bothGreenColor
+        linkButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        
+        // Verify Button Border & White Title Color
+        verifyButton.layer.borderWidth = 1
+        verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+        verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        verifyButton.setTitle("Verify", for: .normal)
+        
+        // Verify Button Image & Green Title
+        verifyButton.setTitleColor(Colors.bothGreenColor, for: .normal)
+        verifyButton.setTitle("Verified", for: .normal)
+        let image = UIImage(named: "ic_verified_new")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+        verifyButton.setImage(image, for: .normal)
+        verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+        verifyButton.semanticContentAttribute = .forceRightToLeft
        
     }
     
