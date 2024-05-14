@@ -1308,7 +1308,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }else{
                 isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
             }
-        }else {
+        } else {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency.uppercased()
             if mainBalance.isEmpty {
                 let fullblnce = "0.00"
@@ -1316,7 +1316,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let cs = CharacterSet.init(charactersIn: "-")
                 str = str.trimmingCharacters(in: cs)
                 isCurrencyResultLabel.text = "\(str)"
-            }else{
+            } else{
                 if currencyValue != nil {
                     isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
                 }

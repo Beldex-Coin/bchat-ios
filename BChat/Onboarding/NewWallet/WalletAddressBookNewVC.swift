@@ -123,6 +123,10 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Address Book"
         
+        let rightBarItem = UIBarButtonItem(image: UIImage(named: "add_address")!, style: .plain, target: self, action: #selector(addAddressBookAction))
+        let rightBarButtonItems = [rightBarItem]
+        navigationItem.rightBarButtonItems = rightBarButtonItems
+        
         view.addSubview(searchTextField)
         view.addSubview(backgroundView)
         backgroundView.addSubview(tableView)
@@ -283,7 +287,15 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         noContactsTitleLabel.layer.cornerRadius = noContactsTitleLabel.frame.height/2
     }
     
-    // MARK: - Navigation
+    // MARK: - Add address book
+    
+    @objc func addAddressBookAction () {
+//        let vc = WalletSettingsNewVC()
+//        navigationController!.pushViewController(vc, animated: true)
+    }
+    
+    // MARK: - UITextField delegates
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
