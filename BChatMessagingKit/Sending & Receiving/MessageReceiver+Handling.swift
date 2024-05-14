@@ -537,13 +537,13 @@ extension MessageReceiver {
     // MARK: - Closed Groups
     public static func handleClosedGroupControlMessage(_ message: ClosedGroupControlMessage, using transaction: Any) {
         switch message.kind! {
-        case .new: handleNewClosedGroup(message, using: transaction)
-        case .encryptionKeyPair: handleClosedGroupEncryptionKeyPair(message, using: transaction)
-        case .nameChange: handleClosedGroupNameChanged(message, using: transaction)
-        case .membersAdded: handleClosedGroupMembersAdded(message, using: transaction)
-        case .membersRemoved: handleClosedGroupMembersRemoved(message, using: transaction)
-        case .memberLeft: handleClosedGroupMemberLeft(message, using: transaction)
-        case .encryptionKeyPairRequest: handleClosedGroupEncryptionKeyPairRequest(message, using: transaction) // Currently not used
+            case .new: handleNewClosedGroup(message, using: transaction)
+            case .encryptionKeyPair: handleClosedGroupEncryptionKeyPair(message, using: transaction)
+            case .nameChange: handleClosedGroupNameChanged(message, using: transaction)
+            case .membersAdded: handleClosedGroupMembersAdded(message, using: transaction)
+            case .membersRemoved: handleClosedGroupMembersRemoved(message, using: transaction)
+            case .memberLeft: handleClosedGroupMemberLeft(message, using: transaction)
+            case .encryptionKeyPairRequest: handleClosedGroupEncryptionKeyPairRequest(message, using: transaction) // Currently not used
         }
     }
     

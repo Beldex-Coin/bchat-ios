@@ -188,7 +188,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         result.textAlignment = .center
         if isNavigationBarHideInChatNewVC == true {
             result.isUserInteractionEnabled = false
-        }else {
+        } else {
 //            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
 //            rightImageView.contentMode = .center
 //            let imageWidth = 14.0

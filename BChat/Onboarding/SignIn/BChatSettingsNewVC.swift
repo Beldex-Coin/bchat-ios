@@ -98,14 +98,14 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if isScreenLockEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(screenLockSwitchValueChanged(_:)), for: .valueChanged)
                 return cell
-            }else if indexPath.row == 1 && OWSScreenLock.shared.isScreenLockEnabled(){
+            } else if indexPath.row == 1 && OWSScreenLock.shared.isScreenLockEnabled(){
                 let cell = ScreenLockTableCell(style: .default, reuseIdentifier: "ScreenLockTableCell")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
@@ -115,7 +115,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.resultTitleLabel.text = screenLockTimeoutString
                 
                 return cell
-            }else {
+            } else {
                 let cell = BChatSettingsTableCell2(style: .default, reuseIdentifier: "BChatSettingsTableCell2")
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -131,7 +131,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if isScreenSecurityEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
@@ -139,7 +139,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(disablePreviewInAppSwitcherSwitchValueChanged(_:)), for: .valueChanged)
                 return cell
             }
-        }else if indexPath.section == 1 {
+        } else if indexPath.section == 1 {
             let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
@@ -156,13 +156,13 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if areWalletEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
                 cell.toggleSwitch.tag = indexPath.row
                 cell.toggleSwitch.addTarget(self, action: #selector(startWalletSwitchValueChanged(_:)), for: .valueChanged)
-            }else{
+            } else {
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
                 let logoImage = isLightMode ? "ic_payAsUChat_dark" : "ic_payAsUChat_white"
@@ -175,18 +175,18 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     if isPayAsYouChatEnabled{
                         cell.toggleSwitch.isOn = true
                         cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                    }else {
+                    } else {
                         cell.toggleSwitch.isOn = false
                         cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                     }
                     cell.toggleSwitch.tag = indexPath.row
                     cell.toggleSwitch.addTarget(self, action: #selector(payAsYouChatSwitchValueChanged(_:)), for: .valueChanged)
-                }else {
+                } else {
                     cell.toggleSwitch.isEnabled = false
                 }
             }
             return cell
-        }else {
+        } else {
             let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
@@ -203,7 +203,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if areReadReceiptsEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
@@ -218,7 +218,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if areTypingIndicatorsEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
@@ -233,7 +233,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if areLinkPreviewsEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
@@ -248,7 +248,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 if areCallsEnabled{
                     cell.toggleSwitch.isOn = true
                     cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                }else {
+                } else {
                     cell.toggleSwitch.isOn = false
                     cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                 }
@@ -292,7 +292,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
-        if indexPath.section == 2{
+        if indexPath.section == 2 {
             if indexPath.row == 4 { // Clear Conversation History
                 let alert = UIAlertController(
                     title: nil,
@@ -339,9 +339,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return UITableView.automaticDimension
-        }else if indexPath.section == 1 {
+        } else if indexPath.section == 1 {
             return UITableView.automaticDimension
-        }else {
+        } else {
             return UITableView.automaticDimension
         }
     }
@@ -349,9 +349,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Screen Lock
     @objc func screenLockSwitchValueChanged(_ sender: UISwitch) {
         let shouldBeEnabled = sender.isOn
-        if (sender.isOn){
+        if (sender.isOn) {
             sender.thumbTintColor = Colors.bothGreenColor
-        }else{
+        } else {
             sender.thumbTintColor = Colors.switchOffBackgroundColor
         }
         if shouldBeEnabled == OWSScreenLock.shared.isScreenLockEnabled() {
@@ -365,9 +365,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Disable Preview in App Switcher
     @objc func disablePreviewInAppSwitcherSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
-        if (sender.isOn){
+        if (sender.isOn) {
             sender.thumbTintColor = Colors.bothGreenColor
-        }else{
+        } else {
             sender.thumbTintColor = Colors.switchOffBackgroundColor
         }
         print("toggled screen security: \(isEnabled ? "true" : "false")")
@@ -376,9 +376,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     // Start Wallet
     @objc func startWalletSwitchValueChanged(_ sender: UISwitch) {
         let isEnabled = sender.isOn
-        if (sender.isOn){
+        if (sender.isOn) {
             sender.thumbTintColor = Colors.bothGreenColor
-        }else{
+        } else {
             sender.thumbTintColor = Colors.switchOffBackgroundColor
         }
         print("toggled to: \(isEnabled ? "true" : "false")")
@@ -387,9 +387,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     // Pay As You Chat
     @objc func payAsYouChatSwitchValueChanged(_ sender: UISwitch) {
-        if (sender.isOn){
+        if (sender.isOn) {
             sender.thumbTintColor = Colors.bothGreenColor
-        }else{
+        } else {
             sender.thumbTintColor = Colors.switchOffBackgroundColor
         }
         let prefs = UserDefaults.standard

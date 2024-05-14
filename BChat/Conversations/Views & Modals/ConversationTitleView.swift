@@ -155,9 +155,9 @@ final class ConversationTitleView : UIView {
     }
 }
 
-// MARK: Delegate
-protocol ConversationTitleViewDelegate : AnyObject {
-    
+// MARK: - ConversationTitleViewDelegate
+
+protocol ConversationTitleViewDelegate: AnyObject {
     func handleTitleViewTapped()
 }
 

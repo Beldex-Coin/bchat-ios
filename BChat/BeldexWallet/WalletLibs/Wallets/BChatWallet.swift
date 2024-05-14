@@ -147,9 +147,11 @@ public class BDXWallet {
     public func disposeTransaction() {
         walletWrapper.disposeTransaction()
     }
+    
     public func txid() -> String {
         return walletWrapper.transactionHash()
     }
+    
     public func feevalue() -> UInt64 {
         return UInt64(walletWrapper.transactionFee())
     }
