@@ -98,7 +98,15 @@ class SlideMenuVC: BaseVC ,UITableViewDelegate,UITableViewDataSource {
             cell.selectionStyle = .none
             cell.contentView.backgroundColor = Colors.cancelButtonBackgroundColor
             cell.v1.backgroundColor = Colors.cellGroundColor3
-            cell.lblname.text = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            let name = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: .whitespacesAndNewlines)
+            // Using capitalized property
+            if let capitalizedFirstName = name?.capitalized {
+                cell.lblname.text = capitalizedFirstName
+            }
+            // OR using capitalizingFirstLetter() method
+            if let firstLetterCapitalized = name?.firstCharacterUpperCase() {
+                cell.lblname.text = firstLetterCapitalized
+            }
             cell.lblIDName.text = "ID: \(getUserHexEncodedPublicKey())"
             cell.lblname.textColor = Colors.titleColor
             cell.lblIDName.textColor = Colors.noDataLabelColor
