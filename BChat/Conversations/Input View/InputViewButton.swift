@@ -3,7 +3,7 @@ import UIKit
 final class InputViewButton : UIView {
     private let icon: UIImage
     private let isSendButton: Bool
-    private let isAudioButton: Bool
+//    private let isAudioButton: Bool
     private weak var delegate: InputViewButtonDelegate?
     private let hasOpaqueBackground: Bool
     private lazy var widthConstraint = set(.width, to: InputViewButton.size)
@@ -16,20 +16,20 @@ final class InputViewButton : UIView {
     private lazy var backgroundView = UIView()
     
     // MARK: Settings
-    static let size = CGFloat(40)
+    static let size = CGFloat(48)
     static let circularSize = CGFloat(33)
     static let expandedSize = CGFloat(48)
     static let expandedNewSize = CGFloat(15)
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
-    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false, isAudioButton: Bool = false) {
+    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false) {
         self.icon = icon
         self.isSendButton = isSendButton
         self.delegate = delegate
         self.hasOpaqueBackground = hasOpaqueBackground
         self.isPayButton = isPayButton
-        self.isAudioButton = isAudioButton
+//        self.isAudioButton = isAudioButton
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         self.isAccessibilityElement = true
@@ -61,7 +61,7 @@ final class InputViewButton : UIView {
         backgroundView.backgroundColor = isSendButton ? Colors.bothGreenColor : UIColor.clear//Colors.accent : UIColor.clear
         addSubview(backgroundView)
         backgroundView.pin(to: self)
-        layer.cornerRadius = isSendButton ? 20 : 20//isSendButton ? 20 : 6
+        layer.cornerRadius = isSendButton ? 24 : 24//isSendButton ? 20 : 6
         layer.masksToBounds = true
         isUserInteractionEnabled = true
         widthConstraint.isActive = true
@@ -73,13 +73,13 @@ final class InputViewButton : UIView {
         iconImageView.set(.width, to: iconSize)
         iconImageView.set(.height, to: iconSize)
         addSubview(iconImageView)
-        if isAudioButton {
-            iconImageView.pin(.left, to: .left, of: self)
-            iconImageView.pin(.top, to: .top, of: self, withInset: 10)
-        } else {
-            iconImageView.center(in: self)
-        }
-//        iconImageView.center(in: self)
+//        if isAudioButton {
+//            iconImageView.pin(.left, to: .left, of: self)
+//            iconImageView.pin(.top, to: .top, of: self, withInset: 10)
+//        } else {
+//            iconImageView.center(in: self)
+//        }
+        iconImageView.center(in: self)
         
     }
     
@@ -91,7 +91,7 @@ final class InputViewButton : UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
             self.frame = frame
-            self.layer.cornerRadius = self.isSendButton ? 20 : 20//self.isSendButton ? 20 : 7
+            self.layer.cornerRadius = self.isSendButton ? 24 : 24//self.isSendButton ? 20 : 7
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, radius: isLightMode ? 4 : 6)
             self.setCircularGlow(with: glowConfiguration)
             self.backgroundView.backgroundColor = backgroundColor

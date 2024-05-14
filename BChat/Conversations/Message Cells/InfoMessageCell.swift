@@ -10,7 +10,7 @@ final class InfoMessageCell : MessageCell {
         let result = UILabel()
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
-        result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
@@ -67,6 +67,7 @@ final class InfoMessageCell : MessageCell {
         iconImageViewHeightConstraint.constant = (icon != nil) ? InfoMessageCell.iconSize : 0
         Storage.read { transaction in
             self.label.text = message.previewText(with: transaction)
+            print("--------->",message.previewText(with: transaction))
         }
     }
 }
