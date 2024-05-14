@@ -14,6 +14,20 @@ extension UILabel {
     }
 }
 
+extension UILabel {
+    var spacing: CGFloat {
+        get {return 0}
+        set {
+            let textAlignment = self.textAlignment
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineHeightMultiple = newValue
+            let attributedString = NSAttributedString(string: self.text ?? "", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+            self.attributedText = attributedString
+            self.textAlignment = textAlignment
+        }
+    }
+}
+
 class PaddingLabel: UILabel {
     var textEdgeInsets = UIEdgeInsets.zero {
         didSet { invalidateIntrinsicContentSize() }

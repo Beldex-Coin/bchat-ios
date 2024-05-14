@@ -256,7 +256,6 @@ class LandingNewVC: BaseVC {
     @objc private func isCreateButtonAction() {
         if isFlagValue == true {
             let vc = DisplayNameNewVC()
-            navigationflowTag = false
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Terms_Condition_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
@@ -266,7 +265,6 @@ class LandingNewVC: BaseVC {
     
     @objc private func isRestoreButtonAction() {
         let restoreVC = RestoreSeedNewVC()
-        navigationflowTag = true
         navigationController!.pushViewController(restoreVC, animated: true)
     }
 }

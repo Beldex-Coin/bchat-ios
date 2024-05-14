@@ -249,7 +249,6 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
                     mnemonicTextView.resignFirstResponder()
                     Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
                         let restoreNameVC = RestoreNameVC()
-                        navigationflowTag = true
                         self.isFromRestoreButton.isUserInteractionEnabled = true
                         restoreNameVC.seedPassing = self.mnemonicTextView.text!.lowercased()
                         self.navigationController!.pushViewController(restoreNameVC, animated: true)

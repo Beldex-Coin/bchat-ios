@@ -125,6 +125,7 @@ NSString *const ReportedApplicationStateDidChangeNotification = @"ReportedApplic
     [DDLog flushLog];
 
     [NSNotificationCenter.defaultCenter postNotificationName:OWSApplicationWillResignActiveNotification object:nil];
+    [NSNotificationCenter.defaultCenter postNotificationName:@"cancelVoiceMessageRecordingWhenDeviceLock" object:nil];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

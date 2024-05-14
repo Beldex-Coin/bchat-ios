@@ -294,25 +294,4 @@ class EnableWalletVC: BaseVC {
    
 }
 
-extension UILabel {
-    var spacing: CGFloat {
-        get {return 0}
-        set {
-            let textAlignment = self.textAlignment
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineHeightMultiple = newValue
-            let attributedString = NSAttributedString(string: self.text ?? "", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
-            self.attributedText = attributedString
-            self.textAlignment = textAlignment
-        }
-    }
-}
 
-public extension String {
-    func setColor(_ color: UIColor, ofSubstring substring: String) -> NSMutableAttributedString {
-        let range = (self as NSString).range(of: substring)
-        let attributedString = NSMutableAttributedString(string: self)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
-        return attributedString
-    }
-}

@@ -109,9 +109,17 @@ class HomeTableViewCell: UITableViewCell {
         return result
     }()
     
+    lazy var separatorLineView: UIView = {
+       let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = Colors.separatorHomeTableViewCellColor
+       return View
+   }()
+    
     func setUPLayout() {
         contentView.addSubview(backGroundView)
         contentView.addSubview(pinImageView)
+        contentView.addSubview(separatorLineView)
         pinImageView.image = UIImage(named: "ic_pinned")
         backGroundView.addSubViews(iconImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
@@ -152,6 +160,12 @@ class HomeTableViewCell: UITableViewCell {
             messageCountAndDateStackView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 15),
             messageCountAndDateStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
             messageCountAndDateStackView.widthAnchor.constraint(equalToConstant: 56),
+            
+            separatorLineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            separatorLineView.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            separatorLineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            separatorLineView.heightAnchor.constraint(equalToConstant: 1),
+            
         ])
     }
     
@@ -252,15 +266,20 @@ class HomeTableViewCell: UITableViewCell {
 //        isPinnedIcon.isHidden = !threadViewModel.isPinned
         messageCountLabel.isHidden = !threadViewModel.hasUnreadMessages
         backgroundColor = .clear
+//        backGroundView.layer.borderWidth = 1
         if !messageCountLabel.isHidden {
             backGroundView.backgroundColor = Colors.cellGroundColor3
+//            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
         } else {
             backGroundView.backgroundColor = .clear
+//            backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         }
-        
+//        backGroundView.layer.borderWidth = 1
+//        backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         pinImageView.isHidden = true
         if threadViewModel.isPinned {
             backGroundView.backgroundColor = Colors.cellGroundColor3
+//            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
             pinImageView.isHidden = false
         }
         

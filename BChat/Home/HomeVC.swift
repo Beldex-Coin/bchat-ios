@@ -1294,7 +1294,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let conversationVC = ConversationVC(thread: thread)
         conversationVC.isSyncingStatus = syncedflag
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = 0.4
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
@@ -1362,8 +1362,11 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
-        let RightVC = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LeftMenuNavigationController") as! SideMenuNavigationController
-        SideMenuManager.default.leftMenuNavigationController = RightVC
+        let menu = SideMenuNavigationController(rootViewController: SideMenuVC())
+        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let minimumSize = min(appScreenRect.width, appScreenRect.height)
+        menu.menuWidth = round(minimumSize * 0.80)
+        SideMenuManager.default.leftMenuNavigationController = menu
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
