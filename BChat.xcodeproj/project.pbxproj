@@ -306,6 +306,7 @@
 		81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */; };
 		8113C48E2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */; };
 		8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */; };
+		8114932E2BF483000087B74B /* NewIncomingCallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114932D2BF483000087B74B /* NewIncomingCallVC.swift */; };
 		81179E592BDA0A8E00B5C820 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81179E582BDA0A8E00B5C820 /* SideMenuVC.swift */; };
 		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
 		8122EE532BC8F5D70083AD6B /* MissedCallPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */; };
@@ -1423,6 +1424,7 @@
 		81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecoverySeedVC.swift; sourceTree = "<group>"; };
 		8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptMessageRequestPopUp.swift; sourceTree = "<group>"; };
 		8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeListVC.swift; sourceTree = "<group>"; };
+		8114932D2BF483000087B74B /* NewIncomingCallVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIncomingCallVC.swift; sourceTree = "<group>"; };
 		81179E582BDA0A8E00B5C820 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
 		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
 		8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedCallPopUp.swift; sourceTree = "<group>"; };
@@ -2767,6 +2769,7 @@
 				8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */,
 				810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */,
 				812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */,
+				8114932D2BF483000087B74B /* NewIncomingCallVC.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5468,6 +5471,7 @@
 				34B0796D1FCF46B100E248C2 /* MainAppContext.m in Sources */,
 				6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */,
 				8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */,
+				8114932E2BF483000087B74B /* NewIncomingCallVC.swift in Sources */,
 				34A8B3512190A40E00218A25 /* MediaAlbumView.swift in Sources */,
 				7B7CB18B270591630079FF93 /* ShareLogsModal.swift in Sources */,
 				4C4AEC4520EC343B0020E72B /* DismissableTextField.swift in Sources */,

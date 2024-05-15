@@ -164,7 +164,6 @@ final class CallMessageCellNew : MessageCell {
         return stackView
     }()
     
-    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.offWhiteColor
@@ -185,16 +184,13 @@ final class CallMessageCellNew : MessageCell {
     
     private lazy var iconImageView: UIImageView = {
         let result = UIImageView()
-        result.image = UIImage(named: "call_outgoing")
+        result.image = UIImage(named: "call_outgoing") //call_incoming  //call_missed
         result.set(.width, to: 28)
         result.set(.height, to: 28)
         result.layer.masksToBounds = true
         result.contentMode = .scaleAspectFit
         return result
     }()
-    
-    
-    
     
     private lazy var timeLabel: UILabel = {
         let result = UILabel()
@@ -215,6 +211,9 @@ final class CallMessageCellNew : MessageCell {
         mainBackGroundView.addSubViews(smallBackGroundView, timeLabel)
         smallBackGroundView.addSubViews(iconImageView, titleLabel, discriptionLabel)
         
+        
+        discriptionLabel.isHidden = true
+        
         NSLayoutConstraint.activate([
 //            mainBackGroundView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
@@ -234,16 +233,20 @@ final class CallMessageCellNew : MessageCell {
             iconImageView.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 6),
             iconImageView.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -7),
             
-            titleLabel.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 5),
+            
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: smallBackGroundView.trailingAnchor, constant: -18),
-            
-            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 1),
-            discriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            discriptionLabel.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -6)
+            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
+                        
             
             
+//            titleLabel.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 5),
+//            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+//            titleLabel.trailingAnchor.constraint(equalTo: smallBackGroundView.trailingAnchor, constant: -18),
             
+//            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 1),
+//            discriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+//            discriptionLabel.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -6),
             
         ])
         
