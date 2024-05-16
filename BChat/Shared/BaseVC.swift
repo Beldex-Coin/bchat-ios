@@ -26,15 +26,23 @@ class BaseVC : UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppModeChangedNotification(_:)), name: .appModeChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive(_:)), name: .OWSApplicationDidBecomeActive, object: nil)
+        
+        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func resignKeyboard() {
+        view.endEditing(true)
     }
     
     internal func ensureWindowBackground() {
         let appMode = AppModeManager.shared.currentAppMode
         switch appMode {
-        case .light:
-            UIApplication.shared.delegate?.window??.backgroundColor = .white
-        case .dark:
-            UIApplication.shared.delegate?.window??.backgroundColor = .black
+            case .light:
+                UIApplication.shared.delegate?.window??.backgroundColor = .white
+            case .dark:
+                UIApplication.shared.delegate?.window??.backgroundColor = .black
         }
     }
 

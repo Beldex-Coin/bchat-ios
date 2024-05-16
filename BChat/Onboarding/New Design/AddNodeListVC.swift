@@ -224,7 +224,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
-            view.addGestureRecognizer(tap)
+        view.addGestureRecognizer(tap)
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),

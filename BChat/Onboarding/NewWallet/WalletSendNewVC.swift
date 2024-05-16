@@ -479,17 +479,17 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             self.beldexAddressTextview.text = ""
         }
     }
-    override func viewWillAppear(_ animated: Bool){
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.saveReceipeinetAddressOnAndOff()
-        if backAPI == true{
+        if backAPI == true {
             self.beldexAmountTextField.text = ""
             self.beldexAddressTextview.text = ""
             placeholderLabel?.isHidden = !beldexAddressTextview.text.isEmpty
             if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
                 self.currencyName = SaveUserDefaultsData.SelectedCurrency
                 isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
-            }else {
+            } else {
                 isCurrencyResultTitleLabel.text = "0.00 USD"
             }
             paymentIDImg.isHidden = true
@@ -603,9 +603,9 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
             reloadData([:])
-        }else if beldexAmountTextField.text == "." {
+        } else if beldexAmountTextField.text == "." {
             // print("---dot value entry----")
-        }else {
+        } else {
             self.bdxCurrencyValue = beldexAmountTextField.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
@@ -619,9 +619,9 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         if beldexAmountTextField.text!.count == 0 {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
-        }else if beldexAmountTextField.text == "." {
+        } else if beldexAmountTextField.text == "." {
             // print("---dot value entry----")
-        }else {
+        } else {
             self.bdxCurrencyValue = beldexAmountTextField.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
@@ -654,10 +654,10 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
             SELF.marketsDataRequest = nil
             if showHUD { SELF.loadingState.newState(false) }
             switch resp.result {
-            case .failure(_): break
-                //   HUD.showError(error.localizedDescription)
-            case .success(let value):
-                SELF.reloadData(value as? [String: [String: Any]] ?? [:])
+                case .failure(_): break
+                    //   HUD.showError(error.localizedDescription)
+                case .success(let value):
+                    SELF.reloadData(value as? [String: [String: Any]] ?? [:])
             }
             let endTime = CFAbsoluteTimeGetCurrent()
             let requestDuration = endTime - startTime
@@ -684,7 +684,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64("\(height[1])")!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     wallet.start()
@@ -712,7 +712,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
                 vc.feeValue = self.feeValue
                 self.present(vc, animated: true, completion: nil)
             }
-        }else {
+        } else {
             self.dismiss(animated: true)
             DispatchQueue.main.async {
                 let errMsg = wallet.commitPendingTransactionError()
@@ -727,14 +727,14 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     }
     
     // MARK: - Navigation
-    @objc func isFromMaxButtonTapped(_ sender: UIButton){
+    @objc func isFromMaxButtonTapped(_ sender: UIButton) {
         beldexAmountTextField.text! = mainBalance
     }
-    @objc func isFromAddressBookButtonTapped(_ sender: UIButton){
+    @objc func isFromAddressBookButtonTapped(_ sender: UIButton) {
         let vc = WalletAddressBookNewVC()
         navigationController!.pushViewController(vc, animated: true)
     }
-    @objc func isFromScanOptionButtonTapped(_ sender: UIButton){
+    @objc func isFromScanOptionButtonTapped(_ sender: UIButton) {
         let vc = ScanNewVC()
         vc.isFromWallet = true
         vc.wallet = self.wallet
@@ -742,28 +742,27 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         navigationController!.pushViewController(vc, animated: true)
     }
     //send Transation Button Tapped 11
-    @objc func sendButtonTapped(_ sender: UIButton){
+    @objc func sendButtonTapped(_ sender: UIButton) {
         if beldexAddressTextview.text!.isEmpty || beldexAmountTextField.text!.isEmpty {
             let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
-        }else if ((beldexAddressTextview.text.count > 106 || beldexAddressTextview.text.count < 95) && beldexAddressTextview.text.suffix(4).lowercased() != ".bdx") {
+        } else if ((beldexAddressTextview.text.count > 106 || beldexAddressTextview.text.count < 95) && beldexAddressTextview.text.suffix(4).lowercased() != ".bdx") {
             let alert = UIAlertController(title: "My Wallet", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
-        }else {
+        } else {
             let indexOfString = beldexAmountTextField.text!
             let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
             if beldexAmountTextField.text?.count == 0 {
                 let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
-            }
-            else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count > 16 || beldexAmountTextField.text![lastString] == "." {
+            } else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count > 16 || beldexAmountTextField.text![lastString] == "." {
                 let alert = UIAlertController(title: "My Wallet", message: "Pls Enter Proper amount", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
-            }else {
+            } else {
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                     self.finalWalletAddress = self.beldexAddressTextview.text!
                     self.finalWalletAmount = self.beldexAmountTextField.text!
@@ -793,7 +792,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
                         hashArray = UserDefaults.standard.domainSchemas
                         hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                         UserDefaults.standard.domainSchemas = hashArray
-                    }else {
+                    } else {
                         hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                         UserDefaults.standard.domainSchemas = hashArray
                     }

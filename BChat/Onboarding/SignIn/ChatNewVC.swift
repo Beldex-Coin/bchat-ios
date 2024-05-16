@@ -207,7 +207,7 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             letsBChatButton.backgroundColor = Colors.backgroundViewColor
             letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
             chatIdTextView.checkPlaceholderChatNew()
-        }else {
+        } else {
             letsBChatButton.isUserInteractionEnabled = true
             letsBChatButton.backgroundColor = Colors.greenColor
             letsBChatButton.setTitleColor(.white, for: .normal)

@@ -856,7 +856,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "My Wallet"
         
-        let leftBarItem = UIBarButtonItem(image: UIImage(named: "NavBarBack")!, style: .plain, target: self, action: #selector(isGoingToBChatHomeScreen))
+        let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysTemplate)
+        let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(isGoingToBChatHomeScreen))
         navigationItem.leftBarButtonItem = leftBarItem
         
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "icsettings1_New")!, style: .plain, target: self, action: #selector(settingsOptionTapped))

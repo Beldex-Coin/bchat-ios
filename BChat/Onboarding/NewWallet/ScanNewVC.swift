@@ -94,8 +94,6 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         if isFromWallet == true {
             scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
         }
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -196,6 +194,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             imagePicker.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
         }
     }
+    
     func openCamera(_ sourceType: UIImagePickerController.SourceType) {
         imagePicker.sourceType = sourceType
         self.present(imagePicker, animated: true, completion: nil)
@@ -288,7 +287,7 @@ extension ScanNewVC: QRScannerViewDelegate {
             }
             vc.mainBalance = mainBalanceForScan
             navigationController!.pushViewController(vc, animated: true)
-        }else{ // new Chat QR Code Scanning
+        } else { // new Chat QR Code Scanning
             self.qrData = QRData(codeString: str)
             startNewDMIfPossible(with: str!)
         }
