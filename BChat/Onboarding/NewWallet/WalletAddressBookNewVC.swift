@@ -122,8 +122,7 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Address Book"
         
-        // FIXME: Need to update light mode and dark mode image for add address button icon
-        let rightBarItemImage = "add_address" //isLightMode ? "" : "add_address"
+        let rightBarItemImage = isLightMode ? "add_address_light" : "add_address_dark"
         let rightBarItem = UIBarButtonItem(image: UIImage(named: rightBarItemImage)!, style: .plain, target: self, action: #selector(addAddressBookAction))
         let rightBarButtonItems = [rightBarItem]
         navigationItem.rightBarButtonItems = rightBarButtonItems

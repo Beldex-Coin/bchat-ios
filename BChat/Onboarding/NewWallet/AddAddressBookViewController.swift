@@ -22,7 +22,7 @@ class AddAddressBookViewController: BaseVC {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.textColor = .white
+        label.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
         label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,6 @@ class AddAddressBookViewController: BaseVC {
         let textField = UITextField()
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-//        textField.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         textField.font = Fonts.OpenSans(ofSize: 16)
         textField.layer.borderColor = Colors.borderColor.cgColor
         textField.backgroundColor = Colors.cellGroundColor2
@@ -43,6 +42,7 @@ class AddAddressBookViewController: BaseVC {
         textField.leftView = paddingView
         textField.leftViewMode = .always
         textField.placeholder = "Enter name"
+        textField.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
         return textField
     }()
     
@@ -50,7 +50,7 @@ class AddAddressBookViewController: BaseVC {
     private lazy var addressLabel: UILabel = {
         let label = UILabel()
         label.text = "Address"
-        label.textColor = .white
+        label.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
         label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +78,7 @@ class AddAddressBookViewController: BaseVC {
         textField.leftView = paddingView
         textField.leftViewMode = .always
         textField.placeholder = "Enter the address"
+        textField.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
         return textField
     }()
     
@@ -157,7 +158,7 @@ class AddAddressBookViewController: BaseVC {
             addressLabel.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
             addressLabel.heightAnchor.constraint(equalToConstant: 20),
             
-            addressContainerView.topAnchor.constraint(equalTo: addressLabel.topAnchor, constant: 40),
+            addressContainerView.topAnchor.constraint(equalTo: addressLabel.topAnchor, constant: 30),
             addressContainerView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 20),
             addressContainerView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
             addressContainerView.heightAnchor.constraint(equalToConstant: 60),
@@ -177,6 +178,26 @@ class AddAddressBookViewController: BaseVC {
             addAddressButton.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -35),
             addAddressButton.heightAnchor.constraint(equalToConstant: 60),
         ])
+    }
+    
+    /// View will appear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    /// View did appear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    /// View will disappear
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    /// View did disappear
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
     
     // MARK: - UIButton Actions
@@ -210,10 +231,11 @@ extension AddAddressBookViewController: UITextFieldDelegate {
         }
         
         if let oldString = textField.text {
+            // FIXME: need to check allow empty or not
             //donot allow empty spaces
-            if oldString.count == 0 && string.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
-                return false
-            }
+//            if oldString.count == 0 && string.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+//                return false
+//            }
             
             let newString = oldString.replacingCharacters(in: Range(range, in: oldString)!, with: string)
             if textField == nameTextField {
@@ -228,7 +250,7 @@ extension AddAddressBookViewController: UITextFieldDelegate {
         }
         
         if nameString.isEmpty || addressString.isEmpty {
-            addAddressButton.backgroundColor = Colors.backgroundViewColor //buttonDisableColor
+            addAddressButton.backgroundColor = Colors.backgroundViewColor
             addAddressButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
             addAddressButton.isUserInteractionEnabled = false
         } else {
