@@ -239,13 +239,3 @@ extension AddAddressBookViewController: UITextFieldDelegate {
         return true
     }
 }
-
-/*
- 
- guard let currentText = beldexAmountTextField.text else {
-     return true
- }
- // Calculate the future text if the user's input is accepted
- let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
- 
- */
