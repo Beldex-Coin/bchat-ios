@@ -4,7 +4,6 @@ import UIKit
 import BChatUIKit
 import BChatMessagingKit
 
-
 class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate {
     
     private lazy var searchTextField: UITextField = {
@@ -123,7 +122,9 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Address Book"
         
-        let rightBarItem = UIBarButtonItem(image: UIImage(named: "add_address")!, style: .plain, target: self, action: #selector(addAddressBookAction))
+        // FIXME: Need to update light mode and dark mode image for add address button icon
+        let rightBarItemImage = "add_address" //isLightMode ? "" : "add_address"
+        let rightBarItem = UIBarButtonItem(image: UIImage(named: rightBarItemImage)!, style: .plain, target: self, action: #selector(addAddressBookAction))
         let rightBarButtonItems = [rightBarItem]
         navigationItem.rightBarButtonItems = rightBarButtonItems
         
@@ -290,8 +291,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     // MARK: - Add address book
     
     @objc func addAddressBookAction () {
-//        let vc = WalletSettingsNewVC()
-//        navigationController!.pushViewController(vc, animated: true)
+        let addAddressViewController = AddAddressBookViewController()
+        navigationController!.pushViewController(addAddressViewController, animated: true)
     }
     
     // MARK: - UITextField delegates
@@ -373,9 +374,9 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearched == true{
+        if isSearched == true {
             return searchfilterNameArray.count
-        }else {
+        } else {
             return filterBeldexAddressArray.count
         }
     }
@@ -400,13 +401,13 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             cell.shareButton.tag = indexPath.row
             cell.shareButton.addTarget(self, action: #selector(self.shareActionTapped(_:)), for: .touchUpInside)
             
-        }else{
+        } else{
             if isSearched == true{
                 let intIndex = indexPath.item
                 let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
                 cell.nameLabel.text = searchfilterNameArray.keys[index]
                 cell.addressIDLabel.text = searchfilterNameArray.values[index]
-            }else {
+            } else {
                 cell.nameLabel.text = filterContactNameArray[indexPath.item]
                 cell.addressIDLabel.text = filterBeldexAddressArray[indexPath.item]
             }
@@ -445,7 +446,7 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
                 let intIndex = x.tag!
                 let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
                 addressshare = searchfilterNameArray.values[index]
-            }else {
+            } else {
                 addressshare = filterBeldexAddressArray[indexPath.item]
             }
             NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
@@ -457,7 +458,9 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     
 }
 class AddressBookTableCell: UITableViewCell {
+    
     // MARK: - Properties
+    
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -506,6 +509,7 @@ class AddressBookTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

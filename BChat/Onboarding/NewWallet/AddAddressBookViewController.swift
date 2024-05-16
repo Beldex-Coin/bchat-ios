@@ -1,0 +1,171 @@
+// Copyright © 2024 Beldex International Limited OU. All rights reserved.
+
+import UIKit
+import BChatUIKit
+import BChatMessagingKit
+
+class AddAddressBookViewController: BaseVC {
+    
+    // MARK: - UIElements
+    
+    /// Background view
+    private lazy var backgroundView: UIView = {
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = Colors.viewBackgroundColorNew
+        containerView.layer.cornerRadius = 20
+        containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        return containerView
+    }()
+    
+    /// Name label
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Name"
+        label.textColor = .white
+        label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    /// Name text field
+    private lazy var nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+//        textField.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        textField.font = Fonts.OpenSans(ofSize: 16)
+        textField.layer.borderColor = Colors.borderColor.cgColor
+        textField.backgroundColor = Colors.cellGroundColor2
+        textField.layer.cornerRadius = 16
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: textField.frame.size.height))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        textField.placeholder = "Enter name"
+        return textField
+    }()
+    
+    /// Name label
+    private lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Address"
+        label.textColor = .white
+        label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    /// Address container view
+    private lazy var addressContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.cellGroundColor2
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
+    /// Name text field
+    private lazy var addressTextField: UITextField = {
+        let textField = UITextField()
+        textField.delegate = self
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = Fonts.OpenSans(ofSize: 16)
+        textField.backgroundColor = .clear
+        textField.layer.cornerRadius = 16
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: textField.frame.size.height))
+        textField.leftView = paddingView
+        textField.leftViewMode = .always
+        textField.placeholder = "Enter the address"
+        textField.backgroundColor = .red
+        return textField
+    }()
+    
+    /// Add address button
+    private lazy var addAddressButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("Add Address", comment: ""), for: .normal)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.backgroundViewColor
+        button.setTitleColor(Colors.buttonTextColor, for: .normal)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.addTarget(self, action: #selector(addAddressButtonAction(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = Colors.setUpScreenBackgroundColor
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "Add address"
+        
+        view.addSubview(backgroundView)
+        backgroundView.addSubview(nameLabel)
+        backgroundView.addSubview(nameTextField)
+        backgroundView.addSubview(addressLabel)
+        
+        backgroundView.addSubview(addressContainerView)
+        addressContainerView.addSubview(addressTextField)
+        backgroundView.addSubview(addAddressButton)
+        
+        addAddressButton.backgroundColor = Colors.cellGroundColor2
+        addAddressButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        
+        NSLayoutConstraint.activate([
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            
+            nameLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 30),
+            nameLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
+            nameLabel.heightAnchor.constraint(equalToConstant: 20),
+            
+            nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
+            nameTextField.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 20),
+            nameTextField.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
+            nameTextField.heightAnchor.constraint(equalToConstant: 60),
+            
+            addressLabel.topAnchor.constraint(equalTo: nameTextField.topAnchor, constant: 80),
+            addressLabel.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 20),
+            addressLabel.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
+            addressLabel.heightAnchor.constraint(equalToConstant: 20),
+            
+            addressContainerView.topAnchor.constraint(equalTo: addressLabel.topAnchor, constant: 40),
+            addressContainerView.leadingAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: 20),
+            addressContainerView.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
+            addressContainerView.heightAnchor.constraint(equalToConstant: 60),
+        
+            addressTextField.leadingAnchor.constraint(equalTo: addressContainerView.leadingAnchor, constant: 0),
+            addressTextField.trailingAnchor.constraint(equalTo: addressContainerView.trailingAnchor, constant: 0),
+            addressTextField.centerYAnchor.constraint(equalTo: addressContainerView.centerYAnchor),
+            addressTextField.heightAnchor.constraint(equalToConstant: 50),
+            
+            addAddressButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            addAddressButton.trailingAnchor.constraint(equalTo: backgroundView.trailingAnchor, constant: -20),
+            addAddressButton.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -35),
+            addAddressButton.heightAnchor.constraint(equalToConstant: 60),
+        ])
+    }
+    
+    // MARK: - UIButton Actions
+    
+    @objc private func addAddressButtonAction(_ sender: UIButton) {
+        
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension AddAddressBookViewController: UITextFieldDelegate {
+    
+    //addAddressButton.backgroundColor = Colors.bothGreenColor
+}

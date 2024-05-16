@@ -598,8 +598,6 @@ class NewPasswordVC: BaseVC {
             forthStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             zeroView.heightAnchor.constraint(equalToConstant: 60),
             
-            
-            
             nextButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
