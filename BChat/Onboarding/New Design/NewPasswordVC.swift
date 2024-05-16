@@ -5,8 +5,6 @@ import PromiseKit
 
 class NewPasswordVC: BaseVC {
     
-    
-    
     var isGoingHome = false
     var isGoingNewRestoreSeedVC = false
     var isGoingWallet = false

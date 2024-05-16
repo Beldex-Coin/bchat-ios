@@ -337,6 +337,18 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         }
         return true
     }
+    
+    // UITextFieldDelegate method to respond to the clear button action
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        // This method is called when the clear button is pressed
+        // You can perform any additional actions you need here
+        self.isSearched = false
+        self.searchTextField.text = ""
+        self.searchTextField.resignFirstResponder()
+        self.tableView.reloadData()
+        return true
+    }
+    
     // Predicate to filter data
     func getSearchArrayContains(_ text: String) {
         searchfilterNameArray = self.allFilterData.filter({ $0.key.lowercased().hasPrefix(text.lowercased()) })
@@ -358,16 +370,6 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             noSubAddressTitleLabel.isHidden = true
         }
     }
-    // UITextFieldDelegate method to respond to the clear button action
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        // This method is called when the clear button is pressed
-        // You can perform any additional actions you need here
-        self.isSearched = false
-        self.searchTextField.text = ""
-        self.searchTextField.resignFirstResponder()
-        self.tableView.reloadData()
-        return true
-    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -386,12 +388,12 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
         if flagSendAddress == false {
-            if isSearched == true{
+            if isSearched == true {
                 let intIndex = indexPath.row
                 let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
                 cell.nameLabel.text = searchfilterNameArray.keys[index]
                 cell.addressIDLabel.text = searchfilterNameArray.values[index]
-            }else {
+            } else {
                 cell.nameLabel.text = filterContactNameArray[indexPath.item]
                 cell.addressIDLabel.text = filterBeldexAddressArray[indexPath.item]
             }
@@ -402,7 +404,7 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             cell.shareButton.addTarget(self, action: #selector(self.shareActionTapped(_:)), for: .touchUpInside)
             
         } else{
-            if isSearched == true{
+            if isSearched == true {
                 let intIndex = indexPath.item
                 let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
                 cell.nameLabel.text = searchfilterNameArray.keys[index]
