@@ -174,7 +174,7 @@ final class CallMessageCellNew : MessageCell {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.offWhiteColor
+        result.textColor = Colors.titleColor5
         result.font = Fonts.boldOpenSans(ofSize: 11)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Voice call"
@@ -277,11 +277,14 @@ final class CallMessageCellNew : MessageCell {
             mainBackGroundView.backgroundColor = Colors.incomingMessageColor
             smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
             timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-            titleLabel.textColor = Colors.messageTimeLabelColor//Colors.text
+            let colorText = isLightMode ? UIColor(hex: 0x333333) : .white
+            titleLabel.textColor = colorText
         }else if message.callState.rawValue == 1 {//1 is outgoiing
             mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14).isActive = true
             mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
             mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            let colorText = isLightMode ? UIColor(hex: 0xEBEBEB) : .white
+            titleLabel.textColor = colorText
         }else {//2 is missed call
             mainBackGroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
             mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
@@ -289,7 +292,8 @@ final class CallMessageCellNew : MessageCell {
             mainBackGroundView.backgroundColor = Colors.incomingMessageColor
             smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
             timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-            titleLabel.textColor = Colors.messageTimeLabelColor//Colors.text
+            let colorText = isLightMode ? UIColor(hex: 0x333333) : .white
+            titleLabel.textColor = colorText
         }
         let icon: UIImage?
         let incomimglogoImage = isLightMode ? "call_incoming_new_white" : "call_incoming_new"
