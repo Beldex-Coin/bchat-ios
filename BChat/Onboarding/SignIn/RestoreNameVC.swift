@@ -226,8 +226,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
-        
-     
     }
     
     override func viewWillAppear(_ animated: Bool) {

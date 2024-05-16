@@ -5,8 +5,6 @@ import PromiseKit
 
 class NewPasswordVC: BaseVC {
     
-    
-    
     var isGoingHome = false
     var isGoingNewRestoreSeedVC = false
     var isGoingWallet = false
@@ -597,8 +595,6 @@ class NewPasswordVC: BaseVC {
             forthStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             forthStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             zeroView.heightAnchor.constraint(equalToConstant: 60),
-            
-            
             
             nextButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
