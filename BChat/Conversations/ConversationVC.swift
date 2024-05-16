@@ -286,6 +286,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     /// Automatically scroll to the bottom of the conversation when sending a message if the scroll distance from the bottom is less than this number.
     static let scrollToBottomMargin: CGFloat = 60
     
+    
+//    private var tableViewTopConstraint: NSLayoutConstraint!
+    
     // MARK: Lifecycle
     init(thread: TSThread, focusedMessageID: String? = nil) {
         self.thread = thread
@@ -625,6 +628,34 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }()
     
     
+    
+    lazy var callView: UIView = {
+        let result = UIView()
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.height, to: 32)
+        return result
+    }()
+    
+    private lazy var callInfoLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.bothWhiteColor
+        result.font = Fonts.semiOpenSans(ofSize: 10)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Tap to Return to the Call"
+        return result
+    }()
+    
+    private lazy var callIconImageView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "Outgoing_Call_top_banner")//Outgoing_Call_top_banner_decline
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Gradient
@@ -643,12 +674,25 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.addSubview(messagesTableView)
 //        messagesTableView.pin(to: view)
         messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
+//        tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14 + 43)
         messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
         messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
         messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
         
         messagesTableView.layer.cornerRadius = 20
         messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+//        view.addSubview(callView)
+//        callView.addSubViews(callInfoLabel, callIconImageView)
+//        callView.pin(.top, to: .top, of: view, withInset: 14)
+//        callView.pin(.left, to: .left, of: view, withInset: 0)
+//        callView.pin(.right, to: .right, of: view, withInset: 0)
+//        NSLayoutConstraint.activate([
+//            callInfoLabel.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
+//            callInfoLabel.leadingAnchor.constraint(equalTo: callView.leadingAnchor, constant: 16),
+//            callIconImageView.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
+//            callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
+//        ])
         
         // Blocked banner
         addOrRemoveBlockedBanner()
@@ -976,6 +1020,22 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+//            UIView.animate(withDuration: 1.0,
+//                           delay: 0.0,
+//                           usingSpringWithDamping: 0.9,
+//                           initialSpringVelocity: 1,
+//                           options: [],
+//                           animations: {
+//
+//                self.tableViewTopConstraint.isActive = false
+//                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14)
+//                self.callView.isHidden = true
+//
+//            }, completion: nil)
+//        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

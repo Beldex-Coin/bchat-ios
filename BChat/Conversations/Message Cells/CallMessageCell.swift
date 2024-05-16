@@ -140,3 +140,138 @@ final class CallMessageCell : MessageCell {
     }
 
 }
+
+
+
+final class CallMessageCellNew : MessageCell {
+    
+    override class var identifier: String { "CallMessageCellNew" }
+    
+    
+    private lazy var mainBackGroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.bothGreenColor
+        stackView.layer.cornerRadius = 22
+        return stackView
+    }()
+    
+    private lazy var smallBackGroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.darkGreenColor
+        stackView.layer.cornerRadius = 14
+        return stackView
+    }()
+    
+    private lazy var titleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.offWhiteColor
+        result.font = Fonts.boldOpenSans(ofSize: 11)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Voice call"
+        return result
+    }()
+    
+    private lazy var discriptionLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.offWhiteColor
+        result.font = Fonts.OpenSans(ofSize: 10)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "No answer"
+        return result
+    }()
+    
+    private lazy var iconImageView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "call_outgoing") //call_incoming  //call_missed
+        result.set(.width, to: 28)
+        result.set(.height, to: 28)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    private lazy var timeLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.offWhiteColor
+        result.font = Fonts.OpenSans(ofSize: 9)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "12:28 PM"
+        return result
+    }()
+    
+    
+    
+    // MARK: Lifecycle
+    override func setUpViewHierarchy() {
+        super.setUpViewHierarchy()
+        
+        addSubview(mainBackGroundView)
+        mainBackGroundView.addSubViews(smallBackGroundView, timeLabel)
+        smallBackGroundView.addSubViews(iconImageView, titleLabel, discriptionLabel)
+        
+        
+        discriptionLabel.isHidden = true
+        
+        NSLayoutConstraint.activate([
+//            mainBackGroundView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
+            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
+            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
+            
+            timeLabel.trailingAnchor.constraint(equalTo: mainBackGroundView.trailingAnchor, constant: -16),
+            timeLabel.bottomAnchor.constraint(equalTo: mainBackGroundView.bottomAnchor, constant: -7),
+            
+            smallBackGroundView.leadingAnchor.constraint(equalTo: mainBackGroundView.leadingAnchor, constant: 6),
+            smallBackGroundView.trailingAnchor.constraint(equalTo: mainBackGroundView.trailingAnchor, constant: -6),
+            smallBackGroundView.topAnchor.constraint(equalTo: mainBackGroundView.topAnchor, constant: 6),
+            smallBackGroundView.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -6),
+            
+            
+            iconImageView.leadingAnchor.constraint(equalTo: smallBackGroundView.leadingAnchor, constant: 6),
+            iconImageView.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 6),
+            iconImageView.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -7),
+            
+            
+            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(equalTo: smallBackGroundView.trailingAnchor, constant: -18),
+            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
+                        
+            
+            
+//            titleLabel.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 5),
+//            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+//            titleLabel.trailingAnchor.constraint(equalTo: smallBackGroundView.trailingAnchor, constant: -18),
+            
+//            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 1),
+//            discriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+//            discriptionLabel.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -6),
+            
+        ])
+        
+        
+    }
+    
+    
+    
+    override func setUpGestureRecognizers() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    // MARK: Updating
+    override func update() {
+        
+    }
+    
+    @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        let shouldBeTappable = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
+        if shouldBeTappable {
+            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
+        }
+    }
+
+}
