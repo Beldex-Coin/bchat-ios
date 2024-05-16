@@ -148,6 +148,7 @@ class HomeTableViewCell: UITableViewCell {
             
             nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
+            nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
             
             lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor),
             lastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),

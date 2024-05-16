@@ -456,7 +456,7 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
         view.addSubViews(backGroundView, backGroundViewTwo, backGroundViewThree, backGroundViewFour)
         
         backGroundView.addSubViews(profilePictureImageView, userNameLabel, bChatLabel, bChatIdLabel, copyBChatIdButton)
-        backGroundViewTwo.addSubViews(allMediaImageView, allMediaLabel, searchImageView, searchLabel, disappearingMessagesImageView, disappearingMessagesLabel, disappearingMessagesDiscriptionLabel, disappearingMessagesSwitch)
+        backGroundViewTwo.addSubViews(allMediaImageView, allMediaLabel, allMediaButton, searchButton, searchImageView, searchLabel, disappearingMessagesImageView, disappearingMessagesLabel, disappearingMessagesDiscriptionLabel, disappearingMessagesSwitch)
         backGroundViewThree.addSubViews(messageSoundImageView, messageSoundLabel, messageSoundTypeLabel, muteImageView, muteLabel, muteSwitch)
         backGroundViewFour.addSubViews(blockImageView, blockLabel, reportImageView, reportLabel)
         
@@ -507,12 +507,20 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
             allMediaImageView.leadingAnchor.constraint(equalTo: backGroundViewTwo.leadingAnchor, constant: 22),
             allMediaLabel.leadingAnchor.constraint(equalTo: allMediaImageView.trailingAnchor, constant: 20),
             allMediaLabel.centerYAnchor.constraint(equalTo: allMediaImageView.centerYAnchor),
+            allMediaButton.leadingAnchor.constraint(equalTo: allMediaLabel.leadingAnchor),
+            allMediaButton.trailingAnchor.constraint(equalTo: backGroundViewTwo.trailingAnchor),
+            allMediaButton.topAnchor.constraint(equalTo: allMediaLabel.topAnchor, constant: -5),
+            allMediaButton.bottomAnchor.constraint(equalTo: allMediaLabel.bottomAnchor, constant: 5),
             searchImageView.widthAnchor.constraint(equalToConstant: 20),
             searchImageView.heightAnchor.constraint(equalToConstant: 20),
             searchImageView.topAnchor.constraint(equalTo: allMediaImageView.bottomAnchor, constant: 21),
             searchImageView.leadingAnchor.constraint(equalTo: backGroundViewTwo.leadingAnchor, constant: 23),
             searchLabel.leadingAnchor.constraint(equalTo: searchImageView.trailingAnchor, constant: 21),
             searchLabel.centerYAnchor.constraint(equalTo: searchImageView.centerYAnchor),
+            searchButton.leadingAnchor.constraint(equalTo: searchLabel.leadingAnchor),
+            searchButton.trailingAnchor.constraint(equalTo: backGroundViewTwo.trailingAnchor),
+            searchButton.topAnchor.constraint(equalTo: searchLabel.topAnchor, constant: -5),
+            searchButton.bottomAnchor.constraint(equalTo: searchLabel.bottomAnchor, constant: 5),
             disappearingMessagesLabel.topAnchor.constraint(equalTo: searchLabel.bottomAnchor, constant: 20),
             disappearingMessagesDiscriptionLabel.topAnchor.constraint(equalTo: disappearingMessagesLabel.bottomAnchor, constant: 5.14),
             disappearingMessagesImageView.widthAnchor.constraint(equalToConstant: 18),
@@ -589,31 +597,31 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         
-        if disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled {
-            // don't save defaults, else we'll unintentionally save the configuration and notify the contact.
-            return
-        }
-        
-        
-        if disappearingMessagesConfiguration!.dictionaryValueDidChange {
-            Storage.write() { [self] transaction in
-                disappearingMessagesConfiguration!.save(with: transaction as! YapDatabaseReadWriteTransaction)
-
-                let infoMessage = OWSDisappearingConfigurationUpdateInfoMessage(
-                    timestamp: NSDate.ows_millisecondTimeStamp(),
-                    thread: thread!,
-                    configuration: disappearingMessagesConfiguration!,
-                    createdByRemoteName: nil,
-                    createdInExistingGroup: false)
-                infoMessage.save(with: transaction as! YapDatabaseReadWriteTransaction )
-                
-                let expirationTimerUpdate = ExpirationTimerUpdate()
-                let isEnabled = disappearingMessagesConfiguration!.isEnabled
-                expirationTimerUpdate.duration = isEnabled ? disappearingMessagesConfiguration!.durationSeconds : 0
-                MessageSender.send(expirationTimerUpdate, in: thread!, using: transaction)
-
-            }
-        }
+//        if disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled {
+//            // don't save defaults, else we'll unintentionally save the configuration and notify the contact.
+//            return
+//        }
+//
+//
+//        if disappearingMessagesConfiguration!.dictionaryValueDidChange {
+//            Storage.write() { [self] transaction in
+//                disappearingMessagesConfiguration!.save(with: transaction as! YapDatabaseReadWriteTransaction)
+//
+//                let infoMessage = OWSDisappearingConfigurationUpdateInfoMessage(
+//                    timestamp: NSDate.ows_millisecondTimeStamp(),
+//                    thread: thread!,
+//                    configuration: disappearingMessagesConfiguration!,
+//                    createdByRemoteName: nil,
+//                    createdInExistingGroup: false)
+//                infoMessage.save(with: transaction as! YapDatabaseReadWriteTransaction )
+//
+//                let expirationTimerUpdate = ExpirationTimerUpdate()
+//                let isEnabled = disappearingMessagesConfiguration!.isEnabled
+//                expirationTimerUpdate.duration = isEnabled ? disappearingMessagesConfiguration!.durationSeconds : 0
+//                MessageSender.send(expirationTimerUpdate, in: thread!, using: transaction)
+//
+//            }
+//        }
         
         
     }
