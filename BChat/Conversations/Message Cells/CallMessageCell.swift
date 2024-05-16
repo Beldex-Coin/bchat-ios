@@ -145,8 +145,16 @@ final class CallMessageCell : MessageCell {
 
 final class CallMessageCellNew : MessageCell {
     
-    override class var identifier: String { "CallMessageCellNew" }
+    private lazy var iconImageViewWidthConstraint = iconImageView.set(.width, to: 0)
+    private lazy var iconImageViewHeightConstraint = iconImageView.set(.height, to: 0)
     
+    private lazy var infoImageViewWidthConstraint = infoImageView.set(.width, to: 0)
+    private lazy var infoImageViewHeightConstraint = infoImageView.set(.height, to: 0)
+    private static let iconSize: CGFloat = 16
+    private static let margin = UIScreen.main.bounds.width * 0.2
+    private static let inset = Values.mediumSpacing
+    override class var identifier: String { "CallMessageCellNew" }
+    private lazy var infoImageView = UIImageView(image: UIImage(named: "ic_info")?.withTint(Colors.text))
     
     private lazy var mainBackGroundView: UIView = {
         let stackView = UIView()
@@ -197,7 +205,6 @@ final class CallMessageCellNew : MessageCell {
         result.textColor = Colors.offWhiteColor
         result.font = Fonts.OpenSans(ofSize: 9)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "12:28 PM"
         return result
     }()
     
@@ -206,7 +213,6 @@ final class CallMessageCellNew : MessageCell {
     // MARK: Lifecycle
     override func setUpViewHierarchy() {
         super.setUpViewHierarchy()
-        
         addSubview(mainBackGroundView)
         mainBackGroundView.addSubViews(smallBackGroundView, timeLabel)
         smallBackGroundView.addSubViews(iconImageView, titleLabel, discriptionLabel)
@@ -216,9 +222,9 @@ final class CallMessageCellNew : MessageCell {
         
         NSLayoutConstraint.activate([
 //            mainBackGroundView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
-            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
+//            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
+//            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
+//            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
             
             timeLabel.trailingAnchor.constraint(equalTo: mainBackGroundView.trailingAnchor, constant: -16),
             timeLabel.bottomAnchor.constraint(equalTo: mainBackGroundView.bottomAnchor, constant: -7),
@@ -263,7 +269,52 @@ final class CallMessageCellNew : MessageCell {
     
     // MARK: Updating
     override func update() {
+        guard let message = viewItem?.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        if message.callState.rawValue == 0 {//0 is incoming
+            mainBackGroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            mainBackGroundView.backgroundColor = Colors.incomingMessageColor
+            smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
+            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+            titleLabel.textColor = Colors.messageTimeLabelColor//Colors.text
+        }else if message.callState.rawValue == 1 {//1 is outgoiing
+            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14).isActive = true
+            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        }else {//2 is missed call
+            mainBackGroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            mainBackGroundView.backgroundColor = Colors.incomingMessageColor
+            smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
+            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+            titleLabel.textColor = Colors.messageTimeLabelColor//Colors.text
+        }
+        let icon: UIImage?
+        let incomimglogoImage = isLightMode ? "call_incoming_new_white" : "call_incoming_new"
+        let missedlogoImage = isLightMode ? "call_missed_new_white" : "call_missed_new"
+        switch message.callState {
+        case .outgoing: icon = UIImage(named: "call_outgoing")//?.withTint(Colors.text)
+        case .incoming: icon = UIImage(named: incomimglogoImage)//?.withTint(Colors.text)
+        case .missed, .permissionDenied: icon = UIImage(named: missedlogoImage)//?.withTint(Colors.destructive)
+        default: icon = nil
+        }
+        iconImageView.image = icon
+        iconImageViewWidthConstraint.constant = (icon != nil) ? CallMessageCellNew.iconSize : 0
+        iconImageViewHeightConstraint.constant = (icon != nil) ? CallMessageCellNew.iconSize : 0
         
+        let shouldShowInfoIcon = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
+        infoImageViewWidthConstraint.constant = shouldShowInfoIcon ? CallMessageCellNew.iconSize : 0
+        infoImageViewHeightConstraint.constant = shouldShowInfoIcon ? CallMessageCellNew.iconSize : 0
+        
+        Storage.read { transaction in
+            self.titleLabel.text = message.previewText(with: transaction)
+        }
+        
+        let date = message.dateForUI()
+        let description = DateUtil.formatDate(forDisplay: date)
+        timeLabel.text = description
     }
     
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
