@@ -209,7 +209,9 @@ class AddAddressBookViewController: BaseVC {
     
     /// Qr code button action
     @objc private func qrCodeButtonAction(_ sender: UIButton) {
-        
+        let scanViewController = ScanNewVC()
+        scanViewController.newChatScanflag = false
+        navigationController!.pushViewController(scanViewController, animated: true)
     }
 }
 
