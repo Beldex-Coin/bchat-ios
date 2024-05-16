@@ -287,7 +287,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     static let scrollToBottomMargin: CGFloat = 60
     
     
-//    private var tableViewTopConstraint: NSLayoutConstraint!
+    private var tableViewTopConstraint: NSLayoutConstraint!
+    var duration: Int = 0
     
     // MARK: Lifecycle
     init(thread: TSThread, focusedMessageID: String? = nil) {
@@ -673,8 +674,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Constraints
         view.addSubview(messagesTableView)
 //        messagesTableView.pin(to: view)
-        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
-//        tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14 + 43)
+//        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
+        tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
         messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
         messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
         messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
@@ -682,17 +683,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messagesTableView.layer.cornerRadius = 20
         messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
-//        view.addSubview(callView)
-//        callView.addSubViews(callInfoLabel, callIconImageView)
-//        callView.pin(.top, to: .top, of: view, withInset: 14)
-//        callView.pin(.left, to: .left, of: view, withInset: 0)
-//        callView.pin(.right, to: .right, of: view, withInset: 0)
-//        NSLayoutConstraint.activate([
-//            callInfoLabel.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-//            callInfoLabel.leadingAnchor.constraint(equalTo: callView.leadingAnchor, constant: 16),
-//            callIconImageView.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-//            callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
-//        ])
+        view.addSubview(callView)
+        callView.addSubViews(callInfoLabel, callIconImageView)
+        callView.pin(.top, to: .top, of: view, withInset: 14)
+        callView.pin(.left, to: .left, of: view, withInset: 0)
+        callView.pin(.right, to: .right, of: view, withInset: 0)
+        NSLayoutConstraint.activate([
+            callInfoLabel.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
+            callInfoLabel.leadingAnchor.constraint(equalTo: callView.leadingAnchor, constant: 16),
+            callIconImageView.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
+            callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
+        ])
+        callView.isHidden = true
         
         // Blocked banner
         addOrRemoveBlockedBanner()
@@ -913,6 +915,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         notificationCenter.addObserver(self, selector: #selector(cancelVoiceMessageRecordingWhenDeviceLock), name: Notification.Name("cancelVoiceMessageRecordingWhenDeviceLock"), object: nil)
                 
+        notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: Notification.Name("connectingCallHideView"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+                
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
         // Draft
@@ -949,6 +954,53 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+    }
+    
+    @objc func connectingCallShowViewTapped(notification: NSNotification) {
+        duration += 1
+        print("------call------->",String(format: "%.2d:%.2d", duration/60, duration%60))
+        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty{
+            showCallView()
+            callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
+            callIconImageView.image = UIImage(named: "End_Call_new")
+            callIconImageView.set(.width, to: 18)
+            callIconImageView.set(.height, to: 18)
+            callIconImageView.layer.masksToBounds = true
+            callIconImageView.contentMode = .scaleAspectFit
+        }else {
+            hideCallView()
+        }
+    }
+    
+    @objc func connectingCallHideViewTapped(notification: NSNotification) {
+        hideCallView()
+    }
+    
+    @objc func connectingCallTapToReturnToTheCall(notification: NSNotification) {
+        showCallView()
+    }
+    
+    func showCallView() {
+        callView.isHidden = false
+        self.tableViewTopConstraint.isActive = false
+        self.tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14 + 43)
+    }
+    
+    func hideCallView() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                
+                self.tableViewTopConstraint.isActive = false
+                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14)
+                self.callView.isHidden = true
+                
+            }, completion: nil)
+        }
     }
     
     @objc func hideOrShowInputViewAction(_ notification: Notification) {
@@ -1021,20 +1073,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-//            UIView.animate(withDuration: 1.0,
-//                           delay: 0.0,
-//                           usingSpringWithDamping: 0.9,
-//                           initialSpringVelocity: 1,
-//                           options: [],
-//                           animations: {
-//
-//                self.tableViewTopConstraint.isActive = false
-//                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14)
-//                self.callView.isHidden = true
-//
-//            }, completion: nil)
-//        }
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: Notification.Name("connectingCallShowView"), object: nil)
         
     }
     

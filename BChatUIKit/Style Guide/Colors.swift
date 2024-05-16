@@ -199,4 +199,5 @@ public final class Colors : NSObject {
     @objc public static var switchOffBackgroundColor: UIColor { UIColor(named: "9595B5")! }
     
     @objc public static var separatorHomeTableViewCellColor: UIColor { UIColor(named: "1C1C26-D5D5D5")! }
+    @objc public static var smallBackGroundViewCellColor: UIColor { UIColor(named: "1C1C26-EBEBEB")! }
 }

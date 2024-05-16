@@ -59,7 +59,7 @@ class MessageCell : UITableViewCell {
         case is TSOutgoingMessage: return VisibleMessageCell.self
         case is TSInfoMessage:
             if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
-                return CallMessageCell.self
+                return CallMessageCellNew.self
             }
             return InfoMessageCell.self
         case is TypingIndicatorInteraction: return TypingIndicatorCell.self

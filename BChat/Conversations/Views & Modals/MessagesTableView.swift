@@ -14,7 +14,7 @@ final class MessagesTableView : UITableView {
         register(VisibleMessageCell.self, forCellReuseIdentifier: VisibleMessageCell.identifier)
         register(InfoMessageCell.self, forCellReuseIdentifier: InfoMessageCell.identifier)
         register(TypingIndicatorCell.self, forCellReuseIdentifier: TypingIndicatorCell.identifier)
-        register(CallMessageCell.self, forCellReuseIdentifier: CallMessageCell.identifier)
+        register(CallMessageCellNew.self, forCellReuseIdentifier: CallMessageCellNew.identifier)
         register(CallMessageCellNew.self, forCellReuseIdentifier: CallMessageCellNew.identifier)
         separatorStyle = .none
         backgroundColor = Colors.mainBackGroundColor2//.clear
