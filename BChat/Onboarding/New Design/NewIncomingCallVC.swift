@@ -70,7 +70,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice Call"
+        result.text = "Call"
         return result
     }()
     
@@ -356,19 +356,19 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         // Local video view
         call.attachLocalVideoRenderer(localVideoView)
         
-//        self.incomingCallLabel.isHidden = true
-//        self.buttonStackView.isHidden = true
-//        self.hangUpButtonSecond.isHidden = false
-//        self.callDurationLabel.isHidden = false
-//        self.bottomView.isHidden = false
+        self.incomingCallLabel.isHidden = true
+        self.buttonStackView.isHidden = true
+        self.hangUpButtonSecond.isHidden = false
+        self.callDurationLabel.isHidden = false
+        self.bottomView.isHidden = false
         
         view.addSubview(backButton)
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.pin(.left, to: .left, of: view)
-        backButton.pin(.top, to: .top, of: view, withInset: 32)
+        backButton.pin(.top, to: .top, of: view, withInset: 55)
         
         NSLayoutConstraint.activate([
-            voiceCallLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 31),
+            voiceCallLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
             voiceCallLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             backGroundViewForIconAndLabel.topAnchor.constraint(equalTo: voiceCallLabel.bottomAnchor, constant: 6),
             backGroundViewForIconAndLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -481,7 +481,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         self.call.remoteVideoStateDidChange = { isEnabled in
 //            self.speakerButton.isHidden = true
 //            self.speakerOptionButton.isHidden = false
-//            NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25) {
 //                    self.remoteVideoView.alpha = isEnabled ? 1 : 0
@@ -502,7 +502,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
 //                self.speakerButton.isHidden = true
 //                self.speakerOptionButton.isHidden = false
 //                self.answerButton.alpha = 0
-//                NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
 //                    self.answerButton.isHidden = true
                 }, completion: nil)
@@ -518,7 +518,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
 //                self.minimizeButton.isHidden = false
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
-//                    NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
                 }
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
@@ -526,7 +526,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         }
         self.call.hasEndedDidChange = {
             DispatchQueue.main.async {
-//                NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
                 self.durationTimer?.invalidate()
                 self.durationTimer = nil
                 self.handleEndCallMessage()
@@ -543,7 +543,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             DispatchQueue.main.async {
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
-//                NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
             }
         }
     }
@@ -590,7 +590,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     }
     
     func handleEndCallMessage() {
-//        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
         SNLog("[Calls] Ending call.")
         self.incomingCallLabel.isHidden = false
         self.callDurationLabel.isHidden = true
@@ -632,7 +632,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     @objc private func endCall() {
         UIApplication.shared.isIdleTimerDisabled = false
-//        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
         AppEnvironment.shared.callManager.endCall(call) { error in
           //  self.alertOnCallEnding()
             if let _ = error {
