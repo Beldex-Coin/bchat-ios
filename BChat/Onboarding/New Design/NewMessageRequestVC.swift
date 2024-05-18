@@ -121,7 +121,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             name: .blockedContactsUpdated,
             object: nil
         )
-        
         reload()
     }
     
@@ -421,7 +420,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
             thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
         }
-        
         return thread
     }
     
@@ -454,8 +452,18 @@ extension NewMessageRequestVC {
         // shouldn't cause weird behaviours)
         let bchatId: String = contactThread.contactBChatID()
         let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
-        
-        guard !contact.isApproved else { return Promise.value(()) }
+        guard !contact.isApproved else { return Promise.value(())
+                .map{ _ in
+                    if self.presentedViewController is ModalActivityIndicatorViewController {
+                        self.dismiss(animated: true, completion: nil) // Dismiss the loader
+                        let conversationVC = ConversationVC(thread: thread!)
+                        self.navigationController?.pushViewController(conversationVC, animated: true)
+                    } else {
+                        let conversationVC = ConversationVC(thread: thread!)
+                        self.navigationController?.pushViewController(conversationVC, animated: true)
+                    }
+                }
+        }
         
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in

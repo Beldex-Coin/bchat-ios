@@ -26,7 +26,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     @objc func openSettings() {
         snInputView.resignFirstResponder()
-        let settingsVC = ChatSettingsNewVC()
+        let settingsVC = OWSConversationSettingsViewController()
         settingsVC.configure(with: thread, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
         navigationController!.pushViewController(settingsVC, animated: true, completion: nil)

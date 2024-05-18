@@ -11,18 +11,18 @@ import NVActivityIndicatorView
 // • Remaining search glitchiness
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
-    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC) {
-        showSearchUI()
-        popAllConversationSettingsViews {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
-                self.searchController.uiSearchController.searchBar.becomeFirstResponder()
-            }
-        }
-    }
-    
-    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?) {
-        print("")
-    }
+//    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC) {
+//        showSearchUI()
+//        popAllConversationSettingsViews {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
+//                self.searchController.uiSearchController.searchBar.becomeFirstResponder()
+//            }
+//        }
+//    }
+//    
+//    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?) {
+//        print("")
+//    }
     
     let thread: TSThread
     let threadStartedAsMessageRequest: Bool
