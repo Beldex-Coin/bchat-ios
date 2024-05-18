@@ -303,7 +303,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         self.hasEnded = true
         DispatchQueue.main.async {
             if let currentBanner = IncomingCallBanner.current { currentBanner.dismiss() }
-            if let callVC = CurrentAppContext().frontmostViewController() as? CallVC { callVC.handleEndCallMessage() }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC { callVC.handleEndCallMessage() }
             if let miniCallView = MiniCallView.current { miniCallView.dismiss() }
             AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: .remoteEnded)
         }

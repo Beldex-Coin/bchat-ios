@@ -159,6 +159,7 @@
 		6042B18E29EE578C005FC06B /* ringback_tone_ansi_ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6042B18D29EE578B005FC06B /* ringback_tone_ansi_ring.caf */; };
 		6042B19029EE57E4005FC06B /* sonarping_ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6042B18F29EE57E4005FC06B /* sonarping_ring.mp3 */; };
 		6045DC9629CAEEB800321B43 /* gifAnimation_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6045DC9529CAEEB700321B43 /* gifAnimation_white.gif */; };
+		604939AD2BF756E0000441EE /* NewIncomingCallVC+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604939AC2BF756E0000441EE /* NewIncomingCallVC+Camera.swift */; };
 		6049BEF32B58E854003DD410 /* WalletSendNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049BEF22B58E854003DD410 /* WalletSendNewVC.swift */; };
 		6049BEF52B592BA4003DD410 /* WalletReceiveNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049BEF42B592BA4003DD410 /* WalletReceiveNewVC.swift */; };
 		6049BEF72B597622003DD410 /* ScanNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6049BEF62B597622003DD410 /* ScanNewVC.swift */; };
@@ -1260,6 +1261,7 @@
 		6042B18D29EE578B005FC06B /* ringback_tone_ansi_ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ringback_tone_ansi_ring.caf; sourceTree = "<group>"; };
 		6042B18F29EE57E4005FC06B /* sonarping_ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sonarping_ring.mp3; sourceTree = "<group>"; };
 		6045DC9529CAEEB700321B43 /* gifAnimation_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gifAnimation_white.gif; sourceTree = "<group>"; };
+		604939AC2BF756E0000441EE /* NewIncomingCallVC+Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewIncomingCallVC+Camera.swift"; sourceTree = "<group>"; };
 		6049BEF22B58E854003DD410 /* WalletSendNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSendNewVC.swift; sourceTree = "<group>"; };
 		6049BEF42B592BA4003DD410 /* WalletReceiveNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletReceiveNewVC.swift; sourceTree = "<group>"; };
 		6049BEF62B597622003DD410 /* ScanNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNewVC.swift; sourceTree = "<group>"; };
@@ -3099,6 +3101,7 @@
 				B877E24126CA12910007970A /* CallVC.swift */,
 				7B1581E5271FD2A100848B49 /* VideoPreviewVC.swift */,
 				B877E24526CA13BA0007970A /* CallVC+Camera.swift */,
+				604939AC2BF756E0000441EE /* NewIncomingCallVC+Camera.swift */,
 				B8B558F026C4BB0600693325 /* CameraManager.swift */,
 				7BA68907272A279900EFC32F /* Call Management */,
 				7B7CB18C270D06350079FF93 /* Views & Modals */,
@@ -5613,6 +5616,7 @@
 				7B1581E4271FC59D00848B49 /* CallModal.swift in Sources */,
 				6098CA722A1DCC9C005A5502 /* TransactionHistory.swift in Sources */,
 				34BECE2E1F7ABCE000D7438D /* GifPickerViewController.swift in Sources */,
+				604939AD2BF756E0000441EE /* NewIncomingCallVC+Camera.swift in Sources */,
 				B84664F5235022F30083A1CD /* MentionUtilities.swift in Sources */,
 				6007B5F028ABC9DF0004BD61 /* DatePickerDialog.swift in Sources */,
 				6049BEFF2B60C881003DD410 /* WalletNodeListVC.swift in Sources */,
