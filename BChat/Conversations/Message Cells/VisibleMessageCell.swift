@@ -459,7 +459,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
-        print("--Date Print---->",description)
 //        messageTimeLabel.text = description
         messageTimeBottomLabel.text = description
         messageTimeCenterLabel.text = description

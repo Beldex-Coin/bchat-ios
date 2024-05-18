@@ -408,7 +408,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return stackView
     }()
     
-    
     private lazy var nestedView1: UIView = {
         let view = UIView()
         view.backgroundColor = .blue
@@ -435,7 +434,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
     
     private lazy var beldexImage: UIImageView = {
         let imageView = UIImageView()
@@ -656,7 +654,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return result
     }()
     
-    
+    /// View didload
     override func viewDidLoad() {
         super.viewDidLoad()
         // Gradient
@@ -779,11 +777,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         NSLayoutConstraint.activate([
             cancelButton.widthAnchor.constraint(equalToConstant: 120),
             cancelButton.heightAnchor.constraint(equalToConstant: 35),
+            cancelButton.trailingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: -15),
+            cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
+
             okButton.widthAnchor.constraint(equalToConstant: 120),
             okButton.heightAnchor.constraint(equalToConstant: 35),
-            cancelButton.trailingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: -15),
             okButton.leadingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: +15),
-            cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
             okButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor)
         ])
         
@@ -1075,7 +1074,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: Notification.Name("connectingCallShowView"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+        snInputView.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
+        self.saveReceipeinetAddressOnAndOff()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1090,19 +1101,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
-        }        
-        snInputView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.customizeSlideToOpen.isHidden = true
-        }
-        self.saveReceipeinetAddressOnAndOff()
-    }
-    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        
         let text = snInputView.text
         Storage.write { transaction in
             self.thread.setDraft(text, transaction: transaction)
