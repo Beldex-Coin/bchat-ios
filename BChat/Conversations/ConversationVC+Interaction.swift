@@ -50,7 +50,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let contact: Contact = Storage.shared.getContact(with: publicKey)!
         if contact.isBlocked {
             guard !showBlockedModalIfNeeded() else { return }
-        }else{
+        } else {
             guard BChatCall.isEnabled else { return }
             if SSKPreferences.areCallsEnabled {
                 requestMicrophonePermissionIfNeeded { }

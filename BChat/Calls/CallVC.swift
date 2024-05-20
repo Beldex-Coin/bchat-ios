@@ -328,6 +328,27 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.conversationVC?.inputAccessoryView?.alpha = 0
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
+        localVideoView.removeFromSuperview()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
+        shouldRestartCamera = true
+        addLocalVideoView()
+        remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+    }
+    
     deinit {
         UIDevice.current.endGeneratingDeviceOrientationNotifications()
         NotificationCenter.default.removeObserver(self)
@@ -397,27 +418,6 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: Values.smallSpacing)
         let topMargin = safeAreaInsets.top + Values.veryLargeSpacing
         localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
-        shouldRestartCamera = true
-        addLocalVideoView()
-        remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
-        self.conversationVC?.inputAccessoryView?.isHidden = true
-        self.conversationVC?.inputAccessoryView?.alpha = 0
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.conversationVC?.inputAccessoryView?.isHidden = true
-        self.conversationVC?.inputAccessoryView?.alpha = 0
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
-        localVideoView.removeFromSuperview()
     }
     
     // MARK: - Orientation

@@ -4,7 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatMessagingKit
 
-class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate {
+class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
@@ -111,8 +111,8 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     var filterBeldexAddressArray = [String]()
     var allFilterData = [String: String]()
     var flagSendAddress = false
-    fileprivate var isSearched : Bool = false
-    fileprivate var searchfilterNameArray = [String: String]()
+    internal var isSearched : Bool = false
+    internal var searchfilterNameArray = [String: String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -196,20 +196,12 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             noContactsYetLogoImage.isHidden = false
             noAddressTitleLabel.isHidden = false
             noSubAddressTitleLabel.isHidden = false
-        }else {
+        } else {
             tableView.isHidden = false
             noContactsYetLogoImage.isHidden = true
             noAddressTitleLabel.isHidden = true
             noSubAddressTitleLabel.isHidden = true
         }
-        
-        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(dismiss)
-    }
-    
-    @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
     }
     
     @objc func closeIconTapped() {
@@ -291,7 +283,7 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
     
     @objc func addAddressBookAction () {
         let addAddressViewController = AddAddressBookViewController()
-        navigationController!.pushViewController(addAddressViewController, animated: true)
+        navigationController?.pushViewController(addAddressViewController, animated: true)
     }
     
     // MARK: - UITextField delegates
@@ -368,57 +360,6 @@ class WalletAddressBookNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate
             noAddressTitleLabel.isHidden = true
             noSubAddressTitleLabel.isHidden = true
         }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isSearched == true {
-            return searchfilterNameArray.count
-        } else {
-            return filterBeldexAddressArray.count
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = AddressBookTableCell(style: .default, reuseIdentifier: "AddressBookTableCell")
-        cell.backgroundColor = .clear
-        cell.selectionStyle = .none
-        if flagSendAddress == false {
-            if isSearched == true {
-                let intIndex = indexPath.row
-                let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
-                cell.nameLabel.text = searchfilterNameArray.keys[index]
-                cell.addressIDLabel.text = searchfilterNameArray.values[index]
-            } else {
-                cell.nameLabel.text = filterContactNameArray[indexPath.item]
-                cell.addressIDLabel.text = filterBeldexAddressArray[indexPath.item]
-            }
-            cell.copyButton.tag = indexPath.row
-            cell.copyButton.addTarget(self, action: #selector(self.copyActionTapped(_:)), for: .touchUpInside)
-            
-            cell.shareButton.tag = indexPath.row
-            cell.shareButton.addTarget(self, action: #selector(self.shareActionTapped(_:)), for: .touchUpInside)
-            
-        } else{
-            if isSearched == true {
-                let intIndex = indexPath.item
-                let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
-                cell.nameLabel.text = searchfilterNameArray.keys[index]
-                cell.addressIDLabel.text = searchfilterNameArray.values[index]
-            } else {
-                cell.nameLabel.text = filterContactNameArray[indexPath.item]
-                cell.addressIDLabel.text = filterBeldexAddressArray[indexPath.item]
-            }
-            
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
     
     @objc func copyActionTapped(_ x: AnyObject) {

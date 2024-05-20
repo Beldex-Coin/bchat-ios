@@ -250,17 +250,17 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
                     shouldMarkAsRead = true
                 } else {
                     switch mode {
-                    case .local:
-                        shouldMarkAsRead = true
-                        fallthrough
-                    case .remote:
-                        fallthrough
-                    case .unanswered:
-                        if messageToUpdate.callState == .incoming {
-                            messageToUpdate.updateCallInfoMessage(.missed, using: transaction)
-                        }
-                    case .answeredElsewhere:
-                        shouldMarkAsRead = true
+                        case .local:
+                            shouldMarkAsRead = true
+                            fallthrough
+                        case .remote:
+                            fallthrough
+                        case .unanswered:
+                            if messageToUpdate.callState == .incoming {
+                                messageToUpdate.updateCallInfoMessage(.missed, using: transaction)
+                            }
+                        case .answeredElsewhere:
+                            shouldMarkAsRead = true
                     }
                 }
                 if shouldMarkAsRead {
