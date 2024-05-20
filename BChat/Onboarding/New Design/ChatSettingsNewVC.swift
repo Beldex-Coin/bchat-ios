@@ -6,7 +6,7 @@ import PromiseKit
 import Foundation
 
 
-let kIconViewLength: CGFloat = 24
+//let kIconViewLength: CGFloat = 24
 
 
 //protocol OWSConversationSettingsViewDelegate: AnyObject {

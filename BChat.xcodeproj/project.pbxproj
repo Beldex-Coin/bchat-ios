@@ -307,6 +307,7 @@
 		8113C48E2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */; };
 		8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */; };
 		8114932E2BF483000087B74B /* NewIncomingCallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8114932D2BF483000087B74B /* NewIncomingCallVC.swift */; };
+		811498132BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */; };
 		81179E592BDA0A8E00B5C820 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81179E582BDA0A8E00B5C820 /* SideMenuVC.swift */; };
 		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
 		8122EE532BC8F5D70083AD6B /* MissedCallPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */; };
@@ -1427,6 +1428,7 @@
 		8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptMessageRequestPopUp.swift; sourceTree = "<group>"; };
 		8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeListVC.swift; sourceTree = "<group>"; };
 		8114932D2BF483000087B74B /* NewIncomingCallVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewIncomingCallVC.swift; sourceTree = "<group>"; };
+		811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		81179E582BDA0A8E00B5C820 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
 		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
 		8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedCallPopUp.swift; sourceTree = "<group>"; };
@@ -2776,6 +2778,7 @@
 				812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */,
 				8114932D2BF483000087B74B /* NewIncomingCallVC.swift */,
 				813B392C2BF896EC0037FD0F /* ChatSettingsVC.swift */,
+				811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5569,6 +5572,7 @@
 				34B6A903218B3F63007C4606 /* TypingIndicatorView.swift in Sources */,
 				6016F9842A8214B7004C3A90 /* DateHeight + Ext.swift in Sources */,
 				810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */,
+				811498132BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift in Sources */,
 				7BAF54CF27ACCEEC003D12F8 /* GlobalSearchViewController.swift in Sources */,
 				B886B4A72398B23E00211ABE /* QRCodeVC.swift in Sources */,
 				6007B5DF28ABC75B0004BD61 /* UIImage+Gif.swift in Sources */,

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Sound 1.png",
+      "filename" : "Add Reminder 2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Sound.png",
+      "filename" : "Add Reminder 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Sound@2x 1.png",
+      "filename" : "Add Reminder 1@2x 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Sound@2x.png",
+      "filename" : "Add Reminder 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Sound@3x 1.png",
+      "filename" : "Add Reminder 1@3x 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Sound@3x.png",
+      "filename" : "Add Reminder 1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
