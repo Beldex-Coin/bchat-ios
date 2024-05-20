@@ -51,7 +51,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
         result.addSubview(progressView)
         return result
     }()
@@ -61,7 +61,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
         result.addSubview(progressView)
         return result
     }()
@@ -296,14 +296,14 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         linkPreviewInfo = nil
         guard let quoteDraftInfo = quoteDraftInfo else { return }
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
-        let hInset: CGFloat = 6 // Slight visual adjustment
+        let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
         let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
         additionalContentContainer.addSubview(quoteView)
         quoteView.pin(.left, to: .left, of: additionalContentContainer, withInset: hInset)
         quoteView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -hInset)
-        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -6)
+        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -54)
+        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -1)
     }
 
     private func autoGenerateLinkPreviewIfPossible() {

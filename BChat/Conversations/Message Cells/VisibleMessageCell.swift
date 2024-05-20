@@ -669,10 +669,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             guard let message = viewItem.interaction as? TSIncomingMessage else { return }
             guard !message.isOpenGroupMessage else { return } // Do not show user details to prevent spam
             delegate?.showUserDetails(for: message.authorId)
-        } else if replyButton.frame.contains(location) {
-            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-            reply()
-        } else {
+        } else if replyButton.frame.contains(location) { // here tick mark option click means replay going i give hide
+//            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+//            reply()
+        }
+        else {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
     }
