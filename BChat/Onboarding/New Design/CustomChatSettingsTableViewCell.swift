@@ -253,6 +253,61 @@ class DisappearingChatSettingsTableViewCell: UITableViewCell {
     }()
     
     
+     lazy var topView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        return stackView
+    }()
+    
+//    chatSetting_disSlider
+    
+     lazy var bottomView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        return stackView
+    }()
+    
+    lazy var stackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 21
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
+    lazy var leftIconImageViewForSlider: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    lazy var titleLabelForSlider: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 16)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.numberOfLines = 0
+        return result
+    }()
+    
+    lazy var rightTitleLabelForSlider: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.chatSettingsGrayColor
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    
+    
     
     
     
@@ -270,25 +325,56 @@ class DisappearingChatSettingsTableViewCell: UITableViewCell {
     
     func setUPCellUI() {
         
-        contentView.addSubViews(leftIconImageView, titleLabel, discriptionLabel, rightSwitch)
+        contentView.addSubview(stackView)
+        stackView.addArrangedSubview(topView)
+        stackView.addArrangedSubview(bottomView)
+        
+        topView.addSubViews(leftIconImageView, titleLabel, discriptionLabel, rightSwitch)
+        bottomView.addSubViews(leftIconImageViewForSlider, titleLabelForSlider, rightTitleLabelForSlider)
+        
+        
+        leftIconImageViewForSlider.image = UIImage(named: "chatSetting_disSlider")
+        titleLabelForSlider.text = "Disappear"
+        rightTitleLabelForSlider.text = "after 1 day"
         
         NSLayoutConstraint.activate([
+            
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            
             leftIconImageView.heightAnchor.constraint(equalToConstant: 22),
             leftIconImageView.widthAnchor.constraint(equalToConstant: 22),
-            leftIconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 22),
-            leftIconImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 11),
+            leftIconImageView.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 22),
+            leftIconImageView.topAnchor.constraint(equalTo: topView.topAnchor, constant: 11),
             
             titleLabel.leadingAnchor.constraint(equalTo: leftIconImageView.trailingAnchor, constant: 26),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -63),
+            titleLabel.topAnchor.constraint(equalTo: topView.topAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -63),
             
-            rightSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            rightSwitch.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -20),
             rightSwitch.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             
             discriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            discriptionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -76),
-            discriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -6)
+            discriptionLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -76),
+            discriptionLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -6),
+            
+            
+            leftIconImageViewForSlider.heightAnchor.constraint(equalToConstant: 22),
+            leftIconImageViewForSlider.widthAnchor.constraint(equalToConstant: 22),
+            leftIconImageViewForSlider.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 22),
+            leftIconImageViewForSlider.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 0),
+            
+            titleLabelForSlider.leadingAnchor.constraint(equalTo: leftIconImageViewForSlider.trailingAnchor, constant: 26),
+            titleLabelForSlider.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 0),
+            titleLabelForSlider.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -70),
+            
+            rightTitleLabelForSlider.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -18),
+            rightTitleLabelForSlider.centerYAnchor.constraint(equalTo: titleLabelForSlider.centerYAnchor),
+            
             
         ])
         
