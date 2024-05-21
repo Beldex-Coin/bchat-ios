@@ -95,10 +95,7 @@ final class QuoteView : UIView {
         self.hInset = hInset
         self.delegate = delegate
         super.init(frame: CGRect.zero)
-        setUpViewHierarchy()
-        
-        self.backgroundColor = Colors.incomingMessageColor
-        self.layer.cornerRadius = 16
+        setUpViewHierarchy() 
         
     }
     //additional Background View

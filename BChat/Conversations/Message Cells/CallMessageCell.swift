@@ -206,6 +206,37 @@ final class CallMessageCellNew : MessageCell {
     private lazy var statusCallIncoming = mainBackGroundView.pin(.left, to: .right, of: self, withInset: 14)
     private lazy var statusCallOutgoing = mainBackGroundView.pin(.right, to: .left, of: self, withInset: -14)
     
+    //handle swipe - Replay
+    private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+        let result = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        result.delegate = self
+        return result
+    }()
+    private static let maxBubbleTranslationX: CGFloat = 40
+    private static let swipeToReplyThreshold: CGFloat = 110
+    private var previousX: CGFloat = 0
+    private lazy var timerView = OWSMessageTimerView()
+    private static let replyButtonSize: CGFloat = 18//24
+    private lazy var replyButton: UIView = {
+        let result = UIView()
+        let size = CallMessageCellNew.replyButtonSize + 8
+        result.set(.width, to: size)
+        result.set(.height, to: size)
+        result.layer.borderWidth = 1
+        result.layer.borderColor = UIColor.clear.cgColor
+        result.layer.cornerRadius = size / 2
+        result.layer.masksToBounds = true
+        result.alpha = 0
+        return result
+    }()
+    private lazy var replyIconImageView: UIImageView = {
+        let result = UIImageView()
+        let size = CallMessageCellNew.replyButtonSize
+        result.set(.width, to: size)
+        result.set(.height, to: size)
+        result.image = UIImage(named: "Forward")
+        return result
+    }()
     
     // MARK: Lifecycle
     override func setUpViewHierarchy() {
@@ -213,10 +244,7 @@ final class CallMessageCellNew : MessageCell {
         addSubview(mainBackGroundView)
         mainBackGroundView.addSubViews(smallBackGroundView, timeLabel)
         smallBackGroundView.addSubViews(iconImageView, titleLabel, discriptionLabel)
-        
-        
-//        discriptionLabel.isHidden = true
-        
+
         NSLayoutConstraint.activate([
 //            mainBackGroundView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
 //            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
@@ -251,6 +279,13 @@ final class CallMessageCellNew : MessageCell {
             discriptionLabel.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -1),
             
         ])
+
+        // Reply button
+        addSubview(replyButton)
+        replyButton.addSubview(replyIconImageView)
+        replyIconImageView.center(in: replyButton)
+        replyButton.pin(.right, to: .left, of: mainBackGroundView, withInset: -5)
+        replyButton.center(.vertical, in: mainBackGroundView)
                 
         
     }
@@ -261,6 +296,7 @@ final class CallMessageCellNew : MessageCell {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tapGestureRecognizer.numberOfTapsRequired = 1
         addGestureRecognizer(tapGestureRecognizer)
+        addGestureRecognizer(panGestureRecognizer)
     }
     
     // MARK: Updating
@@ -319,10 +355,94 @@ final class CallMessageCellNew : MessageCell {
     
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        if message.callState.rawValue == 0 {//0 is incoming
+            
+        }else if message.callState.rawValue == 1 { // 1 is outgoing
+            
+        }else { // missed call
+            NotificationCenter.default.post(name: Notification.Name("tapToCallBackCallVC"), object: nil)
+        }
         let shouldBeTappable = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
         if shouldBeTappable {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
+    }
+    
+    
+    //handle swipe - Replay
+    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true // Needed for the pan gesture recognizer to work with the table view's pan gesture recognizer
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer == panGestureRecognizer {
+            let translation = panGestureRecognizer.translation(in: self)
+            // Only allow swipes from left to right
+            return translation.x > 0 && abs(translation.x) > abs(translation.y)
+        } else {
+            return true
+        }
+    }
+    
+    @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+        guard let viewItem = viewItem else { return }
+        var quoteDraftOrNil: OWSQuotedReplyModel?
+        Storage.read { transaction in
+            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+        }
+        guard let quoteDraft = quoteDraftOrNil else { return }
+//        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+//            return
+//        }
+
+        guard let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        Storage.read { transaction in
+            print("----->",message.previewText(with: transaction))
+            
+        }
+        
+        let viewsToMove = [ replyButton, mainBackGroundView ]
+        let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
+        switch gestureRecognizer.state {
+        case .began:
+            delegate?.handleViewItemSwiped(viewItem, state: .began)
+        case .changed:
+            // The idea here is to asymptotically approach a maximum drag distance
+            let damping: CGFloat = 20
+            let sign: CGFloat = 1
+            let x = (damping * (sqrt(abs(translationX)) / sqrt(damping))) * sign
+            viewsToMove.forEach { $0.transform = CGAffineTransform(translationX: x, y: 0) }
+            if timerView.isHidden {
+                replyButton.alpha = abs(translationX) / CallMessageCellNew.maxBubbleTranslationX
+            } else {
+                replyButton.alpha = 0 // Always hide the reply button if the timer view is showing, otherwise they can overlap
+            }
+            if abs(translationX) > CallMessageCellNew.swipeToReplyThreshold && abs(previousX) < CallMessageCellNew.swipeToReplyThreshold {
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
+            }
+            previousX = translationX
+        case .ended, .cancelled:
+            if abs(translationX) > CallMessageCellNew.swipeToReplyThreshold {
+                delegate?.handleViewItemSwiped(viewItem, state: .ended)
+                reply()
+            } else {
+                delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
+                resetReply()
+            }
+        default: break
+        }
+    }
+    private func resetReply() {
+        let viewsToMove = [ replyButton, mainBackGroundView ]
+        UIView.animate(withDuration: 0.25) {
+            viewsToMove.forEach { $0.transform = .identity }
+            self.replyButton.alpha = 0
+        }
+    }
+    private func reply() {
+        guard let viewItem = viewItem else { return }
+        resetReply()
+        delegate?.handleReplyButtonTapped(for: viewItem)
     }
 
 }
