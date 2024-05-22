@@ -387,18 +387,30 @@ final class CallMessageCellNew : MessageCell {
     @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard let viewItem = viewItem else { return }
         var quoteDraftOrNil: OWSQuotedReplyModel?
+//        Storage.read { transaction in
+//            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+//        }
+//        guard let quoteDraft = quoteDraftOrNil else { return }
+////        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+////            return
+////        }
+//
+//        guard let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+//        Storage.read { transaction in
+//            print("----->",message.previewText(with: transaction))
+//            
+//        }
+        
+        guard let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        var previewText: String?
         Storage.read { transaction in
-            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+            previewText = message.previewText(with: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
-//        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
-//            return
-//        }
-
-        guard let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
-        Storage.read { transaction in
-            print("----->",message.previewText(with: transaction))
-            
+        // You can now use `previewText` as needed without causing type mismatch errors
+        if let text = previewText {
+            // Process `text` as needed
+            print("Preview Text:", text)
         }
         
         let viewsToMove = [ replyButton, mainBackGroundView ]

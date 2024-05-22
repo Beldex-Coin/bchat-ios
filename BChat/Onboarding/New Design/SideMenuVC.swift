@@ -273,7 +273,7 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             navigationController!.pushViewController(vc, animated: true)
         }else {
             if indexPath.row == 0 { //My Account
-                let vc = MyAccountNewVC()
+                let vc = MyAccountBnsNewVC()
                 navigationController!.pushViewController(vc, animated: true)
             } else if indexPath.row == 1 {   //Settings
                 let vc = BChatSettingsNewVC()
