@@ -90,13 +90,13 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     var thread: TSThread?
     var uiDatabaseConnection: YapDatabaseConnection?
-//            private(set) var editingDatabaseConnection: YapDatabaseConnection?
+    //            private(set) var editingDatabaseConnection: YapDatabaseConnection?
     var disappearingMessagesDurations: [NSNumber]?
     var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
     var mediaGallery: MediaGallery?
     private(set) var avatarView: UIImageView?
-//    private(set) var disappearingMessagesDurationLabel: UILabel?
-//    var displayNameLabel: UILabel?
+    //    private(set) var disappearingMessagesDurationLabel: UILabel?
+    //    var displayNameLabel: UILabel?
     var displayNameTextField: TextField?
     var displayNameContainer: UIView?
     var isEditingDisplayName: Bool = false
@@ -183,7 +183,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.thread = thread
         self.uiDatabaseConnection = uiDatabaseConnection
     }
-
+    
     func didFinishEditingContact() {
         self.tableView.reloadData()
         dismiss(animated: false)
@@ -201,9 +201,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
     }
-        
     
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -293,9 +293,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
-
         
-//        adjustTableViewHeight()
+        
+        //        adjustTableViewHeight()
         
     }
     
@@ -317,8 +317,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         tableView.heightAnchor.constraint(equalToConstant: totalHeight).isActive = true
     }
     
-        
-        
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         
         if (disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled) {
@@ -379,8 +379,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         navigationController?.pushViewController(userSelectionVC, animated: true)
     }
-        
-        
+    
+    
     func copyBChatID() {
         UIPasteboard.general.string = (thread as! TSContactThread).contactBChatID()
         let toast = UIAlertController(title: nil, message: "Your BChat ID copied to clipboard", preferredStyle: .alert)
@@ -391,7 +391,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             toast.dismiss(animated: true)
         })
     }
-        
+    
     @objc func nameTextfieldTapped(textField: UITextField) {
         self.doneButton.isHidden = false
         self.editIconImage.isHidden = true
@@ -432,9 +432,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         self.tableView.reloadData()
     }
-
     
-        
+    
+    
     func editGroup() {
         let editSecretGroupVC = EditSecretGroupVC(with: thread!.uniqueId!)
         navigationController?.pushViewController(editSecretGroupVC, animated: true, completion: nil)
@@ -475,7 +475,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     
-        
+    
     func hasLeftGroup() -> Bool {
         if isGroupThread() {
             let groupThread = thread as? TSGroupThread
@@ -483,7 +483,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         return false
     }
-        
+    
     func leaveGroup() {
         let gThread = thread as? TSGroupThread
         if gThread!.isClosedGroup {
@@ -512,28 +512,27 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         self.tableView.reloadData()
     }
-        
+    
     func disappearingMessagesSwitchValueDidChange(_ sender: UISwitch?) {
         let disappearingMessagesSwitch = sender
         self.tableView.reloadData()
         
     }
-        
+    
     func showMediaGallery() {
-        print("")
-        
-        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
-        self.mediaGallery = mediaGallery
-        
-        assert(self.navigationController is OWSNavigationController)
-        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
+//        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
+//        self.mediaGallery = mediaGallery
+//        assert(self.navigationController is OWSNavigationController)
+//        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
+        let vc = AllMediaViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
     }
-        
+    
     func tappedConversationSearch() {
         conversationSettingsViewDelegate?.conversationSettingsDidRequestConversationSearch(self)
     }
-        
-        
+    
+    
     @objc func showProfilePicture(_ tapGesture: UITapGestureRecognizer) {
         guard let profilePictureView = tapGesture.view as? ProfilePictureView,
               let image = profilePictureView.getProfilePicture() else {
@@ -546,19 +545,19 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true, completion: nil)
     }
-
+    
     func sheetViewControllerRequestedDismiss(_ sheetViewController: SheetViewController?) {
         dismiss(animated: true)
     }
-        
+    
     func hideEditNameUI() {
         isEditingDisplayName = false
     }
-
+    
     func showEditNameUI() {
         isEditingDisplayName = true
     }
-        
+    
     @objc func copyBChatIdButtonTapped() {
         self.copyBChatID()
     }
@@ -583,7 +582,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     @objc private func searchButtonTapped(_ sender: UIButton) {
         self.tappedConversationSearch()
     }
-        
+    
     @objc private func allMediaButtonTapped(_ sender: UIButton) {
         self.showMediaGallery()
     }
@@ -626,10 +625,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.doneButton.isHidden = true
         self.editIconImage.isHidden = false
     }
-        
-        
-        // MARK: - Notification Observers -
-        
+    
+    
+    // MARK: - Notification Observers -
+    
     @objc func identityStateDidChange(_ notification: Notification) {
         self.tableView.reloadData()
     }
@@ -646,7 +645,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
-
+    
 }
 
 
@@ -832,7 +831,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.titleLabel.text = "Disappearing Messgaess"
                 cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                 
-//                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
+                //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
                 cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
                 
                 if cell.rightSwitch.isOn {
@@ -924,16 +923,16 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.titleLabel.text = "Disappearing Messgaess"
                 cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                 
-//                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
+                //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
                 cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
                 
-//                if cell.rightSwitch.isOn {
-//                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-//                    cell.bottomView.isHidden = false
-//                } else {
-//                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-//                    cell.bottomView.isHidden = true
-//                }
+                //                if cell.rightSwitch.isOn {
+                //                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                //                    cell.bottomView.isHidden = false
+                //                } else {
+                //                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                //                    cell.bottomView.isHidden = true
+                //                }
                 if cell.rightSwitch.isOn {
                     cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
                     cell.bottomView.isHidden = false
@@ -963,7 +962,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
                     slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
                     slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
-                                        
+                    
                     
                 } else {
                     cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
@@ -1103,13 +1102,13 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
                     slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
                     slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
-                                        
+                    
                     
                 } else {
                     cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
                     cell.bottomView.isHidden = true
                 }
-
+                
                 cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
                 
                 return cell
@@ -1217,42 +1216,41 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 6 {
                 
                 if let contactThread = self.thread as? TSContactThread {
-
+                    
                     let isCurrentlyBlocked = contactThread.isBlocked()
-
+                    
                     if !isCurrentlyBlocked {
                         assert(!isCurrentlyBlocked, "Assertion: Current thread should not be blocked.")
                         if isCurrentlyBlocked {
                             return
                         }
                         BlockListUIUtils.showBlockThreadActionSheet(contactThread, from: self) { isBlocked in
-
+                            
                             // If we successfully blocked then force a config sync
                             if isBlocked {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                             }
-
+                            
                             self.tableView.reloadData()
                         }
-
+                        
                     } else {
                         assert(isCurrentlyBlocked, "Assertion: Current thread should be blocked.")
                         if !isCurrentlyBlocked {
                             return
                         }
                         BlockListUIUtils.showUnblockThreadActionSheet(contactThread, from: self) { isBlocked in
-
+                            
                             // If we successfully unblocked then force a config sync
                             if !isBlocked {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                             }
-
                             self.tableView.reloadData()
                         }
                     }
                 }
-                
             }
+            
             if indexPath.row == 7 {
                 if let thread = self.thread as? TSContactThread {
                     if let contact = Storage.shared.getContact(with: thread.contactBChatID()) {
@@ -1302,11 +1300,6 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 self.didTapLeaveGroup()
             }
         }
-        
-        
     }
-    
-    
-    
     
 }
