@@ -172,11 +172,12 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
             if isApprovedflag == true {
                 let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
                 if blockedflag == false {
-                    let pukey = Storage.shared.getContact(with: publicKey)
-                    if pukey!.beldexAddress != nil {
-                        beldexAddressArray.append(pukey!.beldexAddress!)
-                        let userName = Storage.shared.getContact(with: publicKey)?.name
-                        contactNameArray.append(userName!)
+                    if let contact = Storage.shared.getContact(with: publicKey) {
+                        if contact.beldexAddress != nil {
+                            beldexAddressArray.append(contact.beldexAddress!)
+                            let userName = Storage.shared.getContact(with: publicKey)?.name
+                            contactNameArray.append(userName!)
+                        }
                     }
                 }
             }

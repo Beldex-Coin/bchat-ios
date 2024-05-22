@@ -350,6 +350,8 @@
 		81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */; };
 		8A433C442BF34AB5006C3AE0 /* AddAddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */; };
 		8A5C46B82BFB529A0031441A /* WalletAddressBookNewVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */; };
+		8A5C46BA2BFCA4E70031441A /* CallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */; };
+		8A5C46C02BFCC9610031441A /* OutgoingCallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */; };
 		8AE793CE2BD62582007F5086 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE793CB2BD6254B007F5086 /* libwallet_api.a */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
@@ -1467,6 +1469,8 @@
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
 		8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressBookViewController.swift; sourceTree = "<group>"; };
 		8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressBookNewVCExtension.swift; sourceTree = "<group>"; };
+		8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallTableViewCell.swift; sourceTree = "<group>"; };
+		8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingCallTableViewCell.swift; sourceTree = "<group>"; };
 		8AE793CA2BD62541007F5086 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		8AE793CB2BD6254B007F5086 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.app store release.xcconfig"; sourceTree = "<group>"; };
@@ -2944,6 +2948,8 @@
 				B835249A25C3AB650089A44F /* VisibleMessageCell.swift */,
 				B83524A425C3BA4B0089A44F /* InfoMessageCell.swift */,
 				7B0EFDEF275084AA00FFAAE7 /* CallMessageCell.swift */,
+				8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */,
+				8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */,
 				B8041AA625C90927003C2166 /* TypingIndicatorCell.swift */,
 				B8041A7325C8F758003C2166 /* Content Views */,
 			);
@@ -5573,6 +5579,7 @@
 				B886B4A72398B23E00211ABE /* QRCodeVC.swift in Sources */,
 				6007B5DF28ABC75B0004BD61 /* UIImage+Gif.swift in Sources */,
 				B8544E3323D50E4900299F14 /* SNAppearance.swift in Sources */,
+				8A5C46C02BFCC9610031441A /* OutgoingCallTableViewCell.swift in Sources */,
 				4C586926224FAB83003FD070 /* AVAudioSession+OWS.m in Sources */,
 				C331FFF42558FF0300070591 /* PNOptionView.swift in Sources */,
 				810B9A742BA177AA008CB61A /* HomeTableViewCell.swift in Sources */,
@@ -5582,6 +5589,7 @@
 				B82149C125D605C6009C0F2A /* InfoBanner.swift in Sources */,
 				C3DAB3242480CB2B00725F25 /* SRCopyableLabel.swift in Sources */,
 				7BAADFCC27B0EF23007BCF92 /* CallVideoView.swift in Sources */,
+				8A5C46BA2BFCA4E70031441A /* CallTableViewCell.swift in Sources */,
 				6098CA462A1DCAD0005A5502 /* DispatchQueuePool.swift in Sources */,
 				6098CA6A2A1DCC42005A5502 /* BChatWalletWrapper.mm in Sources */,
 				6098CA482A1DCAD0005A5502 /* Helper.swift in Sources */,

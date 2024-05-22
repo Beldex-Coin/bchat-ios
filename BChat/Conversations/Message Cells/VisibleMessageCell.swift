@@ -40,9 +40,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private var direction: Direction {
         guard let message = viewItem?.interaction as? TSMessage else { preconditionFailure() }
         switch message {
-        case is TSIncomingMessage: return .incoming
-        case is TSOutgoingMessage: return .outgoing
-        default: preconditionFailure()
+            case is TSIncomingMessage: return .incoming
+            case is TSOutgoingMessage: return .outgoing
+            default: preconditionFailure()
         }
     }
     

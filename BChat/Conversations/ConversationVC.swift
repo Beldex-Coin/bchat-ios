@@ -138,6 +138,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             trailing: 0
         )
         
+        result.register(OutgoingCallTableViewCell.self, forCellReuseIdentifier: "OutgoingCallTableViewCell")
         return result
     }()
         
@@ -381,7 +382,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var recipientAddressON = false
     var isdaemonHeight : Int64 = 0
     
-    private lazy var HiddenView: UIView = {
+    private lazy var hiddenView: UIView = {
         let result = UIView()
         result.layer.cornerRadius = 8
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -702,14 +703,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.addSubview(messageRequestView)
         
         // Add your HiddenView to the main view
-        HiddenView.isHidden = true
-        view.addSubview(HiddenView)
+        hiddenView.isHidden = true
+        view.addSubview(hiddenView)
         // Set up constraints for HiddenView
         NSLayoutConstraint.activate([
-            HiddenView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            HiddenView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            HiddenView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            HiddenView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            hiddenView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            hiddenView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            hiddenView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            hiddenView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         initiatingTransactionPopView.isHidden = true
@@ -738,7 +739,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         
 //        isPaymentDetailsView.isHidden = true
-        HiddenView.addSubview(isPaymentDetailsView)
+        hiddenView.addSubview(isPaymentDetailsView)
 //        view.addSubview(isPaymentDetailsView)
         // Add constraints to center the isPaymentFeeValueView and set its size
         NSLayoutConstraint.activate([
@@ -1061,7 +1062,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 //            if WalletSharedData.sharedInstance.wallet != nil {
 //                connect(wallet: WalletSharedData.sharedInstance.wallet!)
 //            }
-            if HiddenView.isHidden == false{
+            if hiddenView.isHidden == false{
                 navigationController?.navigationBar.isHidden = true
                 snInputView.isUserInteractionEnabled = false
             }else {
@@ -1129,7 +1130,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationController?.navigationBar.isHidden = false
         snInputView.isUserInteractionEnabled = true
         print("Cancel button tapped!")
-        HiddenView.isHidden = true
+        hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
         initiatingTransactionPopView.isHidden = true
     }
@@ -1138,7 +1139,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Handle ok button tap
         print("OK button tapped!")
         self.dismiss(animated: true)
-        HiddenView.isHidden = true
+        hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
         var txid = WalletSharedData.sharedInstance.wallet!.txid()//self.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
@@ -1221,7 +1222,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func isSuccessPopTappedButton() {
         // Handle button tap action
-        HiddenView.isHidden = true
+        hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
     }
     
@@ -1465,20 +1466,47 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     
-    // MARK: Table View Data Source
+    // MARK: - Table View Data Source
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let viewItem = viewItems[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.getCellType(for: viewItem).identifier) as! MessageCell
-        cell.delegate = self
-        cell.thread = thread
-        cell.viewItem = viewItem
-        return cell
+        if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
+            if message.callState == .outgoing {
+                let cell = tableView.dequeueReusableCell(withIdentifier: OutgoingCallTableViewCell.identifier) as! OutgoingCallTableViewCell
+                cell.delegate = self
+                cell.thread = self.thread
+                cell.viewItem = viewItem
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: CallTableViewCell.identifier) as! CallTableViewCell
+                cell.delegate = self
+                cell.thread = self.thread
+                cell.viewItem = viewItem
+                return cell
+            } 
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.getCellType(for: viewItem).identifier) as! MessageCell
+            cell.delegate = self
+            cell.thread = self.thread
+            cell.viewItem = viewItem
+            return cell
+        }
     }
     
+    // MARK: - Table View Delegate
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
@@ -1727,19 +1755,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let batchUpdates: () -> Void = {
             for update in conversationUpdate.updateItems! {
                 switch update.updateItemType {
-                case .delete:
-                    self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
-                case .insert:
-                    // Perform inserts before updates
-                    self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)
-                    if update.viewItem?.interaction is TSOutgoingMessage {
-                        shouldScrollToBottom = true
-                    } else {
-                        shouldScrollToBottom = self.isCloseToBottom
-                    }
-                case .update:
-                    self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
-                default: preconditionFailure()
+                    case .delete:
+                        self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                    case .insert:
+                        // Perform inserts before updates
+                        self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)
+                        if update.viewItem?.interaction is TSOutgoingMessage {
+                            shouldScrollToBottom = true
+                        } else {
+                            shouldScrollToBottom = self.isCloseToBottom
+                        }
+                    case .update:
+                        self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                    default: preconditionFailure()
                 }
                 
                 // Update the nav items if the message request was approved
@@ -1856,14 +1884,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             trySendReadReceipt: !thread.isMessageRequest()
         )
         SSKEnvironment.shared.disappearingMessagesJob.cleanupMessagesWhichFailedToStartExpiringFromNow()
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
     }
     
     func getMediaCache() -> NSCache<NSString, AnyObject> {
