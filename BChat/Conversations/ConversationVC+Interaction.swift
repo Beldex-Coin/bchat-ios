@@ -672,6 +672,19 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         window.makeKeyAndVisible()
         window.backgroundColor = .clear
     }
+    
+    func handleTapToCallback() {
+        guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
+        guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
+        guard AppEnvironment.shared.callManager.currentCall == nil else { return }
+        let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
+//        let callVC = NewIncomingCallVC(for: call)
+//        callVC.conversationVC = self
+//        self.inputAccessoryView?.isHidden = true
+//        self.inputAccessoryView?.alpha = 0
+        let callVC = NewIncomingCallVC()
+        present(callVC, animated: true, completion: nil)
+    }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
         func confirmDownload() {

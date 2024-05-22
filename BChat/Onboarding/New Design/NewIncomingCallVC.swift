@@ -2,10 +2,7 @@
 
 import UIKit
 
-
-
 class NewIncomingCallVC: BaseVC {
-    
     
     var backgroundImageView: UIImageView = {
         let theImageView = UIImageView()

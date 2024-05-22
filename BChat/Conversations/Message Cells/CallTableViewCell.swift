@@ -221,6 +221,11 @@ final class CallTableViewCell: UITableViewCell {
     /// Handle tap gesture
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+        
+        if message.callState == .missed {
+            delegate?.handleTapToCallback()
+        }
+        
         let shouldBeTappable = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
         if shouldBeTappable {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
