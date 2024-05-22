@@ -51,7 +51,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
         result.addSubview(progressView)
         return result
     }()
@@ -61,7 +61,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
         result.addSubview(progressView)
         return result
     }()
@@ -119,6 +119,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }()
 
     private lazy var additionalContentContainer = UIView()
+    private lazy var additionalContentContainerOuterView = UIView()
 
     // MARK: Settings
     private static let linkPreviewViewInset: CGFloat = 6
@@ -166,7 +167,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton)])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
-        bottomStackView.backgroundColor = Colors.textViewColor
+        bottomStackView.backgroundColor = Colors.incomingMessageColor//Colors.textViewColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
@@ -292,18 +293,48 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // URL before removing the quote draft.
     
     private func handleQuoteDraftChanged() {
+//        additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
+//        linkPreviewInfo = nil
+//        guard let quoteDraftInfo = quoteDraftInfo else { return }
+//        let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
+//        let hInset: CGFloat = 4 // Slight visual adjustment
+//        let maxWidth = additionalContentContainer.bounds.width
+//        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
+//        additionalContentContainer.addSubview(quoteView)
+//        quoteView.layer.cornerRadius = 16
+//        quoteView.backgroundColor = Colors.incomingMessageColor
+//        
+//        quoteView.pin(.left, to: .left, of: additionalContentContainer, withInset: hInset)
+//        quoteView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
+//        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -54)
+//        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -1)
+        
+        
         additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
         linkPreviewInfo = nil
         guard let quoteDraftInfo = quoteDraftInfo else { return }
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
-        let hInset: CGFloat = 6 // Slight visual adjustment
+        let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
         let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
-        additionalContentContainer.addSubview(quoteView)
-        quoteView.pin(.left, to: .left, of: additionalContentContainer, withInset: hInset)
-        quoteView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -hInset)
-        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -6)
+        additionalContentContainerOuterView.addSubview(quoteView)
+        additionalContentContainer.addSubview(additionalContentContainerOuterView)
+        quoteView.backgroundColor = Colors.mainBackGroundColor2
+        quoteView.layer.cornerRadius = 16
+        
+        additionalContentContainerOuterView.backgroundColor = Colors.incomingMessageColor
+        additionalContentContainerOuterView.layer.cornerRadius = 16
+        additionalContentContainerOuterView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        quoteView.pin(.left, to: .left, of: additionalContentContainerOuterView, withInset: 10)
+        quoteView.pin(.top, to: .top, of: additionalContentContainerOuterView, withInset: 12)
+        quoteView.pin(.right, to: .right, of: additionalContentContainerOuterView, withInset: -10)
+        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainerOuterView, withInset: -20)
+        
+        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0)
+        additionalContentContainerOuterView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
+        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -51)
+        additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
 
     private func autoGenerateLinkPreviewIfPossible() {
