@@ -268,6 +268,122 @@ final class CallMessageCell : MessageCell {
 //            
 //            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
 //            titleLabel.trailingAnchor.constraint(equalTo: smallBackGroundView.trailingAnchor, constant: -18),
+<<<<<<< HEAD
+            
+//            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 1),
+//            discriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+//            discriptionLabel.bottomAnchor.constraint(equalTo: smallBackGroundView.bottomAnchor, constant: -1),
+//            
+//        ])
+//
+//        // Reply button
+//        addSubview(replyButton)
+//        replyButton.addSubview(replyIconImageView)
+//        replyIconImageView.center(in: replyButton)
+//        replyButton.pin(.right, to: .left, of: mainBackGroundView, withInset: -5)
+//        replyButton.center(.vertical, in: mainBackGroundView)
+//                
+//        
+//    }
+    
+    
+    
+//    override func setUpGestureRecognizers() {
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+//        tapGestureRecognizer.numberOfTapsRequired = 1
+//        addGestureRecognizer(tapGestureRecognizer)
+//        addGestureRecognizer(panGestureRecognizer)
+//    }
+//    
+//    // MARK: Updating
+//    override func update() {
+//        guard let message = viewItem?.interaction as? TSInfoMessage, message.messageType == .call else { return }
+//        if message.callState.rawValue == 0 {//0 is incoming
+//            mainBackGroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+//            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+//            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+//            mainBackGroundView.backgroundColor = Colors.incomingMessageColor
+//            smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
+//            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+//            let colorText = isLightMode ? UIColor(hex: 0x333333) : .white
+//            titleLabel.textColor = colorText
+//            discriptionLabel.isHidden = true
+//            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor).isActive = true
+//        }else if message.callState.rawValue == 1 {//1 is outgoiing
+//            mainBackGroundView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14).isActive = true
+//            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+//            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+//            let colorText = isLightMode ? UIColor(hex: 0xEBEBEB) : .white
+//            titleLabel.textColor = colorText
+//            discriptionLabel.isHidden = true
+//            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor).isActive = true
+//        }else {//2 is missed call
+//            mainBackGroundView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+//            mainBackGroundView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+//            mainBackGroundView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+//            mainBackGroundView.backgroundColor = Colors.incomingMessageColor
+//            smallBackGroundView.backgroundColor = Colors.smallBackGroundViewCellColor
+//            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+//            let colorText = isLightMode ? UIColor(hex: 0x333333) : .white
+//            titleLabel.textColor = colorText
+//            discriptionLabel.isHidden = false
+//            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor, constant: -6).isActive = true
+//        }
+//        let icon: UIImage?
+//        let incomimglogoImage = isLightMode ? "call_incoming_new_white" : "call_incoming_new"
+//        let missedlogoImage = isLightMode ? "call_missed_new_white" : "call_missed_new"
+//        switch message.callState {
+//        case .outgoing: icon = UIImage(named: "call_outgoing")//?.withTint(Colors.text)
+//        case .incoming: icon = UIImage(named: incomimglogoImage)//?.withTint(Colors.text)
+//        case .missed, .permissionDenied: icon = UIImage(named: missedlogoImage)//?.withTint(Colors.destructive)
+//        default: icon = nil
+//        }
+//        iconImageView.image = icon
+//        let shouldShowInfoIcon = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
+//        Storage.read { transaction in
+//            self.titleLabel.text = message.previewText(with: transaction)
+//        }
+//        
+//        let date = message.dateForUI()
+//        let description = DateUtil.formatDate(forDisplay2: date)
+//        timeLabel.text = description
+//    }
+//    
+//    @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+//        guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+//        if message.callState.rawValue == 0 {//0 is incoming
+//            
+//        }else if message.callState.rawValue == 1 { // 1 is outgoing
+//            
+//        }else { // missed call
+//            NotificationCenter.default.post(name: Notification.Name("tapToCallBackCallVC"), object: nil)
+//        }
+//        let shouldBeTappable = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
+//        if shouldBeTappable {
+//            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
+//        }
+//    }
+//    
+//    
+//    //handle swipe - Replay
+//    override func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        return true // Needed for the pan gesture recognizer to work with the table view's pan gesture recognizer
+//    }
+//    
+//    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if gestureRecognizer == panGestureRecognizer {
+//            let translation = panGestureRecognizer.translation(in: self)
+//            // Only allow swipes from left to right
+//            return translation.x > 0 && abs(translation.x) > abs(translation.y)
+//        } else {
+//            return true
+//        }
+//    }
+//    
+//    @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+//        guard let viewItem = viewItem else { return }
+//        var quoteDraftOrNil: OWSQuotedReplyModel?
+//=======
 //            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
 //            
 ////            titleLabel.topAnchor.constraint(equalTo: smallBackGroundView.topAnchor, constant: 5),
@@ -387,6 +503,7 @@ final class CallMessageCell : MessageCell {
 //    @objc private func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
 //        guard let viewItem = viewItem else { return }
 //        var quoteDraftOrNil: OWSQuotedReplyModel?
+//>>>>>>> origin/new-design-with-functionality
 //        Storage.read { transaction in
 //            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
 //        }
@@ -399,6 +516,19 @@ final class CallMessageCell : MessageCell {
 //        Storage.read { transaction in
 //            print("----->",message.previewText(with: transaction))
 //            
+//        }
+//<<<<<<< HEAD
+        
+//        guard let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
+//        var previewText: String?
+//        Storage.read { transaction in
+//            previewText = message.previewText(with: transaction)
+//        }
+//        guard let quoteDraft = quoteDraftOrNil else { return }
+//        // You can now use `previewText` as needed without causing type mismatch errors
+//        if let text = previewText {
+//            // Process `text` as needed
+//            print("Preview Text:", text)
 //        }
 //        
 //        let viewsToMove = [ replyButton, mainBackGroundView ]
@@ -444,4 +574,52 @@ final class CallMessageCell : MessageCell {
 //        resetReply()
 //        delegate?.handleReplyButtonTapped(for: viewItem)
 //    }
+//
 //}
+//=======
+//        
+//        let viewsToMove = [ replyButton, mainBackGroundView ]
+//        let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
+//        switch gestureRecognizer.state {
+//        case .began:
+//            delegate?.handleViewItemSwiped(viewItem, state: .began)
+//        case .changed:
+//            // The idea here is to asymptotically approach a maximum drag distance
+//            let damping: CGFloat = 20
+//            let sign: CGFloat = 1
+//            let x = (damping * (sqrt(abs(translationX)) / sqrt(damping))) * sign
+//            viewsToMove.forEach { $0.transform = CGAffineTransform(translationX: x, y: 0) }
+//            if timerView.isHidden {
+//                replyButton.alpha = abs(translationX) / CallMessageCellNew.maxBubbleTranslationX
+//            } else {
+//                replyButton.alpha = 0 // Always hide the reply button if the timer view is showing, otherwise they can overlap
+//            }
+//            if abs(translationX) > CallMessageCellNew.swipeToReplyThreshold && abs(previousX) < CallMessageCellNew.swipeToReplyThreshold {
+//                UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
+//            }
+//            previousX = translationX
+//        case .ended, .cancelled:
+//            if abs(translationX) > CallMessageCellNew.swipeToReplyThreshold {
+//                delegate?.handleViewItemSwiped(viewItem, state: .ended)
+//                reply()
+//            } else {
+//                delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
+//                resetReply()
+//            }
+//        default: break
+//        }
+//    }
+//    private func resetReply() {
+//        let viewsToMove = [ replyButton, mainBackGroundView ]
+//        UIView.animate(withDuration: 0.25) {
+//            viewsToMove.forEach { $0.transform = .identity }
+//            self.replyButton.alpha = 0
+//        }
+//    }
+//    private func reply() {
+//        guard let viewItem = viewItem else { return }
+//        resetReply()
+//        delegate?.handleReplyButtonTapped(for: viewItem)
+//    }
+//}
+//>>>>>>> origin/new-design-with-functionality
