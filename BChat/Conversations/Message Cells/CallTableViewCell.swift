@@ -8,7 +8,7 @@ final class CallTableViewCell: UITableViewCell {
     weak var delegate: MessageCellDelegate?
     var thread: TSThread? {
         didSet {
-            if viewItem != nil { 
+            if viewItem != nil {
                 update()
             }
         }
@@ -33,7 +33,7 @@ final class CallTableViewCell: UITableViewCell {
         setUpViewHierarchy()
         setUpGestureRecognizers()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
@@ -52,7 +52,7 @@ final class CallTableViewCell: UITableViewCell {
     
     private static let iconSize: CGFloat = 16
     private lazy var infoImageView = UIImageView(image: UIImage(named: "ic_info")?.withTint(Colors.text))
-        
+    
     // MARK: - UIElemnts
     
     /// Main Background View
@@ -83,10 +83,10 @@ final class CallTableViewCell: UITableViewCell {
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.callCellTitle
+        result.textColor = Colors.noDataLabelColor
         result.font = Fonts.OpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "No answer"
+        result.text = "Tap to call back"
         return result
     }()
     
@@ -108,6 +108,18 @@ final class CallTableViewCell: UITableViewCell {
         return result
     }()
     
+    lazy var stackViewContainer: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 2
+        return result
+    }()
+    
+    
+    
     // MARK: - UI setup
     
     /// SetUp View Hierarchy
@@ -120,7 +132,14 @@ final class CallTableViewCell: UITableViewCell {
         
         addSubview(mainContainerView)
         mainContainerView.addSubViews(containerView, timeLabel)
-        containerView.addSubViews(iconImageView, titleLabel, discriptionLabel)
+        containerView.addSubViews(iconImageView, stackViewContainer)
+        
+        
+        containerView.addSubview(stackViewContainer)
+        stackViewContainer.addArrangedSubview(titleLabel)
+        stackViewContainer.addArrangedSubview( discriptionLabel)
+        
+        
         
         discriptionLabel.isHidden = true
         
@@ -133,14 +152,13 @@ final class CallTableViewCell: UITableViewCell {
             containerView.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -6),
             containerView.widthAnchor.constraint(equalToConstant: 147),
             
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -18),
-            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
-            titleLabel.widthAnchor.constraint(equalToConstant: 61),
-            
             iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
-            iconImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 6),
-            iconImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -7),
+            iconImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            
+            stackViewContainer.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+            stackViewContainer.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+            stackViewContainer.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
+            stackViewContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
             
             timeLabel.trailingAnchor.constraint(equalTo: mainContainerView.trailingAnchor, constant: -16),
             timeLabel.bottomAnchor.constraint(equalTo: mainContainerView.bottomAnchor, constant: -7),
@@ -164,45 +182,47 @@ final class CallTableViewCell: UITableViewCell {
         let missedlogoImage = isLightMode ? "call_missed_new_white" : "call_missed_new"
         
         switch message.callState {
-            case .incoming:
-                mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
-                mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
-                mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
-                mainContainerView.widthAnchor.constraint(equalToConstant: 124).isActive = true
-                
-                mainContainerView.backgroundColor = Colors.incomingMessageColor
-                containerView.backgroundColor = Colors.smallBackGroundViewCellColor
-                
-                containerView.widthAnchor.constraint(equalToConstant: 112).isActive = true
-                titleLabel.widthAnchor.constraint(equalToConstant: 21).isActive = true
-                
-                timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-                titleLabel.textColor = Colors.messageTimeLabelColor
-                self.titleLabel.text = "Call"
-                icon = UIImage(named: incomimglogoImage)
-            case .outgoing:
-                debugPrint("outgoing call")
-            case .missed:
-                mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
-                mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
-                mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
-                mainContainerView.widthAnchor.constraint(equalToConstant: 159).isActive = true
-                
-                containerView.widthAnchor.constraint(equalToConstant: 147).isActive = true
-                titleLabel.widthAnchor.constraint(equalToConstant: 61).isActive = true
-                
-                mainContainerView.backgroundColor = Colors.incomingMessageColor
-                containerView.backgroundColor = Colors.smallBackGroundViewCellColor
-                
-                timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-                titleLabel.textColor = Colors.messageTimeLabelColor
+        case .incoming:
+            discriptionLabel.isHidden = true
+            mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+            mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+            mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            mainContainerView.widthAnchor.constraint(equalToConstant: 124).isActive = true
             
-                self.titleLabel.text = "Missed call"
-                icon = UIImage(named: missedlogoImage)
-            case .permissionDenied, .unknown:
-                icon = UIImage(named: missedlogoImage)
-            default:
-                icon = nil
+            mainContainerView.backgroundColor = Colors.incomingMessageColor
+            containerView.backgroundColor = Colors.smallBackGroundViewCellColor
+            
+            containerView.widthAnchor.constraint(equalToConstant: 112).isActive = true
+            titleLabel.widthAnchor.constraint(equalToConstant: 21).isActive = true
+            
+            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+            titleLabel.textColor = Colors.messageTimeLabelColor
+            self.titleLabel.text = "Call"
+            icon = UIImage(named: incomimglogoImage)
+        case .outgoing:
+            debugPrint("outgoing call")
+        case .missed:
+            discriptionLabel.isHidden = false
+            mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+            mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+            mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            mainContainerView.widthAnchor.constraint(equalToConstant: 159).isActive = true
+            
+            containerView.widthAnchor.constraint(equalToConstant: 147).isActive = true
+            titleLabel.widthAnchor.constraint(equalToConstant: 61).isActive = true
+            
+            mainContainerView.backgroundColor = Colors.incomingMessageColor
+            containerView.backgroundColor = Colors.smallBackGroundViewCellColor
+            
+            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+            titleLabel.textColor = Colors.messageTimeLabelColor
+            
+            self.titleLabel.text = "Missed call"
+            icon = UIImage(named: missedlogoImage)
+        case .permissionDenied, .unknown:
+            icon = UIImage(named: missedlogoImage)
+        default:
+            icon = nil
         }
         
         iconImageView.image = icon
