@@ -89,7 +89,7 @@ class CustomChatSettingsTableViewCell: UITableViewCell {
             rightIconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             rightTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -18),
             rightTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-]            rightSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            rightSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             rightSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
         ])
         
