@@ -514,12 +514,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     func showMediaGallery() {
-//        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
-//        self.mediaGallery = mediaGallery
-//        assert(self.navigationController is OWSNavigationController)
-//        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
-        let vc = AllMediaViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
+        self.mediaGallery = mediaGallery
+        assert(self.navigationController is OWSNavigationController)
+        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
     }
     
     func tappedConversationSearch() {
@@ -835,6 +833,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
@@ -925,6 +929,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
@@ -1065,6 +1075,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
