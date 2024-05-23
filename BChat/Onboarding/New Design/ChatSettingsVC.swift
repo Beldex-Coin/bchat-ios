@@ -90,13 +90,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     var thread: TSThread?
     var uiDatabaseConnection: YapDatabaseConnection?
-    //            private(set) var editingDatabaseConnection: YapDatabaseConnection?
     var disappearingMessagesDurations: [NSNumber]?
     var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
     var mediaGallery: MediaGallery?
     private(set) var avatarView: UIImageView?
-    //    private(set) var disappearingMessagesDurationLabel: UILabel?
-    //    var displayNameLabel: UILabel?
     var displayNameTextField: TextField?
     var displayNameContainer: UIView?
     var isEditingDisplayName: Bool = false
@@ -293,9 +290,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
-        
-        
-        //        adjustTableViewHeight()
         
     }
     
@@ -923,16 +917,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.titleLabel.text = "Disappearing Messgaess"
                 cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                 
-                //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
                 cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
-                
-                //                if cell.rightSwitch.isOn {
-                //                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                //                    cell.bottomView.isHidden = false
-                //                } else {
-                //                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                //                    cell.bottomView.isHidden = true
-                //                }
                 if cell.rightSwitch.isOn {
                     cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
                     cell.bottomView.isHidden = false
