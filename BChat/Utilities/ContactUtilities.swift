@@ -21,6 +21,7 @@ enum ContactUtilities {
                 result.append(thread.contactBChatID())
             }
         }
+        
         func getDisplayName(for publicKey: String) -> String {
             return Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
         }

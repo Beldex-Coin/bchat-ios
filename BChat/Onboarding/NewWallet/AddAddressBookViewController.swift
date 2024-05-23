@@ -22,7 +22,7 @@ class AddAddressBookViewController: BaseVC {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Name"
-        label.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
+        label.textColor = Colors.titleColor
         label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class AddAddressBookViewController: BaseVC {
         textField.leftView = paddingView
         textField.leftViewMode = .always
         textField.placeholder = "Enter name"
-        textField.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
+        textField.textColor = Colors.titleColor
         return textField
     }()
     
@@ -50,7 +50,7 @@ class AddAddressBookViewController: BaseVC {
     private lazy var addressLabel: UILabel = {
         let label = UILabel()
         label.text = "Address"
-        label.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
+        label.textColor = Colors.titleColor
         label.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +78,7 @@ class AddAddressBookViewController: BaseVC {
         textField.leftView = paddingView
         textField.leftViewMode = .always
         textField.placeholder = "Enter the address"
-        textField.textColor = Colors.titleColor //isLightMode ? UIColor(hex: 0x333333) : UIColor(hex: 0xEBEBEB)
+        textField.textColor = Colors.titleColor
         return textField
     }()
     

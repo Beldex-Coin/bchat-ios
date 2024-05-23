@@ -2782,7 +2782,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         // Print and display the sorted grouped items
         for (key, items) in sortedGroupedTransactionAllArray {
             for item in items {
-                print("Date list-------->:", item.newtimestamp)
+                //print("Date list-------->:", item.newtimestamp)
             }
         }
         
@@ -3026,7 +3026,6 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
         transactionAllArray = history.all
         transactionSendArray = history.send
         transactionReceiveArray = history.receive
-        print("+++++",transactionAllArray)
         self.mainBalance = balance_modify
         DispatchQueue.main.async { [self] in
             self.transactionAllArray = history.all

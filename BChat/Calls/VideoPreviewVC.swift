@@ -1,4 +1,5 @@
 import UIKit
+import BChatUIKit
 import WebRTC
 
 public protocol VideoPreviewDelegate : AnyObject {

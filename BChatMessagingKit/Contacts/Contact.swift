@@ -40,14 +40,14 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     @objc public func displayName(for context: Context) -> String? {
         if let nickname = nickname { return nickname }
         switch context {
-        case .regular: return name
-        case .openGroup:
-            // In open groups, where it's more likely that multiple users have the same name, we display a bit of the BChat ID after
-            // a user's display name for added context.
-            guard let name = name else { return nil }
-            let endIndex = bchatID.endIndex
-            let cutoffIndex = bchatID.index(endIndex, offsetBy: -8)
-            return "\(name) (...\(bchatID[cutoffIndex..<endIndex]))"
+            case .regular: return name
+            case .openGroup:
+                // In open groups, where it's more likely that multiple users have the same name, we display a bit of the BChat ID after
+                // a user's display name for added context.
+                guard let name = name else { return nil }
+                let endIndex = bchatID.endIndex
+                let cutoffIndex = bchatID.index(endIndex, offsetBy: -8)
+                return "\(name) (...\(bchatID[cutoffIndex..<endIndex]))"
         }
     }
     

@@ -15,9 +15,9 @@ extension AppDelegate {
     @objc func handleAppActivatedWithOngoingCallIfNeeded() {
         guard let call = AppEnvironment.shared.callManager.currentCall else { return }
         guard MiniCallView.current == nil else { return }
-        if let callVC = CurrentAppContext().frontmostViewController() as? CallVC, callVC.call == call { return }
+        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
-        let callVC = CallVC(for: call)
+        let callVC = NewIncomingCallVC(for: call)
         if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
             callVC.conversationVC = conversationVC
             conversationVC.inputAccessoryView?.isHidden = true
@@ -28,7 +28,7 @@ extension AppDelegate {
     
     private func dismissAllCallUI() {
         if let currentBanner = IncomingCallBanner.current { currentBanner.dismiss() }
-        if let callVC = CurrentAppContext().frontmostViewController() as? CallVC { callVC.handleEndCallMessage() }
+        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC { callVC.handleEndCallMessage() }
         if let miniCallView = MiniCallView.current { miniCallView.dismiss() }
     }
     
@@ -41,7 +41,7 @@ extension AppDelegate {
                     if CurrentAppContext().isMainAppAndActive {
                         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
                         if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
-                            let callVC = CallVC(for: call)
+                            let callVC = NewIncomingCallVC(for: call)
                             callVC.conversationVC = conversationVC
                             conversationVC.inputAccessoryView?.isHidden = true
                             conversationVC.inputAccessoryView?.alpha = 0
@@ -141,7 +141,7 @@ extension AppDelegate {
                     call.hasStartedConnecting = true
                     let sdp = RTCSessionDescription(type: .answer, sdp: message.sdps![0])
                     call.didReceiveRemoteSDP(sdp: sdp)
-                    guard let callVC = CurrentAppContext().frontmostViewController() as? CallVC else { return }
+                    guard let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC else { return }
                     callVC.handleAnswerMessage(message)
                 }
             }

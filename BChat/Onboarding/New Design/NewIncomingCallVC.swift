@@ -1,11 +1,61 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
+import WebRTC
+import BChatUIKit
+import BChatMessagingKit
+import BChatUtilitiesKit
 import UIKit
+import MediaPlayer
+import AVFoundation
 
-
-
-class NewIncomingCallVC: BaseVC {
+final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
+    let call: BChatCall
+    var latestKnownAudioOutputDeviceName: String?
+    var durationTimer: Timer?
+    var duration: Int = 0
+    var shouldRestartCamera = true
+    weak var conversationVC: ConversationVC? = nil
+    var player: AVAudioPlayer?;
+    lazy var cameraManager: CameraManager = {
+        let result = CameraManager()
+        result.delegate = self
+        return result
+    }()
+    
+    private var isSpeakerEnabled = false
+    private var isBluetoothEnabled = false
+    
+    // MARK: Lifecycle
+    init(for call: BChatCall) {
+        self.call = call
+        super.init(nibName: nil, bundle: nil)
+        setupStateChangeCallbacks()
+        self.modalPresentationStyle = .overFullScreen
+        self.modalTransitionStyle = .crossDissolve
+    }
+    
+    required init(coder: NSCoder) { preconditionFailure("Use init(for:) instead.") }
+    
+    
+    private lazy var localVideoView: LocalVideoView = {
+        let result = LocalVideoView()
+        result.isHidden = !call.isVideoEnabled
+        result.layer.cornerRadius = 10
+        result.layer.masksToBounds = true
+        result.set(.width, to: LocalVideoView.width)
+        result.set(.height, to: LocalVideoView.height)
+        result.makeViewDraggable()
+        return result
+    }()
+    
+    private lazy var remoteVideoView: RemoteVideoView = {
+        let result = RemoteVideoView()
+        result.alpha = 0
+        result.backgroundColor = .black
+        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoteVieioViewTapped)))
+        return result
+    }()
     
     var backgroundImageView: UIImageView = {
         let theImageView = UIImageView()
@@ -20,7 +70,7 @@ class NewIncomingCallVC: BaseVC {
         result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice Call"
+        result.text = "Call"
         return result
     }()
     
@@ -55,7 +105,8 @@ class NewIncomingCallVC: BaseVC {
         result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Incoming Call.."
+//        result.text = "Incoming Call.."
+        if call.hasStartedConnecting { result.text = "Connecting..." }
         return result
     }()
     
@@ -115,6 +166,17 @@ class NewIncomingCallVC: BaseVC {
         return result
     }()
     
+    private lazy var backButton: UIButton = {
+        let result = UIButton(type: .custom)
+        result.isHidden = call.hasConnected
+        let image = UIImage(named: "NavBarBack")!.withTint(.white)
+        result.setImage(image, for: UIControl.State.normal)
+        result.set(.width, to: 60)
+        result.set(.height, to: 60)
+        result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
+        return result
+    }()
+    
     private lazy var callerNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
@@ -142,7 +204,7 @@ class NewIncomingCallVC: BaseVC {
         return result
     }()
     
-    private lazy var videoButton: UIButton = {
+    private lazy var videoButton: UIButton = { // videoButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "video_enable")
         result.setImage(image, for: UIControl.State.normal)
@@ -155,7 +217,7 @@ class NewIncomingCallVC: BaseVC {
         return result
     }()
         
-    private lazy var cameraButton: UIButton = {
+    private lazy var cameraButton: UIButton = { //switchCameraButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "cameraRotate_disable")
         result.setImage(image, for: UIControl.State.normal)
@@ -177,7 +239,7 @@ class NewIncomingCallVC: BaseVC {
         return result
     }()
     
-    private lazy var audioButton: UIButton = {
+    private lazy var audioButton: UIButton = { //switchAudioButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "audio_enable")
         result.setImage(image, for: UIControl.State.normal)
@@ -286,9 +348,27 @@ class NewIncomingCallVC: BaseVC {
         self.callDurationLabel.isHidden = true
         self.speakerOptionView.isHidden = true
         
+        // Remote video view
+        call.attachRemoteVideoRenderer(remoteVideoView)
+        view.addSubview(remoteVideoView)
+        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+        remoteVideoView.pin(to: view)
+        // Local video view
+        call.attachLocalVideoRenderer(localVideoView)
+        
+        self.incomingCallLabel.isHidden = true
+        self.buttonStackView.isHidden = true
+        self.hangUpButtonSecond.isHidden = false
+        self.callDurationLabel.isHidden = false
+        self.bottomView.isHidden = false
+        
+        view.addSubview(backButton)
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.pin(.left, to: .left, of: view)
+        backButton.pin(.top, to: .top, of: view, withInset: 55)
         
         NSLayoutConstraint.activate([
-            voiceCallLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 31),
+            voiceCallLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
             voiceCallLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             backGroundViewForIconAndLabel.topAnchor.constraint(equalTo: voiceCallLabel.bottomAnchor, constant: 6),
             backGroundViewForIconAndLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -327,14 +407,208 @@ class NewIncomingCallVC: BaseVC {
             internalSpeakerButton.topAnchor.constraint(equalTo: bluetoothButton.bottomAnchor, constant: 19),
             internalSpeakerButton.centerXAnchor.constraint(equalTo: speakerOptionView.centerXAnchor),
         ])
+        
+//        self.speakerButton.isHidden = true
+        if shouldRestartCamera { cameraManager.prepare() }
+        touch(call.videoCapturer)
+        callerNameLabel.text = self.call.contactName
+        AppEnvironment.shared.callManager.startCall(call) { error in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    self.incomingCallLabel.text = "Can't start a call."
+                    self.endCall()
+                } else {
+//                    self.incomingCallLabel.text = "Ringing..."
+                    self.callDurationLabel.text = "Ringing..."
+//                    self.answerButton.isHidden = true
+//                    self.volumeView.isHidden = false
+//                    self.speakerOptionButton.isHidden = true
+                }
+            }
+        }
+        setupOrientationMonitoring()
+        NotificationCenter.default.addObserver(self, selector: #selector(audioRouteDidChange), name: AVAudioSession.routeChangeNotification, object: nil)
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
      
         
     }
     
+    private func addLocalVideoView() {
+        let safeAreaInsets = UIApplication.shared.keyWindow!.safeAreaInsets
+        let window = CurrentAppContext().mainWindow!
+        window.addSubview(localVideoView)
+        localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: Values.smallSpacing)
+        let topMargin = safeAreaInsets.top + Values.veryLargeSpacing
+        localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
+    }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
+        shouldRestartCamera = true
+        addLocalVideoView()
+        remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+    }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
+        localVideoView.removeFromSuperview()
+    }
     
+    @objc private func pop() {
+        NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+        self.conversationVC?.showInputAccessoryView()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Orientation
+
+    private func setupOrientationMonitoring() {
+        UIDevice.current.beginGeneratingDeviceOrientationNotifications()
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeDeviceOrientation), name: UIDevice.orientationDidChangeNotification, object: UIDevice.current)
+    }
+    
+    func setupStateChangeCallbacks() {
+        self.call.remoteVideoStateDidChange = { isEnabled in
+//            self.speakerButton.isHidden = true
+//            self.speakerOptionButton.isHidden = false
+            NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.25) {
+//                    self.remoteVideoView.alpha = isEnabled ? 1 : 0
+                }
+                if self.incomingCallLabel.alpha < 0.5 {
+                    UIView.animate(withDuration: 0.25) {
+//                        self.operationPanel.alpha = 1
+//                        self.responsePanel.alpha = 1
+//                        self.incomingCallLabel.alpha = 1
+                        self.callDurationLabel.text = "Connecting..."
+                    }
+                }
+            }
+        }
+        self.call.hasStartedConnectingDidChange = {
+            DispatchQueue.main.async {
+                self.callDurationLabel.text = "Connecting..."
+//                self.speakerButton.isHidden = true
+//                self.speakerOptionButton.isHidden = false
+//                self.answerButton.alpha = 0
+                NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//                    self.answerButton.isHidden = true
+                }, completion: nil)
+            }
+        }
+        self.call.hasConnectedDidChange = {
+            DispatchQueue.main.async {
+                CallRingTonePlayer.shared.stopPlayingRingTone()
+                self.callDurationLabel.text = "Connected"
+//                self.speakerButton.isHidden = false
+//                self.speakerOptionButton.isHidden = true
+                self.backButton.isHidden = true
+//                self.minimizeButton.isHidden = false
+                self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                    self.updateDuration()
+                    NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+                }
+                self.incomingCallLabel.isHidden = true
+                self.callDurationLabel.isHidden = false
+            }
+        }
+        self.call.hasEndedDidChange = {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+                self.durationTimer?.invalidate()
+                self.durationTimer = nil
+                self.handleEndCallMessage()
+            }
+        }
+        self.call.hasStartedReconnecting = {
+            DispatchQueue.main.async {
+                self.incomingCallLabel.isHidden = false
+                self.callDurationLabel.isHidden = true
+                self.callDurationLabel.text = "Reconnecting..."
+            }
+        }
+        self.call.hasReconnected = {
+            DispatchQueue.main.async {
+                self.incomingCallLabel.isHidden = true
+                self.callDurationLabel.isHidden = false
+                NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+            }
+        }
+    }
+    
+    @objc func didChangeDeviceOrientation(notification: Notification) {
+        func rotateAllButtons(rotationAngle: CGFloat) {
+            let transform = CGAffineTransform(rotationAngle: rotationAngle)
+            UIView.animate(withDuration: 0.2) {
+                self.answerButton.transform = transform
+                self.hangUpButton.transform = transform
+                self.audioButton.transform = transform
+                self.cameraButton.transform = transform
+                self.videoButton.transform = transform
+                self.internalSpeakerButton.transform = transform
+                self.bluetoothButton.transform = transform
+//                self.speakerOptionButton.transform = transform
+            }
+        }
+        
+        switch UIDevice.current.orientation {
+        case .portrait:
+            rotateAllButtons(rotationAngle: 0)
+        case .portraitUpsideDown:
+            rotateAllButtons(rotationAngle: .pi)
+        case .landscapeLeft:
+            rotateAllButtons(rotationAngle: .halfPi)
+        case .landscapeRight:
+            rotateAllButtons(rotationAngle: .pi + .halfPi)
+        default:
+            break
+        }
+    }
+    
+    // MARK: Call signalling
+    func handleAnswerMessage(_ message: CallMessage) {
+        callDurationLabel.text = "Connecting..."
+    }
+    
+    @objc private func updateDuration() {
+//        self.volumeView.isHidden = false
+//        self.speakerOptionButton.isHidden = true
+        callDurationLabel.text = String(format: "%.2d:%.2d", duration/60, duration%60)
+        duration += 1
+    }
+    
+    func handleEndCallMessage() {
+        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        SNLog("[Calls] Ending call.")
+        self.incomingCallLabel.isHidden = false
+        self.callDurationLabel.isHidden = true
+        callDurationLabel.text = "Call Ended"
+//        self.volumeView.isHidden = true
+//        self.speakerOptionButton.isHidden = false
+        self.alertOnCallEnding()
+        UIView.animate(withDuration: 0.25) {
+//            self.remoteVideoView.alpha = 0
+//            self.operationPanel.alpha = 1
+//            self.responsePanel.alpha = 1
+//            self.incomingCallLabel.alpha = 1
+        }
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+            self.conversationVC?.showInputAccessoryView()
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+    }
     
     @objc private func answerCall() {
         self.incomingCallLabel.isHidden = true
@@ -342,23 +616,104 @@ class NewIncomingCallVC: BaseVC {
         self.hangUpButtonSecond.isHidden = false
         self.callDurationLabel.isHidden = false
         self.bottomView.isHidden = false
+        
+//        self.volumeView.isHidden = false
+//        self.speakerOptionButton.isHidden = true
+        UIApplication.shared.isIdleTimerDisabled = true
+        AppEnvironment.shared.callManager.answerCall(call) { error in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    self.callDurationLabel.text = "Can't answer the call."
+                    self.endCall()
+                }
+            }
+        }
     }
     
     @objc private func endCall() {
-        
+        UIApplication.shared.isIdleTimerDisabled = false
+        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        AppEnvironment.shared.callManager.endCall(call) { error in
+          //  self.alertOnCallEnding()
+            if let _ = error {
+                self.call.endBChatCall()
+                AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
+            }
+            DispatchQueue.main.async {
+                self.conversationVC?.showInputAccessoryView()
+                self.presentingViewController?.dismiss(animated: true, completion: nil)
+            }
+        }
     }
+    
+    func alertOnCallEnding(){
+        guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
+            print("error");
+            return;
+        }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: AVAudioSession.CategoryOptions.mixWithOthers);
+            player = try AVAudioPlayer(contentsOf: url);
+            guard let player = player else {
+                print("error");
+                return;
+            }
+            player.play();
+        } catch let error {
+            print(error.localizedDescription);
+        }
+    }
+    
     
     
     @objc private func videoButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
+        if (call.isVideoEnabled) {
+            localVideoView.isHidden = true
+            cameraManager.stop()
+            call.isVideoEnabled = false
+            cameraButton.isEnabled = false
+            videoButton.tintColor = .white
+            videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
+        } else {
+            guard requestCameraPermissionIfNeeded() else { return }
+            let previewVC = VideoPreviewVC()
+            previewVC.delegate = self
+            present(previewVC, animated: true, completion: nil)
+        }
     }
+    
+    func cameraDidConfirmTurningOn() {
+        localVideoView.isHidden = false
+        cameraManager.prepare()
+        cameraManager.start()
+        call.isVideoEnabled = true
+        cameraButton.isEnabled = true
+        videoButton.tintColor = UIColor(hex: 0x1F1F1F)
+        videoButton.backgroundColor = .white
+        let currentSession = AVAudioSession.sharedInstance()
+        do {
+            try currentSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
+        } catch let error as NSError {
+            print("audioSession error: \(error.localizedDescription)")
+        }
+    }
+    
     
     @objc private func cameraButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
+        cameraManager.switchCamera()
     }
     
     @objc private func audioButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
+        if call.isMuted {
+            audioButton.backgroundColor = UIColor(hex: 0x1F1F1F)
+            call.isMuted = false
+        } else {
+            audioButton.backgroundColor = Colors.destructive
+            call.isMuted = true
+        }
     }
     
     @objc private func speakerButtonTapped(sender : UIButton) {
@@ -370,12 +725,101 @@ class NewIncomingCallVC: BaseVC {
         sender.isSelected = !sender.isSelected
         self.speakerOptionView.isHidden = true
         self.internalSpeakerButton.isSelected = !self.bluetoothButton.isSelected
+        
+        isBluetoothEnabled.toggle()
+        if isBluetoothEnabled {
+            // Logic to enable Bluetooth audio
+            enableBluetooth()
+            sender.isSelected = true
+        } else {
+            // Logic to disable Bluetooth audio (revert to default)
+            disableBluetooth()
+            sender.isSelected = false
+        }
+    }
+    
+    private func enableBluetooth() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("Bluetooth audio enabled")
+        } catch {
+            print("Failed to enable Bluetooth audio: \(error)")
+        }
+    }
+
+    private func disableBluetooth() {
+        do {
+            // Revert to default audio route
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("Bluetooth audio disabled")
+        } catch {
+            print("Failed to disable Bluetooth audio: \(error)")
+        }
     }
     
     @objc private func internalSpeakerButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         self.speakerOptionView.isHidden = true
         self.bluetoothButton.isSelected = !self.internalSpeakerButton.isSelected
+        
+        isSpeakerEnabled.toggle()
+        if isSpeakerEnabled {
+            // Logic to enable the speaker
+            enableSpeaker()
+            sender.isSelected = true
+        } else {
+            // Logic to disable the speaker
+            disableSpeaker()
+            sender.isSelected = false
+        }
+    }
+    
+    private func enableSpeaker() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("Speaker enabled")
+        } catch {
+            print("Failed to enable speaker: \(error)")
+        }
+    }
+
+    private func disableSpeaker() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
+            print("Speaker disabled")
+        } catch {
+            print("Failed to disable speaker: \(error)")
+        }
+    }
+    
+    @objc private func audioRouteDidChange() {
+        let currentSession = AVAudioSession.sharedInstance()
+        let currentRoute = currentSession.currentRoute
+        if let currentOutput = currentRoute.outputs.first {
+            if let latestKnownAudioOutputDeviceName = latestKnownAudioOutputDeviceName, currentOutput.portName == latestKnownAudioOutputDeviceName {
+                return
+            }
+            latestKnownAudioOutputDeviceName = currentOutput.portName
+            if currentOutput.portType == .builtInSpeaker {
+//                let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
+//                volumeView.setRouteButtonImage(image, for: .normal)
+//                volumeView.tintColor = UIColor(hex: 0x1F1F1F)
+//                volumeView.backgroundColor = .white
+            }
+        }
+    }
+    
+    @objc private func handleRemoteVieioViewTapped(gesture: UITapGestureRecognizer) {
+        let isHidden = callDurationLabel.alpha < 0.5
+        UIView.animate(withDuration: 0.5) {
+//            self.operationPanel.alpha = isHidden ? 1 : 0
+//            self.responsePanel.alpha = isHidden ? 1 : 0
+//            self.callDurationLabel.alpha = isHidden ? 1 : 0
+        }
     }
     
 }

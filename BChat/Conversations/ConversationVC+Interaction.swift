@@ -50,7 +50,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let contact: Contact = Storage.shared.getContact(with: publicKey)!
         if contact.isBlocked {
             guard !showBlockedModalIfNeeded() else { return }
-        }else{
+        } else {
             guard BChatCall.isEnabled else { return }
             if SSKPreferences.areCallsEnabled {
                 requestMicrophonePermissionIfNeeded { }
@@ -58,11 +58,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
                 guard AppEnvironment.shared.callManager.currentCall == nil else { return }
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-                let callVC = CallVC(for: call)
+                let callVC = NewIncomingCallVC(for: call)
                 callVC.conversationVC = self
                 self.inputAccessoryView?.isHidden = true
                 self.inputAccessoryView?.alpha = 0
                 present(callVC, animated: true, completion: nil)
+                //CallVC
+                //NewIncomingCallVC
             } else {
                 snInputView.isHidden = true
                 let vc = CallPermissionRequestModalNewVC()
@@ -671,6 +673,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         window.rootViewController = contextMenuVC
         window.makeKeyAndVisible()
         window.backgroundColor = .clear
+    }
+    
+    func handleTapToCallback() {
+        guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
+        guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
+        guard AppEnvironment.shared.callManager.currentCall == nil else { return }
+        let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
+        let callVC = NewIncomingCallVC(for: call)
+        callVC.conversationVC = self
+        self.inputAccessoryView?.isHidden = true
+        self.inputAccessoryView?.alpha = 0
+        present(callVC, animated: true, completion: nil)
     }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
