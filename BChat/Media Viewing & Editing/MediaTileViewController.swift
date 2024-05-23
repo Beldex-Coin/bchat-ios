@@ -362,27 +362,27 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         }
 
         switch indexPath.section {
-        case kLoadOlderSectionIdx:
-            owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
-            return defaultCell
-        case loadNewerSectionIdx:
-            owsFailDebug("unexpected cell for loadNewerSectionIdx")
-            return defaultCell
-        default:
-            guard let galleryItem = galleryItem(at: indexPath) else {
-                owsFailDebug("no message for path: \(indexPath)")
+            case kLoadOlderSectionIdx:
+                owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
                 return defaultCell
-            }
-
-            guard let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: PhotoGridViewCell.reuseIdentifier, for: indexPath) as? PhotoGridViewCell else {
-                owsFailDebug("unexpected cell for indexPath: \(indexPath)")
+            case loadNewerSectionIdx:
+                owsFailDebug("unexpected cell for loadNewerSectionIdx")
                 return defaultCell
-            }
+            default:
+                guard let galleryItem = galleryItem(at: indexPath) else {
+                    owsFailDebug("no message for path: \(indexPath)")
+                    return defaultCell
+                }
 
-            let gridCellItem = GalleryGridCellItem(galleryItem: galleryItem)
-            cell.configure(item: gridCellItem)
+                guard let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: PhotoGridViewCell.reuseIdentifier, for: indexPath) as? PhotoGridViewCell else {
+                    owsFailDebug("unexpected cell for indexPath: \(indexPath)")
+                    return defaultCell
+                }
 
-            return cell
+                let gridCellItem = GalleryGridCellItem(galleryItem: galleryItem)
+                cell.configure(item: gridCellItem)
+
+                return cell
         }
     }
 
