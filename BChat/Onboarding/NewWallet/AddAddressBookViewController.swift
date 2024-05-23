@@ -204,7 +204,14 @@ class AddAddressBookViewController: BaseVC {
     
     /// Add address button  action
     @objc private func addAddressButtonAction(_ sender: UIButton) {
-        
+        var contact = Contact(bchatID: "")
+        Storage.write { transaction in
+            contact.name = "test iOS"
+            contact.beldexAddress = "bxcnTBCVEXS62VyRNxoPui81JcQGSgiJQj8y8NFQvzyUZZDtWmSnuvA5zifEPwpAHLCFCRDi7qbM1VQ4gVuCKFLG1qApD6G9p"
+            contact.didApproveMe = true
+            Storage.shared.setContact(contact, using: transaction)
+        }
+        self.navigationController?.popViewController(animated: true)
     }
     
     /// Qr code button action

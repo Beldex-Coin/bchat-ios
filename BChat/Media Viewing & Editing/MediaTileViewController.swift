@@ -135,9 +135,14 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
-        ViewControllerUtilities.setUpDefaultBChatStyle(for: self, title: MediaStrings.allMedia, hasCustomBackButton: false)
 
+        
+        // NavigationBar Title
+        self.title = "All Media"
+        
+        // Remove Back Button Title
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         guard let collectionView = self.collectionView else {
             owsFailDebug("collectionView was unexpectedly nil")
             return
