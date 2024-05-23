@@ -291,12 +291,12 @@ public final class MessageSender : NSObject {
         }
         // Validate the message
         guard let message = message as? VisibleMessage else {
-            #if DEBUG
-            preconditionFailure()
-            #else
+//            #if DEBUG
+//            preconditionFailure()
+//            #else
             handleFailure(with: Error.invalidMessage, using: transaction)
             return promise
-            #endif
+//            #endif
         }
         guard message.isValid else { handleFailure(with: Error.invalidMessage, using: transaction); return promise }
         // Attach the user's profile

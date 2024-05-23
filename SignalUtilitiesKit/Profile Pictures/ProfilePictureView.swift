@@ -106,7 +106,10 @@ public final class ProfilePictureView : UIView {
                 size = 32
             } else if self.size == Values.largeProfilePictureSize {
                 size = 56
-            } else {
+            } else if self.size == CGFloat(86) {
+                size = 74
+            }
+            else {
                 size = Values.smallProfilePictureSize
             }
             imageViewWidthConstraint.constant = size
@@ -127,6 +130,10 @@ public final class ProfilePictureView : UIView {
         imageView.backgroundColor = useFallbackPicture ? UIColor(rgbHex: 0x353535) : Colors.unimportant
         imageView.layer.cornerRadius = 3
         additionalImageView.layer.cornerRadius = 3
+        if self.size == CGFloat(86) {
+            imageView.layer.cornerRadius = 37
+            additionalImageView.layer.cornerRadius = 37
+        }
         imageView.contentMode = useFallbackPicture ? .center : .scaleAspectFit
         if useFallbackPicture {
             switch size {

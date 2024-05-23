@@ -68,6 +68,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var statusImageIncoming = messageStatusImageViewNew.pin(.left, to: .right, of: bubbleView, withInset: 7)
     private lazy var statusImageOutgoing = messageStatusImageViewNew.pin(.right, to: .left, of: bubbleView, withInset: -7)
     
+    private lazy var bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
     
     
     lazy var bubbleView: UIView = {
@@ -149,7 +150,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.set(.width, to: size)
         result.set(.height, to: size)
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor.clear.cgColor//Colors.text.cgColor
+        result.layer.borderColor = UIColor.clear.cgColor
         result.layer.cornerRadius = size / 2
         result.layer.masksToBounds = true
         result.alpha = 0
@@ -161,7 +162,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = VisibleMessageCell.replyButtonSize
         result.set(.width, to: size)
         result.set(.height, to: size)
-        result.image = UIImage(named: "Forward")//!.withTint(Colors.text)
+        result.image = UIImage(named: "Forward")
         return result
     }()
     
@@ -190,11 +191,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     private var bodyLabelTextColor: UIColor {
         switch (direction, AppModeManager.shared.currentAppMode) {
-      //  case (.outgoing, .dark), (.incoming, .light): return .black
         case (.outgoing, .dark): return .white
-        case (.incoming, .dark): return .white//Colors.titleColor5//.white
+        case (.incoming, .dark): return .white
         case (.outgoing, .light): return .white
-        case (.incoming, .light): return Colors.titleColor5//.black
+        case (.incoming, .light): return Colors.titleColor5
         default: return .white
         }
     }
@@ -236,41 +236,22 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         addSubview(timerView)
         timerView.center(.vertical, in: bubbleView)
         timerViewOutgoingMessageConstraint.isActive = true
-        
-        // message Time Label New view
-//        bubbleView.addSubview(messageTimeLabelNew)
-//        messageTimeLabelNew.pin(.right, to: .right, of: bubbleView, withInset: -10)
-//        messageTimeLabelNew.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
-        
-        bubbleView.addSubview(stackVerticalView)
-        stackVerticalView.addArrangedSubview(stackHorizontalView)
-        stackVerticalView.addArrangedSubview(messageTimeBottomLabel)
-        stackVerticalView.pin(.right, to: .right, of: bubbleView, withInset: -10)
-        stackVerticalView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
-        
-//        bubbleView.addSubview(messageTimeLabelNew2)
-//        messageTimeLabelNew2.pin(.right, to: .right, of: bubbleView, withInset: -10)
-//        messageTimeLabelNew2.center(.vertical, in: bubbleView)
-        
-        // Content view
-//        bubbleView.addSubview(snContentView)
-//        snContentView.pin(.right, to: .right, of: messageTimeLabelNew2, withInset: -35)
-//        snContentView.pin(.bottom, to: .bottom, of: messageTimeLabelNew, withInset: -5)
-//        snContentView.pin(.left, to: .left, of: bubbleView, withInset: 5)
-//        snContentView.pin(.top, to: .top, of: bubbleView, withInset: 5)
-        
+        bubbleView.addSubview(snContentView)
+        bubbleView.addSubview(messageTimeBottomLabel)
+        snContentView.pin(.right, to: .right, of: bubbleView, withInset: -5)
+        snContentView.pin(.left, to: .left, of: bubbleView, withInset: 5)
+        snContentView.pin(.top, to: .top, of: bubbleView, withInset: 5)
+        bubbleView.backgroundColor = .red
+        messageTimeBottomLabel.pin(.right, to: .right, of: bubbleView, withInset: -10)
+        messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
         messageTimeCenterLabel.isHidden = true
         bubbleView.addSubview(stackHorizontalView)
         stackHorizontalView.addArrangedSubview(snContentView)
         stackHorizontalView.addArrangedSubview(messageTimeCenterLabel)
-        
         stackHorizontalView.pin(.right, to: .right, of: bubbleView, withInset: -10)
         stackHorizontalView.pin(.bottom, to: .bottom, of: messageTimeBottomLabel, withInset: -5)
         stackHorizontalView.pin(.left, to: .left, of: bubbleView, withInset: 5)
         stackHorizontalView.pin(.top, to: .top, of: bubbleView, withInset: 5)
-        
-//        snContentView.pin(to: bubbleView)
-        // Message status image view
         addSubview(messageStatusImageView)
         messageStatusImageViewTopConstraint.isActive = true
         messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -5)
@@ -283,17 +264,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         replyIconImageView.center(in: replyButton)
         replyButton.pin(.right, to: .left, of: bubbleView, withInset: -5)
         replyButton.center(.vertical, in: bubbleView)
-//        addSubview(messageTimeLabel)
-//        messageTimeLabel.text = ""
         addSubview(messageStatusImageViewNew)
-//        messageTimeLabel.pin(.left, to: .right, of: bubbleView, withInset: 10)
-//        messageTimeLabel.center(.vertical, in: bubbleView)
-        // Remaining constraints
         authorLabel.pin(.left, to: .left, of: bubbleView, withInset: VisibleMessageCell.authorLabelInset)
-//        messageTimeLableIncoming.isActive = true
-//        messageTimeLableOutgoing.isActive = true
-//        messageTimeLabel.center(.vertical, in: messageStatusImageViewNew)
-
         statusImageIncoming.isActive = true
         statusImageOutgoing.isActive = true
         messageStatusImageViewNew.center(.vertical, in: bubbleView)
@@ -340,7 +312,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewTopConstraint.constant = (viewItem.senderName == nil) ? 0 : VisibleMessageCell.authorLabelBottomSpacing
         bubbleViewRightConstraint1.isActive = (direction == .outgoing)
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
-        bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor/*Colors.bchatMessageRequestsBubble*/ : Colors.bothGreenColor/*Colors.sentMessageBackground*/
+        bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         updateBubbleViewCorners()
         // Content view
         populateContentView(for: viewItem, message: message)
@@ -368,7 +340,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else {
             messageStatusImageView.isHidden = true
         }
-//        messageStatusImageViewTopConstraint.constant = (messageStatusImageView.isHidden) ? 0 : 5
         [ messageStatusImageViewWidthConstraint, messageStatusImageViewHeightConstraint ].forEach {
             $0.constant = (messageStatusImageView.isHidden) ? 0 : VisibleMessageCell.messageStatusImageViewSize
         }
@@ -411,13 +382,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateHeader(for viewItem: ConversationViewItem) {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
-        dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)//Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        dateBreakLabel.textColor = Colors.messageTimeLabelColor//Colors.titleColor//Colors.text
+        dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)
+        dateBreakLabel.textColor = Colors.messageTimeLabelColor
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
-//        let description = DateUtil.formatDate(forDisplay: date)
         let formattedDate = formatDate(date)
-        dateBreakLabel.text = formattedDate//description
+        dateBreakLabel.text = formattedDate
         headerView.addSubview(dateBreakLabel)
         dateBreakLabel.pin(.top, to: .top, of: headerView, withInset: Values.smallSpacing)
         let additionalBottomInset = shouldInsetHeader ? Values.mediumSpacing : 1
@@ -439,32 +409,24 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         albumView = nil
         bodyTextView = nil
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-        
-        
         let direction = isOutgoing ? "send" : "receive"
         if direction == "send" {
-//            messageTimeLableIncoming.isActive = false
-//            messageTimeLableOutgoing.isActive = true
-            
             statusImageIncoming.isActive = false
             statusImageOutgoing.isActive = true
             
         } else {
-//            messageTimeLableOutgoing.isActive = false
-//            messageTimeLableIncoming.isActive = true
-            
             statusImageOutgoing.isActive = false
             statusImageIncoming.isActive = true
         }
-        
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
-//        messageTimeLabel.text = description
         messageTimeBottomLabel.text = description
         messageTimeCenterLabel.text = description
         
         switch viewItem.messageCellType {
         case .textOnlyMessage:
+            bubbleViewBottomConstraint.isActive = false
+            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
             let inset: CGFloat = 12
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
             if let linkPreview = viewItem.linkPreview {
@@ -515,7 +477,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stackView.pin(to: snContentView, withInset: inset)
             }
         case .mediaMessage:
-//            self.messageTimeBottomLabel.isHidden = true
+            bubbleViewBottomConstraint.isActive = false
+            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
             if viewItem.interaction is TSIncomingMessage,
                 let thread = thread as? TSContactThread,
                 Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
@@ -531,7 +494,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 let albumView = MediaAlbumView(mediaCache: cache, items: viewItem.mediaAlbumItems!, isOutgoing: isOutgoing, maxMessageWidth: maxMessageWidth)
                 self.albumView = albumView
                 let size = getSize(for: viewItem)
-                albumView.set(.width, to: size.width)
+                albumView.set(.width, to: size.width - 20)
                 albumView.set(.height, to: size.height)
                 albumView.loadMedia()
                 albumView.layer.mask = bubbleViewMaskLayer
@@ -548,9 +511,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 // Constraints
                 snContentView.addSubview(stackView)
                 stackView.pin(to: snContentView)
+                snContentView.layer.cornerRadius = 10
+                snContentView.layer.masksToBounds = true
             }
         case .audio:
-//            self.messageTimeBottomLabel.isHidden = true
+            bubbleViewBottomConstraint.isActive = false
+            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
             if viewItem.interaction is TSIncomingMessage,
                 let thread = thread as? TSContactThread,
                 Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
@@ -563,7 +529,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 viewItem.lastAudioMessageView = voiceMessageView
             }
         case .genericAttachment:
-//            self.messageTimeBottomLabel.isHidden = true
+            bubbleViewBottomConstraint.isActive = false
+            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
             if viewItem.interaction is TSIncomingMessage,
                 let thread = thread as? TSContactThread,
                 Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
@@ -589,7 +556,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stackView.pin(to: snContentView, withInset: inset)
             }
         case .deletedMessage:
-//            self.messageTimeBottomLabel.isHidden = true
+            bubbleViewBottomConstraint.isActive = false
+            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
             let deletedMessageView = DeletedMessageView(viewItem: viewItem, textColor: bodyLabelTextColor)
             snContentView.addSubview(deletedMessageView)
             deletedMessageView.pin(to: snContentView)
@@ -607,8 +575,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath
-        bubbleView.layer.cornerRadius = 18//VisibleMessageCell.largeCornerRadius
-//        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
+        bubbleView.layer.cornerRadius = 18
     }
     
     override func prepareForReuse() {
@@ -712,7 +679,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
             }
             previousX = translationX
-//            messageTimeLabel.alpha = 0
             messageStatusImageViewNew.alpha = 0
         case .ended, .cancelled:
             if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold {
@@ -722,7 +688,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
                 resetReply()
             }
-//            messageTimeLabel.alpha = 1
             messageStatusImageViewNew.alpha = 1
         default: break
         }
