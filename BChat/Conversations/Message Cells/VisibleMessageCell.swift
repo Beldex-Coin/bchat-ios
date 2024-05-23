@@ -40,9 +40,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private var direction: Direction {
         guard let message = viewItem?.interaction as? TSMessage else { preconditionFailure() }
         switch message {
-        case is TSIncomingMessage: return .incoming
-        case is TSOutgoingMessage: return .outgoing
-        default: preconditionFailure()
+            case is TSIncomingMessage: return .incoming
+            case is TSOutgoingMessage: return .outgoing
+            default: preconditionFailure()
         }
     }
     
@@ -459,7 +459,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
-        print("--Date Print---->",description)
 //        messageTimeLabel.text = description
         messageTimeBottomLabel.text = description
         messageTimeCenterLabel.text = description

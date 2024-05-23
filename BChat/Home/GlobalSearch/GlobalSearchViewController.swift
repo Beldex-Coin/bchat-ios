@@ -358,35 +358,35 @@ extension GlobalSearchViewController {
         }
 
         switch searchSection {
-        case .noResults:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: EmptySearchResultCell.reuseIdentifier) as? EmptySearchResultCell, indexPath.row == 0 else { return UITableViewCell() }
-            cell.configure(isLoading: isLoading)
-            return cell
-        case .contacts:
-            let sectionResults = searchResultSet.conversations
-            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-            cell.isShowingGlobalSearchResult = true
-            let searchResult = sectionResults[safe: indexPath.row]
-            cell.threadViewModel = searchResult?.thread
-            cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText)
-            return cell
-        case .messages:
-            let sectionResults = searchResultSet.messages
-            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-            cell.isShowingGlobalSearchResult = true
-            let searchResult = sectionResults[safe: indexPath.row]
-            cell.threadViewModel = searchResult?.thread
-            cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText, message: searchResult?.message)
-            return cell
-        case .recent:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-            cell.isShowingGlobalSearchResult = true
-            dbReadConnection.read { transaction in
-                guard let threadId = self.recentSearchResults[safe: indexPath.row], let thread = TSThread.fetch(uniqueId: threadId, transaction: transaction) else { return }
-                cell.threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
-            }
-            cell.configureForRecent()
-            return cell
+            case .noResults:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: EmptySearchResultCell.reuseIdentifier) as? EmptySearchResultCell, indexPath.row == 0 else { return UITableViewCell() }
+                cell.configure(isLoading: isLoading)
+                return cell
+            case .contacts:
+                let sectionResults = searchResultSet.conversations
+                let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+                cell.isShowingGlobalSearchResult = true
+                let searchResult = sectionResults[safe: indexPath.row]
+                cell.threadViewModel = searchResult?.thread
+                cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText)
+                return cell
+            case .messages:
+                let sectionResults = searchResultSet.messages
+                let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+                cell.isShowingGlobalSearchResult = true
+                let searchResult = sectionResults[safe: indexPath.row]
+                cell.threadViewModel = searchResult?.thread
+                cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText, message: searchResult?.message)
+                return cell
+            case .recent:
+                let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
+                cell.isShowingGlobalSearchResult = true
+                dbReadConnection.read { transaction in
+                    guard let threadId = self.recentSearchResults[safe: indexPath.row], let thread = TSThread.fetch(uniqueId: threadId, transaction: transaction) else { return }
+                    cell.threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
+                }
+                cell.configureForRecent()
+                return cell
         }
     }
 }

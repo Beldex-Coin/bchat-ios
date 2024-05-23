@@ -336,7 +336,6 @@ public final class SnodeAPI : NSObject {
     
     public static func clearPath(){
         SNSnodeKitConfiguration.shared.storage.writeSync { transaction in
-            SNLog("Snode.+++++Clearing onion request paths.")
             SNSnodeKitConfiguration.shared.storage.setOnionRequestPaths(to: [], using: transaction)
             (transaction as! YapDatabaseReadWriteTransaction).removeAllObjects(inCollection: Storage.onionRequestPathCollection)
         }

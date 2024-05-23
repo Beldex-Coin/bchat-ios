@@ -130,9 +130,9 @@ public final class ProfilePictureView : UIView {
         imageView.contentMode = useFallbackPicture ? .center : .scaleAspectFit
         if useFallbackPicture {
             switch size {
-            case Values.smallProfilePictureSize..<Values.mediumProfilePictureSize: imageView.image = #imageLiteral(resourceName: "96x96")
-            case Values.mediumProfilePictureSize..<Values.largeProfilePictureSize: imageView.image = #imageLiteral(resourceName: "192x192")
-            default: imageView.image = #imageLiteral(resourceName: "logo")
+                case Values.smallProfilePictureSize..<Values.mediumProfilePictureSize: imageView.image = #imageLiteral(resourceName: "96x96")
+                case Values.mediumProfilePictureSize..<Values.largeProfilePictureSize: imageView.image = #imageLiteral(resourceName: "192x192")
+                default: imageView.image = #imageLiteral(resourceName: "logo")
             }
         }
     }
