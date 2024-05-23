@@ -2,6 +2,7 @@
 
 import UIKit
 import BChatUIKit
+import BChatUtilitiesKit
 
 class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
@@ -11,7 +12,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var topBackGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.myAccountViewBackgroundColor
+        stackView.backgroundColor = Colors.cellGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -20,7 +21,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var bottomBackGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.myAccountViewBackgroundColor
+        stackView.backgroundColor = Colors.cellGroundColor2
         stackView.layer.cornerRadius = 16
         return stackView
     }()
@@ -34,8 +35,19 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         imageView.clipsToBounds = true
         let logoImage = isLightMode ? "ic_userImageNew" : "ic_userImageNew"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-//        imageView.layer.borderWidth = 3
-//        imageView.layer.borderColor = UIColor.red.cgColor
+        imageView.layer.borderWidth = 3
+        imageView.layer.borderColor = Colors.bothGreenColor.cgColor
+        return imageView
+    }()
+    
+    /// Bns Approval Icon Image
+    private lazy var bnsApprovalIconImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        let logoImage = isLightMode ? "ic_Bns_Approval_icon" : "ic_Bns_Approval_icon"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
     
@@ -44,7 +56,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "shadow_image" : "shadow_image"
+        let logoImage = isLightMode ? "ic_background_image" : "shadow_image"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
@@ -52,7 +64,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     /// User Name Id Label
     private lazy var userNameIdLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.textColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.text = "Sreek"
         result.textAlignment = .center
@@ -62,16 +74,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    /// Edit Icon Image
-    private lazy var editIconImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "ic_newedit" : "ic_newedit"
-        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        return imageView
-    }()
-    
     /// Stack View For UserName
     lazy var stackViewForUserName: UIStackView = {
         let result: UIStackView = UIStackView()
@@ -79,13 +81,13 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.axis = .horizontal
         result.alignment = .fill
         result.distribution = .fill
-        result.spacing = 1
+        result.spacing = 0
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
     
     /// Bns Verified Label
-    private lazy var bnsVerifiedLabel: UILabel = {
+    private lazy var bnsVerifiedTitleNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
@@ -123,9 +125,9 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.axis = .vertical
-        result.alignment = .fill
-        result.distribution = .fill
-        result.spacing = 4
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 5
         return result
     }()
     
@@ -133,7 +135,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var beldexAddressView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 10
         return stackView
     }()
@@ -142,8 +144,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var beldexAddressButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setTitle("", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(beldexAddressButtonTapped), for: .touchUpInside)
         return button
@@ -153,7 +153,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var bchatIdView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 10
         return stackView
     }()
@@ -162,8 +162,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var bchatIdButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setTitle("", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(bchatIdButtonTapped), for: .touchUpInside)
         return button
@@ -173,7 +171,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var showQrView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.mainBackGroundColor2
         stackView.layer.cornerRadius = 10
         return stackView
     }()
@@ -182,8 +180,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var showQrButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.setTitle("", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(showQrButtonTapped), for: .touchUpInside)
         return button
@@ -223,7 +219,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var beldexAddressNameLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("Beldex Address", comment: "")
-        result.textColor = .white//Colors.greenColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -234,7 +230,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var bchatNameLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BChat ID", comment: "")
-        result.textColor = .white//Colors.greenColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -245,7 +241,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var showQrCodeLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("Show QR", comment: "")
-        result.textColor = .white//Colors.greenColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -277,7 +273,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "ic_ShowQr_logo" : "ic_ShowQr_logo"
+        let logoImage = isLightMode ? "ic_ShowQr_logo_dark" : "ic_ShowQr_logo"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
@@ -315,7 +311,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var linkYourBNSNameLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("Link Your BNS", comment: "")
-        result.textColor = .white//Colors.greenColor
+        result.textColor = .white
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -326,7 +322,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var readMoreAboutBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .clear//Colors.bothGreenColor//UIColor(hex: 0x11111A)
+        stackView.backgroundColor = .clear
         stackView.layer.cornerRadius = 12
         return stackView
     }()
@@ -335,7 +331,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var readMoreAboutBNSNameLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("Read more about BNS", comment: "")
-        result.textColor = .white//Colors.greenColor
+        result.textColor = Colors.textFieldPlaceHolderColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -363,6 +359,141 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
+    /// Beldex Address Expand View
+    private lazy var beldexAddressExpandView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.expandBackgroundColor
+        stackView.layer.cornerRadius = 12
+        return stackView
+    }()
+    
+    /// bchat ID Expand View
+    private lazy var bchatIDExpandView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.expandBackgroundColor
+        stackView.layer.cornerRadius = 12
+        return stackView
+    }()
+    
+    /// Show QR Expand View
+    private lazy var showQRExpandView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.expandBackgroundColor
+        stackView.layer.cornerRadius = 12
+        return stackView
+    }()
+    
+    /// Beldex Address Name Title Label
+    private lazy var beldexAddressNameTitleLabel: UILabel = {
+        let result = UILabel()
+        result.text = NSLocalizedString("Beldex Address", comment: "")
+        result.textColor = Colors.bothGreenColor
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    /// Beldex Address Id Label
+    private lazy var beldexAddressIdLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.numberOfLines = 0
+        result.lineBreakMode = .byCharWrapping
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    /// Bchat ID Title Label
+    private lazy var bchatIDTitleLabel: UILabel = {
+        let result = UILabel()
+        result.text = NSLocalizedString("BChat ID", comment: "")
+        result.textColor = Colors.bothGreenColor
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    /// Bchat Id Label
+    private lazy var bchatIdLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.numberOfLines = 0
+        result.lineBreakMode = .byCharWrapping
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    /// Scan QR Title Label
+    private lazy var scanQRTitleLabel: UILabel = {
+        let result = UILabel()
+        result.text = NSLocalizedString("Scan QR Code", comment: "")
+        result.textColor = Colors.bothGreenColor
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    /// Copy For Beldex Address Button
+    private lazy var copyForBeldexAddressButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "ic_copy_image"), for: .normal)
+        button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    /// Copy For BChat Id Button
+    private lazy var copyForBChatIdButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setImage(UIImage(named: "ic_copy_image"), for: .normal)
+        button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    /// Share Button
+    private lazy var shareButton: UIButton = {
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
+        button.layer.cornerRadius = 24
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.greenColor
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    /// Qr Background View
+    private lazy var qrBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .white
+        stackView.layer.cornerRadius = 10
+        return stackView
+    }()
+    
+    /// Qr Code Image
+    private lazy var qrCodeImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 0
+        imageView.layer.masksToBounds = true
+        return imageView
+    }()
+    
     let tableView : UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -372,29 +503,33 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     let imageArray = ["ic_hops", "ic_change_password",/*"ic_app_lock"*/ /*"ic_chat_settings",*/ "ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
     let titleArray = ["Hops", "Change Password",/*"App Lock"*/ /*"Chat Settings",*/ "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
     
-
+    @objc public var useFallbackPicture = false
+    @objc public var openGroupProfilePicture: UIImage?
+    @objc public var size: CGFloat = 30
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "My Account"
         
-        view.addSubview(topBackGroundView)
-        topBackGroundView.addSubview(profilePictureImage)
-        topBackGroundView.addSubview(shadowBackgroundImage)
+        shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))
+        shareButton.tintColor = .white
         
-        topBackGroundView.addSubview(stackViewForUserName)
-        stackViewForUserName.addArrangedSubview(userNameIdLabel)
-        stackViewForUserName.addArrangedSubview(editIconImage)
+        view.addSubview(topBackGroundView)
+        topBackGroundView.addSubview(shadowBackgroundImage)
+        topBackGroundView.addSubview(profilePictureImage)
+        
+        view.addSubview(bnsApprovalIconImage)
         
         topBackGroundView.addSubview(stackViewForBNSVerifiedName)
-        stackViewForBNSVerifiedName.addArrangedSubview(bnsVerifiedLabel)
+        stackViewForBNSVerifiedName.addArrangedSubview(bnsVerifiedTitleNameLabel)
         stackViewForBNSVerifiedName.addArrangedSubview(bnsTickIconImage)
         
         topBackGroundView.addSubview(stackViewForUserNameAndBnsVerifiedContainer)
-        stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForUserName)
+        stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(userNameIdLabel)
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForBNSVerifiedName)
         
         beldexAddressView.addSubview(copyImageBeldexAddress)
@@ -417,7 +552,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         stackViewThreeVerticalElementsContainer.addArrangedSubview(bchatIdView)
         stackViewThreeVerticalElementsContainer.addArrangedSubview(showQrView)
         
-        
         //link Your BNS Background View
         view.addSubview(linkYourBNSBackgroundView)
         linkYourBNSBackgroundView.addSubview(linkYourBNSNameLabel)
@@ -437,26 +571,54 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(bottomBackGroundView)
         bottomBackGroundView.addSubview(tableView)
         
+        view.addSubview(beldexAddressExpandView)
+        view.addSubview(bchatIDExpandView)
+        view.addSubview(showQRExpandView)
+        
+        beldexAddressExpandView.addSubview(beldexAddressNameTitleLabel)
+        beldexAddressExpandView.addSubview(beldexAddressIdLabel)
+        beldexAddressExpandView.addSubview(copyForBeldexAddressButton)
+        
+        bchatIDExpandView.addSubview(bchatIDTitleLabel)
+        bchatIDExpandView.addSubview(bchatIdLabel)
+        bchatIDExpandView.addSubview(copyForBChatIdButton)
+        
+        showQRExpandView.addSubview(scanQRTitleLabel)
+        showQRExpandView.addSubview(qrBackgroundView)
+        qrBackgroundView.addSubview(qrCodeImage)
+        showQRExpandView.addSubview(shareButton)
         
         // Not Verified
-//        shadowBackgroundImage.isHidden = true
-//        stackViewForBNSVerifiedName.isHidden = true
-//        linkYourBNSBackgroundView.isHidden = false
-//        readMoreAboutBackgroundView.isHidden = false
+        shadowBackgroundImage.isHidden = true
+        stackViewForBNSVerifiedName.isHidden = true
+        linkYourBNSBackgroundView.isHidden = false
+        readMoreAboutBackgroundView.isHidden = false
+        beldexAddressExpandView.isHidden = true
+        bchatIDExpandView.isHidden = true
+        showQRExpandView.isHidden = true
+        bnsApprovalIconImage.isHidden = true
+        profilePictureImage.layer.borderColor = UIColor.clear.cgColor
+        stackViewForBNSVerifiedName.isHidden = true
+        
         
         // BNS Verified
-        shadowBackgroundImage.isHidden = false
-        stackViewForBNSVerifiedName.isHidden = false
-        stackViewForFinalLinkBNS.isHidden = false
-        linkYourBNSBackgroundView.isHidden = true
-        readMoreAboutBackgroundView.isHidden = true
+//        shadowBackgroundImage.isHidden = false
+//        stackViewForBNSVerifiedName.isHidden = false
+//        stackViewForFinalLinkBNS.isHidden = false
+//        linkYourBNSBackgroundView.isHidden = true
+//        readMoreAboutBackgroundView.isHidden = true
+//        beldexAddressExpandView.isHidden = true
+//        bchatIDExpandView.isHidden = true
+//        showQRExpandView.isHidden = true
+//        bnsApprovalIconImage.isHidden = false
+//        profilePictureImage.layer.borderWidth = 3
+//        profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
+//        stackViewForBNSVerifiedName.isHidden = false
         
         
         NSLayoutConstraint.activate([
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             topBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-//            topBackGroundView.widthAnchor.constraint(equalToConstant: 361),
-//            topBackGroundView.heightAnchor.constraint(equalToConstant: 185),
             
             profilePictureImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             profilePictureImage.widthAnchor.constraint(equalToConstant: 86),
@@ -469,32 +631,19 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             shadowBackgroundImage.topAnchor.constraint(equalTo: topBackGroundView.topAnchor, constant: 0),
             shadowBackgroundImage.bottomAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: -0),
             
-//            userNameIdLabel.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 2),
+            bnsApprovalIconImage.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
+            bnsApprovalIconImage.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 9),
+            bnsApprovalIconImage.widthAnchor.constraint(equalToConstant: 34),
+            bnsApprovalIconImage.heightAnchor.constraint(equalToConstant: 34),
+            
             userNameIdLabel.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
-//
-            editIconImage.widthAnchor.constraint(equalToConstant: 14),
-            editIconImage.heightAnchor.constraint(equalToConstant: 14),
-            editIconImage.leadingAnchor.constraint(equalTo: userNameIdLabel.trailingAnchor, constant: 4),
-            editIconImage.centerYAnchor.constraint(equalTo: userNameIdLabel.centerYAnchor),
-//
-//            bnsVerifiedLabel.topAnchor.constraint(equalTo: nameIdLabel.bottomAnchor, constant: 2),
-//            bnsVerifiedLabel.centerXAnchor.constraint(equalTo: nameIdLabel.centerXAnchor),
-//            
+            userNameIdLabel.heightAnchor.constraint(equalToConstant: 22),
             bnsTickIconImage.widthAnchor.constraint(equalToConstant: 14),
             bnsTickIconImage.heightAnchor.constraint(equalToConstant: 14),
-            bnsTickIconImage.leadingAnchor.constraint(equalTo: bnsVerifiedLabel.trailingAnchor, constant: 4),
-            bnsTickIconImage.centerYAnchor.constraint(equalTo: bnsVerifiedLabel.centerYAnchor),
             
-            
-//            stackViewIsName.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 2),
-//            stackViewIsName.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
-            
-//            stackViewIsBNSVerifiedName.topAnchor.constraint(equalTo: stackViewIsName.bottomAnchor, constant: 4),
-//            stackViewIsBNSVerifiedName.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
-            
-            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 5),
+            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 8),
             stackViewForUserNameAndBnsVerifiedContainer.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
-//
+            
             beldexAddressView.heightAnchor.constraint(equalToConstant: 73),
             bchatIdView.heightAnchor.constraint(equalToConstant: 73),
             showQrView.heightAnchor.constraint(equalToConstant: 73),
@@ -548,7 +697,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             showQrButton.trailingAnchor.constraint(equalTo: showQrView.trailingAnchor, constant: -0),
             showQrButton.bottomAnchor.constraint(equalTo: showQrView.bottomAnchor, constant: -0),
             
-            stackViewThreeVerticalElementsContainer.topAnchor.constraint(equalTo: stackViewForUserNameAndBnsVerifiedContainer.bottomAnchor, constant: 15),
+            stackViewThreeVerticalElementsContainer.topAnchor.constraint(equalTo: stackViewForUserNameAndBnsVerifiedContainer.bottomAnchor, constant: 14),
             stackViewThreeVerticalElementsContainer.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 12),
             stackViewThreeVerticalElementsContainer.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -12),
             stackViewThreeVerticalElementsContainer.bottomAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: -14),
@@ -588,7 +737,6 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             stackViewForFinalLinkBNS.topAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: 8),
             stackViewForFinalLinkBNS.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             stackViewForFinalLinkBNS.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-
             
             //bottom BackGround View
             bottomBackGroundView.topAnchor.constraint(equalTo: stackViewForFinalLinkBNS.bottomAnchor, constant: 8),
@@ -596,13 +744,79 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             bottomBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             bottomBackGroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18),
             
+            //Expand Views
+            beldexAddressExpandView.topAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: 0),
+            beldexAddressExpandView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            beldexAddressExpandView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            
+            bchatIDExpandView.topAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: 0),
+            bchatIDExpandView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            bchatIDExpandView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            
+            showQRExpandView.topAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: 0),
+            showQRExpandView.widthAnchor.constraint(equalToConstant: 270),
+            showQRExpandView.centerXAnchor.constraint(equalTo: topBackGroundView.centerXAnchor),
+            
+            copyForBeldexAddressButton.widthAnchor.constraint(equalToConstant: 18),
+            copyForBeldexAddressButton.heightAnchor.constraint(equalToConstant: 18),
+            copyForBeldexAddressButton.centerYAnchor.constraint(equalTo: beldexAddressExpandView.centerYAnchor),
+            copyForBeldexAddressButton.trailingAnchor.constraint(equalTo: beldexAddressExpandView.trailingAnchor, constant: -16),
+            
+            beldexAddressNameTitleLabel.topAnchor.constraint(equalTo: beldexAddressExpandView.topAnchor, constant: 14),
+            beldexAddressNameTitleLabel.leadingAnchor.constraint(equalTo: beldexAddressExpandView.leadingAnchor, constant: 19),
+            
+            beldexAddressIdLabel.topAnchor.constraint(equalTo: beldexAddressNameTitleLabel.bottomAnchor, constant: 4),
+            beldexAddressIdLabel.leadingAnchor.constraint(equalTo: beldexAddressExpandView.leadingAnchor, constant: 19),
+            beldexAddressIdLabel.trailingAnchor.constraint(equalTo: copyForBeldexAddressButton.leadingAnchor, constant: -8),
+            beldexAddressIdLabel.bottomAnchor.constraint(equalTo: beldexAddressExpandView.bottomAnchor, constant: -14),
+            
+            copyForBChatIdButton.widthAnchor.constraint(equalToConstant: 18),
+            copyForBChatIdButton.heightAnchor.constraint(equalToConstant: 18),
+            copyForBChatIdButton.centerYAnchor.constraint(equalTo: bchatIDExpandView.centerYAnchor),
+            copyForBChatIdButton.trailingAnchor.constraint(equalTo: bchatIDExpandView.trailingAnchor, constant: -16),
+            
+            bchatIDTitleLabel.topAnchor.constraint(equalTo: bchatIDExpandView.topAnchor, constant: 14),
+            bchatIDTitleLabel.leadingAnchor.constraint(equalTo: bchatIDExpandView.leadingAnchor, constant: 19),
+            
+            bchatIdLabel.topAnchor.constraint(equalTo: bchatIDTitleLabel.bottomAnchor, constant: 4),
+            bchatIdLabel.leadingAnchor.constraint(equalTo: bchatIDExpandView.leadingAnchor, constant: 19),
+            bchatIdLabel.trailingAnchor.constraint(equalTo: copyForBChatIdButton.leadingAnchor, constant: -8),
+            bchatIdLabel.bottomAnchor.constraint(equalTo: bchatIDExpandView.bottomAnchor, constant: -14),
+            
+            scanQRTitleLabel.topAnchor.constraint(equalTo: showQRExpandView.topAnchor, constant: 19),
+            scanQRTitleLabel.centerXAnchor.constraint(equalTo: showQRExpandView.centerXAnchor),
+            
+            qrBackgroundView.widthAnchor.constraint(equalToConstant: 138),
+            qrBackgroundView.heightAnchor.constraint(equalToConstant: 138),
+            qrBackgroundView.topAnchor.constraint(equalTo: scanQRTitleLabel.bottomAnchor, constant: 13),
+            qrBackgroundView.centerXAnchor.constraint(equalTo: scanQRTitleLabel.centerXAnchor),
+            
+            qrCodeImage.topAnchor.constraint(equalTo: qrBackgroundView.topAnchor, constant: 10),
+            qrCodeImage.leadingAnchor.constraint(equalTo: qrBackgroundView.leadingAnchor, constant: 10),
+            qrCodeImage.trailingAnchor.constraint(equalTo: qrBackgroundView.trailingAnchor, constant: -10),
+            qrCodeImage.bottomAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: -10),
+            
+            shareButton.widthAnchor.constraint(equalToConstant: 150),
+            shareButton.heightAnchor.constraint(equalToConstant: 48),
+            shareButton.centerXAnchor.constraint(equalTo: qrBackgroundView.centerXAnchor),
+            shareButton.topAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: 19),
+            shareButton.bottomAnchor.constraint(equalTo: showQRExpandView.bottomAnchor, constant: -26),
             
         ])
+        
+        // Display image
+        let publicKey = getUserHexEncodedPublicKey()
+        profilePictureImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        profilePictureImage.clipsToBounds = true
+        profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height/2
         
         // Display name label
         let nam = Storage.shared.getUser()?.name
         userNameIdLabel.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        
+        bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
+        beldexAddressIdLabel.text = "\(SaveUserDefaultsData.WalletpublicAddress)"
+        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
+        qrCodeImage.image = qrCode
         
         tableView.leftAnchor.constraint(equalTo: bottomBackGroundView.leftAnchor, constant: 0).isActive = true
         tableView.topAnchor.constraint(equalTo: bottomBackGroundView.topAnchor, constant: 16).isActive = true
@@ -615,10 +829,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         
-        
-        
-        
-    }//LinkBNSVC
+    }
     
     /// View will appear
     override func viewWillAppear(_ animated: Bool) {
@@ -645,33 +856,77 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidLayoutSubviews()
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
     }
-
     
-
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
     
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            //  hasTappableProfilePicture = true
+            return profilePicture
+        } else {
+            //  hasTappableProfilePicture = false
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
+    }
+    
+    // Actions
     @objc func beldexAddressButtonTapped(_ sender: UIButton){
-        print("-------->beldexAddressButtonTapped")
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            beldexAddressExpandView.isHidden = false
+        }else {
+            beldexAddressExpandView.isHidden = true
+        }
     }
     
     @objc func bchatIdButtonTapped(_ sender: UIButton){
-        print("-------->bchatIdButtonTapped")
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            bchatIDExpandView.isHidden = false
+        }else {
+            bchatIDExpandView.isHidden = true
+        }
     }
     
     @objc func showQrButtonTapped(_ sender: UIButton){
-        print("-------->showQrButtonTapped")
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+            showQRExpandView.isHidden = false
+        }else {
+            showQRExpandView.isHidden = true
+        }
+    }
+    
+    @objc func shareButtonTapped() {
+        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
+        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+        self.navigationController!.present(shareVC, animated: true, completion: nil)
+    }
+    
+    @objc func copyForBeldexAddressButtonTapped(){
+        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
+        beldexAddressIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
+    @objc func copyForBChatIdButtonTapped() {
+        UIPasteboard.general.string = getUserHexEncodedPublicKey()
+        bchatIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func linkYourBNSButtonTapped(_ sender: UIButton){
-        print("-------->linkYourBNSButtonTapped")
         let vc = LinkBNSVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
@@ -702,46 +957,37 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if indexPath.row == 0 { //Hops
+        switch indexPath.row {
+        case 0:
             let vc = NewHopsVC()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-        if indexPath.row == 1 { //Change password
+            navigationController?.pushViewController(vc, animated: true)
+        case 1:
             let vc = NewPasswordVC()
             vc.isGoingBack = true
             vc.isCreatePassword = true
             vc.isChangePassword = true
-            navigationController!.pushViewController(vc, animated: true)
-        }
-        
-        if indexPath.row == 2 {//Blocked contact
+            navigationController?.pushViewController(vc, animated: true)
+        case 2:
             let vc = NewBlockedContactVC()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-        
-        if indexPath.row == 3 {//Clear data
+            navigationController?.pushViewController(vc, animated: true)
+        case 3:
             let vc = NewClearDataVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
-        
-        if indexPath.row == 4 {//Feedback
+            present(vc, animated: true, completion: nil)
+        case 4:
             if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
-        }
-        
-        if indexPath.row == 5 {//FAQ
-            let url = URL(string: bchat_FAQ_Link)!
-            UIApplication.shared.open(url)
-        }
-        
-        if indexPath.row == 6 {//Changelog
+        case 5:
+            if let url = URL(string: bchat_FAQ_Link) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        case 6:
             let vc = ChangeLogNewVC()
-            navigationController!.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            break
         }
     }
     
