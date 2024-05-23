@@ -12,7 +12,7 @@ import NVActivityIndicatorView
 // • Remaining search glitchiness
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
-    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC) {
+    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
         showSearchUI()
         popAllConversationSettingsViews {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show

@@ -6,14 +6,14 @@ import PromiseKit
 import Foundation
 
 
-let kIconViewLength: CGFloat = 24
+//let kIconViewLength: CGFloat = 24
 
 
-protocol OWSConversationSettingsViewDelegate: AnyObject {
-    func groupWasUpdated(_ groupModel: TSGroupModel)
-    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC)
-    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?)
-}
+//protocol OWSConversationSettingsViewDelegate: AnyObject {
+//    func groupWasUpdated(_ groupModel: TSGroupModel)
+//    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsNewVC)
+//    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?)
+//}
 
 
 class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
@@ -361,7 +361,7 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
 
 
     
-    weak var conversationSettingsViewDelegate: OWSConversationSettingsViewDelegate?
+//    weak var conversationSettingsViewDelegate: OWSConversationSettingsViewDelegate?
 
         var showVerificationOnAppear: Bool = false
 
@@ -706,7 +706,7 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
     }
     
     func tappedConversationSearch() {
-        conversationSettingsViewDelegate?.conversationSettingsDidRequestConversationSearch(self)
+//        conversationSettingsViewDelegate?.conversationSettingsDidRequestConversationSearch(self)
     }
     
     

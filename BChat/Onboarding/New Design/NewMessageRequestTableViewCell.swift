@@ -105,7 +105,6 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     
     func setUPLayout() {
-        
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(profileImageView, nameLabel, buttonStackView)
         buttonStackView.addArrangedSubview(deleteButton)
@@ -124,13 +123,10 @@ class NewMessageRequestTableViewCell: UITableViewCell {
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 4),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4),
-            
             profileImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 14),
             profileImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 11),
-            
             buttonStackView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -22),
             buttonStackView.heightAnchor.constraint(equalToConstant: 32),
