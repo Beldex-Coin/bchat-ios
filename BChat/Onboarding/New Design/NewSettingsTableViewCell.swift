@@ -47,8 +47,8 @@ class NewSettingsTableViewCell: UITableViewCell {
     
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
-        result.set(.width, to: 27)
-        result.set(.height, to: 27)
+        result.set(.width, to: 20)
+        result.set(.height, to: 20)
         result.layer.masksToBounds = true
         result.contentMode = .center
         return result
