@@ -113,6 +113,8 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     var flagSendAddress = false
     internal var isSearched : Bool = false
     internal var searchfilterNameArray = [String: String]()
+    
+    // For Add Address Don't Remove
 //    var savedDict = [String: String]()
     
     override func viewDidLoad() {
@@ -184,6 +186,8 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
             }
             tableView.reloadData()
         }
+        
+        // For Add Address Don't Remove
 //        savedDict = UserDefaults.standard.object([String: String].self, with: "savedDict") ?? [:]
 //
 //        let kvp = Array(savedDict).sorted { $0.key < $1.key }
@@ -371,6 +375,8 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
+    
+    // For Add Address Don't Remove
 //    func unzip<K, V>(_ array: [(key: K, value: V)]) -> ([K], [V]) {
 //        var keys = [K]()
 //        var values = [V]()
@@ -416,7 +422,6 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
                 addressshare = filterBeldexAddressArray[indexPath.item]
             }
             NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
-//            self.navigationController?.popViewController(animated: true)
             let shareVC = UIActivityViewController(activityItems: [ addressshare ], applicationActivities: nil)
             navigationController!.present(shareVC, animated: true, completion: nil)
         }

@@ -114,7 +114,7 @@ class AddAddressBookViewController: BaseVC {
     /// Address text
     var addressText: String?
     
-    
+    // For Add Address Don't Remove
 //    var savedDict = [String: String]()
     
     
@@ -183,10 +183,8 @@ class AddAddressBookViewController: BaseVC {
             addAddressButton.heightAnchor.constraint(equalToConstant: 60),
         ])
         
+        // For Add Address Don't Remove
 //        savedDict = UserDefaults.standard.object([String: String].self, with: "savedDict") ?? [:]
-
-        
-        
     }
     
     /// View will appear
@@ -214,6 +212,7 @@ class AddAddressBookViewController: BaseVC {
     /// Add address button  action
     @objc private func addAddressButtonAction(_ sender: UIButton) {
         
+        // For Add Address Don't Remove
 //        if ((addressTextField.text!.count > 106 || addressTextField.text!.count < 95) && addressTextField.text!.suffix(4).lowercased() != ".bdx") {
 //            let alert = UIAlertController(title: "Add address", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
 //            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
