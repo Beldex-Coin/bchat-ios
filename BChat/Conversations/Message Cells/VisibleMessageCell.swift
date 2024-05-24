@@ -424,144 +424,144 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         messageTimeCenterLabel.text = description
         
         switch viewItem.messageCellType {
-        case .textOnlyMessage:
-            bubbleViewBottomConstraint.isActive = false
-            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
-            let inset: CGFloat = 12
-            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
-            if let linkPreview = viewItem.linkPreview {
-                let linkPreviewView = LinkPreviewView(for: viewItem, maxWidth: maxWidth, delegate: self)
-                linkPreviewView.layer.mask = bubbleViewMaskLayer
-                linkPreviewView.linkPreviewState = LinkPreviewSent(linkPreview: linkPreview, imageAttachment: viewItem.linkPreviewAttachment)
-                snContentView.addSubview(linkPreviewView)
-                linkPreviewView.pin(to: snContentView)
-                linkPreviewView.layer.mask = bubbleViewMaskLayer
-                self.bodyTextView = linkPreviewView.bodyTextView
-            } else if let openGroupInvitationName = message.openGroupInvitationName, let openGroupInvitationURL = message.openGroupInvitationURL {
-                let openGroupInvitationView = OpenGroupInvitationView(name: openGroupInvitationName, url: openGroupInvitationURL, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
-                openGroupInvitationView.layer.mask = bubbleViewMaskLayer
-                snContentView.addSubview(openGroupInvitationView)
-                openGroupInvitationView.pin(to: snContentView)
-                openGroupInvitationView.layer.mask = bubbleViewMaskLayer
-            } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
-                let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
-                paymentView.layer.mask = bubbleViewMaskLayer
-                snContentView.addSubview(paymentView)
-                paymentView.pin(to: snContentView)
-                let direction = isOutgoing ? "send" : "receive"
-                if direction == "send" {
-                    paymentView.backgroundColor = Colors.incomingMessageColor
-                }else {
-                    paymentView.backgroundColor = Colors.greenColor
-                }
-                paymentView.layer.mask = bubbleViewMaskLayer
-            } else {
-                // Stack view
-                let stackView = UIStackView(arrangedSubviews: [])
-                stackView.axis = .vertical
-                stackView.spacing = 2
-                // Quote view
-                if viewItem.quotedReply != nil {
-                    let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
-                    let hInset: CGFloat = 2
-                    let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
-                    let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
-                    stackView.addArrangedSubview(quoteViewContainer)
-                }
-                // Body text view
-                let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
-                self.bodyTextView = bodyTextView
-                stackView.addArrangedSubview(bodyTextView)
-                // Constraints
-                snContentView.addSubview(stackView)
-                stackView.pin(to: snContentView, withInset: inset)
-            }
-        case .mediaMessage:
-            bubbleViewBottomConstraint.isActive = false
-            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
-            if viewItem.interaction is TSIncomingMessage,
-                let thread = thread as? TSContactThread,
-                Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                showMediaPlaceholder()
-            } else {
-                guard let cache = delegate?.getMediaCache() else { preconditionFailure() }
-                // Stack view
-                let stackView = UIStackView(arrangedSubviews: [])
-                stackView.axis = .vertical
-                stackView.spacing = Values.smallSpacing
-                // Album view
-                let maxMessageWidth = VisibleMessageCell.getMaxWidth(for: viewItem)
-                let albumView = MediaAlbumView(mediaCache: cache, items: viewItem.mediaAlbumItems!, isOutgoing: isOutgoing, maxMessageWidth: maxMessageWidth)
-                self.albumView = albumView
-                let size = getSize(for: viewItem)
-                albumView.set(.width, to: size.width - 20)
-                albumView.set(.height, to: size.height)
-                albumView.loadMedia()
-                albumView.layer.mask = bubbleViewMaskLayer
-                stackView.addArrangedSubview(albumView)
-                // Body text view
-                if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
-                    let inset: CGFloat = 12
-                    let maxWidth = size.width - 2 * inset
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
-                    self.bodyTextView = bodyTextView
-                    stackView.addArrangedSubview(UIView(wrapping: bodyTextView, withInsets: UIEdgeInsets(top: 0, left: inset, bottom: inset, right: inset)))
-                }
-                unloadContent = { albumView.unloadMedia() }
-                // Constraints
-                snContentView.addSubview(stackView)
-                stackView.pin(to: snContentView)
-                snContentView.layer.cornerRadius = 10
-                snContentView.layer.masksToBounds = true
-            }
-        case .audio:
-            bubbleViewBottomConstraint.isActive = false
-            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
-            if viewItem.interaction is TSIncomingMessage,
-                let thread = thread as? TSContactThread,
-                Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                showMediaPlaceholder()
-            } else {
-                let voiceMessageView = VoiceMessageView(viewItem: viewItem)
-                snContentView.addSubview(voiceMessageView)
-                voiceMessageView.pin(to: snContentView)
-                voiceMessageView.layer.mask = bubbleViewMaskLayer
-                viewItem.lastAudioMessageView = voiceMessageView
-            }
-        case .genericAttachment:
-            bubbleViewBottomConstraint.isActive = false
-            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
-            if viewItem.interaction is TSIncomingMessage,
-                let thread = thread as? TSContactThread,
-                Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                showMediaPlaceholder()
-            } else {
+            case .textOnlyMessage:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 let inset: CGFloat = 12
                 let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
-                // Stack view
-                let stackView = UIStackView(arrangedSubviews: [])
-                stackView.axis = .vertical
-                stackView.spacing = Values.smallSpacing
-                // Document view
-                let documentView = DocumentView(viewItem: viewItem, textColor: bodyLabelTextColor)
-                stackView.addArrangedSubview(documentView)
-                // Body text view
-                if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                if let linkPreview = viewItem.linkPreview {
+                    let linkPreviewView = LinkPreviewView(for: viewItem, maxWidth: maxWidth, delegate: self)
+                    linkPreviewView.layer.mask = bubbleViewMaskLayer
+                    linkPreviewView.linkPreviewState = LinkPreviewSent(linkPreview: linkPreview, imageAttachment: viewItem.linkPreviewAttachment)
+                    snContentView.addSubview(linkPreviewView)
+                    linkPreviewView.pin(to: snContentView)
+                    linkPreviewView.layer.mask = bubbleViewMaskLayer
+                    self.bodyTextView = linkPreviewView.bodyTextView
+                } else if let openGroupInvitationName = message.openGroupInvitationName, let openGroupInvitationURL = message.openGroupInvitationURL {
+                    let openGroupInvitationView = OpenGroupInvitationView(name: openGroupInvitationName, url: openGroupInvitationURL, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
+                    openGroupInvitationView.layer.mask = bubbleViewMaskLayer
+                    snContentView.addSubview(openGroupInvitationView)
+                    openGroupInvitationView.pin(to: snContentView)
+                    openGroupInvitationView.layer.mask = bubbleViewMaskLayer
+                } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                    let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
+                    paymentView.layer.mask = bubbleViewMaskLayer
+                    snContentView.addSubview(paymentView)
+                    paymentView.pin(to: snContentView)
+                    let direction = isOutgoing ? "send" : "receive"
+                    if direction == "send" {
+                        paymentView.backgroundColor = Colors.incomingMessageColor
+                    }else {
+                        paymentView.backgroundColor = Colors.greenColor
+                    }
+                    paymentView.layer.mask = bubbleViewMaskLayer
+                } else {
+                    // Stack view
+                    let stackView = UIStackView(arrangedSubviews: [])
+                    stackView.axis = .vertical
+                    stackView.spacing = 2
+                    // Quote view
+                    if viewItem.quotedReply != nil {
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
+                    // Body text view
                     let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     stackView.addArrangedSubview(bodyTextView)
+                    // Constraints
+                    snContentView.addSubview(stackView)
+                    stackView.pin(to: snContentView, withInset: inset)
                 }
-                // Constraints
-                snContentView.addSubview(stackView)
-                stackView.pin(to: snContentView, withInset: inset)
-            }
-        case .deletedMessage:
-            bubbleViewBottomConstraint.isActive = false
-            bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
-            let deletedMessageView = DeletedMessageView(viewItem: viewItem, textColor: bodyLabelTextColor)
-            snContentView.addSubview(deletedMessageView)
-            deletedMessageView.pin(to: snContentView)
-        default: return
+            case .mediaMessage:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
+                if viewItem.interaction is TSIncomingMessage,
+                    let thread = thread as? TSContactThread,
+                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                    showMediaPlaceholder()
+                } else {
+                    guard let cache = delegate?.getMediaCache() else { preconditionFailure() }
+                    // Stack view
+                    let stackView = UIStackView(arrangedSubviews: [])
+                    stackView.axis = .vertical
+                    stackView.spacing = Values.smallSpacing
+                    // Album view
+                    let maxMessageWidth = VisibleMessageCell.getMaxWidth(for: viewItem)
+                    let albumView = MediaAlbumView(mediaCache: cache, items: viewItem.mediaAlbumItems!, isOutgoing: isOutgoing, maxMessageWidth: maxMessageWidth)
+                    self.albumView = albumView
+                    let size = getSize(for: viewItem)
+                    albumView.set(.width, to: size.width - 20)
+                    albumView.set(.height, to: size.height)
+                    albumView.loadMedia()
+                    albumView.layer.mask = bubbleViewMaskLayer
+                    stackView.addArrangedSubview(albumView)
+                    // Body text view
+                    if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                        let inset: CGFloat = 12
+                        let maxWidth = size.width - 2 * inset
+                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                        self.bodyTextView = bodyTextView
+                        stackView.addArrangedSubview(UIView(wrapping: bodyTextView, withInsets: UIEdgeInsets(top: 0, left: inset, bottom: inset, right: inset)))
+                    }
+                    unloadContent = { albumView.unloadMedia() }
+                    // Constraints
+                    snContentView.addSubview(stackView)
+                    stackView.pin(to: snContentView)
+                    snContentView.layer.cornerRadius = 10
+                    snContentView.layer.masksToBounds = true
+                }
+            case .audio:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                if viewItem.interaction is TSIncomingMessage,
+                    let thread = thread as? TSContactThread,
+                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                    showMediaPlaceholder()
+                } else {
+                    let voiceMessageView = VoiceMessageView(viewItem: viewItem)
+                    snContentView.addSubview(voiceMessageView)
+                    voiceMessageView.pin(to: snContentView)
+                    voiceMessageView.layer.mask = bubbleViewMaskLayer
+                    viewItem.lastAudioMessageView = voiceMessageView
+                }
+            case .genericAttachment:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
+                if viewItem.interaction is TSIncomingMessage,
+                    let thread = thread as? TSContactThread,
+                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                    showMediaPlaceholder()
+                } else {
+                    let inset: CGFloat = 12
+                    let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+                    // Stack view
+                    let stackView = UIStackView(arrangedSubviews: [])
+                    stackView.axis = .vertical
+                    stackView.spacing = Values.smallSpacing
+                    // Document view
+                    let documentView = DocumentView(viewItem: viewItem, textColor: bodyLabelTextColor)
+                    stackView.addArrangedSubview(documentView)
+                    // Body text view
+                    if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                        self.bodyTextView = bodyTextView
+                        stackView.addArrangedSubview(bodyTextView)
+                    }
+                    // Constraints
+                    snContentView.addSubview(stackView)
+                    stackView.pin(to: snContentView, withInset: inset)
+                }
+            case .deletedMessage:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                let deletedMessageView = DeletedMessageView(viewItem: viewItem, textColor: bodyLabelTextColor)
+                snContentView.addSubview(deletedMessageView)
+                deletedMessageView.pin(to: snContentView)
+            default: return
         }
     }
     
@@ -662,34 +662,34 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
-        case .began:
-            delegate?.handleViewItemSwiped(viewItem, state: .began)
-        case .changed:
-            // The idea here is to asymptotically approach a maximum drag distance
-            let damping: CGFloat = 20
-            let sign: CGFloat = 1
-            let x = (damping * (sqrt(abs(translationX)) / sqrt(damping))) * sign
-            viewsToMove.forEach { $0.transform = CGAffineTransform(translationX: x, y: 0) }
-            if timerView.isHidden {
-                replyButton.alpha = abs(translationX) / VisibleMessageCell.maxBubbleTranslationX
-            } else {
-                replyButton.alpha = 0 // Always hide the reply button if the timer view is showing, otherwise they can overlap
-            }
-            if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold && abs(previousX) < VisibleMessageCell.swipeToReplyThreshold {
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
-            }
-            previousX = translationX
-            messageStatusImageViewNew.alpha = 0
-        case .ended, .cancelled:
-            if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold {
-                delegate?.handleViewItemSwiped(viewItem, state: .ended)
-                reply()
-            } else {
-                delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
-                resetReply()
-            }
-            messageStatusImageViewNew.alpha = 1
-        default: break
+            case .began:
+                delegate?.handleViewItemSwiped(viewItem, state: .began)
+            case .changed:
+                // The idea here is to asymptotically approach a maximum drag distance
+                let damping: CGFloat = 20
+                let sign: CGFloat = 1
+                let x = (damping * (sqrt(abs(translationX)) / sqrt(damping))) * sign
+                viewsToMove.forEach { $0.transform = CGAffineTransform(translationX: x, y: 0) }
+                if timerView.isHidden {
+                    replyButton.alpha = abs(translationX) / VisibleMessageCell.maxBubbleTranslationX
+                } else {
+                    replyButton.alpha = 0 // Always hide the reply button if the timer view is showing, otherwise they can overlap
+                }
+                if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold && abs(previousX) < VisibleMessageCell.swipeToReplyThreshold {
+                    UIImpactFeedbackGenerator(style: .heavy).impactOccurred() // Let the user know when they've hit the swipe to reply threshold
+                }
+                previousX = translationX
+                messageStatusImageViewNew.alpha = 0
+            case .ended, .cancelled:
+                if abs(translationX) > VisibleMessageCell.swipeToReplyThreshold {
+                    delegate?.handleViewItemSwiped(viewItem, state: .ended)
+                    reply()
+                } else {
+                    delegate?.handleViewItemSwiped(viewItem, state: .cancelled)
+                    resetReply()
+                }
+                messageStatusImageViewNew.alpha = 1
+            default: break
         }
     }
     
@@ -721,13 +721,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         guard !isOnlyMessageInCluster else { return .allCorners }
         let result: UIRectCorner
         switch (positionInCluster, direction) {
-        case (.top, .outgoing): result = [ .bottomLeft, .topLeft, .topRight ]
-        case (.middle, .outgoing): result = [ .bottomLeft, .topLeft ]
-        case (.bottom, .outgoing): result = [ .bottomRight, .bottomLeft, .topLeft ]
-        case (.top, .incoming): result = [ .topLeft, .topRight, .bottomRight ]
-        case (.middle, .incoming): result = [ .topRight, .bottomRight ]
-        case (.bottom, .incoming): result = [ .topRight, .bottomRight, .bottomLeft ]
-        case (nil, _): result = .allCorners
+            case (.top, .outgoing): result = [ .bottomLeft, .topLeft, .topRight ]
+            case (.middle, .outgoing): result = [ .bottomLeft, .topLeft ]
+            case (.bottom, .outgoing): result = [ .bottomRight, .bottomLeft, .topLeft ]
+            case (.top, .incoming): result = [ .topLeft, .topRight, .bottomRight ]
+            case (.middle, .incoming): result = [ .topRight, .bottomRight ]
+            case (.bottom, .incoming): result = [ .topRight, .bottomRight, .bottomLeft ]
+            case (nil, _): result = .allCorners
         }
         return result
     }
@@ -748,10 +748,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private static func getFontSize(for viewItem: ConversationViewItem) -> CGFloat {
         let baselineFontSize = Values.smallFontSize
         switch viewItem.displayableBodyText?.jumbomojiCount {
-        case 1: return baselineFontSize + 30
-        case 2: return baselineFontSize + 24
-        case 3, 4, 5: return baselineFontSize + 18
-        default: return baselineFontSize
+            case 1: return baselineFontSize + 30
+            case 2: return baselineFontSize + 24
+            case 3, 4, 5: return baselineFontSize + 18
+            default: return baselineFontSize
         }
     }
     
