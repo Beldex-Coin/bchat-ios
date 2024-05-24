@@ -38,7 +38,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = .clear//Colors.cellGroundColor3
+        View.backgroundColor = .clear
         View.layer.cornerRadius = 36
        return View
    }()
@@ -284,21 +284,7 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.layer.borderWidth = 0
         iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
         verifiedImageView.isHidden = true
-        
-        if let thread = thread as? TSGroupThread {
-            if thread.groupModel.groupImage != nil { // An open group with a profile picture
-                // For Open Group
-//                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-//                iconImageView.layer.borderWidth = 1
-            } else if thread.groupModel.groupType == .openGroup { // An open group without a profile picture or an RSS feed
-                
-            }
-        } else {
-            // one-to-one chat
-        }
-        
-        
-        
+
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {

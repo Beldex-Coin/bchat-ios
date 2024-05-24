@@ -1020,9 +1020,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
-//        tableViewTopConstraint.isActive = false
-//        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
-//        self.messageCollectionView.isHidden = false
+
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -1031,24 +1029,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-//        reloadForMessageRequest()
         if sender.isSelected {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
             self.messageCollectionView.isHidden = false
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
             self.messageCollectionView.isHidden = true
         }
     }
     
     private func updateNavBarButtons() {
-//        let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
-//        backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
-//        backButton.isAccessibilityElement = true
-//        self.navigationItem.leftBarButtonItem = backButton
-                
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.rightBarButtonItem = nil
         
