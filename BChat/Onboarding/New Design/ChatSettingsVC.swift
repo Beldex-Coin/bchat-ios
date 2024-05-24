@@ -100,6 +100,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     var sliderDurationText = ""
     
+    weak var conversationSettingsViewDelegate: OWSConversationSettingsViewDelegate?
+    
+    var showVerificationOnAppear: Bool = false
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -113,93 +117,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         super.init(coder: aDecoder)
         commonInit()
     }
-    
-    private func commonInit() {
-        observeNotifications()
-    }
-    
-    weak var conversationSettingsViewDelegate: OWSConversationSettingsViewDelegate?
-    
-    var showVerificationOnAppear: Bool = false
-    
-    func configureWithThread(thread: TSThread, uiDatabaseConnection: YapDatabaseConnection) {
-        self.thread = thread
-        self.uiDatabaseConnection = uiDatabaseConnection
-    }
-    
-    func tsAccountManager() -> TSAccountManager? {
-        return SSKEnvironment.shared.tsAccountManager
-    }
-    
-    func profileManager() -> OWSProfileManager? {
-        return OWSProfileManager.shared()
-    }
-    
-    func observeNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
-    }
-    
-    func editingDatabaseConnection() -> YapDatabaseConnection? {
-        return OWSPrimaryStorage.shared().dbReadWriteConnection
-    }
-    
-    func threadName() -> String? {
-        var threadName = self.thread?.name()
-        if self.thread is TSContactThread {
-            let thread = self.thread as? TSContactThread
-            return Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
-        } else if threadName!.count == 0 && isGroupThread() {
-            threadName = MessageStrings.newGroupDefaultTitle
-        }
-        return threadName
-    }
-    
-    func isGroupThread() -> Bool {
-        return thread is TSGroupThread
-    }
-    
-    func isOpenGroup() -> Bool {
-        if isGroupThread() {
-            let thread = self.thread as? TSGroupThread
-            return thread?.isOpenGroup ?? false
-        }
-        return false
-    }
-    
-    func isClosedGroup() -> Bool {
-        if isGroupThread() {
-            let thread = self.thread as? TSGroupThread
-            return thread?.groupModel.groupType == .closedGroup
-        }
-        return false
-    }
-    
-    
-    func configure(with thread: TSThread?, uiDatabaseConnection: YapDatabaseConnection?) {
-        self.thread = thread
-        self.uiDatabaseConnection = uiDatabaseConnection
-    }
-    
-    func didFinishEditingContact() {
-        self.tableView.reloadData()
-        dismiss(animated: false)
-    }
-    
-    func contactViewController(
-        _ viewController: CNContactViewController,
-        didCompleteWith contact: CNContact?
-    ) {
-        self.tableView.reloadData()
-        if (contact != nil) {
-            dismiss(animated: false)
-        } else {
-            dismiss(animated: true)
-        }
-        
-    }
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -297,22 +214,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.tableView.reloadData()
     }
     
-    func adjustTableViewHeight() {
-        tableView.layoutIfNeeded()
-        var totalHeight: CGFloat = 0
-        for section in 0..<tableView.numberOfSections {
-            for row in 0..<tableView.numberOfRows(inSection: section) {
-                let indexPath = IndexPath(row: row, section: section)
-                if let cell = tableView.cellForRow(at: indexPath) {
-                    totalHeight += cell.frame.height
-                }
-            }
-        }
-        tableView.heightAnchor.constraint(equalToConstant: totalHeight).isActive = true
-    }
-    
-    
-    
     override func viewWillDisappear(_ animated: Bool) {
         
         if (disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled) {
@@ -340,6 +241,100 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
     }
     
+    private func commonInit() {
+        observeNotifications()
+    }
+    
+    func configureWithThread(thread: TSThread, uiDatabaseConnection: YapDatabaseConnection) {
+        self.thread = thread
+        self.uiDatabaseConnection = uiDatabaseConnection
+    }
+    
+    func tsAccountManager() -> TSAccountManager? {
+        return SSKEnvironment.shared.tsAccountManager
+    }
+    
+    func profileManager() -> OWSProfileManager? {
+        return OWSProfileManager.shared()
+    }
+    
+    func observeNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
+    }
+    
+    func editingDatabaseConnection() -> YapDatabaseConnection? {
+        return OWSPrimaryStorage.shared().dbReadWriteConnection
+    }
+    
+    func threadName() -> String? {
+        var threadName = self.thread?.name()
+        if self.thread is TSContactThread {
+            let thread = self.thread as? TSContactThread
+            return Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+        } else if threadName!.count == 0 && isGroupThread() {
+            threadName = MessageStrings.newGroupDefaultTitle
+        }
+        return threadName
+    }
+    
+    func isGroupThread() -> Bool {
+        return thread is TSGroupThread
+    }
+    
+    func isOpenGroup() -> Bool {
+        if isGroupThread() {
+            let thread = self.thread as? TSGroupThread
+            return thread?.isOpenGroup ?? false
+        }
+        return false
+    }
+    
+    func isClosedGroup() -> Bool {
+        if isGroupThread() {
+            let thread = self.thread as? TSGroupThread
+            return thread?.groupModel.groupType == .closedGroup
+        }
+        return false
+    }
+    
+    
+    func configure(with thread: TSThread?, uiDatabaseConnection: YapDatabaseConnection?) {
+        self.thread = thread
+        self.uiDatabaseConnection = uiDatabaseConnection
+    }
+    
+    func didFinishEditingContact() {
+        self.tableView.reloadData()
+        dismiss(animated: false)
+    }
+    
+    func contactViewController(
+        _ viewController: CNContactViewController,
+        didCompleteWith contact: CNContact?
+    ) {
+        self.tableView.reloadData()
+        if (contact != nil) {
+            dismiss(animated: false)
+        } else {
+            dismiss(animated: true)
+        }
+        
+    }
+    
+    func adjustTableViewHeight() {
+        tableView.layoutIfNeeded()
+        var totalHeight: CGFloat = 0
+        for section in 0..<tableView.numberOfSections {
+            for row in 0..<tableView.numberOfRows(inSection: section) {
+                let indexPath = IndexPath(row: row, section: section)
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    totalHeight += cell.frame.height
+                }
+            }
+        }
+        tableView.heightAnchor.constraint(equalToConstant: totalHeight).isActive = true
+    }
     
     func inviteUsersToOpenGroup() {
         guard let threadID = self.thread?.uniqueId else {
@@ -514,12 +509,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     func showMediaGallery() {
-//        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
-//        self.mediaGallery = mediaGallery
-//        assert(self.navigationController is OWSNavigationController)
-//        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
-        let vc = AllMediaViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
+        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
+        self.mediaGallery = mediaGallery
+        assert(self.navigationController is OWSNavigationController)
+        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
     }
     
     func tappedConversationSearch() {
@@ -835,6 +828,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
@@ -925,6 +924,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
@@ -1065,6 +1070,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     if self.disappearingMessagesConfiguration!.isEnabled {
                         let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
                         self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                            let numberOfSeconds = self.disappearingMessagesDurations![10]
+                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                        }
                     } else {
                         self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
                     }
