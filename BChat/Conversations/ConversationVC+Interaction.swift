@@ -707,103 +707,103 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             showFailedMessageSheet(for: message)
         } else {
             switch viewItem.messageCellType {
-            case .audio:
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                } else {
+                case .audio:
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        confirmDownload()
+                    } else {
+                        guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
+                            let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
+                        let albumView = cell.subviews[5]
+                        let albumCheck = gestureRecognizer.location(in: albumView)
+                        if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                            return
+                        }
+                        playOrPauseAudio(for: viewItem)
+                    }
+                case .mediaMessage:
                     guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                         let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
-                    let albumView = cell.subviews[5]
-                    let albumCheck = gestureRecognizer.location(in: albumView)
-                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
-                        return
-                    }
-                    playOrPauseAudio(for: viewItem)
-                }
-            case .mediaMessage:
-                guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
-                    let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                } else {
-                    guard let albumView = cell.albumView else { return }
-                    let locationInCell = gestureRecognizer.location(in: cell)
-                    // Figure out which of the media views was tapped
-                    let albumCheck = gestureRecognizer.location(in: albumView)
-                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
-                        return
-                    }
-                    let locationInAlbumView = cell.convert(locationInCell, to: albumView)
-                    guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
-                    if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
-                        // TODO: Tapped a failed incoming attachment
-                    }
-                    let attachment = mediaView.attachment
-                    if let pointer = attachment as? TSAttachmentPointer {
-                        if pointer.state == .failed {
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        confirmDownload()
+                    } else {
+                        guard let albumView = cell.albumView else { return }
+                        let locationInCell = gestureRecognizer.location(in: cell)
+                        // Figure out which of the media views was tapped
+                        let albumCheck = gestureRecognizer.location(in: albumView)
+                        if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                            return
+                        }
+                        let locationInAlbumView = cell.convert(locationInCell, to: albumView)
+                        guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
+                        if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
                             // TODO: Tapped a failed incoming attachment
                         }
+                        let attachment = mediaView.attachment
+                        if let pointer = attachment as? TSAttachmentPointer {
+                            if pointer.state == .failed {
+                                // TODO: Tapped a failed incoming attachment
+                            }
+                        }
+                        guard let stream = attachment as? TSAttachmentStream else { return }
+                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ])
+                        gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
                     }
-                    guard let stream = attachment as? TSAttachmentStream else { return }
-                    let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ])
-                    gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
-                }
-            case .genericAttachment:
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                }
-                else if (
-                    viewItem.attachmentStream?.isText == true ||
-                    viewItem.attachmentStream?.isMicrosoftDoc == true ||
-                    viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf
-                ), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
-                    let fileUrl: URL = URL(fileURLWithPath: filePathString)
-                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                    interactionController.delegate = self
-                    interactionController.presentPreview(animated: true)
-                }
-                else {
-                    // Open the document if possible
-                    guard let url = viewItem.attachmentStream?.originalMediaURL else { return }
-                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                    if UIDevice.current.isIPad {
-                        shareVC.excludedActivityTypes = []
-                        shareVC.popoverPresentationController?.permittedArrowDirections = []
-                        shareVC.popoverPresentationController?.sourceView = self.view
-                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                case .genericAttachment:
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        confirmDownload()
                     }
-                    navigationController!.present(shareVC, animated: true, completion: nil)
-                }
-            case .textOnlyMessage:
-                if let reply = viewItem.quotedReply {
-                    // Scroll to the source of the reply
-                    guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
-                    messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
-                } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
-                    let url = message.openGroupInvitationURL {
-                    joinOpenGroup(name: name, url: url)
-                } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
-                    joinBeldexExplorer(id: id, amount: amount)
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
-                    joinBeldexExplorer(id: id, amount: amount)
-                }
-            default: break
+                    else if (
+                        viewItem.attachmentStream?.isText == true ||
+                        viewItem.attachmentStream?.isMicrosoftDoc == true ||
+                        viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf
+                    ), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
+                        let fileUrl: URL = URL(fileURLWithPath: filePathString)
+                        let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+                        interactionController.delegate = self
+                        interactionController.presentPreview(animated: true)
+                    }
+                    else {
+                        // Open the document if possible
+                        guard let url = viewItem.attachmentStream?.originalMediaURL else { return }
+                        let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+                        if UIDevice.current.isIPad {
+                            shareVC.excludedActivityTypes = []
+                            shareVC.popoverPresentationController?.permittedArrowDirections = []
+                            shareVC.popoverPresentationController?.sourceView = self.view
+                            shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                        }
+                        navigationController!.present(shareVC, animated: true, completion: nil)
+                    }
+                case .textOnlyMessage:
+                    if let reply = viewItem.quotedReply {
+                        // Scroll to the source of the reply
+                        guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
+                        messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                    } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
+                        let url = message.openGroupInvitationURL {
+                        joinOpenGroup(name: name, url: url)
+                    } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
+                        joinBeldexExplorer(id: id, amount: amount)
+                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
+                        joinBeldexExplorer(id: id, amount: amount)
+                    }
+                default: break
             }
         }
     }
     
     func handleViewItemSwiped(_ viewItem: ConversationViewItem, state: SwipeState) {
         switch state {
-        case .began:
-            messagesTableView.isScrollEnabled = false
-        case .ended, .cancelled:
-            messagesTableView.isScrollEnabled = true
+            case .began:
+                messagesTableView.isScrollEnabled = false
+            case .ended, .cancelled:
+                messagesTableView.isScrollEnabled = true
         }
     }
 

@@ -2090,7 +2090,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 }
 extension ConversationVC: BeldexWalletDelegate {
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
-        print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         isdaemonHeight = Int64(wallet.blockChainHeight)
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
