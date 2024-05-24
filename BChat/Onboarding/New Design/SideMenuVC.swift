@@ -6,13 +6,12 @@ extension Notification.Name {
     public static let myNotificationKey_doodlechange = Notification.Name(rawValue: "myNotificationKey_doodlechange")
 }
 
-
 class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
     
     private lazy var tableView: UITableView = {
         let result = UITableView()
         result.backgroundColor = .clear
-        result.separatorStyle = .none//.singleLine
+        result.separatorStyle = .none
         result.register(SideMenuTableViewCell.self, forCellReuseIdentifier: "SideMenuTableViewCell")
         result.register(SideMenuProfileTableViewCell.self, forCellReuseIdentifier: "SideMenuProfileTableViewCell")
         result.showsVerticalScrollIndicator = false
@@ -69,9 +68,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         return button
     }()
     
-    
-    
-    
     var titlesArray = ["My Account","Settings","Notification","Message Requests","Recovery Seed","Wallet","Report Issue","Help","Invite","About"]
     private var hasTappableProfilePicture: Bool = false
     @objc public var size: CGFloat = 30 // Not an implicitly unwrapped optional due to Obj-C limitations
@@ -80,19 +76,13 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
     @objc public var additionalPublicKey: String?
     @objc public var openGroupProfilePicture: UIImage?
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         self.navigationController?.isNavigationBarHidden = true
         
         view.addSubViews(closeButton, menuTitleLabel, sampleSwitch, lblversion, lblmodeTitle)
-        
-        
-        
-        
         
         if isLightMode {
             sampleSwitch.isOn = false
@@ -117,7 +107,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         tableView.pin(.trailing, to: .trailing, of: view)
         tableViewHeightConstraint = tableView.set(.height, to: 550)
         
-        
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 15),
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -125,7 +114,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             closeButton.heightAnchor.constraint(equalToConstant: 20),
             menuTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
-            
             
             sampleSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
             sampleSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24.333),
@@ -135,9 +123,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             
             lblversion.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
             lblversion.topAnchor.constraint(equalTo: sampleSwitch.bottomAnchor, constant: 25)
-            
-            
-            
         ])
         
         
@@ -174,9 +159,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
         tableView.reloadData()
     }
-
-    
-    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
@@ -196,10 +178,6 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             return 50
         }
     }
-    
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 {
@@ -209,13 +187,10 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             cell.contentView.backgroundColor = Colors.cancelButtonBackgroundColor
             cell.backGroundView.backgroundColor = Colors.cellGroundColor3
             cell.titleLabel.text = Storage.shared.getUser()?.name ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-            cell.subTitleLabel.text = "ID: \(getUserHexEncodedPublicKey())"
             cell.titleLabel.textColor = Colors.titleColor
-            cell.subTitleLabel.textColor = Colors.noDataLabelColor
             
             let publicKey = getUserHexEncodedPublicKey()
             cell.iconImageView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
-            
             
             let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -333,23 +308,18 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-
-   
-
 }
 
-
-
 class SideMenuTableViewCell: UITableViewCell {
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -366,30 +336,19 @@ class SideMenuTableViewCell: UITableViewCell {
         
     }
     
-    
-//    lazy var backGroundView: UIView = {
-//       let View = UIView()
-//        View.translatesAutoresizingMaskIntoConstraints = false
-//        View.backgroundColor = .clear//Colors.cellGroundColor3
-//        View.layer.cornerRadius = 36
-//       return View
-//   }()
-    
-    
     lazy var titleLabel: UILabel = {
-       let result = UILabel()
+        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.semiOpenSans(ofSize: 14)
-       result.textAlignment = .left
-       result.translatesAutoresizingMaskIntoConstraints = false
-       return result
-   }()
+        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
     
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
         result.set(.width, to: 28)
         result.set(.height, to: 28)
-//        result.layer.cornerRadius = 14
         result.layer.masksToBounds = true
         result.contentMode = .center
         return result
@@ -397,44 +356,27 @@ class SideMenuTableViewCell: UITableViewCell {
     
     func setUPLayout() {
         contentView.addSubViews(titleLabel, iconImageView)
-//        backGroundView.addSubViews(titleLabel, iconImageView)
-              
-        
         NSLayoutConstraint.activate([
-//            backGroundView.heightAnchor.constraint(equalToConstant: 72),
-//            backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
-//            backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
-//            backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-//            backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-            
             iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
             titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
             
-            
-            
         ])
     }
-    
-    
+}
 
- }
-    
-    
-
-    
 class SideMenuProfileTableViewCell: UITableViewCell {
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     
@@ -451,33 +393,22 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         
     }
     
-    
     lazy var backGroundView: UIView = {
-       let View = UIView()
+        let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = Colors.cellGroundColor3
         View.layer.cornerRadius = 10
-       return View
-   }()
-    
+        return View
+    }()
     
     lazy var titleLabel: UILabel = {
-       let result = UILabel()
+        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.boldOpenSans(ofSize: 16)
-       result.textAlignment = .left
-       result.translatesAutoresizingMaskIntoConstraints = false
-       return result
-   }()
-    
-    lazy var subTitleLabel: UILabel = {
-       let result = UILabel()
-        result.textColor = Colors.titleColor3
-       result.font = Fonts.OpenSans(ofSize: 12)
-       result.textAlignment = .left
-       result.translatesAutoresizingMaskIntoConstraints = false
-       return result
-   }()
+        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
     
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
@@ -495,17 +426,13 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         result.set(.width, to: 33)
         result.set(.height, to: 33)
         result.contentMode = .center
-//        result.layer.masksToBounds = false
-//        result.layer.cornerRadius = 22
-//        result.clipsToBounds = true
         return result
     }()
     
     
     func setUPLayout() {
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(titleLabel, iconImageView, subTitleLabel, scanImageView)
-              
+        backGroundView.addSubViews(titleLabel, iconImageView, scanImageView)
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 75),
@@ -520,21 +447,14 @@ class SideMenuProfileTableViewCell: UITableViewCell {
             scanImageView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -15),
             scanImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             
-            
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 10),
-            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor, constant: -10),
-            
-            subTitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
             
             titleLabel.trailingAnchor.constraint(equalTo: scanImageView.leadingAnchor, constant: -5),
-            subTitleLabel.trailingAnchor.constraint(equalTo: scanImageView.leadingAnchor, constant: -5)
             
         ])
     }
     
-    
-
- }
+}
 
 

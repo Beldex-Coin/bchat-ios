@@ -213,7 +213,10 @@ class LinkBNSVC: BaseVC {
     }
     
     @objc private func linkButtonTapped(_ sender: UIButton) {
-       
+        let vc = BNSLinkSuccessVC()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
     }
    
 
