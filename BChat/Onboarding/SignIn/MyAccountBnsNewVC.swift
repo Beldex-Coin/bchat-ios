@@ -282,7 +282,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var linkYourBNSBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.bothGreenColor//UIColor(hex: 0x11111A)
+        stackView.backgroundColor = Colors.bothGreenColor
         stackView.layer.cornerRadius = 12
         return stackView
     }()
@@ -880,32 +880,32 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    // Actions
-    @objc func beldexAddressButtonTapped(_ sender: UIButton){
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            beldexAddressExpandView.isHidden = false
-        }else {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            showQRExpandView.isHidden = true
             beldexAddressExpandView.isHidden = true
-        }
-    }
-    
-    @objc func bchatIdButtonTapped(_ sender: UIButton){
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            bchatIDExpandView.isHidden = false
-        }else {
             bchatIDExpandView.isHidden = true
         }
     }
     
+    // Actions
+    @objc func beldexAddressButtonTapped(_ sender: UIButton){
+        beldexAddressExpandView.isHidden = false
+        bchatIDExpandView.isHidden = true
+        showQRExpandView.isHidden = true
+    }
+    
+    @objc func bchatIdButtonTapped(_ sender: UIButton){
+        bchatIDExpandView.isHidden = false
+        beldexAddressExpandView.isHidden = true
+        showQRExpandView.isHidden = true
+    }
+    
     @objc func showQrButtonTapped(_ sender: UIButton){
-        sender.isSelected = !sender.isSelected
-        if sender.isSelected {
-            showQRExpandView.isHidden = false
-        }else {
-            showQRExpandView.isHidden = true
-        }
+        showQRExpandView.isHidden = false
+        beldexAddressExpandView.isHidden = true
+        bchatIDExpandView.isHidden = true
     }
     
     @objc func shareButtonTapped() {
