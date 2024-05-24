@@ -31,7 +31,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 43 // This will be updated correctly in `viewDidLayoutSubviews`
+        imageView.layer.cornerRadius = 43
         imageView.clipsToBounds = true
         let logoImage = isLightMode ? "ic_userImageNew" : "ic_userImageNew"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
@@ -500,8 +500,8 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return table
     }()
     
-    let imageArray = ["ic_hops", "ic_change_password",/*"ic_app_lock"*/ /*"ic_chat_settings",*/ "ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
-    let titleArray = ["Hops", "Change Password",/*"App Lock"*/ /*"Chat Settings",*/ "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
+    let imageArray = ["ic_hops", "ic_change_password","ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
+    let titleArray = ["Hops", "Change Password", "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
     
     @objc public var useFallbackPicture = false
     @objc public var openGroupProfilePicture: UIImage?
@@ -601,7 +601,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         stackViewForBNSVerifiedName.isHidden = true
         
         
-        // BNS Verified
+        // BNS Verified Dont Delete this lines
 //        shadowBackgroundImage.isHidden = false
 //        stackViewForBNSVerifiedName.isHidden = false
 //        stackViewForFinalLinkBNS.isHidden = false
@@ -857,23 +857,14 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
+     // MARK: - Navigation
+
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            //  hasTappableProfilePicture = true
             return profilePicture
         } else {
-            //  hasTappableProfilePicture = false
             // TODO: Pass in context?
             let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
             return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
