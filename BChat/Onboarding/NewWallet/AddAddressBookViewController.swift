@@ -114,6 +114,10 @@ class AddAddressBookViewController: BaseVC {
     /// Address text
     var addressText: String?
     
+    
+//    var savedDict = [String: String]()
+    
+    
     // MARK: - UIViewController life cycle
     
     /// View did load
@@ -178,6 +182,11 @@ class AddAddressBookViewController: BaseVC {
             addAddressButton.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor, constant: -35),
             addAddressButton.heightAnchor.constraint(equalToConstant: 60),
         ])
+        
+//        savedDict = UserDefaults.standard.object([String: String].self, with: "savedDict") ?? [:]
+
+        
+        
     }
     
     /// View will appear
@@ -204,14 +213,17 @@ class AddAddressBookViewController: BaseVC {
     
     /// Add address button  action
     @objc private func addAddressButtonAction(_ sender: UIButton) {
-        var contact = Contact(bchatID: "")
-        Storage.write { transaction in
-            contact.name = "test iOS"
-            contact.beldexAddress = "bxcnTBCVEXS62VyRNxoPui81JcQGSgiJQj8y8NFQvzyUZZDtWmSnuvA5zifEPwpAHLCFCRDi7qbM1VQ4gVuCKFLG1qApD6G9p"
-            contact.didApproveMe = true
-            Storage.shared.setContact(contact, using: transaction)
-        }
-        self.navigationController?.popViewController(animated: true)
+        
+//        if ((addressTextField.text!.count > 106 || addressTextField.text!.count < 95) && addressTextField.text!.suffix(4).lowercased() != ".bdx") {
+//            let alert = UIAlertController(title: "Add address", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        } 
+//        
+//
+//        savedDict[String(nameTextField.text!)] = String(addressTextField.text!)
+//        UserDefaults.standard.set(object: savedDict, forKey: "savedDict")
+//        self.navigationController?.popViewController(animated: true)
     }
     
     /// Qr code button action
@@ -268,5 +280,20 @@ extension AddAddressBookViewController: UITextFieldDelegate {
             addAddressButton.isUserInteractionEnabled = true
         }
         return true
+    }
+}
+
+
+
+
+extension UserDefaults {
+    func object<T: Codable>(_ type: T.Type, with key: String, usingDecoder decoder: JSONDecoder = JSONDecoder()) -> T? {
+        guard let data = self.value(forKey: key) as? Data else { return nil }
+        return try? decoder.decode(type.self, from: data)
+    }
+
+    func set<T: Codable>(object: T, forKey key: String, usingEncoder encoder: JSONEncoder = JSONEncoder()) {
+        let data = try? encoder.encode(object)
+        self.set(data, forKey: key)
     }
 }

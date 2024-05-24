@@ -113,6 +113,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     var flagSendAddress = false
     internal var isSearched : Bool = false
     internal var searchfilterNameArray = [String: String]()
+//    var savedDict = [String: String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -183,6 +184,13 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
             }
             tableView.reloadData()
         }
+//        savedDict = UserDefaults.standard.object([String: String].self, with: "savedDict") ?? [:]
+//
+//        let kvp = Array(savedDict).sorted { $0.key < $1.key }
+//        let (keys, values) = unzip(kvp)
+//        contactNameArray.append(contentsOf: keys)
+//        beldexAddressArray.append(contentsOf: values)
+
         
         let nameSeparator = contactNameArray.joined(separator: ",")
         let allcontactNameArray = nameSeparator.components(separatedBy: ",")
@@ -362,6 +370,21 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
             noSubAddressTitleLabel.isHidden = true
         }
     }
+    
+//    func unzip<K, V>(_ array: [(key: K, value: V)]) -> ([K], [V]) {
+//        var keys = [K]()
+//        var values = [V]()
+//
+//        keys.reserveCapacity(array.count)
+//        values.reserveCapacity(array.count)
+//
+//        array.forEach { key, value in
+//            keys.append(key)
+//            values.append(value)
+//        }
+//
+//        return (keys, values)
+//    }
     
     @objc func copyActionTapped(_ x: AnyObject) {
         //Copy the Address

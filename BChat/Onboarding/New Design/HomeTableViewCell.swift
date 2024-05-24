@@ -45,6 +45,15 @@ class HomeTableViewCell: UITableViewCell {
     
     lazy var iconImageView = ProfilePictureView()
     
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor3
@@ -121,7 +130,7 @@ class HomeTableViewCell: UITableViewCell {
         contentView.addSubview(pinImageView)
         contentView.addSubview(separatorLineView)
         pinImageView.image = UIImage(named: "ic_pinned")
-        backGroundView.addSubViews(iconImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
+        backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
         messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
@@ -145,6 +154,10 @@ class HomeTableViewCell: UITableViewCell {
             
             iconImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             iconImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
+            
+            verifiedImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
+            verifiedImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
+            
             
             nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
@@ -290,7 +303,12 @@ class HomeTableViewCell: UITableViewCell {
         messageCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
 //        hasMentionView.isHidden = !(threadViewModel.hasUnreadMentions && thread.isGroupThread())
         iconImageView.update(for: thread)
+        
+        // For BNS Verified User
         iconImageView.layer.borderWidth = 0
+        iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+        verifiedImageView.isHidden = true
+        
         if let thread = thread as? TSGroupThread {
             if thread.groupModel.groupImage != nil { // An open group with a profile picture
 //                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
