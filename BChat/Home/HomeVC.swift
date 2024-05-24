@@ -335,7 +335,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
         view.addSubview(showOrHideMessageRequestCollectionViewButton)
-        showOrHideMessageRequestCollectionViewButton.isSelected = true
+        showOrHideMessageRequestCollectionViewButton.isSelected = false
         
         NSLayoutConstraint.activate([
             messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
@@ -804,6 +804,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
         }
         self.messageCollectionView.isHidden = true
+        showOrHideMessageRequestCollectionViewButton.isSelected = false
         
         switch section {
         case 0:
@@ -1019,9 +1020,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
-//        tableViewTopConstraint.isActive = false
-//        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
-//        self.messageCollectionView.isHidden = false
+
     }
     
     @objc private func handleBlockedContactsUpdatedNotification(_ notification: Notification) {
@@ -1030,25 +1029,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
-        isOpen = !isOpen
-//        reloadForMessageRequest()
-        if !isOpen {
+        if sender.isSelected {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
             self.messageCollectionView.isHidden = false
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
             self.messageCollectionView.isHidden = true
         }
     }
     
     private func updateNavBarButtons() {
-//        let backButton = UIBarButtonItem(image: UIImage(named: "Group 630"), style: .plain, target: self, action: #selector(openSettings))
-//        backButton.tintColor = UIColor(red: 0.18, green: 0.63, blue: 0.13, alpha: 1.00)
-//        backButton.isAccessibilityElement = true
-//        self.navigationItem.leftBarButtonItem = backButton
-                
         self.navigationItem.leftBarButtonItem = nil
         self.navigationItem.rightBarButtonItem = nil
         
@@ -1066,6 +1058,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.layer.cornerRadius = 21
         button.layer.masksToBounds = true
         
+        // For BNS Verified User
+        button.layer.borderWidth = 0
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+
+        lazy var verifiedImageView: UIImageView = {
+            let result = UIImageView()
+            result.set(.width, to: 18)
+            result.set(.height, to: 18)
+            result.contentMode = .center
+            result.image = UIImage(named: "ic_verified_image")
+            return result
+        }()
         
         lazy var outerView: UIView = {
             let View = UIView()
@@ -1075,7 +1079,12 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             View.heightAnchor.constraint(equalToConstant: 42).isActive = true
             return View
         }()
-        outerView.addSubview(button)
+        outerView.addSubViews(button, verifiedImageView)
+        // For BNS Verified User
+        verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
+        verifiedImageView.isHidden = true
+        
         
         if let statusView = view.viewWithTag(333222) {
             statusView.removeFromSuperview()
@@ -1370,7 +1379,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         present(SideMenuManager.default.leftMenuNavigationController!, animated: true, completion: nil)
     }
     
-    var isOpen = false
     @objc private func showSearchUI() {
         if let presentedVC = self.presentedViewController {
             presentedVC.dismiss(animated: false, completion: nil)
@@ -1505,13 +1513,11 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            self.isOpen = false
         } else {
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = false
             self.showOrHideMessageRequestCollectionViewButton.isSelected = true
-            self.isOpen = true
         }
         
         
@@ -1533,7 +1539,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            self.isOpen = false
             messageRequestCountLabel.isHidden = true
             messageRequestLabel.isHidden = true
             showOrHideMessageRequestCollectionViewButton.isHidden = true
@@ -1541,8 +1546,7 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
             self.messageCollectionView.isHidden = false
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            self.isOpen = false
+            self.showOrHideMessageRequestCollectionViewButton.isSelected = true
             messageRequestCountLabel.isHidden = false
             messageRequestLabel.isHidden = false
             showOrHideMessageRequestCollectionViewButton.isHidden = false

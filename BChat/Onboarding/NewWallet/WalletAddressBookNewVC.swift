@@ -114,6 +114,9 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     internal var isSearched : Bool = false
     internal var searchfilterNameArray = [String: String]()
     
+    // For Add Address Don't Remove
+//    var savedDict = [String: String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -183,6 +186,15 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
             }
             tableView.reloadData()
         }
+        
+        // For Add Address Don't Remove
+//        savedDict = UserDefaults.standard.object([String: String].self, with: "savedDict") ?? [:]
+//
+//        let kvp = Array(savedDict).sorted { $0.key < $1.key }
+//        let (keys, values) = unzip(kvp)
+//        contactNameArray.append(contentsOf: keys)
+//        beldexAddressArray.append(contentsOf: values)
+
         
         let nameSeparator = contactNameArray.joined(separator: ",")
         let allcontactNameArray = nameSeparator.components(separatedBy: ",")
@@ -363,6 +375,23 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
+    
+    // For Add Address Don't Remove
+//    func unzip<K, V>(_ array: [(key: K, value: V)]) -> ([K], [V]) {
+//        var keys = [K]()
+//        var values = [V]()
+//
+//        keys.reserveCapacity(array.count)
+//        values.reserveCapacity(array.count)
+//
+//        array.forEach { key, value in
+//            keys.append(key)
+//            values.append(value)
+//        }
+//
+//        return (keys, values)
+//    }
+    
     @objc func copyActionTapped(_ x: AnyObject) {
         //Copy the Address
         let indexPath = IndexPath(item: x.tag!, section: 0)
@@ -393,7 +422,6 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
                 addressshare = filterBeldexAddressArray[indexPath.item]
             }
             NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
-//            self.navigationController?.popViewController(animated: true)
             let shareVC = UIActivityViewController(activityItems: [ addressshare ], applicationActivities: nil)
             navigationController!.present(shareVC, animated: true, completion: nil)
         }

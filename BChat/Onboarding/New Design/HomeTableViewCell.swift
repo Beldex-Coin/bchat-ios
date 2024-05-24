@@ -38,12 +38,21 @@ class HomeTableViewCell: UITableViewCell {
     lazy var backGroundView: UIView = {
        let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = .clear//Colors.cellGroundColor3
+        View.backgroundColor = .clear
         View.layer.cornerRadius = 36
        return View
    }()
     
     lazy var iconImageView = ProfilePictureView()
+    
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
     
     lazy var nameLabel: UILabel = {
        let result = UILabel()
@@ -121,7 +130,7 @@ class HomeTableViewCell: UITableViewCell {
         contentView.addSubview(pinImageView)
         contentView.addSubview(separatorLineView)
         pinImageView.image = UIImage(named: "ic_pinned")
-        backGroundView.addSubViews(iconImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
+        backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
         messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
@@ -145,6 +154,10 @@ class HomeTableViewCell: UITableViewCell {
             
             iconImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             iconImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 20),
+            
+            verifiedImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
+            verifiedImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
+            
             
             nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
@@ -176,14 +189,11 @@ class HomeTableViewCell: UITableViewCell {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
         iconImageView.update(for: thread)
-//        isPinnedIcon.isHidden = true
         messageCountLabel.isHidden = true
-//        hasMentionView.isHidden = true
     }
     
     public func configureForRecent() {
         nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.titleColor3])
-//        bottomLabelStackView.isHidden = false
         let snippet = String(format: NSLocalizedString("RECENT_SEARCH_LAST_MESSAGE_DATETIME", comment: ""), DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate))
         lastMessageLabel.attributedText = NSMutableAttributedString(string: snippet, attributes: [.foregroundColor:Colors.textFieldPlaceHolderColor.withAlphaComponent(Values.lowOpacity)])
         dateLabel.isHidden = true
@@ -198,7 +208,6 @@ class HomeTableViewCell: UITableViewCell {
             nameLabel.attributedText = NSMutableAttributedString(string: getDisplayName(), attributes: [.foregroundColor:Colors.titleColor3])
             dateLabel.isHidden = false
             dateLabel.text = DateUtil.formatDate(forDisplay: messageDate)
-//            bottomLabelStackView.isHidden = false
             var rawSnippet = snippet
             if let message = message, let name = getMessageAuthorName(message: message) {
                 rawSnippet = "\(name): \(snippet)"
@@ -221,14 +230,11 @@ class HomeTableViewCell: UITableViewCell {
                     }
                 }
                 if rawSnippet.isEmpty {
-//                    bottomLabelStackView.isHidden = true
                 } else {
-//                    bottomLabelStackView.isHidden = false
                     lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: 12)
                 }
             } else {
                 nameLabel.attributedText = getHighlightedSnippet(snippet: getDisplayNameForSearch(threadViewModel.contactBChatID!), searchText: normalizedSearchText, fontSize: 15)
-//                bottomLabelStackView.isHidden = true
             }
             dateLabel.isHidden = true
         }
@@ -254,33 +260,17 @@ class HomeTableViewCell: UITableViewCell {
     private func update() {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
-//        backgroundColor = threadViewModel.isPinned ? Colors.cellPinned : Colors.cellBackgroundColor
 
-        if thread.isBlocked() {
-//            accentLineView.backgroundColor = Colors.destructive
-//            accentLineView.alpha = 1
-        }
-        else {
-//            accentLineView.backgroundColor = Colors.accent
-//            accentLineView.alpha = threadViewModel.hasUnreadMessages ? 1 : 0.0001 // Setting the alpha to exactly 0 causes an issue on iOS 12
-        }
-//        isPinnedIcon.isHidden = !threadViewModel.isPinned
         messageCountLabel.isHidden = !threadViewModel.hasUnreadMessages
         backgroundColor = .clear
-//        backGroundView.layer.borderWidth = 1
         if !messageCountLabel.isHidden {
             backGroundView.backgroundColor = Colors.cellGroundColor3
-//            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
         } else {
             backGroundView.backgroundColor = .clear
-//            backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         }
-//        backGroundView.layer.borderWidth = 1
-//        backGroundView.layer.borderColor = Colors.cellGroundColor.cgColor
         pinImageView.isHidden = true
         if threadViewModel.isPinned {
             backGroundView.backgroundColor = Colors.cellGroundColor3
-//            backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
             pinImageView.isHidden = false
         }
         
@@ -288,63 +278,21 @@ class HomeTableViewCell: UITableViewCell {
         messageCountLabel.text = unreadCount < 10000 ? "\(unreadCount)" : "9999+"
         let fontSize = (unreadCount < 10000) ? Values.verySmallFontSize : 8
         messageCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
-//        hasMentionView.isHidden = !(threadViewModel.hasUnreadMentions && thread.isGroupThread())
         iconImageView.update(for: thread)
+        
+        // For BNS Verified User
         iconImageView.layer.borderWidth = 0
-        if let thread = thread as? TSGroupThread {
-            if thread.groupModel.groupImage != nil { // An open group with a profile picture
-//                iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-//                iconImageView.layer.borderWidth = 1
-            } else if thread.groupModel.groupType == .openGroup { // An open group without a profile picture or an RSS feed
-                
-            }
-        } else {
-            // one-to-one chat
-        }
-        
-        
-        
+        iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+        verifiedImageView.isHidden = true
+
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {
             lastMessageLabel.text = ""
-//            typingIndicatorView.isHidden = false
-//            typingIndicatorView.startAnimation()
         } else {
             lastMessageLabel.attributedText = getSnippet()
-//            typingIndicatorView.isHidden = true
-//            typingIndicatorView.stopAnimation()
         }
-//        statusIndicatorView.backgroundColor = nil
         let lastMessage = threadViewModel.lastMessageForInbox
-//        if let lastMessage = lastMessage as? TSOutgoingMessage, !lastMessage.isCallMessage {
-//
-//            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: lastMessage)
-//
-//            switch status {
-//                case .uploading, .sending:
-//                    statusIndicatorView.image = #imageLiteral(resourceName: "CircleDotDotDot").withRenderingMode(.alwaysTemplate)
-//                    statusIndicatorView.tintColor = Colors.text
-//
-//                case .sent, .skipped, .delivered:
-//                    statusIndicatorView.image = #imageLiteral(resourceName: "CircleCheck").withRenderingMode(.alwaysTemplate)
-//                    statusIndicatorView.tintColor = Colors.text
-//
-//                case .read:
-//                    statusIndicatorView.image = isLightMode ? #imageLiteral(resourceName: "FilledCircleCheckLightMode") : #imageLiteral(resourceName: "FilledCircleCheckDarkMode")
-//                    statusIndicatorView.tintColor = nil
-//                    statusIndicatorView.backgroundColor = (isLightMode ? .black : .white)
-//
-//                case .failed:
-//                    statusIndicatorView.image = #imageLiteral(resourceName: "message_status_failed").withRenderingMode(.alwaysTemplate)
-//                    statusIndicatorView.tintColor = Colors.destructive
-//            }
-//
-//            statusIndicatorView.isHidden = false
-//        }
-//        else {
-//            statusIndicatorView.isHidden = true
-//        }
     }
     
     private func getMessageAuthorName(message: TSMessage) -> String? {
@@ -461,12 +409,8 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             profileImageView.heightAnchor.constraint(equalToConstant: 44),
             profileImageView.widthAnchor.constraint(equalToConstant: 44),
-            
             removeButton.topAnchor.constraint(equalTo: profileImageView.topAnchor, constant: -4),
             removeButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 6),
-//            removeButton.heightAnchor.constraint(equalToConstant: 16),
-//            removeButton.widthAnchor.constraint(equalToConstant: 16),
-            
             nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 8),
             nameLabel.centerXAnchor.constraint(equalTo: profileImageView.centerXAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
