@@ -1,16 +1,49 @@
 {
   "images" : [
     {
+      "filename" : "imgonline-com-ua-resize-5zcKBmhYMZ.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "VideoPlayer_Slider_Thumb_15x15_@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "imgonline-com-ua-resize-ZrzrOP05WdJSuGJ.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "VideoPlayer_Slider_Thumb_15x15_@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "imgonline-com-ua-resize-lbdiKfrQ3Hqps.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "VideoPlayer_Slider_Thumb_15x15_@3x.png",
       "idiom" : "universal",
       "scale" : "3x"

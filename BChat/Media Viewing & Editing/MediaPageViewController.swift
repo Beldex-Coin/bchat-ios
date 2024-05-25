@@ -112,6 +112,56 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     var pagerScrollView: UIScrollView!
 
     // MARK: UIViewController overrides
+    
+    /// TopBackGround view
+    private lazy var topBackGroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.cellGroundColor2
+        stackView.layer.cornerRadius = 16
+        return stackView
+    }()
+    
+    /// All Media Button
+    private lazy var allMediaButton: UIButton = {
+        let result = UIButton(type: .custom)
+        result.setTitle(NSLocalizedString("All media", comment: ""), for: UIControl.State.normal)
+        result.setTitleColor(Colors.titleColor, for: .normal)
+        result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.addTarget(self, action: #selector(didPressAllMediaButton), for: UIControl.Event.touchUpInside)
+        let image = UIImage(named: "ic_videoImage")?.withRenderingMode(.alwaysTemplate)
+        result.setImage(image, for: .normal)
+        result.tintColor = Colors.titleColor
+        result.backgroundColor = .clear
+        result.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -19)
+        return result
+    }()
+    
+    /// Delete Button
+    private lazy var deleteButton: UIButton = {
+        let result = UIButton(type: .custom)
+        result.setTitle(NSLocalizedString("Delete", comment: ""), for: UIControl.State.normal)
+        result.setTitleColor(.red, for: .normal)
+        result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.addTarget(self, action: #selector(didPressDelete), for: UIControl.Event.touchUpInside)
+        let image = UIImage(named: "ic_delete_image")?.withRenderingMode(.alwaysTemplate)
+        result.setImage(image, for: .normal)
+        result.tintColor = .red
+        result.backgroundColor = .clear
+        result.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -19)
+        return result
+    }()
+    
+    lazy var stackViewContainer: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .leading
+        result.distribution = .fillEqually
+        result.spacing = 0
+        return result
+    }()
+    var isMenuButtonSelected = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,10 +174,50 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         self.navigationItem.leftBarButtonItem = backButton
 
         self.navigationItem.titleView = portraitHeaderView
-
-        if showAllMediaButton {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: MediaStrings.allMedia, style: .plain, target: self, action: #selector(didPressAllMediaButton))
-        }
+        
+        view.addSubview(topBackGroundView)
+        topBackGroundView.addSubview(stackViewContainer)
+        stackViewContainer.addArrangedSubview(allMediaButton)
+        stackViewContainer.addArrangedSubview(deleteButton)
+        
+        topBackGroundView.isHidden = true
+        
+        NSLayoutConstraint.activate([
+            topBackGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            topBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            topBackGroundView.heightAnchor.constraint(equalToConstant: 82),
+            topBackGroundView.widthAnchor.constraint(equalToConstant: 152),
+            
+            stackViewContainer.topAnchor.constraint(equalTo: topBackGroundView.topAnchor, constant: 5),
+            stackViewContainer.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -2),
+            stackViewContainer.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 22),
+            stackViewContainer.bottomAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: -5)
+        ])
+        
+        var rightBarButtonItems: [UIBarButtonItem] = []
+        
+        let settings = UIButton(type: .custom)
+        settings.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
+        settings.setImage(UIImage(named:"ic_menu_new"), for: .normal)
+        settings.addTarget(self, action: #selector(didMenuButton), for: UIControl.Event.touchUpInside)
+        let settingsBarItem = UIBarButtonItem(customView: settings)
+        rightBarButtonItems.append(settingsBarItem)
+        
+        let download = UIButton(type: .custom)
+        download.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
+        download.setImage(UIImage(named:"ic_download_imagelogo"), for: .normal)
+        download.addTarget(self, action: #selector(downloadTapped), for: UIControl.Event.touchUpInside)
+        let downloadBarItem = UIBarButtonItem(customView: download)
+        rightBarButtonItems.append(downloadBarItem)
+        
+        let forward = UIButton(type: .custom)
+        forward.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
+        forward.setImage(UIImage(named:"ic_forward_image"), for: .normal)
+        forward.addTarget(self, action: #selector(didPressShare), for: UIControl.Event.touchUpInside)
+        let forwardBarItem = UIBarButtonItem(customView: forward)
+        rightBarButtonItems.append(forwardBarItem)
+        
+        navigationItem.rightBarButtonItems = rightBarButtonItems
 
         // Even though bars are opaque, we want content to be layed out behind them.
         // The bars might obscure part of the content, but they can easily be hidden by tapping
@@ -153,9 +243,9 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         }
 
         // Views
-        pagerScrollView.backgroundColor = Colors.navigationBarBackground
+        pagerScrollView.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         
-        view.backgroundColor = Colors.navigationBarBackground
+        view.backgroundColor = Colors.homeScreenFloatingbackgroundColor
 
         captionContainerView.delegate = self
         updateCaptionContainerVisibility()
@@ -267,31 +357,17 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
             // Hiding the status bar affects the positioning of the navbar. We don't want to show that in an animation, it's
             // better to just have everythign "flit" in/out.
-            UIApplication.shared.setStatusBarHidden(shouldHideToolbars, with: .none)
-            self.navigationController?.setNavigationBarHidden(shouldHideToolbars, animated: false)
+//            UIApplication.shared.setStatusBarHidden(shouldHideToolbars, with: .none)
+//            self.navigationController?.setNavigationBarHidden(shouldHideToolbars, animated: false)
 
             UIView.animate(withDuration: 0.1) {
-                self.currentViewController.setShouldHideToolbars(self.shouldHideToolbars)
+                self.currentViewController.setShouldHideToolbars(false)
                 self.bottomContainer.isHidden = self.shouldHideToolbars
             }
         }
     }
 
     // MARK: Bar Buttons
-
-    lazy var shareBarButton: UIBarButtonItem = {
-        let shareBarButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didPressShare))
-        shareBarButton.tintColor = Colors.text
-        return shareBarButton
-    }()
-
-    lazy var deleteBarButton: UIBarButtonItem = {
-        let deleteBarButton = UIBarButtonItem(barButtonSystemItem: .trash,
-                                              target: self,
-                                              action: #selector(didPressDelete))
-        deleteBarButton.tintColor = Colors.text
-        return deleteBarButton
-    }()
 
     func buildFlexibleSpace() -> UIBarButtonItem {
         return UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -319,19 +395,14 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         }
 
         var toolbarItems: [UIBarButtonItem] = [
-            shareBarButton,
             buildFlexibleSpace()
         ]
 
         if (self.currentItem.isVideo) {
             toolbarItems += [
-                isPlayingVideo ? self.videoPauseBarButton : self.videoPlayBarButton,
                 buildFlexibleSpace()
             ]
         }
-
-        toolbarItems.append(deleteBarButton)
-
         self.footerBar.setItems(toolbarItems, animated: false)
     }
 
@@ -347,11 +418,88 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     }
 
     // MARK: Actions
+    
+    // Download image
+    @objc
+    public func downloadTapped(sender: Any) {
+        // Ensure that the current view controller is valid
+        guard let currentViewController = self.viewControllers?[0] as? MediaDetailViewController else {
+            owsFailDebug("currentViewController was unexpectedly nil")
+            return
+        }
+
+        // Ensure that the original media URL is valid
+        guard let originalMediaURL = currentViewController.galleryItem.attachmentStream.originalMediaURL else {
+            owsFailDebug("originalMediaURL was unexpectedly nil")
+            return
+        }
+
+        SNLog("Starting download for URL: \(originalMediaURL)")
+        
+        // Call the download function with the media URL
+        downloadFile(from: originalMediaURL)
+    }
+    
+    func downloadFile(from url: URL) {
+        let session = URLSession(configuration: .default)
+        let downloadTask = session.dataTask(with: url) { data, response, error in
+            if let error = error {
+                SNLog("Failed to download file with error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                SNLog("Failed to download file: No valid HTTP response")
+                return
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                SNLog("Failed to download file: HTTP status code \(httpResponse.statusCode)")
+                return
+            }
+            
+            guard let data = data else {
+                SNLog("Failed to download file: No data received")
+                return
+            }
+            
+            // Create a file path to save the downloaded data
+            let fileManager = FileManager.default
+            let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+            
+            do {
+                try data.write(to: fileURL)
+                SNLog("File downloaded and saved successfully to \(fileURL)")
+                
+                DispatchQueue.main.async {
+                    // Optionally, show a success message to the user
+                    let alert = UIAlertController(title: "Download Complete", message: "The file has been downloaded and saved to your documents.", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            } catch {
+                SNLog("Failed to save file with error: \(error.localizedDescription)")
+            }
+        }
+        
+        downloadTask.resume()
+    }
+    
+    @objc
+    public func didMenuButton(sender: Any) {
+        isMenuButtonSelected = !isMenuButtonSelected
+        if isMenuButtonSelected {
+            topBackGroundView.isHidden = false
+        } else {
+            topBackGroundView.isHidden = true
+        }
+    }
 
     @objc
     public func didPressAllMediaButton(sender: Any) {
         Logger.debug("")
-
+        topBackGroundView.isHidden = true
         currentViewController.stopAnyVideo()
 
         guard let mediaGalleryDataSource = self.mediaGalleryDataSource else {
@@ -408,6 +556,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     @objc
     public func didPressDelete(_ sender: Any) {
+        topBackGroundView.isHidden = true
         guard let currentViewController = self.viewControllers?[0] as? MediaDetailViewController else {
             owsFailDebug("currentViewController was unexpectedly nil")
             return
@@ -771,12 +920,10 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     private func updateTitle(item: MediaGalleryItem) {
         let name = senderName(message: item.message)
-        portraitHeaderNameLabel.text = name
 
         // use sent date
         let date = Date(timeIntervalSince1970: Double(item.message.timestamp) / 1000)
         let formattedDate = dateFormatter.string(from: date)
-        portraitHeaderDateLabel.text = formattedDate
 
         let landscapeHeaderFormat = NSLocalizedString("MEDIA_GALLERY_LANDSCAPE_TITLE_FORMAT", comment: "embeds {{sender name}} and {{sent datetime}}, e.g. 'Sarah on 10/30/18, 3:29'")
         let landscapeHeaderText = String(format: landscapeHeaderFormat, name, formattedDate)
