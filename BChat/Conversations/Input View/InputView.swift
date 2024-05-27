@@ -129,14 +129,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         self.delegate = delegate
         self.thread = thread
         super.init(frame: CGRect.zero)
-//        sendButton.isHidden = false
         setUpViewHierarchy()
     }
     
-    // MARK: Lifecycle
-//    init(thread: TSThread, focusedMessageID: String? = nil) {
-//        self.thread = thread
-//    }
     
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
