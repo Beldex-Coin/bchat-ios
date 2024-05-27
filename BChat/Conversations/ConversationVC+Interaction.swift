@@ -696,8 +696,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
-//            let callMissedTipsModal = CallMissedTipsModal(caller: caller)
-//            present(callMissedTipsModal, animated: true, completion: nil)
             let vc = MissedCallPopUp(caller: caller)
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -792,6 +790,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         joinBeldexExplorer(id: id, amount: amount)
                     } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
+                    } else {
+                        if isKeyboardPresented {
+                            UIApplication.dismissKeyboard()
+                        }
                     }
                 default: break
             }

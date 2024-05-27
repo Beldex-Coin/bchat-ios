@@ -371,6 +371,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private var currentBlockChainHeight: UInt64 = 0
     private var daemonBlockChainHeight: UInt64 = 0
     lazy var conncetingState = { return Observable<Bool>(false) }()
+    var isKeyboardPresented = false
     private var needSynchronized = false {
         didSet {
             guard needSynchronized, !oldValue,
@@ -1077,9 +1078,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
-//            if WalletSharedData.sharedInstance.wallet != nil {
-//                connect(wallet: WalletSharedData.sharedInstance.wallet!)
-//            }
             if hiddenView.isHidden == false{
                 navigationController?.navigationBar.isHidden = true
                 snInputView.isUserInteractionEnabled = false
@@ -1110,10 +1108,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        let text = snInputView.text
-//        Storage.write { transaction in
-//            self.thread.setDraft(text, transaction: transaction)
-//        }
         self.backAPI = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
@@ -1175,7 +1169,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
             
             initiatingTransactionPopView.isHidden = true
-//            isSuccessPopView.isHidden = false
             let vc = WalletTransactionSuccessVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -1313,8 +1306,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-//                let privacySettingsVC = PrivacySettingsTableViewController()
-//                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
                 let vc = BChatSettingsNewVC()
                 self.navigationController!.pushViewController(vc, animated: true)
             }))
@@ -1399,8 +1390,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-//                let privacySettingsVC = PrivacySettingsTableViewController()
-//                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
                 let vc = BChatSettingsNewVC()
                 self.navigationController!.pushViewController(vc, animated: true)
             }))
@@ -1443,8 +1432,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
             }
-//            isPaymentDetailsView.isHidden = false
-//            HiddenView.isHidden = false
             
             // Here dismiss with Initiating Transaction PopUp
             self.dismiss(animated: true)
@@ -1569,7 +1556,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-//            button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
@@ -1594,12 +1580,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
-//                    let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
-//                    settingsButton.accessibilityLabel = "Settings button"
-//                    settingsButton.isAccessibilityElement = true
-//                    settingsButton.imageInsets = .init(top: 0, left: 0, bottom: 0, right: 8)
-//                    rightBarButtonItems.append(settingsButton)
-                    
                     let setting = UIButton(type: .custom)
                     setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
                     setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
@@ -1614,10 +1594,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         callBtn.setImage(UIImage(named:"ic_call_new"), for: .normal)
                         callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
                         let callBarItem = UIBarButtonItem(customView: callBtn)
-                        //                        let callButton = UIBarButtonItem(image: UIImage(named: "ic_call_new")!, style: .plain, target: self, action: #selector(startCall))
                         rightBarButtonItems.append(callBarItem)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
-                        //                        callButton.imageInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
                     }
                 }
                 else {
@@ -1674,9 +1652,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
             newSlidePositionY = UIScreen.main.bounds.height / 1.4
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
+            self.isKeyboardPresented = false
         } else {
             newSlidePositionY = UIScreen.main.bounds.height / 2.8
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
+            self.isKeyboardPresented = true
         }
         let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
         let oldContentInset: UIEdgeInsets = messagesTableView.contentInset
@@ -1731,6 +1711,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         newSlidePositionY = UIScreen.main.bounds.height / 1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        self.isKeyboardPresented = false
         
         UIView.animate(
             withDuration: duration,
@@ -1845,12 +1826,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         thread.reload() // Needed so that thread.isCurrentUserMemberInGroup() is up to date
         reloadInputViews()
     }
-//    @objc private func nextButtonTapped() {
-//
-//    }
-//    @objc private func continueButtonTapped() {
-//
-//    }
     @objc private func handleMessageSentStatusChanged() {
         DispatchQueue.main.async {
             guard let indexPaths = self.messagesTableView.indexPathsForVisibleRows else { return }
@@ -2056,10 +2031,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = nil
         }
-        
-        //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
-        //        navBar.stubbedNextResponder = nil
-        
         becomeFirstResponder()
         reloadInputViews()
     }
