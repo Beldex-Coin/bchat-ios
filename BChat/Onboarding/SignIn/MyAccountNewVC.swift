@@ -188,20 +188,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         result.textAlignment = .center
         if isNavigationBarHideInChatNewVC == true {
             result.isUserInteractionEnabled = false
-        } else {
-//            let rightImageView = UIImageView(image: UIImage(named: "ic_newedit"))
-//            rightImageView.contentMode = .center
-//            let imageWidth = 14.0
-//            rightImageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: result.frame.height)
-//            result.rightView = rightImageView
-//            result.rightViewMode = .always
-//            //Here left view Empty i display
-//            let leftView = UIView()//UIImageView(image: UIImage(named: "ic_newedit"))
-//            leftView.contentMode = .center
-//            let viewWidth = 14.0
-//            leftView.frame = CGRect(x: 0, y: 0, width: viewWidth, height: result.frame.height)
-//            result.leftView = leftView
-//            result.leftViewMode = .always
         }
         return result
     }()
@@ -233,8 +219,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         stackView.backgroundColor = Colors.lineViewbackgroundColor
         return stackView
     }()
-    
-    //-------------------------------------------------------------------------
     
     private lazy var outerProfileView: UIView = {
         let stackView = UIView()
@@ -369,12 +353,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         beldexAddressBgView.addSubview(beldexAddressIdLabel)
         view.addSubview(outerProfileView)
         outerProfileView.addSubview(innerProfileImageView)
-        
-        
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_menu"), style: .plain, target: self, action: #selector(showSettingsVC))
-        navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        
+     
         NSLayoutConstraint.activate([
             doneButton.widthAnchor.constraint(equalToConstant: 80),
             doneButton.heightAnchor.constraint(equalToConstant: 28),
@@ -385,7 +364,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-//            backGroundView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -36),
             backGroundView.topAnchor.constraint(equalTo: profilePictureImage.firstBaselineAnchor, constant: 48),
             //Close
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 15),
@@ -626,19 +604,7 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
     }
     
     private func handleIsEditingDisplayNameChanged() {
-//        UIView.animate(withDuration: 0.25) { [self] in
-//            nameIdLabel.text = displayNameToBeUploaded
-//        }
-//        if isEditingDisplayName {
-//            nameTextField.becomeFirstResponder()
-//            nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
-//            doneButton.backgroundColor = Colors.greenColor
-//            doneButton.setTitle("Done", for: .normal)
-//            editIconImage.isHidden = true
-//        } else {
-//            editIconImage.isHidden = false
-//            // Reset rightView to the default state
-//        }
+
     }
     
     // Action to perform when label is tapped
@@ -646,7 +612,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         UIView.animate(withDuration: 0.25) { [self] in
             nameIdLabel.text = displayNameToBeUploaded
         }
-        print("Name ID label tapped!")
         nameTextField.becomeFirstResponder()
         nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
         doneButton.backgroundColor = Colors.greenColor
@@ -804,11 +769,6 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
         self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
-    }
-    
-    @objc private func showSettingsVC() {
-        let vc = NewDesignSettingsVC()
-        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

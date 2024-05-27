@@ -1,16 +1,17 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
 
 class BNSLinkSuccessVC: BaseVC {
-
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
-         stackView.layer.borderWidth = 1
-         stackView.layer.borderColor = Colors.borderColorNew.cgColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     private lazy var iconView: UIImageView = {
@@ -70,9 +71,8 @@ class BNSLinkSuccessVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        
+        UserDefaults.standard.set(true, forKey: "isFromBNSVerifiedData")
+        NotificationCenter.default.post(name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name("isFromUpdateBNSDetailsNavigateToMyAccount"), object: nil)
     }
-
-
-
 }
