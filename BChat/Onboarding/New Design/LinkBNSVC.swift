@@ -4,7 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatSnodeKit
 
-class LinkBNSVC: BaseVC, UITextFieldDelegate {
+class LinkBNSVC: BaseVC {
 
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
@@ -179,39 +179,6 @@ class LinkBNSVC: BaseVC, UITextFieldDelegate {
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let currentString: NSString = textField.text! as NSString
-            let newString = currentString.replacingCharacters(in: range, with: string)
-            if newString.suffix(4).lowercased() == ".bdx" {
-                verifyButton.isUserInteractionEnabled = true
-                
-                self.verifyButton.layer.borderWidth = 1
-                self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-                self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-                self.verifyButton.setTitle("Verify", for: .normal)
-                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-                self.verifyButton.setImage(image, for: .normal)
-                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-                self.verifyButton.semanticContentAttribute = .forceRightToLeft
-                
-            } else {
-                verifyButton.isUserInteractionEnabled = false
-                
-                self.verifyButton.layer.borderWidth = 1
-                self.verifyButton.layer.borderColor = UIColor.clear.cgColor
-                self.verifyButton.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
-                self.verifyButton.setTitle("Verify", for: .normal)
-                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-                self.verifyButton.setImage(image, for: .normal)
-                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-                self.verifyButton.semanticContentAttribute = .forceRightToLeft
-                
-            }
-        return true
-    }
-    
     
     @objc private func verifyButtonTapped(_ sender: UIButton) {
         // No Border
@@ -291,4 +258,37 @@ class LinkBNSVC: BaseVC, UITextFieldDelegate {
         }
     }
 
+}
+
+extension LinkBNSVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentString: NSString = textField.text! as NSString
+            let newString = currentString.replacingCharacters(in: range, with: string)
+            if newString.suffix(4).lowercased() == ".bdx" {
+                verifyButton.isUserInteractionEnabled = true
+                
+                self.verifyButton.layer.borderWidth = 1
+                self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+                self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                self.verifyButton.setTitle("Verify", for: .normal)
+                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+                self.verifyButton.setImage(image, for: .normal)
+                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+                self.verifyButton.semanticContentAttribute = .forceRightToLeft
+                
+            } else {
+                verifyButton.isUserInteractionEnabled = false
+                
+                self.verifyButton.layer.borderWidth = 1
+                self.verifyButton.layer.borderColor = UIColor.clear.cgColor
+                self.verifyButton.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
+                self.verifyButton.setTitle("Verify", for: .normal)
+                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+                self.verifyButton.setImage(image, for: .normal)
+                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+                self.verifyButton.semanticContentAttribute = .forceRightToLeft
+                
+            }
+        return true
+    }
 }
