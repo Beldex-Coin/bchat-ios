@@ -45,6 +45,12 @@ extension ContextMenuVC {
             let title = NSLocalizedString("context_menu_ban_and_delete_all", comment: "")
             return Action(icon: UIImage(named: "ic_block")!, title: title) { delegate?.banAndDeleteAllMessages(viewItem) }
         }
+        
+        static func messageDetail(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
+            let title = NSLocalizedString("context_menu_message_detail", comment: "")
+            return Action(icon: UIImage(named: "ic_message_detail")!, title: title) { delegate?.messageDetail(viewItem) }
+        }
+        
     }
 
     static func actions(for viewItem: ConversationViewItem, delegate: ContextMenuActionDelegate?) -> [Action] {
@@ -76,6 +82,11 @@ extension ContextMenuVC {
             // Copy Code
             result.append(Action.copy(viewItem, delegate))
             
+            // Message Detail For OutgoingMessage
+            if viewItem.interaction is TSOutgoingMessage {
+                result.append(Action.messageDetail(viewItem, delegate))
+            }
+            
             let isGroup = viewItem.isGroupThread
             if let message = viewItem.interaction as? TSIncomingMessage, isGroup, message.isOpenGroupMessage {
                 result.append(Action.report(viewItem, delegate))
@@ -94,6 +105,12 @@ extension ContextMenuVC {
             if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
             if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
             if viewItem.canSaveMedia() { result.append(Action.save(viewItem, delegate)) }
+            
+            // Message Detail For OutgoingMessage
+            if viewItem.interaction is TSOutgoingMessage {
+                result.append(Action.messageDetail(viewItem, delegate))
+            }
+            
             let isGroup = viewItem.isGroupThread
             if let message = viewItem.interaction as? TSIncomingMessage, isGroup, !message.isOpenGroupMessage {
                 result.append(Action.copyBChatID(viewItem, delegate))
@@ -121,4 +138,5 @@ protocol ContextMenuActionDelegate : AnyObject {
     func ban(_ viewItem: ConversationViewItem)
     func banAndDeleteAllMessages(_ viewItem: ConversationViewItem)
     func contextMenuDismissed()
+    func messageDetail(_ viewItem: ConversationViewItem)
 }

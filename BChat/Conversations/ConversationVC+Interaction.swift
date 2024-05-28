@@ -1038,6 +1038,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendMediaSavedNotificationIfNeeded(for: viewItem)
     }
     
+    func messageDetail(_ viewItem: ConversationViewItem) {
+        let vc = MessageDetailsVC(with: viewItem, thread: self.thread)
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
     func ban(_ viewItem: ConversationViewItem) {
         guard let message = viewItem.interaction as? TSIncomingMessage, message.isOpenGroupMessage else { return }
         let explanation = "This will ban the selected user from this room. It won't ban them from other rooms."
