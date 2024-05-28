@@ -285,15 +285,6 @@ NS_ASSUME_NONNULL_BEGIN
         [playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
         playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
         
-        /// Don't delete here importent code
-        
-//        UIButton *playVideoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        self.playVideoButton = playVideoButton;
-//        [playVideoButton setImage:[UIImage imageNamed:@"CirclePlay"] forState:UIControlStateNormal];
-//        [playVideoButton setImage:[UIImage imageNamed:@"ic_Pause_logo"] forState:UIControlStateSelected];
-        // Set action for touchUpInside event
-//        [playVideoButton addTarget:self action:@selector(playVideoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-
         [self.view addSubview:playVideoButton];
 
         CGFloat playVideoButtonWidth = 72.f;
@@ -445,29 +436,6 @@ NS_ASSUME_NONNULL_BEGIN
     [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
 }
 
-/// Don't delete here importent code
-
-//- (void)playVideoButtonTapped:(UIButton *)sender {
-//    sender.selected = !sender.selected;
-//    if (sender.selected) {
-//        OWSAssertDebug(self.videoPlayer);
-//        self.playVideoButton.hidden = YES;
-//        UIImage *playImage = [UIImage imageNamed:@"ic_Pause_logo"];
-//        [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
-//        _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
-//        [self.videoPlayer play];
-//        [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
-//    } else {
-//        OWSAssertDebug(self.isVideo);
-//        OWSAssertDebug(self.videoPlayer);
-//        UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
-//        [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
-//        _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
-//        [self pauseVideo];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPlayAction" object:nil];
-//    }
-//}
 
 - (void) isFromPassSmallButtonTapped:(NSNotification *) notification
 {

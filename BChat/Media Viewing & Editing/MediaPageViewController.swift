@@ -357,8 +357,6 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
             // Hiding the status bar affects the positioning of the navbar. We don't want to show that in an animation, it's
             // better to just have everythign "flit" in/out.
-//            UIApplication.shared.setStatusBarHidden(shouldHideToolbars, with: .none)
-//            self.navigationController?.setNavigationBarHidden(shouldHideToolbars, animated: false)
 
             UIView.animate(withDuration: 0.1) {
                 self.currentViewController.setShouldHideToolbars(false)
