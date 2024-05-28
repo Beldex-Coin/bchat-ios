@@ -588,33 +588,34 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         qrBackgroundView.addSubview(qrCodeImage)
         showQRExpandView.addSubview(shareButton)
         
-        // Not Verified
-        shadowBackgroundImage.isHidden = true
-        stackViewForBNSVerifiedName.isHidden = true
-        linkYourBNSBackgroundView.isHidden = false
-        readMoreAboutBackgroundView.isHidden = false
-        beldexAddressExpandView.isHidden = true
-        bchatIDExpandView.isHidden = true
-        showQRExpandView.isHidden = true
-        bnsApprovalIconImage.isHidden = true
-        profilePictureImage.layer.borderColor = UIColor.clear.cgColor
-        stackViewForBNSVerifiedName.isHidden = true
-        
-        
-        // BNS Verified Dont Delete this lines
-//        shadowBackgroundImage.isHidden = false
-//        stackViewForBNSVerifiedName.isHidden = false
-//        stackViewForFinalLinkBNS.isHidden = false
-//        linkYourBNSBackgroundView.isHidden = true
-//        readMoreAboutBackgroundView.isHidden = true
-//        beldexAddressExpandView.isHidden = true
-//        bchatIDExpandView.isHidden = true
-//        showQRExpandView.isHidden = true
-//        bnsApprovalIconImage.isHidden = false
-//        profilePictureImage.layer.borderWidth = 3
-//        profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-//        stackViewForBNSVerifiedName.isHidden = false
-        
+        // BNS Verified
+        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
+            print("BNS Verified.")
+            shadowBackgroundImage.isHidden = false
+            stackViewForBNSVerifiedName.isHidden = false
+            stackViewForFinalLinkBNS.isHidden = false
+            linkYourBNSBackgroundView.isHidden = true
+            readMoreAboutBackgroundView.isHidden = true
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = false
+            profilePictureImage.layer.borderWidth = 3
+            profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
+            stackViewForBNSVerifiedName.isHidden = false
+        }else{
+            print("Not Verified") // Not Verified
+            shadowBackgroundImage.isHidden = true
+            stackViewForBNSVerifiedName.isHidden = true
+            linkYourBNSBackgroundView.isHidden = false
+            readMoreAboutBackgroundView.isHidden = false
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = true
+            profilePictureImage.layer.borderColor = UIColor.clear.cgColor
+            stackViewForBNSVerifiedName.isHidden = true
+        }
         
         NSLayoutConstraint.activate([
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
@@ -829,6 +830,9 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(updateBNSDetailsTapped), name: Notification.Name("isFromUpdateBNSDetailsNavigateToMyAccount"), object: nil)
+        
     }
     
     /// View will appear
@@ -857,8 +861,37 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
     }
     
-    
      // MARK: - Navigation
+    
+    @objc func updateBNSDetailsTapped(notification: NSNotification) {
+        // BNS Verified
+        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
+            shadowBackgroundImage.isHidden = false
+            stackViewForBNSVerifiedName.isHidden = false
+            stackViewForFinalLinkBNS.isHidden = false
+            linkYourBNSBackgroundView.isHidden = true
+            readMoreAboutBackgroundView.isHidden = true
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = false
+            profilePictureImage.layer.borderWidth = 3
+            profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
+            stackViewForBNSVerifiedName.isHidden = false
+        }else{
+            print("Not Verified") // Not Verified
+            shadowBackgroundImage.isHidden = true
+            stackViewForBNSVerifiedName.isHidden = true
+            linkYourBNSBackgroundView.isHidden = false
+            readMoreAboutBackgroundView.isHidden = false
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = true
+            profilePictureImage.layer.borderColor = UIColor.clear.cgColor
+            stackViewForBNSVerifiedName.isHidden = true
+        }
+    }
 
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }

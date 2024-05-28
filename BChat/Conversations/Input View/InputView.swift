@@ -132,7 +132,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         setUpViewHierarchy()
     }
     
-    
+
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
     }
@@ -146,7 +146,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Background & blur
         let backgroundView = UIView()
         backgroundView.backgroundColor = Colors.mainBackGroundColor2//isLightMode ? .white : .black
-//        backgroundView.alpha = Values.lowOpacity
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
@@ -154,7 +153,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         blurView.pin(to: self)
         // Separator
         let separator = UIView()
-        separator.backgroundColor = .clear//Colors.text.withAlphaComponent(0.2)
+        separator.backgroundColor = .clear
         separator.set(.height, to: 1 / UIScreen.main.scale)
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
@@ -162,7 +161,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton)])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
-        bottomStackView.backgroundColor = Colors.incomingMessageColor//Colors.textViewColor
+        bottomStackView.backgroundColor = Colors.incomingMessageColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
@@ -170,7 +169,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let bottomStackView2 = UIStackView(arrangedSubviews: [ bottomStackView, container(for: sendButton) ])
         bottomStackView2.axis = .horizontal
         bottomStackView2.spacing = 4
-        bottomStackView2.backgroundColor = .clear//Colors.textViewColor
+        bottomStackView2.backgroundColor = .clear
         bottomStackView2.layer.cornerRadius = 24
         bottomStackView2.alignment = .center
         self.finalBottomStack = bottomStackView2
@@ -178,7 +177,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView2 ])
         mainStackView.axis = .vertical
-        mainStackView.backgroundColor = Colors.mainBackGroundColor2//Colors.bchatViewBackgroundColor
+        mainStackView.backgroundColor = Colors.mainBackGroundColor2
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
         mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)
@@ -257,12 +256,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
     }
     
-    
-    
     @objc func showPayAsYouChatButton(_ notification: Notification) {
         self.hideOrShowPayAsYouChatButton()
     }
-
     
     // MARK: Updating
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView) {
@@ -271,8 +267,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
 
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
         let hasText = !text.isEmpty
-//        sendButton.isHidden = false
-//        voiceMessageButtonContainer.isHidden = false
         sendButton.isHidden = !hasText
         voiceMessageButtonContainer.isHidden = hasText
         autoGenerateLinkPreviewIfPossible()
@@ -288,24 +282,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // URL before removing the quote draft.
     
     private func handleQuoteDraftChanged() {
-//        additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
-//        linkPreviewInfo = nil
-//        guard let quoteDraftInfo = quoteDraftInfo else { return }
-//        let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
-//        let hInset: CGFloat = 4 // Slight visual adjustment
-//        let maxWidth = additionalContentContainer.bounds.width
-//        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
-//        additionalContentContainer.addSubview(quoteView)
-//        quoteView.layer.cornerRadius = 16
-//        quoteView.backgroundColor = Colors.incomingMessageColor
-//        
-//        quoteView.pin(.left, to: .left, of: additionalContentContainer, withInset: hInset)
-//        quoteView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-//        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -54)
-//        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -1)
-        
-        
         additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
+        additionalContentContainerOuterView.subviews.forEach { $0.removeFromSuperview() }
         linkPreviewInfo = nil
         guard let quoteDraftInfo = quoteDraftInfo else { return }
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
