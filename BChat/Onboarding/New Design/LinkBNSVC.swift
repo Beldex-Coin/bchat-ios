@@ -184,7 +184,7 @@ class LinkBNSVC: BaseVC, UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentString: NSString = textField.text! as NSString
-            let newString: String = currentString.replacingCharacters(in: range, with: string) as String
+            let newString = currentString.replacingCharacters(in: range, with: string)
             if newString.suffix(4).lowercased() == ".bdx" {
                 verifyButton.isUserInteractionEnabled = true
                 
