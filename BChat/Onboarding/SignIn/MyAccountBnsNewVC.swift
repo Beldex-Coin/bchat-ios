@@ -873,6 +873,9 @@ class MyAccountBnsNewVC: BaseVC {
     /// Update BNS Details
     func updateBNSDetails() {
         // BNS Verified
+        updateBnsDetail()
+    }
+    func updateBnsDetail() {
         if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
             shadowBackgroundImage.isHidden = false
             stackViewForBNSVerifiedName.isHidden = false
