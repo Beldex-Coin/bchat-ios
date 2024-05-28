@@ -5,6 +5,7 @@ import BChatSnodeKit
 public final class FileServerAPIV2 : NSObject {
     
     /// Specifies the Old Server for the API
+    @objc
     public static var oldServer: String {
         #if MAINNET
             return "http://fs1.rpcnode.stream"
@@ -14,6 +15,7 @@ public final class FileServerAPIV2 : NSObject {
     }
     
     /// Specifies the Old Server Public key for the API
+    @objc
     public static var oldServerPublicKey: String {
         #if MAINNET
             return "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
@@ -23,6 +25,7 @@ public final class FileServerAPIV2 : NSObject {
     }
     
     /// Specifies the Server for the API
+    @objc
     public static var server: String {
         #if MAINNET
             return "http://fs1.rpcnode.stream"
@@ -32,6 +35,7 @@ public final class FileServerAPIV2 : NSObject {
     }
     
     /// Specifies the Server Public key for the API
+    @objc
     public static var serverPublicKey: String {
         #if MAINNET
             return "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"

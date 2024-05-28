@@ -2808,13 +2808,13 @@
 			path = "New Design";
 			sourceTree = "<group>";
 		};
-		8A5A0B462C04A6AE00288474 /* Helper */ = {
+		8A5A0B462C04A6AE00288474 /* Host Helper */ = {
 			isa = PBXGroup;
 			children = (
 				8A5A0B442C04942300288474 /* HostManager.swift */,
 				8A5A0B492C05913300288474 /* HostType.swift */,
 			);
-			path = Helper;
+			path = "Host Helper";
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
@@ -4148,7 +4148,7 @@
 				76EB03C318170B33006006FC /* AppDelegate.m */,
 				C3AAFFF125AE99710089E6DD /* AppDelegate.swift */,
 				34D99CE3217509C1000AFB39 /* AppEnvironment.swift */,
-				8A5A0B462C04A6AE00288474 /* Helper */,
+				8A5A0B462C04A6AE00288474 /* Host Helper */,
 				6007B5E028ABC76B0004BD61 /* BChat Utilities */,
 				6007B5C928ABC5C70004BD61 /* SVGfiles */,
 				7BFD1A952747689000FB91B9 /* TurnServers */,
