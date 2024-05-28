@@ -1272,7 +1272,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioSession.endAudioActivity(recordVoiceMessageActivity)
     }
     
-    // MARK: Data Extraction Notifications
+    // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
         /*
         guard thread is TSContactThread else { return }

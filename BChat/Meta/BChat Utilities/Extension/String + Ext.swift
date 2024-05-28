@@ -31,13 +31,20 @@ extension String {
         return dec.scaleString(scale)
     }
     
-    
     func repeatString(_ count: Int) -> String {
         var repeatStr = ""
         stride(from: 0, to: count, by: 1).forEach { (i) in
             repeatStr += self
         }
         return repeatStr
+    }
+    
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        // Regular expression pattern for the specified format
+        let pattern = "^[0-9]{0,9}(\\.[0-9]{0,5})?$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: self)
     }
 }
 
