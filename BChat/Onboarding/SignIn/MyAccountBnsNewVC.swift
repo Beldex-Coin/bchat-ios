@@ -4,7 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatUtilitiesKit
 
-class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
+class MyAccountBnsNewVC: BaseVC {
     
     // MARK: - UIElements
     
@@ -448,7 +448,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_copy_image"), for: .normal)
-        button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -457,7 +457,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_copy_image"), for: .normal)
-        button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(copyForBChatIdButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -470,7 +470,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.backgroundColor = Colors.greenColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -494,19 +494,33 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return imageView
     }()
     
-    let tableView : UITableView = {
+    /// tableView
+    let tableView: UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
     
-    let imageArray = ["ic_hops", "ic_change_password","ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
-    let titleArray = ["Hops", "Change Password", "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
+    // MARK: - Properties
     
-    @objc public var useFallbackPicture = false
+    /// is fallback picture
+    @objc public var isFallbackPicture = false
+    
+    /// openGroupProfilePicture
     @objc public var openGroupProfilePicture: UIImage?
+    
+    /// size
     @objc public var size: CGFloat = 30
     
+    /// image array
+    let imageArray = ["ic_hops", "ic_change_password","ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
+    
+    /// title array
+    let titleArray = ["Hops", "Change Password", "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
+    
+    // MARK: - UIViewController life cycle
+    
+    /// View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -588,33 +602,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         qrBackgroundView.addSubview(qrCodeImage)
         showQRExpandView.addSubview(shareButton)
         
-        // Not Verified
-        shadowBackgroundImage.isHidden = true
-        stackViewForBNSVerifiedName.isHidden = true
-        linkYourBNSBackgroundView.isHidden = false
-        readMoreAboutBackgroundView.isHidden = false
-        beldexAddressExpandView.isHidden = true
-        bchatIDExpandView.isHidden = true
-        showQRExpandView.isHidden = true
-        bnsApprovalIconImage.isHidden = true
-        profilePictureImage.layer.borderColor = UIColor.clear.cgColor
-        stackViewForBNSVerifiedName.isHidden = true
-        
-        
-        // BNS Verified Dont Delete this lines
-//        shadowBackgroundImage.isHidden = false
-//        stackViewForBNSVerifiedName.isHidden = false
-//        stackViewForFinalLinkBNS.isHidden = false
-//        linkYourBNSBackgroundView.isHidden = true
-//        readMoreAboutBackgroundView.isHidden = true
-//        beldexAddressExpandView.isHidden = true
-//        bchatIDExpandView.isHidden = true
-//        showQRExpandView.isHidden = true
-//        bnsApprovalIconImage.isHidden = false
-//        profilePictureImage.layer.borderWidth = 3
-//        profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-//        stackViewForBNSVerifiedName.isHidden = false
-        
+        updateBNSDetails()
         
         NSLayoutConstraint.activate([
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
@@ -806,7 +794,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         // Display image
         let publicKey = getUserHexEncodedPublicKey()
-        profilePictureImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        profilePictureImage.image = isFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
         profilePictureImage.clipsToBounds = true
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height/2
         
@@ -829,37 +817,98 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(updateBNSDetailsTapped), name: Notification.Name("isFromUpdateBNSDetailsNavigateToMyAccount"), object: nil)
+        
     }
     
     /// View will appear
+    /// - Parameter animated: the Animated
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     /// View did appear
+    /// - Parameter animated: the Animated
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     /// View will disappear
+    ///  - Parameter animated: the Animated
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
     /// View did disappear
+    ///  - Parameter animated: the Animated
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }
     
-    
+    /// View did layout subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
     }
     
+    /// UITouch ended
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            showQRExpandView.isHidden = true
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+        }
+    }
     
-     // MARK: - Navigation
-
+     // MARK: - Private methods
+    
+    /// Update BNS Details Tapped
+    /// - Parameter notification: notification
+    @objc func updateBNSDetailsTapped(notification: NSNotification) {
+        updateBNSDetails()
+    }
+    
+    /// Update BNS Details
+    func updateBNSDetails() {
+        // BNS Verified
+        updateBnsDetail()
+    }
+    func updateBnsDetail() {
+        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
+            shadowBackgroundImage.isHidden = false
+            stackViewForBNSVerifiedName.isHidden = false
+            stackViewForFinalLinkBNS.isHidden = false
+            linkYourBNSBackgroundView.isHidden = true
+            readMoreAboutBackgroundView.isHidden = true
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = false
+            profilePictureImage.layer.borderWidth = 3
+            profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
+            stackViewForBNSVerifiedName.isHidden = false
+        } else {
+            print("Not Verified") // Not Verified
+            shadowBackgroundImage.isHidden = true
+            stackViewForBNSVerifiedName.isHidden = true
+            linkYourBNSBackgroundView.isHidden = false
+            readMoreAboutBackgroundView.isHidden = false
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            showQRExpandView.isHidden = true
+            bnsApprovalIconImage.isHidden = true
+            profilePictureImage.layer.borderColor = UIColor.clear.cgColor
+            stackViewForBNSVerifiedName.isHidden = true
+        }
+    }
+    
+    /// Get Profile Picture
+    /// - Parameters:
+    ///   - size: the size
+    ///   - publicKey: the public key
+    /// - Returns: UIImage
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
@@ -871,16 +920,26 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let firstTouch = touches.first {
-            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
-            showQRExpandView.isHidden = true
-            beldexAddressExpandView.isHidden = true
-            bchatIDExpandView.isHidden = true
-        }
+    // MARK: - UIButton Actions
+    
+    @objc func shareButtonTapped(_ sender: UIButton) {
+        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
+        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+        self.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
-    // Actions
+    @objc func copyForBeldexAddressButtonTapped(_ sender: UIButton){
+        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
+        beldexAddressIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
+    @objc func copyForBChatIdButtonTapped(_ sender: UIButton) {
+        UIPasteboard.general.string = getUserHexEncodedPublicKey()
+        bchatIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
     @objc func beldexAddressButtonTapped(_ sender: UIButton){
         beldexAddressExpandView.isHidden = false
         bchatIDExpandView.isHidden = true
@@ -899,32 +958,18 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         bchatIDExpandView.isHidden = true
     }
     
-    @objc func shareButtonTapped() {
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
-        self.navigationController!.present(shareVC, animated: true, completion: nil)
-    }
-    
-    @objc func copyForBeldexAddressButtonTapped(){
-        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
-        beldexAddressIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
-    }
-    
-    @objc func copyForBChatIdButtonTapped() {
-        UIPasteboard.general.string = getUserHexEncodedPublicKey()
-        bchatIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
-    }
-    
     @objc func linkYourBNSButtonTapped(_ sender: UIButton){
         let vc = LinkBNSVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         self.present(vc, animated: true, completion: nil)
     }
+}
+
+extension MyAccountBnsNewVC: UITableViewDataSource, UITableViewDelegate {
     
-    // TableView
+    // MARK: - UITableView datasources
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.titleArray.count
     }
@@ -934,10 +979,10 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewSettingsTableViewCell") as! NewSettingsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: NewSettingsTableViewCell.reuserIdentifier) as! NewSettingsTableViewCell
         
         if indexPath.row == 0 {
-            cell.smallDotView.isHidden = false
+            cell.dotView.isHidden = false
         }
         if indexPath.row  > 2 {
             cell.arrowButton.isHidden = true
@@ -947,40 +992,40 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    // MARK: - UITableView delegates
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
-        case 0:
-            let vc = NewHopsVC()
-            navigationController?.pushViewController(vc, animated: true)
-        case 1:
-            let vc = NewPasswordVC()
-            vc.isGoingBack = true
-            vc.isCreatePassword = true
-            vc.isChangePassword = true
-            navigationController?.pushViewController(vc, animated: true)
-        case 2:
-            let vc = NewBlockedContactVC()
-            navigationController?.pushViewController(vc, animated: true)
-        case 3:
-            let vc = NewClearDataVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            present(vc, animated: true, completion: nil)
-        case 4:
-            if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        case 5:
-            if let url = URL(string: bchat_FAQ_Link) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            }
-        case 6:
-            let vc = ChangeLogNewVC()
-            navigationController?.pushViewController(vc, animated: true)
-        default:
-            break
+            case 0:
+                let vc = NewHopsVC()
+                navigationController?.pushViewController(vc, animated: true)
+            case 1:
+                let vc = NewPasswordVC()
+                vc.isGoingBack = true
+                vc.isCreatePassword = true
+                vc.isChangePassword = true
+                navigationController?.pushViewController(vc, animated: true)
+            case 2:
+                let vc = NewBlockedContactVC()
+                navigationController?.pushViewController(vc, animated: true)
+            case 3:
+                let vc = NewClearDataVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                present(vc, animated: true, completion: nil)
+            case 4:
+                if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            case 5:
+                if let url = URL(string: bchat_FAQ_Link) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+            case 6:
+                let vc = ChangeLogNewVC()
+                navigationController?.pushViewController(vc, animated: true)
+            default:
+                break
         }
     }
-    
-    
 }

@@ -4,17 +4,29 @@ import UIKit
 
 class NewSettingsTableViewCell: UITableViewCell {
     
+    // MARK: - Properties
+    
+    static let reuserIdentifier = "NewSettingsTableViewCell"
+    
+    // MARK: -
+    
+    /// Awake from nib
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
+    /// Set selected
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state
     }
     
+    /// Initialize
+    /// - Parameters:
+    ///   - style: UITableViewCell style
+    ///   - reuseIdentifier: the Reuse Identifier
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -24,11 +36,16 @@ class NewSettingsTableViewCell: UITableViewCell {
         self.setUPLayout()
     }
     
+    /// Initialize
+    /// - Parameter coder: the Coder
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
     }
     
+    // MARK: - UIElements
+    
+    /// BackGroundView
     lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +53,8 @@ class NewSettingsTableViewCell: UITableViewCell {
         return stackView
     }()
     
-    lazy var smallDotView: UIView = {
+    /// Dot View
+    lazy var dotView: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = Colors.bothGreenColor
@@ -45,6 +63,7 @@ class NewSettingsTableViewCell: UITableViewCell {
         return View
     }()
     
+    /// Icon Image View
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
         result.set(.width, to: 20)
@@ -54,6 +73,7 @@ class NewSettingsTableViewCell: UITableViewCell {
         return result
     }()
     
+    /// Title label
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
@@ -63,6 +83,7 @@ class NewSettingsTableViewCell: UITableViewCell {
         return result
     }()
     
+    /// Arrow button
     lazy var arrowButton: UIButton = {
         let button = UIButton()
         button.setTitle("", for: .normal)
@@ -72,10 +93,12 @@ class NewSettingsTableViewCell: UITableViewCell {
         return button
     }()
     
+    // MARK: - Private methods
     
+    /// Setup layout
     func setUPLayout() {
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(iconImageView, titleLabel, arrowButton, smallDotView)
+        backGroundView.addSubViews(iconImageView, titleLabel, arrowButton, dotView)
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
@@ -89,16 +112,14 @@ class NewSettingsTableViewCell: UITableViewCell {
             titleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 20),
             
-            smallDotView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            smallDotView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 6),
-            smallDotView.heightAnchor.constraint(equalToConstant: 8),
-            smallDotView.widthAnchor.constraint(equalToConstant: 8),
+            dotView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            dotView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 6),
+            dotView.heightAnchor.constraint(equalToConstant: 8),
+            dotView.widthAnchor.constraint(equalToConstant: 8),
             
             arrowButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             arrowButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -31),
             
         ])
     }
-    
-    
 }

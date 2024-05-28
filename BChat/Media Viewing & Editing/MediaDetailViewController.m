@@ -115,6 +115,15 @@ NS_ASSUME_NONNULL_BEGIN
     navigationBar.shadowImage = [UIImage new];
     [navigationBar setTranslucent:NO];
     navigationBar.barTintColor = LKColors.navigationBarBackground;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(isFromPassSmallButtonTapped:)
+            name:@"isFromPassSmallButton"
+            object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(isFromPlaySmallButtonTapped:)
+            name:@"isFromPlaySmallButton"
+            object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -253,23 +262,29 @@ NS_ASSUME_NONNULL_BEGIN
         // 1. Video completes playing
         // 2. User taps the screen
         videoProgressBar.hidden = YES;
-
+        
         self.videoProgressBar = videoProgressBar;
         [self.view addSubview:videoProgressBar];
-        [videoProgressBar autoPinWidthToSuperview];
-        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeTop];
-        CGFloat kVideoProgressBarHeight = 44;
+        
+        // Set corner radius
+        videoProgressBar.layer.cornerRadius = 22;
+        videoProgressBar.layer.masksToBounds = YES;
+        
+        // Adjust the width to match the leading and trailing margins
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
+        
+        CGFloat kVideoProgressBarHeight = 42;
         [videoProgressBar autoSetDimension:ALDimensionHeight toSize:kVideoProgressBarHeight];
-
+        
         UIButton *playVideoButton = [UIButton new];
         self.playVideoButton = playVideoButton;
-
         [playVideoButton addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
-
         UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
         [playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
         playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
-
+        
         [self.view addSubview:playVideoButton];
 
         CGFloat playVideoButtonWidth = 72.f;
@@ -418,6 +433,32 @@ NS_ASSUME_NONNULL_BEGIN
     [self.videoPlayer play];
 
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
+}
+
+
+- (void) isFromPassSmallButtonTapped:(NSNotification *) notification
+{
+    OWSAssertDebug(self.isVideo);
+    OWSAssertDebug(self.videoPlayer);
+    UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
+    [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
+    _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
+    [self.videoPlayer pause];
+
+    [self.delegate mediaDetailViewController:self isPlayingVideo:NO];
+}
+
+- (void) isFromPlaySmallButtonTapped:(NSNotification *) notification
+{
+    OWSAssertDebug(self.videoPlayer);
+
+    self.playVideoButton.hidden = YES;
+
+    [self.videoPlayer play];
+
+    [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
 }
 
 - (void)pauseVideo
@@ -443,7 +484,9 @@ NS_ASSUME_NONNULL_BEGIN
     OWSAssertDebug(self.videoPlayer);
 
     [self.videoPlayer stop];
-
+    UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
+    [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
+    _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
     self.playVideoButton.hidden = NO;
 
     [self.delegate mediaDetailViewController:self isPlayingVideo:NO];

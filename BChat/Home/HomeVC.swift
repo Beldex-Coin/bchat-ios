@@ -99,13 +99,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return theImageView
     }()
     
-    //MARK:- Wallet References
-    //========================================================================================
-    //    ,"publicnode5.rpcnode.stream:29095"
-    //MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
-    //TESTNET
-    //    var nodeArray = ["149.102.156.174:19095"]
+    var type = HostManager.shared.hostType.hostValue
+    var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()
     lazy var conncetingState = { return Observable<Bool>(false) }()

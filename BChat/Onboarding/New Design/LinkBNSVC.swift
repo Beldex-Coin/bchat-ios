@@ -1,10 +1,11 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
+import BChatUIKit
+import BChatSnodeKit
 
 class LinkBNSVC: BaseVC {
 
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,6 +119,8 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
+    var isFromVerfied: Bool!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,7 +135,8 @@ class LinkBNSVC: BaseVC {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(verifyButton)
         
-        bchatIdLabel.text = "bxcALKJHSakhdsadhaskdhHHHDJADHUAWasasgjhrewrb6asdnkawo…"
+        bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
+        bnsNameTextField.delegate = self
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -163,61 +167,128 @@ class LinkBNSVC: BaseVC {
             linkButton.heightAnchor.constraint(equalToConstant: 52),
         ])
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
+        
     }
     
-
-    
-    
+    @objc func dismissLinkBNSTapped(notification: NSNotification) {
+        self.dismiss(animated: true)
+    }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
     
     @objc private func verifyButtonTapped(_ sender: UIButton) {
-        
-        // Red
-        bnsNameTextField.layer.borderWidth = 1
-        bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
-        
-        // Green
-        bnsNameTextField.layer.borderWidth = 1
-        bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
-        
         // No Border
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
         
-        
-        // link button disable color
-        linkButton.backgroundColor = Colors.cellGroundColor2
-        linkButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        
-        // link button enable color
-        linkButton.backgroundColor = Colors.bothGreenColor
-        linkButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        
-        // Verify Button Border & White Title Color
-        verifyButton.layer.borderWidth = 1
-        verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        verifyButton.setTitle("Verify", for: .normal)
-        
-        // Verify Button Image & Green Title
-        verifyButton.setTitleColor(Colors.bothGreenColor, for: .normal)
-        verifyButton.setTitle("Verified", for: .normal)
-        let image = UIImage(named: "ic_verified_new")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-        verifyButton.setImage(image, for: .normal)
-        verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-        verifyButton.semanticContentAttribute = .forceRightToLeft
-       
+        let bnsName = bnsNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
+        SnodeAPI.getBChatID(for: bnsName).done { bchatID in
+            self.startNewDM(with: bchatID)
+        }.catch { error in
+            var messageOrNil: String?
+            if let error = error as? SnodeAPI.Error {
+                switch error {
+                case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                default: break
+                }
+            }
+            
+            self.linkButton.backgroundColor = Colors.cellGroundColor2
+            self.linkButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            // Red
+            self.bnsNameTextField.layer.borderWidth = 1
+            self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
+            
+            self.verifyButton.layer.borderWidth = 1
+            self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+            self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            self.verifyButton.setTitle("Verify", for: .normal)
+            let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+            self.verifyButton.setImage(image, for: .normal)
+            self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+            self.verifyButton.semanticContentAttribute = .forceRightToLeft
+        }
     }
     
     @objc private func linkButtonTapped(_ sender: UIButton) {
-        let vc = BNSLinkSuccessVC()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        if isFromVerfied{
+            let vc = BNSLinkSuccessVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
     }
-   
+    
+    private func startNewDM(with bchatID: String) {
+        if bchatIdLabel.text == bchatID {
+            isFromVerfied = true
+            // link button enable color
+            linkButton.backgroundColor = Colors.bothGreenColor
+            linkButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            
+            // Verify Button Border & White Title Color
+            verifyButton.layer.borderWidth = 1
+            verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+            verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            verifyButton.setTitle("Verify", for: .normal)
+            
+            // Verify Button Image & Green Title
+            verifyButton.setTitleColor(Colors.bothGreenColor, for: .normal)
+            verifyButton.setTitle("Verified", for: .normal)
+            let image = UIImage(named: "ic_verified_new")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+            verifyButton.setImage(image, for: .normal)
+            verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+            verifyButton.semanticContentAttribute = .forceRightToLeft
+            
+            // Green
+            bnsNameTextField.layer.borderWidth = 1
+            bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
+        }else {
+            isFromVerfied = false
+            
+            linkButton.backgroundColor = Colors.cellGroundColor2
+            linkButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            // Red
+            bnsNameTextField.layer.borderWidth = 1
+            bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
+        }
+    }
 
+}
+
+extension LinkBNSVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentString: NSString = textField.text! as NSString
+            let newString = currentString.replacingCharacters(in: range, with: string)
+            if newString.suffix(4).lowercased() == ".bdx" {
+                verifyButton.isUserInteractionEnabled = true
+                
+                self.verifyButton.layer.borderWidth = 1
+                self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+                self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+                self.verifyButton.setTitle("Verify", for: .normal)
+                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+                self.verifyButton.setImage(image, for: .normal)
+                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+                self.verifyButton.semanticContentAttribute = .forceRightToLeft
+                
+            } else {
+                verifyButton.isUserInteractionEnabled = false
+                
+                self.verifyButton.layer.borderWidth = 1
+                self.verifyButton.layer.borderColor = UIColor.clear.cgColor
+                self.verifyButton.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
+                self.verifyButton.setTitle("Verify", for: .normal)
+                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+                self.verifyButton.setImage(image, for: .normal)
+                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+                self.verifyButton.semanticContentAttribute = .forceRightToLeft
+                
+            }
+        return true
+    }
 }

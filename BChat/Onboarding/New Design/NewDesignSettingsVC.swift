@@ -55,7 +55,7 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewSettingsTableViewCell") as! NewSettingsTableViewCell
         
         if indexPath.row == 0 {
-            cell.smallDotView.isHidden = false
+            cell.dotView.isHidden = false
         }
         cell.titleLabel.text = self.titleArray[indexPath.row]
         cell.iconImageView.image = UIImage(named: self.imageArray[indexPath.row])

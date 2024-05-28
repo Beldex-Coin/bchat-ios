@@ -4,17 +4,45 @@ import BChatSnodeKit
 @objc(SNFileServerAPIV2)
 public final class FileServerAPIV2 : NSObject {
     
-    // MARK: TESTNET
-//    @objc public static let oldServer = "http://fileserver.rpcnode.stream"
-//    public static let oldServerPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
-//    @objc public static let server = "http://fileserver.rpcnode.stream"
-//    public static let serverPublicKey = "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
+    /// Specifies the Old Server for the API
+    @objc
+    public static var oldServer: String {
+        #if MAINNET
+            return "http://fs1.rpcnode.stream"
+        #else
+            return "http://fileserver.rpcnode.stream"
+        #endif
+    }
     
-    // MARK: MAINNET
-      @objc public static let oldServer = "http://fs1.rpcnode.stream"
-      public static let oldServerPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
-      @objc public static let server = "http://fs1.rpcnode.stream"
-      public static let serverPublicKey = "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
+    /// Specifies the Old Server Public key for the API
+    @objc
+    public static var oldServerPublicKey: String {
+        #if MAINNET
+            return "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
+        #else
+            return "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
+        #endif
+    }
+    
+    /// Specifies the Server for the API
+    @objc
+    public static var server: String {
+        #if MAINNET
+            return "http://fs1.rpcnode.stream"
+        #else
+            return "http://fileserver.rpcnode.stream"
+        #endif
+    }
+    
+    /// Specifies the Server Public key for the API
+    @objc
+    public static var serverPublicKey: String {
+        #if MAINNET
+            return "f3024b309be838eff764c6804c417b667096d6c5301184f90fb66e9e4515444c"
+        #else
+            return "decc13c0a80cdd44926226f20b86c85525b001d9ab9850c95b281aa67ffebf6a"
+        #endif
+    }
     
     public static let maxFileSize = 10_000_000 // 10 MB
     /// The file server has a file size limit of `maxFileSize`, which the Service Nodes try to enforce as well. However, the limit applied by the Service Nodes

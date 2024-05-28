@@ -962,8 +962,109 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         callView.addGestureRecognizer(tap)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+            
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
+        self.saveReceipeinetAddressOnAndOff()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if backAPI == true {
+            let vc = InitiatingTransactionVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+        highlightFocusedMessageIfNeeded()
+        didFinishInitialLayout = true
+        markAllAsRead()
+        recoverInputView()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        
+        if backAPI == true {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+            }
+            if hiddenView.isHidden == false {
+                navigationController?.navigationBar.isHidden = true
+                snInputView.isUserInteractionEnabled = false
+            } else {
+                navigationController?.navigationBar.isHidden = false
+                snInputView.isUserInteractionEnabled = true
+            }
+        }
+        newSlidePositionY = UIScreen.main.bounds.height/1.4
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: Notification.Name("connectingCallShowView"), object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.backAPI = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+        }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        let text = snInputView.text
+        Storage.write { transaction in
+            self.thread.setDraft(text, transaction: transaction)
+        }
+        mediaCache.removeAllObjects()
+        self.resignFirstResponder()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if !didFinishInitialLayout {
+            // Scroll to the last unread message if possible; otherwise scroll to the bottom.
+            // When the unread message count is more than the number of view items of a page,
+            // the screen will scroll to the bottom instead of the first unread message.
+            // unreadIndicatorIndex is calculated during loading of the viewItems, so it's
+            // supposed to be accurate.
+            DispatchQueue.main.async {
+                if let focusedMessageID = self.focusedMessageID {
+                    self.scrollToInteraction(with: focusedMessageID, isAnimated: false, highlighted: true)
+                } else {
+                    let firstUnreadMessageIndex = self.viewModel.viewState.unreadIndicatorIndex?.intValue
+                    ?? (self.viewItems.count - self.unreadViewItems.count)
+                    if self.initialUnreadCount > 0, let viewItem = self.viewItems[ifValid: firstUnreadMessageIndex], let interactionID = viewItem.interaction.uniqueId {
+                        self.scrollToInteraction(with: interactionID, position: .top, isAnimated: false)
+                        self.unreadCountView.alpha = self.scrollButton.alpha
+                    } else {
+                        self.scrollToBottom(isAnimated: false)
+                    }
+                }
+                self.scrollButton.alpha = self.getScrollButtonOpacity()
+            }
+        }
+    }
+    
+    override func appDidBecomeActive(_ notification: Notification) {
+        recoverInputView()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     @objc func callViewTapped(_ sender: UITapGestureRecognizer? = nil) {
-        print("------Tapped call------")
         guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
         guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
         guard AppEnvironment.shared.callManager.currentCall == nil else { return }
@@ -977,7 +1078,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
         duration += 1
-        print("------call------->",String(format: "%.2d:%.2d", duration/60, duration%60))
         if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty{
             showCallView()
             callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
@@ -1026,115 +1126,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         snInputView.isHidden = false
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        
-        if !didFinishInitialLayout {
-            // Scroll to the last unread message if possible; otherwise scroll to the bottom.
-            // When the unread message count is more than the number of view items of a page,
-            // the screen will scroll to the bottom instead of the first unread message.
-            // unreadIndicatorIndex is calculated during loading of the viewItems, so it's
-            // supposed to be accurate.
-            DispatchQueue.main.async {
-                if let focusedMessageID = self.focusedMessageID {
-                    self.scrollToInteraction(with: focusedMessageID, isAnimated: false, highlighted: true)
-                } else {
-                    let firstUnreadMessageIndex = self.viewModel.viewState.unreadIndicatorIndex?.intValue
-                    ?? (self.viewItems.count - self.unreadViewItems.count)
-                    if self.initialUnreadCount > 0, let viewItem = self.viewItems[ifValid: firstUnreadMessageIndex], let interactionID = viewItem.interaction.uniqueId {
-                        self.scrollToInteraction(with: interactionID, position: .top, isAnimated: false)
-                        self.unreadCountView.alpha = self.scrollButton.alpha
-                    } else {
-                        self.scrollToBottom(isAnimated: false)
-                    }
-                }
-                self.scrollButton.alpha = self.getScrollButtonOpacity()
-            }
-        }
-    }
-    
     @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
         if WalletSharedData.sharedInstance.wallet != nil {
             connect(wallet: WalletSharedData.sharedInstance.wallet!)
         }
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if backAPI == true{
-            let vc = InitiatingTransactionVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
-        highlightFocusedMessageIfNeeded()
-        didFinishInitialLayout = true
-        markAllAsRead()
-        recoverInputView()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
-        if backAPI == true{
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                self.customizeSlideToOpen.isHidden = true
-            }
-            if hiddenView.isHidden == false{
-                navigationController?.navigationBar.isHidden = true
-                snInputView.isUserInteractionEnabled = false
-            }else {
-                navigationController?.navigationBar.isHidden = false
-                snInputView.isUserInteractionEnabled = true
-            }
-        }
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
-        
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: Notification.Name("connectingCallShowView"), object: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
-        }
-        snInputView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.customizeSlideToOpen.isHidden = true
-        }
-        self.saveReceipeinetAddressOnAndOff()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.backAPI = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.customizeSlideToOpen.isHidden = true
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        let text = snInputView.text
-        Storage.write { transaction in
-            self.thread.setDraft(text, transaction: transaction)
-        }
-        mediaCache.removeAllObjects()
-        self.resignFirstResponder()
-    }
-    
-    override func appDidBecomeActive(_ notification: Notification) {
-        recoverInputView()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func synchronizedUI() {
-        
     }
     
     @objc private func cancelButtonTapped() {
@@ -1881,26 +1876,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return mediaCache
     }
     
-    func scrollToBottom(isAnimated: Bool) {
-        guard !isUserScrolling && !viewItems.isEmpty else { return }
-        messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isUserScrolling = true
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        isUserScrolling = false
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollButton.alpha = getScrollButtonOpacity()
-        unreadCountView.alpha = scrollButton.alpha
-        autoLoadMoreIfNeeded()
-        updateUnreadCountView()
-    }
-    
     func updateUnreadCountView() {
         let visibleViewItems = (messagesTableView.indexPathsForVisibleRows ?? []).map { viewItems[ifValid: $0.row] }
         for visibleItem in visibleViewItems {
@@ -1986,36 +1961,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         // Nav bar buttons
         updateNavBarButtons()
-        // Hack so that the ResultsBar stays on the screen when dismissing the search field
-        // keyboard.
-        //
-        // Details:
-        //
-        // When the search UI is activated, both the SearchField and the ConversationVC
-        // have the resultsBar as their inputAccessoryView.
-        //
-        // So when the SearchField is first responder, the ResultsBar is shown on top of the keyboard.
-        // When the ConversationVC is first responder, the ResultsBar is shown at the bottom of the
-        // screen.
-        //
-        // When the user swipes to dismiss the keyboard, trying to see more of the content while
-        // searching, we want the ResultsBar to stay at the bottom of the screen - that is, we
-        // want the ConversationVC to becomeFirstResponder.
-        //
-        // If the SearchField were a subview of ConversationVC.view, this would all be automatic,
-        // as first responder status is percolated up the responder chain via `nextResponder`, which
-        // basically travereses each superView, until you're at a rootView, at which point the next
-        // responder is the ViewController which controls that View.
-        //
-        // However, because SearchField lives in the Navbar, it's "controlled" by the
-        // NavigationController, not the ConversationVC.
-        //
-        // So here we stub the next responder on the navBar so that when the searchBar resigns
-        // first responder, the ConversationVC will be in it's responder chain - keeeping the
-        // ResultsBar on the bottom of the screen after dismissing the keyboard.
-        
-        //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
-        //        navBar.stubbedNextResponder = self
         
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
@@ -2059,6 +2004,29 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
 }
+
+extension ConversationVC {
+    func scrollToBottom(isAnimated: Bool) {
+        guard !isUserScrolling && !viewItems.isEmpty else { return }
+        messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isUserScrolling = true
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        isUserScrolling = false
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollButton.alpha = getScrollButtonOpacity()
+        unreadCountView.alpha = scrollButton.alpha
+        autoLoadMoreIfNeeded()
+        updateUnreadCountView()
+    }
+}
+
 extension ConversationVC: BeldexWalletDelegate {
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
@@ -2089,6 +2057,11 @@ extension ConversationVC: BeldexWalletDelegate {
             }
         }
     }
+    
+    private func synchronizedUI() {
+            
+    }
+    
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
@@ -2096,6 +2069,7 @@ extension ConversationVC: BeldexWalletDelegate {
         self.needSynchronized = true
         self.isSyncingUI = true
     }
+    
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
@@ -2188,5 +2162,5 @@ extension ConversationVC {
                 }
             }
     }
-
+    
 }
