@@ -589,33 +589,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         showQRExpandView.addSubview(shareButton)
         
         // BNS Verified
-        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
-            print("BNS Verified.")
-            shadowBackgroundImage.isHidden = false
-            stackViewForBNSVerifiedName.isHidden = false
-            stackViewForFinalLinkBNS.isHidden = false
-            linkYourBNSBackgroundView.isHidden = true
-            readMoreAboutBackgroundView.isHidden = true
-            beldexAddressExpandView.isHidden = true
-            bchatIDExpandView.isHidden = true
-            showQRExpandView.isHidden = true
-            bnsApprovalIconImage.isHidden = false
-            profilePictureImage.layer.borderWidth = 3
-            profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-            stackViewForBNSVerifiedName.isHidden = false
-        }else{
-            print("Not Verified") // Not Verified
-            shadowBackgroundImage.isHidden = true
-            stackViewForBNSVerifiedName.isHidden = true
-            linkYourBNSBackgroundView.isHidden = false
-            readMoreAboutBackgroundView.isHidden = false
-            beldexAddressExpandView.isHidden = true
-            bchatIDExpandView.isHidden = true
-            showQRExpandView.isHidden = true
-            bnsApprovalIconImage.isHidden = true
-            profilePictureImage.layer.borderColor = UIColor.clear.cgColor
-            stackViewForBNSVerifiedName.isHidden = true
-        }
+        updateBnsDetail()
         
         NSLayoutConstraint.activate([
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
@@ -865,6 +839,9 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc func updateBNSDetailsTapped(notification: NSNotification) {
         // BNS Verified
+        updateBnsDetail()
+    }
+    func updateBnsDetail() {
         if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
             shadowBackgroundImage.isHidden = false
             stackViewForBNSVerifiedName.isHidden = false
@@ -878,7 +855,7 @@ class MyAccountBnsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             profilePictureImage.layer.borderWidth = 3
             profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
             stackViewForBNSVerifiedName.isHidden = false
-        }else{
+        } else {
             print("Not Verified") // Not Verified
             shadowBackgroundImage.isHidden = true
             stackViewForBNSVerifiedName.isHidden = true
