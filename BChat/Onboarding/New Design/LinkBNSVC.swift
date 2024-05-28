@@ -6,7 +6,6 @@ import BChatSnodeKit
 
 class LinkBNSVC: BaseVC {
 
-    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
