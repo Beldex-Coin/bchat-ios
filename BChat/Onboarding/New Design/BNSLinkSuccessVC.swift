@@ -71,7 +71,7 @@ class BNSLinkSuccessVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        UserDefaults.standard.set(true, forKey: "87")
+        UserDefaults.standard.set(true, forKey: "isFromBNSVerifiedData")
         NotificationCenter.default.post(name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
         NotificationCenter.default.post(name: Notification.Name("isFromUpdateBNSDetailsNavigateToMyAccount"), object: nil)
     }

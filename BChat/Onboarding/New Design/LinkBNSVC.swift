@@ -203,14 +203,7 @@ class LinkBNSVC: BaseVC {
             self.bnsNameTextField.layer.borderWidth = 1
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
-            self.verifyButton.layer.borderWidth = 1
-            self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-            self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-            self.verifyButton.setTitle("Verify", for: .normal)
-            let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-            self.verifyButton.setImage(image, for: .normal)
-            self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-            self.verifyButton.semanticContentAttribute = .forceRightToLeft
+            self.verifyButtonDetails()
         }
     }
     
@@ -257,6 +250,17 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
     }
+    
+    func verifyButtonDetails() {
+        self.verifyButton.layer.borderWidth = 1
+        self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
+        self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        self.verifyButton.setTitle("Verify", for: .normal)
+        let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+        self.verifyButton.setImage(image, for: .normal)
+        self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+        self.verifyButton.semanticContentAttribute = .forceRightToLeft
+    }
 
 }
 
@@ -267,15 +271,7 @@ extension LinkBNSVC: UITextFieldDelegate {
             if newString.suffix(4).lowercased() == ".bdx" {
                 verifyButton.isUserInteractionEnabled = true
                 
-                self.verifyButton.layer.borderWidth = 1
-                self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-                self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-                self.verifyButton.setTitle("Verify", for: .normal)
-                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-                self.verifyButton.setImage(image, for: .normal)
-                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-                self.verifyButton.semanticContentAttribute = .forceRightToLeft
-                
+                verifyButtonDetails()
             } else {
                 verifyButton.isUserInteractionEnabled = false
                 
