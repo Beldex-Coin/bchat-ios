@@ -844,6 +844,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         threadViewModelCache.removeAll()
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
+        messageCollectionView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
         isReloading = false
     }
@@ -1202,10 +1203,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                     self?.delete(thread)
                 })
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in })
-                // guard let self = self else { return }
                 self.presentAlert(alert)
             })
-            delete.backgroundColor = Colors.mainBackGroundColor2//Colors.destructive
+            delete.backgroundColor = Colors.mainBackGroundColor2
             delete.image = UIImage(named: "ic_delete_new")
             let isPinned = thread.isPinned
             let pin = UIContextualAction(style: .destructive, title: "Pin", handler: { (action, view, success) in
