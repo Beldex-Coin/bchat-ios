@@ -50,12 +50,12 @@ final class HostManager: NSObject {
         #endif
     }
     
-    /// Specifies the environment Type
-    var environment: String {
+    ///  the environment Host Type for API
+    var hostType: HostType {
         #if MAINNET
-            return "MAINNET"
+            return .MAINNET
         #else
-            return "TESTNET"
+            return .TESTNET
         #endif
     }
 }

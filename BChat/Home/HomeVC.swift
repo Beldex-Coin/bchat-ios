@@ -99,6 +99,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return theImageView
     }()
     
+    var type = HostManager.shared.hostType.hostValue
     var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()
