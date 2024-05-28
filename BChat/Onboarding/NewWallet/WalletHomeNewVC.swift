@@ -806,10 +806,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private var listening = false
     private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     lazy var progressState = { return Observable<CGFloat>(0) }()
-    // MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
-    // TESTNET
-//    var nodeArray = ["149.102.156.174:19095"]
+    
+    var nodeArray = HostManager.shared.hostNet
+    
     var nodeArrayDynamic : [String]?
     let myGroup = DispatchGroup()
     var randomNodeValue = ""

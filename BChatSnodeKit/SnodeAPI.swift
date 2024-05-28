@@ -38,11 +38,8 @@ public final class SnodeAPI : NSObject {
     private static let maxRetryCount: UInt = 8
     private static let minSwarmSnodeCount = 3
     
-    // MAINNET links
-    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443" ]
-    
-    // TESTNET links
-//    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    // MAINNET and TESTNET links
+    private static let seedNodePool: Set<String> = Features.isTestNet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443" ]
     
     private static let snodeFailureThreshold = 3
     private static let targetSwarmSnodeCount = 2
@@ -420,7 +417,7 @@ public final class SnodeAPI : NSObject {
         if let cachedSwarm = swarmCache[publicKey], cachedSwarm.count >= minSwarmSnodeCount{
             if getfrBctStatus == false{
                 SNLog("Getting swarm for false: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
-                let parameters: [String:Any] = [ "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
+                let parameters: [String:Any] = [ "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
                 return getRandomSnode().then2 { snode in
                     attempt(maxRetryCount: 4, recoveringOn: Threading.workQueue) {
                         return invoke(.getSwarm, on: snode, associatedWith: publicKey, parameters: parameters)
@@ -435,7 +432,7 @@ public final class SnodeAPI : NSObject {
             }
         } else {
             SNLog("Getting swarm for: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
-            let parameters: [String:Any] = [ "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
+            let parameters: [String:Any] = [ "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
             return getRandomSnode().then2 { snode in
                 attempt(maxRetryCount: 4, recoveringOn: Threading.workQueue) {
                     invoke(.getSwarm, on: snode, associatedWith: publicKey, parameters: parameters)
@@ -499,7 +496,7 @@ public final class SnodeAPI : NSObject {
         else { return Promise(error: Error.signingFailed) }
         // Make the request
         let parameters: JSON = [
-            "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey,
+            "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey,
             "namespace": namespace,
             "lastHash" : lastHash,
             "timestamp" : timestamp,
@@ -518,7 +515,7 @@ public final class SnodeAPI : NSObject {
 
         // Make the request
         var parameters: JSON = [
-            "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey,
+            "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey,
             "lastHash" : lastHash,
         ]
         // Don't include namespace if polling for 0 with no authentication
@@ -547,7 +544,7 @@ public final class SnodeAPI : NSObject {
         else { return Promise(error: Error.signingFailed) }
         // Make the request
         let (promise, seal) = Promise<Set<RawResponsePromise>>.pending()
-        let publicKey = Features.useTestnet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
+        let publicKey = Features.isTestNet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
         Threading.workQueue.async {
             getTargetSnodes(for: publicKey).map2 { targetSnodes in
                 var parameters = message.toJSON()
@@ -567,7 +564,7 @@ public final class SnodeAPI : NSObject {
     
     private static func sendMessageUnauthenticated(_ message: SnodeMessage, isClosedGroupMessage: Bool) -> Promise<Set<RawResponsePromise>> {
         let (promise, seal) = Promise<Set<RawResponsePromise>>.pending()
-        let publicKey = Features.useTestnet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
+        let publicKey = Features.isTestNet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
         Threading.workQueue.async {
             getTargetSnodes(for: publicKey).map2 { targetSnodes in
                 var rawResponsePromises: Set<RawResponsePromise> = Set()
@@ -608,7 +605,7 @@ public final class SnodeAPI : NSObject {
         let storage = SNSnodeKitConfiguration.shared.storage
         guard let userX25519PublicKey = storage.getUserPublicKey(),
             let userED25519KeyPair = storage.getUserED25519KeyPair() else { return Promise(error: Error.noKeyPair) }
-        let publicKey = Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey
+        let publicKey = Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey
         return attempt(maxRetryCount: maxRetryCount, recoveringOn: Threading.workQueue) {
             getSwarm(for: publicKey).then2 { swarm -> Promise<[String:Bool]> in
                 let snode = swarm.randomElement()!

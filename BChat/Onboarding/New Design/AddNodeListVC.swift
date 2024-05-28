@@ -187,13 +187,12 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         return result
     }()
     
+    // MARK: - Properties
+    
     var testResultFlag = false
+    var nodeArray = HostManager.shared.hostNet
     
-    //MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
-    //TESTNET
-    //    var nodeArray = ["149.102.156.174:19095"]
-    
+    // MARK: - UIViewController life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
