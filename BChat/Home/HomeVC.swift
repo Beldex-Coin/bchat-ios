@@ -50,10 +50,9 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     // MARK: UI Components
     private lazy var tableView: UITableView = {
         let result = UITableView()
-        result.backgroundColor = Colors.mainBackGroundColor2//.clear
-        result.separatorStyle = .none//.singleLine
+        result.backgroundColor = Colors.mainBackGroundColor2
+        result.separatorStyle = .none
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
-//        result.register(ConversationCell.self, forCellReuseIdentifier: ConversationCell.reuseIdentifier)
         result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
         result.showsVerticalScrollIndicator = false
         return result
@@ -100,13 +99,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return theImageView
     }()
     
-    //MARK:- Wallet References
-    //========================================================================================
-    //    ,"publicnode5.rpcnode.stream:29095"
-    //MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
-    //TESTNET
-    //    var nodeArray = ["149.102.156.174:19095"]
+    var type = HostManager.shared.hostType.hostValue
+    var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()
     lazy var conncetingState = { return Observable<Bool>(false) }()
@@ -309,6 +303,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
+    var isManualyCloseMessageRequest = false
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -386,8 +381,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.layer.cornerRadius = 22
         tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-//        view.addSubview(someImageView)
-//        someImageView.pin(to: view)
         self.messageCollectionView.isHidden = true
         // Empty state view
         view.addSubview(emptyStateView)
@@ -497,10 +490,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
-//        someImageView.layer.masksToBounds = true
-//        let logoName = isLightMode ? "svg_light" : "svg_dark"
-//        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-//        someImageView.image = namSvgImgVar.uiImage
     }
     @objc func tappedMe() {
         let searchController = GlobalSearchViewController()
@@ -610,6 +599,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.isManualyCloseMessageRequest = false
         self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
         reload()
@@ -652,6 +642,8 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+        self.isManualyCloseMessageRequest = false
         self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
@@ -798,21 +790,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         if !messageRequestLabel.isHidden {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
         }
         self.messageCollectionView.isHidden = true
-        showOrHideMessageRequestCollectionViewButton.isSelected = false
+//        showOrHideMessageRequestCollectionViewButton.isSelected = false
         
         switch section {
         case 0:
-//            if unreadMessageRequestCount > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-//                return 1
-//            }
             return 0
-        case 1: return Int(threadCount)//5
+        case 1: return Int(threadCount)
         default: return 0
         }
     }
@@ -831,10 +820,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             return cell
             
         default:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-//            cell.threadViewModel = threadViewModel(at: indexPath.row)
-//            return cell
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
             cell.threadViewModel = threadViewModel(at: indexPath.row)
             return cell
@@ -855,7 +840,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
-//        someImageView.isHidden = (threadCount != 0)
         isReloading = false
     }
     
@@ -1030,10 +1014,12 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc private func showOrHideMessageRequestCollectionViewButtonTapped(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
+            self.isManualyCloseMessageRequest = false
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
             self.messageCollectionView.isHidden = false
         } else {
+            self.isManualyCloseMessageRequest = true
             tableViewTopConstraint.isActive = false
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
             self.messageCollectionView.isHidden = true
@@ -1115,7 +1101,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         rightBarButtonItem.isAccessibilityElement  = true
         rightBarButtonItems.append(rightBarButtonItem)
         
-//        let rightBarButtonItemWallet =  UIBarButtonItem(image: UIImage(named: "ic_walletHomeNew"), style: .plain, target: self, action: #selector(showWallet))
         let wallet = UIButton(type: .custom)
         wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
         wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
@@ -1143,8 +1128,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {
         super.handleAppModeChangedNotification(notification)
-        //        let gradient = Gradients.homeVCFade
-        //        fadeView.setGradient(gradient) // Re-do the gradient
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         tableView.reloadData()
     }
@@ -1350,12 +1333,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         mainButtonPopUpView.isHidden = true
         let vc = CreateSecretGroupScreenVC()
         self.navigationController?.pushViewController(vc, animated: true)
-//        let newSecretGroupVC = NewSecretGroupVC()
-//        let navigationController = OWSNavigationController(rootViewController: newSecretGroupVC)
-//        if UIDevice.current.isIPad {
-//            navigationController.modalPresentationStyle = .fullScreen
-//        }
-//        present(navigationController, animated: true, completion: nil)
     }
     // Social Group
     @objc private func socialGroupButtonTapped(_ sender: UIButton) {
@@ -1510,14 +1487,20 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         if messageRequestCountForMessageRequest == 0 {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
             self.messageCollectionView.isHidden = false
             self.showOrHideMessageRequestCollectionViewButton.isSelected = true
+            if isManualyCloseMessageRequest {
+                tableViewTopConstraint.isActive = false
+                tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
+                self.messageCollectionView.isHidden = true
+                self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+            }
         }
         
         
@@ -1525,18 +1508,10 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
-//        if !messageRequestLabel.isHidden {
-//            tableViewTopConstraint.isActive = false
-//            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16/*Values.smallSpacing*/)
-//        } else {
-//            tableViewTopConstraint.isActive = false
-//            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
-//        }
-        
         
         if messageRequestCountForMessageRequest == 0 {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
             self.messageCollectionView.isHidden = true
             self.showOrHideMessageRequestCollectionViewButton.isSelected = false
             messageRequestCountLabel.isHidden = true
@@ -1544,12 +1519,18 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             showOrHideMessageRequestCollectionViewButton.isHidden = true
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16/*Values.smallSpacing*/)
+            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
             self.messageCollectionView.isHidden = false
             self.showOrHideMessageRequestCollectionViewButton.isSelected = true
             messageRequestCountLabel.isHidden = false
             messageRequestLabel.isHidden = false
             showOrHideMessageRequestCollectionViewButton.isHidden = false
+            if isManualyCloseMessageRequest {
+                tableViewTopConstraint.isActive = false
+                tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
+                self.messageCollectionView.isHidden = true
+                self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+            }
         }
         
         
@@ -1559,7 +1540,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "MessageRequestCollectionViewCell", for: indexPath) as! MessageRequestCollectionViewCell
-//        cell.backgroundColor = .red
         cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
         
         if threadViewModelForMessageRequest(at: indexPath.row)!.isGroupThread {

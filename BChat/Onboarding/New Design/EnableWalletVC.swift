@@ -144,11 +144,12 @@ class EnableWalletVC: BaseVC {
         return button
     }()
     
-    //MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]
-    //TESTNET
-    //    var nodeArray = ["149.102.156.174:19095"]
+    // MARK: - Properties
+    
+    var nodeArray = HostManager.shared.hostNet
 
+    // MARK: - UIViewController life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -162,7 +163,6 @@ class EnableWalletVC: BaseVC {
 //
 //        navigationItem.hidesBackButton = true
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_back_newNavBar"), style: .plain, target: self, action: nil)
-
         
         view.addSubview(backGroundView)
         backGroundView.addSubViews(greenDotView1, infoLabel1, greenDotView2, infoLabel2, greenDotView3, infoLabel3, greenDotView4, infoLabel4, bottomStackView)

@@ -46,10 +46,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    //MAINNET
-    var nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
-    //TESTNET
-//    var nodeArray = ["149.102.156.174:19095"]
+    var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     var randomValueAfterAddNewNode = ""
     var selectedIndex : Int = 70
@@ -296,10 +293,6 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
             SaveUserDefaultsData.SwitchNode = true
-            //MAINNET
-            self.nodeArray = ["publicnode1.rpcnode.stream:29095","publicnode2.rpcnode.stream:29095","publicnode3.rpcnode.stream:29095","publicnode4.rpcnode.stream:29095","publicnode5.rpcnode.stream:29095"]//["149.102.156.174:19095"]
-            //TESTNET
-            //                self.nodeArray = ["149.102.156.174:19095"]
             SaveUserDefaultsData.SaveLocalNodelist = []
             if self.nodeArrayDynamic!.count > 0 {
                 for i in 0 ..< self.nodeArrayDynamic!.count {

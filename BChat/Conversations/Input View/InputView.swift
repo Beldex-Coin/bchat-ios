@@ -132,6 +132,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         setUpViewHierarchy()
     }
     
+
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
     }
