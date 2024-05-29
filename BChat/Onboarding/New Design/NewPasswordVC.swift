@@ -2,6 +2,8 @@
 
 import UIKit
 import PromiseKit
+import BChatUIKit
+import BChatMessagingKit
 
 class NewPasswordVC: BaseVC {
     
@@ -17,11 +19,9 @@ class NewPasswordVC: BaseVC {
     var isVerifyPassword = false
     var isChangePassword = false
     
-//    var isSendWalletVC = false
     var wallet: BDXWallet?
     var finalWalletAddress = ""
     var finalWalletAmount = ""
-    
     
     private lazy var iconView: UIImageView = {
         let result = UIImageView()
@@ -44,7 +44,6 @@ class NewPasswordVC: BaseVC {
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     
     private lazy var bottomView: UIView = {
         let stackView = UIView()
@@ -100,7 +99,6 @@ class NewPasswordVC: BaseVC {
         return result
     }()
     
-    
     private lazy var pin1: UIImageView = {
         let result = UIImageView()
         result.image = UIImage(named: "ic_star")
@@ -140,7 +138,6 @@ class NewPasswordVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
-    
     
     private lazy var pinLabel: UILabel = {
         let result = UILabel()
@@ -247,7 +244,6 @@ class NewPasswordVC: BaseVC {
         return result
     }()
     
-    
     lazy var firstStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -287,7 +283,6 @@ class NewPasswordVC: BaseVC {
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
-    
     
     private lazy var oneButton: UIButton = {
         let button = UIButton()
@@ -441,13 +436,7 @@ class NewPasswordVC: BaseVC {
     
     var passwordText = ""
     var confirmPasswordText = ""
-    
-    
     var isPasswordEnterFirstTime = false
-
-    
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -471,7 +460,6 @@ class NewPasswordVC: BaseVC {
             self.title = "Verify PIN"
             self.pinLabel.text = "Enter your 4 digit PIN"
         }
-        
         
         pinStackView.addArrangedSubview(firstPinView)
         pinStackView.addArrangedSubview(secondPinView)
@@ -555,7 +543,6 @@ class NewPasswordVC: BaseVC {
             pinStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pinStackView.heightAnchor.constraint(equalToConstant: 56),
             firstPinView.widthAnchor.constraint(equalToConstant: 56),
-//            pinStackView.widthAnchor.constraint(equalToConstant: 200),
             
             pin1.centerXAnchor.constraint(equalTo: firstPinView.centerXAnchor),
             pin1.centerYAnchor.constraint(equalTo: firstPinView.centerYAnchor),
@@ -574,7 +561,6 @@ class NewPasswordVC: BaseVC {
             bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             bottomView.heightAnchor.constraint(equalToConstant: view.frame.height*0.57),
-            
             
             firstStackView.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 40),
             firstStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -614,20 +600,12 @@ class NewPasswordVC: BaseVC {
             self.nextButton.isHidden = true
         }
         
-       
-        
     }
     
     
     // MARK: Button Actions :-
     @objc private func nextButtonTapped() {
         if passwordText.count == 4 {
-//            self.pin1.isHidden = false
-//            self.pin2.isHidden = false
-//            self.pin3.isHidden = false
-//            self.pin4.isHidden = false
-            
-            
             if isChangePassword {
                 if passwordText == SaveUserDefaultsData.BChatPassword {
                     isChangePassword = false
@@ -664,10 +642,7 @@ class NewPasswordVC: BaseVC {
                     nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
                     return
                 }
-                
             }
-            
-            
             
             if isCreatePassword {
                 isPasswordEnterFirstTime = true
@@ -728,8 +703,6 @@ class NewPasswordVC: BaseVC {
                 }
             }
             
-            
-            
             if self.isGoingHome == true {
                 UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
@@ -761,7 +734,6 @@ class NewPasswordVC: BaseVC {
                         VC.finalWalletAmount = self.finalWalletAmount
                         VC.backAPI = true
                         self.navigationController?.popViewController(animated: true)
-    //                    NotificationCenter.default.post(name: Notification.Name(rawValue: "plm"), object: nil)
                     }
                 }
             }
@@ -781,7 +753,6 @@ class NewPasswordVC: BaseVC {
                 }
             }
             
-            
             if self.isGoingBack == true {
                 let vc = PINSuccessPopUp()
                 vc.modalPresentationStyle = .overFullScreen
@@ -794,7 +765,6 @@ class NewPasswordVC: BaseVC {
                 let vc = NewRecoverySeedVC()
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            
         }
     }
     
@@ -995,10 +965,6 @@ class NewPasswordVC: BaseVC {
             }
         }
         
-        
-        
-        
-        
         if passwordText.count == 4 {
             self.pin1.isHidden = false
             self.pin2.isHidden = false
@@ -1010,7 +976,6 @@ class NewPasswordVC: BaseVC {
             secondPinView.layer.borderColor = Colors.bothGreenColor.cgColor
             thirdPinView.layer.borderColor = Colors.bothGreenColor.cgColor
             fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
-            
         }
         
         if passwordText.count == 4 && tag == 10 {
@@ -1206,7 +1171,6 @@ class NewPasswordVC: BaseVC {
                         }
                     }
                     
-                    
                     if self.isGoingNewRestoreSeedVC && self.isCreatePassword {
                         self.nextButton.isHidden = false
                         isPasswordEnterFirstTime = true
@@ -1242,6 +1206,22 @@ class NewPasswordVC: BaseVC {
                     }
                     
                     if self.isGoingBack && self.isCreatePassword && !isChangePassword {
+                        if passwordText == SaveUserDefaultsData.BChatPassword {
+                            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: "New password should not be same as old password.") , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                            })
+                            passwordText = ""
+                            self.pin1.isHidden = true
+                            self.pin2.isHidden = true
+                            self.pin3.isHidden = true
+                            self.pin4.isHidden = true
+                            firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            nextButton.backgroundColor = Colors.cellGroundColor2
+                            nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                            return
+                        }
                         self.nextButton.isHidden = false
                         isPasswordEnterFirstTime = true
                         self.pin1.isHidden = true
@@ -1257,18 +1237,9 @@ class NewPasswordVC: BaseVC {
                         fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                         return
                     }
-                    
-                    
                 }
-                
             }
-            
         }
-        
     }
-   
-    
-    
-    
 
 }

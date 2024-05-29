@@ -202,5 +202,7 @@ public final class Colors : NSObject {
     @objc public static var smallBackGroundViewCellColor: UIColor { UIColor(named: "1C1C26-EBEBEB")! }
     @objc public static var chatSettingsGrayColor: UIColor { UIColor(named: "ACACAC-8A8A9D-Alpha")! }
     @objc public static var expandBackgroundColor: UIColor { UIColor(named: "282836-EBEBEB")! }
+    @objc public static var betaBackgroundColor: UIColor { UIColor(named: "A7A7BA-E0E0E0")! }
+    
     
 }

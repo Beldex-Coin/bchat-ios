@@ -471,11 +471,14 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
         // Display name label
         let nam = Storage.shared.getUser()?.name
         nameIdLabel.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        nameTextField.delegate = self
         bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
         beldexAddressIdLabel.text = "\(SaveUserDefaultsData.WalletpublicAddress)"
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
         qrCodeImage.image = qrCode
+        
+        // Edit name textfiled
+        nameTextField.delegate = self
+        nameTextField.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         
         innerProfileImageView.addSubview(profilePictureLabel)
         innerProfileImageView.addSubview(innerProfileCloseButton)
