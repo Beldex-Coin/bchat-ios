@@ -76,6 +76,64 @@ final class VoiceMessageRecordingView : UIView {
         result.alpha = 0
         return result
     }()
+    
+    private lazy var pauseButton: UIButton = {
+        let result = UIButton()
+        result.setTitle("Pause", for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        result.setTitleColor(Colors.text, for: UIControl.State.normal)
+        result.addTarget(self, action: #selector(handlePauseButtonTapped), for: UIControl.Event.touchUpInside)
+        result.alpha = 0
+        return result
+    }()
+    
+    private lazy var playPauseauseButton: UIButton = {
+        let result = UIButton()
+        result.setTitle("", for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        result.setTitleColor(Colors.text, for: UIControl.State.normal)
+        result.addTarget(self, action: #selector(handlePlayButtonTapped), for: UIControl.Event.touchUpInside)
+        result.alpha = 0
+        let image = UIImage(named: "ic_play")
+        result.setImage(image, for: UIControl.State.normal)
+        let imageSelected = UIImage(named: "ic_pause_record")
+        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.imageView?.isUserInteractionEnabled = true
+        result.clipsToBounds = true
+        return result
+    }()
+    
+    private lazy var audioButton: UIButton = {
+        let result = UIButton()
+        result.setTitle("", for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+        result.setTitleColor(Colors.text, for: UIControl.State.normal)
+        result.addTarget(self, action: #selector(audioButtonTapped), for: UIControl.Event.touchUpInside)
+        result.alpha = 0
+        let image = UIImage(named: "ic_record")
+        result.setImage(image, for: UIControl.State.normal)
+        result.imageView?.isUserInteractionEnabled = true
+        result.clipsToBounds = true
+        return result
+    }()
+    
+    private lazy var audioDurationLabel: UILabel = {
+        let result = UILabel()
+        result.text = "0:07"
+        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.textColor = Colors.noDataLabelColor
+        result.alpha = 0
+        result.sizeToFit()
+        return result
+    }()
+    
+    private lazy var audioWavesImageView: UIImageView = {
+        var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        result.set(.height, to: 24)
+        result.contentMode = .scaleAspectFit
+        result.alpha = 0
+        return result
+    }()
 
     private lazy var durationStackView: UIStackView = {
         let result = UIStackView()
@@ -107,9 +165,9 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var lockView = LockView()
 
     // MARK: Settings
-    private static let circleSize: CGFloat = 46//96
+    private static let circleSize: CGFloat = 46
     private static let pulseSize: CGFloat = 24
-    private static let iconSize: CGFloat = 20//28
+    private static let iconSize: CGFloat = 20
     private static let chevronSize: CGFloat = 16
     private static let dotSize: CGFloat = 16
     private static let lockViewHitMargin: CGFloat = 40
@@ -170,6 +228,36 @@ final class VoiceMessageRecordingView : UIView {
         addSubview(lockView)
         lockView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor, constant: 2).isActive = true
         lockViewBottomConstraint.isActive = true
+        
+        addSubview(pauseButton)
+        pauseButton.pin(.left, to: .right, of: durationStackView, withInset: 8)
+        pauseButton.center(.vertical, in: iconImageView)
+        
+        addSubview(playPauseauseButton)
+        playPauseauseButton.pin(.left, to: .left, of: self, withInset: 30)
+        playPauseauseButton.center(.vertical, in: iconImageView)
+        NSLayoutConstraint.activate([
+            playPauseauseButton.heightAnchor.constraint(equalToConstant: 40),
+            playPauseauseButton.widthAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        addSubview(audioButton)
+        audioButton.pin(.right, to: .right, of: self, withInset: -72)
+        audioButton.center(.vertical, in: iconImageView)
+        NSLayoutConstraint.activate([
+            audioButton.heightAnchor.constraint(equalToConstant: 40),
+            audioButton.widthAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        addSubview(audioDurationLabel)
+        audioDurationLabel.pin(.left, to: .right, of: playPauseauseButton, withInset: 0)
+        audioDurationLabel.center(.vertical, in: iconImageView)
+        
+        addSubview(audioWavesImageView)
+        audioWavesImageView.pin(.left, to: .right, of: audioDurationLabel, withInset: 13)
+        audioWavesImageView.center(.vertical, in: iconImageView)
+        audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -10)
+        
     }
 
     // MARK: Updating
@@ -278,6 +366,7 @@ final class VoiceMessageRecordingView : UIView {
                 self.iconImageView.image = UIImage(named: "ic_chevron_up")!.withTint(.white)
                 self.slideToCancelStackView.alpha = 0
                 self.cancelButton.alpha = 1
+                self.pauseButton.alpha = 1
             }, completion: { _ in
                 // Do nothing
             })
@@ -293,6 +382,28 @@ final class VoiceMessageRecordingView : UIView {
     @objc private func handleCancelButtonTapped() {
         delegate?.cancelVoiceMessageRecording()
     }
+    
+    @objc private func handlePauseButtonTapped() {
+        delegate?.pauseRecording()
+        self.durationStackView.isHidden = true
+        self.cancelButton.isHidden = true
+        self.pauseButton.isHidden = true
+        self.playPauseauseButton.alpha = 1
+        self.audioButton.alpha = 1
+        self.audioDurationLabel.alpha = 1
+        self.audioWavesImageView.alpha = 1
+    }
+    
+    @objc private func handlePlayButtonTapped(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        delegate?.playRecording()
+    }
+    
+    
+    @objc private func audioButtonTapped(_ sender: UIButton) {
+        
+    }
+    
 
     // MARK: Convenience
     private func isValidLockViewLocation(_ location: CGPoint) -> Bool {
@@ -403,4 +514,7 @@ protocol VoiceMessageRecordingViewDelegate : class {
     func endVoiceMessageRecording()
     func cancelVoiceMessageRecording()
     func payAsYouChatLongPress()
+    func pauseRecording()
+    func playRecording()
+    
 }

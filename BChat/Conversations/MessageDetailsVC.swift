@@ -195,7 +195,9 @@ class MessageDetailsVC: BaseVC {
             }
             MessageSender.prep(attachments, for: message, using: transaction)
             MessageSender.send(message, in: thread, using: transaction)
-            self.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 

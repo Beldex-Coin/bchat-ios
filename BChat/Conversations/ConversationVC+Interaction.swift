@@ -1166,8 +1166,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func payAsYouChatLongPress() {
         snInputView.isHidden = true
-        //        let payAsYouChatPermissionRequestModal = PayAsYouChatPermissionRequestModal()
-        //        self.navigationController?.present(payAsYouChatPermissionRequestModal, animated: true, completion: nil)
         let vc = PayAsYouChatPopUpVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
@@ -1239,8 +1237,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         // Check preconditions
         guard let audioRecorder = audioRecorder else { return }
+        // For LongPress stop audio
+        let player = try? AVAudioPlayer(contentsOf: audioRecorder.url)
         // Get duration
-        let duration = audioRecorder.currentTime
+        var duration = audioRecorder.currentTime
+        // For LongPress stop audio
+        if player?.duration ?? 0.0 > 1 {
+            duration = player?.duration ?? 0.0
+        }
         // Stop the recording
         stopVoiceMessageRecording()
         // Check for user misunderstanding
@@ -1270,11 +1274,39 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         stopVoiceMessageRecording()
         audioRecorder = nil
+        self.audioPlayer = nil
+        deleteAudioView.isHidden = true
+    }
+    
+    func pauseRecording() {
+        deleteAudioView.isHidden = false
+        audioRecorder?.stop()
+    }
+    
+    func playRecording() {
+        let url = (audioRecorder?.url)!
+        let audioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
+        audioPlayer.isLooping = true
+        if self.audioPlayer == nil {
+            self.audioPlayer = audioPlayer
+        }
+        if isPlaying {
+            self.audioPlayer!.pause()
+        } else {
+            self.audioPlayer!.play()
+        }
+        isPlaying = !isPlaying
     }
 
     func stopVoiceMessageRecording() {
         audioRecorder?.stop()
         audioSession.endAudioActivity(recordVoiceMessageActivity)
+        deleteAudioView.isHidden = true
+    }
+    
+    @objc func deleteAudioButtonTapped() {
+        deleteAudioView.isHidden = true
+        self.cancelVoiceMessageRecording()
     }
     
     // MARK: - Data Extraction Notifications
