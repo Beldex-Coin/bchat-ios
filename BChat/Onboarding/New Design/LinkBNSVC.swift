@@ -203,14 +203,7 @@ class LinkBNSVC: BaseVC {
             self.bnsNameTextField.layer.borderWidth = 1
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
-            self.verifyButton.layer.borderWidth = 1
-            self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-            self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-            self.verifyButton.setTitle("Verify", for: .normal)
-            let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-            self.verifyButton.setImage(image, for: .normal)
-            self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-            self.verifyButton.semanticContentAttribute = .forceRightToLeft
+            self.verifyButtonDetails(isVerify: false)
         }
     }
     
@@ -257,38 +250,32 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
     }
+    
+    func verifyButtonDetails(isVerify: Bool) {
+        verifyButton.isUserInteractionEnabled =  isVerify ?  false : true
+        self.verifyButton.layer.borderWidth = isVerify ? 1 : 0
+        self.verifyButton.layer.borderColor =  isVerify ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+        self.verifyButton.setTitleColor(isVerify ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
+        self.verifyButton.setTitle("Verify", for: .normal)
+        let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
+        self.verifyButton.setImage(image, for: .normal)
+        self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
+        self.verifyButton.semanticContentAttribute = .forceRightToLeft
+    }
 
 }
 
 extension LinkBNSVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentString: NSString = textField.text! as NSString
-            let newString = currentString.replacingCharacters(in: range, with: string)
-            if newString.suffix(4).lowercased() == ".bdx" {
-                verifyButton.isUserInteractionEnabled = true
-                
-                self.verifyButton.layer.borderWidth = 1
-                self.verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-                self.verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-                self.verifyButton.setTitle("Verify", for: .normal)
-                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-                self.verifyButton.setImage(image, for: .normal)
-                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-                self.verifyButton.semanticContentAttribute = .forceRightToLeft
-                
-            } else {
-                verifyButton.isUserInteractionEnabled = false
-                
-                self.verifyButton.layer.borderWidth = 1
-                self.verifyButton.layer.borderColor = UIColor.clear.cgColor
-                self.verifyButton.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
-                self.verifyButton.setTitle("Verify", for: .normal)
-                let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-                self.verifyButton.setImage(image, for: .normal)
-                self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-                self.verifyButton.semanticContentAttribute = .forceRightToLeft
-                
-            }
+        let newString = currentString.replacingCharacters(in: range, with: string)
+        if newString.suffix(4).lowercased() == ".bdx" {
+            
+            verifyButtonDetails(isVerify: true)
+        } else {
+            
+            verifyButtonDetails(isVerify: false)
+        }
         return true
     }
 }

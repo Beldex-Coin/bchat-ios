@@ -44,9 +44,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
     }
     
-    
-    
-    
     // MARK: UI Components
     private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -540,8 +537,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             Storage.write(
                 with: { [weak self] transaction in
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
-//                    self?.updateContactAndThread(thread: thread, with: transaction)
-                    
                     // Block the contact
                     if
                         let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
@@ -554,7 +549,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                             self?.tableView.reloadData()
                             self?.messageCollectionView.reloadData()
                         }
-                        
                     }
                 },
                 completion: {
@@ -612,7 +606,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
                 hashArray2 = UserDefaults.standard.domainSchemas
             }
             myGroup.notify(queue: .main) {
-                print("Finished all requests.")
                 if !SaveUserDefaultsData.SelectedNode.isEmpty {
                     if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
                         self.randomNodeValue = SaveUserDefaultsData.SelectedNode
@@ -796,7 +789,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
         }
         self.messageCollectionView.isHidden = true
-//        showOrHideMessageRequestCollectionViewButton.isSelected = false
         
         switch section {
         case 0:
@@ -1046,7 +1038,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         button.layer.masksToBounds = true
         
         // For BNS Verified User
-        button.layer.borderWidth = 0
         button.layer.borderColor = Colors.bothGreenColor.cgColor
 
         lazy var verifiedImageView: UIImageView = {
@@ -1070,29 +1061,32 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         // For BNS Verified User
         verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
-        verifiedImageView.isHidden = true
         
+        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
+            button.layer.borderWidth = 1
+            verifiedImageView.isHidden = false
+        } else {
+            button.layer.borderWidth = 0
+            verifiedImageView.isHidden = true
+        }
         
         if let statusView = view.viewWithTag(333222) {
             statusView.removeFromSuperview()
         }
         // Path status indicator
-            let pathStatusView = PathStatusView()
-            pathStatusView.tag = 333222
-            pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-            pathStatusView.set(.width, to: PathStatusView.size)
-            pathStatusView.set(.height, to: PathStatusView.size)
-            outerView.addSubview(pathStatusView)
-            pathStatusView.layer.borderWidth = 2
+        let pathStatusView = PathStatusView()
+        pathStatusView.tag = 333222
+        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
+        pathStatusView.set(.width, to: PathStatusView.size)
+        pathStatusView.set(.height, to: PathStatusView.size)
+        outerView.addSubview(pathStatusView)
+        pathStatusView.layer.borderWidth = 2
         pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
-            pathStatusView.pin(.trailing, to: .trailing, of: outerView)
-            pathStatusView.pin(.top, to: .top, of: outerView)
-        
-        
+        pathStatusView.pin(.trailing, to: .trailing, of: outerView)
+        pathStatusView.pin(.top, to: .top, of: outerView)
 
         let barButton = UIBarButtonItem(customView: outerView)
         self.navigationItem.leftBarButtonItem = barButton
-        
         
         var rightBarButtonItems: [UIBarButtonItem] = []
         
@@ -1532,9 +1526,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                 self.showOrHideMessageRequestCollectionViewButton.isSelected = false
             }
         }
-        
-        
-
         return Int(messageRequestCountForMessageRequest)//10
     }
     
