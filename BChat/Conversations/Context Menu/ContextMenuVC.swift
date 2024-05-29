@@ -7,7 +7,7 @@ final class ContextMenuVC : UIViewController {
     private weak var delegate: ContextMenuActionDelegate?
 
     // MARK: UI Components
-//    private lazy var blurView = UIVisualEffectView(effect: nil)
+    private lazy var blurView = UIVisualEffectView(effect: nil)
 
     private lazy var menuView: UIView = {
         let result = UIView()
@@ -54,8 +54,8 @@ final class ContextMenuVC : UIViewController {
         // Background color
         view.backgroundColor = .clear
         // Blur
-//        view.addSubview(blurView)
-//        blurView.pin(to: view)
+        view.addSubview(blurView)
+        blurView.pin(to: view)
         // Snapshot
         snapshot.layer.shadowColor = UIColor.black.cgColor
         snapshot.layer.shadowOffset = CGSize.zero
@@ -109,7 +109,7 @@ final class ContextMenuVC : UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         UIView.animate(withDuration: 0.25) {
-//            self.blurView.effect = UIBlurEffect(style: .regular)
+            self.blurView.effect = UIBlurEffect(style: .regular)
             self.menuView.alpha = 1
         }
     }
@@ -127,7 +127,7 @@ final class ContextMenuVC : UIViewController {
     
     func snDismiss() {
         UIView.animate(withDuration: 0.25, animations: {
-//            self.blurView.effect = nil
+            self.blurView.effect = nil
             self.menuView.alpha = 0
 //            self.timestampLabel.alpha = 0
         }, completion: { _ in

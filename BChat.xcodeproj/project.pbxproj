@@ -297,6 +297,7 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		810A24C32C059F280049050B /* MessageDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A24C22C059F280049050B /* MessageDetailsVC.swift */; };
 		810B9A742BA177AA008CB61A /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B9A732BA177AA008CB61A /* HomeTableViewCell.swift */; };
 		810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */; };
 		810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */; };
@@ -358,6 +359,7 @@
 		8A433C442BF34AB5006C3AE0 /* AddAddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */; };
 		8A5A0B452C04942300288474 /* HostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B442C04942300288474 /* HostManager.swift */; };
 		8A5A0B4A2C05913300288474 /* HostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B492C05913300288474 /* HostType.swift */; };
+		8A5A0B4C2C05F95100288474 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */; };
 		8A5C46B82BFB529A0031441A /* WalletAddressBookNewVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */; };
 		8A5C46BA2BFCA4E70031441A /* CallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */; };
 		8A5C46C02BFCC9610031441A /* OutgoingCallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */; };
@@ -1428,6 +1430,7 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		810A24C22C059F280049050B /* MessageDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailsVC.swift; sourceTree = "<group>"; };
 		810B9A732BA177AA008CB61A /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSuccessVC.swift; sourceTree = "<group>"; };
 		810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitiatingTransactionVC.swift; sourceTree = "<group>"; };
@@ -1486,6 +1489,7 @@
 		8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressBookViewController.swift; sourceTree = "<group>"; };
 		8A5A0B442C04942300288474 /* HostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostManager.swift; sourceTree = "<group>"; };
 		8A5A0B492C05913300288474 /* HostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostType.swift; sourceTree = "<group>"; };
+		8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
 		8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressBookNewVCExtension.swift; sourceTree = "<group>"; };
 		8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallTableViewCell.swift; sourceTree = "<group>"; };
 		8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingCallTableViewCell.swift; sourceTree = "<group>"; };
@@ -2808,13 +2812,13 @@
 			path = "New Design";
 			sourceTree = "<group>";
 		};
-		8A5A0B462C04A6AE00288474 /* Helper */ = {
+		8A5A0B462C04A6AE00288474 /* Host Helper */ = {
 			isa = PBXGroup;
 			children = (
 				8A5A0B442C04942300288474 /* HostManager.swift */,
 				8A5A0B492C05913300288474 /* HostType.swift */,
 			);
-			path = Helper;
+			path = "Host Helper";
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
@@ -2965,6 +2969,7 @@
 				341341ED2187467900192D59 /* ConversationViewModel.h */,
 				341341EE2187467900192D59 /* ConversationViewModel.m */,
 				34ABC0E321DD20C500ED9469 /* ConversationMessageMapping.swift */,
+				810A24C22C059F280049050B /* MessageDetailsVC.swift */,
 				B887C38125C7C79700E11DAE /* Input View */,
 				B835247725C38D190089A44F /* Message Cells */,
 				C328252E25CA54F70062D0A7 /* Context Menu */,
@@ -2998,6 +3003,7 @@
 				C374EEF325DB31D40073A857 /* VoiceMessageRecordingView.swift */,
 				C302093D25DCBF07001F572D /* MentionSelectionView.swift */,
 				B8D84ECE25E3108A005A043E /* ExpandingAttachmentsButton.swift */,
+				8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */,
 			);
 			path = "Input View";
 			sourceTree = "<group>";
@@ -4148,7 +4154,7 @@
 				76EB03C318170B33006006FC /* AppDelegate.m */,
 				C3AAFFF125AE99710089E6DD /* AppDelegate.swift */,
 				34D99CE3217509C1000AFB39 /* AppEnvironment.swift */,
-				8A5A0B462C04A6AE00288474 /* Helper */,
+				8A5A0B462C04A6AE00288474 /* Host Helper */,
 				6007B5E028ABC76B0004BD61 /* BChat Utilities */,
 				6007B5C928ABC5C70004BD61 /* SVGfiles */,
 				7BFD1A952747689000FB91B9 /* TurnServers */,
@@ -5637,6 +5643,7 @@
 				B8CCF63F23975CFB0091D419 /* JoinOpenGroupVC.swift in Sources */,
 				34ABC0E421DD20C500ED9469 /* ConversationMessageMapping.swift in Sources */,
 				45B5360E206DD8BB00D61655 /* UIResponder+OWS.swift in Sources */,
+				8A5A0B4C2C05F95100288474 /* CircularProgressView.swift in Sources */,
 				6098CA742A1DCC9C005A5502 /* InteropConverter.swift in Sources */,
 				B8D84ECF25E3108A005A043E /* ExpandingAttachmentsButton.swift in Sources */,
 				813B392D2BF896EC0037FD0F /* ChatSettingsVC.swift in Sources */,
@@ -5656,6 +5663,7 @@
 				7BC707F227290ACB002817AD /* BChatCallManager.swift in Sources */,
 				7BAADFCE27B215FE007BCF92 /* UIView+Draggable.swift in Sources */,
 				45C0DC1B1E68FE9000E04C47 /* UIApplication+OWS.swift in Sources */,
+				810A24C32C059F280049050B /* MessageDetailsVC.swift in Sources */,
 				4539B5861F79348F007141FF /* PushRegistrationManager.swift in Sources */,
 				B8041A9525C8FA1D003C2166 /* MediaLoaderView.swift in Sources */,
 				6049BEF72B597622003DD410 /* ScanNewVC.swift in Sources */,

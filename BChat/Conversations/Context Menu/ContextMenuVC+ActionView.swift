@@ -28,15 +28,15 @@ extension ContextMenuVC {
         private func setUpViewHierarchy() {
             // Icon
             let iconSize = ActionView.iconSize
-            let iconImageView = UIImageView(image: action.icon.resizedImage(to: CGSize(width: iconSize, height: iconSize))/*!.withTint(Colors.text)*/)
-            let iconImageViewSize = CGFloat(12)//ActionView.iconImageViewSize
+            let iconImageView = UIImageView(image: action.icon)
+            let iconImageViewSize = CGFloat(15)
             iconImageView.set(.width, to: iconImageViewSize)
             iconImageView.set(.height, to: iconImageViewSize)
-            iconImageView.contentMode = .scaleAspectFit//.center
+            iconImageView.contentMode = .scaleAspectFit
             // Title
             let titleLabel = UILabel()
             titleLabel.text = action.title
-            titleLabel.textColor = UIColor(hex: 0xEBEBEB)//Colors.text
+            titleLabel.textColor = UIColor(hex: 0xEBEBEB)
             if action.title == "Delete" {
                 titleLabel.textColor = Colors.bothRedColor
             }
@@ -44,7 +44,7 @@ extension ContextMenuVC {
             // Stack view
             let stackView = UIStackView(arrangedSubviews: [ iconImageView, titleLabel ])
             stackView.axis = .horizontal
-            stackView.spacing = 10//Values.smallSpacing
+            stackView.spacing = 10
             stackView.alignment = .center
             stackView.isLayoutMarginsRelativeArrangement = true
             let smallSpacing = Values.smallSpacing
