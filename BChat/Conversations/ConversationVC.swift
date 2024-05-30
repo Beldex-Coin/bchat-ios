@@ -350,7 +350,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {
-        let slide = MTSlideToOpenView(frame: CGRect(x: 60, y: UIScreen.main.bounds.height/1.4, width: 250, height: 50))
+        let slide = MTSlideToOpenView(frame: CGRect(x: 40, y: UIScreen.main.bounds.height/1.4, width: 300, height: 50))
         slide.sliderViewTopDistance = 0
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
@@ -358,7 +358,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         slide.draggedView.backgroundColor = .clear
         slide.delegate = self
         slide.thumnailImageView.image = #imageLiteral(resourceName: "ic_sliderImage").imageFlippedForRightToLeftLayoutDirection()
-        slide.thumnailImageViewRight.image = #imageLiteral(resourceName: "send_icon").imageFlippedForRightToLeftLayoutDirection()
+        slide.thumnailImageViewRight.image = UIImage(named: "ic_bdx_send_logo")
         slide.sliderBackgroundColor = .darkGray
         return slide
     }()

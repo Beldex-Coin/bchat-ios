@@ -30,7 +30,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Link BNS"
+        result.text = "Your BChat ID"
         return result
     }()
     
@@ -256,11 +256,6 @@ class LinkBNSVC: BaseVC {
         self.verifyButton.layer.borderWidth = isVerify ? 1 : 0
         self.verifyButton.layer.borderColor =  isVerify ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         self.verifyButton.setTitleColor(isVerify ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
-        self.verifyButton.setTitle("Verify", for: .normal)
-        let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-        self.verifyButton.setImage(image, for: .normal)
-        self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-        self.verifyButton.semanticContentAttribute = .forceRightToLeft
     }
 
 }
