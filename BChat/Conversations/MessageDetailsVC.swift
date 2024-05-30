@@ -165,6 +165,9 @@ class MessageDetailsVC: BaseVC {
                 self.failedView.isHidden = true
                 self.successView.isHidden = false
                 self.timeLabelSuccessView.text = self.customDateFormate(message: message)
+                if message.messageState == .sending {
+                    self.sentLabel.text = "Sending"
+                }
             }
         }
         

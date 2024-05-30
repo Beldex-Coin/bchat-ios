@@ -1,5 +1,6 @@
 
 final class VoiceMessageRecordingView : UIView {
+    
     private let voiceMessageButtonFrame: CGRect
     private weak var delegate: VoiceMessageRecordingViewDelegate?
     private lazy var slideToCancelStackViewRightConstraint = slideToCancelStackView.pin(.right, to: .right, of: self)
@@ -9,6 +10,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var lockViewBottomConstraint = lockView.pin(.bottom, to: .top, of: self, withInset: Values.mediumSpacing)
     private let recordingStartDate = Date()
     private var recordingTimer: Timer?
+    var timerSecond = 0
 
     // MARK: UI Components
     private lazy var iconImageView: UIImageView = {
@@ -100,6 +102,7 @@ final class VoiceMessageRecordingView : UIView {
         result.setImage(imageSelected, for: UIControl.State.selected)
         result.imageView?.isUserInteractionEnabled = true
         result.clipsToBounds = true
+        result.isSelected = true
         return result
     }()
     
@@ -130,7 +133,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var audioWavesImageView: UIImageView = {
         var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
         result.set(.height, to: 24)
-        result.contentMode = .scaleAspectFit
+        result.contentMode = .scaleToFill//.scaleAspectFit
         result.alpha = 0
         return result
     }()
@@ -163,6 +166,8 @@ final class VoiceMessageRecordingView : UIView {
     }()
 
     private lazy var lockView = LockView()
+    
+    var isAudioRecordingStop = false
 
     // MARK: Settings
     private static let circleSize: CGFloat = 46
@@ -178,7 +183,7 @@ final class VoiceMessageRecordingView : UIView {
         self.delegate = delegate
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
-        recordingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+        recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             self?.updateDurationLabel()
         }
     }
@@ -234,12 +239,12 @@ final class VoiceMessageRecordingView : UIView {
         pauseButton.center(.vertical, in: iconImageView)
         
         addSubview(playPauseauseButton)
-        playPauseauseButton.pin(.left, to: .left, of: self, withInset: 30)
-        playPauseauseButton.center(.vertical, in: iconImageView)
         NSLayoutConstraint.activate([
             playPauseauseButton.heightAnchor.constraint(equalToConstant: 40),
-            playPauseauseButton.widthAnchor.constraint(equalToConstant: 40)
+            playPauseauseButton.widthAnchor.constraint(equalToConstant: 40),
         ])
+        playPauseauseButton.pin(.left, to: .left, of: self, withInset: 30)
+        playPauseauseButton.center(.vertical, in: iconImageView)
         
         addSubview(audioButton)
         audioButton.pin(.right, to: .right, of: self, withInset: -72)
@@ -251,19 +256,28 @@ final class VoiceMessageRecordingView : UIView {
         
         addSubview(audioDurationLabel)
         audioDurationLabel.pin(.left, to: .right, of: playPauseauseButton, withInset: 0)
-        audioDurationLabel.center(.vertical, in: iconImageView)
+        audioDurationLabel.center(.vertical, in: playPauseauseButton)
+        NSLayoutConstraint.activate([
+            audioDurationLabel.widthAnchor.constraint(equalToConstant: 60)
+        ])
         
         addSubview(audioWavesImageView)
-        audioWavesImageView.pin(.left, to: .right, of: audioDurationLabel, withInset: 13)
+        audioWavesImageView.pin(.left, to: .right, of: audioDurationLabel, withInset: -14)
         audioWavesImageView.center(.vertical, in: iconImageView)
-        audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -10)
+        audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -4)
         
     }
 
     // MARK: Updating
     @objc private func updateDurationLabel() {
+        self.timerSecond += 1
         let interval = Date().timeIntervalSince(recordingStartDate)
         durationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+        getSecondsIntoMinutesAndSecondFormate(seconds: self.timerSecond) { minutes, seconds in
+            let minutes = self.getStringFrom(seconds: minutes)
+            let seconds = self.getStringFrom(seconds: seconds)
+            self.audioDurationLabel.text = "\(minutes):\(seconds)"
+        }
     }
 
     // MARK: Animation
@@ -363,10 +377,19 @@ final class VoiceMessageRecordingView : UIView {
             circleView.addGestureRecognizer(tapGestureRecognizer)
             UIView.animate(withDuration: 0.25, delay: 0, options: .transitionCrossDissolve, animations: {
                 self.lockView.alpha = 0
-                self.iconImageView.image = UIImage(named: "ic_chevron_up")!.withTint(.white)
+                // Needed after flow work fine i will remove
+//                self.iconImageView.image = UIImage(named: "ic_chevron_up")!.withTint(.white)
                 self.slideToCancelStackView.alpha = 0
-                self.cancelButton.alpha = 1
-                self.pauseButton.alpha = 1
+                self.circleView.backgroundColor = Colors.bothGreenColor
+                self.iconImageView.image = UIImage(named: "ic_sendMessage_new")
+                self.durationStackView.isHidden = true
+                self.cancelButton.isHidden = true
+                self.pauseButton.isHidden = true
+                self.playPauseauseButton.alpha = 1
+                self.audioButton.alpha = 1
+                self.audioDurationLabel.alpha = 1
+                self.audioWavesImageView.alpha = 1
+                self.delegate?.showDeleteAudioView()
             }, completion: { _ in
                 // Do nothing
             })
@@ -383,27 +406,52 @@ final class VoiceMessageRecordingView : UIView {
         delegate?.cancelVoiceMessageRecording()
     }
     
+    // For pause button
     @objc private func handlePauseButtonTapped() {
-        delegate?.pauseRecording()
-        self.durationStackView.isHidden = true
-        self.cancelButton.isHidden = true
-        self.pauseButton.isHidden = true
-        self.playPauseauseButton.alpha = 1
-        self.audioButton.alpha = 1
-        self.audioDurationLabel.alpha = 1
-        self.audioWavesImageView.alpha = 1
+
     }
     
     @objc private func handlePlayButtonTapped(_ sender: UIButton) {
+        if sender.isSelected {
+            if !isAudioRecordingStop {
+                if recordingTimer != nil {
+                    recordingTimer?.invalidate()
+                    recordingTimer = nil
+                }
+                delegate?.pauseRecording()
+                isAudioRecordingStop = true
+            } else {
+                delegate?.playRecording()
+            }
+        } else {
+            delegate?.playRecording()
+        }
         sender.isSelected = !sender.isSelected
-        delegate?.playRecording()
     }
     
     
     @objc private func audioButtonTapped(_ sender: UIButton) {
-        
+        if !isAudioRecordingStop {
+            delegate?.showAlertForAudioRecordingIsOn()
+            return
+        }
+        self.playPauseauseButton.isSelected = true
+        recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            self?.updateDurationLabel()
+        }
+        isAudioRecordingStop = false
+        delegate?.resumeAudioRecording()
     }
     
+    // Convert seconds into minutes and seconds formate
+    func getSecondsIntoMinutesAndSecondFormate(seconds: Int, completion: @escaping (_ minutes: Int, _ seconds: Int)->()) {
+        completion((seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+
+    // Convert seconds into double digits
+    func getStringFrom(seconds: Int) -> String {
+        return seconds < 10 ? "0\(seconds)" : "\(seconds)"
+    }
 
     // MARK: Convenience
     private func isValidLockViewLocation(_ location: CGPoint) -> Bool {
@@ -516,5 +564,8 @@ protocol VoiceMessageRecordingViewDelegate : class {
     func payAsYouChatLongPress()
     func pauseRecording()
     func playRecording()
+    func showDeleteAudioView()
+    func resumeAudioRecording()
+    func showAlertForAudioRecordingIsOn()
     
 }

@@ -1280,7 +1280,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func pauseRecording() {
         deleteAudioView.isHidden = false
-        audioRecorder?.stop()
+        audioRecorder?.pause()
+    }
+    
+    func showDeleteAudioView() {
+        deleteAudioView.isHidden = false
+    }
+    
+    func resumeAudioRecording() {
+        audioRecorder?.record()
+    }
+    
+    func showAlertForAudioRecordingIsOn() {
+        let alert = UIAlertController(title: Alert.Alert_BChat_title, message: Alert.Alert_Recording_On, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Alert.Alert_BChat_Ok, style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func playRecording() {
