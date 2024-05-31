@@ -11,6 +11,8 @@ final class VoiceMessageRecordingView : UIView {
     private let recordingStartDate = Date()
     private var recordingTimer: Timer?
     var timerSecond = 0
+    
+    var timerSecondForConstraintOfProgressView = 0
 
     // MARK: UI Components
     private lazy var iconImageView: UIImageView = {
@@ -133,7 +135,7 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var audioWavesImageView: UIImageView = {
         var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
         result.set(.height, to: 24)
-        result.contentMode = .scaleToFill//.scaleAspectFit
+        result.contentMode = .scaleToFill
         result.alpha = 0
         return result
     }()
@@ -164,6 +166,13 @@ final class VoiceMessageRecordingView : UIView {
         result.text = "0:00"
         return result
     }()
+    
+    private lazy var progressView: UIView = {
+        let result = UIView()
+        result.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        return result
+    }()
+    
 
     private lazy var lockView = LockView()
     
@@ -176,6 +185,8 @@ final class VoiceMessageRecordingView : UIView {
     private static let chevronSize: CGFloat = 16
     private static let dotSize: CGFloat = 16
     private static let lockViewHitMargin: CGFloat = 40
+    
+    private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: audioWavesImageView, withInset: -audioWavesImageView.width)
 
     // MARK: Lifecycle
     init(voiceMessageButtonFrame: CGRect, delegate: VoiceMessageRecordingViewDelegate?) {
@@ -266,6 +277,12 @@ final class VoiceMessageRecordingView : UIView {
         audioWavesImageView.center(.vertical, in: iconImageView)
         audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -4)
         
+        addSubview(progressView)
+        progressView.pin(.left, to: .left, of: audioWavesImageView)
+        progressView.pin(.top, to: .top, of: audioWavesImageView)
+        progressViewRightConstraint.isActive = true
+        progressView.pin(.bottom, to: .bottom, of: audioWavesImageView)
+        
     }
 
     // MARK: Updating
@@ -273,11 +290,14 @@ final class VoiceMessageRecordingView : UIView {
         self.timerSecond += 1
         let interval = Date().timeIntervalSince(recordingStartDate)
         durationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
-        getSecondsIntoMinutesAndSecondFormate(seconds: self.timerSecond) { minutes, seconds in
-            let minutes = self.getStringFrom(seconds: minutes)
-            let seconds = self.getStringFrom(seconds: seconds)
-            self.audioDurationLabel.text = "\(minutes):\(seconds)"
-        }
+        self.audioDurationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+        
+        // For Resume Audio Don't Delete
+//        getSecondsIntoMinutesAndSecondFormate(seconds: self.timerSecond) { minutes, seconds in
+//            let minutes = self.getStringFrom(seconds: minutes)
+//            let seconds = self.getStringFrom(seconds: seconds)
+//            self.audioDurationLabel.text = "\(minutes):\(seconds)"
+//        }
     }
 
     // MARK: Animation
@@ -377,8 +397,6 @@ final class VoiceMessageRecordingView : UIView {
             circleView.addGestureRecognizer(tapGestureRecognizer)
             UIView.animate(withDuration: 0.25, delay: 0, options: .transitionCrossDissolve, animations: {
                 self.lockView.alpha = 0
-                // Needed after flow work fine i will remove
-//                self.iconImageView.image = UIImage(named: "ic_chevron_up")!.withTint(.white)
                 self.slideToCancelStackView.alpha = 0
                 self.circleView.backgroundColor = Colors.bothGreenColor
                 self.iconImageView.image = UIImage(named: "ic_sendMessage_new")
@@ -390,6 +408,7 @@ final class VoiceMessageRecordingView : UIView {
                 self.audioDurationLabel.alpha = 1
                 self.audioWavesImageView.alpha = 1
                 self.delegate?.showDeleteAudioView()
+                self.progressViewRightConstraint.constant = -(self.audioWavesImageView.width())
             }, completion: { _ in
                 // Do nothing
             })
@@ -411,6 +430,8 @@ final class VoiceMessageRecordingView : UIView {
 
     }
     
+    var TimerForConstraintOfProgressView: Timer?
+    
     @objc private func handlePlayButtonTapped(_ sender: UIButton) {
         if sender.isSelected {
             if !isAudioRecordingStop {
@@ -426,21 +447,34 @@ final class VoiceMessageRecordingView : UIView {
         } else {
             delegate?.playRecording()
         }
+        
+        if !sender.isSelected {
+            TimerForConstraintOfProgressView = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                 self?.handleProgressChanged()
+             }
+        } else {
+            if TimerForConstraintOfProgressView != nil {
+                TimerForConstraintOfProgressView?.invalidate()
+                TimerForConstraintOfProgressView = nil
+            }
+        }
+        
         sender.isSelected = !sender.isSelected
     }
     
-    
+    // For Resume Audio Don't Delete
     @objc private func audioButtonTapped(_ sender: UIButton) {
-        if !isAudioRecordingStop {
-            delegate?.showAlertForAudioRecordingIsOn()
-            return
-        }
-        self.playPauseauseButton.isSelected = true
-        recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            self?.updateDurationLabel()
-        }
-        isAudioRecordingStop = false
-        delegate?.resumeAudioRecording()
+        // For Resume Audio Don't Delete
+//        if !isAudioRecordingStop {
+//            delegate?.showAlertForAudioRecordingIsOn()
+//            return
+//        }
+//        self.playPauseauseButton.isSelected = true
+//        recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+//            self?.updateDurationLabel()
+//        }
+//        isAudioRecordingStop = false
+//        delegate?.resumeAudioRecording()
     }
     
     // Convert seconds into minutes and seconds formate
@@ -458,6 +492,19 @@ final class VoiceMessageRecordingView : UIView {
         let lockViewHitMargin = VoiceMessageRecordingView.lockViewHitMargin
         return location.y < 0 && location.x > (lockView.frame.minX - lockViewHitMargin) && location.x < (lockView.frame.maxX + lockViewHitMargin)
     }
+    
+    
+    private func handleProgressChanged() {
+        self.timerSecondForConstraintOfProgressView += 1
+        if self.timerSecondForConstraintOfProgressView > self.timerSecond {
+            self.timerSecondForConstraintOfProgressView = 0
+        }
+        let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
+        let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
+        progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
+    }
+    
+    
 }
 
 // MARK: Lock Vie

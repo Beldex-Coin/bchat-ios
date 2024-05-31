@@ -77,7 +77,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     var socialGroupTitleArray = ["All Media", "Add Members", "Search Conversation", "Message Sound", "Notify for Mentions Only", "Mute"]
     var socialGroupLeftImageArray = ["ic_allmedia", "chatSettings_addmember", "ic_search_settingnew", "ic_message_sound", "chatSetting_notify", "chatSetting_mute"]
     
-    var noteToSelfTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messgaess"]
+    var noteToSelfTitleArray = ["", "All Media", "Search Conversation"]
     var noteToSelfImageArray = ["bchat_chat_setting", "ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting"]
     
     var contactTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messgaess", "Message Sound", "Mute", "Block This User", "Report Name"]
@@ -218,6 +218,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         if (disappearingMessagesConfiguration!.isNewRecord && !disappearingMessagesConfiguration!.isEnabled) {
             // don't save defaults, else we'll unintentionally save the configuration and notify the contact.
+            return
+        }
+        
+        // Initial default is 0 second for disappearslider
+        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
             return
         }
         
@@ -384,7 +389,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     @objc func nameTextfieldTapped(textField: UITextField) {
         self.doneButton.isHidden = false
         self.editIconImage.isHidden = true
-        self.nameTextField.text = ""
+        // While edit name for clear text
+//        self.nameTextField.text = ""
     }
     
     @objc func notifyforMentionsOnlySwitchValueDidChange(_ sender: UISwitch) {

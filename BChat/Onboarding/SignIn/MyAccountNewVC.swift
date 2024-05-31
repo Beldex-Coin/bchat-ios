@@ -317,6 +317,8 @@ class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate
             doneButton.isHidden = true
             nameTextField.isHidden = true
             editIconImage.isHidden = true
+            nameTextField.isUserInteractionEnabled = false
+            nameIdLabel.isUserInteractionEnabled = false
         }else {
             navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             self.title = "My Account"

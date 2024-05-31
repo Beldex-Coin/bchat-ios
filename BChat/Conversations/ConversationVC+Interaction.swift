@@ -1280,7 +1280,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func pauseRecording() {
         deleteAudioView.isHidden = false
-        audioRecorder?.pause()
+        audioRecorder?.stop()
     }
     
     func showDeleteAudioView() {
@@ -1288,7 +1288,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func resumeAudioRecording() {
-        audioRecorder?.record()
+        // For Resume Audio Don't Delete
+//        audioRecorder?.record()
     }
     
     func showAlertForAudioRecordingIsOn() {

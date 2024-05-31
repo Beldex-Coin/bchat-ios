@@ -215,7 +215,7 @@ class LinkBNSVC: BaseVC {
     }
     
     @objc private func linkButtonTapped(_ sender: UIButton) {
-        if isFromVerfied{
+        if isFromVerfied ?? false {
             let vc = BNSLinkSuccessVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
