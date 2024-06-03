@@ -147,7 +147,7 @@ final class QuoteView : UIView {
         mainStackView.axis = .horizontal
         mainStackView.spacing = smallSpacing
         mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 35)
+        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 35)
         mainStackView.alignment = .center
         // Content view
         let contentView = UIView()
@@ -183,7 +183,7 @@ final class QuoteView : UIView {
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
-        bodyLabel.textColor = textColor
+        bodyLabel.textColor = Colors.titleColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
         // Label stack view
         var authorLabelHeight: CGFloat?

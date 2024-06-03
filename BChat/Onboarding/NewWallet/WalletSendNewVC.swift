@@ -4,7 +4,7 @@ import UIKit
 import Alamofire
 import BChatUIKit
 
-class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
+class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSendingDelegateProtocol {
     
     private lazy var topView: UIView = {
         let stackView = UIView()
@@ -273,9 +273,6 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         estimatedFeeBgView.addSubview(estimatedFeeIDLabel)
         view.addSubview(sendButton)
         
-//        flashPriorityButton.addRightIcon(image: UIImage(named: "ic_dropdownNew")!.withRenderingMode(.alwaysTemplate))
-//        flashPriorityButton.tintColor = isLightMode ? UIColor.lightGray : UIColor.white
-        
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 18),
             topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
@@ -387,6 +384,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         beldexAddressTextview.returnKeyType = .done
         beldexAmountTextField.tintColor = Colors.bchatButtonColor
         beldexAddressTextview.tintColor = Colors.bchatButtonColor
+        beldexAddressTextview.delegate = self
         //Keyboard Done Option
         beldexAmountTextField.addDoneButtonKeybord()
         self.placeHolderSeedLabel()
@@ -732,6 +730,8 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     }
     @objc func isFromAddressBookButtonTapped(_ sender: UIButton) {
         let vc = WalletAddressBookNewVC()
+        vc.isGoingToSendScreen = true
+        vc.delegate = self
         navigationController!.pushViewController(vc, animated: true)
     }
     @objc func isFromScanOptionButtonTapped(_ sender: UIButton) {
@@ -823,6 +823,13 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         paymentIDImg.isHidden = true
         paymentIDTitleLabel.isHidden = true
     }
+    
+    // Delegate Method get the beldex address
+    func sendBeldexAddressToMyWalletSendVC(myData: String) {
+        placeholderLabel?.isHidden = true
+        self.beldexAddressTextview.text = myData
+    }
+    
 }
 
 extension WalletSendNewVC: BeldexWalletDelegate {

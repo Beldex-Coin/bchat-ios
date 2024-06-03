@@ -169,34 +169,60 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
             button.center(in: button.superview!)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(attachmentHiddenTapped), name: .attachmentHiddenNotification, object: nil)
+        
+    }
+    
+    // hide the Attachment
+    @objc func attachmentHiddenTapped(notification: NSNotification) {
+        hideAttachment()
+    }
+    
+    func hideAttachment() {
+        mainButton.accessibilityLabel = NSLocalizedString("accessibility_expanding_attachments_button", comment: "")
+        [ documentButtonContainerBottomConstraint, libraryButtonContainerBottomConstraint, cameraButtonContainerBottomConstraint ].forEach {
+            $0.constant = 0
+        }
+        UIView.animate(withDuration: 0.25) {
+            [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+                $0.alpha = 0
+            }
+            self.layoutIfNeeded()
+        }
     }
     
     // MARK: Animation
     private func expandOrCollapse() {
         if isExpanded {
-            mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
-            let expandedButtonSize = InputViewButton.expandedSize
-            let spacing: CGFloat = 4
-            cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
-            libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
-            documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
-            UIView.animate(withDuration: 0.25) {
-                [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
-                    $0.alpha = 1
+            if CustomSlideViewBool.isFromExpandAttachment {
+                mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
+                let expandedButtonSize = InputViewButton.expandedSize
+                let spacing: CGFloat = 4
+                cameraButtonContainerBottomConstraint.constant = -2.2 * (expandedButtonSize + spacing)
+                libraryButtonContainerBottomConstraint.constant = -2.2 * (expandedButtonSize + spacing)
+                documentButtonContainerBottomConstraint.constant = -2.2 * (expandedButtonSize + spacing)
+                UIView.animate(withDuration: 0.25) {
+                    [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+                        $0.alpha = 1
+                    }
+                    self.layoutIfNeeded()
                 }
-                self.layoutIfNeeded()
+            } else {
+                mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
+                let expandedButtonSize = InputViewButton.expandedSize
+                let spacing: CGFloat = 4
+                cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+                libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+                documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
+                UIView.animate(withDuration: 0.25) {
+                    [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+                        $0.alpha = 1
+                    }
+                    self.layoutIfNeeded()
+                }
             }
         } else {
-            mainButton.accessibilityLabel = NSLocalizedString("accessibility_expanding_attachments_button", comment: "")
-            [ documentButtonContainerBottomConstraint, libraryButtonContainerBottomConstraint, cameraButtonContainerBottomConstraint ].forEach {
-                $0.constant = 0
-            }
-            UIView.animate(withDuration: 0.25) {
-                [ self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
-                    $0.alpha = 0
-                }
-                self.layoutIfNeeded()
-            }
+            hideAttachment()
         }
     }
     

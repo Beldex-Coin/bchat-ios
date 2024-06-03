@@ -19,6 +19,9 @@ extension Notification.Name {
     static var refreshNodePopUpNotification = Notification.Name(rawValue: "refreshNodePopup")
     static var switchNodePopUpNotification = Notification.Name(rawValue: "switchNodePopUp")
     static var reloadSettingScreenTableNotification = Notification.Name(rawValue: "reloadSettingScreenTable")
+    static var attachmentHiddenNotification = Notification.Name(rawValue: "attachmentHidden")
+    static var blockContactPopUpYesActionNotification = Notification.Name(rawValue: "blockContactPopUpYesAction")
+    
     
     
     
