@@ -464,7 +464,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                                 customizeSlideToOpen.isHidden = false
                                                 inputTextView.textColor = Colors.accent
                                                 let value = ["bdxAmount": newText]
-                                                NotificationCenter.default.post(name: Notification.Name("bdxAmountPassingSliderView"), object: value)
+                                                NotificationCenter.default.post(name: .bdxAmountPassingSliderViewNotification, object: value)
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
                                             }

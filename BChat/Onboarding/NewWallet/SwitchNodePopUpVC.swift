@@ -86,7 +86,7 @@ class SwitchNodePopUpVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "switchNodePopUpVCOk"), object: nil)
+        NotificationCenter.default.post(name: .switchNodePopUpNotification, object: nil)
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {

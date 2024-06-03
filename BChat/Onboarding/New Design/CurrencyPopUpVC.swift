@@ -219,7 +219,7 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
         SaveUserDefaultsData.SelectedCurrency = currencyNameString
-        NotificationCenter.default.post(name: Notification.Name("selectedCurrencyNameKey"), object: SaveUserDefaultsData.SelectedCurrency)
+        NotificationCenter.default.post(name: .selectedCurrencyNameKeyNotification, object: SaveUserDefaultsData.SelectedCurrency)
         self.tableView.reloadData()
         self.searchTextField.resignFirstResponder()
     }

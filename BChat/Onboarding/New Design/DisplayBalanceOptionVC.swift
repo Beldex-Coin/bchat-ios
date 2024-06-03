@@ -118,7 +118,7 @@ class DisplayBalanceOptionVC: BaseVC {
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
         SaveUserDefaultsData.SelectedBalance = displayBalanceString
-        NotificationCenter.default.post(name: Notification.Name("selectedDisplayNameKey"), object: SaveUserDefaultsData.SelectedBalance)
+        NotificationCenter.default.post(name: .selectedDisplayNameKeyNotification, object: SaveUserDefaultsData.SelectedBalance)
     }
     
     @objc private func fullBalanceButtonTapped(_ sender: UIButton) {

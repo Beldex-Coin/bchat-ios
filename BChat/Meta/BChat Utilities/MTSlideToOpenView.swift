@@ -221,7 +221,7 @@ import BChatUIKit
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateBdxAmountSlider),
-                                               name: Notification.Name("bdxAmountPassingSliderView"),
+                                               name: .bdxAmountPassingSliderViewNotification,
                                                object: nil)
         
     }

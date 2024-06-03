@@ -110,12 +110,12 @@ class SyncingOptionPopUpVC: BaseVC {
     
     @objc private func reconnectButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "reconnectButtonAction"), object: nil)
+        NotificationCenter.default.post(name: .reconnectButtonActionNotification, object: nil)
     }
     
     @objc private func reScaneButtonTapped(_ sender: UIButton) {
         //        self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "reScaneButtonAction"), object: nil)
+        NotificationCenter.default.post(name: .reScaneButtonActionNotification, object: nil)
     }
     
 }

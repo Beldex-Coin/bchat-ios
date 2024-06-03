@@ -100,7 +100,7 @@ class FeePriorityVC: BaseVC {
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
         SaveUserDefaultsData.FeePriority = feeValue
-        NotificationCenter.default.post(name: Notification.Name("feePriorityNameKey"), object: SaveUserDefaultsData.FeePriority)
+        NotificationCenter.default.post(name: .feePriorityNameKeyNotification, object: SaveUserDefaultsData.FeePriority)
     }
     
     @objc private func flashButtonTapped(_ sender: UIButton) {

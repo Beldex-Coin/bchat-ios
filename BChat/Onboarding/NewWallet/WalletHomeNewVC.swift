@@ -1216,8 +1216,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                                   cancelAction: #selector(tocancelAction),
                                   datePickerMode: .date)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(reScaneButtonTapped(_:)), name: Notification.Name(rawValue: "reScaneButtonAction"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reconnectButtonTapped(_:)), name: Notification.Name(rawValue: "reconnectButtonAction"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reScaneButtonTapped(_:)), name: .reScaneButtonActionNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reconnectButtonTapped(_:)), name: .reconnectButtonActionNotification, object: nil)
         
     }
     

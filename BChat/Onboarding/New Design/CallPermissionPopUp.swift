@@ -162,7 +162,7 @@ class CallPermissionPopUp: BaseVC {
 
     /// Cancel button action
     @objc private func cancelButtonTapped(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name("reloadSettingScreenTable"), object: nil)
+        NotificationCenter.default.post(name: .reloadSettingScreenTableNotification, object: nil)
         self.dismiss(animated: true)
     }
 }

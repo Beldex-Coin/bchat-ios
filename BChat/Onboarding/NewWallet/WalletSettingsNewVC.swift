@@ -347,19 +347,19 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleSelectedDisplayName),
-                                               name: Notification.Name("selectedDisplayNameKey"),
+                                               name: .selectedDisplayNameKeyNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleSelectedDecimalName),
-                                               name: Notification.Name("selectedDecimalNameKey"),
+                                               name: .selectedDecimalNameKeyNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleFeePriorityName),
-                                               name: Notification.Name("feePriorityNameKey"),
+                                               name: .feePriorityNameKeyNotification,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleSelectedCurrencyName),
-                                               name: Notification.Name("selectedCurrencyNameKey"),
+                                               name: .selectedCurrencyNameKeyNotification,
                                                object: nil)
  
     }

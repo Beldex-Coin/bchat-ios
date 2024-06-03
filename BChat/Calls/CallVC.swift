@@ -269,7 +269,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 self.minimizeButton.isHidden = false
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
-                    NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+                    NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
                 }
                 self.callInfoLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
@@ -277,7 +277,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         }
         self.call.hasEndedDidChange = {
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+                NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
                 self.durationTimer?.invalidate()
                 self.durationTimer = nil
                 self.handleEndCallMessage()
@@ -294,7 +294,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             DispatchQueue.main.async {
                 self.callInfoLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
-                NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+                NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             }
         }
     }
@@ -463,7 +463,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     func handleEndCallMessage() {
-        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
         SNLog("[Calls] Ending call.")
         self.callInfoLabel.isHidden = false
         self.callDurationLabel.isHidden = true
@@ -499,7 +499,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     
     @objc private func endCall() {
         UIApplication.shared.isIdleTimerDisabled = false
-        NotificationCenter.default.post(name: Notification.Name("connectingCallHideView"), object: nil)
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
         AppEnvironment.shared.callManager.endCall(call) { error in
           //  self.alertOnCallEnding()
             if let _ = error {
@@ -546,7 +546,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.conversationVC?.showInputAccessoryView()
         self.conversationVC?.resignFirstResponder()
         presentingViewController?.dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: Notification.Name("connectingCallShowView"), object: nil)
+        NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
     }
     
     @objc private func pop() {

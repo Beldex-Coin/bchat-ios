@@ -135,7 +135,7 @@ class DecimalsPopUpVC: BaseVC {
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
         SaveUserDefaultsData.SelectedDecimal = decimalValue
-        NotificationCenter.default.post(name: Notification.Name("selectedDecimalNameKey"), object: SaveUserDefaultsData.SelectedDecimal)
+        NotificationCenter.default.post(name: .selectedDecimalNameKeyNotification, object: SaveUserDefaultsData.SelectedDecimal)
     }
     @objc private func fourButtonTapped(_ sender: UIButton) {
         fourButtonUtilities()

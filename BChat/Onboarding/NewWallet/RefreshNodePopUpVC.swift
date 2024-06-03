@@ -86,7 +86,7 @@ class RefreshNodePopUpVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "refreshNodePopUpOk"), object: nil)
+        NotificationCenter.default.post(name: .refreshNodePopUpOkNotification, object: nil)
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {

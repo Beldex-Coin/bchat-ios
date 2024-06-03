@@ -134,7 +134,7 @@ class PayAsYouChatPopUpVC: BaseVC {
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
 
 }

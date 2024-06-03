@@ -217,7 +217,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageButtonContainer.backgroundColor = Colors.bothGreenColor
         voiceMessageButtonContainer.layer.cornerRadius = 24
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: .showPayAsYouChatNotification, object: nil)
         self.hideOrShowPayAsYouChatButton()
     }
     

@@ -39,7 +39,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Settings"
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: Notification.Name("reloadSettingScreenTable"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: .reloadSettingScreenTableNotification, object: nil)
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

@@ -973,7 +973,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         notificationCenter.addObserver(self, selector: #selector(cancelVoiceMessageRecordingWhenDeviceLock), name: Notification.Name("cancelVoiceMessageRecordingWhenDeviceLock"), object: nil)
                 
-        notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: Notification.Name("connectingCallHideView"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
                 
         // Mentions
@@ -1011,7 +1011,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             OpenGroupAPIV2.getMemberCount(for: v2OpenGroup.room, on: v2OpenGroup.server).retainUntilComplete()
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .hideOrShowInputViewNotification, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
         tap.cancelsTouchesInView = false
@@ -1044,7 +1044,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         didFinishInitialLayout = true
         markAllAsRead()
         recoverInputView()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
         
         if backAPI == true {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -1062,7 +1062,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: Notification.Name("connectingCallShowView"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: .connectingCallShowViewNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1646,7 +1646,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
                         let callBarItem = UIBarButtonItem(customView: callBtn)
                         rightBarButtonItems.append(callBarItem)
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+                        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
                     }
                 }
                 else {

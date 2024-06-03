@@ -108,8 +108,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: Notification.Name(rawValue: "refreshNodePopUpOk"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: Notification.Name(rawValue: "switchNodePopUpVCOk"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: .refreshNodePopUpNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: .switchNodePopUpNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

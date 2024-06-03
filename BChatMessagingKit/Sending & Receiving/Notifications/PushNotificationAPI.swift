@@ -32,8 +32,8 @@ public final class PushNotificationAPI : NSObject {
         
         public var endpoint: String {
             switch self {
-            case .subscribe: return "subscribe_closed_group"
-            case .unsubscribe: return "unsubscribe_closed_group"
+                case .subscribe: return "subscribe_closed_group"
+                case .unsubscribe: return "unsubscribe_closed_group"
             }
         }
     }
