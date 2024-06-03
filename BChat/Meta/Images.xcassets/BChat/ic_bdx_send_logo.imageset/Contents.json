@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Image Gallery 1.png",
+      "filename" : "Group 1517.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "surface43627.png",
+      "filename" : "Group 1517@2x 1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Image Gallery 1@2x.png",
+      "filename" : "Group 1517@2x 2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "surface43627@2x.png",
+      "filename" : "Group 1517@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Image Gallery 1@3x.png",
+      "filename" : "Group 1517@3x 1.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "surface43627@3x.png",
+      "filename" : "Group 1517@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

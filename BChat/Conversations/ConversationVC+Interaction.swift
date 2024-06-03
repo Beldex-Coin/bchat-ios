@@ -353,89 +353,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
         }
     }
-    
-    // Send Msg Button Action
-//    func sendMessage(hasPermissionToSendSeed: Bool = false) {
-//        guard !showBlockedModalIfNeeded() else { return }
-//
-//        let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
-//        // Space count
-//        let spaceCount = text.reduce(0) { $1.isWhitespace && !$1.isNewline ? $0 + 1 : $0 }
-//
-//        // I have develop word count 4096 perpose logic
-//        if spaceCount < 0 {
-//            self.longtextmesg(text:text)
-//        }else {
-//            if text.count == 4096 || text.count > 4096 {
-//                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
-//            }else {
-//                self.longtextmesg(text:text)
-//            }
-//        }
-//    }
-    
-//    func longtextmesg(text:String,hasPermissionToSendSeed: Bool = false) {
-//        let thread = self.thread
-//        guard !text.isEmpty else { return }
-//        if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
-//            // Warn the user if they're about to send their seed to someone
-//            let modal = SendSeedModal()
-//            modal.modalPresentationStyle = .overFullScreen
-//            modal.modalTransitionStyle = .crossDissolve
-//            modal.proceed = { self.sendMessage(hasPermissionToSendSeed: true) }
-//            return present(modal, animated: true, completion: nil)
-//        }
-//        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-//        let message: VisibleMessage = VisibleMessage()
-//        message.sentTimestamp = sentTimestamp
-//        message.text = text
-//        message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-//
-//        // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
-//        // use it to determine if the user is creating a new thread and update the 'isApproved'
-//        // flags appropriately
-//        let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
-//        let linkPreviewDraft = snInputView.linkPreviewInfo?.draft
-//        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
-//
-//        let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
-//            for: self.thread,
-//            isNewThread: !oldThreadShouldBeVisible,
-//            timestamp: (sentTimestamp - 1)  // Set 1ms earlier as this is used for sorting
-//        )
-//        .map { [weak self] _ in
-//            self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
-//            Storage.write(with: { transaction in
-//                message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
-//            }, completion: { [weak self] in
-//                tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
-//
-//                Storage.shared.write(
-//                    with: { transaction in
-//                        tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
-//                    },
-//                    completion: { [weak self] in
-//                        // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
-//                        // the height of the new message cell
-//                        self?.scrollToBottom(isAnimated: false)
-//                    }
-//                )
-//
-//                Storage.shared.write { transaction in
-//                    MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
-//                }
-//
-//                self?.handleMessageSent()
-//            })
-//        }
-//        // Show an error indicating that approving the thread failed
-//        promise.catch(on: DispatchQueue.main) { [weak self] _ in
-//            let alert = UIAlertController(title: "BChat", message: "An error occurred when trying to accept this message request", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self?.present(alert, animated: true, completion: nil)
-//        }
-//        promise.retainUntilComplete()
-//    }
 
     func sendAttachments(_ attachments: [SignalAttachment], with text: String, onComplete: (() -> ())? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
@@ -546,6 +463,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                             if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
                                                 customizeSlideToOpen.isHidden = false
                                                 inputTextView.textColor = Colors.accent
+                                                let value = ["bdxAmount": newText]
+                                                NotificationCenter.default.post(name: Notification.Name("bdxAmountPassingSliderView"), object: value)
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
                                             }
@@ -574,7 +493,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         linkPreviewModel.modalPresentationStyle = .overFullScreen
         linkPreviewModel.modalTransitionStyle = .crossDissolve
-       // present(linkPreviewModel, animated: true, completion: nil)
         dismiss(animated: true)
     }
 
@@ -861,39 +779,15 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
-//        if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid, let amount = payment.paymentAmount {
-//            UserDefaults.standard.set("\(amount)", forKey: "TSIncomingMessageAmount")
-//            var quoteDraftOrNil: OWSQuotedReplyModel?
-//            Storage.read { transaction in
-//                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-//            }
-//            guard let quoteDraft = quoteDraftOrNil else { return }
-//            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-//            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-//            snInputView.becomeFirstResponder()
-//            UserDefaults.standard.removeObject(forKey: "TSOutgoingMessageAmount")
-//        } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid, let amount = payment.paymentAmount {
-//            UserDefaults.standard.set("\(amount)", forKey: "TSOutgoingMessageAmount")
-//            var quoteDraftOrNil: OWSQuotedReplyModel?
-//            Storage.read { transaction in
-//                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-//            }
-//            guard let quoteDraft = quoteDraftOrNil else { return }
-//            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-//            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-//            snInputView.becomeFirstResponder()
-//            UserDefaults.standard.removeObject(forKey: "TSIncomingMessageAmount")
-//        }else {
         customizeSlideToOpen.isHidden = true
-            var quoteDraftOrNil: OWSQuotedReplyModel?
-            Storage.read { transaction in
-                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-            }
-            guard let quoteDraft = quoteDraftOrNil else { return }
-            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-            snInputView.becomeFirstResponder()
-//        }
+        var quoteDraftOrNil: OWSQuotedReplyModel?
+        Storage.read { transaction in
+            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+        }
+        guard let quoteDraft = quoteDraftOrNil else { return }
+        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
+        snInputView.becomeFirstResponder()
     }
     
     func copy(_ viewItem: ConversationViewItem) {
@@ -950,8 +844,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self.inputAccessoryView?.alpha = 0
             self.presentAlert(alertVC)
         } else {
-            // deleteLocally(viewItem)
-            
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
@@ -963,14 +855,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 title = String(format: NSLocalizedString("Report & Delete", comment: ""), viewItem.interaction.thread.name())
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
-                // self.showToastMsg(message: "Report send", seconds: 1.0)
                 let uiAlert = UIAlertController(title: "Report & Delete", message: "This message will be forwarded to the BChat Team & will be deleted.", preferredStyle: UIAlertController.Style.alert)
                 self.present(uiAlert, animated: true, completion: nil)
                 uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                    // println("Click of default button")
                 }))
                 uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
-                    //println("Click of cancel button")
                     self.deleteLocally(viewItem)
                     self.showInputAccessoryView()
                 }))
@@ -990,10 +879,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let uiAlert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
         self.present(uiAlert, animated: true, completion: nil)
         uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            // println("Click of default button")
         }))
         uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
-            //println("Click of cancel button")
         }))
     }
     
@@ -1163,7 +1050,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         viewItem.lastAudioMessageView?.showSpeedUpLabel()
     }
     
-    
     func payAsYouChatLongPress() {
         snInputView.isHidden = true
         let vc = PayAsYouChatPopUpVC()
@@ -1171,7 +1057,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         vc.modalTransitionStyle = .crossDissolve
         self.present(vc, animated: true, completion: nil)
     }
-    
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {

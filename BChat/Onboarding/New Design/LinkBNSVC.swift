@@ -33,7 +33,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Link BNS"
+        result.text = "Your BChat ID"
         return result
     }()
     
@@ -271,7 +271,6 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
     }
-    
     /// <#Description#>
     /// - Parameter isEnabled: <#isEnabled description#>
     func verifyButtonUpdate(_ isEnabled: Bool) {
