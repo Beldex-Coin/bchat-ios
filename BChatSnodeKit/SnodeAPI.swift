@@ -58,20 +58,22 @@ public final class SnodeAPI : NSObject {
         case decryptionFailed
         case hashingFailed
         case validationFailed
+        case validationNone
 
         public var errorDescription: String? {
             switch self {
-            case .generic: return "An error occurred."
-            case .clockOutOfSync: return "Your clock is out of sync with the Master Node network. Please check that your device's clock is set to automatic time."
-            case .snodePoolUpdatingFailed: return "Failed to update the Master Node pool."
-            case .inconsistentSnodePools: return "Received inconsistent Master Node pool information from the Master Node network."
-            case .noKeyPair: return "Missing user key pair."
-            case .signingFailed: return "Couldn't sign message."
-            case . signatureVerificationFailed: return "Failed to verify the signature."
-            // BNS
-            case .decryptionFailed: return "Couldn't decrypt BNS name."
-            case .hashingFailed: return "Couldn't compute BNS name hash."
-            case .validationFailed: return "BNS name validation failed."
+                case .generic: return "An error occurred."
+                case .clockOutOfSync: return "Your clock is out of sync with the Master Node network. Please check that your device's clock is set to automatic time."
+                case .snodePoolUpdatingFailed: return "Failed to update the Master Node pool."
+                case .inconsistentSnodePools: return "Received inconsistent Master Node pool information from the Master Node network."
+                case .noKeyPair: return "Missing user key pair."
+                case .signingFailed: return "Couldn't sign message."
+                case . signatureVerificationFailed: return "Failed to verify the signature."
+                // BNS
+                case .decryptionFailed: return "Couldn't decrypt BNS name."
+                case .hashingFailed: return "Couldn't compute BNS name hash."
+                case .validationFailed, .validationNone:
+                    return "BNS name validation failed."
             }
         }
     }

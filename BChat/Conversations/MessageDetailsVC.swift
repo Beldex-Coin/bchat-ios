@@ -165,6 +165,9 @@ class MessageDetailsVC: BaseVC {
                 self.failedView.isHidden = true
                 self.successView.isHidden = false
                 self.timeLabelSuccessView.text = self.customDateFormate(message: message)
+                if message.messageState == .sending {
+                    self.sentLabel.text = "Sending"
+                }
             }
         }
         
@@ -195,7 +198,9 @@ class MessageDetailsVC: BaseVC {
             }
             MessageSender.prep(attachments, for: message, using: transaction)
             MessageSender.send(message, in: thread, using: transaction)
-            self.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 

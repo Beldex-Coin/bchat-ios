@@ -14,6 +14,7 @@ class BNSLinkSuccessVC: BaseVC {
         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
+    
     private lazy var iconView: UIImageView = {
         let result = UIImageView()
         result.image = UIImage(named: "ic_pinSuccess")
@@ -23,6 +24,7 @@ class BNSLinkSuccessVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
+    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
@@ -31,6 +33,7 @@ class BNSLinkSuccessVC: BaseVC {
         result.text = "BNS Linked Successfully!"
         return result
     }()
+    
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)

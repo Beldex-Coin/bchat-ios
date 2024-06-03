@@ -17,7 +17,6 @@ extension UIView {
             self.addSubview(sub)
         }
     }
-    
 
     var width: CGFloat {
         get { return self.frame.size.width }

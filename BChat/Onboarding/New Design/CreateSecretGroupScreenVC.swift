@@ -312,6 +312,14 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         let isSelected = selectedContacts.contains(publicKey)
         cell.selectionButton.isSelected = isSelected
         cell.update()
+        cell.selectionButtonCallback = {
+            let publicKey = Array(self.filterDict.keys)[indexPath.row]
+            if !self.selectedContacts.contains(publicKey) { self.selectedContacts.insert(publicKey) } else { self.selectedContacts.remove(publicKey) }
+            guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
+            let isSelected = self.selectedContacts.contains(publicKey)
+            cell.selectionButton.isSelected = isSelected
+            cell.update()
+        }
         return cell
     }
     
@@ -334,8 +342,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = groupNameTextField.text!
         if str.count == 0 {
-//            createButton.backgroundColor = Colors.cancelButtonBackgroundColor
-//            createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
             createButton.backgroundColor = Colors.bothGreenColor
             createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         } else {

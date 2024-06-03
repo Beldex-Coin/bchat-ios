@@ -38,10 +38,12 @@ public final class PushNotificationAPI : NSObject {
         }
     }
 
-    // MARK: Initialization
+    // MARK: - Initialization
+    
     private override init() { }
 
-    // MARK: Registration
+    // MARK: - Registration
+    
     public static func unregister(_ token: Data) -> Promise<Void> {
         let hexEncodedToken = token.toHexString()
         let parameters = [ "token" : hexEncodedToken ]

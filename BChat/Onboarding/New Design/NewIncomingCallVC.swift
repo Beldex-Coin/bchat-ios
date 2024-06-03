@@ -469,7 +469,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     }
     
     @objc private func pop() {
-        NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
         self.conversationVC?.showInputAccessoryView()
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
@@ -483,7 +483,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     func setupStateChangeCallbacks() {
         self.call.remoteVideoStateDidChange = { isEnabled in
-            NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+            NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
             DispatchQueue.main.async {
                 if self.incomingCallLabel.alpha < 0.5 {
                     UIView.animate(withDuration: 0.25) {
@@ -495,7 +495,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         self.call.hasStartedConnectingDidChange = {
             DispatchQueue.main.async {
                 self.callDurationLabel.text = "Connecting..."
-                NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+                NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 }, completion: nil)
             }

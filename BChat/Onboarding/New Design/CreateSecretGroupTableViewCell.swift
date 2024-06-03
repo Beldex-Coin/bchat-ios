@@ -5,6 +5,8 @@ import UIKit
 class CreateSecretGroupTableViewCell: UITableViewCell {
     
     var publicKey = ""
+    
+    var selectionButtonCallback: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,6 +59,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
         button.backgroundColor = .clear
         button.setBackgroundImage(UIImage(named: "ic_button_normal"), for: .normal)
         button.setBackgroundImage(UIImage(named: "ic_button_selected"), for: .selected)
+        button.addTarget(self, action: #selector(selectionButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -91,6 +94,10 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
         profileImageView.publicKey = publicKey
         profileImageView.update()
         nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+    }
+    
+    @objc private func selectionButtonTapped(_ sender: UIButton) {
+        selectionButtonCallback?()
     }
     
 }
