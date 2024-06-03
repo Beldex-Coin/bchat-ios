@@ -32,6 +32,7 @@ public extension UISearchBar {
         searchTextField.backgroundColor = Colors.searchBarBackground // The search bar background color
         searchTextField.textColor = Colors.text
         searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: ""), attributes: [ .foregroundColor : Colors.searchBarPlaceholder ])
+        searchTextField.becomeFirstResponder()
         setPositionAdjustment(UIOffset(horizontal: 4, vertical: 0), for: UISearchBar.Icon.search)
         searchTextPositionAdjustment = UIOffset(horizontal: 2, vertical: 0)
         setPositionAdjustment(UIOffset(horizontal: -4, vertical: 0), for: UISearchBar.Icon.clear)

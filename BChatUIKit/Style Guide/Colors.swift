@@ -203,6 +203,8 @@ public final class Colors : NSObject {
     @objc public static var chatSettingsGrayColor: UIColor { UIColor(named: "ACACAC-8A8A9D-Alpha")! }
     @objc public static var expandBackgroundColor: UIColor { UIColor(named: "282836-EBEBEB")! }
     @objc public static var betaBackgroundColor: UIColor { UIColor(named: "A7A7BA-E0E0E0")! }
+    @objc public static var walletDisableButtonColor: UIColor { UIColor(named: "333343-E0E0E0")! }
+    @objc public static var enableSendButtonColor: UIColor { UIColor(named: "2979FB")! }
     
     
 }
