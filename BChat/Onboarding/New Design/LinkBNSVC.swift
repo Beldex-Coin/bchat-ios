@@ -5,7 +5,8 @@ import BChatUIKit
 import BChatSnodeKit
 
 class LinkBNSVC: BaseVC {
-
+    
+    /// <#Description#>
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -16,6 +17,7 @@ class LinkBNSVC: BaseVC {
         return stackView
     }()
     
+    /// <#Description#>
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
@@ -25,6 +27,7 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
+    /// <#Description#>
     private lazy var bchatIdTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
@@ -121,7 +124,9 @@ class LinkBNSVC: BaseVC {
     
     var isFromVerfied: Bool!
     
+    // MARK: - UIViewController life cycle
     
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -131,6 +136,7 @@ class LinkBNSVC: BaseVC {
         blurView.frame = view.bounds
         view.addSubview(blurView)
         view.addSubview(backGroundView)
+        
         backGroundView.addSubViews(titleLabel, bchatIdTitleLabel, bchatIdLabel, bnsNameTitleLabel, bnsNameTextField, buttonStackView, linkButton)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(verifyButton)
@@ -142,26 +148,33 @@ class LinkBNSVC: BaseVC {
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            
             bchatIdTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             bchatIdTitleLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 25),
+            
             bchatIdLabel.topAnchor.constraint(equalTo: bchatIdTitleLabel.bottomAnchor, constant: 6),
             bchatIdLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             bchatIdLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -15),
+            
             bnsNameTitleLabel.topAnchor.constraint(equalTo: bchatIdLabel.bottomAnchor, constant: 13),
             bnsNameTitleLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 23),
             bnsNameTextField.topAnchor.constraint(equalTo: bnsNameTitleLabel.bottomAnchor, constant: 9),
             bnsNameTextField.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             bnsNameTextField.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -15),
             bnsNameTextField.heightAnchor.constraint(equalToConstant: 50),
+            
             buttonStackView.topAnchor.constraint(equalTo: bnsNameTextField.bottomAnchor, constant: 23),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
+            
             linkButton.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: 13),
             linkButton.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             linkButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             linkButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -22),
+            
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
             verifyButton.heightAnchor.constraint(equalToConstant: 52),
             linkButton.heightAnchor.constraint(equalToConstant: 52),
@@ -169,17 +182,22 @@ class LinkBNSVC: BaseVC {
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
-        
     }
     
+    /// <#Description#>
+    /// - Parameter notification: <#notification description#>
     @objc func dismissLinkBNSTapped(notification: NSNotification) {
         self.dismiss(animated: true)
     }
     
+    /// <#Description#>
+    /// - Parameter sender: <#sender description#>
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
     
+    /// <#Description#>
+    /// - Parameter sender: <#sender description#>
     @objc private func verifyButtonTapped(_ sender: UIButton) {
         // No Border
         bnsNameTextField.layer.borderWidth = 0
@@ -189,11 +207,10 @@ class LinkBNSVC: BaseVC {
         SnodeAPI.getBChatID(for: bnsName).done { bchatID in
             self.startNewDM(with: bchatID)
         }.catch { error in
-            var messageOrNil: String?
             if let error = error as? SnodeAPI.Error {
                 switch error {
-                case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
-                default: break
+                    case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
+                    default: break
                 }
             }
             
@@ -203,10 +220,12 @@ class LinkBNSVC: BaseVC {
             self.bnsNameTextField.layer.borderWidth = 1
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
-            self.verifyButtonDetails(isVerify: false)
+            self.verifyButtonUpdate(false)
         }
     }
     
+    /// <#Description#>
+    /// - Parameter sender: <#sender description#>
     @objc private func linkButtonTapped(_ sender: UIButton) {
         if isFromVerfied{
             let vc = BNSLinkSuccessVC()
@@ -216,6 +235,8 @@ class LinkBNSVC: BaseVC {
         }
     }
     
+    /// Description
+    /// - Parameter bchatID: <#bchatID description#>
     private func startNewDM(with bchatID: String) {
         if bchatIdLabel.text == bchatID {
             isFromVerfied = true
@@ -240,7 +261,7 @@ class LinkBNSVC: BaseVC {
             // Green
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
-        }else {
+        } else {
             isFromVerfied = false
             
             linkButton.backgroundColor = Colors.cellGroundColor2
@@ -251,31 +272,28 @@ class LinkBNSVC: BaseVC {
         }
     }
     
-    func verifyButtonDetails(isVerify: Bool) {
-        verifyButton.isUserInteractionEnabled =  isVerify ?  false : true
-        self.verifyButton.layer.borderWidth = isVerify ? 1 : 0
-        self.verifyButton.layer.borderColor =  isVerify ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-        self.verifyButton.setTitleColor(isVerify ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
-        self.verifyButton.setTitle("Verify", for: .normal)
-        let image = UIImage(named: "")?.scaled(to: CGSize(width: 14.42, height: 13.93))
-        self.verifyButton.setImage(image, for: .normal)
-        self.verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
-        self.verifyButton.semanticContentAttribute = .forceRightToLeft
+    /// <#Description#>
+    /// - Parameter isEnabled: <#isEnabled description#>
+    func verifyButtonUpdate(_ isEnabled: Bool) {
+        verifyButton.isUserInteractionEnabled =  isEnabled ?  false : true
+        self.verifyButton.layer.borderWidth = isEnabled ? 1 : 0
+        self.verifyButton.layer.borderColor =  isEnabled ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+        self.verifyButton.setTitleColor(isEnabled ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
     }
 
 }
 
 extension LinkBNSVC: UITextFieldDelegate {
+    /// <#Description#>
+    /// - Parameters:
+    ///   - textField: <#textField description#>
+    ///   - range: <#range description#>
+    ///   - string: <#string description#>
+    /// - Returns: <#description#>
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let currentString: NSString = textField.text! as NSString
         let newString = currentString.replacingCharacters(in: range, with: string)
-        if newString.suffix(4).lowercased() == ".bdx" {
-            
-            verifyButtonDetails(isVerify: true)
-        } else {
-            
-            verifyButtonDetails(isVerify: false)
-        }
+        verifyButtonUpdate(newString.suffix(4).lowercased() == ".bdx")
         return true
     }
 }

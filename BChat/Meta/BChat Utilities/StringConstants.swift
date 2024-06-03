@@ -17,7 +17,7 @@ var globalDynamicNodeArray = [String]()
 let globalDynamicNodeUrl = "https://testdeb.beldex.dev/Beldex-Projects/Beldex-flutter-wallet/mainnet-apk/testing/15-04-2024/node_list.json"
 
 
-//MARK: -Use 
+
 
 
 

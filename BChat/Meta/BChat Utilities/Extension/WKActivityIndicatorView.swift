@@ -21,11 +21,9 @@ class WKActivityIndicatorView: UIActivityIndicatorView {
         }
     }
     
-    
-    // MARK: - Life Cycles
-    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
+        
         if isLoading && !isAnimating {
             startAnimating()
         }

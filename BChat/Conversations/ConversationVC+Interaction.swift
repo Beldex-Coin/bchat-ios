@@ -1229,6 +1229,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SNLog("Couldn't record audio.")
             return cancelVoiceMessageRecording()
         }
+        audioRecorder.pause()
+        audioRecorder.record()
     }
 
     func endVoiceMessageRecording() {
