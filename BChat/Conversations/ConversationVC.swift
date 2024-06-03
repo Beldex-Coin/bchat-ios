@@ -974,7 +974,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(cancelVoiceMessageRecordingWhenDeviceLock), name: Notification.Name("cancelVoiceMessageRecordingWhenDeviceLock"), object: nil)
                 
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: Notification.Name("connectingCallHideView"), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)

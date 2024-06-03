@@ -10,15 +10,3 @@ struct RecipientDomainSchema: Codable {
         self.localaddress = localaddress
     }
 }
-
-extension UserDefaults {
-    var domainSchemas: [RecipientDomainSchema] {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: "RecipientDomainSchema") else { return [] }
-            return (try? PropertyListDecoder().decode([RecipientDomainSchema].self, from: data)) ?? []
-        }
-        set {
-            UserDefaults.standard.set(try? PropertyListEncoder().encode(newValue), forKey: "RecipientDomainSchema")
-        }
-    }
-}

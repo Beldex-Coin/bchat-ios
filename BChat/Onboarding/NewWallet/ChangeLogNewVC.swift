@@ -97,6 +97,16 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if selectedRowIndex == indexPath.row {
+            isExpanded.toggle()
+        } else {
+            isExpanded = true
+        }
+        selectedRowIndex = isExpanded ? indexPath.row : nil
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
     @objc func expandArrowTapped(_ sender: UITapGestureRecognizer) {
         if let index = sender.view?.tag {
             isExpanded.toggle()
@@ -232,8 +242,6 @@ class ChangeLogTableCell2: UITableViewCell {
         let attributedText = NSAttributedString(
             string: " ",
             attributes: [
-                //                .font: result.font,
-                //                .foregroundColor: result.textColor,
                 .paragraphStyle: paragraphStyle
             ]
         )

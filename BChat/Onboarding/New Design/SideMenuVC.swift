@@ -25,8 +25,9 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.switchBackgroundColor
         toggle.addTarget(self, action: #selector(self.sampleSwitchValueChanged(_:)), for: .valueChanged)
+        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     
@@ -89,6 +90,13 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
         } else {
             sampleSwitch.isOn = true
         }
+        
+        if sampleSwitch.isOn == true {
+            sampleSwitch.thumbTintColor = Colors.bothGreenColor
+        }else {
+            sampleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+        }
+        
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         closeButton.setImage(tintedImage, for: .normal)
@@ -148,8 +156,10 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
     @objc func sampleSwitchValueChanged(_ x: UISwitch) {
         if sampleSwitch.isOn {
             AppModeManager.shared.setCurrentAppMode(to: .dark)
+            sampleSwitch.thumbTintColor = Colors.bothGreenColor
         }else {
             AppModeManager.shared.setCurrentAppMode(to: .light)
+            sampleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
         }
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -236,6 +246,12 @@ class SideMenuVC: BaseVC, UITableViewDelegate, UITableViewDataSource {
             }else { //About
                 let logoName = "ic_menu_about"
                 cell.iconImageView.image = UIImage(named: logoName)!
+            }
+            
+            if indexPath.row == 5 {
+                cell.betaTitleLabel.isHidden = false
+            }else {
+                cell.betaTitleLabel.isHidden = true
             }
             
             return cell
@@ -345,6 +361,21 @@ class SideMenuTableViewCell: UITableViewCell {
         return result
     }()
     
+    lazy var betaTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = .black
+        result.backgroundColor = Colors.betaBackgroundColor
+        result.text = "BETA"
+        result.font = Fonts.semiOpenSans(ofSize: 8)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.set(.width, to: 40)
+        result.set(.height, to: 16)
+        result.clipsToBounds = true
+        result.layer.cornerRadius = 4
+        return result
+    }()
+    
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
         result.set(.width, to: 28)
@@ -355,7 +386,7 @@ class SideMenuTableViewCell: UITableViewCell {
     }()
     
     func setUPLayout() {
-        contentView.addSubViews(titleLabel, iconImageView)
+        contentView.addSubViews(titleLabel, iconImageView, betaTitleLabel)
         NSLayoutConstraint.activate([
             iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -363,6 +394,8 @@ class SideMenuTableViewCell: UITableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
             titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
             
+            betaTitleLabel.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
+            betaTitleLabel.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor, constant: -2),
         ])
     }
 }

@@ -2,9 +2,6 @@
 
 import Foundation
 
-
-
-
 struct SaveUserDefaultsData {
     static var messageString = NSLocalizedString("Message", comment: "")
     

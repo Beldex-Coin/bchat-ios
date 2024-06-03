@@ -360,6 +360,8 @@
 		8A5A0B452C04942300288474 /* HostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B442C04942300288474 /* HostManager.swift */; };
 		8A5A0B4A2C05913300288474 /* HostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B492C05913300288474 /* HostType.swift */; };
 		8A5A0B4C2C05F95100288474 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */; };
+		8A5A0B4E2C085F8600288474 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B4D2C085F8500288474 /* UserDefaultsExtension.swift */; };
+		8A5A0B502C087DEA00288474 /* NotificationCenterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B4F2C087DEA00288474 /* NotificationCenterExtension.swift */; };
 		8A5C46B82BFB529A0031441A /* WalletAddressBookNewVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */; };
 		8A5C46BA2BFCA4E70031441A /* CallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */; };
 		8A5C46C02BFCC9610031441A /* OutgoingCallTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */; };
@@ -1490,6 +1492,8 @@
 		8A5A0B442C04942300288474 /* HostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostManager.swift; sourceTree = "<group>"; };
 		8A5A0B492C05913300288474 /* HostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostType.swift; sourceTree = "<group>"; };
 		8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
+		8A5A0B4D2C085F8500288474 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		8A5A0B4F2C087DEA00288474 /* NotificationCenterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCenterExtension.swift; sourceTree = "<group>"; };
 		8A5C46B72BFB529A0031441A /* WalletAddressBookNewVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletAddressBookNewVCExtension.swift; sourceTree = "<group>"; };
 		8A5C46B92BFCA4E70031441A /* CallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallTableViewCell.swift; sourceTree = "<group>"; };
 		8A5C46BF2BFCC9610031441A /* OutgoingCallTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingCallTableViewCell.swift; sourceTree = "<group>"; };
@@ -2313,6 +2317,8 @@
 				6098CA7A2A1DCD44005A5502 /* WKActivityIndicatorView.swift */,
 				60E8A50D2A4EB24200BA996C /* UITextField + Ext.swift */,
 				60408DC92B8DA479002EE7F8 /* TextView + Ext.swift */,
+				8A5A0B4D2C085F8500288474 /* UserDefaultsExtension.swift */,
+				8A5A0B4F2C087DEA00288474 /* NotificationCenterExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -5615,6 +5621,7 @@
 				6016F9862A822646004C3A90 /* Date + Ext.swift in Sources */,
 				C331FFF32558FF0300070591 /* PathStatusView.swift in Sources */,
 				7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */,
+				8A5A0B502C087DEA00288474 /* NotificationCenterExtension.swift in Sources */,
 				4CC1ECFB211A553000CC13BE /* AppUpdateNag.swift in Sources */,
 				B848A4C5269EAAA200617031 /* UserDetailsSheet.swift in Sources */,
 				34B6A903218B3F63007C4606 /* TypingIndicatorView.swift in Sources */,
@@ -5705,6 +5712,7 @@
 				7B0EFDF0275084AA00FFAAE7 /* CallMessageCell.swift in Sources */,
 				7B93D06A27CF173D00811CB6 /* MessageRequestsViewController.swift in Sources */,
 				C33100082558FF6D00070591 /* NewConversationButtonSet.swift in Sources */,
+				8A5A0B4E2C085F8600288474 /* UserDefaultsExtension.swift in Sources */,
 				C3AAFFF225AE99710089E6DD /* AppDelegate.swift in Sources */,
 				B8BB82A5238F627000BA5194 /* HomeVC.swift in Sources */,
 				60E8A50E2A4EB24200BA996C /* UITextField + Ext.swift in Sources */,

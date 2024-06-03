@@ -232,7 +232,8 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
         self.call.remoteVideoStateDidChange = { isEnabled in
             self.volumeView.isHidden = true
             self.speakerOptionButton.isHidden = false
-            NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+            NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
+                //.callConnectingTapNotification
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25) {
                     self.remoteVideoView.alpha = isEnabled ? 1 : 0
@@ -252,7 +253,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
                 self.volumeView.isHidden = true
                 self.speakerOptionButton.isHidden = false
                 self.answerButton.alpha = 0
-                NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+                NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                     self.answerButton.isHidden = true
                 }, completion: nil)
@@ -549,7 +550,7 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
     }
     
     @objc private func pop() {
-        NotificationCenter.default.post(name: Notification.Name("connectingCallTapToReturnToTheCall"), object: nil)
+        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
         self.conversationVC?.showInputAccessoryView()
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
@@ -608,33 +609,33 @@ final class CallVC : UIViewController, VideoPreviewDelegate {
             if let latestKnownAudioOutputDeviceName = latestKnownAudioOutputDeviceName, currentOutput.portName == latestKnownAudioOutputDeviceName { return }
             latestKnownAudioOutputDeviceName = currentOutput.portName
             switch currentOutput.portType {
-            case .builtInSpeaker:
-                let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
-                volumeView.setRouteButtonImage(image, for: .normal)
-                volumeView.tintColor = UIColor(hex: 0x1F1F1F)
-                volumeView.backgroundColor = .white
-            case .headphones:
-                let image = UIImage(named: "Headsets")?.withRenderingMode(.alwaysTemplate)
-                volumeView.setRouteButtonImage(image, for: .normal)
-                volumeView.tintColor = UIColor(hex: 0x1F1F1F)
-                volumeView.backgroundColor = .white
-            case .bluetoothLE: fallthrough
-            case .bluetoothA2DP:
-                let image = UIImage(named: "Bluetooth")?.withRenderingMode(.alwaysTemplate)
-                volumeView.setRouteButtonImage(image, for: .normal)
-                volumeView.tintColor = UIColor(hex: 0x1F1F1F)
-                volumeView.backgroundColor = .white
-            case .bluetoothHFP:
-                let image = UIImage(named: "Airpods")?.withRenderingMode(.alwaysTemplate)
-                volumeView.setRouteButtonImage(image, for: .normal)
-                volumeView.tintColor = UIColor(hex: 0x1F1F1F)
-                volumeView.backgroundColor = .white
-            case .builtInReceiver: fallthrough
-            default:
-                let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
-                volumeView.setRouteButtonImage(image, for: .normal)
-                volumeView.tintColor = .white
-                volumeView.backgroundColor = UIColor(hex: 0x1F1F1F)
+                case .builtInSpeaker:
+                    let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
+                    volumeView.setRouteButtonImage(image, for: .normal)
+                    volumeView.tintColor = UIColor(hex: 0x1F1F1F)
+                    volumeView.backgroundColor = .white
+                case .headphones:
+                    let image = UIImage(named: "Headsets")?.withRenderingMode(.alwaysTemplate)
+                    volumeView.setRouteButtonImage(image, for: .normal)
+                    volumeView.tintColor = UIColor(hex: 0x1F1F1F)
+                    volumeView.backgroundColor = .white
+                case .bluetoothLE: fallthrough
+                case .bluetoothA2DP:
+                    let image = UIImage(named: "Bluetooth")?.withRenderingMode(.alwaysTemplate)
+                    volumeView.setRouteButtonImage(image, for: .normal)
+                    volumeView.tintColor = UIColor(hex: 0x1F1F1F)
+                    volumeView.backgroundColor = .white
+                case .bluetoothHFP:
+                    let image = UIImage(named: "Airpods")?.withRenderingMode(.alwaysTemplate)
+                    volumeView.setRouteButtonImage(image, for: .normal)
+                    volumeView.tintColor = UIColor(hex: 0x1F1F1F)
+                    volumeView.backgroundColor = .white
+                case .builtInReceiver: fallthrough
+                default:
+                    let image = UIImage(named: "Speaker")?.withRenderingMode(.alwaysTemplate)
+                    volumeView.setRouteButtonImage(image, for: .normal)
+                    volumeView.tintColor = .white
+                    volumeView.backgroundColor = UIColor(hex: 0x1F1F1F)
             }
         }
     }
