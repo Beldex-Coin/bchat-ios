@@ -75,7 +75,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.backgroundColor = UIColor(hex: 0x2979FB)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
-        let image = UIImage(named: "ic_send_new")//?.scaled(to: CGSize(width: 25, height: 25))
+        let image = UIImage(named: "ic_send_new")
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 1)
         button.addTarget(self, action: #selector(isFromSendButtonTapped), for: .touchUpInside)
@@ -86,7 +86,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.backgroundColor = Colors.greenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
-        let image = UIImage(named: "ic_receive_wallet")//?.scaled(to: CGSize(width: 25, height: 25))
+        let image = UIImage(named: "ic_receive_wallet")
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(isFromReceiveButtonTapped), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
@@ -1168,7 +1168,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         isFromFilterTransactionsHistoryBackgroundView.isHidden = true
         transactionsDetailsBackgroundView.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(syncWalletData(_:)), name: Notification.Name(rawValue: "syncWallet"), object: nil)
-        if BackAPI == true{
+        if BackAPI == true {
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
         }
@@ -1181,7 +1181,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 self.closeWallet()
                 init_syncing_wallet()
             }
-        }else {
+        } else {
             init_syncing_wallet()
         }
         
@@ -1197,14 +1197,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 self.randomNodeValue = globalDynamicNodeArray.randomElement()!
                 SaveUserDefaultsData.SelectedNode = self.randomNodeValue
             }
-        }else {
+        } else {
             randomNodeValue = globalDynamicNodeArray.randomElement()!
             SaveUserDefaultsData.SelectedNode = self.randomNodeValue
         }
         SaveUserDefaultsData.FinalWallet_node = randomNodeValue
         
         //Save Receipent Address fun developed
-        if UserDefaults.standard.domainSchemas.isEmpty { }else {
+        if UserDefaults.standard.domainSchemas.isEmpty { } else {
             hashArray = UserDefaults.standard.domainSchemas
         }
         self.fromDateTextField.datePicker(target: self,
@@ -1270,13 +1270,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
         incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
-        if BackAPI == true{
+        if BackAPI == true {
             self.closeWallet()
             init_syncing_wallet()
             self.SelectedBalance = SaveUserDefaultsData.SelectedBalance
             self.fetchMarketsData(false)
         }
-        if UserDefaults.standard.domainSchemas.isEmpty {}else {
+        if UserDefaults.standard.domainSchemas.isEmpty {} else {
             hashArray = UserDefaults.standard.domainSchemas
         }
         //Dynamic node array
@@ -1293,7 +1293,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
                     SaveUserDefaultsData.SelectedNode = self.randomNodeValue
                 }
-            }else {
+            } else {
                 self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
                 SaveUserDefaultsData.SelectedNode = self.randomNodeValue
             }
@@ -1305,7 +1305,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.currencyName = SaveUserDefaultsData.SelectedCurrency.uppercased()
             if mainBalance.isEmpty {
                 isCurrencyResultLabel.text = "0.00 \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
-            }else{
+            } else {
                 isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
             }
         } else {
@@ -1316,7 +1316,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let cs = CharacterSet.init(charactersIn: "-")
                 str = str.trimmingCharacters(in: cs)
                 isCurrencyResultLabel.text = "\(str)"
-            } else{
+            } else {
                 if currencyValue != nil {
                     isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
                 }
@@ -1394,13 +1394,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func start(hashid:String,array:[RecipientDomainSchema])->(boolvalue:Bool,address:String){
         var boolvalue:Bool = false
         var address:String = ""
-        for ar in array{
+        for ar in array {
             let hasid = ar.localhash
-            if hashid == hasid{
+            if hashid == hasid {
                 boolvalue = true
                 address = ar.localaddress
                 return (boolvalue,address)
-            }else{
+            } else {
                 boolvalue = false
             }
         }
@@ -1477,7 +1477,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     if self.backApiRescanVC == true {
@@ -1603,25 +1603,25 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             isFromScanButton.isUserInteractionEnabled = true
             isFromSendButton.isUserInteractionEnabled = true
             self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-            if self.backApiRescanVC == true{
+            if self.backApiRescanVC == true {
                 self.isFromProgressStatusLabel.text = "Connecting..."
                 walletSyncingBackgroundView.isHidden = false
                 noTransactionsYetBackgroundView.isHidden = true
-            }else {
+            } else {
                 self.isFromProgressStatusLabel.text = "Synchronized 100%"
                 beldexLogoImg.image = UIImage(named: "ic_beldex_green")
                 walletSyncingBackgroundView.isHidden = true
                 if self.transactionAllArray.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = true
-                }else {
+                } else {
                     noTransactionsYetBackgroundView.isHidden = true
                     isFromFilterTransactionsHistoryBackgroundView.isHidden = false
                 }
             }
             self.tableView.reloadData()
             WalletSharedData.sharedInstance.wallet = nil
-        }else {
+        } else {
             self.isFromProgressStatusLabel.textColor = .red
             self.isFromProgressStatusLabel.text = "Check your internet"
         }
@@ -1635,29 +1635,29 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             //MARK:- Balance currency conversion
             if mainBalance.isEmpty {
                 self.beldexBalanceLabel.text = "0.00"
-            }else {
+            } else {
                 if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                     selectedDecimal = SaveUserDefaultsData.SelectedDecimal
-                    if selectedDecimal == "4 - Four (0.0000)"{
+                    if selectedDecimal == "4 - Four (0.0000)" {
                         self.beldexBalanceLabel.text = String(format:"%.4f", Double(mainBalance)!)
-                    }else if selectedDecimal == "3 - Three (0.000)"{
+                    } else if selectedDecimal == "3 - Three (0.000)" {
                         self.beldexBalanceLabel.text = String(format:"%.3f", Double(mainBalance)!)
-                    }else if selectedDecimal == "2 - Two (0.00)"{
+                    } else if selectedDecimal == "2 - Two (0.00)" {
                         self.beldexBalanceLabel.text = String(format:"%.2f", Double(mainBalance)!)
-                    }else if selectedDecimal == "0 - Zero (0)"{
+                    } else if selectedDecimal == "0 - Zero (0)" {
                         self.beldexBalanceLabel.text = String(format:"%.0f", Double(mainBalance)!)
                     }
                     self.currencyName = SaveUserDefaultsData.SelectedCurrency
                     self.fetchMarketsData(false)
                     self.reloadData([:])
-                    if mainBalance.isEmpty{
+                    if mainBalance.isEmpty {
                         isCurrencyResultLabel.text = "\(String(format:"%.2f", "0.00")) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
-                    }else {
-                        if currencyValue != nil{
+                    } else {
+                        if currencyValue != nil {
                             isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
                         }
                     }
-                }else{
+                } else {
                     isCurrencyResultLabel.text = "\(String(format:"%.2f", Double(mainBalance)! * currencyValue)) \(SaveUserDefaultsData.SelectedCurrency.uppercased())"
                 }
             }
@@ -1729,6 +1729,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func tocancelAction() {
         self.toDateTextField.resignFirstResponder()
     }
+    
     @objc
     func todoneAction() {
         if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
@@ -1766,7 +1767,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     @objc func isFromFilterImageButtonTapped(_ sender: UIButton){
         if self.transactionAllArray.count == 0 {
             isFromFilterImageButton.isUserInteractionEnabled = true
-        }else {
+        } else {
             self.noTransaction = false
             self.isFilter = false
             filteredAllTransactionSortingArray = []
@@ -1784,7 +1785,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 isFromFilterImageButton.backgroundColor = Colors.titleColor
                 let logoImage2 = isLightMode ? "ic_filter_white" : "ic_filter_black"
                 isFromFilterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
-            }else{
+            } else {
                 filterStackView.isHidden = true
                 lineBackgroundView.isHidden = true
                 isFromFilterImageButton.backgroundColor = .clear
@@ -1833,7 +1834,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             let vc = RescanNewVC()
             vc.daemonBlockChainHeight = UInt64(isdaemonHeight)
             navigationController!.pushViewController(vc, animated: true)
-        }else {
+        } else {
             self.showToastMsg(message: "Can't rescan while wallet is syncing", seconds: 1.0)
         }
     }
@@ -1942,7 +1943,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                                if ListDate >= FromDate && ListDate <= ToDate{ //
+                                if ListDate >= FromDate && ListDate <= ToDate { //
 //                                    filteredOutgoingTransactionarray.append(element)
                                 }
                             }
@@ -2023,7 +2024,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                                if ListDate >= FromDate && ListDate <= ToDate{ //
+                                if ListDate >= FromDate && ListDate <= ToDate { //
 //                                    filteredIncomingTransactionarray.append(element)
                                 }
                             }
@@ -2107,7 +2108,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     
                     if ListYear >= FromYear && ListYear <= ToYear {
                         if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                            if ListDate >= FromDate && ListDate <= ToDate{ //
+                            if ListDate >= FromDate && ListDate <= ToDate { //
 //                                filteredAllTransactionarray.append(element)
                             }
                         }
@@ -2257,18 +2258,18 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func numberOfSections(in tableView: UITableView) -> Int {
         if self.noTransaction {
             return 0
-        }else {
+        } else {
             if isFromAllTransationFlag == true {
                 if self.isFilter {
                     return filteredAllTransactionSortingArray.count
                 }
                 return sortedGroupedTransactionAllArray.count
-            }else if isFromSendTransationFlag == true{
+            } else if isFromSendTransationFlag == true {
                 if self.isFilter {
                     return filteredOutgoingTransactionSortingArray.count
                 }
                 return sortedGroupedTransactionSendArray.count
-            }else{
+            } else {
                 if self.isFilter {
                     return filteredIncomingTransactionSortingArray.count
                 }
@@ -2276,6 +2277,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.noTransaction {
             return 0
@@ -2294,7 +2296,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
                 return sortedGroupedTransactionAllArray[section].value.count
             }
-        }else if isFromSendTransationFlag == true {
+        } else if isFromSendTransationFlag == true {
             if self.isFilter {
                 if filteredOutgoingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
@@ -2308,7 +2310,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
                 return sortedGroupedTransactionSendArray[section].value.count
             }
-        }else {
+        } else {
             if self.isFilter {
                 if filteredIncomingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
@@ -2324,6 +2326,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = TransationHistoryTableCell(style: .default, reuseIdentifier: "TransationHistoryTableCell")
         cell.backgroundColor = .clear
@@ -2343,16 +2346,16 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
-                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
-            }else{
+            } else {
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2363,17 +2366,17 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let dateString = dateFormatter.string(from: date as Date)
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
-                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
-        }else if isFromSendTransationFlag == true {
+        } else if isFromSendTransationFlag == true {
             if filteredOutgoingTransactionSortingArray.count > 0{
                 let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
@@ -2383,10 +2386,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
-                if valueResponce.direction != BChat_Messenger.TransactionDirection.sent{
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.sent {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
@@ -2399,15 +2402,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
-                if transaction.direction != BChat_Messenger.TransactionDirection.sent{
+                if transaction.direction != BChat_Messenger.TransactionDirection.sent {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
-        }else {
+        } else {
             if filteredIncomingTransactionSortingArray.count > 0{
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
@@ -2417,10 +2420,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
-                if valueResponce.direction != BChat_Messenger.TransactionDirection.received{
+                if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
@@ -2436,7 +2439,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     cell.isFromSendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
@@ -2457,8 +2460,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         LongdateFormatter.dateFormat = "MMM d, yyyy, h:mm:ss a"
         LongdateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
         
-        if isFromAllTransationFlag == true{
-            if filteredAllTransactionSortingArray.count > 0{
+        if isFromAllTransationFlag == true {
+            if filteredAllTransactionSortingArray.count > 0 {
                 let responceData = filteredAllTransactionSortingArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2469,7 +2472,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2482,25 +2485,25 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
-            }else{
+            } else {
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2511,7 +2514,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2524,27 +2527,27 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
-        }else if isFromSendTransationFlag == true{
-            if filteredOutgoingTransactionSortingArray.count > 0{
+        } else if isFromSendTransationFlag == true {
+            if filteredOutgoingTransactionSortingArray.count > 0 {
                 let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2555,7 +2558,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2568,24 +2571,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
-                if transaction.direction != BChat_Messenger.TransactionDirection.sent{
+                if transaction.direction != BChat_Messenger.TransactionDirection.sent {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
-            }else{
+            } else {
                 let responceData = sortedGroupedTransactionSendArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2596,7 +2599,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2609,26 +2612,26 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
-                if transaction.direction != BChat_Messenger.TransactionDirection.sent{
+                if transaction.direction != BChat_Messenger.TransactionDirection.sent {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Send"
                     isFromSendDetailsTitleLabel.textColor = .red
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
-        }else{
-            if filteredIncomingTransactionSortingArray.count > 0{
+        } else {
+            if filteredIncomingTransactionSortingArray.count > 0 {
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2639,7 +2642,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2652,24 +2655,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
-            }else{
+            } else {
                 let responceData = sortedGroupedTransactionReceiveArray[indexPath.section].value
                 let transaction = responceData[indexPath.row]
                 let timeInterval  = transaction.timestamp
@@ -2680,7 +2683,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 transationDetailsIDLabel.text = transaction.hash
                 if transaction.paymentId == "0000000000000000" {
                     paymentIDStackView.isHidden = true
-                }else {
+                } else {
                     recipientAddressDetailsIDLabel.text = transaction.paymentId
                     paymentIDStackView.isHidden = false
                 }
@@ -2693,19 +2696,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let hashionfo = self.start(hashid: serverhash, array: hashArray)
                 let hashbool = hashionfo.boolvalue
                 let address = hashionfo.address
-                if hashbool == true{
+                if hashbool == true {
                     recipientAddressStackView.isHidden = false
                     recipientAddressDetailsIDLabel.text = "\(address)"
-                }else{
+                } else {
                     recipientAddressStackView.isHidden = true
                 }
                 //Transation Details from Send and Received
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
-                }else{
+                } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
@@ -2730,19 +2733,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if isFromAllTransationFlag == true {
             if self.isFilter {
                 label.text = formatDateString(filteredAllTransactionSortingArray[section].key)
-            }else {
+            } else {
                 label.text = formatDateString(sortedGroupedTransactionAllArray[section].key)
             }
-        }else if isFromSendTransationFlag == true{
+        } else if isFromSendTransationFlag == true {
             if self.isFilter {
                 label.text = formatDateString(filteredOutgoingTransactionSortingArray[section].key)
-            }else {
+            } else {
                 label.text = formatDateString(sortedGroupedTransactionSendArray[section].key)
             }
-        }else{
+        } else {
             if self.isFilter {
                 label.text = formatDateString(filteredIncomingTransactionSortingArray[section].key)
-            }else {
+            } else {
                 label.text = formatDateString(sortedGroupedTransactionReceiveArray[section].key)
             }
         }
@@ -2752,9 +2755,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         footerView.addSubview(label)
         return footerView
     }
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 25 // Set the height of the header view as needed
     }
+    
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -2814,8 +2819,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
         sortedGroupedTransactionSendArray = groupedItemsSend.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
-        
-        
         tableView.reloadData()
     }
 
@@ -2860,12 +2863,14 @@ class TransationHistoryTableCell: UITableViewCell {
         view.backgroundColor = .clear
         return view
     }()
+    
     lazy var directionLogoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
     lazy var balanceAmountLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -2874,6 +2879,7 @@ class TransationHistoryTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var dateLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
@@ -2882,6 +2888,7 @@ class TransationHistoryTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var isFromSendandReceiveLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
@@ -2890,7 +2897,8 @@ class TransationHistoryTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("RECEIVED_TITLE", comment: "")
         return result
-    }()//ic_arrow_whitethem
+    }()
+    
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -2942,6 +2950,7 @@ class TransationHistoryTableCell: UITableViewCell {
 }
 
 extension WalletHomeNewVC: BeldexWalletDelegate {
+    
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
         print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
@@ -2972,6 +2981,7 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
             }
         }
     }
+    
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
         print("NewBlock------------------------------------------currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
@@ -3046,14 +3056,14 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
                 selectedDecimal = SaveUserDefaultsData.SelectedDecimal
                 if selectedDecimal == "4 - Four (0.0000)" {
                     self.beldexBalanceLabel.text = String(format:"%.4f", Double(mainBalance)!)
-                }else if selectedDecimal == "3 - Three (0.000)" {
+                } else if selectedDecimal == "3 - Three (0.000)" {
                     self.beldexBalanceLabel.text = String(format:"%.3f", Double(mainBalance)!)
-                }else if selectedDecimal == "2 - Two (0.00)" {
+                } else if selectedDecimal == "2 - Two (0.00)" {
                     self.beldexBalanceLabel.text = String(format:"%.2f", Double(mainBalance)!)
-                }else if selectedDecimal == "0 - Zero (0)" {
+                } else if selectedDecimal == "0 - Zero (0)" {
                     self.beldexBalanceLabel.text = String(format:"%.0f", Double(mainBalance)!)
                 }
-            }else {
+            } else {
                 self.beldexBalanceLabel.text = String(format:"%.4f", Double(balance_modify)!)
             }
             if SaveUserDefaultsData.SelectedBalance == "Beldex Full Balance" || SaveUserDefaultsData.SelectedBalance == "Beldex Available Balance"{
@@ -3061,14 +3071,14 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
                     selectedDecimal = SaveUserDefaultsData.SelectedDecimal
                     if selectedDecimal == "4 - Four (0.0000)" {
                         self.beldexBalanceLabel.text = String(format:"%.4f", Double(mainBalance)!)
-                    }else if selectedDecimal == "3 - Three (0.000)" {
+                    } else if selectedDecimal == "3 - Three (0.000)" {
                         self.beldexBalanceLabel.text = String(format:"%.3f", Double(mainBalance)!)
-                    }else if selectedDecimal == "2 - Two (0.00)" {
+                    } else if selectedDecimal == "2 - Two (0.00)" {
                         self.beldexBalanceLabel.text = String(format:"%.2f", Double(mainBalance)!)
-                    }else if selectedDecimal == "0 - Zero (0)" {
+                    } else if selectedDecimal == "0 - Zero (0)" {
                         self.beldexBalanceLabel.text = String(format:"%.0f", Double(mainBalance)!)
                     }
-                }else {
+                } else {
                     self.beldexBalanceLabel.text = String(format:"%.4f", Double(balance_modify)!)
                 }
             }
@@ -3085,7 +3095,7 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
             if self.transactionAllArray.count == 0 {
                 noTransactionsYetBackgroundView.isHidden = false
                 isFromFilterTransactionsHistoryBackgroundView.isHidden = true
-            }else {
+            } else {
                 noTransactionsYetBackgroundView.isHidden = true
                 isFromFilterTransactionsHistoryBackgroundView.isHidden = false
             }

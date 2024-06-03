@@ -41,7 +41,7 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabelContainer: UIView = {
         let result = UIView()
-        result.backgroundColor = .clear//.white
+        result.backgroundColor = .clear
         result.layer.masksToBounds = true
         result.set(.height, to: VoiceMessageView.toggleContainerSize)
         result.set(.width, to: 44)
@@ -50,7 +50,7 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabel: UILabel = {
         let result = UILabel()
-        result.textColor = .white//.black
+        result.textColor = .white
         if viewItem.interaction is TSIncomingMessage {
             let tint = Colors.titleColor
             result.textColor = tint
@@ -84,7 +84,7 @@ public final class VoiceMessageView : UIView {
     
 
     // MARK: Settings
-    private static let width: CGFloat = 200//160
+    private static let width: CGFloat = 200
     private static let toggleContainerSize: CGFloat = 20
     private static let inset = Values.smallSpacing
 
@@ -113,7 +113,7 @@ public final class VoiceMessageView : UIView {
         set(.height, to: 44)
         // Toggle
         let toggleContainer = UIView()
-        toggleContainer.backgroundColor = .clear//.white
+        toggleContainer.backgroundColor = .clear
         toggleContainer.set(.width, to: toggleContainerSize)
         toggleContainer.set(.height, to: toggleContainerSize)
         toggleContainer.addSubview(toggleImageView)
@@ -124,7 +124,7 @@ public final class VoiceMessageView : UIView {
         addSubview(audioWavesImageView)
         // Line
         let lineView = UIView()
-        lineView.backgroundColor = .clear//.white
+        lineView.backgroundColor = .clear
         lineView.set(.height, to: 1)
         // Countdown label
         countdownLabelContainer.addSubview(countdownLabel)

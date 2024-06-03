@@ -41,6 +41,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var audioPlayer: OWSAudioPlayer?
     var audioRecorder: AVAudioRecorder?
     var audioTimer: Timer?
+    var isPlaying = false
     // Context menu
     var contextMenuWindow: ContextMenuWindow?
     var contextMenuVC: ContextMenuVC?
@@ -629,6 +630,42 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return theImageView
     }()
     
+     lazy var deleteAudioView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.incomingMessageColor
+        stackView.layer.cornerRadius = 18
+        return stackView
+    }()
+     
+    lazy var deleteAudioImageView: UIImageView = {
+       let result = UIImageView()
+       result.image = UIImage(named: "ic_delete_record")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+       result.layer.masksToBounds = true
+       result.contentMode = .scaleAspectFit
+       return result
+   }()
+    
+     lazy var deleteAudioLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.semiOpenSans(ofSize: 11)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Delete"
+        result.adjustsFontSizeToFitWidth = true
+        return result
+    }()
+    
+     lazy var deleteAudioButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(deleteAudioButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     
     lazy var callView: UIView = {
@@ -901,6 +938,25 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         unreadCountView.centerYAnchor.constraint(equalTo: scrollButton.topAnchor).isActive = true
         unreadCountView.center(.horizontal, in: scrollButton)
         updateUnreadCountView()
+        
+        
+        view.addSubview(deleteAudioView)
+        deleteAudioView.addSubViews(deleteAudioImageView, deleteAudioLabel)
+        deleteAudioView.addSubview(deleteAudioButton)
+        deleteAudioView.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        deleteAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            deleteAudioImageView.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
+            deleteAudioImageView.leadingAnchor.constraint(equalTo: deleteAudioView.leadingAnchor, constant: 14),
+            deleteAudioLabel.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
+            deleteAudioLabel.leadingAnchor.constraint(equalTo: deleteAudioImageView.trailingAnchor, constant: 5),
+            deleteAudioLabel.trailingAnchor.constraint(equalTo: deleteAudioView.trailingAnchor, constant: -15)
+        ])
+        deleteAudioButton.pin(to: deleteAudioView)
+        deleteAudioView.isHidden = true
+        
+        
         
         // Notifications
         let notificationCenter = NotificationCenter.default
