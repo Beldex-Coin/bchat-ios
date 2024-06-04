@@ -14,6 +14,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
+    
     lazy var downloadLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -22,6 +23,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -31,6 +33,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         result.textAlignment = .center
         return result
     }()
+    
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -40,6 +43,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         result.textAlignment = .center
         return result
     }()
+    
     private lazy var downloadButton: UIButton = {
         let button = UIButton()
         button.setTitle("Download", for: .normal)
@@ -51,6 +55,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         button.addTarget(self, action: #selector(downloadButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
@@ -62,6 +67,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     lazy var buttonStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -72,6 +78,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     private let viewItem: ConversationViewItem
     init(viewItem: ConversationViewItem) {
         self.viewItem = viewItem

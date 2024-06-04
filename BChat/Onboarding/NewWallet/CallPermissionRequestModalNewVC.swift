@@ -14,6 +14,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
+    
     lazy var callPermissionLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -22,6 +23,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -32,6 +34,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         result.textAlignment = .center
         return result
     }()
+    
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -41,6 +44,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         result.textAlignment = .center
         return result
     }()
+    
     private lazy var settingsButton: UIButton = {
         let button = UIButton()
         button.setTitle("Settings", for: .normal)
@@ -52,6 +56,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         button.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
@@ -63,6 +68,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     lazy var buttonStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false

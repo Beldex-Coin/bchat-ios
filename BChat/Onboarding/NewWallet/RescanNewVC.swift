@@ -5,7 +5,8 @@ import BChatUIKit
 
 class RescanNewVC: BaseVC,UITextFieldDelegate {
     
-    private lazy var topView: UIView = {
+    /// topBackgroundView
+    private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.cellBackgroundColorForNodeList
@@ -13,6 +14,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
+    /// Current Blockheight Title Label
     private lazy var currentBlockheightTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("CURRENT_BLOCK_HEIGHT_NEW", comment: "")
@@ -22,7 +25,9 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-    private lazy var currentBlockheightIDTitleLabel: UILabel = {
+    
+    /// Current Block height Id Title Label
+    private lazy var currentBlockheightIdTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
         result.font = Fonts.boldOpenSans(ofSize: 20)
@@ -30,6 +35,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Sub Title Wallet Label
     private lazy var subTitleWalletLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW", comment: "")
@@ -40,6 +47,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Restore Date Height TextField
     private lazy var restoreDateHeightTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
@@ -63,6 +72,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.rightView?.addSubview(imageView)
         return result
     }()
+    
+    /// Restore From Block Height TextField
     private lazy var restoreFromBlockHeightTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
@@ -76,7 +87,9 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         result.leftViewMode = .always
         return result
     }()
-    private lazy var isFromRescanButton: UIButton = {
+    
+    /// Rescan Button
+    private lazy var rescanButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("RESCAN_BUTTON_TITLE", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
@@ -84,10 +97,12 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         button.backgroundColor = Colors.greenColor
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
-        button.addTarget(self, action: #selector(isFromRescanButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(rescanButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var isFromIKnowTheHeightButton: UIButton = {
+    
+    /// I Know The BlockHeight Button
+    private lazy var iKnowTheBlockHeightButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("I_KNOW_THE_BLOCKHEIGHT", comment: ""), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +111,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         button.layer.borderColor = Colors.borderColor.cgColor
         button.layer.borderWidth = 1
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(isFromIKnowTheHeightButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(iKnowTheBlockHeightButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -112,35 +127,35 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Rescan"
         
-        isFromIKnowTheHeightButton.addRightIconLongSpace(image: UIImage(named: "ic_right_arrow_New")!.withRenderingMode(.alwaysTemplate))
-        isFromIKnowTheHeightButton.tintColor = Colors.greenColor
+        iKnowTheBlockHeightButton.addRightIconLongSpace(image: UIImage(named: "ic_right_arrow_New")!.withRenderingMode(.alwaysTemplate))
+        iKnowTheBlockHeightButton.tintColor = Colors.greenColor
         restoreFromBlockHeightTextField.isHidden = true
         restoreDateHeightTextField.isHidden = false
         
-        currentBlockheightIDTitleLabel.text = "\(daemonBlockChainHeight)"
+        currentBlockheightIdTitleLabel.text = "\(daemonBlockChainHeight)"
         restoreFromBlockHeightTextField.addDoneButtonKeybord()
         restoreFromBlockHeightTextField.keyboardType = .numberPad
         
-        view.addSubViews(topView)
-        topView.addSubview(currentBlockheightTitleLabel)
-        topView.addSubview(currentBlockheightIDTitleLabel)
+        view.addSubViews(topBackgroundView)
+        topBackgroundView.addSubview(currentBlockheightTitleLabel)
+        topBackgroundView.addSubview(currentBlockheightIdTitleLabel)
         view.addSubview(subTitleWalletLabel)
         view.addSubview(restoreDateHeightTextField)
         view.addSubview(restoreFromBlockHeightTextField)
-        view.addSubview(isFromRescanButton)
-        view.addSubview(isFromIKnowTheHeightButton)
+        view.addSubview(rescanButton)
+        view.addSubview(iKnowTheBlockHeightButton)
         
         NSLayoutConstraint.activate([
-            topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 41),
-            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            topView.heightAnchor.constraint(equalToConstant: 52),
-            currentBlockheightTitleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 20),
-            currentBlockheightTitleLabel.centerYAnchor.constraint(equalTo: topView.centerYAnchor),
-            currentBlockheightIDTitleLabel.leadingAnchor.constraint(equalTo: currentBlockheightTitleLabel.trailingAnchor, constant: 10),
-            currentBlockheightIDTitleLabel.centerYAnchor.constraint(equalTo: currentBlockheightTitleLabel.centerYAnchor),
+            topBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 41),
+            topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            topBackgroundView.heightAnchor.constraint(equalToConstant: 52),
+            currentBlockheightTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 20),
+            currentBlockheightTitleLabel.centerYAnchor.constraint(equalTo: topBackgroundView.centerYAnchor),
+            currentBlockheightIdTitleLabel.leadingAnchor.constraint(equalTo: currentBlockheightTitleLabel.trailingAnchor, constant: 10),
+            currentBlockheightIdTitleLabel.centerYAnchor.constraint(equalTo: currentBlockheightTitleLabel.centerYAnchor),
             subTitleWalletLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            subTitleWalletLabel.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 116),
+            subTitleWalletLabel.topAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: 116),
             subTitleWalletLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
             restoreDateHeightTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
             restoreDateHeightTextField.topAnchor.constraint(equalTo: subTitleWalletLabel.bottomAnchor, constant: 20),
@@ -150,14 +165,14 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
             restoreFromBlockHeightTextField.topAnchor.constraint(equalTo: subTitleWalletLabel.bottomAnchor, constant: 20),
             restoreFromBlockHeightTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
             restoreFromBlockHeightTextField.heightAnchor.constraint(equalToConstant: 60),
-            isFromRescanButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            isFromRescanButton.topAnchor.constraint(equalTo: restoreDateHeightTextField.bottomAnchor, constant: 16),
-            isFromRescanButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            isFromRescanButton.heightAnchor.constraint(equalToConstant: 58),
-            isFromIKnowTheHeightButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
-            isFromIKnowTheHeightButton.topAnchor.constraint(equalTo: isFromRescanButton.bottomAnchor, constant: 168),
-            isFromIKnowTheHeightButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            isFromIKnowTheHeightButton.heightAnchor.constraint(equalToConstant: 58),
+            rescanButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            rescanButton.topAnchor.constraint(equalTo: restoreDateHeightTextField.bottomAnchor, constant: 16),
+            rescanButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            rescanButton.heightAnchor.constraint(equalToConstant: 58),
+            iKnowTheBlockHeightButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 26),
+            iKnowTheBlockHeightButton.topAnchor.constraint(equalTo: rescanButton.bottomAnchor, constant: 168),
+            iKnowTheBlockHeightButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
+            iKnowTheBlockHeightButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
         let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -172,8 +187,8 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        topView.layer.cornerRadius = topView.frame.height/2
-        isFromIKnowTheHeightButton.layer.cornerRadius = isFromIKnowTheHeightButton.frame.height/2
+        topBackgroundView.layer.cornerRadius = topBackgroundView.frame.height/2
+        iKnowTheBlockHeightButton.layer.cornerRadius = iKnowTheBlockHeightButton.frame.height/2
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -239,7 +254,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         datePickerTapped()
     }
     
-    @objc func isFromRescanButtonTapped(_ sender: UIButton){
+    @objc func rescanButtonTapped(_ sender: UIButton){
         let heightString = restoreFromBlockHeightTextField.text
         let dateString = restoreDateHeightTextField.text
         if heightString == "" && dateString != ""{
@@ -261,9 +276,9 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         if heightString != "" && dateString == "" {
             let number: Int64? = Int64("\(heightString!)")
             if number! > daemonBlockChainHeight {
-                isFromInvalidHeightAlert()
+                inValidHeightAlert()
             }else if number! == daemonBlockChainHeight {
-                isFromInvalidHeightAlert()
+                inValidHeightAlert()
             }
             else {
                 SaveUserDefaultsData.WalletRestoreHeight = restoreFromBlockHeightTextField.text!
@@ -279,20 +294,20 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
             }
         }
         if restoreFromBlockHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
-            isFromRestoreHeightDateAlert()
+            restoreHeightDateAlert()
         }
         if restoreFromBlockHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty {
-            isFromRestoreHeightDateAlert()
+            restoreHeightDateAlert()
         }
     }
-    func isFromInvalidHeightAlert(){
+    func inValidHeightAlert(){
         let alert = UIAlertController(title: NSLocalizedString("WALLET_TITLE", comment: ""), message: NSLocalizedString("INVALID_HEIGHT", comment: ""), preferredStyle: .alert)
         let okayAction = UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: .default, handler: { (_) in
         })
         alert.addAction(okayAction)
         self.present(alert, animated: true, completion: nil)
     }
-    func isFromRestoreHeightDateAlert(){
+    func restoreHeightDateAlert(){
         let alert = UIAlertController(title: NSLocalizedString("WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_PICK_RESTOREHEIGHT", comment: ""), preferredStyle: .alert)
         let okayAction = UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: .default, handler: { (_) in
         })
@@ -300,16 +315,16 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @objc func isFromIKnowTheHeightButtonTapped(_ sender: UIButton){
-        isFromIKnowTheHeightButton.isSelected = !isFromIKnowTheHeightButton.isSelected
-        if isFromIKnowTheHeightButton.isSelected {
+    @objc func iKnowTheBlockHeightButtonTapped(_ sender: UIButton){
+        iKnowTheBlockHeightButton.isSelected = !iKnowTheBlockHeightButton.isSelected
+        if iKnowTheBlockHeightButton.isSelected {
             subTitleWalletLabel.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW2", comment: "")
-            isFromIKnowTheHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_DATE", comment: ""), for: .normal)
+            iKnowTheBlockHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_DATE", comment: ""), for: .normal)
             restoreFromBlockHeightTextField.isHidden = false
             restoreDateHeightTextField.isHidden = true
         }else {
             subTitleWalletLabel.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW", comment: "")
-            isFromIKnowTheHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_BLOCKHEIGHT", comment: ""), for: .normal)
+            iKnowTheBlockHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_BLOCKHEIGHT", comment: ""), for: .normal)
             restoreFromBlockHeightTextField.isHidden = true
             restoreDateHeightTextField.isHidden = false
         }

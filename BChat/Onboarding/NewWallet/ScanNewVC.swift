@@ -6,6 +6,7 @@ import BChatUIKit
 
 class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    /// Scanner View
     private lazy var scannerView: QRScannerView = {
         let stackView = QRScannerView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -14,7 +15,9 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         stackView.delegate = self
         return stackView
     }()
-    private lazy var isFromUploadGalleryOptionButton: UIButton = {
+    
+    /// Upload From Gallery Button
+    private lazy var uploadFromGalleryButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("UPLOAD_FROM_GALLERY", comment: ""), for: .normal)
         let logoImage = isLightMode ? "ic_scanimge_dark" : "ic_scanlogo_New"
@@ -28,10 +31,12 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         button.layer.borderColor = Colors.greenColor.cgColor
         button.layer.borderWidth = 1
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(isFromUploadGalleryOptionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(uploadFromGalleryButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var scanDescLabel: UILabel = {
+    
+    /// Description Label
+    private lazy var descriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 14)
@@ -67,8 +72,8 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         self.title = "Scan"
         
         view.addSubViews(scannerView)
-        view.addSubview(isFromUploadGalleryOptionButton)
-        view.addSubview(scanDescLabel)
+        view.addSubview(uploadFromGalleryButton)
+        view.addSubview(descriptionLabel)
         
         NSLayoutConstraint.activate([
             scannerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 55),
@@ -76,26 +81,27 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             scannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             scannerView.heightAnchor.constraint(equalToConstant: 351),
             scannerView.widthAnchor.constraint(equalToConstant: 351),
-            isFromUploadGalleryOptionButton.topAnchor.constraint(equalTo: scannerView.bottomAnchor, constant: 115),
-            isFromUploadGalleryOptionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 84),
-            isFromUploadGalleryOptionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -84),
-            isFromUploadGalleryOptionButton.heightAnchor.constraint(equalToConstant: 58),
-            scanDescLabel.topAnchor.constraint(equalTo: isFromUploadGalleryOptionButton.bottomAnchor, constant: 37),
-            scanDescLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            scanDescLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
+            uploadFromGalleryButton.topAnchor.constraint(equalTo: scannerView.bottomAnchor, constant: 115),
+            uploadFromGalleryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 84),
+            uploadFromGalleryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -84),
+            uploadFromGalleryButton.heightAnchor.constraint(equalToConstant: 58),
+            descriptionLabel.topAnchor.constraint(equalTo: uploadFromGalleryButton.bottomAnchor, constant: 37),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -25),
         ])
         
         if newChatScanflag == true{
-            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
         }
         if newChatScanflag == false{
-            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
         }
         if isFromWallet == true {
-            scanDescLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
         }
     }
     
+    /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let hasCameraAccess = (AVCaptureDevice.authorizationStatus(for: .video) == .authorized)
@@ -107,6 +113,8 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             guard requestCameraPermissionIfNeeded() else { return }
         }
     }
+    
+    /// View will disappear
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if !scannerView.isRunning {
@@ -188,7 +196,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         presentAlert(alert)
     }
     
-    @objc func isFromUploadGalleryOptionButtonTapped(){
+    @objc func uploadFromGalleryButtonTapped(){
         if UIImagePickerController.isSourceTypeAvailable(.savedPhotosAlbum){
             self.openCamera(UIImagePickerController.SourceType.photoLibrary)
             imagePicker.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
@@ -244,10 +252,6 @@ extension ScanNewVC: QRScannerViewDelegate {
             self.qrData = QRData(codeString: str)
             joinOpenGroup(with: str!)
         }
-//        if newChatScanflag == false {
-//            self.qrData = QRData(codeString: str)
-//            startNewDMIfPossible(with: str!)
-//        }
         if isFromWallet == true { //Wallet QR Code Scanning
             var qrString = str!
             if qrString.contains("Beldex:") {
@@ -260,7 +264,6 @@ extension ScanNewVC: QRScannerViewDelegate {
                 guard BChatWalletWrapper.validAddress(walletAddress[0]) else {
                     let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-//                        self.scannerView.startScanning()
                         self.navigationController?.popViewController(animated: true)
                     }))
                     present(alertController, animated: true, completion: nil)
@@ -271,7 +274,6 @@ extension ScanNewVC: QRScannerViewDelegate {
                 guard BChatWalletWrapper.validAddress(qrString) else {
                     let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-//                        self.scannerView.startScanning()
                         self.navigationController?.popViewController(animated: true)
                     }))
                     present(alertController, animated: true, completion: nil)
