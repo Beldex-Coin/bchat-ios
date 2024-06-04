@@ -2,10 +2,6 @@
 
 import UIKit
 
-extension Notification.Name {
-    public static let myNotificationKey_doodlechange = Notification.Name(rawValue: "myNotificationKey_doodlechange")
-}
-
 class SideMenuViewController: BaseVC {
     
     // MARK: - UIElements
@@ -15,8 +11,8 @@ class SideMenuViewController: BaseVC {
         let result = UITableView()
         result.backgroundColor = .clear
         result.separatorStyle = .none
-        result.register(SideMenuTableViewCell.self, forCellReuseIdentifier: "SideMenuTableViewCell")
-        result.register(SideMenuProfileTableViewCell.self, forCellReuseIdentifier: "SideMenuProfileTableViewCell")
+        result.register(SideMenuTableViewCell.self, forCellReuseIdentifier: SideMenuTableViewCell.reuseIdentifier)
+        result.register(SideMenuProfileTableViewCell.self, forCellReuseIdentifier: SideMenuProfileTableViewCell.reuseIdentifier)
         result.showsVerticalScrollIndicator = false
         return result
     }()
@@ -77,11 +73,11 @@ class SideMenuViewController: BaseVC {
     
     // MARK: - Properties
     
-//    @objc public var size: CGFloat = 30 // Not an implicitly unwrapped optional due to Obj-C limitations
-//    @objc public var useFallbackPicture = false
-//    @objc public var publicKey: String!
-//    @objc public var additionalPublicKey: String?
-//    @objc public var openGroupProfilePicture: UIImage?
+    @objc public var size: CGFloat = 30 // Not an implicitly unwrapped optional due to Obj-C limitations
+    @objc public var useFallbackPicture = false
+    @objc public var publicKey: String!
+    @objc public var additionalPublicKey: String?
+    @objc public var openGroupProfilePicture: UIImage?
     
     var viewModel = SideMenuViewModel()
     
@@ -95,15 +91,17 @@ class SideMenuViewController: BaseVC {
         self.navigationController?.isNavigationBarHidden = true
         
         view.addSubViews(closeButton, menuTitleLabel, darkLightModeSwitch, lblversion, lblmodeTitle)
+        
         darkLightModeSwitch.isOn = !isLightMode
         darkLightModeSwitch.thumbTintColor = darkLightModeSwitch.isOn == true ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
         
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         closeButton.setImage(tintedImage, for: .normal)
-        closeButton.tintColor = isLightMode ? UIColor.black : UIColor.white
-        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"]!
-        let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"]!
+        closeButton.tintColor = isLightMode ? .black : .white
+        
+        guard let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] else { return }
+        guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] else { return }
         self.lblversion.text = "BChat \(version) (\(buildNumber))"
         
         // Table view
@@ -121,6 +119,7 @@ class SideMenuViewController: BaseVC {
             closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             closeButton.widthAnchor.constraint(equalToConstant: 20),
             closeButton.heightAnchor.constraint(equalToConstant: 20),
+            
             menuTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             
@@ -172,7 +171,7 @@ class SideMenuViewController: BaseVC {
         closeButton.setImage(tintedImage, for: .normal)
         closeButton.tintColor = isLightMode ? UIColor.black : UIColor.white
         let userInfo = [ "text" : "dark" ]
-        NotificationCenter.default.post(name: .myNotificationKey_doodlechange, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: .doodleChangeNotification, object: nil, userInfo: userInfo)
         tableView.reloadData()
     }
 }

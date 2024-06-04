@@ -482,7 +482,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .myNotificationKey_doodlechange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .doodleChangeNotification, object: nil)
     }
     
     @objc func notificationReceived(_ notification: Notification) {
@@ -595,7 +595,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         super.viewDidAppear(animated)
         self.isManualyCloseMessageRequest = false
         self.isTapped = false
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .myNotificationKey_doodlechange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
         if SSKPreferences.areWalletEnabled{

@@ -105,7 +105,7 @@ final class SideMenuViewModel: NSObject {
     /// menuTitles
     var menuTitles: [SideMenuItem] = [.myAccount, .settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
     
-    /// hasTappableProfilePicture
+    /// hasTappableProfilePictureOSideMenuV
     var hasTappableProfilePicture: Bool = false
     
     /// tableViewHeightConstraint

@@ -23,4 +23,5 @@ extension Notification.Name {
     static var deleteMessageRequestTappedNotification = Notification.Name(rawValue: Constants.deleteMessageRequest)
     static var attachmentHiddenNotification = Notification.Name(rawValue: Constants.hideAttachment)
     static var userBlockContactNotification = Notification.Name(rawValue: Constants.userBlockContact)
+    static let doodleChangeNotification = Notification.Name(rawValue: Constants.doodleChangeNotification)
 }
