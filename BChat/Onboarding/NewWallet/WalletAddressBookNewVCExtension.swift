@@ -30,11 +30,8 @@ extension WalletAddressBookNewVC: UITableViewDataSource, UITableViewDelegate {
                 cell.nameLabel.text = filterContactNameArray[indexPath.item]
                 cell.addressIDLabel.text = filterBeldexAddressArray[indexPath.item]
             }
-            cell.copyButton.tag = indexPath.row
-            cell.copyButton.addTarget(self, action: #selector(self.copyActionTapped(_:)), for: .touchUpInside)
-            
-            cell.shareButton.tag = indexPath.row
-            cell.shareButton.addTarget(self, action: #selector(self.shareActionTapped(_:)), for: .touchUpInside)
+            cell.copyAndSendButton.tag = indexPath.row
+            cell.copyAndSendButton.addTarget(self, action: #selector(self.copyAndSendActionTapped(_:)), for: .touchUpInside)
             
         } else {
             if isSearched == true {
@@ -48,6 +45,14 @@ extension WalletAddressBookNewVC: UITableViewDataSource, UITableViewDelegate {
             }
             
         }
+        
+        if isGoingToSendScreen{
+            cell.copyAndSendButton.setImage(UIImage(named: "ic_send_bdxaddress")!, for: UIControl.State.normal)
+        }else {
+            cell.copyAndSendButton.setImage(UIImage(named: "ic_copy_white2")!, for: UIControl.State.normal)
+            cell.copyAndSendButton.backgroundColor = Colors.bothGreenColor
+        }
+        
         return cell
     }
     

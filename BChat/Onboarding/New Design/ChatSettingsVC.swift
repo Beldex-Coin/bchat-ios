@@ -266,6 +266,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     func observeNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userBlockContactTapped), name: .userBlockContactNotification, object: nil)
     }
     
     func editingDatabaseConnection() -> YapDatabaseConnection? {
@@ -638,6 +639,49 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
+    
+    // Block and UnBlock the Contact
+    @objc func userBlockContactTapped(_ notification: Notification) {
+        if let contactThread = self.thread as? TSContactThread {
+            let isCurrentlyBlocked = contactThread.isBlocked()
+            if !isCurrentlyBlocked {
+                guard let thread = thread as? TSContactThread else { return }
+                let publicKey = thread.contactBChatID()
+                if let contact: Contact = Storage.shared.getContact(with: publicKey) {
+                    Storage.shared.write(
+                        with: { transaction in
+                            guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
+                            
+                            contact.isBlocked = true
+                            Storage.shared.setContact(contact, using: transaction)
+                        },
+                        completion: {
+                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                        }
+                    )
+                    self.tableView.reloadData()
+                }
+            } else {
+                guard let thread = thread as? TSContactThread else { return }
+                let publicKey = thread.contactBChatID()
+                if let contact: Contact = Storage.shared.getContact(with: publicKey) {
+                    Storage.shared.write(
+                        with: { transaction in
+                            guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
+                            
+                            contact.isBlocked = false
+                            Storage.shared.setContact(contact, using: transaction)
+                        },
+                        completion: {
+                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                        }
+                    )
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
     
 }
 
@@ -1215,40 +1259,20 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 5 {
                 
             }
-            if indexPath.row == 6 {
-                
+            if indexPath.row == 6 { // Block and UnBlock Contact Index Cell
                 if let contactThread = self.thread as? TSContactThread {
-                    
                     let isCurrentlyBlocked = contactThread.isBlocked()
-                    
                     if !isCurrentlyBlocked {
-                        assert(!isCurrentlyBlocked, "Assertion: Current thread should not be blocked.")
-                        if isCurrentlyBlocked {
-                            return
-                        }
-                        BlockListUIUtils.showBlockThreadActionSheet(contactThread, from: self) { isBlocked in
-                            
-                            // If we successfully blocked then force a config sync
-                            if isBlocked {
-                                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            }
-                            
-                            self.tableView.reloadData()
-                        }
-                        
+                        let vc = BlockContactPopUpVC()
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.modalTransitionStyle = .crossDissolve
+                        self.present(vc, animated: true, completion: nil)
                     } else {
-                        assert(isCurrentlyBlocked, "Assertion: Current thread should be blocked.")
-                        if !isCurrentlyBlocked {
-                            return
-                        }
-                        BlockListUIUtils.showUnblockThreadActionSheet(contactThread, from: self) { isBlocked in
-                            
-                            // If we successfully unblocked then force a config sync
-                            if !isBlocked {
-                                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            }
-                            self.tableView.reloadData()
-                        }
+                        let vc = BlockContactPopUpVC()
+                        vc.isBlocked = true
+                        vc.modalPresentationStyle = .overFullScreen
+                        vc.modalTransitionStyle = .crossDissolve
+                        self.present(vc, animated: true, completion: nil)
                     }
                 }
             }

@@ -4,7 +4,7 @@ import UIKit
 import Alamofire
 import BChatUIKit
 
-class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
+class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSendingDelegateProtocol {
     
     private lazy var topView: UIView = {
         let stackView = UIView()
@@ -406,6 +406,7 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         beldexAddressTextview.returnKeyType = .done
         beldexAmountTextField.tintColor = Colors.bchatButtonColor
         beldexAddressTextview.tintColor = Colors.bchatButtonColor
+        beldexAddressTextview.delegate = self
         //Keyboard Done Option
         beldexAmountTextField.addDoneButtonKeybord()
         self.placeHolderSeedLabel()
@@ -763,6 +764,8 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
     
     @objc func isFromAddressBookButtonTapped(_ sender: UIButton) {
         let vc = WalletAddressBookNewVC()
+        vc.isGoingToSendScreen = true
+        vc.delegate = self
         navigationController!.pushViewController(vc, animated: true)
     }
     
@@ -856,6 +859,13 @@ class WalletSendNewVC: BaseVC,UITextFieldDelegate,UITextViewDelegate {
         paymentIDImg.isHidden = true
         paymentIDTitleLabel.isHidden = true
     }
+    
+    // Delegate Method get the beldex address
+    func sendBeldexAddressToMyWalletSendVC(myData: String) {
+        placeholderLabel?.isHidden = true
+        self.beldexAddressTextview.text = myData
+    }
+    
 }
 
 extension WalletSendNewVC: BeldexWalletDelegate {

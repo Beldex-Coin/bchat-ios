@@ -194,30 +194,26 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             stackViewContainer.bottomAnchor.constraint(equalTo: topBackGroundView.bottomAnchor, constant: -5)
         ])
         
-        var rightBarButtonItems: [UIBarButtonItem] = []
-        
         let settings = UIButton(type: .custom)
-        settings.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
         settings.setImage(UIImage(named:"ic_menu_new"), for: .normal)
-        settings.addTarget(self, action: #selector(didMenuButton), for: UIControl.Event.touchUpInside)
-        let settingsBarItem = UIBarButtonItem(customView: settings)
-        rightBarButtonItems.append(settingsBarItem)
-        
+        settings.addTarget(self, action: #selector(didMenuButton), for: .touchUpInside)
+
         let download = UIButton(type: .custom)
-        download.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
         download.setImage(UIImage(named:"ic_download_imagelogo"), for: .normal)
-        download.addTarget(self, action: #selector(downloadTapped), for: UIControl.Event.touchUpInside)
-        let downloadBarItem = UIBarButtonItem(customView: download)
-        rightBarButtonItems.append(downloadBarItem)
-        
+        download.addTarget(self, action: #selector(downloadTapped), for: .touchUpInside)
+
         let forward = UIButton(type: .custom)
-        forward.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
         forward.setImage(UIImage(named:"ic_forward_image"), for: .normal)
-        forward.addTarget(self, action: #selector(didPressShare), for: UIControl.Event.touchUpInside)
-        let forwardBarItem = UIBarButtonItem(customView: forward)
-        rightBarButtonItems.append(forwardBarItem)
-        
-        navigationItem.rightBarButtonItems = rightBarButtonItems
+        forward.addTarget(self, action: #selector(didPressShare), for: .touchUpInside)
+
+        let stackView = UIStackView(arrangedSubviews: [forward, download, settings])
+        stackView.axis = .horizontal
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
+        stackView.spacing = 20 // Adjust as needed
+
+        let stackBarItem = UIBarButtonItem(customView: stackView)
+        navigationItem.rightBarButtonItem = stackBarItem
 
         // Even though bars are opaque, we want content to be layed out behind them.
         // The bars might obscure part of the content, but they can easily be hidden by tapping

@@ -4,6 +4,11 @@ import UIKit
 import BChatUIKit
 import BChatMessagingKit
 
+protocol MyDataSendingDelegateProtocol {
+    func sendBeldexAddressToMyWalletSendVC(myData: String)
+}
+
+
 class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var searchTextField: UITextField = {
@@ -113,6 +118,8 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     var flagSendAddress = false
     internal var isSearched : Bool = false
     internal var searchfilterNameArray = [String: String]()
+    var isGoingToSendScreen = false
+    var delegate: MyDataSendingDelegateProtocol? = nil
     
     // For Add Address Don't Remove
 //    var savedDict = [String: String]()
@@ -392,38 +399,38 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
 //        return (keys, values)
 //    }
     
-    @objc func copyActionTapped(_ x: AnyObject) {
-        //Copy the Address
-        let indexPath = IndexPath(item: x.tag!, section: 0)
-        if tableView.cellForRow(at: indexPath) is AddressBookTableCell {
-            var addresscopy = ""
-            if isSearched == true {
-                let intIndex = x.tag!
-                let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
-                addresscopy = searchfilterNameArray.values[index]
-            } else {
-                addresscopy = filterBeldexAddressArray[indexPath.item]
+    /// Copy Address and Send Address
+    @objc func copyAndSendActionTapped(_ x: AnyObject) {
+        if isGoingToSendScreen {
+            //Send Address
+            let indexPath = IndexPath(item: x.tag!, section: 0);
+            if tableView.cellForRow(at: indexPath) is AddressBookTableCell {
+                var addressshare = ""
+                if isSearched == true {
+                    let intIndex = x.tag!
+                    let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
+                    addressshare = searchfilterNameArray.values[index]
+                } else {
+                    addressshare = filterBeldexAddressArray[indexPath.item]
+                }
+                self.delegate?.sendBeldexAddressToMyWalletSendVC(myData: addressshare)
+                self.navigationController?.popViewController(animated: true)
             }
-            UIPasteboard.general.string = "\(addresscopy)"
-            self.showToastMsg(message: "Copied to clipboard", seconds: 1.0)
-        }
-    }
-    
-    @objc func shareActionTapped(_ x: AnyObject) {
-        //Share Address
-        let indexPath = IndexPath(item: x.tag!, section: 0);
-        if tableView.cellForRow(at: indexPath) is AddressBookTableCell {
-            var addressshare = ""
-            if isSearched == true {
-                let intIndex = x.tag!
-                let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
-                addressshare = searchfilterNameArray.values[index]
-            } else {
-                addressshare = filterBeldexAddressArray[indexPath.item]
+        } else {
+            //Copy the Address
+            let indexPath = IndexPath(item: x.tag!, section: 0)
+            if tableView.cellForRow(at: indexPath) is AddressBookTableCell {
+                var addresscopy = ""
+                if isSearched == true {
+                    let intIndex = x.tag!
+                    let index = searchfilterNameArray.index(searchfilterNameArray.startIndex, offsetBy: intIndex)
+                    addresscopy = searchfilterNameArray.values[index]
+                } else {
+                    addresscopy = filterBeldexAddressArray[indexPath.item]
+                }
+                UIPasteboard.general.string = "\(addresscopy)"
+                self.showToastMsg(message: "Copied to clipboard", seconds: 1.0)
             }
-            NotificationCenter.default.post(name: Notification.Name("selectedAddressSharingToSendScreen"), object: addressshare)
-            let shareVC = UIActivityViewController(activityItems: [ addressshare ], applicationActivities: nil)
-            navigationController!.present(shareVC, animated: true, completion: nil)
         }
     }
     
@@ -439,21 +446,12 @@ class AddressBookTableCell: UITableViewCell {
         view.layer.cornerRadius = 16
         return view
     }()
-    lazy var copyButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = Colors.greenColor
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
-        button.setImage(UIImage(named: "ic_copy_white2"), for: .normal)
-        return button
-    }()
-    lazy var shareButton: UIButton = {
+    lazy var copyAndSendButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.backgroundViewColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
-        let logoImage = isLightMode ? "ic_black_share" : "share"
-        button.setImage(UIImage(named: logoImage), for: .normal)
+        button.setImage(UIImage(named: "ic_copy_white2"), for: .normal)
         return button
     }()
     lazy var namebackgroundView: UIView = {
@@ -487,8 +485,7 @@ class AddressBookTableCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         // Add subviews to the cell
         contentView.addSubview(backGroundView)
-        backGroundView.addSubview(copyButton)
-        backGroundView.addSubview(shareButton)
+        backGroundView.addSubview(copyAndSendButton)
         backGroundView.addSubview(namebackgroundView)
         namebackgroundView.addSubview(nameLabel)
         backGroundView.addSubview(addressIDLabel)
@@ -498,18 +495,14 @@ class AddressBookTableCell: UITableViewCell {
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             backGroundView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            copyButton.widthAnchor.constraint(equalToConstant: 38),
-            copyButton.heightAnchor.constraint(equalToConstant: 38),
-            copyButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
-            copyButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -0),
-            shareButton.widthAnchor.constraint(equalToConstant: 38),
-            shareButton.heightAnchor.constraint(equalToConstant: 38),
-            shareButton.centerYAnchor.constraint(equalTo: copyButton.centerYAnchor),
-            shareButton.trailingAnchor.constraint(equalTo: copyButton.leadingAnchor, constant: -10),
+            copyAndSendButton.widthAnchor.constraint(equalToConstant: 38),
+            copyAndSendButton.heightAnchor.constraint(equalToConstant: 38),
+            copyAndSendButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
+            copyAndSendButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -0),
             namebackgroundView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
             namebackgroundView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 0),
-            namebackgroundView.trailingAnchor.constraint(equalTo: shareButton.leadingAnchor, constant: -10),
-            namebackgroundView.centerYAnchor.constraint(equalTo: shareButton.centerYAnchor),
+            namebackgroundView.trailingAnchor.constraint(equalTo: copyAndSendButton.leadingAnchor, constant: -10),
+            namebackgroundView.centerYAnchor.constraint(equalTo: copyAndSendButton.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: namebackgroundView.leadingAnchor, constant: 20),
             nameLabel.trailingAnchor.constraint(equalTo: namebackgroundView.trailingAnchor, constant: -10),
             nameLabel.centerYAnchor.constraint(equalTo: namebackgroundView.centerYAnchor),

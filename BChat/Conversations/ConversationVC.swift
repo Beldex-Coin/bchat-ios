@@ -897,6 +897,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         
         customizeSlideToOpen.isHidden = true
+        CustomSlideView.isFromExpandAttachment = false
         view.addSubview(customizeSlideToOpen)
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
@@ -1028,6 +1029,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
         }
         self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
@@ -1051,6 +1053,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if backAPI == true {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             if hiddenView.isHidden == false {
                 navigationController?.navigationBar.isHidden = true
@@ -1073,6 +1076,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.backAPI = false
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
         }
     }
     
@@ -1355,6 +1359,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             snInputView.text = ""
             let vc = NewPasswordVC()
@@ -1385,7 +1390,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    
+                    customizeSlideToOpen.isHidden = true
+                    CustomSlideView.isFromExpandAttachment = false
                     var balance = WalletSharedData.sharedInstance.wallet!.balance
                     var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
                     
@@ -1465,6 +1471,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func connect(wallet: BDXWallet) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
             guard let `self` = self else { return }
@@ -1492,6 +1499,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             
             // Here dismiss with Initiating Transaction PopUp
@@ -1517,6 +1525,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             initiatingTransactionPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
@@ -1693,7 +1702,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        newSlidePositionY = UIScreen.main.bounds.height / 2.8
+        newSlidePositionY = UIScreen.main.bounds.height / 2.9
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
         // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
@@ -1715,7 +1724,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = false
         } else {
-            newSlidePositionY = UIScreen.main.bounds.height / 2.8
+            newSlidePositionY = UIScreen.main.bounds.height / 2.9
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = true
         }
