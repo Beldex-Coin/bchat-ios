@@ -17,7 +17,28 @@ var globalDynamicNodeArray = [String]()
 let globalDynamicNodeUrl = "https://testdeb.beldex.dev/Beldex-Projects/Beldex-flutter-wallet/mainnet-apk/testing/15-04-2024/node_list.json"
 
 
+// MARK: - Constants
 
-
-
-
+struct Constants: Equatable {
+    
+    static let callTapBackToReturn = "connectingCallTapToReturnToTheCall"
+    static let callConnectingShowView = "connectingCallShowView"
+    static let callConnectionHideView = "connectingCallHideView"
+    static let showPayAsYouChat = "showPayAsYouChat"
+    static let showHideInputView = "hideOrShowInputView"
+    static let bdxSlidingView = "bdxAmountPassingSliderView"
+    static let rescanAction = "reScaneButtonAction"
+    static let reconnect = "reconnectButtonAction"
+    static let selectedNameDisplay = "selectedDisplayNameKey"
+    static let selectedDecimalDisplay = "selectedDecimalNameKey"
+    static let feePeriority = "feePriorityNameKey"
+    static let selectedCurrency = "selectedCurrencyNameKey"
+    static let refreshNodePopup = "refreshNodePopup"
+    static let switchNodePopup = "switchNodePopUp"
+    static let reloadSettingScreen = "reloadSettingScreenTable"
+    static let blockMessageRequest = "blockMessageRequestTapped"
+    static let acceptMessageRequest = "acceptMessageRequestTapped"
+    static let deleteMessageRequest = "deleteMessageRequestTapped"
+    static let userBlockContact = "userBlockContact"
+    static let hideAttachment = "attachmentHidden"
+}
