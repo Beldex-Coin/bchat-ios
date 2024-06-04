@@ -67,16 +67,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         return result
     }()
     
-    private lazy var payAsChatButtonFinal: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
-        result.accessibilityLabel = NSLocalizedString("", comment: "")
-        result.accessibilityHint = NSLocalizedString("", comment: "")
-        // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
-        result.addSubview(progressView)
-        return result
-    }()
-    
     private var progressView: CircularProgressView? {
         return payAsChatButton.subviews.compactMap { $0 as? CircularProgressView }.first
     }
@@ -156,7 +146,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         autoresizingMask = .flexibleHeight
         // Background & blur
         let backgroundView = UIView()
-        backgroundView.backgroundColor = Colors.mainBackGroundColor2//isLightMode ? .white : .black
+        backgroundView.backgroundColor = Colors.mainBackGroundColor2
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
