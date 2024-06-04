@@ -182,21 +182,7 @@ final class CallTableViewCell: UITableViewCell {
         
         switch message.callState {
         case .incoming:
-            discriptionLabel.isHidden = true
-            mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
-            mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
-            mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
-            mainContainerView.widthAnchor.constraint(equalToConstant: 124).isActive = true
-            
-            mainContainerView.backgroundColor = Colors.incomingMessageColor
-            containerView.backgroundColor = Colors.smallBackGroundViewCellColor
-            
-            containerView.widthAnchor.constraint(equalToConstant: 112).isActive = true
-            titleLabel.widthAnchor.constraint(equalToConstant: 21).isActive = true
-            
-            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-            titleLabel.textColor = Colors.messageTimeLabelColor
-            self.titleLabel.text = "Call"
+            incomingOutgoingCallView()
             icon = UIImage(named: incomimglogoImage)
         case .outgoing:
             debugPrint("outgoing call")
@@ -219,7 +205,8 @@ final class CallTableViewCell: UITableViewCell {
             self.titleLabel.text = "Missed call"
             icon = UIImage(named: missedlogoImage)
         case .permissionDenied, .unknown:
-            icon = UIImage(named: missedlogoImage)
+            incomingOutgoingCallView()
+            icon = UIImage(named: incomimglogoImage)
         default:
             icon = nil
         }
@@ -235,6 +222,25 @@ final class CallTableViewCell: UITableViewCell {
         let date = message.dateForUI()
         let description = DateUtil.formatDate(forDisplay: date)
         timeLabel.text = description
+    }
+    
+    /// Incoming Outgoing Call View
+    func incomingOutgoingCallView() {
+        discriptionLabel.isHidden = true
+        mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+        mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        mainContainerView.widthAnchor.constraint(equalToConstant: 124).isActive = true
+        
+        mainContainerView.backgroundColor = Colors.incomingMessageColor
+        containerView.backgroundColor = Colors.smallBackGroundViewCellColor
+        
+        containerView.widthAnchor.constraint(equalToConstant: 112).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 21).isActive = true
+        
+        timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+        titleLabel.textColor = Colors.messageTimeLabelColor
+        self.titleLabel.text = "Call"
     }
     
     /// Handle tap gesture
