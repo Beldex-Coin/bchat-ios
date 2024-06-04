@@ -5,6 +5,7 @@ import BChatUIKit
 
 class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     
+    /// Share Button
     private lazy var shareButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
@@ -20,6 +21,8 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    /// Top Background View
     private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -27,14 +30,18 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         stackView.layer.cornerRadius = 16
         return stackView
     }()
-    private lazy var beldexAddressBgView: UIView = {
+    
+    /// Beldex Address Background View
+    private lazy var beldexAddressBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
         stackView.backgroundColor = Colors.cellGroundColor2
         return stackView
     }()
-    private lazy var beldexAddressIDLabel: UILabel = {
+    
+    /// Beldex Address Id Label
+    private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
         result.font = Fonts.OpenSans(ofSize: 13)
@@ -43,6 +50,8 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.numberOfLines = 0
         return result
     }()
+    
+    /// Copy Button
     private lazy var copyButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -52,6 +61,8 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    /// Beldex Address Title Label
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
@@ -61,6 +72,8 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Beldex Amount TextField
     private lazy var beldexAmountTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
@@ -77,6 +90,8 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.layer.borderWidth = 1
         return result
     }()
+    
+    /// Bdx Amount Title Label
     private lazy var bdxAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
@@ -86,13 +101,17 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-    private lazy var isFromQrCodebackgroundView: UIView = {
+    
+    /// Qr Code Background View
+    private lazy var qrCodebackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
         stackView.backgroundColor = Colors.qrCodeBackgroundColor
         return stackView
     }()
+    
+    /// Qr Code Image
     private lazy var qrCodeImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -112,31 +131,31 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         self.title = "Receive"
         
         view.addSubview(topBackgroundView)
-        topBackgroundView.addSubview(beldexAddressBgView)
-        beldexAddressBgView.addSubview(beldexAddressIDLabel)
+        topBackgroundView.addSubview(beldexAddressBackgroundView)
+        beldexAddressBackgroundView.addSubview(beldexAddressIdLabel)
         topBackgroundView.addSubview(copyButton)
         topBackgroundView.addSubview(beldexAddressTitleLabel)
         topBackgroundView.addSubview(beldexAmountTextField)
         topBackgroundView.addSubview(bdxAmountTitleLabel)
-        topBackgroundView.addSubview(isFromQrCodebackgroundView)
-        isFromQrCodebackgroundView.addSubview(qrCodeImage)
+        topBackgroundView.addSubview(qrCodebackgroundView)
+        qrCodebackgroundView.addSubview(qrCodeImage)
         view.addSubview(shareButton)
         
         NSLayoutConstraint.activate([
             topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             topBackgroundView.bottomAnchor.constraint(equalTo: shareButton.topAnchor, constant: -25),
-            beldexAddressBgView.bottomAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: -40),
-            beldexAddressBgView.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 19),
-            beldexAddressBgView.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -19),
-            beldexAddressIDLabel.topAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: 22),
-            beldexAddressIDLabel.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -22),
-            beldexAddressIDLabel.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 22),
-            beldexAddressIDLabel.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -22),
+            beldexAddressBackgroundView.bottomAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: -40),
+            beldexAddressBackgroundView.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 19),
+            beldexAddressBackgroundView.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -19),
+            beldexAddressIdLabel.topAnchor.constraint(equalTo: beldexAddressBackgroundView.topAnchor, constant: 22),
+            beldexAddressIdLabel.bottomAnchor.constraint(equalTo: beldexAddressBackgroundView.bottomAnchor, constant: -22),
+            beldexAddressIdLabel.leadingAnchor.constraint(equalTo: beldexAddressBackgroundView.leadingAnchor, constant: 22),
+            beldexAddressIdLabel.trailingAnchor.constraint(equalTo: beldexAddressBackgroundView.trailingAnchor, constant: -22),
             copyButton.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -20),
             copyButton.widthAnchor.constraint(equalToConstant: 32),
             copyButton.heightAnchor.constraint(equalToConstant: 32),
-            copyButton.bottomAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: -15),
+            copyButton.bottomAnchor.constraint(equalTo: beldexAddressBackgroundView.topAnchor, constant: -15),
             beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 26),
             beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: copyButton.centerYAnchor),
             beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: copyButton.leadingAnchor, constant: -7),
@@ -147,15 +166,15 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
             bdxAmountTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 26),
             bdxAmountTitleLabel.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -7),
             bdxAmountTitleLabel.bottomAnchor.constraint(equalTo: beldexAmountTextField.topAnchor, constant: -10),
-            isFromQrCodebackgroundView.widthAnchor.constraint(equalToConstant: 190),
-            isFromQrCodebackgroundView.heightAnchor.constraint(equalToConstant: 190),
-            isFromQrCodebackgroundView.centerXAnchor.constraint(equalTo: topBackgroundView.centerXAnchor),
-            isFromQrCodebackgroundView.bottomAnchor.constraint(equalTo: bdxAmountTitleLabel.topAnchor, constant: -35),
-            isFromQrCodebackgroundView.centerYAnchor.constraint(equalTo: topBackgroundView.firstBaselineAnchor, constant: 25),
-            qrCodeImage.topAnchor.constraint(equalTo: isFromQrCodebackgroundView.topAnchor, constant: 20),
-            qrCodeImage.bottomAnchor.constraint(equalTo: isFromQrCodebackgroundView.bottomAnchor, constant: -20),
-            qrCodeImage.leadingAnchor.constraint(equalTo: isFromQrCodebackgroundView.leadingAnchor, constant: 20),
-            qrCodeImage.trailingAnchor.constraint(equalTo: isFromQrCodebackgroundView.trailingAnchor, constant: -20),
+            qrCodebackgroundView.widthAnchor.constraint(equalToConstant: 190),
+            qrCodebackgroundView.heightAnchor.constraint(equalToConstant: 190),
+            qrCodebackgroundView.centerXAnchor.constraint(equalTo: topBackgroundView.centerXAnchor),
+            qrCodebackgroundView.bottomAnchor.constraint(equalTo: bdxAmountTitleLabel.topAnchor, constant: -35),
+            qrCodebackgroundView.centerYAnchor.constraint(equalTo: topBackgroundView.firstBaselineAnchor, constant: 25),
+            qrCodeImage.topAnchor.constraint(equalTo: qrCodebackgroundView.topAnchor, constant: 20),
+            qrCodeImage.bottomAnchor.constraint(equalTo: qrCodebackgroundView.bottomAnchor, constant: -20),
+            qrCodeImage.leadingAnchor.constraint(equalTo: qrCodebackgroundView.leadingAnchor, constant: 20),
+            qrCodeImage.trailingAnchor.constraint(equalTo: qrCodebackgroundView.trailingAnchor, constant: -20),
         ])
         NSLayoutConstraint.activate([
             shareButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
@@ -170,7 +189,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         //Keyboard Done Option
         beldexAmountTextField.addDoneButtonKeybord()
         if !SaveUserDefaultsData.WalletpublicAddress.isEmpty {
-            beldexAddressIDLabel.text = SaveUserDefaultsData.WalletpublicAddress
+            beldexAddressIdLabel.text = SaveUserDefaultsData.WalletpublicAddress
         }
         qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
         qrCodeImage.contentMode = .scaleAspectFit
@@ -209,12 +228,12 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     }
     
     @objc private func onAmountChange(_ textField: UITextField) {
-        isFromUpdateQRCode()
+        updateQRCode()
     }
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        isFromUpdateQRCode()
+        updateQRCode()
     }
-    func isFromUpdateQRCode(){
+    func updateQRCode(){
         if beldexAmountTextField.text!.count == 0 {
             shareButton.isUserInteractionEnabled = false
             shareButton.backgroundColor = Colors.backgroundViewColor
@@ -235,16 +254,16 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     
     @objc func shareButtonTapped(_ sender: UIButton) {
         if beldexAmountTextField.text!.isEmpty {
-            isFromAmountValidationAlert()
+            amountValidationAlert()
         }else {
             let indexOfString = beldexAmountTextField.text!
             let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
             if beldexAmountTextField.text?.count == 0 {
-                isFromAmountValidationAlert()
+                amountValidationAlert()
             }
             else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count
                         > 16 || beldexAmountTextField.text![lastString] == "." {
-                isFromProperAmountValidationAlert()
+                properAmountValidationAlert()
             }else {
                 let qrCode = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
                 let shareVC = UIActivityViewController(activityItems: [ qrCode! ], applicationActivities: nil)
@@ -253,12 +272,12 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         }
     }
     
-    func isFromAmountValidationAlert(){
+    func amountValidationAlert(){
         let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
-    func isFromProperAmountValidationAlert(){
+    func properAmountValidationAlert(){
         let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_PROPER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)

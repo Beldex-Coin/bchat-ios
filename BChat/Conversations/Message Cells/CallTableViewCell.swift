@@ -50,7 +50,7 @@ final class CallTableViewCell: UITableViewCell {
     private lazy var infoImageViewWidthConstraint = infoImageView.set(.width, to: 0)
     private lazy var infoImageViewHeightConstraint = infoImageView.set(.height, to: 0)
     
-    private static let iconSize: CGFloat = 16
+    private static let iconSize: CGFloat = 28
     private lazy var infoImageView = UIImageView(image: UIImage(named: "ic_info")?.withTint(Colors.text))
     
     // MARK: - UIElemnts
@@ -134,17 +134,14 @@ final class CallTableViewCell: UITableViewCell {
         mainContainerView.addSubViews(containerView, timeLabel)
         containerView.addSubViews(iconImageView, stackViewContainer)
         
-        
         containerView.addSubview(stackViewContainer)
         stackViewContainer.addArrangedSubview(titleLabel)
         stackViewContainer.addArrangedSubview( discriptionLabel)
         
-        
-        
         discriptionLabel.isHidden = true
         
         NSLayoutConstraint.activate([
-            mainContainerView.widthAnchor.constraint(equalToConstant: 124),
+            mainContainerView.widthAnchor.constraint(equalToConstant: 159),
             
             containerView.leadingAnchor.constraint(equalTo: mainContainerView.leadingAnchor, constant: 6),
             containerView.trailingAnchor.constraint(equalTo: mainContainerView.trailingAnchor, constant: -6),
@@ -154,6 +151,8 @@ final class CallTableViewCell: UITableViewCell {
             
             iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
             iconImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            iconImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+            iconImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
             
             stackViewContainer.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
             stackViewContainer.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),

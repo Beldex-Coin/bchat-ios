@@ -41,13 +41,6 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         setUpGestureRecognizers()
     }
     
-//    override func prepareForReuse() {
-//        super.prepareForReuse()
-//        
-//        update()
-//    }
-    
-    
     // MARK: - Properties
     
     private lazy var iconImageViewWidthConstraint = iconImageView.set(.width, to: 0)
@@ -56,7 +49,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
     private lazy var infoImageViewWidthConstraint = infoImageView.set(.width, to: 0)
     private lazy var infoImageViewHeightConstraint = infoImageView.set(.height, to: 0)
     
-    private static let iconSize: CGFloat = 16
+    private static let iconSize: CGFloat = 28
     private lazy var infoImageView = UIImageView(image: UIImage(named: "ic_info")?.withTint(Colors.text))
         
     // MARK: - UIElemnts

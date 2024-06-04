@@ -6,7 +6,8 @@ import BChatUIKit
 
 class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSendingDelegateProtocol {
     
-    private lazy var topView: UIView = {
+    /// Top Background View
+    private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
@@ -16,7 +17,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return stackView
     }()
     
-    private lazy var titleOfTotalBalanceLabel: UILabel = {
+    /// Total Balance Title Label
+    private lazy var totalBalanceTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TOTAL_BALANCE", comment: "")
         result.textColor = Colors.cancelButtonTitleColor
@@ -26,6 +28,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
+    /// Beldex Logo Img
     lazy var beldexLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -35,6 +38,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return imageView
     }()
     
+    /// Beldex Balance Label
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -44,6 +48,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
+    /// Payment ID Title Label
     private lazy var paymentIDTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
@@ -54,7 +59,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
-    lazy var paymentIDImg: UIImageView = {
+    /// Payment Id Image
+    lazy var paymentIdImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +69,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return imageView
     }()
     
-    private lazy var middleView: UIView = {
+    /// Middle Background View
+    private lazy var middleBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.mainBackGroundColor2
@@ -71,6 +78,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return stackView
     }()
     
+    /// Beldex Amount Title Label
     private lazy var beldexAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
@@ -81,7 +89,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
-    private lazy var isFromMaxButton: UIButton = {
+    /// Max Button
+    private lazy var maxButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("MAX_BUTTON", comment: ""), for: .normal)
         button.layer.cornerRadius = 10
@@ -89,10 +98,11 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.backgroundColor = Colors.bothBlueColor
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
-        button.addTarget(self, action: #selector(isFromMaxButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(maxButtonTapped), for: .touchUpInside)
         return button
     }()
     
+    /// Beldex Amount TextField
     private lazy var beldexAmountTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
@@ -109,7 +119,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
-    private lazy var isCurrencyResultTitleLabel: UILabel = {
+    /// Currency Result Title Label
+    private lazy var currencyResultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
@@ -118,17 +129,19 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
-    private lazy var isFromAddressBookButton: UIButton = {
+    /// Address Book Button
+    private lazy var addressBookButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "ic_addressBook_New"), for: .normal)
-        button.addTarget(self, action: #selector(isFromAddressBookButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addressBookButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private lazy var isFromScanOptionButtonView: UIView = {
+    /// Scan Option Background View
+    private lazy var scanOptionBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 8
@@ -136,16 +149,18 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return stackView
     }()
     
-    private lazy var isFromScanOptionButton: UIButton = {
+    /// Scan Button
+    private lazy var scanButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         let logoImage = isLightMode ? "ic_scan_blackimage" : "ic_QR_scan_send"
         button.setImage(UIImage(named: logoImage), for: .normal)
-        button.addTarget(self, action: #selector(isFromScanOptionButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(scanButtonTapped), for: .touchUpInside)
         return button
     }()
     
+    /// Beldex Address TitleLabel
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
@@ -156,7 +171,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
-    private lazy var beldexAddressBgView: UIView = {
+    /// Beldex Address Background View
+    private lazy var beldexAddressBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 12
@@ -164,6 +180,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return stackView
     }()
     
+    /// Beldex Address Textview
     private lazy var beldexAddressTextview: UITextView = {
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -175,6 +192,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
+    /// Transation Priority Title Label
     private lazy var transationPriorityTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_PRIORITY", comment: "")
@@ -185,6 +203,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
+    /// Flash Priority Button
     private lazy var flashPriorityButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
@@ -196,7 +215,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return button
     }()
     
-    private lazy var estimatedFeeBgView: UIView = {
+    /// Estimated Fee Background View
+    private lazy var estimatedFeeBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.layer.cornerRadius = 8
@@ -206,6 +226,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return stackView
     }()
     
+    /// Estimated Fee ID Label
     private lazy var estimatedFeeIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor.white
@@ -216,6 +237,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return result
     }()
     
+    /// Send Button
     private lazy var sendButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: ""), for: .normal)
@@ -269,107 +291,107 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         newBackButton.image = UIImage(named: "NavBarBack")
         self.navigationItem.leftBarButtonItem = newBackButton
         
-        view.addSubViews(topView)
-        topView.addSubview(titleOfTotalBalanceLabel)
-        topView.addSubview(beldexLogoImg)
-        topView.addSubview(beldexBalanceLabel)
-        view.addSubview(middleView)
-        middleView.addSubview(beldexAmountTitleLabel)
-        middleView.addSubview(isFromMaxButton)
-        middleView.addSubview(beldexAmountTextField)
-        middleView.addSubview(isCurrencyResultTitleLabel)
-        middleView.addSubview(isFromAddressBookButton)
-        middleView.addSubview(isFromScanOptionButtonView)
-        isFromScanOptionButtonView.addSubview(isFromScanOptionButton)
-        middleView.addSubview(beldexAddressTitleLabel)
-        middleView.addSubview(beldexAddressBgView)
-        beldexAddressBgView.addSubview(beldexAddressTextview)
-        middleView.addSubview(paymentIDImg)
-        middleView.addSubview(paymentIDTitleLabel)
-        middleView.addSubview(transationPriorityTitleLabel)
-        middleView.addSubview(flashPriorityButton)
-        middleView.addSubview(estimatedFeeBgView)
-        estimatedFeeBgView.addSubview(estimatedFeeIDLabel)
+        view.addSubViews(topBackgroundView)
+        topBackgroundView.addSubview(totalBalanceTitleLabel)
+        topBackgroundView.addSubview(beldexLogoImg)
+        topBackgroundView.addSubview(beldexBalanceLabel)
+        view.addSubview(middleBackgroundView)
+        middleBackgroundView.addSubview(beldexAmountTitleLabel)
+        middleBackgroundView.addSubview(maxButton)
+        middleBackgroundView.addSubview(beldexAmountTextField)
+        middleBackgroundView.addSubview(currencyResultTitleLabel)
+        middleBackgroundView.addSubview(addressBookButton)
+        middleBackgroundView.addSubview(scanOptionBackgroundView)
+        scanOptionBackgroundView.addSubview(scanButton)
+        middleBackgroundView.addSubview(beldexAddressTitleLabel)
+        middleBackgroundView.addSubview(beldexAddressBackgroundView)
+        beldexAddressBackgroundView.addSubview(beldexAddressTextview)
+        middleBackgroundView.addSubview(paymentIdImage)
+        middleBackgroundView.addSubview(paymentIDTitleLabel)
+        middleBackgroundView.addSubview(transationPriorityTitleLabel)
+        middleBackgroundView.addSubview(flashPriorityButton)
+        middleBackgroundView.addSubview(estimatedFeeBackgroundView)
+        estimatedFeeBackgroundView.addSubview(estimatedFeeIDLabel)
         view.addSubview(sendButton)
         
         NSLayoutConstraint.activate([
-            topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 18),
-            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            titleOfTotalBalanceLabel.topAnchor.constraint(equalTo: topView.topAnchor, constant: 20),
-            titleOfTotalBalanceLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 18),
-            beldexLogoImg.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 18),
+            topBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 18),
+            topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            totalBalanceTitleLabel.topAnchor.constraint(equalTo: topBackgroundView.topAnchor, constant: 20),
+            totalBalanceTitleLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
+            beldexLogoImg.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
             beldexLogoImg.widthAnchor.constraint(equalToConstant: 18),
             beldexLogoImg.heightAnchor.constraint(equalToConstant: 18),
-            beldexLogoImg.topAnchor.constraint(equalTo: titleOfTotalBalanceLabel.bottomAnchor, constant: 10),
+            beldexLogoImg.topAnchor.constraint(equalTo: totalBalanceTitleLabel.bottomAnchor, constant: 10),
             beldexBalanceLabel.leadingAnchor.constraint(equalTo: beldexLogoImg.trailingAnchor, constant: 10),
             beldexBalanceLabel.centerYAnchor.constraint(equalTo: beldexLogoImg.centerYAnchor),
-            beldexBalanceLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -14),
-            beldexBalanceLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -18),
+            beldexBalanceLabel.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -14),
+            beldexBalanceLabel.bottomAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: -18),
         ])
         
         NSLayoutConstraint.activate([
-            middleView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 18),
-            middleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            middleView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            beldexAmountTitleLabel.topAnchor.constraint(equalTo: middleView.topAnchor, constant: 20),
-            beldexAmountTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            beldexAmountTitleLabel.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -19),
-            isFromMaxButton.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -19),
-            isFromMaxButton.widthAnchor.constraint(equalToConstant: 68),
-            isFromMaxButton.heightAnchor.constraint(equalToConstant: 53),
-            isFromMaxButton.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
-            beldexAmountTextField.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
+            middleBackgroundView.topAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: 18),
+            middleBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            middleBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            beldexAmountTitleLabel.topAnchor.constraint(equalTo: middleBackgroundView.topAnchor, constant: 20),
+            beldexAmountTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            beldexAmountTitleLabel.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+            maxButton.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+            maxButton.widthAnchor.constraint(equalToConstant: 68),
+            maxButton.heightAnchor.constraint(equalToConstant: 53),
+            maxButton.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
+            beldexAmountTextField.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
             beldexAmountTextField.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
-            beldexAmountTextField.trailingAnchor.constraint(equalTo: isFromMaxButton.leadingAnchor, constant: -7),
+            beldexAmountTextField.trailingAnchor.constraint(equalTo: maxButton.leadingAnchor, constant: -7),
             beldexAmountTextField.heightAnchor.constraint(equalToConstant: 53),
-            isCurrencyResultTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            isCurrencyResultTitleLabel.topAnchor.constraint(equalTo: beldexAmountTextField.bottomAnchor, constant: 15),
-            isCurrencyResultTitleLabel.heightAnchor.constraint(equalToConstant: 25),
-            isFromAddressBookButton.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -19),
-            isFromAddressBookButton.widthAnchor.constraint(equalToConstant: 32),
-            isFromAddressBookButton.heightAnchor.constraint(equalToConstant: 32),
-            isFromAddressBookButton.topAnchor.constraint(equalTo: isCurrencyResultTitleLabel.bottomAnchor, constant: 25),
-            isFromScanOptionButtonView.trailingAnchor.constraint(equalTo: isFromAddressBookButton.leadingAnchor, constant: -7),
-            isFromScanOptionButtonView.widthAnchor.constraint(equalToConstant: 32),
-            isFromScanOptionButtonView.heightAnchor.constraint(equalToConstant: 32),
-            isFromScanOptionButtonView.centerYAnchor.constraint(equalTo: isFromAddressBookButton.centerYAnchor),
-            beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: isFromScanOptionButtonView.centerYAnchor),
-            beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: isFromScanOptionButtonView.leadingAnchor, constant: -7),
-            isFromScanOptionButton.heightAnchor.constraint(equalToConstant: 14),
-            isFromScanOptionButton.widthAnchor.constraint(equalToConstant: 14),
-            isFromScanOptionButton.centerYAnchor.constraint(equalTo: isFromScanOptionButtonView.centerYAnchor),
-            isFromScanOptionButton.centerXAnchor.constraint(equalTo: isFromScanOptionButtonView.centerXAnchor),
-            beldexAddressBgView.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -19),
-            beldexAddressBgView.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            beldexAddressBgView.topAnchor.constraint(equalTo: isFromAddressBookButton.bottomAnchor, constant: 13),
-            beldexAddressBgView.heightAnchor.constraint(equalToConstant: 105),
-            beldexAddressTextview.topAnchor.constraint(equalTo: beldexAddressBgView.topAnchor, constant: 18),
-            beldexAddressTextview.bottomAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: -18),
-            beldexAddressTextview.leadingAnchor.constraint(equalTo: beldexAddressBgView.leadingAnchor, constant: 19),
-            beldexAddressTextview.trailingAnchor.constraint(equalTo: beldexAddressBgView.trailingAnchor, constant: -22),
-            paymentIDImg.heightAnchor.constraint(equalToConstant: 15),
-            paymentIDImg.widthAnchor.constraint(equalToConstant: 15),
-            paymentIDImg.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            paymentIDImg.topAnchor.constraint(equalTo: beldexAddressBgView.bottomAnchor, constant: 5),
-            paymentIDTitleLabel.leadingAnchor.constraint(equalTo: paymentIDImg.trailingAnchor, constant: 5),
-            paymentIDTitleLabel.centerYAnchor.constraint(equalTo: paymentIDImg.centerYAnchor),
-            transationPriorityTitleLabel.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            transationPriorityTitleLabel.topAnchor.constraint(equalTo: paymentIDImg.bottomAnchor, constant: 25),
+            currencyResultTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            currencyResultTitleLabel.topAnchor.constraint(equalTo: beldexAmountTextField.bottomAnchor, constant: 15),
+            currencyResultTitleLabel.heightAnchor.constraint(equalToConstant: 25),
+            addressBookButton.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+            addressBookButton.widthAnchor.constraint(equalToConstant: 32),
+            addressBookButton.heightAnchor.constraint(equalToConstant: 32),
+            addressBookButton.topAnchor.constraint(equalTo: currencyResultTitleLabel.bottomAnchor, constant: 25),
+            scanOptionBackgroundView.trailingAnchor.constraint(equalTo: addressBookButton.leadingAnchor, constant: -7),
+            scanOptionBackgroundView.widthAnchor.constraint(equalToConstant: 32),
+            scanOptionBackgroundView.heightAnchor.constraint(equalToConstant: 32),
+            scanOptionBackgroundView.centerYAnchor.constraint(equalTo: addressBookButton.centerYAnchor),
+            beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: scanOptionBackgroundView.centerYAnchor),
+            beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: scanOptionBackgroundView.leadingAnchor, constant: -7),
+            scanButton.heightAnchor.constraint(equalToConstant: 14),
+            scanButton.widthAnchor.constraint(equalToConstant: 14),
+            scanButton.centerYAnchor.constraint(equalTo: scanOptionBackgroundView.centerYAnchor),
+            scanButton.centerXAnchor.constraint(equalTo: scanOptionBackgroundView.centerXAnchor),
+            beldexAddressBackgroundView.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+            beldexAddressBackgroundView.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            beldexAddressBackgroundView.topAnchor.constraint(equalTo: addressBookButton.bottomAnchor, constant: 13),
+            beldexAddressBackgroundView.heightAnchor.constraint(equalToConstant: 105),
+            beldexAddressTextview.topAnchor.constraint(equalTo: beldexAddressBackgroundView.topAnchor, constant: 18),
+            beldexAddressTextview.bottomAnchor.constraint(equalTo: beldexAddressBackgroundView.bottomAnchor, constant: -18),
+            beldexAddressTextview.leadingAnchor.constraint(equalTo: beldexAddressBackgroundView.leadingAnchor, constant: 19),
+            beldexAddressTextview.trailingAnchor.constraint(equalTo: beldexAddressBackgroundView.trailingAnchor, constant: -22),
+            paymentIdImage.heightAnchor.constraint(equalToConstant: 15),
+            paymentIdImage.widthAnchor.constraint(equalToConstant: 15),
+            paymentIdImage.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            paymentIdImage.topAnchor.constraint(equalTo: beldexAddressBackgroundView.bottomAnchor, constant: 5),
+            paymentIDTitleLabel.leadingAnchor.constraint(equalTo: paymentIdImage.trailingAnchor, constant: 5),
+            paymentIDTitleLabel.centerYAnchor.constraint(equalTo: paymentIdImage.centerYAnchor),
+            transationPriorityTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            transationPriorityTitleLabel.topAnchor.constraint(equalTo: paymentIdImage.bottomAnchor, constant: 25),
             flashPriorityButton.leadingAnchor.constraint(equalTo: transationPriorityTitleLabel.trailingAnchor, constant: 10),
             flashPriorityButton.centerYAnchor.constraint(equalTo: transationPriorityTitleLabel.centerYAnchor),
             flashPriorityButton.heightAnchor.constraint(equalToConstant: 36),
             flashPriorityButton.widthAnchor.constraint(equalToConstant: 81),
-            estimatedFeeBgView.trailingAnchor.constraint(equalTo: middleView.trailingAnchor, constant: -19),
-            estimatedFeeBgView.leadingAnchor.constraint(equalTo: middleView.leadingAnchor, constant: 19),
-            estimatedFeeBgView.topAnchor.constraint(equalTo: flashPriorityButton.bottomAnchor, constant: 25),
-            estimatedFeeBgView.bottomAnchor.constraint(equalTo: middleView.bottomAnchor, constant: -25),
-            estimatedFeeBgView.heightAnchor.constraint(equalToConstant: 44),
-            estimatedFeeIDLabel.leadingAnchor.constraint(equalTo: estimatedFeeBgView.leadingAnchor, constant: 12),
-            estimatedFeeIDLabel.trailingAnchor.constraint(equalTo: estimatedFeeBgView.trailingAnchor, constant: -12),
-            estimatedFeeIDLabel.centerYAnchor.constraint(equalTo: estimatedFeeBgView.centerYAnchor),
-            estimatedFeeIDLabel.centerXAnchor.constraint(equalTo: estimatedFeeBgView.centerXAnchor),
+            estimatedFeeBackgroundView.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+            estimatedFeeBackgroundView.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
+            estimatedFeeBackgroundView.topAnchor.constraint(equalTo: flashPriorityButton.bottomAnchor, constant: 25),
+            estimatedFeeBackgroundView.bottomAnchor.constraint(equalTo: middleBackgroundView.bottomAnchor, constant: -25),
+            estimatedFeeBackgroundView.heightAnchor.constraint(equalToConstant: 44),
+            estimatedFeeIDLabel.leadingAnchor.constraint(equalTo: estimatedFeeBackgroundView.leadingAnchor, constant: 12),
+            estimatedFeeIDLabel.trailingAnchor.constraint(equalTo: estimatedFeeBackgroundView.trailingAnchor, constant: -12),
+            estimatedFeeIDLabel.centerYAnchor.constraint(equalTo: estimatedFeeBackgroundView.centerYAnchor),
+            estimatedFeeIDLabel.centerXAnchor.constraint(equalTo: estimatedFeeBackgroundView.centerXAnchor),
         ])
         
         NSLayoutConstraint.activate([
@@ -425,16 +447,16 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             updateSendButtonStates()
         }
         
-        paymentIDImg.isHidden = true
+        paymentIdImage.isHidden = true
         paymentIDTitleLabel.isHidden = true
         
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
         if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
-            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            currencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
         } else {
-            isCurrencyResultTitleLabel.text = "0.00 USD"
+            currencyResultTitleLabel.text = "0.00 USD"
         }
         
         // Dismiss keyboard on tap
@@ -448,6 +470,43 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
     }
+    
+    /// View did appear
+    override func viewDidAppear(_ animated: Bool) {
+        if backAPI == true{
+            let vc = InitiatingTransactionVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+            self.beldexAmountTextField.text = ""
+            self.beldexAddressTextview.text = ""
+        }
+    }
+    
+    /// View will appear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.saveReceipeinetAddressOnAndOff()
+        if backAPI == true {
+            self.beldexAmountTextField.text = ""
+            self.beldexAddressTextview.text = ""
+            placeholderLabel?.isHidden = !beldexAddressTextview.text.isEmpty
+            if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
+                self.currencyName = SaveUserDefaultsData.SelectedCurrency
+                currencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            } else {
+                currencyResultTitleLabel.text = "0.00 USD"
+            }
+            paymentIdImage.isHidden = true
+            paymentIDTitleLabel.isHidden = true
+        }
+    }
+    
+    /// View will disappear
+    override func viewWillDisappear(_ animated: Bool) {
+        self.backAPI = false
+    }
+    
     
     // transation FeePriority values
     func flashPriorityValue(){
@@ -491,39 +550,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         placeholderLabel.isHidden = !beldexAddressTextview.text.isEmpty
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if backAPI == true{
-            let vc = InitiatingTransactionVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-            self.beldexAmountTextField.text = ""
-            self.beldexAddressTextview.text = ""
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.saveReceipeinetAddressOnAndOff()
-        if backAPI == true {
-            self.beldexAmountTextField.text = ""
-            self.beldexAddressTextview.text = ""
-            placeholderLabel?.isHidden = !beldexAddressTextview.text.isEmpty
-            if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
-                self.currencyName = SaveUserDefaultsData.SelectedCurrency
-                isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
-            } else {
-                isCurrencyResultTitleLabel.text = "0.00 USD"
-            }
-            paymentIDImg.isHidden = true
-            paymentIDTitleLabel.isHidden = true
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.backAPI = false
-    }
-    
     //Here Address display
     @objc func handleAddressSharingToSendScreen(notification: NSNotification) {
         if let stringValue = notification.object as? NSObject {
@@ -564,14 +590,14 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         let currentAddress: NSString = beldexAddressTextview.text! as NSString
         if BChatWalletWrapper.validAddress(beldexAddressTextview.text!) {
             if currentAddress.length == 106 {
-                paymentIDImg.isHidden = false
+                paymentIdImage.isHidden = false
                 paymentIDTitleLabel.isHidden = false
             } else{
-                paymentIDImg.isHidden = true
+                paymentIdImage.isHidden = true
                 paymentIDTitleLabel.isHidden = true
             }
         } else {
-            paymentIDImg.isHidden = true
+            paymentIdImage.isHidden = true
             paymentIDTitleLabel.isHidden = true
         }
         updateSendButtonStates()
@@ -579,10 +605,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel?.isHidden = !textView.text.isEmpty
-    }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        //        placeholderLabel?.isHidden = true
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -629,7 +651,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if beldexAmountTextField.text!.count == 0 {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
-            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            currencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
             self.bdxCurrencyValue = beldexAmountTextField.text!
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             fetchMarketsData(false)
@@ -649,7 +671,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if beldexAmountTextField.text!.count == 0 {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
-            isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
+            currencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
         } else if beldexAmountTextField.text == "." {
             // print("---dot value entry----")
         } else {
@@ -668,7 +690,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         if currencyValue != nil && bdxCurrencyValue != "" {
             let tax = Double(bdxCurrencyValue)! * currencyValue
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
-            isCurrencyResultTitleLabel.text = "\(String(format:"%.4f",tax)) \(self.currencyName.uppercased())"
+            currencyResultTitleLabel.text = "\(String(format:"%.4f",tax)) \(self.currencyName.uppercased())"
         }
     }
     
@@ -686,7 +708,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             if showHUD { SELF.loadingState.newState(false) }
             switch resp.result {
                 case .failure(_): break
-                    //   HUD.showError(error.localizedDescription)
                 case .success(let value):
                     SELF.reloadData(value as? [String: [String: Any]] ?? [:])
             }
@@ -758,18 +779,18 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     }
     
     // MARK: - Navigation
-    @objc func isFromMaxButtonTapped(_ sender: UIButton) {
+    @objc func maxButtonTapped(_ sender: UIButton) {
         beldexAmountTextField.text! = mainBalance
     }
     
-    @objc func isFromAddressBookButtonTapped(_ sender: UIButton) {
+    @objc func addressBookButtonTapped(_ sender: UIButton) {
         let vc = WalletAddressBookNewVC()
         vc.isGoingToSendScreen = true
         vc.delegate = self
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    @objc func isFromScanOptionButtonTapped(_ sender: UIButton) {
+    @objc func scanButtonTapped(_ sender: UIButton) {
         let vc = ScanNewVC()
         vc.isFromWallet = true
         vc.wallet = self.wallet
@@ -856,7 +877,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         self.beldexAmountTextField.text = ""
         self.beldexAddressTextview.text = ""
         connect(wallet: self.wallet!)
-        paymentIDImg.isHidden = true
+        paymentIdImage.isHidden = true
         paymentIDTitleLabel.isHidden = true
     }
     

@@ -6,6 +6,7 @@ import BChatUIKit
 
 class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
+    /// Table View
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -17,6 +18,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
+    
+    /// Refresh Button
     private lazy var refreshButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
@@ -27,6 +30,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Add Node Button
     private lazy var addNodeButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
@@ -37,6 +42,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Button Stack View
     private lazy var buttonStackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ refreshButton, addNodeButton ])
         result.axis = .horizontal
@@ -90,7 +97,6 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         getDynamicNodesFromAPI()
         
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
-//        randomValueAfterAddNewNode = nodeArray.randomElement()!
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
@@ -112,12 +118,12 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: .switchNodePopUpNotification, object: nil)
     }
     
+    /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if SaveUserDefaultsData.SaveLocalNodelist != []{
             if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
                 getDynamicNodesFromAPI()
-//                nodeArray = SaveUserDefaultsData.SaveLocalNodelist
                 tableView.reloadData()
             }
         }
@@ -299,16 +305,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])
                 }
             }
-//            self.randomNodeValue = self.nodeArray.randomElement()!
             SaveUserDefaultsData.SelectedNode = randomNodeValue
-//            if self.navigationController != nil{
-//                let count = self.navigationController!.viewControllers.count
-//                if count > 1
-//                {
-//                    let VC = self.navigationController!.viewControllers[count-2] as! WalletSettingsNewVC
-//                    VC.BackAPI = true
-//                }
-//            }
             self.tableView.reloadData()
         }else{
             nodeArrayDynamic = []
