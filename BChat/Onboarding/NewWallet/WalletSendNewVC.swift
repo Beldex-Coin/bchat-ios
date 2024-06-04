@@ -15,6 +15,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
     private lazy var titleOfTotalBalanceLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TOTAL_BALANCE", comment: "")
@@ -24,6 +25,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var beldexLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -32,6 +34,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -40,6 +43,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var paymentIDTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
@@ -49,6 +53,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var paymentIDImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -57,6 +62,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var middleView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,6 +70,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         stackView.layer.cornerRadius = 16
         return stackView
     }()
+    
     private lazy var beldexAmountTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("ENTER_BDX_AMOUNT", comment: "")
@@ -73,6 +80,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var isFromMaxButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("MAX_BUTTON", comment: ""), for: .normal)
@@ -84,6 +92,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.addTarget(self, action: #selector(isFromMaxButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var beldexAmountTextField: UITextField = {
         let result = UITextField()
         result.delegate = self
@@ -99,6 +108,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.layer.borderWidth = 1
         return result
     }()
+    
     private lazy var isCurrencyResultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.noDataLabelColor
@@ -107,6 +117,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var isFromAddressBookButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -116,6 +127,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.addTarget(self, action: #selector(isFromAddressBookButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var isFromScanOptionButtonView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +135,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         stackView.backgroundColor = Colors.scanButtonBackgroundColor
         return stackView
     }()
+    
     private lazy var isFromScanOptionButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -132,6 +145,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.addTarget(self, action: #selector(isFromScanOptionButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var beldexAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
@@ -141,6 +155,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var beldexAddressBgView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -148,6 +163,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         stackView.backgroundColor = Colors.cellGroundColor2
         return stackView
     }()
+    
     private lazy var beldexAddressTextview: UITextView = {
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -158,6 +174,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.backgroundColor = .clear
         return result
     }()
+    
     private lazy var transationPriorityTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_PRIORITY", comment: "")
@@ -167,6 +184,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var flashPriorityButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
@@ -177,6 +195,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.layer.cornerRadius = 8
         return button
     }()
+    
     private lazy var estimatedFeeBgView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -186,6 +205,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
     private lazy var estimatedFeeIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor.white
@@ -195,6 +215,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.numberOfLines = 0
         return result
     }()
+    
     private lazy var sendButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: ""), for: .normal)
@@ -265,9 +286,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         beldexAddressBgView.addSubview(beldexAddressTextview)
         middleView.addSubview(paymentIDImg)
         middleView.addSubview(paymentIDTitleLabel)
-        
         middleView.addSubview(transationPriorityTitleLabel)
-        
         middleView.addSubview(flashPriorityButton)
         middleView.addSubview(estimatedFeeBgView)
         estimatedFeeBgView.addSubview(estimatedFeeIDLabel)
@@ -288,6 +307,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             beldexBalanceLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -14),
             beldexBalanceLabel.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -18),
         ])
+        
         NSLayoutConstraint.activate([
             middleView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 18),
             middleView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
@@ -351,15 +371,17 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             estimatedFeeIDLabel.centerYAnchor.constraint(equalTo: estimatedFeeBgView.centerYAnchor),
             estimatedFeeIDLabel.centerXAnchor.constraint(equalTo: estimatedFeeBgView.centerXAnchor),
         ])
+        
         NSLayoutConstraint.activate([
             sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             sendButton.heightAnchor.constraint(equalToConstant: 58),
             sendButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
         ])
-        if !mainBalance.isEmpty{
+        
+        if !mainBalance.isEmpty {
             beldexBalanceLabel.text = mainBalance
-        }else {
+        } else {
             beldexBalanceLabel.text = "-.----"
         }
         
@@ -369,7 +391,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             flashPriorityButton.setTitle(val, for: .normal)
             if val == "Flash" {
                 flashPriorityValue()
-            }else {
+            } else {
                 slowPriorityValue()
             }
         } else {
@@ -411,7 +433,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
             self.currencyName = SaveUserDefaultsData.SelectedCurrency
             isCurrencyResultTitleLabel.text = "0.00 \(self.currencyName.uppercased())"
-        }else {
+        } else {
             isCurrencyResultTitleLabel.text = "0.00 USD"
         }
         
@@ -457,6 +479,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     @objc private func dismissKeyboard() {
         beldexAddressTextview.resignFirstResponder()
     }
+    
     func placeHolderSeedLabel(){
         placeholderLabel = UILabel()
         placeholderLabel.text = "Enter Address or BNS name"
@@ -467,6 +490,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         placeholderLabel.textColor = Colors.bchatPlaceholderColor
         placeholderLabel.isHidden = !beldexAddressTextview.text.isEmpty
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         if backAPI == true{
             let vc = InitiatingTransactionVC()
@@ -477,6 +501,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             self.beldexAddressTextview.text = ""
         }
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.saveReceipeinetAddressOnAndOff()
@@ -494,6 +519,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             paymentIDTitleLabel.isHidden = true
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         self.backAPI = false
     }
@@ -508,6 +534,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             }
         }
     }
+    
     private func updateSendButtonStates() {
         let isAddressValid = isValidAddress(beldexAddressTextview.text)
         let isAmountValid = isValidAmount(beldexAmountTextField.text)
@@ -515,11 +542,13 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : Colors.backgroundViewColor
         sendButton.setTitleColor(sendButton.isEnabled ? UIColor.white : UIColor(hex: 0x6E6E7C), for: .normal)
     }
+    
     private func isValidAddress(_ address: String?) -> Bool {
         // Add your validation logic for the address here
         // Example: Check if the address is not empty
         return !(address ?? "").isEmpty
     }
+    
     private func isValidAmount(_ amount: String?) -> Bool {
         // Add your validation logic for the amount here
         // Example: Check if the amount is a valid decimal number
@@ -537,28 +566,32 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             if currentAddress.length == 106 {
                 paymentIDImg.isHidden = false
                 paymentIDTitleLabel.isHidden = false
-            }else{
+            } else{
                 paymentIDImg.isHidden = true
                 paymentIDTitleLabel.isHidden = true
             }
-        }else{
+        } else {
             paymentIDImg.isHidden = true
             paymentIDTitleLabel.isHidden = true
         }
         updateSendButtonStates()
     }
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         placeholderLabel?.isHidden = !textView.text.isEmpty
     }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         //        placeholderLabel?.isHidden = true
     }
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
         }
         return true
     }
+    
     // txtamout only sigle . enter and txtaddress lenth fixed
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         updateSendButtonStates()
@@ -728,12 +761,14 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     @objc func isFromMaxButtonTapped(_ sender: UIButton) {
         beldexAmountTextField.text! = mainBalance
     }
+    
     @objc func isFromAddressBookButtonTapped(_ sender: UIButton) {
         let vc = WalletAddressBookNewVC()
         vc.isGoingToSendScreen = true
         vc.delegate = self
         navigationController!.pushViewController(vc, animated: true)
     }
+    
     @objc func isFromScanOptionButtonTapped(_ sender: UIButton) {
         let vc = ScanNewVC()
         vc.isFromWallet = true
@@ -741,6 +776,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         vc.mainBalanceForScan = beldexBalanceLabel.text!
         navigationController!.pushViewController(vc, animated: true)
     }
+    
     //send Transation Button Tapped 11
     @objc func sendButtonTapped(_ sender: UIButton) {
         if beldexAddressTextview.text!.isEmpty || beldexAmountTextField.text!.isEmpty {

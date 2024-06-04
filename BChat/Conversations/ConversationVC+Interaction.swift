@@ -600,15 +600,24 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleTapToCallback() {
-        guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
-        guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
-        guard AppEnvironment.shared.callManager.currentCall == nil else { return }
-        let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-        let callVC = NewIncomingCallVC(for: call)
-        callVC.conversationVC = self
-        self.inputAccessoryView?.isHidden = true
-        self.inputAccessoryView?.alpha = 0
-        present(callVC, animated: true, completion: nil)
+        if SSKPreferences.areCallsEnabled {
+            requestMicrophonePermissionIfNeeded { }
+            guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
+            guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
+            guard AppEnvironment.shared.callManager.currentCall == nil else { return }
+            let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
+            let callVC = NewIncomingCallVC(for: call)
+            callVC.conversationVC = self
+            snInputView.isHidden = true
+            present(callVC, animated: true, completion: nil)
+            
+        } else {
+            snInputView.isHidden = true
+            let vc = CallPermissionRequestModalNewVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {

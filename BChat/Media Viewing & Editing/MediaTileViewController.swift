@@ -85,7 +85,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     lazy var containerViewForMediaAndDocument: SegmentedControl = {
        let stackView = SegmentedControl()
        stackView.translatesAutoresizingMaskIntoConstraints = false
-       stackView.backgroundColor = .clear
+        stackView.backgroundColor = Colors.navigationBarBackground
        return stackView
    }()
     

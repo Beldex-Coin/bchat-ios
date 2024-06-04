@@ -15,8 +15,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
         showSearchUI()
         popAllConversationSettingsViews {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { // Without this delay the search bar doesn't show
                 self.searchController.uiSearchController.searchBar.becomeFirstResponder()
+                self.searchController.uiSearchController.searchBar.showsCancelButton = true
             }
         }
     }
@@ -1031,6 +1032,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             CustomSlideView.isFromExpandAttachment = false
         }
         self.saveReceipeinetAddressOnAndOff()
+        snInputView.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1125,15 +1127,24 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     @objc func callViewTapped(_ sender: UITapGestureRecognizer? = nil) {
-        guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
-        guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
-        guard AppEnvironment.shared.callManager.currentCall == nil else { return }
-        let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-        let callVC = NewIncomingCallVC(for: call)
-        callVC.conversationVC = self
-        self.inputAccessoryView?.isHidden = true
-        self.inputAccessoryView?.alpha = 0
-        present(callVC, animated: true, completion: nil)
+        if SSKPreferences.areCallsEnabled {
+            requestMicrophonePermissionIfNeeded { }
+            guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
+            guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
+            guard AppEnvironment.shared.callManager.currentCall == nil else { return }
+            let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
+            let callVC = NewIncomingCallVC(for: call)
+            callVC.conversationVC = self
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+            present(callVC, animated: true, completion: nil)
+        } else {
+            snInputView.isHidden = true
+            let vc = CallPermissionRequestModalNewVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
     }
     
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
@@ -1381,7 +1392,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 if blockChainHeight == daemonBlockChainHeight {
                     customizeSlideToOpen.isHidden = true
                     CustomSlideView.isFromExpandAttachment = false
-                    
                     var balance = WalletSharedData.sharedInstance.wallet!.balance
                     var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
                     
@@ -2007,6 +2017,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         searchBarContainer.set(.width, to: UIScreen.main.bounds.width - 32)
         searchBarContainer.addSubview(searchBar)
         navigationItem.titleView = searchBarContainer
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            searchBar.becomeFirstResponder()
+        }
         
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc

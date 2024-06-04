@@ -408,6 +408,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             internalSpeakerButton.centerXAnchor.constraint(equalTo: speakerOptionView.centerXAnchor),
         ])
         
+        callerImageView.image = getProfilePicture(of: 132, for: self.call.bchatID)
+        
         if shouldRestartCamera { cameraManager.prepare() }
         touch(call.videoCapturer)
         callerNameLabel.text = self.call.contactName
@@ -788,6 +790,17 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     @objc private func handleRemoteVieioViewTapped(gesture: UITapGestureRecognizer) {
         let isHidden = callDurationLabel.alpha < 0.5
+    }
+
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
     }
     
 }

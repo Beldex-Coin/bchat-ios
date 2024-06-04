@@ -5,6 +5,7 @@ import Alamofire
 import BChatUIKit
 
 class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UITextFieldDelegate {
+    
     private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -12,6 +13,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.backgroundColor = Colors.walletHomeTopViewBackgroundColor
         return stackView
     }()
+    
     private lazy var isFromProgressStatusLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -20,6 +22,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var isCurrencyResultLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.cancelButtonTitleColor
@@ -28,6 +31,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.center = view.center
@@ -36,6 +40,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         progressView.tintColor = Colors.greenColor
         return progressView
     }()
+    
     lazy var beldexLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -44,6 +49,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -52,6 +58,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var middleBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,6 +66,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.backgroundColor = Colors.cancelButtonBackgroundColor
         return stackView
     }()
+    
     private lazy var isFromScanButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.messageRequestBackgroundColor
@@ -70,9 +78,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(isFromScanButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var isFromSendButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(hex: 0x2979FB)
+        button.backgroundColor = Colors.enableSendButtonColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
         let image = UIImage(named: "ic_send_new")
@@ -81,6 +90,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(isFromSendButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var isFromReceiveButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -93,6 +103,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
 
         return button
     }()
+    
     private lazy var isFromReConnectButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.walletHomeReconnectBackgroundColor
@@ -104,6 +115,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(isFromReConnectButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var buttonsStackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ isFromScanButton, isFromSendButton, isFromReceiveButton, isFromReConnectButton ])
         result.axis = .horizontal
@@ -114,6 +126,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     private lazy var transationTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_LABEL", comment: "")
@@ -123,6 +136,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var isFromFilterImageButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -133,6 +147,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(isFromFilterImageButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     // MARK: - Here Wallet Syncing Components
     private lazy var walletSyncingBackgroundView: UIView = {
         let stackView = UIView()
@@ -142,6 +157,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
+    
     lazy var walletSyncingLogoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -150,6 +166,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var walletSyncingTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "Wallet Syncing.."
@@ -159,6 +176,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var walletSyncingSubTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PLEASE_WAIT_WHILE_WALLET_SYNCING", comment: "")
@@ -168,6 +186,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     // MARK: - Here No Transactions Yet Components
     private lazy var noTransactionsYetBackgroundView: UIView = {
         let stackView = UIView()
@@ -177,6 +196,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
+    
     lazy var noTransactionsYetLogoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -185,6 +205,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var noTransactionsYetTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("NO_TRANSACTION_MSG", comment: "")
@@ -194,6 +215,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var noTransactionsYetSubTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("AFTER_YOUR_FIRST_TRANSATION_VIEW", comment: "")
@@ -204,6 +226,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     // MARK: - Here Transactions History Components
     private lazy var isFromFilterTransactionsHistoryBackgroundView: UIView = {
         let stackView = UIView()
@@ -213,7 +236,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
-    //ic_checked_black
+    
     private lazy var incomingButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("INCOMING_BUTTON", comment: ""), for: .normal)
@@ -228,6 +251,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(incomingButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var outgoingButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("OUTGOING_BUTTON", comment: ""), for: .normal)
@@ -242,6 +266,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(outgoingButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var byDateButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("BY_DATE_BUTTON", comment: ""), for: .normal)
@@ -256,6 +281,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(byDateButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var filterStackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ incomingButton, outgoingButton, byDateButton ])
         result.axis = .horizontal
@@ -264,54 +290,63 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var lineBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView2: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView3: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView4: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView5: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView6: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView7: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     private lazy var lineBackgroundView8: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.borderColor
         return stackView
     }()
+    
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -323,6 +358,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
+    
     // MARK: - Here No Transactions Details Components
     private lazy var transactionsDetailsBackgroundView: UIView = {
         let stackView = UIView()
@@ -332,6 +368,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
+    
     private lazy var detailsTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("DETAILS_MSG", comment: "")
@@ -341,6 +378,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var backImageButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -350,12 +388,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(backImageButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     lazy var directionLogoForDetailsPageImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
     lazy var balanceAmountForDetailsPageLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -364,6 +404,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var dateForDetailsPageLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
@@ -372,6 +413,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var transationDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -396,6 +438,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.addGestureRecognizer(tapGesture)
         return result
     }()
+    
     private lazy var transationIDcopyButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -406,12 +449,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.tintColor = Colors.greenColor
         return button
     }()
+    
     private lazy var outerBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear//Colors.mainBackGroundColor2
         return stackView
     }()
+    
     lazy var subStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -422,6 +467,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var transationIDStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -432,6 +478,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var subStackView2: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -442,6 +489,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var dateIDStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -452,6 +500,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var dateDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -461,6 +510,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("DATE_TITLE", comment: "")
         return result
     }()
+    
     lazy var dateDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -480,6 +530,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var paymentIDStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -490,6 +541,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var paymentTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -499,6 +551,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("Payment ID", comment: "")
         return result
     }()
+    
     lazy var paymentIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -508,6 +561,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = "000000000000"
         return result
     }()
+    
     lazy var subStackView4: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -518,6 +572,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var heightIDStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -528,6 +583,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var subStackView5: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -538,6 +594,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var amountIDStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -548,6 +605,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var subStackView6: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -558,6 +616,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var recipientAddressStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -568,6 +627,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var mainStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -578,6 +638,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
+    
     lazy var heightDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -587,6 +648,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("HEIGHT_TITLE", comment: "")
         return result
     }()
+    
     lazy var heightDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -595,6 +657,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var amountDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -604,6 +667,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("AMOUNT_TITLE", comment: "")
         return result
     }()
+    
     lazy var amountDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
@@ -612,6 +676,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var isFromSendDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.boldOpenSans(ofSize: 14)
@@ -620,6 +685,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
     }()
+    
     lazy var recipientAddressDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -629,6 +695,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("RECIPIENT_ADDRESS", comment: "")
         return result
     }()
+    
     lazy var recipientAddressDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
@@ -638,6 +705,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var recipientAddresscopyButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -648,6 +716,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.tintColor = Colors.greenColor
         return button
     }()
+    
     private lazy var stackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ filterStackView, lineBackgroundView, tableView ])
         result.axis = .vertical
@@ -656,6 +725,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     //Date PopUp
     private lazy var backgroundBlerView: UIView = {
         let stackView = UIView()
@@ -663,6 +733,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.backgroundColor = Colors.walletHomeDateViewBackgroundColor
         return stackView
     }()
+    
     private lazy var selectDateRangePopUpbackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -672,6 +743,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
+    
     lazy var selectDateRangeTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -681,6 +753,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.text = NSLocalizedString("Select Date Range", comment: "")
         return result
     }()
+    
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -747,6 +820,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var okButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
@@ -767,6 +841,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     var fromDate : String = ""
     var toDate : String = ""
     private var wallet: BDXWallet?
@@ -780,12 +855,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
     }
+    
     private lazy var timer: Timer = {
         Timer.init(timeInterval: 0.5, repeats: true) { [weak self] (_) in
             guard let `self` = self else { return }
             self.updateSyncingProgress()
         }
     }()
+    
     private var needSynchronized = false {
         didSet {
             guard needSynchronized, !oldValue,
@@ -793,6 +870,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             wallet.saveOnTerminate()
         }
     }
+    
     var syncingIsFromDelegateMethod = true
     var syncedflag = false
     lazy var statusTextState = { return Observable<String>("") }()
@@ -1162,6 +1240,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         
         isFromScanButton.isUserInteractionEnabled = false
         isFromSendButton.isUserInteractionEnabled = false
+        isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+        isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+        let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+        let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+        isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+        let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+        isFromScanButton.setImage(scanButtonImage, for: .normal)
+        let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+        isFromSendButton.setImage(sendButtonImage, for: .normal)
         // MARK: - Here Conditions based on hidden the view only
         walletSyncingBackgroundView.isHidden = false
         noTransactionsYetBackgroundView.isHidden = true
@@ -1326,6 +1413,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if backApiRescanVC == true {
             isFromScanButton.isUserInteractionEnabled = false
             isFromSendButton.isUserInteractionEnabled = false
+            isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+            isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+            let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+            let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+            isFromScanButton.setImage(scanButtonImage, for: .normal)
             self.closeWallet()
             init_syncing_wallet()
         }
@@ -1419,6 +1515,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             isFromScanButton.isUserInteractionEnabled = false
             isFromSendButton.isUserInteractionEnabled = false
+            isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+            isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+            let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+            isFromScanButton.setImage(scanButtonImage, for: .normal)
+            let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+            let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
             beldexBalanceLabel.text = "-.---"
             isCurrencyResultLabel.text = "0.00 USD"
             self.syncedflag = false
@@ -1434,6 +1539,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 DispatchQueue.main.async {
                     self?.isFromScanButton.isUserInteractionEnabled = false
                     self?.isFromSendButton.isUserInteractionEnabled = false
+                    self?.isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+                    self?.isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+                    let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+                    self?.isFromScanButton.setImage(scanButtonImage, for: .normal)
+                    let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+                    self?.isFromSendButton.setImage(sendButtonImage, for: .normal)
+                    let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+                    let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+                    self?.isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
                 }
                 guard let strongSelf = self else { return }
                 switch result {
@@ -1602,6 +1716,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             syncedflag = true
             isFromScanButton.isUserInteractionEnabled = true
             isFromSendButton.isUserInteractionEnabled = true
+            isFromSendButton.backgroundColor = Colors.enableSendButtonColor
+            isFromScanButton.backgroundColor = Colors.messageRequestBackgroundColor
+            let sendButtonImage = UIImage(named: "ic_send_new")
+            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate)
+            isFromScanButton.setImage(scanButtonImage, for: .normal)
+            let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+            let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25))
+            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
             self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
             if self.backApiRescanVC == true {
                 self.isFromProgressStatusLabel.text = "Connecting..."

@@ -83,12 +83,42 @@ class HomeTableViewCell: UITableViewCell {
         return result
     }()
     
+    lazy var messageCountStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fill
+        result.spacing = 7
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
+    lazy var notifyMentionImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_notifyMention")
+        return result
+    }()
+    
+    lazy var muteImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_mute_homeTableCell")
+        return result
+    }()
+    
+    
     lazy var messageCountLabel: UILabel = {
-       let result = PaddingLabel()
+        let result = PaddingLabel()
         result.textColor = Colors.bothWhiteColor
-       result.font = Fonts.boldOpenSans(ofSize: 11)
-       result.textAlignment = .center
-       result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 11)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.paddingTop = 3
         result.paddingBottom = 3
         result.paddingLeft = 5
@@ -96,17 +126,17 @@ class HomeTableViewCell: UITableViewCell {
         result.layer.masksToBounds = true
         result.layer.cornerRadius = 11
         result.backgroundColor = Colors.bothGreenColor
-       return result
-   }()
+        return result
+    }()
     
     lazy var dateLabel: UILabel = {
-       let result = UILabel()
+        let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-       result.font = Fonts.OpenSans(ofSize: 12)
-       result.textAlignment = .center
-       result.translatesAutoresizingMaskIntoConstraints = false
-       return result
-   }()
+        result.font = Fonts.OpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
     
     lazy var pinImageView: UIImageView = {
         let result = UIImageView()
@@ -132,9 +162,14 @@ class HomeTableViewCell: UITableViewCell {
         pinImageView.image = UIImage(named: "ic_pinned")
         backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
-        messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
+//        messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
+        messageCountAndDateStackView.addArrangedSubview(messageCountStackView)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         
+        messageCountStackView.addArrangedSubview(muteImageView)
+        messageCountStackView.addArrangedSubview(notifyMentionImageView)
+        messageCountStackView.addArrangedSubview(messageCountLabel)
+
         let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
@@ -158,7 +193,6 @@ class HomeTableViewCell: UITableViewCell {
             verifiedImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
             verifiedImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
             
-            
             nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
@@ -173,7 +207,7 @@ class HomeTableViewCell: UITableViewCell {
             messageCountAndDateStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             messageCountAndDateStackView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 15),
             messageCountAndDateStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
-            messageCountAndDateStackView.widthAnchor.constraint(equalToConstant: 56),
+            messageCountAndDateStackView.widthAnchor.constraint(equalToConstant: 56 + 30),
             
             separatorLineView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             separatorLineView.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
@@ -339,16 +373,25 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     private func getSnippet() -> NSMutableAttributedString {
+        muteImageView.isHidden = true
+        notifyMentionImageView.isHidden = true
         let result = NSMutableAttributedString()
         if threadViewModel.isMuted {
-            result.append(NSAttributedString(string: "\u{e067}  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
-        } else if threadViewModel.isOnlyNotifyingForMentions {
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.image = UIImage(named: "NotifyMentions.png")?.asTintedImage(color: Colors.unimportant)
-            imageAttachment.bounds = CGRect(x: 0, y: -2, width: Values.smallFontSize, height: Values.smallFontSize)
-            let imageString = NSAttributedString(attachment: imageAttachment)
-            result.append(imageString)
-            result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
+            muteImageView.isHidden = false
+            // Don't Delete i will remove after confirmation of flow
+            
+//            result.append(NSAttributedString(string: "\u{e067}  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
+        }
+        if threadViewModel.isOnlyNotifyingForMentions {
+            notifyMentionImageView.isHidden = false
+            // Don't Delete i will remove after confirmation of flow
+            
+//            let imageAttachment = NSTextAttachment()
+//            imageAttachment.image = UIImage(named: "NotifyMentions.png")?.asTintedImage(color: Colors.unimportant)
+//            imageAttachment.bounds = CGRect(x: 0, y: -2, width: Values.smallFontSize, height: Values.smallFontSize)
+//            let imageString = NSAttributedString(attachment: imageAttachment)
+//            result.append(imageString)
+//            result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
         let font = threadViewModel.hasUnreadMessages ? Fonts.OpenSans(ofSize: Values.smallFontSize) : Fonts.OpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
