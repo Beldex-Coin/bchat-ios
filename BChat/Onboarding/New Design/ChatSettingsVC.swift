@@ -266,7 +266,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     func observeNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(blockContactPopUpYesActionTapped), name: .blockContactPopUpYesActionNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userBlockContactTapped), name: .userBlockContactNotification, object: nil)
     }
     
     func editingDatabaseConnection() -> YapDatabaseConnection? {
@@ -641,7 +641,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     // Block and UnBlock the Contact
-    @objc func blockContactPopUpYesActionTapped(_ notification: Notification) {
+    @objc func userBlockContactTapped(_ notification: Notification) {
         if let contactThread = self.thread as? TSContactThread {
             let isCurrentlyBlocked = contactThread.isBlocked()
             if !isCurrentlyBlocked {

@@ -125,7 +125,7 @@ class BlockContactPopUpVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        NotificationCenter.default.post(name: .blockContactPopUpYesActionNotification, object: nil)
+        NotificationCenter.default.post(name: .userBlockContactNotification, object: nil)
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {

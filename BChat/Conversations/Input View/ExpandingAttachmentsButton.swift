@@ -194,7 +194,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     // MARK: Animation
     private func expandOrCollapse() {
         if isExpanded {
-            if CustomSlideViewBool.isFromExpandAttachment {
+            if CustomSlideView.isFromExpandAttachment {
                 mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
                 let expandedButtonSize = InputViewButton.expandedSize
                 let spacing: CGFloat = 4

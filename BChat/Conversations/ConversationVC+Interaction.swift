@@ -465,30 +465,30 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                                 inputTextView.textColor = Colors.accent
                                                 let value = ["bdxAmount": newText]
                                                 NotificationCenter.default.post(name: .bdxAmountPassingSliderViewNotification, object: value)
-                                                CustomSlideViewBool.isFromExpandAttachment = true
+                                                CustomSlideView.isFromExpandAttachment = true
                                                 NotificationCenter.default.post(name: .attachmentHiddenNotification, object: value)
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
-                                                CustomSlideViewBool.isFromExpandAttachment = false
+                                                CustomSlideView.isFromExpandAttachment = false
                                             }
                                         }
                                     }
                                 } else {
                                     customizeSlideToOpen.isHidden = true
-                                    CustomSlideViewBool.isFromExpandAttachment = false
+                                    CustomSlideView.isFromExpandAttachment = false
                                 }
                             }
                         }
                     } else {
                         customizeSlideToOpen.isHidden = true
-                        CustomSlideViewBool.isFromExpandAttachment = false
+                        CustomSlideView.isFromExpandAttachment = false
                     }
                     print("Height-->",blockChainHeight,daemonBlockChainHeight)
                 }
             }
         } else {
             customizeSlideToOpen.isHidden = true
-            CustomSlideViewBool.isFromExpandAttachment = false
+            CustomSlideView.isFromExpandAttachment = false
         }
         updateMentions(for: newText)
     }
@@ -786,7 +786,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func reply(_ viewItem: ConversationViewItem) {
         customizeSlideToOpen.isHidden = true
-        CustomSlideViewBool.isFromExpandAttachment = false
+        CustomSlideView.isFromExpandAttachment = false
         var quoteDraftOrNil: OWSQuotedReplyModel?
         Storage.read { transaction in
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
@@ -1069,7 +1069,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func startVoiceMessageRecording() {
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
-        CustomSlideViewBool.isFromExpandAttachment = false
+        CustomSlideView.isFromExpandAttachment = false
         requestMicrophonePermissionIfNeeded() { [weak self] in
             self?.cancelVoiceMessageRecording()
         }
@@ -1452,7 +1452,7 @@ extension ConversationVC {
     
 }
 
-struct CustomSlideViewBool {
+struct CustomSlideView {
     static var isFromExpandAttachment = false
     static var isFromNormalAttachment = false
 }
