@@ -90,7 +90,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             switch viewModel.menuTitles[indexPath.row] {
                 case .myAccount:
-                    let viewController = MyAccountNewVC()
+                    let viewController = MyAccountBnsNewVC()
                     navigationController?.pushViewController(viewController, animated: true)
                 case .settings:
                     let viewController = BChatSettingsNewVC()
