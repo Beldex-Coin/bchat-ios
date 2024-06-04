@@ -427,7 +427,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
         if inputViewButton == sendButton {
             delegate?.handleSendButtonTapped()
-        }else if inputViewButton == payAsChatButton {
+        } else if inputViewButton == payAsChatButton {
             delegate?.handlePaySendButtonTapped()
         }
     }
