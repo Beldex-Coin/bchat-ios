@@ -4,6 +4,7 @@ import UIKit
 
 class SideMenuProfileTableViewCell: UITableViewCell {
     
+    static let reuseIdentifier = "SideMenuProfileTableViewCell"
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,6 +19,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         selectionStyle = .none
         backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -26,7 +28,6 @@ class SideMenuProfileTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
     }
     
     lazy var backGroundView: UIView = {

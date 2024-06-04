@@ -6,8 +6,11 @@ extension Notification.Name {
     public static let myNotificationKey_doodlechange = Notification.Name(rawValue: "myNotificationKey_doodlechange")
 }
 
-class SideMenuVC: BaseVC {
+class SideMenuViewController: BaseVC {
     
+    // MARK: - UIElements
+    
+    /// tableView
     private lazy var tableView: UITableView = {
         let result = UITableView()
         result.backgroundColor = .clear
@@ -18,17 +21,19 @@ class SideMenuVC: BaseVC {
         return result
     }()
     
-    lazy var sampleSwitch: UISwitch = {
+    /// darkLightModeSwitch
+    lazy var darkLightModeSwitch: UISwitch = {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
         toggle.onTintColor = Colors.switchBackgroundColor
-        toggle.addTarget(self, action: #selector(self.sampleSwitchValueChanged(_:)), for: .valueChanged)
+        toggle.addTarget(self, action: #selector(darkLightModeValueChanged(_:)), for: .valueChanged)
         toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
         return toggle
     }()
     
+    /// menuTitleLabel
     lazy var menuTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bchatLabelNameColor
@@ -39,6 +44,7 @@ class SideMenuVC: BaseVC {
         return result
     }()
     
+    /// lblversion
     lazy var lblversion: UILabel = {
         let result = UILabel()
         result.textColor = Colors.noDataLabelColor
@@ -48,6 +54,7 @@ class SideMenuVC: BaseVC {
         return result
     }()
     
+    /// lblmodeTitle
     lazy var lblmodeTitle: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
@@ -58,6 +65,7 @@ class SideMenuVC: BaseVC {
         return result
     }()
     
+    /// closeButton
     lazy var closeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -67,25 +75,28 @@ class SideMenuVC: BaseVC {
         return button
     }()
     
-    private var hasTappableProfilePicture: Bool = false
-    @objc public var size: CGFloat = 30 // Not an implicitly unwrapped optional due to Obj-C limitations
-    @objc public var useFallbackPicture = false
-    @objc public var publicKey: String!
-    @objc public var additionalPublicKey: String?
-    @objc public var openGroupProfilePicture: UIImage?
-    internal var tableViewHeightConstraint: NSLayoutConstraint!
+    // MARK: - Properties
     
-    var menuTitles: [SideMenuItem] = [.myAccount, .settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
+//    @objc public var size: CGFloat = 30 // Not an implicitly unwrapped optional due to Obj-C limitations
+//    @objc public var useFallbackPicture = false
+//    @objc public var publicKey: String!
+//    @objc public var additionalPublicKey: String?
+//    @objc public var openGroupProfilePicture: UIImage?
     
+    var viewModel = SideMenuViewModel()
+    
+    // MARK: - UIViewController life cycle
+    
+    /// view did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         self.navigationController?.isNavigationBarHidden = true
         
-        view.addSubViews(closeButton, menuTitleLabel, sampleSwitch, lblversion, lblmodeTitle)
-        sampleSwitch.isOn = !isLightMode
-        sampleSwitch.thumbTintColor = sampleSwitch.isOn == true ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        view.addSubViews(closeButton, menuTitleLabel, darkLightModeSwitch, lblversion, lblmodeTitle)
+        darkLightModeSwitch.isOn = !isLightMode
+        darkLightModeSwitch.thumbTintColor = darkLightModeSwitch.isOn == true ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
         
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -103,7 +114,7 @@ class SideMenuVC: BaseVC {
         tableView.pin(.leading, to: .leading, of: view)
         tableView.pin(.top, to: .bottom, of: closeButton, withInset: 15)
         tableView.pin(.trailing, to: .trailing, of: view)
-        tableViewHeightConstraint = tableView.set(.height, to: 550)
+        viewModel.tableViewHeightConstraint = tableView.set(.height, to: 550)
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 15),
@@ -113,41 +124,48 @@ class SideMenuVC: BaseVC {
             menuTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             
-            sampleSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
-            sampleSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24.333),
+            darkLightModeSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
+            darkLightModeSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24.333),
             
-            lblmodeTitle.trailingAnchor .constraint(equalTo: sampleSwitch.leadingAnchor, constant: -12),
-            lblmodeTitle.centerYAnchor.constraint(equalTo: sampleSwitch.centerYAnchor),
+            lblmodeTitle.trailingAnchor .constraint(equalTo: darkLightModeSwitch.leadingAnchor, constant: -12),
+            lblmodeTitle.centerYAnchor.constraint(equalTo: darkLightModeSwitch.centerYAnchor),
             
             lblversion.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
-            lblversion.topAnchor.constraint(equalTo: sampleSwitch.bottomAnchor, constant: 25)
+            lblversion.topAnchor.constraint(equalTo: darkLightModeSwitch.bottomAnchor, constant: 25)
         ])
     }
     
+    // MARK: - UIButton action
+    
+    /// close button tapped
     @objc private func closeButtonTapped(_ sender: UIButton) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    // MARK: - Private methods
+    
+    /// Get profile picture
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
         guard !publicKey.isEmpty else { return nil }
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            hasTappableProfilePicture = true
+            viewModel.hasTappableProfilePicture = true
             return profilePicture
         } else {
-            hasTappableProfilePicture = false
+            viewModel.hasTappableProfilePicture = false
             // TODO: Pass in context?
             let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
             return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
         }
     }
     
-    @objc func sampleSwitchValueChanged(_ x: UISwitch) {
-        if sampleSwitch.isOn {
+    /// darkLightModeValueChanged
+    @objc func darkLightModeValueChanged(_ sender: UISwitch) {
+        if darkLightModeSwitch.isOn {
             AppModeManager.shared.setCurrentAppMode(to: .dark)
-            sampleSwitch.thumbTintColor = Colors.bothGreenColor
+            darkLightModeSwitch.thumbTintColor = Colors.bothGreenColor
         } else {
             AppModeManager.shared.setCurrentAppMode(to: .light)
-            sampleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+            darkLightModeSwitch.thumbTintColor = Colors.switchOffBackgroundColor
         }
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)

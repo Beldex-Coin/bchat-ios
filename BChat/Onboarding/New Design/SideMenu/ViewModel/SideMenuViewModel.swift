@@ -2,7 +2,7 @@
 
 import Foundation
 
-// MARK: -
+// MARK: - Side menu item
 
 enum SideMenuItem {
     
@@ -36,6 +36,12 @@ enum SideMenuItem {
     /// Indicated Side menu - About
     case about
     
+    //MARK: -  Constant
+    
+    /// the Default SideMenuItem = `.myAccount`
+    static let `default`: SideMenuItem = .myAccount
+    
+    /// title
     var title: String {
         let aKey: String
         switch self {
@@ -62,4 +68,46 @@ enum SideMenuItem {
         }
         return aKey
     }
+    
+    /// image name
+    var imageName: String {
+        let aKey: String
+        switch self {
+            case .myAccount:
+                aKey = "ic_menu_account"
+            case .settings:
+                aKey = "ic_menu_setting"
+            case .notification:
+                aKey = "ic_menu_notification"
+            case .messageRequests:
+                aKey = "ic_menu_msg_rqst"
+            case .recoverySeed:
+                aKey = "ic_menu_recovery_seed"
+            case .wallet:
+                aKey = "ic_menu_wallet"
+            case .reportIssue:
+                aKey = "ic_menu_report_issue"
+            case .help:
+                aKey = "ic_menu_help"
+            case .invite:
+                aKey = "ic_menu_invite"
+            case .about:
+                aKey = "ic_menu_about"
+        }
+        return aKey
+    }
+}
+
+// MARK: - Side menu view model
+
+final class SideMenuViewModel: NSObject {
+    
+    /// menuTitles
+    var menuTitles: [SideMenuItem] = [.myAccount, .settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
+    
+    /// hasTappableProfilePicture
+    var hasTappableProfilePicture: Bool = false
+    
+    /// tableViewHeightConstraint
+    var tableViewHeightConstraint: NSLayoutConstraint!
 }
