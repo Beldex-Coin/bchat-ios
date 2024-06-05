@@ -8,7 +8,6 @@ extension Notification.Name {
     static var connectingCallHideViewNotification = Notification.Name(rawValue: Constants.callConnectionHideView)
     static var showPayAsYouChatNotification = Notification.Name(rawValue: Constants.showPayAsYouChat)
     static var hideOrShowInputViewNotification = Notification.Name(rawValue: Constants.showHideInputView)
-    static var bdxAmountPassingSliderViewNotification = Notification.Name(rawValue: Constants.bdxSlidingView)
     static var reScaneButtonActionNotification = Notification.Name(rawValue: Constants.rescanAction)
     static var reconnectButtonActionNotification = Notification.Name(rawValue: Constants.reconnect)
     static var selectedDisplayNameKeyNotification = Notification.Name(rawValue: Constants.selectedNameDisplay)

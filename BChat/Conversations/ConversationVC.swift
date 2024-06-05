@@ -15,7 +15,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
         showSearchUI()
         popAllConversationSettingsViews {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { // Without this delay the search bar doesn't show
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
                 self.searchController.uiSearchController.searchBar.becomeFirstResponder()
                 self.searchController.uiSearchController.searchBar.showsCancelButton = true
             }
@@ -1390,7 +1390,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    customizeSlideToOpen.isHidden = true
                     CustomSlideView.isFromExpandAttachment = false
                     var balance = WalletSharedData.sharedInstance.wallet!.balance
                     var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance

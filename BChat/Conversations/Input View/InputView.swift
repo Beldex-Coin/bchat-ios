@@ -48,7 +48,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     private var bottomStackView: UIStackView?
     private var finalBottomStack: UIStackView?
-    private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
+    lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self)
@@ -389,26 +389,35 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // MARK: Interaction
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         // Needed so that the user can tap the buttons when the expanding attachments button is expanded
-        let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
-                                 attachmentsButton.libraryButton, attachmentsButton.documentButton ]
-        let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
-        if let buttonContainer = buttonContainer {
-            return buttonContainer
+        if attachmentsButton.isExpanded {
+            let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
+                                     attachmentsButton.libraryButton, attachmentsButton.documentButton ]
+            let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
+            if let buttonContainer = buttonContainer {
+                return buttonContainer
+            } else {
+                return super.hitTest(point, with: event)
+            }
         } else {
             return super.hitTest(point, with: event)
         }
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let buttonContainers = [ attachmentsButton.documentButtonContainer,
-                                 attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
-        let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
-        if isPointInsideAttachmentsButton {
-            // Needed so that the user can tap the buttons when the expanding attachments button is expanded
-            return true
-        } else if mentionsViewContainer.frame.contains(point) {
-            // Needed so that the user can tap mentions
-            return true
+        
+        if attachmentsButton.isExpanded {
+            let buttonContainers = [ attachmentsButton.documentButtonContainer,
+                                     attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
+            let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
+            if isPointInsideAttachmentsButton {
+                // Needed so that the user can tap the buttons when the expanding attachments button is expanded
+                return true
+            } else if mentionsViewContainer.frame.contains(point) {
+                // Needed so that the user can tap mentions
+                return true
+            } else {
+                return super.point(inside: point, with: event)
+            }
         } else {
             return super.point(inside: point, with: event)
         }

@@ -99,7 +99,6 @@ final class VoiceMessageRecordingView : UIView {
         result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "ic_pause_record")
         result.setImage(imageSelected, for: .selected)
-        result.imageView?.isUserInteractionEnabled = true
         result.clipsToBounds = true
         result.isSelected = true
         return result
@@ -111,14 +110,13 @@ final class VoiceMessageRecordingView : UIView {
         result.alpha = 0
         let image = UIImage(named: "ic_record")
         result.setImage(image, for: UIControl.State.normal)
-        result.imageView?.isUserInteractionEnabled = true
         result.clipsToBounds = true
         return result
     }()
     
     private lazy var audioDurationLabel: UILabel = {
         let result = UILabel()
-        result.text = "0:07"
+        result.text = "0:00"
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textColor = Colors.noDataLabelColor
         result.alpha = 0
@@ -164,12 +162,13 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var progressView: UIView = {
         let result = UIView()
         result.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        result.alpha = 0
         return result
     }()
     
 
     private lazy var lockView = LockView()
-    
+    var TimerForConstraintOfProgressView: Timer?
     var isAudioRecordingStop = false
 
     // MARK: Settings
@@ -402,6 +401,7 @@ final class VoiceMessageRecordingView : UIView {
                 self.audioDurationLabel.alpha = 1
                 self.audioWavesImageView.alpha = 1
                 self.delegate?.showDeleteAudioView()
+                self.progressView.alpha = 1
                 self.progressViewRightConstraint.constant = -(self.audioWavesImageView.width())
             }, completion: { _ in
                 // Do nothing
@@ -423,8 +423,6 @@ final class VoiceMessageRecordingView : UIView {
     @objc private func handlePauseButtonTapped() {
 
     }
-    
-    var TimerForConstraintOfProgressView: Timer?
     
     @objc private func handlePlayButtonTapped(_ sender: UIButton) {
         if sender.isSelected {
@@ -492,6 +490,12 @@ final class VoiceMessageRecordingView : UIView {
         self.timerSecondForConstraintOfProgressView += 1
         if self.timerSecondForConstraintOfProgressView > self.timerSecond {
             self.timerSecondForConstraintOfProgressView = 0
+            // For stop loop
+//            if TimerForConstraintOfProgressView != nil {
+//                TimerForConstraintOfProgressView?.invalidate()
+//                TimerForConstraintOfProgressView = nil
+//                self.playPauseButton.isSelected = false
+//            }
         }
         let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
         let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished

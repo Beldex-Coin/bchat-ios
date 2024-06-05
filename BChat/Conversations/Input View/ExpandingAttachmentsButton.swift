@@ -2,7 +2,7 @@ import BChatUIKit
 
 final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private weak var delegate: ExpandingAttachmentsButtonDelegate?
-    private var isExpanded = false { didSet { expandOrCollapse() } }
+    var isExpanded = false { didSet { expandOrCollapse() } }
     
     override var isUserInteractionEnabled: Bool {
         didSet {
