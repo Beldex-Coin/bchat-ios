@@ -14,7 +14,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return stackView
     }()
     
-    private lazy var isFromProgressStatusLabel: UILabel = {
+    private lazy var progressStatusLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
@@ -80,7 +80,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return stackView
     }()
     
-    private lazy var isFromScanButton: UIButton = {
+    private lazy var scanButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.messageRequestBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -88,11 +88,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let image = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate)
         button.setImage(image, for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(isFromScanButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(scanButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private lazy var isFromSendButton: UIButton = {
+    private lazy var sendButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.enableSendButtonColor
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -100,23 +100,23 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let image = UIImage(named: "ic_send_new")
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 1)
-        button.addTarget(self, action: #selector(isFromSendButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private lazy var isFromReceiveButton: UIButton = {
+    private lazy var receiveButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
         let image = UIImage(named: "ic_receive_wallet")
         button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(isFromReceiveButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(receiveButtonTapped), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
         return button
     }()
     
-    private lazy var isFromReConnectButton: UIButton = {
+    private lazy var reConnectButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.walletHomeReconnectBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -124,12 +124,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let logoImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
         let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 25, height: 25))
         button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(isFromReConnectButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(reConnectButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var buttonsStackView: UIStackView = {
-        let result = UIStackView(arrangedSubviews: [ isFromScanButton, isFromSendButton, isFromReceiveButton, isFromReConnectButton ])
+        let result = UIStackView(arrangedSubviews: [ scanButton, sendButton, receiveButton, reConnectButton ])
         result.axis = .horizontal
         result.spacing = 22
         result.distribution = .fillEqually
@@ -149,14 +149,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return result
     }()
     
-    private lazy var isFromFilterImageButton: UIButton = {
+    private lazy var filterImageButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_Filter_New" : "ic_Filter_New"
         let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 20, height: 20))
         button.setImage(image, for: .normal)
-        button.addTarget(self, action: #selector(isFromFilterImageButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(filterImageButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -240,7 +240,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }()
     
     // MARK: - Here Transactions History Components
-    private lazy var isFromFilterTransactionsHistoryBackgroundView: UIView = {
+    private lazy var filterTransactionsHistoryBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.mainBackGroundColor2
@@ -465,7 +465,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var outerBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = .clear//Colors.mainBackGroundColor2
+        stackView.backgroundColor = .clear
         return stackView
     }()
     
@@ -954,7 +954,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         navigationItem.rightBarButtonItems = rightBarButtonItems
         
         view.addSubview(topBackgroundView)
-        topBackgroundView.addSubview(isFromProgressStatusLabel)
+        topBackgroundView.addSubview(progressStatusLabel)
         topBackgroundView.addSubview(isCurrencyResultLabel)
         topBackgroundView.addSubview(progressView)
         topBackgroundView.addSubview(sliderView)
@@ -963,7 +963,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         topBackgroundView.addSubview(middleBackgroundView)
         middleBackgroundView.addSubview(buttonsStackView)
         view.addSubview(transationTitleLabel)
-        view.addSubview(isFromFilterImageButton)
+        view.addSubview(filterImageButton)
         
         view.addSubview(walletSyncingBackgroundView)
         walletSyncingBackgroundView.addSubview(walletSyncingLogoImage)
@@ -975,11 +975,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         noTransactionsYetBackgroundView.addSubview(noTransactionsYetTitleLabel)
         noTransactionsYetBackgroundView.addSubview(noTransactionsYetSubTitleLabel)
         
-        view.addSubview(isFromFilterTransactionsHistoryBackgroundView)
-        isFromFilterTransactionsHistoryBackgroundView.addSubview(filterStackView)
-        isFromFilterTransactionsHistoryBackgroundView.addSubview(lineBackgroundView)
-        isFromFilterTransactionsHistoryBackgroundView.addSubview(tableView)
-        isFromFilterTransactionsHistoryBackgroundView.addSubview(stackView)
+        view.addSubview(filterTransactionsHistoryBackgroundView)
+        filterTransactionsHistoryBackgroundView.addSubview(filterStackView)
+        filterTransactionsHistoryBackgroundView.addSubview(lineBackgroundView)
+        filterTransactionsHistoryBackgroundView.addSubview(tableView)
+        filterTransactionsHistoryBackgroundView.addSubview(stackView)
         
         view.addSubview(transactionsDetailsBackgroundView)
         transactionsDetailsBackgroundView.addSubview(detailsTitleLabel)
@@ -1067,13 +1067,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             topBackgroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
             topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            isFromProgressStatusLabel.topAnchor.constraint(equalTo: topBackgroundView.topAnchor, constant: 20),
-            isFromProgressStatusLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
+            progressStatusLabel.topAnchor.constraint(equalTo: topBackgroundView.topAnchor, constant: 20),
+            progressStatusLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
             isCurrencyResultLabel.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -18),
-            isCurrencyResultLabel.centerYAnchor.constraint(equalTo: isFromProgressStatusLabel.centerYAnchor),
+            isCurrencyResultLabel.centerYAnchor.constraint(equalTo: progressStatusLabel.centerYAnchor),
             progressView.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 0),
             progressView.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -0),
-            progressView.topAnchor.constraint(equalTo: isFromProgressStatusLabel.bottomAnchor, constant: 16),
+            progressView.topAnchor.constraint(equalTo: progressStatusLabel.bottomAnchor, constant: 16),
             progressView.heightAnchor.constraint(equalToConstant: 1.5),
             beldexLogoImg.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 23),
             beldexLogoImg.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
@@ -1088,26 +1088,26 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             middleBackgroundView.topAnchor.constraint(equalTo: beldexLogoImg.bottomAnchor, constant: 23),
             middleBackgroundView.centerYAnchor.constraint(equalTo: topBackgroundView.lastBaselineAnchor),
             buttonsStackView.heightAnchor.constraint(equalToConstant: 50),
-            isFromScanButton.heightAnchor.constraint(equalToConstant: 50),
-            isFromSendButton.heightAnchor.constraint(equalToConstant: 50),
-            isFromReceiveButton.heightAnchor.constraint(equalToConstant: 50),
-            isFromReConnectButton.heightAnchor.constraint(equalToConstant: 50),
-            isFromScanButton.widthAnchor.constraint(equalToConstant: 50),
-            isFromSendButton.widthAnchor.constraint(equalToConstant: 50),
-            isFromReceiveButton.widthAnchor.constraint(equalToConstant: 50),
-            isFromReConnectButton.widthAnchor.constraint(equalToConstant: 50),
+            scanButton.heightAnchor.constraint(equalToConstant: 50),
+            sendButton.heightAnchor.constraint(equalToConstant: 50),
+            receiveButton.heightAnchor.constraint(equalToConstant: 50),
+            reConnectButton.heightAnchor.constraint(equalToConstant: 50),
+            scanButton.widthAnchor.constraint(equalToConstant: 50),
+            sendButton.widthAnchor.constraint(equalToConstant: 50),
+            receiveButton.widthAnchor.constraint(equalToConstant: 50),
+            reConnectButton.widthAnchor.constraint(equalToConstant: 50),
             buttonsStackView.centerXAnchor.constraint(equalTo: middleBackgroundView.centerXAnchor),
             buttonsStackView.centerYAnchor.constraint(equalTo: middleBackgroundView.centerYAnchor),
             transationTitleLabel.topAnchor.constraint(equalTo: middleBackgroundView.bottomAnchor, constant: 13),
             transationTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            isFromFilterImageButton.heightAnchor.constraint(equalToConstant: 35),
-            isFromFilterImageButton.widthAnchor.constraint(equalToConstant: 35),
-            isFromFilterImageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            isFromFilterImageButton.centerYAnchor.constraint(equalTo: transationTitleLabel.centerYAnchor),
+            filterImageButton.heightAnchor.constraint(equalToConstant: 35),
+            filterImageButton.widthAnchor.constraint(equalToConstant: 35),
+            filterImageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            filterImageButton.centerYAnchor.constraint(equalTo: transationTitleLabel.centerYAnchor),
         ])
         
         NSLayoutConstraint.activate([
-            walletSyncingBackgroundView.topAnchor.constraint(equalTo: isFromFilterImageButton.bottomAnchor, constant: 12),
+            walletSyncingBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             walletSyncingBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             walletSyncingBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             walletSyncingBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
@@ -1124,7 +1124,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.sliderView.pin(to: progressView)
         
         NSLayoutConstraint.activate([
-            noTransactionsYetBackgroundView.topAnchor.constraint(equalTo: isFromFilterImageButton.bottomAnchor, constant: 12),
+            noTransactionsYetBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             noTransactionsYetBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             noTransactionsYetBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             noTransactionsYetBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
@@ -1139,30 +1139,30 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         ])
         
         NSLayoutConstraint.activate([
-            isFromFilterTransactionsHistoryBackgroundView.topAnchor.constraint(equalTo: isFromFilterImageButton.bottomAnchor, constant: 12),
-            isFromFilterTransactionsHistoryBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
-            isFromFilterTransactionsHistoryBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            isFromFilterTransactionsHistoryBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
-            filterStackView.topAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.topAnchor, constant: 10),
-            filterStackView.trailingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.trailingAnchor, constant: -25),
-            filterStackView.leadingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.leadingAnchor, constant: 25),
+            filterTransactionsHistoryBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
+            filterTransactionsHistoryBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            filterTransactionsHistoryBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            filterTransactionsHistoryBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
+            filterStackView.topAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.topAnchor, constant: 10),
+            filterStackView.trailingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.trailingAnchor, constant: -25),
+            filterStackView.leadingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.leadingAnchor, constant: 25),
             filterStackView.heightAnchor.constraint(equalToConstant: 50),
             lineBackgroundView.topAnchor.constraint(equalTo: filterStackView.bottomAnchor, constant: 15),
-            lineBackgroundView.trailingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
-            lineBackgroundView.leadingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
+            lineBackgroundView.trailingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
+            lineBackgroundView.leadingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
             lineBackgroundView.heightAnchor.constraint(equalToConstant: 1),
             tableView.topAnchor.constraint(equalTo: lineBackgroundView.bottomAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
-            tableView.trailingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
-            tableView.bottomAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.bottomAnchor, constant: -0),
-            stackView.topAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.topAnchor, constant: 0),
-            stackView.trailingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
-            stackView.leadingAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
-            stackView.bottomAnchor.constraint(equalTo: isFromFilterTransactionsHistoryBackgroundView.bottomAnchor, constant: -0)
+            tableView.leadingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
+            tableView.bottomAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.bottomAnchor, constant: -0),
+            stackView.topAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.topAnchor, constant: 0),
+            stackView.trailingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.trailingAnchor, constant: -0),
+            stackView.leadingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
+            stackView.bottomAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.bottomAnchor, constant: -0)
         ])
         
         NSLayoutConstraint.activate([
-            transactionsDetailsBackgroundView.topAnchor.constraint(equalTo: isFromFilterImageButton.bottomAnchor, constant: 12),
+            transactionsDetailsBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             transactionsDetailsBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
             transactionsDetailsBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             transactionsDetailsBackgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
@@ -1257,21 +1257,21 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
         
-        isFromScanButton.isUserInteractionEnabled = false
-        isFromSendButton.isUserInteractionEnabled = false
-        isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
-        isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+        scanButton.isUserInteractionEnabled = false
+        sendButton.isUserInteractionEnabled = false
+        sendButton.backgroundColor = Colors.walletDisableButtonColor
+        scanButton.backgroundColor = Colors.walletDisableButtonColor
         let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
         let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
-        isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+        reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
         let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-        isFromScanButton.setImage(scanButtonImage, for: .normal)
+        scanButton.setImage(scanButtonImage, for: .normal)
         let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
-        isFromSendButton.setImage(sendButtonImage, for: .normal)
+        sendButton.setImage(sendButtonImage, for: .normal)
         // MARK: - Here Conditions based on hidden the view only
         walletSyncingBackgroundView.isHidden = false
         noTransactionsYetBackgroundView.isHidden = true
-        isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+        filterTransactionsHistoryBackgroundView.isHidden = true
         transactionsDetailsBackgroundView.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(syncWalletData(_:)), name: Notification.Name(rawValue: "syncWallet"), object: nil)
         if BackAPI == true {
@@ -1296,7 +1296,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
         // randomElement node And Selected Node
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
-            //            randomNodeValue = SaveUserDefaultsData.SelectedNode
             if globalDynamicNodeArray.contains(SaveUserDefaultsData.SelectedNode) {
                 self.randomNodeValue = SaveUserDefaultsData.SelectedNode
             } else {
@@ -1330,7 +1329,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        isFromFilterImageButton.layer.cornerRadius = isFromFilterImageButton.frame.height/2
+        filterImageButton.layer.cornerRadius = filterImageButton.frame.height/2
         cancelButton.layer.cornerRadius = cancelButton.frame.height/2
         okButton.layer.cornerRadius = okButton.frame.height/2
     }
@@ -1393,7 +1392,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             print("Finished all requests.")
             // randomElement node And Selected Node
             if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                //                self.randomNodeValue = SaveUserDefaultsData.SelectedNode
                 if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
                     self.randomNodeValue = SaveUserDefaultsData.SelectedNode
                 } else {
@@ -1431,17 +1429,17 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
         // Rescan Height Update in userdefaults work
         if backApiRescanVC == true {
-            isFromScanButton.isUserInteractionEnabled = false
-            isFromSendButton.isUserInteractionEnabled = false
-            isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
-            isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+            scanButton.isUserInteractionEnabled = false
+            sendButton.isUserInteractionEnabled = false
+            scanButton.backgroundColor = Colors.walletDisableButtonColor
+            sendButton.backgroundColor = Colors.walletDisableButtonColor
             let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
-            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            sendButton.setImage(sendButtonImage, for: .normal)
             let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
             let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
-            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+            reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
             let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-            isFromScanButton.setImage(scanButtonImage, for: .normal)
+            scanButton.setImage(scanButtonImage, for: .normal)
             self.closeWallet()
             init_syncing_wallet()
         }
@@ -1533,41 +1531,41 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     //MARK:- Wallet func Connect Deamon
     func init_syncing_wallet() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            isFromScanButton.isUserInteractionEnabled = false
-            isFromSendButton.isUserInteractionEnabled = false
-            isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
-            isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
+            scanButton.isUserInteractionEnabled = false
+            sendButton.isUserInteractionEnabled = false
+            scanButton.backgroundColor = Colors.walletDisableButtonColor
+            sendButton.backgroundColor = Colors.walletDisableButtonColor
             let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
-            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            sendButton.setImage(sendButtonImage, for: .normal)
             let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-            isFromScanButton.setImage(scanButtonImage, for: .normal)
+            scanButton.setImage(scanButtonImage, for: .normal)
             let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
             let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
-            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+            reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
             beldexBalanceLabel.text = "-.---"
             isCurrencyResultLabel.text = "0.00 USD"
             self.syncedflag = false
             conncetingState.value = true
             walletSyncingBackgroundView.isHidden = false
             noTransactionsYetBackgroundView.isHidden = true
-            isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-            isFromProgressStatusLabel.text = "Loading Wallet ..."
+            progressStatusLabel.textColor = Colors.aboutContentLabelColor
+            progressStatusLabel.text = "Loading Wallet ..."
             let username = SaveUserDefaultsData.NameForWallet
             let pwd = SaveUserDefaultsData.israndomUUIDPassword
             WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
                 WalletSharedData.sharedInstance.wallet = nil
                 DispatchQueue.main.async {
-                    self?.isFromScanButton.isUserInteractionEnabled = false
-                    self?.isFromSendButton.isUserInteractionEnabled = false
-                    self?.isFromSendButton.backgroundColor = Colors.walletDisableButtonColor
-                    self?.isFromScanButton.backgroundColor = Colors.walletDisableButtonColor
+                    self?.scanButton.isUserInteractionEnabled = false
+                    self?.sendButton.isUserInteractionEnabled = false
+                    self?.sendButton.backgroundColor = Colors.walletDisableButtonColor
+                    self?.scanButton.backgroundColor = Colors.walletDisableButtonColor
                     let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-                    self?.isFromScanButton.setImage(scanButtonImage, for: .normal)
+                    self?.scanButton.setImage(scanButtonImage, for: .normal)
                     let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
-                    self?.isFromSendButton.setImage(sendButtonImage, for: .normal)
+                    self?.sendButton.setImage(sendButtonImage, for: .normal)
                     let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
                     let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
-                    self?.isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+                    self?.reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
                 }
                 guard let strongSelf = self else { return }
                 switch result {
@@ -1579,8 +1577,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     DispatchQueue.main.async {
                         strongSelf.refreshState.value = true
                         strongSelf.conncetingState.value = false
-                        strongSelf.isFromProgressStatusLabel.textColor = .red
-                        strongSelf.isFromProgressStatusLabel.text = "Failed to Connect"
+                        strongSelf.progressStatusLabel.textColor = .red
+                        strongSelf.progressStatusLabel.text = "Failed to Connect"
                         self!.syncedflag = false
                         self!.walletSyncingBackgroundView.isHidden = false
                         self!.noTransactionsYetBackgroundView.isHidden = true
@@ -1599,7 +1597,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             DispatchQueue.main.async {
                 self.walletSyncingBackgroundView.isHidden = false
                 self.noTransactionsYetBackgroundView.isHidden = true
-                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+                self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
             }
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
@@ -1627,8 +1625,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     self.listening = false
                     self.walletSyncingBackgroundView.isHidden = false
                     self.noTransactionsYetBackgroundView.isHidden = true
-                    self.isFromProgressStatusLabel.textColor = .red
-                    self.isFromProgressStatusLabel.text = "Failed to Connect"
+                    self.progressStatusLabel.textColor = .red
+                    self.progressStatusLabel.text = "Failed to Connect"
                 }
             }
         }
@@ -1666,8 +1664,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                             self.syncedflag = false
                             self.progressView.progress = Float(progress)
                             self.sliderView.value = Float(progress)
-                            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-                            self.isFromProgressStatusLabel.text = statusText
+                            self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
+                            self.progressStatusLabel.text = statusText
                         }
                     }
                 }
@@ -1705,14 +1703,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         self.syncedflag = false
                         self.progressView.progress = Float(progress)
                         self.sliderView.value = Float(progress)
-                        self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-                        self.isFromProgressStatusLabel.text = statusText
+                        self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
+                        self.progressStatusLabel.text = statusText
                     }
                 }
             }
         } else {
-            self.isFromProgressStatusLabel.textColor = .red
-            self.isFromProgressStatusLabel.text = "Check your internet"
+            self.progressStatusLabel.textColor = .red
+            self.progressStatusLabel.text = "Check your internet"
         }
     }
     
@@ -1737,39 +1735,39 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             progressView.progress = 1
             self.sliderView.value = 1
             syncedflag = true
-            isFromScanButton.isUserInteractionEnabled = true
-            isFromSendButton.isUserInteractionEnabled = true
-            isFromSendButton.backgroundColor = Colors.enableSendButtonColor
-            isFromScanButton.backgroundColor = Colors.messageRequestBackgroundColor
+            scanButton.isUserInteractionEnabled = true
+            sendButton.isUserInteractionEnabled = true
+            sendButton.backgroundColor = Colors.enableSendButtonColor
+            scanButton.backgroundColor = Colors.messageRequestBackgroundColor
             let sendButtonImage = UIImage(named: "ic_send_new")
-            isFromSendButton.setImage(sendButtonImage, for: .normal)
+            sendButton.setImage(sendButtonImage, for: .normal)
             let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate)
-            isFromScanButton.setImage(scanButtonImage, for: .normal)
+            scanButton.setImage(scanButtonImage, for: .normal)
             let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
             let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25))
-            isFromReConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
-            self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
+            reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+            self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
             if self.backApiRescanVC == true {
-                self.isFromProgressStatusLabel.text = "Connecting..."
+                self.progressStatusLabel.text = "Connecting..."
                 walletSyncingBackgroundView.isHidden = false
                 noTransactionsYetBackgroundView.isHidden = true
             } else {
-                self.isFromProgressStatusLabel.text = "Synchronized 100%"
+                self.progressStatusLabel.text = "Synchronized 100%"
                 beldexLogoImg.image = UIImage(named: "ic_beldex_green")
                 walletSyncingBackgroundView.isHidden = true
                 if self.transactionAllArray.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 } else {
                     noTransactionsYetBackgroundView.isHidden = true
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = false
+                    filterTransactionsHistoryBackgroundView.isHidden = false
                 }
             }
             self.tableView.reloadData()
             WalletSharedData.sharedInstance.wallet = nil
         } else {
-            self.isFromProgressStatusLabel.textColor = .red
-            self.isFromProgressStatusLabel.text = "Check your internet"
+            self.progressStatusLabel.textColor = .red
+            self.progressStatusLabel.text = "Check your internet"
         }
     }
     
@@ -1911,9 +1909,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
     }
     
-    @objc func isFromFilterImageButtonTapped(_ sender: UIButton){
+    @objc func filterImageButtonTapped(_ sender: UIButton){
         if self.transactionAllArray.count == 0 {
-            isFromFilterImageButton.isUserInteractionEnabled = true
+            filterImageButton.isUserInteractionEnabled = true
         } else {
             self.noTransaction = false
             self.isFilter = false
@@ -1925,23 +1923,23 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             if let datePickerView = self.toDateTextField.inputView as? UIDatePicker {
                 datePickerView.minimumDate = nil
             }
-            isFromFilterImageButton.isSelected = !isFromFilterImageButton.isSelected
-            if isFromFilterImageButton.isSelected {
+            filterImageButton.isSelected = !filterImageButton.isSelected
+            if filterImageButton.isSelected {
                 filterStackView.isHidden = false
                 lineBackgroundView.isHidden = false
-                isFromFilterImageButton.backgroundColor = Colors.titleColor
+                filterImageButton.backgroundColor = Colors.titleColor
                 let logoImage2 = isLightMode ? "ic_filter_white" : "ic_filter_black"
-                isFromFilterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
+                filterImageButton.setImage(UIImage(named: logoImage2), for: .normal)
             } else {
                 filterStackView.isHidden = true
                 lineBackgroundView.isHidden = true
-                isFromFilterImageButton.backgroundColor = .clear
-                isFromFilterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
+                filterImageButton.backgroundColor = .clear
+                filterImageButton.setImage(UIImage(named: "ic_Filter_New"), for: .normal)
             }
         }
     }
     
-    @objc func isFromScanButtonTapped(_ sender: UIButton){
+    @objc func scanButtonTapped(_ sender: UIButton){
         let vc = ScanNewVC()
         vc.isFromWallet = true
         vc.wallet = self.wallet
@@ -1954,19 +1952,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.showToastMsg(message: "Copied to Transaction ID", seconds: 1.0)
     }
     
-    @objc func isFromSendButtonTapped(_ sender: UIButton){
+    @objc func sendButtonTapped(_ sender: UIButton){
         let vc = WalletSendNewVC()
         vc.mainBalance = beldexBalanceLabel.text!
         vc.wallet = self.wallet
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    @objc func isFromReceiveButtonTapped(_ sender: UIButton){
+    @objc func receiveButtonTapped(_ sender: UIButton){
         let vc = WalletReceiveNewVC()
         navigationController!.pushViewController(vc, animated: true)
     }
     // Rescan and Reconnect popup
-    @objc func isFromReConnectButtonTapped(_ sender: UIButton){
+    @objc func reConnectButtonTapped(_ sender: UIButton){
         let vc = SyncingOptionPopUpVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
@@ -2090,8 +2088,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                                if ListDate >= FromDate && ListDate <= ToDate { //
-//                                    filteredOutgoingTransactionarray.append(element)
+                                if ListDate >= FromDate && ListDate <= ToDate {
+                                    
                                 }
                             }
                         }
@@ -2171,8 +2169,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         
                         if ListYear >= FromYear && ListYear <= ToYear {
                             if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                                if ListDate >= FromDate && ListDate <= ToDate { //
-//                                    filteredIncomingTransactionarray.append(element)
+                                if ListDate >= FromDate && ListDate <= ToDate {
+                                    
                                 }
                             }
                         }
@@ -2255,8 +2253,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     
                     if ListYear >= FromYear && ListYear <= ToYear {
                         if ListMonth >= FromMonth && ListMonth <= ToMonth {
-                            if ListDate >= FromDate && ListDate <= ToDate { //
-//                                filteredAllTransactionarray.append(element)
+                            if ListDate >= FromDate && ListDate <= ToDate {
+                                
                             }
                         }
                     }
@@ -2318,7 +2316,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     @objc func backImageButtonTapped(_ sender: UIButton){
         walletSyncingBackgroundView.isHidden = true
         noTransactionsYetBackgroundView.isHidden = true
-        isFromFilterTransactionsHistoryBackgroundView.isHidden = false
+        filterTransactionsHistoryBackgroundView.isHidden = false
         transactionsDetailsBackgroundView.isHidden = true
     }
     
@@ -2433,13 +2431,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             if self.isFilter {
                 if filteredAllTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return filteredAllTransactionSortingArray[section].value.count
             } else {
                 if sortedGroupedTransactionAllArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return sortedGroupedTransactionAllArray[section].value.count
             }
@@ -2447,13 +2445,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             if self.isFilter {
                 if filteredOutgoingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return filteredOutgoingTransactionSortingArray[section].value.count
             } else {
                 if sortedGroupedTransactionSendArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return sortedGroupedTransactionSendArray[section].value.count
             }
@@ -2461,13 +2459,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             if self.isFilter {
                 if filteredIncomingTransactionSortingArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return filteredIncomingTransactionSortingArray[section].value.count
             } else {
                 if sortedGroupedTransactionReceiveArray[section].value.count == 0 {
                     noTransactionsYetBackgroundView.isHidden = false
-                    isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                    filterTransactionsHistoryBackgroundView.isHidden = true
                 }
                 return sortedGroupedTransactionReceiveArray[section].value.count
             }
@@ -2494,11 +2492,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
@@ -2514,11 +2512,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
@@ -2534,10 +2532,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.sent {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             } else {
@@ -2550,10 +2548,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                 if transaction.direction != BChat_Messenger.TransactionDirection.sent {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Send"
+                    cell.sendandReceiveLabel.text = "Send"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
@@ -2568,10 +2566,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(valueResponce.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if valueResponce.direction != BChat_Messenger.TransactionDirection.received {
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             } else {
@@ -2584,10 +2582,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received{
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
-                    cell.isFromSendandReceiveLabel.text = "Received"
+                    cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
@@ -3036,7 +3034,7 @@ class TransationHistoryTableCell: UITableViewCell {
         return result
     }()
     
-    lazy var isFromSendandReceiveLabel: UILabel = {
+    lazy var sendandReceiveLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
@@ -3065,7 +3063,7 @@ class TransationHistoryTableCell: UITableViewCell {
         backGroundView.addSubview(balanceAmountLabel)
         backGroundView.addSubview(dateLabel)
         backGroundView.addSubview(arrowImage)
-        backGroundView.addSubview(isFromSendandReceiveLabel)
+        backGroundView.addSubview(sendandReceiveLabel)
         
         NSLayoutConstraint.activate([
             backGroundView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
@@ -3086,8 +3084,8 @@ class TransationHistoryTableCell: UITableViewCell {
             arrowImage.widthAnchor.constraint(equalToConstant: 10),
             arrowImage.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -25),
             arrowImage.centerYAnchor.constraint(equalTo: directionLogoImage.centerYAnchor),
-            isFromSendandReceiveLabel.trailingAnchor.constraint(equalTo: arrowImage.leadingAnchor, constant: -10),
-            isFromSendandReceiveLabel.centerYAnchor.constraint(equalTo: arrowImage.centerYAnchor),
+            sendandReceiveLabel.trailingAnchor.constraint(equalTo: arrowImage.leadingAnchor, constant: -10),
+            sendandReceiveLabel.centerYAnchor.constraint(equalTo: arrowImage.centerYAnchor),
         ])
     }
     
@@ -3172,8 +3170,8 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
                 self.syncedflag = false
                 self.progressView.progress = Float(progress)
                 self.sliderView.value = Float(progress)
-                self.isFromProgressStatusLabel.textColor = Colors.aboutContentLabelColor
-                self.isFromProgressStatusLabel.text = statusText
+                self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
+                self.progressStatusLabel.text = statusText
             }
         }
     }
@@ -3238,14 +3236,13 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
             self.fetchMarketsData(false)
             self.reloadData([:])
             
-//            self.tableView.reloadData()
             sortAndGroupTransactions()
             if self.transactionAllArray.count == 0 {
                 noTransactionsYetBackgroundView.isHidden = false
-                isFromFilterTransactionsHistoryBackgroundView.isHidden = true
+                filterTransactionsHistoryBackgroundView.isHidden = true
             } else {
                 noTransactionsYetBackgroundView.isHidden = true
-                isFromFilterTransactionsHistoryBackgroundView.isHidden = false
+                filterTransactionsHistoryBackgroundView.isHidden = false
             }
         }
     }

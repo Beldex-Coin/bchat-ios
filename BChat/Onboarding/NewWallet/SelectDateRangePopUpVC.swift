@@ -13,12 +13,6 @@ class SelectDateRangePopUpVC: BaseVC {
         return imageView
     }()
     
-    //    private lazy var backgroundBlerView: UIView = {
-    //        let stackView = UIView()
-    //        stackView.translatesAutoresizingMaskIntoConstraints = false
-    //        stackView.backgroundColor = Colors.walletHomeDateViewBackgroundColor
-    //        return stackView
-    //    }()
     private lazy var selectDateRangePopUpbackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +22,7 @@ class SelectDateRangePopUpVC: BaseVC {
         stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
+    
     lazy var selectDateRangeTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -37,6 +32,7 @@ class SelectDateRangePopUpVC: BaseVC {
         result.text = NSLocalizedString("Select Date Range", comment: "")
         return result
     }()
+    
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -136,16 +132,12 @@ class SelectDateRangePopUpVC: BaseVC {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-//        view.addSubview(customNavigationBar)
         view.addSubview(backgroundBlerView)
         backgroundBlerView.addSubview(selectDateRangePopUpbackgroundView)
         selectDateRangePopUpbackgroundView.addSubview(selectDateRangeTitleLabel)
         selectDateRangePopUpbackgroundView.addSubview(fromDateTextField)
         selectDateRangePopUpbackgroundView.addSubview(toDateTextField)
         selectDateRangePopUpbackgroundView.addSubview(buttonStackView)
-        
-//        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
         
         NSLayoutConstraint.activate([
             backgroundBlerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
@@ -188,7 +180,6 @@ class SelectDateRangePopUpVC: BaseVC {
     
     // MARK: - Navigation
     @objc func cancelButtonTapped(_ sender: UIButton){
-        print("AAA")
         
     }
     @objc func okButtonTapped(_ sender: UIButton){

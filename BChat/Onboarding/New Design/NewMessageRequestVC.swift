@@ -72,9 +72,9 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.addSubview(tableView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(blockMessageRequestTapped(_:)), name: Notification.Name(rawValue: "blockMessageRequestTapped"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: Notification.Name(rawValue: "acceptMessageRequestTapped"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(blockMessageRequestTapped(_:)), name: .blockMessageRequestTappedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: .acceptMessageRequestTappedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: .deleteMessageRequestTappedNotification, object: nil)
         
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 22.0).isActive = true
@@ -133,8 +133,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Int(messageRequestCount)
     }
@@ -179,7 +177,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let conversationVC = ConversationVC(thread: thread)
         self.navigationController?.pushViewController(conversationVC, animated: true)
     }
-    
     
     @objc func acceptMessageRequestTapped(_ notification: Notification) {
         guard let thread = self.thread(at: self.tappedIndex) else { return }

@@ -697,8 +697,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             return self.contactTitleArray.count
         } else if self.isClosedGroup() {
             return self.closeGroupTitleArray.count
-        }
-        else {
+        } else {
             return 5
         }
     }

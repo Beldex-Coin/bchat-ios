@@ -105,7 +105,7 @@ class AcceptMessageRequestPopUp: BaseVC {
     }
     
     @objc private func okButtonTapped(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "acceptMessageRequestTapped"), object: nil)
+        NotificationCenter.default.post(name: .acceptMessageRequestTappedNotification, object: nil)
         self.dismiss(animated: true)
     }
     
@@ -223,19 +223,14 @@ class DeleteMessageRequestPopUp: BaseVC {
         ])
     }
  
-    
     @objc private func okButtonTapped(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "deleteMessageRequestTapped"), object: nil)
+        NotificationCenter.default.post(name: .deleteMessageRequestTappedNotification, object: nil)
         self.dismiss(animated: true)
     }
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
-
-    
-
 }
 
 
@@ -352,7 +347,7 @@ class BlockMessageRequestPopUp: BaseVC {
     
     
     @objc private func okButtonTapped(_ sender: UIButton) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "blockMessageRequestTapped"), object: nil)
+        NotificationCenter.default.post(name: .blockMessageRequestTappedNotification, object: nil)
         self.dismiss(animated: true)
     }
     

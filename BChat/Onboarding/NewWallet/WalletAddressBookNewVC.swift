@@ -52,6 +52,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         result.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return result
     }()
+    
     private lazy var backgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +61,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         stackView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         return stackView
     }()
+    
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -71,6 +73,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
+    
     private lazy var noAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "No Addresses!"
@@ -80,6 +83,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var noSubAddressTitleLabel: UILabel = {
         let result = UILabel()
         result.text = "Save address to show!"
@@ -89,6 +93,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var noContactsYetLogoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -97,6 +102,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var noContactsTitleLabel: UILabel = {
         let result = PaddingLabel()
         result.text = "No Contacts"

@@ -5,6 +5,7 @@ import BChatUIKit
 
 class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
 
+    /// Table View
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -159,13 +160,15 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }else if indexPath.section == 1 {
             return 350 + 28
         }else {
-            return 56.5//UITableView.automaticDimension
+            return 56.5
         }
     }
 }
 
 class CurrentNodeTableCell: UITableViewCell {
     // MARK: - Properties
+    
+    /// BackGround View
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -173,12 +176,16 @@ class CurrentNodeTableCell: UITableViewCell {
         view.layer.cornerRadius = 16
         return view
     }()
+    
+    /// Logo Image
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    /// Current Node Title Label
     lazy var currentNodeTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
@@ -188,6 +195,8 @@ class CurrentNodeTableCell: UITableViewCell {
         result.text = NSLocalizedString("CURRENT_NODE_TITLE_NEW", comment: "")
         return result
     }()
+    
+    /// Node Name Label
     lazy var nodeNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -196,6 +205,8 @@ class CurrentNodeTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Arrow Image
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -224,14 +235,13 @@ class CurrentNodeTableCell: UITableViewCell {
             logoImage.widthAnchor.constraint(equalToConstant: 18),
             logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
+            
             currentNodeTitleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             currentNodeTitleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -10),
-           
             currentNodeTitleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
             
             nodeNameLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             nodeNameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: 13),
-          
             nodeNameLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
             
             arrowImage.heightAnchor.constraint(equalToConstant: 15),
@@ -248,6 +258,8 @@ class CurrentNodeTableCell: UITableViewCell {
 
 class PersonalSettingsTableCell: UITableViewCell {
     // MARK: - Properties
+    
+    /// BackGround View
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -255,12 +267,16 @@ class PersonalSettingsTableCell: UITableViewCell {
         view.layer.cornerRadius = 16
         return view
     }()
+    
+    /// Logo Image
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    /// Title Label
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -270,6 +286,8 @@ class PersonalSettingsTableCell: UITableViewCell {
         result.text = NSLocalizedString("ADDRESS_BOOK_TITLE_NEW", comment: "")
         return result
     }()
+    
+    /// Arrow Image
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -299,8 +317,6 @@ class PersonalSettingsTableCell: UITableViewCell {
             logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 28),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-//            logoImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
-//            logoImage.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -10),
             titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
             arrowImage.heightAnchor.constraint(equalToConstant: 15),
@@ -317,7 +333,10 @@ class PersonalSettingsTableCell: UITableViewCell {
 
 
 class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableViewDelegate {
+    
     // MARK: - Properties
+    
+    /// Table View
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -423,8 +442,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 let cell = WalletSettingsSubTableCell(style: .default, reuseIdentifier: "WalletSettingsSubTableCell")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
-                cell.titleLabel.text = "Display Balance As"//walletNameArray[indexPath.row]
-                cell.subTitleLabel.text = "Beldex Full Balances"//walletSubNameArray[indexPath.row]
+                cell.titleLabel.text = "Display Balance As"
+                cell.subTitleLabel.text = "Beldex Full Balances"
                 let logoImage = isLightMode ? "ic_displaybalance_dark" : "ic_Display_balance_new"
                 cell.logoImage.image = UIImage(named: logoImage)
                 cell.spaceView.layer.cornerRadius = 14
@@ -439,8 +458,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
-                cell.titleLabel.text = "Decimals"//walletNameArray[indexPath.row]
-                cell.subTitleLabel.text = "2 - Two (0.00)"//walletSubNameArray[indexPath.row]
+                cell.titleLabel.text = "Decimals"
+                cell.subTitleLabel.text = "2 - Two (0.00)"
                 let logoImage = isLightMode ? "ic_decimal_dark" : "ic_Decimal_new"
                 cell.logoImage.image = UIImage(named: logoImage)
                 if !SaveUserDefaultsData.SelectedDecimal.isEmpty{
@@ -453,8 +472,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
-                cell.titleLabel.text = "Currency"//walletNameArray[indexPath.row]
-                cell.subTitleLabel.text = "USD"//walletSubNameArray[indexPath.row]
+                cell.titleLabel.text = "Currency"
+                cell.subTitleLabel.text = "USD"
                 let logoImage = isLightMode ? "ic_currency_dark" : "ic_currency_new"
                 cell.logoImage.image = UIImage(named: logoImage)
                 if !SaveUserDefaultsData.SelectedCurrency.isEmpty{
@@ -467,8 +486,8 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
-                cell.titleLabel.text = "Fee Priority"//walletNameArray[indexPath.row]
-                cell.subTitleLabel.text = "Flash"//walletSubNameArray[indexPath.row]
+                cell.titleLabel.text = "Fee Priority"
+                cell.subTitleLabel.text = "Flash"
                 let logoImage = isLightMode ? "ic_feeperiority_dark" : "ic_fee_priority_new"
                 cell.logoImage.image = UIImage(named: logoImage)
                 if !SaveUserDefaultsData.FeePriority.isEmpty {
@@ -553,6 +572,7 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
 
 class WalletSettingsSubTableCell: UITableViewCell {
     // MARK: - Properties
+    /// Space View
     lazy var spaceView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -560,18 +580,23 @@ class WalletSettingsSubTableCell: UITableViewCell {
         return view
     }()
     
+    /// BackGround View
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Colors.cellBackgroundColorForNodeList
         return view
     }()
+    
+    /// Logo Image
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    /// Title Label
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -580,6 +605,8 @@ class WalletSettingsSubTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Sub Title Label
     lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletSettingsSubTitleLabelColor
@@ -588,6 +615,8 @@ class WalletSettingsSubTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Arrow Image
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -622,14 +651,13 @@ class WalletSettingsSubTableCell: UITableViewCell {
             logoImage.widthAnchor.constraint(equalToConstant: 18),
             logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
+            
             titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -12),
-            
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
             
             subTitleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             subTitleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: 12),
-            
             subTitleLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
             
             arrowImage.heightAnchor.constraint(equalToConstant: 15),
@@ -645,18 +673,24 @@ class WalletSettingsSubTableCell: UITableViewCell {
 
 class WalletSettingsSubTableCell33: UITableViewCell {
     // MARK: - Properties
+    
+    /// BackGround View
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Colors.cellBackgroundColorForNodeList
         return view
     }()
+    
+    /// Logo Image
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    /// Title Label
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -665,6 +699,8 @@ class WalletSettingsSubTableCell33: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Sub Title Label
     lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletSettingsSubTitleLabelColor
@@ -673,6 +709,8 @@ class WalletSettingsSubTableCell33: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Arrow Image
     lazy var arrowImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -701,6 +739,7 @@ class WalletSettingsSubTableCell33: UITableViewCell {
             logoImage.widthAnchor.constraint(equalToConstant: 18),
             logoImage.heightAnchor.constraint(equalToConstant: 18),
             logoImage.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
+            
             titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor, constant: -12),
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
@@ -722,26 +761,33 @@ class WalletSettingsSubTableCell33: UITableViewCell {
 
 
 class WalletSettingsSubTableCell2: UITableViewCell {
-    // MARK: - Properties
     
+    // MARK: - Properties
+    /// Space View
     lazy var spaceView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Colors.cellBackgroundColorForNodeList
         return view
     }()
+    
+    /// BackGround View
     lazy var backGroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Colors.cellBackgroundColorForNodeList
         return view
     }()
+    
+    /// Logo Image
     lazy var logoImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+    
+    /// Title Label
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -750,6 +796,8 @@ class WalletSettingsSubTableCell2: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
+    /// Toggle Switch
     lazy var toggleSwitch: UISwitch = {
         let toggle = UISwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false

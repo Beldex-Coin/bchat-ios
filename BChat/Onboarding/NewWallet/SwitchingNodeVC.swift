@@ -14,6 +14,7 @@ class SwitchingNodeVC: BaseVC {
         stackView.layer.borderColor = Colors.borderColor.cgColor
         return stackView
     }()
+    
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -24,6 +25,7 @@ class SwitchingNodeVC: BaseVC {
         result.textAlignment = .center
         return result
     }()
+    
     private lazy var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .default)
         progressView.center = view.center
