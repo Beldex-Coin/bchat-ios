@@ -4,7 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatUtilitiesKit
 
-class MyAccountBnsNewVC: BaseVC {
+class MyAccountBnsViewController: BaseVC {
     
     // MARK: - UIElements
     
@@ -503,6 +503,8 @@ class MyAccountBnsNewVC: BaseVC {
     
     // MARK: - Properties
     
+    let viewModel = MyAccountBNSViewModel()
+    
     /// is fallback picture
     @objc public var isFallbackPicture = false
     
@@ -511,12 +513,6 @@ class MyAccountBnsNewVC: BaseVC {
     
     /// size
     @objc public var size: CGFloat = 30
-    
-    /// image array
-    let imageArray = ["ic_hops", "ic_change_password","ic_blocked_contacts", "ic_clear_data", "ic_feedback", "ic_faq", "ic_changelog"]
-    
-    /// title array
-    let titleArray = ["Hops", "Change Password", "Blocked Contacts", "Clear Data", "Feedback", "FAQ", "Changelog"]
     
     // MARK: - UIViewController life cycle
     
@@ -849,6 +845,7 @@ class MyAccountBnsNewVC: BaseVC {
     /// View did layout subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
     }
     
@@ -872,35 +869,23 @@ class MyAccountBnsNewVC: BaseVC {
     
     /// Update BNS Details
     func updateBNSDetails() {
-        // BNS Verified
-        updateBnsDetail()
-    }
-    func updateBnsDetail() {
-        if UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData") {
-            shadowBackgroundImage.isHidden = false
-            stackViewForBNSVerifiedName.isHidden = false
+        let isBNSVerified = UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData")
+        shadowBackgroundImage.isHidden = !isBNSVerified
+        stackViewForBNSVerifiedName.isHidden = !isBNSVerified
+        linkYourBNSBackgroundView.isHidden = isBNSVerified
+        readMoreAboutBackgroundView.isHidden = isBNSVerified
+        bchatIDExpandView.isHidden = isBNSVerified
+        showQRExpandView.isHidden = isBNSVerified
+        bnsApprovalIconImage.isHidden = !isBNSVerified
+        profilePictureImage.layer.borderWidth = isBNSVerified ? 3 : 0
+        profilePictureImage.layer.borderColor = isBNSVerified ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+        
+        beldexAddressExpandView.isHidden = true
+        bchatIDExpandView.isHidden = true
+        showQRExpandView.isHidden = true
+        
+        if isBNSVerified {
             stackViewForFinalLinkBNS.isHidden = false
-            linkYourBNSBackgroundView.isHidden = true
-            readMoreAboutBackgroundView.isHidden = true
-            beldexAddressExpandView.isHidden = true
-            bchatIDExpandView.isHidden = true
-            showQRExpandView.isHidden = true
-            bnsApprovalIconImage.isHidden = false
-            profilePictureImage.layer.borderWidth = 3
-            profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-            stackViewForBNSVerifiedName.isHidden = false
-        } else {
-            print("Not Verified") // Not Verified
-            shadowBackgroundImage.isHidden = true
-            stackViewForBNSVerifiedName.isHidden = true
-            linkYourBNSBackgroundView.isHidden = false
-            readMoreAboutBackgroundView.isHidden = false
-            beldexAddressExpandView.isHidden = true
-            bchatIDExpandView.isHidden = true
-            showQRExpandView.isHidden = true
-            bnsApprovalIconImage.isHidden = true
-            profilePictureImage.layer.borderColor = UIColor.clear.cgColor
-            stackViewForBNSVerifiedName.isHidden = true
         }
     }
     
@@ -963,69 +948,5 @@ class MyAccountBnsNewVC: BaseVC {
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         self.present(vc, animated: true, completion: nil)
-    }
-}
-
-extension MyAccountBnsNewVC: UITableViewDataSource, UITableViewDelegate {
-    
-    // MARK: - UITableView datasources
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.titleArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 54
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NewSettingsTableViewCell.reuserIdentifier) as! NewSettingsTableViewCell
-        
-        if indexPath.row == 0 {
-            cell.dotView.isHidden = false
-        }
-        if indexPath.row  > 2 {
-            cell.arrowButton.isHidden = true
-        }
-        cell.titleLabel.text = self.titleArray[indexPath.row]
-        cell.iconImageView.image = UIImage(named: self.imageArray[indexPath.row])
-        return cell
-    }
-    
-    // MARK: - UITableView delegates
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-            case 0:
-                let vc = NewHopsVC()
-                navigationController?.pushViewController(vc, animated: true)
-            case 1:
-                let vc = NewPasswordVC()
-                vc.isGoingBack = true
-                vc.isCreatePassword = true
-                vc.isChangePassword = true
-                navigationController?.pushViewController(vc, animated: true)
-            case 2:
-                let vc = NewBlockedContactVC()
-                navigationController?.pushViewController(vc, animated: true)
-            case 3:
-                let vc = NewClearDataVC()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                present(vc, animated: true, completion: nil)
-            case 4:
-                if let url = URL(string: "mailto:\(bchat_email_Feedback)") {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            case 5:
-                if let url = URL(string: bchat_FAQ_Link) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-            case 6:
-                let vc = ChangeLogNewVC()
-                navigationController?.pushViewController(vc, animated: true)
-            default:
-                break
-        }
     }
 }

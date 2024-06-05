@@ -1,6 +1,6 @@
 // Copyright © 2022 Beldex International. All rights reserved.
 
-extension Storage{
+extension Storage {
     
     private static let recentSearchResultDatabaseCollection = "RecentSearchResultDatabaseCollection"
     private static let recentSearchResultKey = "RecentSearchResult"

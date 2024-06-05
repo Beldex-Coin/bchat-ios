@@ -3,7 +3,7 @@
 import UIKit
 import BChatUIKit
 
-class MyAccountNewVC: BaseVC,UITextFieldDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Components
     private lazy var shareButton: UIButton = {

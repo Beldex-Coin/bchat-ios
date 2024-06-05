@@ -50,32 +50,32 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             cell.titleLabel.textColor = Colors.titleColor2
             
-            var menuItems: SideMenuItem = .default
+            var menuItem: SideMenuItem = .default
             switch viewModel.menuTitles[indexPath.row] {
                 case .myAccount:
-                    menuItems = .myAccount
+                    menuItem = .myAccount
                 case .settings:
-                    menuItems = .settings
+                    menuItem = .settings
                 case .notification:
-                    menuItems = .notification
+                    menuItem = .notification
                 case .messageRequests:
-                    menuItems = .messageRequests
+                    menuItem = .messageRequests
                 case .recoverySeed:
-                    menuItems = .recoverySeed
+                    menuItem = .recoverySeed
                 case .wallet:
-                    menuItems = .wallet
+                    menuItem = .wallet
                 case .reportIssue:
-                    menuItems = .reportIssue
+                    menuItem = .reportIssue
                 case .help:
-                    menuItems = .help
+                    menuItem = .help
                 case .invite:
-                    menuItems = .invite
+                    menuItem = .invite
                 case .about:
-                    menuItems = .about
+                    menuItem = .about
             }
             
-            cell.titleLabel.text = menuItems.title
-            cell.iconImageView.image = UIImage(named: menuItems.imageName)!
+            cell.titleLabel.text = menuItem.title
+            cell.iconImageView.image = UIImage(named: menuItem.imageName)
             cell.betaTitleLabel.isHidden = viewModel.menuTitles[indexPath.row] != .wallet
             
             return cell
@@ -85,12 +85,12 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
-            let viewController = MyAccountNewVC()
+            let viewController = MyAccountViewController()
             navigationController?.pushViewController(viewController, animated: true)
         } else {
             switch viewModel.menuTitles[indexPath.row] {
                 case .myAccount:
-                    let viewController = MyAccountBnsNewVC()
+                    let viewController = MyAccountBnsViewController()
                     navigationController?.pushViewController(viewController, animated: true)
                 case .settings:
                     let viewController = BChatSettingsNewVC()
