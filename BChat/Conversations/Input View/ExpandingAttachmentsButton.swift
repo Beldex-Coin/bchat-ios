@@ -228,9 +228,11 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     
     // MARK: Interaction
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
-        if inputViewButton == documentButton { delegate?.handleDocumentButtonTapped(); isExpanded = false }
-        if inputViewButton == libraryButton { delegate?.handleLibraryButtonTapped(); isExpanded = false }
-        if inputViewButton == cameraButton { delegate?.handleCameraButtonTapped(); isExpanded = false }
+        if isExpanded {
+            if inputViewButton == documentButton { delegate?.handleDocumentButtonTapped(); isExpanded = false }
+            if inputViewButton == libraryButton { delegate?.handleLibraryButtonTapped(); isExpanded = false }
+            if inputViewButton == cameraButton { delegate?.handleCameraButtonTapped(); isExpanded = false }
+        }
         if inputViewButton == mainButton { isExpanded = !isExpanded }
     }
     

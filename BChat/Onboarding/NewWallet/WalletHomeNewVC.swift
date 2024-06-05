@@ -41,6 +41,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return progressView
     }()
     
+    private lazy var sliderView: UISlider = {
+        let slider = UISlider()
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.minimumValue = 0
+        slider.maximumValue = 1
+        slider.value = 0
+        slider.minimumTrackTintColor = .clear
+        slider.maximumTrackTintColor = .clear
+        slider.thumbTintColor = .clear
+        slider.setThumbImage(UIImage(named: "wallet_slider_Image"), for: .normal)
+        return slider
+    }()
+    
     lazy var beldexLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -100,7 +113,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(receiveButtonTapped), for: .touchUpInside)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 1, bottom: 3, right: 0)
-
         return button
     }()
     
@@ -945,6 +957,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         topBackgroundView.addSubview(progressStatusLabel)
         topBackgroundView.addSubview(isCurrencyResultLabel)
         topBackgroundView.addSubview(progressView)
+        topBackgroundView.addSubview(sliderView)
         topBackgroundView.addSubview(beldexLogoImg)
         topBackgroundView.addSubview(beldexBalanceLabel)
         topBackgroundView.addSubview(middleBackgroundView)
@@ -1019,7 +1032,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         amountIDStackView.addArrangedSubview(subStackView5)
         amountIDStackView.addArrangedSubview(lineBackgroundView7)
         
-      //  recipient Address
+        //  recipient Address
         outerBackgroundView.addSubview(subStackView6)
         subStackView6.addArrangedSubview(recipientAddressDetailsIDLabel)
         subStackView6.addArrangedSubview(recipientAddresscopyButton)
@@ -1092,6 +1105,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             filterImageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             filterImageButton.centerYAnchor.constraint(equalTo: transationTitleLabel.centerYAnchor),
         ])
+        
         NSLayoutConstraint.activate([
             walletSyncingBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             walletSyncingBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
@@ -1106,6 +1120,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             walletSyncingSubTitleLabel.topAnchor.constraint(equalTo: walletSyncingTitleLabel.bottomAnchor, constant: 5),
             walletSyncingSubTitleLabel.centerXAnchor.constraint(equalTo: walletSyncingLogoImage.centerXAnchor),
         ])
+        
+        self.sliderView.pin(to: progressView)
+        
         NSLayoutConstraint.activate([
             noTransactionsYetBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             noTransactionsYetBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
@@ -1120,6 +1137,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             noTransactionsYetSubTitleLabel.topAnchor.constraint(equalTo: noTransactionsYetTitleLabel.bottomAnchor, constant: 5),
             noTransactionsYetSubTitleLabel.centerXAnchor.constraint(equalTo: noTransactionsYetLogoImage.centerXAnchor),
         ])
+        
         NSLayoutConstraint.activate([
             filterTransactionsHistoryBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             filterTransactionsHistoryBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
@@ -1142,6 +1160,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             stackView.leadingAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.leadingAnchor, constant: 0),
             stackView.bottomAnchor.constraint(equalTo: filterTransactionsHistoryBackgroundView.bottomAnchor, constant: -0)
         ])
+        
         NSLayoutConstraint.activate([
             transactionsDetailsBackgroundView.topAnchor.constraint(equalTo: filterImageButton.bottomAnchor, constant: 12),
             transactionsDetailsBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
@@ -1198,6 +1217,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             mainStackView.topAnchor.constraint(equalTo: outerBackgroundView.topAnchor, constant: 10),
             mainStackView.bottomAnchor.constraint(equalTo: outerBackgroundView.bottomAnchor, constant: -10),
         ])
+        
         NSLayoutConstraint.activate([
             backgroundBlerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             backgroundBlerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
@@ -1223,6 +1243,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             buttonStackView.trailingAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.trailingAnchor, constant: -21),
             buttonStackView.bottomAnchor.constraint(equalTo: selectDateRangePopUpbackgroundView.bottomAnchor, constant: -25),
         ])
+        
         //from date and to date implemenation
         fromDateTextField.delegate = self
         toDateTextField.delegate = self
@@ -1291,14 +1312,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         if UserDefaults.standard.domainSchemas.isEmpty { } else {
             hashArray = UserDefaults.standard.domainSchemas
         }
+        
         self.fromDateTextField.datePicker(target: self,
-                                    doneAction: #selector(fromdoneAction),
-                                    cancelAction: #selector(fromcancelAction),
-                                    datePickerMode: .date)
+                                          doneAction: #selector(fromdoneAction),
+                                          cancelAction: #selector(fromcancelAction),
+                                          datePickerMode: .date)
         self.toDateTextField.datePicker(target: self,
-                                  doneAction: #selector(todoneAction),
-                                  cancelAction: #selector(tocancelAction),
-                                  datePickerMode: .date)
+                                        doneAction: #selector(todoneAction),
+                                        cancelAction: #selector(tocancelAction),
+                                        datePickerMode: .date)
         
         NotificationCenter.default.addObserver(self, selector: #selector(reScaneButtonTapped(_:)), name: .reScaneButtonActionNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reconnectButtonTapped(_:)), name: .reconnectButtonActionNotification, object: nil)
@@ -1567,7 +1589,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
         }
     }
-
+    
     func connect(wallet: BDXWallet) {
         if !connecting {
             self.syncedflag = false
@@ -1609,7 +1631,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
         }
     }
-
+    
     private func updateSyncingProgress() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             if syncingIsFromDelegateMethod {
@@ -1641,6 +1663,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                             self.noTransactionsYetBackgroundView.isHidden = true
                             self.syncedflag = false
                             self.progressView.progress = Float(progress)
+                            self.sliderView.value = Float(progress)
                             self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
                             self.progressStatusLabel.text = statusText
                         }
@@ -1659,11 +1682,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     } else {
                         leftBlocks = String(difference.partialValue)
                     }
-
+                    
                     if difference.overflow || difference.partialValue <= 1500 {
                         self.timer.invalidate()
                     }
-
+                    
                     let largeNumber = Int(leftBlocks)
                     let numberFormatter = NumberFormatter()
                     numberFormatter.numberStyle = .decimal
@@ -1679,6 +1702,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                         self.noTransactionsYetBackgroundView.isHidden = true
                         self.syncedflag = false
                         self.progressView.progress = Float(progress)
+                        self.sliderView.value = Float(progress)
                         self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
                         self.progressStatusLabel.text = statusText
                     }
@@ -1709,6 +1733,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private func synchronizedUI() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             progressView.progress = 1
+            self.sliderView.value = 1
             syncedflag = true
             scanButton.isUserInteractionEnabled = true
             sendButton.isUserInteractionEnabled = true
@@ -1820,6 +1845,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func fromcancelAction() {
         self.fromDateTextField.resignFirstResponder()
     }
+    
     @objc
     func fromdoneAction() {
         if let datePickerView = self.fromDateTextField.inputView as? UIDatePicker {
@@ -1968,7 +1994,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         UIPasteboard.general.string = "\(recipientAddressDetailsIDLabel.text!)"
         self.showToastMsg(message: "Copied to Recipient Address", seconds: 1.0)
     }
-
+    
     //Explorer after clicking the transaction ID
     @objc func transationDetailsIDLabelTapped() {
         let trID = transationDetailsIDLabel.text
@@ -2450,7 +2476,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let cell = TransationHistoryTableCell(style: .default, reuseIdentifier: "TransationHistoryTableCell")
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
-
+        
         //Date formate
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MMM-yyyy"
@@ -2940,7 +2966,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         sortedGroupedTransactionSendArray = groupedItemsSend.sorted(by: { dateFormatter.date(from: $0.key)! > dateFormatter.date(from: $1.key)! })
         tableView.reloadData()
     }
-
+    
     func formatDateString(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yyyy"  // Adjust the format based on your date string
@@ -3143,6 +3169,7 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
                 self.noTransactionsYetBackgroundView.isHidden = true
                 self.syncedflag = false
                 self.progressView.progress = Float(progress)
+                self.sliderView.value = Float(progress)
                 self.progressStatusLabel.textColor = Colors.aboutContentLabelColor
                 self.progressStatusLabel.text = statusText
             }
