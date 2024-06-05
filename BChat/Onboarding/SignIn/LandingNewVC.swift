@@ -4,10 +4,10 @@ import Foundation
 import UIKit
 import BChatUIKit
 
-public var navFlowTag = true
-
 class LandingNewVC: BaseVC {
-    var isFlagValue:Bool = false
+    var isChecked:Bool = false
+    
+    /// Create Button
     private lazy var createButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -16,10 +16,12 @@ class LandingNewVC: BaseVC {
         result.clipsToBounds = true
         result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(isCreateButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(createButtonActionTapped), for: UIControl.Event.touchUpInside)
         result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         return result
     }()
+    
+    /// Restore Button
     private lazy var restoreButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -28,23 +30,27 @@ class LandingNewVC: BaseVC {
         result.clipsToBounds = true
         result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(isRestoreButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(restoreButtonActionTapped), for: UIControl.Event.touchUpInside)
         result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
         result.layer.borderWidth = 1
         result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
         return result
     }()
-    private lazy var isTermsAndConditionsButton: UIButton = {
+    
+    /// Terms And Conditions Button
+    private lazy var termsAndConditionsButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS_NEW", comment: ""), for: .normal)
         result.setTitleColor(UIColor(hex: 0xA7A7BA), for: .normal)
         result.contentHorizontalAlignment = .center
         result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
-        result.addTarget(self, action: #selector(isTermsAndConditionsButtonAction), for: .touchUpInside)
+        result.addTarget(self, action: #selector(termsAndConditionsButtonActionTapped), for: .touchUpInside)
         return result
     }()
-    private lazy var isBottomImge: UIImageView = {
+    
+    /// Bottom Imge
+    private lazy var bottomImge: UIImageView = {
         let result = UIImageView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = .clear
@@ -54,7 +60,9 @@ class LandingNewVC: BaseVC {
         result.contentMode = .left
         return result
     }()
-    private lazy var isbackgroundImg: UIImageView = {
+    
+    /// Background Image
+    private lazy var backgroundImage: UIImageView = {
         let result = UIImageView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = .clear
@@ -64,16 +72,21 @@ class LandingNewVC: BaseVC {
         result.contentMode = .scaleAspectFit
         return result
     }()
-    private lazy var isCheckedOrNotButton: UIButton = {
+    
+    /// Check Uncheck Button
+    private lazy var checkUncheckButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(named: "ic_Newunchecked")
         result.tintColor = isLightMode ? .white : .white
         result.setImage(image, for: .normal)
-        result.addTarget(self, action: #selector(isCheckedOrNotButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(checkedUncheckButtonActionTapped), for: UIControl.Event.touchUpInside)
         return result
     }()
 
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -146,16 +159,16 @@ class LandingNewVC: BaseVC {
         
         view.addSubViews(titleLabel0)
         view.addSubViews(imageLogo)
-        view.addSubViews(isbackgroundImg)
+        view.addSubViews(backgroundImage)
         view.addSubViews(hellotitleLabel)
         view.addSubViews(titleLabel2)
         view.addSubViews(titleLabel3)
         view.addSubViews(explanationLabel)
         view.addSubViews(createButton)
         view.addSubViews(restoreButton)
-        view.addSubViews(isTermsAndConditionsButton)
-        view.addSubViews(isCheckedOrNotButton)
-        view.addSubViews(isBottomImge)
+        view.addSubViews(termsAndConditionsButton)
+        view.addSubViews(checkUncheckButton)
+        view.addSubViews(bottomImge)
         
         NSLayoutConstraint.activate([
             titleLabel0.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
@@ -165,8 +178,8 @@ class LandingNewVC: BaseVC {
             imageLogo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             imageLogo.heightAnchor.constraint(equalToConstant: 53),
             imageLogo.widthAnchor.constraint(equalToConstant: 255),
-            isbackgroundImg.topAnchor.constraint(equalTo: titleLabel0.bottomAnchor, constant: -10),
-            isbackgroundImg.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            backgroundImage.topAnchor.constraint(equalTo: titleLabel0.bottomAnchor, constant: -10),
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             hellotitleLabel.topAnchor.constraint(equalTo: imageLogo.bottomAnchor, constant: 45),
             hellotitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             hellotitleLabel.heightAnchor.constraint(equalToConstant: 36),
@@ -184,24 +197,25 @@ class LandingNewVC: BaseVC {
             createButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 59),
             createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -59),
             createButton.heightAnchor.constraint(equalToConstant: 58),
-            restoreButton.bottomAnchor.constraint(equalTo: isTermsAndConditionsButton.topAnchor, constant: -14),
+            restoreButton.bottomAnchor.constraint(equalTo: termsAndConditionsButton.topAnchor, constant: -14),
             restoreButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 59),
             restoreButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -59),
             restoreButton.heightAnchor.constraint(equalToConstant: 58),
-            isTermsAndConditionsButton.bottomAnchor.constraint(equalTo: isBottomImge.topAnchor, constant: -10),
-            isTermsAndConditionsButton.centerXAnchor.constraint(equalTo: restoreButton.centerXAnchor),
-            isCheckedOrNotButton.trailingAnchor.constraint(equalTo: isTermsAndConditionsButton.leadingAnchor, constant: -8),
-            isCheckedOrNotButton.centerYAnchor.constraint(equalTo: isTermsAndConditionsButton.centerYAnchor),
-            isCheckedOrNotButton.heightAnchor.constraint(equalToConstant: 16),
-            isCheckedOrNotButton.widthAnchor.constraint(equalToConstant: 16),
-            isBottomImge.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            isBottomImge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
-            isBottomImge.widthAnchor.constraint(equalToConstant: 100),
-            isBottomImge.heightAnchor.constraint(equalToConstant: 50),
+            termsAndConditionsButton.bottomAnchor.constraint(equalTo: bottomImge.topAnchor, constant: -10),
+            termsAndConditionsButton.centerXAnchor.constraint(equalTo: restoreButton.centerXAnchor),
+            checkUncheckButton.trailingAnchor.constraint(equalTo: termsAndConditionsButton.leadingAnchor, constant: -8),
+            checkUncheckButton.centerYAnchor.constraint(equalTo: termsAndConditionsButton.centerYAnchor),
+            checkUncheckButton.heightAnchor.constraint(equalToConstant: 16),
+            checkUncheckButton.widthAnchor.constraint(equalToConstant: 16),
+            bottomImge.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            bottomImge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
+            bottomImge.widthAnchor.constraint(equalToConstant: 100),
+            bottomImge.heightAnchor.constraint(equalToConstant: 50),
         ])
         
     }
     
+    /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
         guard let navigationBar = navigationController?.navigationBar else { return }
@@ -220,6 +234,7 @@ class LandingNewVC: BaseVC {
         }
     }
     
+    /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         createButton.layer.cornerRadius = createButton.bounds.height / 2
@@ -227,24 +242,25 @@ class LandingNewVC: BaseVC {
     }
     
     // MARK: - Navigation
-    @objc private func isCheckedOrNotButtonAction() {
-        isTermsAndConditionsButton.isSelected = !isTermsAndConditionsButton.isSelected
-        if isTermsAndConditionsButton.isSelected {
-            isFlagValue = true
+    @objc private func checkedUncheckButtonActionTapped() {
+        termsAndConditionsButton.isSelected = !termsAndConditionsButton.isSelected
+        if termsAndConditionsButton.isSelected {
+            isChecked = true
             createButton.backgroundColor = Colors.bchatButtonColor
             let img = UIImage(named: "ic_Newcheckbox")!
-            isCheckedOrNotButton.tintColor = .white
-            isCheckedOrNotButton.setImage(img, for: .normal)
+            checkUncheckButton.tintColor = .white
+            checkUncheckButton.setImage(img, for: .normal)
         }else {
-            isFlagValue = false
+            isChecked = false
             let img = UIImage(named: "ic_Newunchecked")!
-            isCheckedOrNotButton.tintColor = .white
+            checkUncheckButton.tintColor = .white
             createButton.backgroundColor = Colors.bchatButtonColor
-            isCheckedOrNotButton.setImage(img, for: .normal)
+            checkUncheckButton.setImage(img, for: .normal)
         }
     }
     
-    @objc private func isTermsAndConditionsButtonAction() {
+    /// Terms And Conditions Button Action Tapped
+    @objc private func termsAndConditionsButtonActionTapped() {
         let urlAsString: String?
         urlAsString = bchat_TermsConditionUrl_Link
         if let urlAsString = urlAsString {
@@ -253,8 +269,9 @@ class LandingNewVC: BaseVC {
         }
     }
     
-    @objc private func isCreateButtonAction() {
-        if isFlagValue == true {
+    /// Create Button Action Tapped
+    @objc private func createButtonActionTapped() {
+        if isChecked == true {
             let vc = DisplayNameNewVC()
             self.navigationController?.pushViewController(vc, animated: true)
         }else{
@@ -263,7 +280,8 @@ class LandingNewVC: BaseVC {
         }
     }
     
-    @objc private func isRestoreButtonAction() {
+    /// Restore Button Action Tapped
+    @objc private func restoreButtonActionTapped() {
         let restoreVC = RestoreSeedNewVC()
         navigationController!.pushViewController(restoreVC, animated: true)
     }
