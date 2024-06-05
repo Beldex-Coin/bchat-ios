@@ -91,17 +91,14 @@ final class VoiceMessageRecordingView : UIView {
         return result
     }()
     
-    private lazy var playPauseauseButton: UIButton = {
+    private lazy var playPauseButton: UIButton = {
         let result = UIButton()
-        result.setTitle("", for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(handlePlayButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(handlePlayButtonTapped), for: .touchUpInside)
         result.alpha = 0
         let image = UIImage(named: "ic_play")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "ic_pause_record")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.imageView?.isUserInteractionEnabled = true
         result.clipsToBounds = true
         result.isSelected = true
@@ -110,9 +107,6 @@ final class VoiceMessageRecordingView : UIView {
     
     private lazy var audioButton: UIButton = {
         let result = UIButton()
-        result.setTitle("", for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.addTarget(self, action: #selector(audioButtonTapped), for: UIControl.Event.touchUpInside)
         result.alpha = 0
         let image = UIImage(named: "ic_record")
@@ -249,13 +243,13 @@ final class VoiceMessageRecordingView : UIView {
         pauseButton.pin(.left, to: .right, of: durationStackView, withInset: 8)
         pauseButton.center(.vertical, in: iconImageView)
         
-        addSubview(playPauseauseButton)
+        addSubview(playPauseButton)
         NSLayoutConstraint.activate([
-            playPauseauseButton.heightAnchor.constraint(equalToConstant: 40),
-            playPauseauseButton.widthAnchor.constraint(equalToConstant: 40),
+            playPauseButton.heightAnchor.constraint(equalToConstant: 40),
+            playPauseButton.widthAnchor.constraint(equalToConstant: 40),
         ])
-        playPauseauseButton.pin(.left, to: .left, of: self, withInset: 30)
-        playPauseauseButton.center(.vertical, in: iconImageView)
+        playPauseButton.pin(.left, to: .left, of: self, withInset: 30)
+        playPauseButton.center(.vertical, in: iconImageView)
         
         addSubview(audioButton)
         audioButton.pin(.right, to: .right, of: self, withInset: -72)
@@ -266,8 +260,8 @@ final class VoiceMessageRecordingView : UIView {
         ])
         
         addSubview(audioDurationLabel)
-        audioDurationLabel.pin(.left, to: .right, of: playPauseauseButton, withInset: 0)
-        audioDurationLabel.center(.vertical, in: playPauseauseButton)
+        audioDurationLabel.pin(.left, to: .right, of: playPauseButton, withInset: 0)
+        audioDurationLabel.center(.vertical, in: playPauseButton)
         NSLayoutConstraint.activate([
             audioDurationLabel.widthAnchor.constraint(equalToConstant: 60)
         ])
@@ -403,7 +397,7 @@ final class VoiceMessageRecordingView : UIView {
                 self.durationStackView.isHidden = true
                 self.cancelButton.isHidden = true
                 self.pauseButton.isHidden = true
-                self.playPauseauseButton.alpha = 1
+                self.playPauseButton.alpha = 1
                 self.audioButton.alpha = 1
                 self.audioDurationLabel.alpha = 1
                 self.audioWavesImageView.alpha = 1
