@@ -3,15 +3,11 @@
 import UIKit
 import BChatUIKit
 
-class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
+class RestoreSeedNewVC: BaseVC {
 
-    // MARK: Components
-    var seedFlag = false
-    var lastWordSeedStr = ""
-    var txtViewStr = ""
-    var fullLenthSeedStr = ""
-    var placeholderLabel : UILabel!
+    // MARK: - UIElements
     
+    /// BackGround View
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -19,15 +15,19 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         stackView.layer.cornerRadius = 16
         return stackView
     }()
-    private lazy var isFromPasteButton: UIButton = {
+    
+    /// Paste Button
+    private lazy var pasteButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_PasteNew"), for: .normal)
-        button.addTarget(self, action: #selector(isFromPasteButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(pasteButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var lblCountLabel: UILabel = {
+    
+    /// Word Count Label
+    private lazy var wordCountLabel: UILabel = {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textColor = UIColor(hex: 0xA7A7BA)
@@ -38,6 +38,8 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         result.textAlignment = .right
         return result
     }()
+    
+    /// Mnemonic TextView
     private lazy var mnemonicTextView: UITextView = {
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +49,8 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         result.font = Fonts.OpenSans(ofSize: 14)
         return result
     }()
+    
+    /// Clear Button
     private lazy var clearButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(hex: 0x1C1C26)
@@ -61,18 +65,22 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var isFromRestoreButton: UIButton = {
+    
+    /// Restore Button
+    private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
-        result.addTarget(self, action: #selector(isFromRestoreAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(restoreActionTapped), for: UIControl.Event.touchUpInside)
         result.layer.cornerRadius = 16
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
         return result
     }()
-    private lazy var descPasteLabel: UILabel = {
+    
+    /// Description Label
+    private lazy var descriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +92,16 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         return result
     }()
     
+    var seedFlag = false
+    var lastSeedWord = ""
+    var textViewString = ""
+    var fullLenthSeedStr = ""
+    var placeholderLabel : UILabel!
+    
+    
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -93,12 +111,12 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         view.backgroundColor = UIColor(hex: 0x11111A)
         
         view.addSubview(backGroundView)
-        backGroundView.addSubview(isFromPasteButton)
-        backGroundView.addSubview(lblCountLabel)
+        backGroundView.addSubview(pasteButton)
+        backGroundView.addSubview(wordCountLabel)
         backGroundView.addSubview(mnemonicTextView)
         view.addSubview(clearButton)
-        view.addSubview(isFromRestoreButton)
-        view.addSubview(descPasteLabel)
+        view.addSubview(restoreButton)
+        view.addSubview(descriptionLabel)
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
@@ -106,54 +124,53 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
             backGroundView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -41),
             backGroundView.heightAnchor.constraint(equalToConstant: 140),
-            isFromPasteButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
-            isFromPasteButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
-            isFromPasteButton.heightAnchor.constraint(equalToConstant: 18),
-            isFromPasteButton.heightAnchor.constraint(equalToConstant: 18),
-            lblCountLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
-            lblCountLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
+            pasteButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 20),
+            pasteButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
+            pasteButton.heightAnchor.constraint(equalToConstant: 18),
+            pasteButton.heightAnchor.constraint(equalToConstant: 18),
+            wordCountLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -20),
+            wordCountLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             mnemonicTextView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 21),
-            mnemonicTextView.trailingAnchor.constraint(equalTo: isFromPasteButton.leadingAnchor, constant: -10),
+            mnemonicTextView.trailingAnchor.constraint(equalTo: pasteButton.leadingAnchor, constant: -10),
             mnemonicTextView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -10),
             mnemonicTextView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 10),
             clearButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 12),
             clearButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             clearButton.heightAnchor.constraint(equalToConstant: 44),
             clearButton.widthAnchor.constraint(equalToConstant: 116),
-            isFromRestoreButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
-            isFromRestoreButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
-            isFromRestoreButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
-            isFromRestoreButton.heightAnchor.constraint(equalToConstant: 58),
-            descPasteLabel.bottomAnchor.constraint(equalTo: isFromRestoreButton.topAnchor, constant: -14),
-            descPasteLabel.centerXAnchor.constraint(equalTo: isFromRestoreButton.centerXAnchor),
+            restoreButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
+            restoreButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
+            restoreButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
+            restoreButton.heightAnchor.constraint(equalToConstant: 58),
+            descriptionLabel.bottomAnchor.constraint(equalTo: restoreButton.topAnchor, constant: -14),
+            descriptionLabel.centerXAnchor.constraint(equalTo: restoreButton.centerXAnchor),
         ])
         
         self.placeHolderSeedLabel()
-        isFromRestoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
-        isFromRestoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
-        
-        // Dismiss keyboard on tap
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapGestureRecognizer)
+        restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
+        restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
         
     }
+    
+    /// View Did Appear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if !isIPhone5OrSmaller {
             mnemonicTextView.becomeFirstResponder()
         }
     }
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    
+    /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         clearButton.layer.cornerRadius = clearButton.bounds.height / 2
     }
-    @objc private func dismissKeyboard() {
-        mnemonicTextView.resignFirstResponder()
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
+    /// PlaceHolder Seed Label
     func placeHolderSeedLabel(){
         mnemonicTextView.textAlignment = .left
         mnemonicTextView.delegate = self
@@ -168,77 +185,55 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
         placeholderLabel.isHidden = !mnemonicTextView.text.isEmpty
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        let strings : String! = mnemonicTextView.text.lowercased()
-        let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
-        let words = strings.components(separatedBy: spaces)
-        if lastWordSeedStr == words.last! {
-            seedFlag = true
-        }else {
-            seedFlag = false
-        }
-        if words.count == 25 {
-            seedFlag = true
-            descPasteLabel.isHidden = true
-            isFromRestoreButton.backgroundColor = UIColor(hex: 0x00BD40)
-            isFromRestoreButton.setTitleColor(.white, for: .normal)
-        }else {
-            descPasteLabel.isHidden = false
-            isFromRestoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
-            isFromRestoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
-        }
-        lblCountLabel.text = "\(words.count)/25"
-        if words.count > 25 {
-            lblCountLabel.text = "25/25"
-            mnemonicTextView.text = txtViewStr
-        }else{
-            txtViewStr = mnemonicTextView.text.lowercased()
-            placeholderLabel.isHidden = !textView.text.isEmpty
-        }
-        if textView.text == "" {
-            lblCountLabel.text = "0/25"
-        }
-    }
-    
     func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
-    // MARK: - Navigation
-    @objc func isFromPasteButtonTapped(_ sender: UIButton){
-        if let myString = UIPasteboard.general.string {
+    // MARK: Button Actions :-
+    
+    /// Paste Button Tapped
+    @objc func pasteButtonTapped(_ sender: UIButton){
+        if let myString = UIPasteboard.general.string, !myString.isEmpty {
             self.mnemonicTextView.text = ""
-            let strings : String! = myString
+            let strings = myString
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
-            let words = strings.components(separatedBy: spaces)
+            let words = strings.components(separatedBy: spaces).filter { !$0.isEmpty } // filter out any empty strings
             fullLenthSeedStr = myString
-            lastWordSeedStr = words.last!
+            if let lastWord = words.last {
+                lastSeedWord = lastWord
+            }
             mnemonicTextView.insertText(myString)
+        } else {
+            self.showToastMsg(message: NSLocalizedString("Make sure you have copied the seed!", comment: ""), seconds: 1.0)
         }
     }
+    
+    /// Clear Button Tapped
     @objc func clearButtonTapped(_ sender: UIButton){
         mnemonicTextView.text = ""
-        lblCountLabel.text = "0/25"
-        descPasteLabel.isHidden = false
+        wordCountLabel.text = "0/25"
+        descriptionLabel.isHidden = false
         self.placeHolderSeedLabel()
-        isFromRestoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
-        isFromRestoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
-        self.isFromRestoreButton.isUserInteractionEnabled = true
+        restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
+        restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+        self.restoreButton.isUserInteractionEnabled = true
     }
-    @objc func isFromRestoreAction(_ sender: UIButton){
+    
+    /// Restore Action Tapped
+    @objc func restoreActionTapped(_ sender: UIButton){
         if seedFlag == false {
             self.showToastMsg(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
         }else {
-            self.isFromRestoreButton.isUserInteractionEnabled = false
+            self.restoreButton.isUserInteractionEnabled = false
             let strings : String! = mnemonicTextView.text.lowercased()
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
                 self.showToastMsg(message: NSLocalizedString("INVALID_SEED_ERROR_NEW", comment: ""), seconds: 2.0)
-                self.isFromRestoreButton.isUserInteractionEnabled = true
+                self.restoreButton.isUserInteractionEnabled = true
             }else {
                 let mnemonic = mnemonicTextView.text!.lowercased()
                 do {
@@ -249,16 +244,56 @@ class RestoreSeedNewVC: BaseVC,UITextViewDelegate {
                     mnemonicTextView.resignFirstResponder()
                     Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
                         let restoreNameVC = RestoreNameVC()
-                        self.isFromRestoreButton.isUserInteractionEnabled = true
+                        self.restoreButton.isUserInteractionEnabled = true
                         restoreNameVC.seedPassing = self.mnemonicTextView.text!.lowercased()
                         self.navigationController!.pushViewController(restoreNameVC, animated: true)
                     }
                 } catch let error {
-                    self.isFromRestoreButton.isUserInteractionEnabled = true
+                    self.restoreButton.isUserInteractionEnabled = true
                     let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
                     showError(title: error.errorDescription!)
                 }
             }
+        }
+    }
+    
+}
+
+
+// MARK: - UITextViewDelegate methods
+
+extension RestoreSeedNewVC: UITextViewDelegate {
+    
+    /// Text View Did Change
+    func textViewDidChange(_ textView: UITextView) {
+        let strings : String! = mnemonicTextView.text.lowercased()
+        let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
+        let words = strings.components(separatedBy: spaces)
+        if lastSeedWord == words.last! {
+            seedFlag = true
+        }else {
+            seedFlag = false
+        }
+        if words.count == 25 {
+            seedFlag = true
+            descriptionLabel.isHidden = true
+            restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
+            restoreButton.setTitleColor(.white, for: .normal)
+        }else {
+            descriptionLabel.isHidden = false
+            restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
+            restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+        }
+        wordCountLabel.text = "\(words.count)/25"
+        if words.count > 25 {
+            wordCountLabel.text = "25/25"
+            mnemonicTextView.text = textViewString
+        }else{
+            textViewString = mnemonicTextView.text.lowercased()
+            placeholderLabel.isHidden = !textView.text.isEmpty
+        }
+        if textView.text == "" {
+            wordCountLabel.text = "0/25"
         }
     }
     

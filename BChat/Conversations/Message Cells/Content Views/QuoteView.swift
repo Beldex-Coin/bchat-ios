@@ -147,7 +147,7 @@ final class QuoteView : UIView {
         mainStackView.axis = .horizontal
         mainStackView.spacing = smallSpacing
         mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 35)
+        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: smallSpacing)
         mainStackView.alignment = .center
         // Content view
         let contentView = UIView()
@@ -156,7 +156,7 @@ final class QuoteView : UIView {
         contentView.rightAnchor.constraint(lessThanOrEqualTo: self.rightAnchor).isActive = true
         // Line view
         let lineView = UIView()
-        lineView.backgroundColor = .clear//lineColor
+        lineView.backgroundColor = .clear
         lineView.set(.width, to: Values.accentLineThickness)
         if !hasAttachments {
             mainStackView.addArrangedSubview(lineView)
@@ -237,7 +237,6 @@ final class QuoteView : UIView {
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
             addSubview(cancelButton)
-//            cancelButton.center(.vertical, in: self)
             cancelButton.pin(.top, to: .top, of: self, withInset: -5)
             cancelButton.pin(.right, to: .right, of: self, withInset: 5)
         }
