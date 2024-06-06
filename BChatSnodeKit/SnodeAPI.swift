@@ -496,6 +496,7 @@ public final class SnodeAPI : NSObject {
         guard let verificationData = ("retrieve" + namespaceVerificationString + String(timestamp)).data(using: String.Encoding.utf8),
               let signature = sodium.sign.signature(message: Bytes(verificationData), secretKey: userED25519KeyPair.secretKey)
         else { return Promise(error: Error.signingFailed) }
+        
         // Make the request
         let parameters: JSON = [
             "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey,

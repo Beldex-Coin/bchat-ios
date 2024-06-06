@@ -41,15 +41,6 @@ final class HostManager: NSObject {
         #endif
     }
     
-    /// Specifies the Server public key for the API
-    var isTestNet: Bool {
-        #if MAINNET
-            return false
-        #else
-            return true
-        #endif
-    }
-    
     ///  the environment Host Type for API
     var hostType: HostType {
         #if MAINNET
