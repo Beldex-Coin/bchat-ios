@@ -1,3 +1,5 @@
+import BChatUIKit
+import SignalUtilitiesKit
 
 final class VoiceMessageRecordingView : UIView {
     
@@ -125,7 +127,8 @@ final class VoiceMessageRecordingView : UIView {
     }()
     
     private lazy var audioWavesImageView: UIImageView = {
-        var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        let tintColor = Colors.audioWaveColor
+        var result = UIImageView(image: UIImage(named: "ic_audioWaves")?.withTint(tintColor))
         result.set(.height, to: 24)
         result.contentMode = .scaleToFill
         result.alpha = 0

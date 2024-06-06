@@ -470,6 +470,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     @objc private func showVoiceMessageUI() {
+        payAsChatButton.isHidden = true
+        progressView?.isHidden = true
         voiceMessageRecordingView?.removeFromSuperview()
         let voiceMessageButtonFrame = voiceMessageButton.superview!.convert(voiceMessageButton.frame, to: self)
         let voiceMessageRecordingView = VoiceMessageRecordingView(voiceMessageButtonFrame: voiceMessageButtonFrame, delegate: delegate)
