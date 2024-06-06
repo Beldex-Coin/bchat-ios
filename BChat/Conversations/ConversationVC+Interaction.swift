@@ -647,7 +647,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        self.confirmDownload(viewItem)
+                        confirmDownload(viewItem)
                     } else {
                         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
@@ -664,7 +664,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        self.confirmDownload(viewItem)
+                        confirmDownload(viewItem)
                     } else {
                         guard let albumView = cell.albumView else { return }
                         let locationInCell = gestureRecognizer.location(in: cell)
@@ -692,7 +692,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        self.confirmDownload(viewItem)
+                        confirmDownload(viewItem)
                     }
                     else if (
                         viewItem.attachmentStream?.isText == true ||
@@ -1182,7 +1182,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         // Send attachment
         sendAttachments([ attachment ], with: "")
-        self.audioPlayer = nil
+        audioPlayer = nil
     }
 
     func cancelVoiceMessageRecording() {
@@ -1192,7 +1192,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioRecorder = nil
         self.audioPlayer = nil
         deleteAudioView.isHidden = true
-        self.hideAttachmentExpandedButtons()
+        hideAttachmentExpandedButtons()
     }
     
     func pauseRecording() {
