@@ -647,7 +647,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        self.confirmDownload(viewItem)
+                        confirmDownload(viewItem)
                     } else {
                         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
@@ -656,7 +656,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
                             return
                         }
-                        self.playOrPauseAudio(for: viewItem)
+                        playOrPauseAudio(for: viewItem)
                     }
                 case .mediaMessage:
                     guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
@@ -664,7 +664,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        self.confirmDownload(viewItem)
+                        confirmDownload(viewItem)
                     } else {
                         guard let albumView = cell.albumView else { return }
                         let locationInCell = gestureRecognizer.location(in: cell)
@@ -1182,7 +1182,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         // Send attachment
         sendAttachments([ attachment ], with: "")
-        self.audioPlayer = nil
+        audioPlayer = nil
     }
 
     func cancelVoiceMessageRecording() {
@@ -1190,9 +1190,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         stopVoiceMessageRecording()
         audioRecorder = nil
-        self.audioPlayer = nil
+        audioPlayer = nil
         deleteAudioView.isHidden = true
-        self.hideAttachmentExpandedButtons()
+        hideAttachmentExpandedButtons()
     }
     
     func pauseRecording() {
@@ -1212,20 +1212,20 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func showAlertForAudioRecordingIsOn() {
         let alert = UIAlertController(title: Alert.Alert_BChat_title, message: Alert.Alert_Recording_On, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Alert.Alert_BChat_Ok, style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     func playRecording() {
         let url = (audioRecorder?.url)!
-        let audioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
-        audioPlayer.isLooping = false
-        if self.audioPlayer == nil {
-            self.audioPlayer = audioPlayer
+        let owsAudioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
+        owsAudioPlayer.isLooping = false
+        if audioPlayer == nil {
+            audioPlayer = owsAudioPlayer
         }
         if isPlaying {
-            self.audioPlayer!.pause()
+            audioPlayer!.pause()
         } else {
-            self.audioPlayer!.play()
+            audioPlayer!.play()
         }
         isPlaying = !isPlaying
     }
@@ -1238,7 +1238,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     @objc func deleteAudioButtonTapped() {
         deleteAudioView.isHidden = true
-        self.cancelVoiceMessageRecording()
+        cancelVoiceMessageRecording()
     }
     
     // MARK: - Data Extraction Notifications
@@ -1388,7 +1388,7 @@ extension ConversationVC {
         alert.addAction(Cancel)
         let Accept = UIAlertAction(title: "Accept", style: .default, handler: { action in
             
-            let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
+            let promise: Promise<Void> = self.approveMessageRequestIfNeeded (
                 for: self.thread,
                 isNewThread: false,
                 timestamp: NSDate.millisecondTimestamp()

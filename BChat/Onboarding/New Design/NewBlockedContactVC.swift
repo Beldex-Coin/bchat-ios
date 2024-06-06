@@ -116,7 +116,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func getBlockedContacts() {
         var names = [String]()
         var publicKeys = [String]()
-        for publicKey in self.contacts {
+        for publicKey in contacts {
             let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
             if blockedflag == true {
                 let userName = Storage.shared.getContact(with: publicKey)?.name
