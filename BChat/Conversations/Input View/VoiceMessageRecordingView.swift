@@ -490,6 +490,12 @@ final class VoiceMessageRecordingView : UIView {
         self.timerSecondForConstraintOfProgressView += 1
         if self.timerSecondForConstraintOfProgressView > self.timerSecond {
             self.timerSecondForConstraintOfProgressView = 0
+            // For stop loop
+//            if TimerForConstraintOfProgressView != nil {
+//                TimerForConstraintOfProgressView?.invalidate()
+//                TimerForConstraintOfProgressView = nil
+//                self.playPauseButton.isSelected = false
+//            }
         }
         let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
         let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished

@@ -87,8 +87,9 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         noContactsTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        getBlockedContacts()
-        updateRighBarButton(isSelectionEnable: self.isSelectionEnable)
+        self.getBlockedContacts()
+        
+        self.updateRighBarButton(isSelectionEnable: self.isSelectionEnable)
         
     }
     
@@ -116,7 +117,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func getBlockedContacts() {
         var names = [String]()
         var publicKeys = [String]()
-        for publicKey in contacts {
+        for publicKey in self.contacts {
             let blockedflag = Storage.shared.getContact(with: publicKey)!.isBlocked
             if blockedflag == true {
                 let userName = Storage.shared.getContact(with: publicKey)?.name
@@ -124,15 +125,15 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let pukey = Storage.shared.getContact(with: publicKey)
                 publicKeys.append(pukey!.bchatID)
             }
-            tableView.reloadData()
+            self.tableView.reloadData()
         }
         let userNames = names.joined(separator: ",")
         let allNames = userNames.components(separatedBy: ",")
         let userPublicKeys = publicKeys.joined(separator: ",")
         let allpublicKeys = userPublicKeys.components(separatedBy: ",")
-        arrayNames = allNames.filter({ $0 != ""})
-        arrayPublicKey = allpublicKeys.filter({ $0 != ""})
-        tableView.reloadData()
+        self.arrayNames = allNames.filter({ $0 != ""})
+        self.arrayPublicKey = allpublicKeys.filter({ $0 != ""})
+        self.tableView.reloadData()
     }
     
     
@@ -158,16 +159,16 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     }
                 )
             }
-            getBlockedContacts()
-            updateRighBarButton(isSelectionEnable: false)
+            self.getBlockedContacts()
+            self.updateRighBarButton(isSelectionEnable: false)
             selectedarrayPublicKey = []
         }
     }
     
     @objc func selectionButtonTapped() {
         self.isSelectionEnable = !self.isSelectionEnable
-        updateRighBarButton(isSelectionEnable: self.isSelectionEnable)
-        tableView.reloadData()
+        self.updateRighBarButton(isSelectionEnable: self.isSelectionEnable)
+        self.tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
