@@ -466,7 +466,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
-                        quoteView.backgroundColor = UIColor(hex: 0x008D06)
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x008D06) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 16
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
