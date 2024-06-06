@@ -219,11 +219,6 @@ import BChatUIKit
         trailingDraggedViewConstraint = draggedView.trailingAnchor.constraint(equalTo: thumnailImageView.trailingAnchor, constant: thumbnailViewStartingDistance)
         trailingDraggedViewConstraint?.isActive = true
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(updateBdxAmountSlider),
-                                               name: .bdxAmountPassingSliderViewNotification,
-                                               object: nil)
-        
     }
     
     private func setStyle() {
@@ -262,15 +257,6 @@ import BChatUIKit
         setNeedsLayout()
     }
     
-    /// Update BDX Amount Value Label
-    @objc func updateBdxAmountSlider(notification: NSNotification) {
-        if let dict = notification.object as? NSDictionary {
-            if let myMessage = dict["bdxAmount"] as? String{
-                textLabel.text = "Swipe to send \(myMessage) BDX"
-                sliderTextLabel.text = "Swipe to send \(myMessage) BDX"
-            }
-        }
-    }
     
     // MARK: UIPanGestureRecognizer
     @objc private func handlePanGesture(_ sender: UIPanGestureRecognizer) {

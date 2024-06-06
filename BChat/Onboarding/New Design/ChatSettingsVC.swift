@@ -36,7 +36,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Edited name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.titleColor])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.titleColor])
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear

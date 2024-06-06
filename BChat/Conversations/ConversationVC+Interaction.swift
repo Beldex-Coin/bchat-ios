@@ -463,10 +463,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                             if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
                                                 customizeSlideToOpen.isHidden = false
                                                 inputTextView.textColor = Colors.accent
-                                                let value = ["bdxAmount": newText]
-                                                NotificationCenter.default.post(name: .bdxAmountPassingSliderViewNotification, object: value)
                                                 CustomSlideView.isFromExpandAttachment = true
-                                                NotificationCenter.default.post(name: .attachmentHiddenNotification, object: value)
+                                                NotificationCenter.default.post(name: .attachmentHiddenNotification, object: nil)
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
                                                 CustomSlideView.isFromExpandAttachment = false
@@ -619,14 +617,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self.present(vc, animated: true, completion: nil)
         }
     }
+    
+    func confirmDownload(_ viewItem: ConversationViewItem) {
+        let vc = DownloadAttachmentModalNewVC(viewItem: viewItem)
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
+    }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
-        func confirmDownload() {
-            let vc = DownloadAttachmentModalNewVC(viewItem: viewItem)
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+        
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.attachmentsButton.isExpanded = false
+            return
         }
+        
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
             let vc = MissedCallPopUp(caller: caller)
@@ -642,7 +647,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        confirmDownload()
+                        confirmDownload(viewItem)
                     } else {
                         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
@@ -659,7 +664,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        confirmDownload()
+                        confirmDownload(viewItem)
                     } else {
                         guard let albumView = cell.albumView else { return }
                         let locationInCell = gestureRecognizer.location(in: cell)
@@ -687,7 +692,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     if viewItem.interaction is TSIncomingMessage,
                         let thread = self.thread as? TSContactThread,
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                        confirmDownload()
+                        self.confirmDownload(viewItem)
                     }
                     else if (
                         viewItem.attachmentStream?.isText == true ||
@@ -982,6 +987,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         snInputView.quoteDraftInfo = nil
     }
     
+    func hideAttachmentExpandedButtons() {
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.attachmentsButton.isExpanded = false
+        }
+    }
+    
     func openURL(_ url: URL) {
         // URLs can be unsafe, so always ask the user whether they want to open one
         let title = NSLocalizedString("modal_open_url_title", comment: "")
@@ -1171,6 +1182,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         // Send attachment
         sendAttachments([ attachment ], with: "")
+        audioPlayer = nil
     }
 
     func cancelVoiceMessageRecording() {
@@ -1178,8 +1190,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         stopVoiceMessageRecording()
         audioRecorder = nil
-        self.audioPlayer = nil
+        audioPlayer = nil
         deleteAudioView.isHidden = true
+        hideAttachmentExpandedButtons()
     }
     
     func pauseRecording() {
@@ -1199,20 +1212,20 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func showAlertForAudioRecordingIsOn() {
         let alert = UIAlertController(title: Alert.Alert_BChat_title, message: Alert.Alert_Recording_On, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Alert.Alert_BChat_Ok, style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     func playRecording() {
         let url = (audioRecorder?.url)!
-        let audioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
-        audioPlayer.isLooping = true
-        if self.audioPlayer == nil {
-            self.audioPlayer = audioPlayer
+        let owsAudioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
+        owsAudioPlayer.isLooping = false
+        if audioPlayer == nil {
+            audioPlayer = owsAudioPlayer
         }
         if isPlaying {
-            self.audioPlayer!.pause()
+            audioPlayer!.pause()
         } else {
-            self.audioPlayer!.play()
+            audioPlayer!.play()
         }
         isPlaying = !isPlaying
     }
@@ -1225,7 +1238,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     @objc func deleteAudioButtonTapped() {
         deleteAudioView.isHidden = true
-        self.cancelVoiceMessageRecording()
+        cancelVoiceMessageRecording()
     }
     
     // MARK: - Data Extraction Notifications
@@ -1375,7 +1388,7 @@ extension ConversationVC {
         alert.addAction(Cancel)
         let Accept = UIAlertAction(title: "Accept", style: .default, handler: { action in
             
-            let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
+            let promise: Promise<Void> = self.approveMessageRequestIfNeeded (
                 for: self.thread,
                 isNewThread: false,
                 timestamp: NSDate.millisecondTimestamp()
