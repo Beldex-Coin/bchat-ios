@@ -1,67 +1,71 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
-import BChatUIKit
 
-class BlockContactPopUpVC: BaseVC {
-
-    /// BackGround View
+class ClearChatPopUp: BaseVC {
+    
+    // MARK: - UIElements
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.popUpBackgroundColor
+        stackView.backgroundColor = Colors.smallBackGroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
-    /// Title Label
+    private lazy var iconView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_clearChatPopUp")
+        result.set(.width, to: 58)
+        result.set(.height, to: 58)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.extraBoldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Block contact"
-        result.numberOfLines = 0
-        result.textAlignment = .center
+        result.text = "Clear Chat"
         return result
     }()
     
-    /// Discription Label
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Are you sure you want to Block this contact?"
-        result.numberOfLines = 0
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Are you sure you want to clear all the chat from this contact?"
+        result.numberOfLines = 0
         return result
     }()
     
-    /// Yes Button
-    private lazy var yesButton: UIButton = {
+    private lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Yes", for: .normal)
+        button.setTitle("Clear", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
+        button.setTitleColor(Colors.bothRedColor, for: .normal)
+        button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    /// Cancel Button
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.profileImageViewButtonColor
+        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -70,14 +74,14 @@ class BlockContactPopUpVC: BaseVC {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.axis = .horizontal
-        result.alignment = .center
+        result.alignment = .fill
         result.distribution = .fillEqually
         result.spacing = 7
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
     
-    var isBlocked = false
+    // MARK: - UIViewController life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,55 +91,50 @@ class BlockContactPopUpVC: BaseVC {
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = view.bounds
         view.addSubview(blurView)
-        
         view.addSubview(backGroundView)
-        backGroundView.addSubViews(titleLabel, discriptionLabel, buttonStackView)
+        backGroundView.addSubViews(iconView, titleLabel, discriptionLabel, buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
-        buttonStackView.addArrangedSubview(yesButton)
+        buttonStackView.addArrangedSubview(clearButton)
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
-            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
-
-            titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 30),
+            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            
+            iconView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            iconView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 22),
+            
+            
+            titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 11),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
-            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            discriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 50),
-            discriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -50),
-
-            buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 21),
+            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            discriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 30),
+            discriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -30),
+            discriptionLabel.bottomAnchor.constraint(equalTo: clearButton.topAnchor, constant: -19),
+            
+            buttonStackView.topAnchor.constraint(equalTo: discriptionLabel.bottomAnchor, constant: 19),
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 16),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
-            buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -23),
+            buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -15),
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
-
-            yesButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            clearButton.heightAnchor.constraint(equalToConstant: 52),
+            
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
         ])
         
-        if isBlocked {
-            titleLabel.text = "Unblock Contact"
-            titleLabel.textColor = Colors.titleColor3
-            discriptionLabel.text = "Are you sure you want to Unblock this contact?"
-            yesButton.setTitle("Unblock", for: .normal)
-        }
-        
-        
     }
     
-    @objc private func okButtonTapped(_ sender: UIButton) {
+    // MARK: - UIButton actions
+    
+    /// Ok button action
+    @objc private func clearButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
-        if isBlocked {
-            NotificationCenter.default.post(name: .userUnblockContactNotification, object: nil)
-        } else {
-            NotificationCenter.default.post(name: .userBlockContactNotification, object: nil)
-        }
     }
     
+    /// Cancel button action
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
     }
-    
 }

@@ -80,7 +80,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
         UIView.animate(withDuration: 0.25, animations: {
-            self.blockedBanner.alpha = 0
         }, completion: { _ in
             if let contact: Contact = Storage.shared.getContact(with: publicKey) {
                 Storage.shared.write(
@@ -91,6 +90,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         Storage.shared.setContact(contact, using: transaction)
                     },
                     completion: {
+                        self.snInputView.isHidden = false
+                        if let clearChatButtonStackView = self.view.viewWithTag(111) {
+                            clearChatButtonStackView.removeFromSuperview()
+                        }
                         MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                     }
                 )
