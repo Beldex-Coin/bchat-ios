@@ -164,22 +164,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return result
     }()
     
-    lazy var blockedBanner: InfoBanner = {
-        let name: String
-        if let thread = thread as? TSContactThread {
-            let publicKey = thread.contactBChatID()
-            let context = Contact.context(for: thread)
-            name = Storage.shared.getContact(with: publicKey)?.displayName(for: context) ?? publicKey
-        } else {
-            name = "Thread"
-        }
-        let message = "\(name) is blocked. Unblock them?"
-        let result = InfoBanner(message: message, backgroundColor: Colors.destructive)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(unblock))
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
     lazy var footerControlsStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -631,6 +615,47 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return theImageView
     }()
     
+    private lazy var clearChatButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Clear Chat", for: .normal)
+        button.setTitleColor(Colors.bothRedColor, for: .normal)
+        button.layer.cornerRadius = 23.5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.incomingMessageColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 13)
+        button.addTarget(self, action: #selector(clearChatButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_clear_chat")?.scaled(to: CGSize(width: 18, height: 18))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        return button
+    }()
+    
+    private lazy var unblockButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Unblock", for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.layer.cornerRadius = 23.5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 13)
+        let image = UIImage(named: "ic_unblock_chat")?.scaled(to: CGSize(width: 18, height: 18))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var clearChatAndUnblockButtonStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 9
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
      lazy var deleteAudioView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -734,9 +759,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
         ])
         callView.isHidden = true
-        
-        // Blocked banner
-        addOrRemoveBlockedBanner()
         
         // Message requests view & scroll to bottom
         view.addSubview(scrollButton)
@@ -977,6 +999,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(unblock), name: .userUnblockContactNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
@@ -1033,6 +1056,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
+        hideInputViewForBlockedContact()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1219,7 +1243,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.dismiss(animated: true)
         hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
-        var txid = WalletSharedData.sharedInstance.wallet!.txid()//self.wallet!.txid()
+        var txid = WalletSharedData.sharedInstance.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
@@ -1295,7 +1319,26 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         cancelVoiceMessageRecording()
     }
     
-    
+    func hideInputViewForBlockedContact() {
+        guard let thread = thread as? TSContactThread else { return }
+        if let clearChatButtonStackView = view.viewWithTag(111) {
+            clearChatButtonStackView.removeFromSuperview()
+        }
+        if thread.isBlocked() {
+            snInputView.isHidden = true
+            view.addSubview(clearChatAndUnblockButtonStackView)
+            clearChatAndUnblockButtonStackView.tag = 111
+            clearChatAndUnblockButtonStackView.addArrangedSubview(clearChatButton)
+            clearChatAndUnblockButtonStackView.addArrangedSubview(unblockButton)
+            NSLayoutConstraint.activate([
+                clearChatButton.heightAnchor.constraint(equalToConstant: 47),
+                unblockButton.heightAnchor.constraint(equalToConstant: 47),
+                clearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+                clearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+                clearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -14),
+            ])
+        }
+    }
     
     @objc func isSuccessPopTappedButton() {
         // Handle button tap action
@@ -1369,7 +1412,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             vc.finalWalletAddress = self.finalWalletAddress
             vc.finalWalletAmount = self.finalWalletAmount
             self.navigationController?.pushViewController(vc, animated: true)
-        }else {
+        } else {
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
@@ -1538,6 +1581,21 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     
+    @objc func clearChatButtonTapped() {
+        let vc = ClearChatPopUp()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func unblockButtonTapped() {
+        let vc = BlockContactPopUpVC()
+        vc.isBlocked = true
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
+    }
+    
     // MARK: - Table View Data Source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -1598,7 +1656,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // get profile image
         self.navigationItem.leftItemsSupplementBackButton = true
         if let contactThread: TSContactThread = (thread as? TSContactThread) {
-            let publicKey = contactThread.contactBChatID()//getUserHexEncodedPublicKey()
+            let publicKey = contactThread.contactBChatID()
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
@@ -1915,17 +1973,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: General
     @objc func addOrRemoveBlockedBanner() {
-        func detach() {
-            blockedBanner.removeFromSuperview()
-        }
-        guard let thread = thread as? TSContactThread else { return detach() }
-        if thread.isBlocked() {
-            view.addSubview(blockedBanner)
-            blockedBanner.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.HorizontalEdge.right ], to: view)
-        }
-        else {
-            detach()
-        }
+        hideInputViewForBlockedContact()
     }
     
     func recoverInputView() {
@@ -2050,7 +2098,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         isShowingSearchUI = false
         navigationItem.titleView = titleView
         updateNavBarButtons()
-        if navigationController!.navigationBar as? OWSNavigationBar != nil{
+        if navigationController!.navigationBar as? OWSNavigationBar != nil {
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = nil
         }
