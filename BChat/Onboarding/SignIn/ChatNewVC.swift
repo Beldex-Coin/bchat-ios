@@ -5,8 +5,9 @@ import NVActivityIndicatorView
 import PromiseKit
 import BChatUIKit
 
-class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
+class ChatNewVC: BaseVC  {
     
+    /// Title Label
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
@@ -15,7 +16,9 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
-    private lazy var topView: UIView = {
+    
+    /// Top Background View
+    private lazy var topBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.viewBackgroundColorSocialGroup
@@ -24,6 +27,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
+    /// Inner View Top
     private lazy var innerViewTop: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -31,6 +36,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         stackView.backgroundColor = .clear
         return stackView
     }()
+    
+    /// Left View
     private lazy var leftView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +45,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         stackView.backgroundColor = Colors.backgroundViewColor
         return stackView
     }()
+    
+    /// Right View
     private lazy var rightView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +54,9 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         stackView.backgroundColor = Colors.backgroundViewColor
         return stackView
     }()
-    private lazy var bottomView: UIView = {
+    
+    /// Bottom Background View
+    private lazy var bottomBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.backgroundViewColor
@@ -53,6 +64,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
+    /// Chat Id TextView
     private lazy var chatIdTextView: UITextView = {
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +74,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         result.font = Fonts.OpenSans(ofSize: 14)
         return result
     }()
+    
+    /// Chat Id Details Button
     private lazy var chatIdDetailsButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("YOUR_CHAT_ID_NEW", comment: ""), for: .normal)
@@ -74,10 +89,12 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(Colors.textColor, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(isChatIdDetailsButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(chatIdDetailsButtonTapped), for: .touchUpInside)
         return button
     }()
-    private lazy var scannerImg: UIImageView = {
+    
+    /// Scanner Image
+    private lazy var scannerImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -88,6 +105,8 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
     }()
+    
+    /// Lets BChat Button
     private lazy var letsBChatButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("LETS_BCHAT_NEW", comment: ""), for: .normal)
@@ -101,6 +120,10 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
     }()
     var placeholderLabel : UILabel!
     
+    
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,16 +134,16 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         self.titleLabel.text = NSLocalizedString("NEW_CHAT_NEW", comment: "")
         
         view.addSubViews(titleLabel)
-        view.addSubViews(topView)
-        view.addSubViews(bottomView)
+        view.addSubViews(topBackgroundView)
+        view.addSubViews(bottomBackgroundView)
         
-        topView.addSubview(innerViewTop)
-        topView.addSubview(letsBChatButton)
+        topBackgroundView.addSubview(innerViewTop)
+        topBackgroundView.addSubview(letsBChatButton)
         innerViewTop.addSubview(rightView)
         innerViewTop.addSubview(leftView)
         leftView.addSubview(chatIdTextView)
-        rightView.addSubview(scannerImg)
-        bottomView.addSubview(chatIdDetailsButton)
+        rightView.addSubview(scannerImage)
+        bottomBackgroundView.addSubview(chatIdDetailsButton)
         chatIdDetailsButton.addRightIcon(image: UIImage(named: "ic-Newarrow")!.withRenderingMode(.alwaysTemplate))
         chatIdDetailsButton.tintColor = Colors.greenColor
         
@@ -128,20 +151,19 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            topView.heightAnchor.constraint(equalToConstant: 202),
-        ])
-        NSLayoutConstraint.activate([
-            topView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22),
-            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            innerViewTop.topAnchor.constraint(equalTo: topView.topAnchor, constant: 18),
-            innerViewTop.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 13),
-            innerViewTop.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -13),
-            letsBChatButton.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 13),
-            letsBChatButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -13),
+           
+            topBackgroundView.heightAnchor.constraint(equalToConstant: 202),
+            topBackgroundView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22),
+            topBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            topBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            innerViewTop.topAnchor.constraint(equalTo: topBackgroundView.topAnchor, constant: 18),
+            innerViewTop.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 13),
+            innerViewTop.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -13),
+            letsBChatButton.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 13),
+            letsBChatButton.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -13),
             letsBChatButton.topAnchor.constraint(equalTo: innerViewTop.bottomAnchor, constant: 10),
             innerViewTop.heightAnchor.constraint(equalTo: letsBChatButton.heightAnchor, constant: 58),
-            letsBChatButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -18),
+            letsBChatButton.bottomAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: -18),
             rightView.topAnchor.constraint(equalTo: innerViewTop.topAnchor, constant: 0),
             rightView.bottomAnchor.constraint(equalTo: innerViewTop.bottomAnchor, constant: -0),
             rightView.trailingAnchor.constraint(equalTo: innerViewTop.trailingAnchor, constant: -0),
@@ -154,20 +176,19 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
             chatIdTextView.bottomAnchor.constraint(equalTo: leftView.bottomAnchor, constant: -10),
             chatIdTextView.leadingAnchor.constraint(equalTo: leftView.leadingAnchor, constant: 10),
             chatIdTextView.trailingAnchor.constraint(equalTo: leftView.trailingAnchor, constant: -10),
-            scannerImg.centerXAnchor.constraint(equalTo: rightView.centerXAnchor),
-            scannerImg.centerYAnchor.constraint(equalTo: rightView.centerYAnchor),
-            scannerImg.widthAnchor.constraint(equalToConstant: 28),
-            scannerImg.heightAnchor.constraint(equalToConstant: 28),
-        ])
-        NSLayoutConstraint.activate([
-            bottomView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 32),
-            bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
-            bottomView.heightAnchor.constraint(equalToConstant: 48),
-            bottomView.widthAnchor.constraint(equalToConstant: 202),
-            chatIdDetailsButton.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 0),
-            chatIdDetailsButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -0),
-            chatIdDetailsButton.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: -0),
-            chatIdDetailsButton.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 0),
+            scannerImage.centerXAnchor.constraint(equalTo: rightView.centerXAnchor),
+            scannerImage.centerYAnchor.constraint(equalTo: rightView.centerYAnchor),
+            scannerImage.widthAnchor.constraint(equalToConstant: 28),
+            scannerImage.heightAnchor.constraint(equalToConstant: 28),
+          
+            bottomBackgroundView.topAnchor.constraint(equalTo: topBackgroundView.bottomAnchor, constant: 32),
+            bottomBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
+            bottomBackgroundView.heightAnchor.constraint(equalToConstant: 48),
+            bottomBackgroundView.widthAnchor.constraint(equalToConstant: 202),
+            chatIdDetailsButton.leadingAnchor.constraint(equalTo: bottomBackgroundView.leadingAnchor, constant: 0),
+            chatIdDetailsButton.trailingAnchor.constraint(equalTo: bottomBackgroundView.trailingAnchor, constant: -0),
+            chatIdDetailsButton.bottomAnchor.constraint(equalTo: bottomBackgroundView.bottomAnchor, constant: -0),
+            chatIdDetailsButton.topAnchor.constraint(equalTo: bottomBackgroundView.topAnchor, constant: 0),
         ])
         //textView
         chatIdTextView.delegate = self
@@ -182,15 +203,18 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         view.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        bottomView.layer.cornerRadius = bottomView.frame.height / 2
+        bottomBackgroundView.layer.cornerRadius = bottomBackgroundView.frame.height / 2
     }
     
+    /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    /// View Did Appear
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -200,36 +224,13 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         chatIdTextView.resignFirstResponder()
     }
     
-    func textViewDidChange(_ textView: UITextView) {
-        let str = textView.text!
-        if str.count == 0 {
-            letsBChatButton.isUserInteractionEnabled = false
-            letsBChatButton.backgroundColor = Colors.backgroundViewColor
-            letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
-            chatIdTextView.checkPlaceholderChatNew()
-        } else {
-            letsBChatButton.isUserInteractionEnabled = true
-            letsBChatButton.backgroundColor = Colors.greenColor
-            letsBChatButton.setTitleColor(.white, for: .normal)
-            chatIdTextView.checkPlaceholderChatNew()
-        }
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if text == "\n" {
-            textView.resignFirstResponder()
-            performAction()
-            return false
-        }
-        return true
-    }
-    
     // MARK: Button Actions :-
     @objc private func letsBChatButtonTapped() {
         let text = chatIdTextView.text?.trimmingCharacters(in: .whitespaces) ?? ""
         self.startNewDMIfPossible(with: text)
     }
     
+    /// Start New DM If Possible
     fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
         if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
             startNewDM(with: bnsNameOrPublicKey)
@@ -263,22 +264,53 @@ class ChatNewVC: BaseVC,UITextViewDelegate,UITextFieldDelegate  {
         SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
     }
     
+    /// Perform Action
     func performAction() {
         let text = chatIdTextView.text?.trimmingCharacters(in: .whitespaces) ?? ""
         self.startNewDMIfPossible(with: text)
     }
     
+    /// Scanner Image View Tapped
     @objc func scannerImageViewTapped() {
         let vc = ScanNewVC()
         vc.newChatScanflag = false
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    @objc func isChatIdDetailsButtonTapped() {
-        let vc = MyAccountNewVC()
+    /// Chat Id Details Button Tapped
+    @objc func chatIdDetailsButtonTapped() {
+        let vc = MyAccountViewController()
         vc.isNavigationBarHideInChatNewVC = true
         navigationController!.pushViewController(vc, animated: true)
     }
+}
+
+// MARK: - UITextViewDelegate methods
+
+extension ChatNewVC: UITextViewDelegate {
+    /// UI Text View Delegate
+    func textViewDidChange(_ textView: UITextView) {
+        let str = textView.text!
+        if str.count == 0 {
+            letsBChatButton.isUserInteractionEnabled = false
+            letsBChatButton.backgroundColor = Colors.backgroundViewColor
+            letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+            chatIdTextView.checkPlaceholderChatNew()
+        } else {
+            letsBChatButton.isUserInteractionEnabled = true
+            letsBChatButton.backgroundColor = Colors.greenColor
+            letsBChatButton.setTitleColor(.white, for: .normal)
+            chatIdTextView.checkPlaceholderChatNew()
+        }
+    }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            performAction()
+            return false
+        }
+        return true
+    }
 }
 

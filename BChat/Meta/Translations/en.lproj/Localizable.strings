@@ -711,7 +711,7 @@
 "ENTER_CHAT_ID_NEW" = "Enter BChat ID or BNS name";
 "INVALID_BCHAT_ID_NEW" = "invalid BChat ID";
 
-/* MyAccountNewVC */
+/* MyAccountViewController */
 "SHARE_OPTION_NEW" = "Share";
 "BELDEX_ADDRESS_TITLE_NEW" = "Beldex Address";
 "BCHAT_ID_NEW" = "BChat ID";

@@ -5,11 +5,11 @@ import SVGKit
 import BChatUIKit
 import Alamofire
 
-final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
+final class HomeVC : BaseVC {
     private var threads: YapDatabaseViewMappings!
-    private var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
-    private var tableViewTopConstraint: NSLayoutConstraint!
-    private var unreadMessageRequestCount: UInt {
+    internal var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
+    internal  var tableViewTopConstraint: NSLayoutConstraint!
+    internal var unreadMessageRequestCount: UInt {
         var count: UInt = 0
         dbConnection.read { transaction in
             let ext = transaction.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewTransaction
@@ -21,7 +21,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         return count
     }
-    private var threadCount: UInt {
+    internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
     }
     private lazy var dbConnection: YapDatabaseConnection = {
@@ -40,7 +40,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }()
     private var threadViewModelCacheForMessageRequest: [String: ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     
-    private var messageRequestCountForMessageRequest: UInt {
+    internal var messageRequestCountForMessageRequest: UInt {
         threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
     }
     
@@ -142,7 +142,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     var isTapped = false
     
     // NewConversation Button Set PopUpView
-    private lazy var mainButtonPopUpView: UIView = {
+    lazy var mainButtonPopUpView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.homeScreenFloatingbackgroundColor
@@ -151,7 +151,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return stackView
     }()
     
-    private lazy var mainButton: UIButton = {
+    lazy var mainButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
@@ -350,7 +350,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         messageCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         messageCollectionView.dataSource = self
         messageCollectionView.delegate = self
-        messageCollectionView.register(MessageRequestCollectionViewCell.self, forCellWithReuseIdentifier: "MessageRequestCollectionViewCell")
+        messageCollectionView.register(MessageRequestCollectionViewCell.self, forCellWithReuseIdentifier: MessageRequestCollectionViewCell.reuseidentifier)
         messageCollectionView.showsHorizontalScrollIndicator = false
         messageCollectionView.backgroundColor = .clear
         messageCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -459,18 +459,67 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
-        
-        
     }
     
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        if !mainButtonPopUpView.isHidden {
-            self.isTapped = true
-            mainButtonPopUpView.isHidden = true
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.isManualyCloseMessageRequest = false
+        self.isTapped = false
+        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
+        reload()
+        updateNavBarButtons()
+        if SSKPreferences.areWalletEnabled{
+            //Dynamic node array
+            self.getDynamicNodesFromAPI()
+            
+            if UserDefaults.standard.domainSchemas.isEmpty {}else {
+                hashArray2 = UserDefaults.standard.domainSchemas
+            }
+            myGroup.notify(queue: .main) {
+                if !SaveUserDefaultsData.SelectedNode.isEmpty {
+                    if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
+                        self.randomNodeValue = SaveUserDefaultsData.SelectedNode
+                    } else {
+                        self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
+                        SaveUserDefaultsData.SelectedNode = self.randomNodeValue
+                    }
+                }else {
+                    self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
+                    SaveUserDefaultsData.SelectedNode = self.randomNodeValue
+                }
+                SaveUserDefaultsData.FinalWallet_node = self.randomNodeValue
+                if WalletSharedData.sharedInstance.wallet != nil {
+                    if self.wallet == nil {
+                        self.isSyncingUI = true
+                        self.syncingIsFromDelegateMethod = false
+                    }
+                }else {
+                    self.init_syncing_wallet()
+                }
+            }
         } else {
-            self.isTapped = false
+            WalletSharedData.sharedInstance.wallet = nil
+            closeWallet()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        reload()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.showOrHideMessageRequestCollectionViewButton.isSelected = false
+        self.isManualyCloseMessageRequest = false
+        self.isTapped = false
+        mainButtonPopUpView.isHidden = true
+        mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .doodleChangeNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -480,9 +529,18 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         isFromSocialGroupImgBtn.layer.cornerRadius = isFromSocialGroupImgBtn.frame.height/2
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: .doodleChangeNotification, object: nil)
+    override func appDidBecomeActive(_ notification: Notification) {
+        reload()
+    }
+
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        if !mainButtonPopUpView.isHidden {
+            self.isTapped = true
+            mainButtonPopUpView.isHidden = true
+            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
+        } else {
+            self.isTapped = false
+        }
     }
     
     @objc func notificationReceived(_ notification: Notification) {
@@ -529,7 +587,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         onComplete?(needsSync)
     }
     
-    private func deleteForMessageRequest(_ thread: TSThread) {
+    func deleteForMessageRequest(_ thread: TSThread) {
         guard let uniqueId: String = thread.uniqueId else { return }
         
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
@@ -561,8 +619,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.present(alertVC, animated: true, completion: nil)
     }
     
-    
-    private func threadForMessageRequest(at index: Int) -> TSThread? {
+    func threadForMessageRequest(at index: Int) -> TSThread? {
         var thread: TSThread? = nil
         
         dbConnection.read { transaction in
@@ -573,7 +630,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return thread
     }
     
-    private func threadViewModelForMessageRequest(at index: Int) -> ThreadViewModel? {
+    func threadViewModelForMessageRequest(at index: Int) -> ThreadViewModel? {
         guard let thread = threadForMessageRequest(at: index), let uniqueId: String = thread.uniqueId else { return nil }
         
         if let cachedThreadViewModel = threadViewModelCacheForMessageRequest[uniqueId] {
@@ -588,67 +645,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
             
             return threadViewModel
         }
-    }
-        
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.isManualyCloseMessageRequest = false
-        self.isTapped = false
-        NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
-        reload()
-        updateNavBarButtons()
-        if SSKPreferences.areWalletEnabled{
-            //Dynamic node array
-            self.getDynamicNodesFromAPI()
-            
-            if UserDefaults.standard.domainSchemas.isEmpty {}else {
-                hashArray2 = UserDefaults.standard.domainSchemas
-            }
-            myGroup.notify(queue: .main) {
-                if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                    if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
-                        self.randomNodeValue = SaveUserDefaultsData.SelectedNode
-                    } else {
-                        self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
-                        SaveUserDefaultsData.SelectedNode = self.randomNodeValue
-                    }
-                }else {
-                    self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
-                    SaveUserDefaultsData.SelectedNode = self.randomNodeValue
-                }
-                SaveUserDefaultsData.FinalWallet_node = self.randomNodeValue
-                if WalletSharedData.sharedInstance.wallet != nil {
-                    if self.wallet == nil {
-                        self.isSyncingUI = true
-                        self.syncingIsFromDelegateMethod = false
-                    }
-                }else {
-                    self.init_syncing_wallet()
-                }
-            }
-        }else {
-            WalletSharedData.sharedInstance.wallet = nil
-            closeWallet()
-        }
-        
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-        self.isManualyCloseMessageRequest = false
-        self.isTapped = false
-        mainButtonPopUpView.isHidden = true
-        mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        reload()
-    }
-    
-    override func appDidBecomeActive(_ notification: Notification) {
-        reload()
     }
     
     func getDynamicNodesFromAPI() {
@@ -768,55 +764,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - UITableViewDataSource
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        messageRequestCountLabel.text = "\(Int(unreadMessageRequestCount))"
-        messageRequestCountLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
-        messageRequestLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
-        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(unreadMessageRequestCount) <= 0)
-        
-        if !messageRequestLabel.isHidden {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
-        }
-        self.messageCollectionView.isHidden = true
-        
-        switch section {
-        case 0:
-            return 0
-        case 1: return Int(threadCount)
-        default: return 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MessageRequestsCell.reuseIdentifier) as! MessageRequestsCell
-            cell.update(with: Int(unreadMessageRequestCount))
-            
-            let logoName = isLightMode ? "arrowmsg1" : "arrowmsg2"
-            let image = UIImage(named: logoName)!
-            let checkmark = UIImageView(frame:CGRect(x:0, y:0, width:(image.size.width), height:(image.size.height)));
-            checkmark.image = image
-            cell.accessoryView = checkmark
-            return cell
-            
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-            cell.threadViewModel = threadViewModel(at: indexPath.row)
-            return cell
-        }
-    }
     
     // MARK: Updating
     
@@ -841,149 +789,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         AssertIsOnMainThread()
         reloadForMessageRequest()
         reload()
-        // If we don't capture `threads` here, a race condition can occur where the
-        // `thread.snapshotOfLastUpdate != firstSnapshot - 1` check below evaluates to
-        // `false`, but `threads` then changes between that check and the
-        // `ext.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notifications, with: threads)`
-        // line. This causes `tableView.endUpdates()` to crash with an `NSInternalInconsistencyException`.
-//        let threads = threads!
-//        // Create a stable state for the connection and jump to the latest commit
-//        let notifications = dbConnection.beginLongLivedReadTransaction()
-//        guard !notifications.isEmpty else { return }
-//        let ext = dbConnection.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewConnection
-//        let hasChanges = (
-//            ext.hasChanges(forGroup: TSMessageRequestGroup, in: notifications) ||
-//            ext.hasChanges(forGroup: TSInboxGroup, in: notifications)
-//        )
-//
-//        guard hasChanges else { return }
-//
-//        if let firstChangeSet = notifications[0].userInfo {
-//            let firstSnapshot = firstChangeSet[YapDatabaseSnapshotKey] as! UInt64
-//
-//            // The 'getSectionChanges' code below will crash if we try to process multiple commits at once
-//            // so just force a full reload
-//            if threads.snapshotOfLastUpdate != firstSnapshot - 1 {
-//                // Check if we inserted a new message request (if so then unhide the message request banner)
-//                if
-//                    let extensions: [String: Any] = firstChangeSet[YapDatabaseExtensionsKey] as? [String: Any],
-//                    let viewExtensions: [String: Any] = extensions[TSThreadDatabaseViewExtensionName] as? [String: Any]
-//                {
-//                    // Note: We do a 'flatMap' here rather than explicitly grab the desired key because
-//                    // the key we need is 'changeset_key_changes' in 'YapDatabaseViewPrivate.h' so could
-//                    // change due to an update and silently break this - this approach is a bit safer
-//                    let allChanges: [Any] = Array(viewExtensions.values).compactMap { $0 as? [Any] }.flatMap { $0 }
-//                    let messageRequestInserts = allChanges
-//                        .compactMap { $0 as? YapDatabaseViewRowChange }
-//                        .filter { $0.finalGroup == TSMessageRequestGroup && $0.type == .insert }
-//
-//                    if !messageRequestInserts.isEmpty && CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-//                        CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = false
-//                    }
-//                }
-//
-//                // If there are no unread message requests then hide the message request banner
-//                if unreadMessageRequestCount == 0 {
-//                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-//                }
-//
-//                return reload()
-//            }
-//        }
-//
-//        var sectionChanges = NSArray()
-//        var rowChanges = NSArray()
-//        ext.getSectionChanges(&sectionChanges, rowChanges: &rowChanges, for: notifications, with: threads)
-//
-//        // Separate out the changes for new message requests and the inbox (so we can avoid updating for
-//        // new messages within an existing message request)
-//        let messageRequestChanges = rowChanges
-//            .compactMap { $0 as? YapDatabaseViewRowChange }
-//            .filter { $0.originalGroup == TSMessageRequestGroup || $0.finalGroup == TSMessageRequestGroup }
-//        let inboxRowChanges = rowChanges
-//            .compactMap { $0 as? YapDatabaseViewRowChange }
-//            .filter { $0.originalGroup == TSInboxGroup || $0.finalGroup == TSInboxGroup }
-//
-//        guard sectionChanges.count > 0 || inboxRowChanges.count > 0 || messageRequestChanges.count > 0 else { return }
-//
-//                tableView.beginUpdates()
-//        self.tableView.performBatchUpdates({
-//            // If we need to unhide the message request row and then re-insert it
-//            if !messageRequestChanges.isEmpty {
-//
-//                // If there are no unread message requests then hide the message request banner
-//                if unreadMessageRequestCount == 0 && tableView.numberOfRows(inSection: 0) == 1 {
-//                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-//                    tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-//                }
-//                else {
-//                    if tableView.numberOfRows(inSection: 0) == 1 && Int(unreadMessageRequestCount) <= 0 {
-//                        tableView.deleteRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-//                    }
-//                    else if tableView.numberOfRows(inSection: 0) == 0 && Int(unreadMessageRequestCount) > 0 && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
-//                        tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-//                    }
-//                }
-//            }
-//
-//            inboxRowChanges.forEach { rowChange in
-//                let key = rowChange.collectionKey.key
-//                threadViewModelCache[key] = nil
-//
-//                switch rowChange.type {
-//                case .delete:
-//                    tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
-//
-//                case .insert:
-//                    tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-//
-//                case .update:
-//                    tableView.reloadRows(at: [ rowChange.indexPath! ], with: .automatic)
-//
-//                case .move:
-//                    // Note: We need to handle the move from the message requests section to the inbox (since
-//                    // we are only showing a single row for message requests we need to custom handle this as
-//                    // an insert as the change won't be defined correctly)
-//                    if rowChange.originalGroup == TSMessageRequestGroup && rowChange.finalGroup == TSInboxGroup {
-//                        tableView.insertRows(at: [ rowChange.newIndexPath! ], with: .automatic)
-//                    }
-//                    else if rowChange.originalGroup == TSInboxGroup && rowChange.finalGroup == TSMessageRequestGroup {
-//                        tableView.deleteRows(at: [ rowChange.indexPath! ], with: .automatic)
-//                    }
-//
-//                default: break
-//                }
-//            }
-//                    tableView.endUpdates()
-//        }, completion: nil)
-//        // HACK: Moves can have conflicts with the other 3 types of change.
-//        // Just batch perform all the moves separately to prevent crashing.
-//        // Since all the changes are from the original state to the final state,
-//        // it will still be correct if we pick the moves out.
-//        //        tableView.beginUpdates()
-//        self.tableView.performBatchUpdates({
-//            rowChanges.forEach { rowChange in
-//                let rowChange = rowChange as! YapDatabaseViewRowChange
-//                let key = rowChange.collectionKey.key
-//                threadViewModelCache[key] = nil
-//
-//                switch rowChange.type {
-//                case .move:
-//                    // Since we are custom handling this specific movement in the above 'updates' call we need
-//                    // to avoid trying to handle it here
-//                    if rowChange.originalGroup == TSMessageRequestGroup || rowChange.finalGroup == TSMessageRequestGroup {
-//                        return
-//                    }
-//
-//                    tableView.moveRow(at: rowChange.indexPath!, to: rowChange.newIndexPath!)
-//
-//                default: break
-//                }
-//            }
-//            //        tableView.endUpdates()
-//        }, completion: nil)
-//        emptyStateView.isHidden = (threadCount != 0)
-//        someImageView.isHidden = (threadCount != 0)
         self.tableView.reloadData()
         self.messageCollectionView.reloadData()
     }
@@ -1127,148 +932,6 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         tableView.reloadData()
     }
     
-    // MARK: - UITableViewDelegate
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if !mainButtonPopUpView.isHidden && !self.isTapped {
-            isTapped = false
-            mainButtonPopUpView.isHidden = true
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-            return
-        }
-        if mainButtonPopUpView.isHidden && self.isTapped {
-            isTapped = false
-            return
-        }
-        isTapped = false
-        switch indexPath.section {
-        case 0:
-            let viewController: MessageRequestsViewController = MessageRequestsViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
-            return
-        default:
-            guard let thread = self.thread(at: indexPath.row) else { return }
-            show(thread, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        switch indexPath.section {
-        case 0:
-            let hide = UIContextualAction(style: .destructive, title: "Hide", handler: { (action, view, success) in
-                let alert = UIAlertController(title: "Hide Message request?", message: "Once they are hidden,you can access them from Settings > Message Requests.", preferredStyle: .alert)
-                let ok = UIAlertAction(title: "No", style: .default, handler: { action in
-                })
-                alert.addAction(ok)
-                let cancel = UIAlertAction(title: "Yes", style: .default, handler: { action in
-                    CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
-                    // Animate the row removal
-                    self.tableView.beginUpdates()
-                    self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                    self.tableView.endUpdates()
-                })
-                cancel.setValue(UIColor.red, forKey: "titleTextColor")
-                alert.addAction(cancel)
-                DispatchQueue.main.async(execute: {
-                    self.present(alert, animated: true)
-                })
-            })
-            hide.backgroundColor = Colors.destructive
-            return UISwipeActionsConfiguration(actions: [hide])
-        default:
-            guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
-            let delete = UIContextualAction(style: .destructive, title: "Delete", handler: { (action, view, success) in
-                var message = NSLocalizedString("This cannot be undone.", comment: "")
-                if let thread = thread as? TSGroupThread, thread.isClosedGroup, thread.groupModel.groupAdminIds.contains(getUserHexEncodedPublicKey()) {
-                    message = NSLocalizedString("admin_group_leave_warning", comment: "")
-                }
-                let alert = UIAlertController(title: NSLocalizedString("Delete Conversation?", comment: ""), message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
-                    self?.delete(thread)
-                })
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in })
-                self.presentAlert(alert)
-            })
-            delete.backgroundColor = Colors.mainBackGroundColor2
-            delete.image = UIImage(named: "ic_delete_new")
-            let isPinned = thread.isPinned
-            let pin = UIContextualAction(style: .destructive, title: "Pin", handler: { (action, view, success) in
-                thread.isPinned = true
-                thread.save()
-                self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
-            })
-            pin.backgroundColor = Colors.mainBackGroundColor2
-            pin.image = UIImage(named: "Pin_menu")
-            //UnPin Option
-            let unpin = UIContextualAction(style: .destructive, title: "Unpin", handler: { (action, view, success) in
-                thread.isPinned = false
-                thread.save()
-                self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
-            })
-            unpin.backgroundColor = Colors.mainBackGroundColor2
-            unpin.image = UIImage(named: "ic_unpin")
-            
-            if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
-                let publicKey = thread.contactBChatID()
-                
-                let block = UIContextualAction(style: .destructive, title: "Block", handler: { (action, view, success) in
-                    Storage.shared.write(
-                        with: { transaction in
-                            guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
-                                return
-                            }
-                            contact.isBlocked = true
-                            Storage.shared.setContact(contact, using: transaction as Any)
-                        },
-                        completion: {
-                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            DispatchQueue.main.async {
-                                tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
-                            }
-                        }
-                    )
-                })
-                block.backgroundColor = Colors.mainBackGroundColor2
-                block.image = UIImage(named: "block")
-                
-                let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: { (action, view, success) in
-                    
-                    Storage.shared.write(
-                        with: { transaction in
-                            guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
-                                return
-                            }
-                            
-                            contact.isBlocked = false
-                            Storage.shared.setContact(contact, using: transaction as Any)
-                        },
-                        completion: {
-                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                            
-                            DispatchQueue.main.async {
-                                tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
-                            }
-                        }
-                    )
-                })
-                unblock.backgroundColor = Colors.mainBackGroundColor2
-                unblock.image = UIImage(named: "unblock_big")
-                
-                return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isPinned ? unpin : pin) ])
-            }
-            else {
-                return UISwipeActionsConfiguration(actions: [ delete, (isPinned ? unpin : pin) ])
-            }
-        }
-    }
-    
     // MARK: - Interaction
     
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
@@ -1400,7 +1063,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     // MARK: Convenience
-    private func thread(at index: Int) -> TSThread? {
+    func thread(at index: Int) -> TSThread? {
         var thread: TSThread? = nil
         dbConnection.read { transaction in
             // Note: Section needs to be '1' as we now have 'TSMessageRequests' as the 0th section
@@ -1410,7 +1073,7 @@ final class HomeVC : BaseVC, UITableViewDataSource, UITableViewDelegate {
         return thread
     }
     
-    private func threadViewModel(at index: Int) -> ThreadViewModel? {
+    func threadViewModel(at index: Int) -> ThreadViewModel? {
         guard let thread = thread(at: index) else { return nil }
         if let cachedThreadViewModel = threadViewModelCache[thread.uniqueId!] {
             return cachedThreadViewModel
@@ -1464,6 +1127,7 @@ extension HomeVC: BeldexWalletDelegate {
         self.needSynchronized = true
         self.isSyncingUI = true
     }
+    
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
@@ -1471,133 +1135,22 @@ extension HomeVC: BeldexWalletDelegate {
             self.tableView.reloadData()
         }
     }
-}
-
-
-
-
-extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if messageRequestCountForMessageRequest == 0 {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
-            self.messageCollectionView.isHidden = true
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
-            self.messageCollectionView.isHidden = false
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = true
-            if isManualyCloseMessageRequest {
-                tableViewTopConstraint.isActive = false
-                tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
-                self.messageCollectionView.isHidden = true
-                self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            }
-        }
-        
-        
-        messageRequestCountLabel.text = "\(Int(messageRequestCountForMessageRequest))"
-        messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
-        messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
-        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
-        
-        if messageRequestCountForMessageRequest == 0 {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
-            self.messageCollectionView.isHidden = true
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            messageRequestCountLabel.isHidden = true
-            messageRequestLabel.isHidden = true
-            showOrHideMessageRequestCollectionViewButton.isHidden = true
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
-            self.messageCollectionView.isHidden = false
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = true
-            messageRequestCountLabel.isHidden = false
-            messageRequestLabel.isHidden = false
-            showOrHideMessageRequestCollectionViewButton.isHidden = false
-            if isManualyCloseMessageRequest {
-                tableViewTopConstraint.isActive = false
-                tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
-                self.messageCollectionView.isHidden = true
-                self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            }
-        }
-        return Int(messageRequestCountForMessageRequest)//10
+    
+    func updateTableViewCell(_ indexPath: IndexPath) {
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: "MessageRequestCollectionViewCell", for: indexPath) as! MessageRequestCollectionViewCell
-        cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
-        
-        if threadViewModelForMessageRequest(at: indexPath.row)!.isGroupThread {
-            if threadViewModelForMessageRequest(at: indexPath.row)!.name.isEmpty {
-                cell.nameLabel.text =  "Unknown Group"
-            }
-            else {
-                cell.nameLabel.text = threadViewModelForMessageRequest(at: indexPath.row)?.name
-            }
-        }
-        else {
-            if threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord.isNoteToSelf() {
-                cell.nameLabel.text = NSLocalizedString("NOTE_TO_SELF", comment: "")
-            }
-            else {
-                let hexEncodedPublicKey: String = threadViewModelForMessageRequest(at: indexPath.row)!.contactBChatID!
-                let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
-                let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
-                cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
-            }
-        }
-        
-        cell.removeCallback = {
-            guard let thread = self.threadForMessageRequest(at: indexPath.row) else { return }
-            self.deleteForMessageRequest(thread)
-        }
-        
-        
-        return cell
+    func setTableViewTopConstraint(_ inset: CGFloat = 0) {
+        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: inset)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let noOfCellsInRow = 6  //number of column you want
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        let totalSpace = flowLayout.sectionInset.left
-        + flowLayout.sectionInset.right
-        + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
-        return CGSize(width: 65, height: 80)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = NewMessageRequestVC()
-        navigationController!.pushViewController(vc, animated: true)
-    }
-    
-}
-
-
-class CollectionViewCell: UICollectionViewCell {
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 
 struct NodeResponceModel: Codable {
     let uri: String
     let isDefault: Bool
+    
     enum CodingKeys: String, CodingKey {
         case uri
         case isDefault = "is_default"

@@ -409,6 +409,8 @@ class HomeTableViewCell: UITableViewCell {
 
 
 class MessageRequestCollectionViewCell: UICollectionViewCell {
+    
+    static let reuseidentifier = "MessageRequestCollectionViewCell"
 
     lazy var profileImageView = ProfilePictureView()
     
