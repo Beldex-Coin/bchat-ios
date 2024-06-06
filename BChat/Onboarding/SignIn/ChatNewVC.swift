@@ -279,11 +279,10 @@ class ChatNewVC: BaseVC  {
     
     /// Chat Id Details Button Tapped
     @objc func chatIdDetailsButtonTapped() {
-        let vc = MyAccountNewVC()
+        let vc = MyAccountViewController()
         vc.isNavigationBarHideInChatNewVC = true
         navigationController!.pushViewController(vc, animated: true)
     }
-    
 }
 
 // MARK: - UITextViewDelegate methods
