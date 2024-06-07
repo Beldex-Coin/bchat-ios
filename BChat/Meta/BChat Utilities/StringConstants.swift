@@ -39,8 +39,9 @@ struct Constants: Equatable {
     static let blockMessageRequest = "blockMessageRequestTapped"
     static let acceptMessageRequest = "acceptMessageRequestTapped"
     static let deleteMessageRequest = "deleteMessageRequestTapped"
-    static let userBlockContact = "userBlockContact"
+    static let blockContact = "blockContact"
     static let hideAttachment = "attachmentHidden"
     static let doodleChangeNotification = "doodleChangeNotification"
-    static let userUnblockContact = "userUnblockContact"
+    static let unblockContact = "unblockContact"
+    static let clearChatHistory = "clearChatHistory"
 }

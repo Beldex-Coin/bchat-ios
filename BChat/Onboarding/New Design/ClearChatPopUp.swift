@@ -131,6 +131,7 @@ class ClearChatPopUp: BaseVC {
     /// Ok button action
     @objc private func clearButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
+        NotificationCenter.default.post(name: .clearChatHistoryNotification, object: nil)
     }
     
     /// Cancel button action
