@@ -652,29 +652,59 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.alignment = .center
         result.distribution = .fillEqually
         result.spacing = 9
-        result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
     
-     lazy var deleteAudioView: UIView = {
+    lazy var blockedBannerView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        return stackView
+    }()
+    
+    lazy var blockedBannerLabel: UILabel = {
+        let result = PaddingLabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 10)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.adjustsFontSizeToFitWidth = true
+        result.backgroundColor = Colors.incomingMessageColor
+        result.paddingTop = 6
+        result.paddingBottom = 6
+        result.paddingLeft = 16
+        result.paddingRight = 16
+        result.layer.cornerRadius = 13
+        result.layer.masksToBounds = true
+        return result
+    }()
+    
+    lazy var backgroundViewForClearChatAndUnblockButtonStackView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.mainBackGroundColor2
+        return stackView
+    }()
+    
+    
+    lazy var deleteAudioView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.incomingMessageColor
         stackView.layer.cornerRadius = 18
         return stackView
     }()
-     
+    
     lazy var deleteAudioImageView: UIImageView = {
-       let result = UIImageView()
-       result.image = UIImage(named: "ic_delete_record")
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_delete_record")
         result.set(.width, to: 14)
         result.set(.height, to: 14)
-       result.layer.masksToBounds = true
-       result.contentMode = .scaleAspectFit
-       return result
-   }()
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
     
-     lazy var deleteAudioLabel: UILabel = {
+    lazy var deleteAudioLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
         result.font = Fonts.semiOpenSans(ofSize: 11)
@@ -684,7 +714,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return result
     }()
     
-     lazy var deleteAudioButton: UIButton = {
+    lazy var deleteAudioButton: UIButton = {
         let button = UIButton()
         button.setTitle("", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -692,7 +722,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.addTarget(self, action: #selector(deleteAudioButtonTapped), for: .touchUpInside)
         return button
     }()
-    
     
     lazy var callView: UIView = {
         let result = UIView()
@@ -1000,6 +1029,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(unblock), name: .userUnblockContactNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .userClearChatNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
@@ -1326,17 +1356,34 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         if thread.isBlocked() {
             snInputView.isHidden = true
-            view.addSubview(clearChatAndUnblockButtonStackView)
-            clearChatAndUnblockButtonStackView.tag = 111
+            view.addSubview(blockedBannerView)
+            blockedBannerView.addSubview(backgroundViewForClearChatAndUnblockButtonStackView)
+            blockedBannerView.addSubview(clearChatAndUnblockButtonStackView)
             clearChatAndUnblockButtonStackView.addArrangedSubview(clearChatButton)
             clearChatAndUnblockButtonStackView.addArrangedSubview(unblockButton)
+            blockedBannerView.addSubview(blockedBannerLabel)
+            blockedBannerView.tag = 111
+            clearChatAndUnblockButtonStackView.tag = 111
             NSLayoutConstraint.activate([
+                blockedBannerView.heightAnchor.constraint(equalToConstant: 126),
+                blockedBannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+                blockedBannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+                blockedBannerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.heightAnchor.constraint(equalToConstant: 65),
+                backgroundViewForClearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: blockedBannerView.leadingAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: blockedBannerView.trailingAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: blockedBannerView.bottomAnchor, constant: 0),
                 clearChatButton.heightAnchor.constraint(equalToConstant: 47),
                 unblockButton.heightAnchor.constraint(equalToConstant: 47),
-                clearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-                clearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-                clearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -14),
+                clearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: blockedBannerView.leadingAnchor, constant: 14),
+                clearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: blockedBannerView.trailingAnchor, constant: -14),
+                clearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: blockedBannerView.bottomAnchor, constant: -18),
+                blockedBannerLabel.heightAnchor.constraint(equalToConstant: 26),
+                blockedBannerLabel.topAnchor.constraint(equalTo: blockedBannerView.topAnchor),
+                blockedBannerLabel.centerXAnchor.constraint(equalTo: blockedBannerView.centerXAnchor)
             ])
+            let userName = Storage.shared.getContact(with: thread.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            blockedBannerLabel.text = "You Blocked \(userName)! Click here to Unblock."
         }
     }
     
@@ -1580,6 +1627,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
+    /// Clear Chat function
+    @objc func clearChat() {
+        delete(thread)
+    }
+    
     
     @objc func clearChatButtonTapped() {
         let vc = ClearChatPopUp()
@@ -1594,6 +1646,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true, completion: nil)
+    }
+    
+    /// Delete Chat
+    private func delete(_ thread: TSThread) {
+        guard let thread = thread as? TSContactThread else { return }
+        Storage.write { transaction in
+            Storage.shared.cancelPendingMessageSendJobs(for: thread.uniqueId!, using: transaction)
+            thread.removeAllThreadInteractions(with: transaction)
+            thread.remove(with: transaction)
+        }
     }
     
     // MARK: - Table View Data Source

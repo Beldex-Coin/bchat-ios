@@ -43,4 +43,5 @@ struct Constants: Equatable {
     static let hideAttachment = "attachmentHidden"
     static let doodleChangeNotification = "doodleChangeNotification"
     static let userUnblockContact = "userUnblockContact"
+    static let userClearChatContact = "userClearChatContact"
 }
