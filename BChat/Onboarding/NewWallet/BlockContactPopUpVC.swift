@@ -128,9 +128,9 @@ class BlockContactPopUpVC: BaseVC {
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
         if isBlocked {
-            NotificationCenter.default.post(name: .userUnblockContactNotification, object: nil)
+            NotificationCenter.default.post(name: .unblockContactNotification, object: nil)
         } else {
-            NotificationCenter.default.post(name: .userBlockContactNotification, object: nil)
+            NotificationCenter.default.post(name: .blockContactNotification, object: nil)
         }
     }
     

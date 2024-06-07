@@ -1028,8 +1028,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(unblock), name: .userUnblockContactNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .userClearChatNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(unblock), name: .unblockContactNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .clearChatHistoryNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
