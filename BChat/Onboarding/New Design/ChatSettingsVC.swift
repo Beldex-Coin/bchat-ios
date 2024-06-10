@@ -266,7 +266,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     func observeNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(identityStateDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_IdentityStateDidChange"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(otherUsersProfileDidChange(_:)), name: Notification.Name(rawValue: "kNSNotificationName_OtherUsersProfileDidChange"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(userBlockContactTapped), name: .userBlockContactNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userBlockContactTapped), name: .blockContactNotification, object: nil)
     }
     
     func editingDatabaseConnection() -> YapDatabaseConnection? {
