@@ -173,6 +173,8 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var lockView = LockView()
     var TimerForConstraintOfProgressView: Timer?
     var isAudioRecordingStop = false
+    var countDownTimer: Timer?
+    var countDownTimerSecond = 0
 
     // MARK: Settings
     private static let circleSize: CGFloat = 46
@@ -271,7 +273,7 @@ final class VoiceMessageRecordingView : UIView {
         addSubview(audioWavesImageView)
         audioWavesImageView.pin(.left, to: .right, of: audioDurationLabel, withInset: -14)
         audioWavesImageView.center(.vertical, in: iconImageView)
-        audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -4)
+        audioWavesImageView.pin(.right, to: .left, of: audioButton, withInset: -20)
         
         addSubview(progressView)
         progressView.pin(.left, to: .left, of: audioWavesImageView)
@@ -283,10 +285,10 @@ final class VoiceMessageRecordingView : UIView {
 
     // MARK: Updating
     @objc private func updateDurationLabel() {
-        self.timerSecond += 1
+        timerSecond += 1
         let interval = Date().timeIntervalSince(recordingStartDate)
         durationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
-        self.audioDurationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+        audioDurationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
         
         // For Resume Audio Don't Delete
 //        getSecondsIntoMinutesAndSecondFormate(seconds: self.timerSecond) { minutes, seconds in
@@ -429,31 +431,34 @@ final class VoiceMessageRecordingView : UIView {
     
     @objc private func handlePlayButtonTapped(_ sender: UIButton) {
         if sender.isSelected {
+            if TimerForConstraintOfProgressView != nil {
+                TimerForConstraintOfProgressView?.invalidate()
+                TimerForConstraintOfProgressView = nil
+            }
+            if countDownTimer != nil {
+                countDownTimer?.invalidate()
+                countDownTimer = nil
+            }
             if !isAudioRecordingStop {
                 if recordingTimer != nil {
                     recordingTimer?.invalidate()
                     recordingTimer = nil
                 }
+                countDownTimerSecond = timerSecond
                 delegate?.pauseRecording()
                 isAudioRecordingStop = true
             } else {
                 delegate?.playRecording()
             }
         } else {
+            TimerForConstraintOfProgressView = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                self?.handleProgressChanged()
+            }
+            countDownTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+                self?.handleCountDownTimer()
+            }
             delegate?.playRecording()
         }
-        
-        if !sender.isSelected {
-            TimerForConstraintOfProgressView = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-                 self?.handleProgressChanged()
-             }
-        } else {
-            if TimerForConstraintOfProgressView != nil {
-                TimerForConstraintOfProgressView?.invalidate()
-                TimerForConstraintOfProgressView = nil
-            }
-        }
-        
         sender.isSelected = !sender.isSelected
     }
     
@@ -490,41 +495,38 @@ final class VoiceMessageRecordingView : UIView {
     
     
     private func handleProgressChanged() {
-        self.timerSecondForConstraintOfProgressView += 1
-        if self.timerSecondForConstraintOfProgressView > self.timerSecond {
-            self.timerSecondForConstraintOfProgressView = 0
+        timerSecondForConstraintOfProgressView += 1
+        if timerSecondForConstraintOfProgressView > timerSecond {
+            timerSecondForConstraintOfProgressView = 0
             // For stop loop
-//            if TimerForConstraintOfProgressView != nil {
-//                TimerForConstraintOfProgressView?.invalidate()
-//                TimerForConstraintOfProgressView = nil
-//                self.playPauseButton.isSelected = false
-//            }
-        }
-        
-        if self.timerSecond > 0 {
-            let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
-            let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
-            progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
-            recordingTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: false)
-        }
-    }
-    
-    // audio countdown timer.
-    @objc func updateTimer() {
-        durationLabel.text = OWSFormat.formatDurationSeconds(self.timerSecond)
-        audioDurationLabel.text = OWSFormat.formatDurationSeconds(self.timerSecond)
-        if timerSecond != 0 {
-            timerSecond -= 1  // decrease counter timer
-        } else {
-            if let timer = self.recordingTimer {
-                timer.invalidate()
-                self.recordingTimer = nil
-                delegate?.playRecording()
-                timerSecond = 0
+            if TimerForConstraintOfProgressView != nil {
+                TimerForConstraintOfProgressView?.invalidate()
+                TimerForConstraintOfProgressView = nil
                 playPauseButton.isSelected = false
+                audioDurationLabel.text = "0:00"
+                isAudioPlaying = false
             }
         }
+        
+        let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / timerSecond)
+        let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
+        progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
     }
+    
+    private func handleCountDownTimer() {
+        countDownTimerSecond -= 1
+        if countDownTimerSecond < 0 {
+            countDownTimerSecond = 0
+            // For stop count down timer
+            if countDownTimer != nil {
+                countDownTimer?.invalidate()
+                countDownTimer = nil
+                countDownTimerSecond = timerSecond
+            }
+        }
+        audioDurationLabel.text = OWSFormat.formatDurationSeconds(countDownTimerSecond)
+    }
+    
     
     
 }

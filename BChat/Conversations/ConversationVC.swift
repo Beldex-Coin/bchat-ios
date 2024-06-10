@@ -11,6 +11,9 @@ import NVActivityIndicatorView
 // • Photo rounding (the small corners don't have the correct rounding)
 // • Remaining search glitchiness
 
+// Required globle variable for audio is playing or not.
+var isAudioPlaying = false
+
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
         showSearchUI()
@@ -42,7 +45,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var audioPlayer: OWSAudioPlayer?
     var audioRecorder: AVAudioRecorder?
     var audioTimer: Timer?
-    var isPlaying = false
     // Context menu
     var contextMenuWindow: ContextMenuWindow?
     var contextMenuVC: ContextMenuVC?
