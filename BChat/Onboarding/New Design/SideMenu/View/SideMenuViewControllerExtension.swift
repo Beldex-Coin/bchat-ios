@@ -1,6 +1,8 @@
 // Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import Foundation
+import BChatMessagingKit
+import BChatUIKit
 
 extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -105,26 +107,34 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                     let viewController = NewAlertRecoverySeedVC()
                     navigationController?.pushViewController(viewController, animated: true)
                 case .wallet:
-                    if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-                        // Old flow (without wallet)
-                        if SaveUserDefaultsData.israndomUUIDPassword == "" {
-                            let viewController = EnableWalletVC()
+                if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+                    // Old flow (without wallet)
+                    if SaveUserDefaultsData.israndomUUIDPassword == "" {
+                        let viewController = EnableWalletVC()
+                        navigationController?.pushViewController(viewController, animated: true)
+                        return
+                    }
+                    // New flow (with wallet)
+                    if SSKPreferences.areWalletEnabled { // Wallet Enable
+                        if SaveUserDefaultsData.WalletPassword.isEmpty { // empty
+                            let viewController = NewPasswordVC()
+                            viewController.isGoingPopUp = true
+                            viewController.isGoingWallet = true
+                            viewController.isCreateWalletPassword = true
                             navigationController?.pushViewController(viewController, animated: true)
-                            return
-                        }
-                        // New flow (with wallet)
-                        if SSKPreferences.areWalletEnabled {
+                        } else { //Pin Enter
                             let viewController = NewPasswordVC()
                             viewController.isGoingWallet = true
-                            viewController.isVerifyPassword = true
-                            navigationController?.pushViewController(viewController, animated: true)
-                        } else {
-                            let viewController = EnableWalletVC()
-                            navigationController?.pushViewController(viewController, animated: true)
+                            viewController.isVerifyWalletPassword = true
+                            navigationController!.pushViewController(viewController, animated: true)
                         }
-                    } else {
-                        self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                    } else { //Not Enable wallet
+                        let viewController = EnableWalletVC()
+                        navigationController?.pushViewController(viewController, animated: true)
                     }
+                } else {
+                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                }
                 case .reportIssue:
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: "\(bchat_report_IssueID)")
                     SignalApp.shared().presentConversation(for: thread, action: .compose, animated: true)

@@ -12,12 +12,15 @@ class NewPasswordVC: BaseVC {
     var isGoingWallet = false
     var isGoingSendBDX = false
     var isGoingBack = false
+    var isGoingPopUp = false
     var isGoingNewRecoverySeed = false
     var isGoingConversionVC = false
     
     var isCreatePassword = false
     var isVerifyPassword = false
     var isChangePassword = false
+    var isCreateWalletPassword = false
+    var isVerifyWalletPassword = false
     
     var wallet: BDXWallet?
     var finalWalletAddress = ""
@@ -437,6 +440,7 @@ class NewPasswordVC: BaseVC {
     var passwordText = ""
     var confirmPasswordText = ""
     var isPasswordEnterFirstTime = false
+    var isPasswordEnterFirstTimeWallet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -452,11 +456,22 @@ class NewPasswordVC: BaseVC {
             self.title = "Create Password"
             self.pinLabel.text = "Enter your PIN"
         }
+        
+        if isCreateWalletPassword {
+            self.title = "Create Password"
+            self.pinLabel.text = "Enter your PIN"
+        }
+        
         if isChangePassword {
             self.pinLabel.text = "Enter Old PIN"
         }
         
         if isVerifyPassword {
+            self.title = "Verify PIN"
+            self.pinLabel.text = "Enter your 4 digit PIN"
+        }
+        
+        if isVerifyWalletPassword {
             self.title = "Verify PIN"
             self.pinLabel.text = "Enter your 4 digit PIN"
         }
@@ -592,7 +607,15 @@ class NewPasswordVC: BaseVC {
             self.nextButton.isHidden = true
         }
         
+        if self.isGoingWallet && self.isVerifyWalletPassword {
+            self.nextButton.isHidden = true
+        }
+        
         if self.isGoingNewRestoreSeedVC && self.isCreatePassword {
+            self.nextButton.isHidden = true
+        }
+        
+        if self.isGoingWallet && self.isCreateWalletPassword {
             self.nextButton.isHidden = true
         }
         
@@ -660,9 +683,45 @@ class NewPasswordVC: BaseVC {
                 return
             }
             
+            if isCreateWalletPassword {
+                isPasswordEnterFirstTimeWallet = true
+                self.pin1.isHidden = true
+                self.pin2.isHidden = true
+                self.pin3.isHidden = true
+                self.pin4.isHidden = true
+                self.pinLabel.text = "Re-Enter your PIN"
+                nextButton.backgroundColor = Colors.cellGroundColor2
+                nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                return
+            }
+            
             if isPasswordEnterFirstTime {
                 if passwordText == confirmPasswordText {
                     SaveUserDefaultsData.BChatPassword = confirmPasswordText
+                } else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    confirmPasswordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                    return
+                }
+            }
+            
+            if isPasswordEnterFirstTimeWallet {
+                if passwordText == confirmPasswordText {
                     SaveUserDefaultsData.WalletPassword = confirmPasswordText
                 } else {
                     _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
@@ -703,6 +762,27 @@ class NewPasswordVC: BaseVC {
                 }
             }
             
+            if isVerifyWalletPassword {
+                if passwordText == SaveUserDefaultsData.WalletPassword {
+                    
+                } else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    passwordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                    return
+                }
+            }
+            
             if self.isGoingHome == true {
                 UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
@@ -716,6 +796,14 @@ class NewPasswordVC: BaseVC {
             if self.isGoingNewRestoreSeedVC == true {
                 let vc = NewRestoreSeedVC()
                 self.navigationController?.pushViewController(vc, animated: true)
+            }
+            
+            if self.isGoingPopUp == true {
+                let vc = PINSuccessPopUp()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
+                self.navigationController?.popViewController(animated: true)
             }
             
             if self.isGoingWallet == true {
@@ -775,8 +863,9 @@ class NewPasswordVC: BaseVC {
     func enterPassword(tag: Int) {
         nextButton.backgroundColor = Colors.cellGroundColor2
         nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        if isPasswordEnterFirstTime {
+        if isPasswordEnterFirstTime || isPasswordEnterFirstTimeWallet {
             isCreatePassword = false
+            isCreateWalletPassword = false
             if confirmPasswordText.count == 4 {
                 self.pin1.isHidden = false
                 self.pin2.isHidden = false
@@ -1171,6 +1260,28 @@ class NewPasswordVC: BaseVC {
                         }
                     }
                     
+                    if isVerifyWalletPassword && isGoingWallet {
+                        if passwordText == SaveUserDefaultsData.BChatPassword {
+                            let vc = WalletHomeNewVC()
+                            self.navigationController!.pushViewController(vc, animated: true)
+                        } else {
+                            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                            })
+                            passwordText = ""
+                            self.pin1.isHidden = true
+                            self.pin2.isHidden = true
+                            self.pin3.isHidden = true
+                            self.pin4.isHidden = true
+                            firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            nextButton.backgroundColor = Colors.cellGroundColor2
+                            nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                            return
+                        }
+                    }
+                    
                     if self.isGoingNewRestoreSeedVC && self.isCreatePassword {
                         self.nextButton.isHidden = false
                         isPasswordEnterFirstTime = true
@@ -1191,6 +1302,23 @@ class NewPasswordVC: BaseVC {
                     if self.isGoingHome && self.isCreatePassword {
                         self.nextButton.isHidden = false
                         isPasswordEnterFirstTime = true
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        self.pinLabel.text = "Re-Enter your PIN"
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        return
+                    }
+                    
+                    if self.isGoingWallet && self.isCreateWalletPassword {
+                        self.nextButton.isHidden = false
+                        isPasswordEnterFirstTimeWallet = true
                         self.pin1.isHidden = true
                         self.pin2.isHidden = true
                         self.pin3.isHidden = true
@@ -1237,6 +1365,40 @@ class NewPasswordVC: BaseVC {
                         fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
                         return
                     }
+                    
+                    if self.isGoingPopUp && self.isGoingWallet && self.isCreateWalletPassword {
+                        if passwordText == SaveUserDefaultsData.WalletPassword {
+                            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: "New password should not be same as old password.") , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                            })
+                            passwordText = ""
+                            self.pin1.isHidden = true
+                            self.pin2.isHidden = true
+                            self.pin3.isHidden = true
+                            self.pin4.isHidden = true
+                            firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                            nextButton.backgroundColor = Colors.cellGroundColor2
+                            nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                            return
+                        }
+                        self.nextButton.isHidden = false
+                        isPasswordEnterFirstTimeWallet = true
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        self.pinLabel.text = "Re-Enter your PIN"
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        return
+                    }
+                    
                 }
             }
         }

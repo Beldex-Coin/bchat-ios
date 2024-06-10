@@ -3,7 +3,9 @@
 import UIKit
 import BChatUIKit
 
-class RescanNewVC: BaseVC,UITextFieldDelegate {
+class RescanNewVC: BaseVC {
+    
+    // MARK: - UIElements
     
     /// topBackgroundView
     private lazy var topBackgroundView: UIView = {
@@ -53,23 +55,30 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.OpenSans(ofSize: 14)
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
+        
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
+        
         let imageView = UIImageView(image: UIImage(named: "ic_date_New"))
-        imageView.frame = CGRect(x: -10, y: 0, width: 24, height: 24) // Adjust the frame as needed
-        imageView.contentMode = .scaleAspectFit // Set the content mode as needed
+        imageView.frame = CGRect(x: 0, y: 0, width: 24, height: 24) // Adjusted frame
+        imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true // Enable user interaction
+        
+        // Ensure the tap gesture recognizer is properly configured
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
-        imageView.isUserInteractionEnabled = true
+        tapGestureRecognizer.numberOfTapsRequired = 1
         imageView.addGestureRecognizer(tapGestureRecognizer)
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 45, height: 24)) // Adjusted width to ensure proper spacing
+        paddingView.addSubview(imageView)
         result.rightView = paddingView
         result.rightViewMode = .always
-        result.rightView?.addSubview(imageView)
+        
         return result
     }()
     
@@ -118,7 +127,11 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
     let datePicker = DatePickerDialog()
     var daemonBlockChainHeight: UInt64 = 0
     var dateHeight = ""
+    var lastEditedTextField: UITextField?
     
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -175,50 +188,16 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
             iKnowTheBlockHeightButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
-        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(dismiss)
-        
     }
     
-    @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
-    }
-    
+    /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         topBackgroundView.layer.cornerRadius = topBackgroundView.frame.height/2
         iKnowTheBlockHeightButton.layer.cornerRadius = iKnowTheBlockHeightButton.frame.height/2
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if(textField == restoreFromBlockHeightTextField){
-            let aSet = NSCharacterSet(charactersIn:"0123456789").inverted
-            let compSepByCharInSet = string.components(separatedBy: aSet)
-            let numberFiltered = compSepByCharInSet.joined(separator: "")
-            return (string == numberFiltered) && textLimit(existingText: textField.text,
-                                                           newText: string,
-                                                           limit: 9)
-        }
-        return true
-    }
-    
-    func textLimit(existingText: String?,
-                   newText: String,
-                   limit: Int) -> Bool {
-        let text = existingText ?? ""
-        let isAtLimit = text.count + newText.count <= limit
-        return isAtLimit
-    }
-    
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == self.restoreDateHeightTextField {
-            datePickerTapped()
-            return false
-        }
-        return true
-    }
-    
+    /// Date Picker
     func datePickerTapped() {
         datePicker.show(NSLocalizedString("SELECT_DATE__TITLE_NEW", comment: ""),
                         doneButtonTitle: NSLocalizedString("DONE_BUTTON_NEW", comment: ""),
@@ -247,67 +226,100 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         }
     }
     
-    
-    // MARK: - Navigation
+    /// image View Tapped
     @objc func imageViewTapped() {
-        // Handle the tap on the imageView here
+        print("Image View tapped")
         datePickerTapped()
     }
     
-    @objc func rescanButtonTapped(_ sender: UIButton){
+    /// Rescan Button Tapped
+    @objc func rescanButtonTapped(_ sender: UIButton) {
         let heightString = restoreFromBlockHeightTextField.text
         let dateString = restoreDateHeightTextField.text
-        if heightString == "" && dateString != ""{
-            if !dateHeight.isEmpty {
-                SaveUserDefaultsData.WalletRestoreHeight = dateHeight
-            }else {
-                SaveUserDefaultsData.WalletRestoreHeight = ""
+        
+        if let lastEdited = lastEditedTextField {
+            if lastEdited == restoreFromBlockHeightTextField, let heightString = heightString, !heightString.isEmpty {
+                processBlockHeightInput(heightString)
+            } else if lastEdited == restoreDateHeightTextField, let dateString = dateString, !dateString.isEmpty {
+                processDateInput()
             }
-            if self.navigationController != nil{
-                let count = self.navigationController!.viewControllers.count
-                if count > 1
-                {
-                    let VC = self.navigationController!.viewControllers[count-2] as! WalletHomeNewVC
-                    VC.backApiRescanVC = true
+        } else {
+            if heightString == "" && dateString != ""{
+                if !dateHeight.isEmpty {
+                    SaveUserDefaultsData.WalletRestoreHeight = dateHeight
+                }else {
+                    SaveUserDefaultsData.WalletRestoreHeight = ""
+                }
+                navigateBack()
+            }
+            if heightString != "" && dateString == "" {
+                let number: Int64? = Int64("\(heightString!)")
+                if number! > daemonBlockChainHeight {
+                    inValidHeightAlert()
+                }else if number! == daemonBlockChainHeight {
+                    inValidHeightAlert()
+                }
+                else {
+                    SaveUserDefaultsData.WalletRestoreHeight = restoreFromBlockHeightTextField.text!
+                    navigateBack()
                 }
             }
-            self.navigationController?.popViewController(animated: true)
-        }
-        if heightString != "" && dateString == "" {
-            let number: Int64? = Int64("\(heightString!)")
-            if number! > daemonBlockChainHeight {
-                inValidHeightAlert()
-            }else if number! == daemonBlockChainHeight {
-                inValidHeightAlert()
+            if restoreFromBlockHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
+                restoreHeightDateAlert()
             }
-            else {
-                SaveUserDefaultsData.WalletRestoreHeight = restoreFromBlockHeightTextField.text!
-                if self.navigationController != nil{
-                    let count = self.navigationController!.viewControllers.count
-                    if count > 1
-                    {
-                        let VC = self.navigationController!.viewControllers[count-2] as! WalletHomeNewVC
-                        VC.backApiRescanVC = true
-                    }
-                }
-                self.navigationController?.popViewController(animated: true)
+            if restoreFromBlockHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty {
+                restoreHeightDateAlert()
             }
-        }
-        if restoreFromBlockHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
-            restoreHeightDateAlert()
-        }
-        if restoreFromBlockHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty {
-            restoreHeightDateAlert()
         }
     }
-    func inValidHeightAlert(){
+    
+    /// Process Block Height Input
+    func processBlockHeightInput(_ heightString: String) {
+        let number: Int64? = Int64(heightString)
+        if let number = number, number > 0 {
+            if number > daemonBlockChainHeight || number == daemonBlockChainHeight {
+                inValidHeightAlert()
+            } else {
+                SaveUserDefaultsData.WalletRestoreHeight = heightString
+                navigateBack()
+            }
+        }
+    }
+    
+    /// Process Date Input
+    func processDateInput() {
+        if !dateHeight.isEmpty {
+            SaveUserDefaultsData.WalletRestoreHeight = dateHeight
+            navigateBack()
+        } else {
+            SaveUserDefaultsData.WalletRestoreHeight = ""
+            navigateBack()
+        }
+    }
+    
+    /// Navigate Back
+    func navigateBack() {
+        if let navigationController = navigationController {
+            let count = navigationController.viewControllers.count
+            if count > 1 {
+                let VC = navigationController.viewControllers[count - 2] as! WalletHomeNewVC
+                VC.backApiRescanVC = true
+            }
+            navigationController.popViewController(animated: true)
+        }
+    }
+    
+    /// In Valid Height Alert
+    func inValidHeightAlert() {
         let alert = UIAlertController(title: NSLocalizedString("WALLET_TITLE", comment: ""), message: NSLocalizedString("INVALID_HEIGHT", comment: ""), preferredStyle: .alert)
         let okayAction = UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: .default, handler: { (_) in
         })
         alert.addAction(okayAction)
         self.present(alert, animated: true, completion: nil)
     }
-    func restoreHeightDateAlert(){
+    
+    /// Restore Height Date Alert
+    func restoreHeightDateAlert() {
         let alert = UIAlertController(title: NSLocalizedString("WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_PICK_RESTOREHEIGHT", comment: ""), preferredStyle: .alert)
         let okayAction = UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: .default, handler: { (_) in
         })
@@ -322,7 +334,7 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
             iKnowTheBlockHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_DATE", comment: ""), for: .normal)
             restoreFromBlockHeightTextField.isHidden = false
             restoreDateHeightTextField.isHidden = true
-        }else {
+        } else {
             subTitleWalletLabel.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW", comment: "")
             iKnowTheBlockHeightButton.setTitle(NSLocalizedString("I_KNOW_THE_BLOCKHEIGHT", comment: ""), for: .normal)
             restoreFromBlockHeightTextField.isHidden = true
@@ -330,4 +342,42 @@ class RescanNewVC: BaseVC,UITextFieldDelegate {
         }
     }
     
+}
+
+
+// MARK: - UITextFieldDelegate methods
+
+extension RescanNewVC: UITextFieldDelegate {
+    /// UI Text View Delegate
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if(textField == restoreFromBlockHeightTextField){
+            let aSet = NSCharacterSet(charactersIn:"0123456789").inverted
+            let compSepByCharInSet = string.components(separatedBy: aSet)
+            let numberFiltered = compSepByCharInSet.joined(separator: "")
+            return (string == numberFiltered) && textLimit(existingText: textField.text,
+                                                           newText: string,
+                                                           limit: 9)
+        }
+        return true
+    }
+    
+    func textLimit(existingText: String?,
+                   newText: String,
+                   limit: Int) -> Bool {
+        let text = existingText ?? ""
+        let isAtLimit = text.count + newText.count <= limit
+        return isAtLimit
+    }
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == self.restoreDateHeightTextField {
+            datePickerTapped()
+            return false
+        }
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        lastEditedTextField = textField
+    }
 }
