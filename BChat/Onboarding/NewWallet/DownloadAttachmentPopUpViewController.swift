@@ -3,8 +3,11 @@
 import UIKit
 import BChatUIKit
 
-class DownloadAttachmentModalNewVC: BaseVC {
+class DownloadAttachmentPopUpViewController: BaseVC {
     
+    // MARK: - UIElements
+    
+    /// BackGround View
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -15,6 +18,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return stackView
     }()
     
+    /// Download Logo Img
     lazy var downloadLogoImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -24,6 +28,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return imageView
     }()
     
+    /// Title Label
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -34,6 +39,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return result
     }()
     
+    /// Discription Label
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -44,6 +50,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return result
     }()
     
+    /// Download Button
     private lazy var downloadButton: UIButton = {
         let button = UIButton()
         button.setTitle("Download", for: .normal)
@@ -56,6 +63,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return button
     }()
     
+    /// Cancel Button
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
@@ -68,6 +76,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         return button
     }()
     
+    /// Button Stack View
     lazy var buttonStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -91,6 +100,9 @@ class DownloadAttachmentModalNewVC: BaseVC {
         preconditionFailure("Use init(viewItem:) instead.")
     }
     
+    // MARK: - UIViewController life cycle
+    
+    /// View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -145,6 +157,7 @@ class DownloadAttachmentModalNewVC: BaseVC {
         
     }
     
+    /// Download Button Tapped
     @objc private func downloadButtonTapped(_ sender: UIButton) {
         guard let message = viewItem.interaction as? TSIncomingMessage else { return }
         let publicKey = message.authorId
@@ -157,13 +170,13 @@ class DownloadAttachmentModalNewVC: BaseVC {
             Storage.shared.resumeAttachmentDownloadJobsIfNeeded(for: message.uniqueThreadId)
         })
         presentingViewController?.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
     
+    /// Cancel Button Tapped
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
-    
-    
-    
     
 }

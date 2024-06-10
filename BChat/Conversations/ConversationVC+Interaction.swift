@@ -622,7 +622,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func confirmDownload(_ viewItem: ConversationViewItem) {
-        let vc = DownloadAttachmentModalNewVC(viewItem: viewItem)
+        snInputView.isHidden = true
+        let vc = DownloadAttachmentPopUpViewController(viewItem: viewItem)
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         self.present(vc, animated: true, completion: nil)

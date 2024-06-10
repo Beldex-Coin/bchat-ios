@@ -230,7 +230,7 @@
 		60BE18AE29FA782100048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60BE18AF29FA782700048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60C51BAC2BC6BC1A0051C05F /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */; };
-		60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */; };
+		60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift */; };
 		60C51BB02BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */; };
 		60C8E17B2B1062BE00755333 /* MTSlideToOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C8E17A2B1062BE00755333 /* MTSlideToOpenView.swift */; };
 		60D33B6329F7D9E7003CAE13 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
@@ -1361,7 +1361,7 @@
 		60BE18A529FA3CC900048350 /* UIView+Constraints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Constraints.swift"; sourceTree = "<group>"; };
 		60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Tinting.swift"; sourceTree = "<group>"; };
 		60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
-		60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAttachmentModalNewVC.swift; sourceTree = "<group>"; };
+		60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAttachmentPopUpViewController.swift; sourceTree = "<group>"; };
 		60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModalNewVC.swift; sourceTree = "<group>"; };
 		60C8E17A2B1062BE00755333 /* MTSlideToOpenView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTSlideToOpenView.swift; sourceTree = "<group>"; };
 		60D33B6229F7D9E7003CAE13 /* StringConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
@@ -2559,7 +2559,7 @@
 				6049BF042B62229A003DD410 /* AboutNewVC.swift */,
 				6055282F2BB446020098387A /* SelectDateRangePopUpVC.swift */,
 				60EBEC232BC507CE001D0B20 /* SwitchingNodeVC.swift */,
-				60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift */,
+				60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift */,
 				60C51BAF2BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift */,
 			);
 			path = NewWallet;
@@ -5643,7 +5643,7 @@
 				4C4AEC4520EC343B0020E72B /* DismissableTextField.swift in Sources */,
 				3496955E219B605E00DCFE74 /* PhotoLibrary.swift in Sources */,
 				60C51BB02BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift in Sources */,
-				60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentModalNewVC.swift in Sources */,
+				60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift in Sources */,
 				6007B5B228A4D7400004BD61 /* Seed.swift in Sources */,
 				C3A76A8D25DB83F90074CB90 /* PermissionMissingModal.swift in Sources */,
 				6007B5EA28ABC9DF0004BD61 /* QRScannerView.swift in Sources */,

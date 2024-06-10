@@ -2,6 +2,7 @@
 
 import UIKit
 import BChatMessagingKit
+import BChatUIKit
 
 final class CallTableViewCell: UITableViewCell {
     
@@ -182,31 +183,18 @@ final class CallTableViewCell: UITableViewCell {
         
         switch message.callState {
         case .incoming:
-            incomingOutgoingCallView()
+            incomingCallView()
             icon = UIImage(named: incomimglogoImage)
         case .outgoing:
             debugPrint("outgoing call")
         case .missed:
             discriptionLabel.isHidden = false
-            mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
-            mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
-            mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
-            mainContainerView.widthAnchor.constraint(equalToConstant: 159).isActive = true
-            
-            containerView.widthAnchor.constraint(equalToConstant: 147).isActive = true
-            titleLabel.widthAnchor.constraint(equalToConstant: 61).isActive = true
-            
-            mainContainerView.backgroundColor = Colors.incomingMessageColor
-            containerView.backgroundColor = Colors.smallBackGroundViewCellColor
-            
-            timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-            titleLabel.textColor = Colors.messageTimeLabelColor
-            
-            self.titleLabel.text = "Missed call"
+            missedCallView()
             icon = UIImage(named: missedlogoImage)
         case .permissionDenied, .unknown:
-            incomingOutgoingCallView()
-            icon = UIImage(named: incomimglogoImage)
+            discriptionLabel.isHidden = false
+            missedCallView()
+            icon = UIImage(named: missedlogoImage)
         default:
             icon = nil
         }
@@ -224,8 +212,8 @@ final class CallTableViewCell: UITableViewCell {
         timeLabel.text = description
     }
     
-    /// Incoming Outgoing Call View
-    func incomingOutgoingCallView() {
+    /// Incoming Call View
+    func incomingCallView() {
         discriptionLabel.isHidden = true
         mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
         mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
@@ -243,11 +231,31 @@ final class CallTableViewCell: UITableViewCell {
         self.titleLabel.text = "Call"
     }
     
+    /// Missed Call View
+    func missedCallView() {
+        mainContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14).isActive = true
+        mainContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 4).isActive = true
+        mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+        mainContainerView.widthAnchor.constraint(equalToConstant: 159).isActive = true
+        
+        containerView.widthAnchor.constraint(equalToConstant: 147).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 61).isActive = true
+        
+        mainContainerView.backgroundColor = Colors.incomingMessageColor
+        containerView.backgroundColor = Colors.smallBackGroundViewCellColor
+        
+        timeLabel.textColor = UIColor(hex: 0xA7A7BA)
+        titleLabel.textColor = Colors.messageTimeLabelColor
+        
+        self.titleLabel.text = "Missed call"
+    }
+    
+    
     /// Handle tap gesture
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
         
-        if message.callState == .missed {
+        if message.callState == .missed || message.callState == .permissionDenied || message.callState == .unknown{
             delegate?.handleTapToCallback()
         }
         
