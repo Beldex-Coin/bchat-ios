@@ -206,6 +206,9 @@ public final class Colors : NSObject {
     @objc public static var walletDisableButtonColor: UIColor { UIColor(named: "333343-E0E0E0")! }
     @objc public static var enableSendButtonColor: UIColor { UIColor(named: "2979FB")! }
     @objc public static var audioWaveColor: UIColor { UIColor(named: "A7A7BA-FFFFFF")! }
-    
+    @objc public static var callScreenBorderColor: UIColor { UIColor(named: "363645-868695")! }
+    @objc public static var mainBackgroundColorWithAlpha: UIColor { UIColor(named: "1C1C26-1C1C26")! }
+    @objc public static var callScreenBottomViewBackgroundColor: UIColor { UIColor(named: "11111A-E8E8E8")! }
+    @objc public static var callScreenSpeakerOptionBackgroundColor: UIColor { UIColor(named: "11111A-F4F4F4")! }
     
 }

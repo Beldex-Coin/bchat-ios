@@ -1226,12 +1226,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if audioPlayer == nil {
             audioPlayer = owsAudioPlayer
         }
-        if isPlaying {
+        if isAudioPlaying {
             audioPlayer!.pause()
         } else {
             audioPlayer!.play()
         }
-        isPlaying = !isPlaying
+        isAudioPlaying = !isAudioPlaying
     }
 
     func stopVoiceMessageRecording() {

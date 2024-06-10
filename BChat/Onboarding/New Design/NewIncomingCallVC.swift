@@ -148,16 +148,16 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.set(.width, to: 194)
         stackView.set(.height, to: 194)
-        stackView.backgroundColor = UIColor(hex: 0x1C1C26)
+        stackView.backgroundColor = Colors.mainBackgroundColorWithAlpha
         stackView.layer.cornerRadius = 97
         stackView.layer.borderWidth = 1.19
-        stackView.layer.borderColor = UIColor(hex: 0x363645).cgColor
+        stackView.layer.borderColor = Colors.callScreenBorderColor.cgColor
         return stackView
     }()
     
     private lazy var callerImageView: UIImageView = {
         let result = UIImageView()
-        result.image = UIImage(named: "ic_test")
+        result.image = UIImage(named: "")
         result.set(.width, to: 132)
         result.set(.height, to: 132)
         result.layer.masksToBounds = true
@@ -169,7 +169,10 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     private lazy var backButton: UIButton = {
         let result = UIButton(type: .custom)
         result.isHidden = call.hasConnected
-        let image = UIImage(named: "NavBarBack")!.withTint(.white)
+        var image = UIImage(named: "NavBarBack")!.withTint(.white)
+        if isLightMode {
+            var image = UIImage(named: "NavBarBack")!.withTint(.black)
+        }
         result.setImage(image, for: UIControl.State.normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
@@ -190,7 +193,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.set(.height, to: 86 + 34)
-        View.backgroundColor = UIColor(hex: 0x11111A)
+        View.backgroundColor = Colors.callScreenBottomViewBackgroundColor
         return View
     }()
     
@@ -292,7 +295,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         View.set(.height, to: 110)
         View.set(.width, to: 52)
         View.layer.cornerRadius = 26
-        View.backgroundColor = UIColor(hex: 0x11111A)
+        View.backgroundColor = Colors.callScreenSpeakerOptionBackgroundColor
         return View
     }()
     
@@ -325,7 +328,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: 0x1C1C26)
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         view.addSubview(backgroundImageView)
         backgroundImageView.pin(to: view)
         

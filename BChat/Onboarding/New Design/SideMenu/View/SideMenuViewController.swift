@@ -67,7 +67,9 @@ class SideMenuViewController: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        button.setBackgroundImage(UIImage(named: "ic_closeNew"), for: .normal)
+        if #available(iOS 15.0, *) {
+            button.configuration?.imagePadding = 2.5
+        }
         return button
     }()
     
@@ -116,9 +118,9 @@ class SideMenuViewController: BaseVC {
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 15),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            closeButton.widthAnchor.constraint(equalToConstant: 20),
-            closeButton.heightAnchor.constraint(equalToConstant: 20),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
             
             menuTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
