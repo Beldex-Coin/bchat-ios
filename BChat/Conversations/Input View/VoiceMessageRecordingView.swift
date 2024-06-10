@@ -256,9 +256,9 @@ final class VoiceMessageRecordingView : UIView {
         addSubview(audioButton)
         audioButton.pin(.right, to: .right, of: self, withInset: -72)
         audioButton.center(.vertical, in: iconImageView)
-        NSLayoutConstraint.activate([
-            audioButton.heightAnchor.constraint(equalToConstant: 40),
-            audioButton.widthAnchor.constraint(equalToConstant: 40)
+        NSLayoutConstraint.activate([ // Here i have to give hide the audiobutton.if u want enable the audio button heightAnchor and widthAnchor 40,40.
+            audioButton.heightAnchor.constraint(equalToConstant: 0),
+            audioButton.widthAnchor.constraint(equalToConstant: 0)
         ])
         
         addSubview(audioDurationLabel)
@@ -500,9 +500,30 @@ final class VoiceMessageRecordingView : UIView {
 //                self.playPauseButton.isSelected = false
 //            }
         }
-        let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
-        let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
-        progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
+        
+        if self.timerSecond > 0 {
+            let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / self.timerSecond)
+            let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
+            progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
+            recordingTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: false)
+        }
+    }
+    
+    // audio countdown timer.
+    @objc func updateTimer() {
+        durationLabel.text = OWSFormat.formatDurationSeconds(self.timerSecond)
+        audioDurationLabel.text = OWSFormat.formatDurationSeconds(self.timerSecond)
+        if timerSecond != 0 {
+            timerSecond -= 1  // decrease counter timer
+        } else {
+            if let timer = self.recordingTimer {
+                timer.invalidate()
+                self.recordingTimer = nil
+                delegate?.playRecording()
+                timerSecond = 0
+                playPauseButton.isSelected = false
+            }
+        }
     }
     
     
