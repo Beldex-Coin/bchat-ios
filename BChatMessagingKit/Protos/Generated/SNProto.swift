@@ -1932,7 +1932,7 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
         }
         let amount = proto.amount
 
-        guard proto.hasTxnid else {
+        guard proto.hastxnId else {
             throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: txnId")
         }
         let txnId = proto.txnId
