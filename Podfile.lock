@@ -146,7 +146,7 @@ DEPENDENCIES:
   - SocketRocket (~> 0.5.1)
   - Sodium (~> 0.9.1)
   - SVGKit
-  - SwiftProtobuf (~> 1.5.0)
+  - SwiftProtobuf
   - SwiftyRSA
   - WebRTC-lib
   - YapDatabase/SQLCipher (from `https://github.com/oxen-io/session-ios-yap-database.git`, branch `signal-release`)
@@ -235,6 +235,6 @@ SPEC CHECKSUMS:
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 10454b87f998be3dfe281cf3ac339ec5a98e6fc5
+PODFILE CHECKSUM: 4eb93b5f90b9910e57baf60539e94b7d0843e6d8
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2

@@ -51,14 +51,14 @@ abstract_target 'GlobalDependencies' do
         pod 'NVActivityIndicatorView'
         pod 'Reachability'
         pod 'SAMKeychain'
-        pod 'SwiftProtobuf', '~> 1.5.0'
+        pod 'SwiftProtobuf'
         pod 'YYImage', git: 'https://github.com/signalapp/YYImage'
       end
       
       target 'BChatMessagingKit' do
         pod 'Reachability'
         pod 'SAMKeychain'
-        pod 'SwiftProtobuf', '~> 1.5.0'
+        pod 'SwiftProtobuf'
       end
       
       target 'BChatUtilitiesKit' do
