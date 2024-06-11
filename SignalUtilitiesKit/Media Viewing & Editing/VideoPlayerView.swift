@@ -203,7 +203,7 @@ public class PlayerProgressBar: UIView {
         if passAndPaly.isSelected {
             passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPassSmallButton"), object: nil)
-        }else {
+        } else {
             passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPlaySmallButton"), object: nil)
         }

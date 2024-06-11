@@ -18,14 +18,21 @@ class SideMenuViewController: BaseVC {
     }()
     
     /// darkLightModeSwitch
-    lazy var darkLightModeSwitch: UISwitch = {
-        let toggle = UISwitch()
+    lazy var darkLightModeSwitch: CustomSwitch = {
+        let toggle = CustomSwitch()
         toggle.translatesAutoresizingMaskIntoConstraints = false
-        toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.switchBackgroundColor
+        toggle.onTintColor = Colors.switchOnTintColor
+        toggle.offTintColor = Colors.bothWhiteColor
         toggle.addTarget(self, action: #selector(darkLightModeValueChanged(_:)), for: .valueChanged)
-        toggle.transform = CGAffineTransform(scaleX: 0.80, y: 0.75)
+        toggle.onThumbColor = Colors.bothGreenColor
+        toggle.offThumbColor = Colors.bothGreenColor
+        // For Thumb Image
+        toggle.onThumbImage = UIImage(named: "switchon_appmode")
+        toggle.offThumbImage = UIImage(named: "switchoff_appmode")
+        // For Background Image
+//        toggle.onBackImage = UIImage(named: "darkmode_switch_image")
+//        toggle.offBackImage = UIImage(named: "lightmode_switch_image")
         return toggle
     }()
     
@@ -94,8 +101,12 @@ class SideMenuViewController: BaseVC {
         
         view.addSubViews(closeButton, menuTitleLabel, darkLightModeSwitch, lblversion, lblmodeTitle)
         
-        darkLightModeSwitch.isOn = !isLightMode
-        darkLightModeSwitch.thumbTintColor = darkLightModeSwitch.isOn == true ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        
+        if isLightMode {
+            darkLightModeSwitch.isOn = false
+        } else {
+            darkLightModeSwitch.isOn = true
+        }
         
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -127,6 +138,8 @@ class SideMenuViewController: BaseVC {
             
             darkLightModeSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
             darkLightModeSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24.333),
+            darkLightModeSwitch.widthAnchor.constraint(equalToConstant: 41.48),
+            darkLightModeSwitch.heightAnchor.constraint(equalToConstant: 22.57),
             
             lblmodeTitle.trailingAnchor .constraint(equalTo: darkLightModeSwitch.leadingAnchor, constant: -12),
             lblmodeTitle.centerYAnchor.constraint(equalTo: darkLightModeSwitch.centerYAnchor),
@@ -163,10 +176,8 @@ class SideMenuViewController: BaseVC {
     @objc func darkLightModeValueChanged(_ sender: UISwitch) {
         if darkLightModeSwitch.isOn {
             AppModeManager.shared.setCurrentAppMode(to: .dark)
-            darkLightModeSwitch.thumbTintColor = Colors.bothGreenColor
         } else {
             AppModeManager.shared.setCurrentAppMode(to: .light)
-            darkLightModeSwitch.thumbTintColor = Colors.switchOffBackgroundColor
         }
         let origImage = UIImage(named: isLightMode ? "X" : "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
@@ -177,5 +188,4 @@ class SideMenuViewController: BaseVC {
         tableView.reloadData()
     }
 }
-
 
