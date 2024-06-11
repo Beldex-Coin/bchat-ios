@@ -271,10 +271,11 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
     }
+    
     /// <#Description#>
     /// - Parameter isEnabled: <#isEnabled description#>
     func verifyButtonUpdate(_ isEnabled: Bool) {
-        verifyButton.isUserInteractionEnabled =  isEnabled ?  false : true
+        verifyButton.isUserInteractionEnabled =  isEnabled
         self.verifyButton.layer.borderWidth = isEnabled ? 1 : 0
         self.verifyButton.layer.borderColor =  isEnabled ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         self.verifyButton.setTitleColor(isEnabled ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)

@@ -44,4 +44,6 @@ struct Constants: Equatable {
     static let doodleChangeNotification = "doodleChangeNotification"
     static let unblockContact = "unblockContact"
     static let clearChatHistory = "clearChatHistory"
+    
+    static let isBnsVerified = "isBnsVerifiedData"
 }

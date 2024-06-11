@@ -37,13 +37,13 @@ public enum SNProtoError: Error {
 
     // MARK: - SNProtoEnvelopeBuilder
 
-    @objc public class func builder(type: SNProtoEnvelopeType, timestamp: UInt64) -> SNProtoEnvelopeBuilder {
-        return SNProtoEnvelopeBuilder(type: type, timestamp: timestamp)
+    @objc public class func builder(type: SNProtoEnvelopeType, timestamp: UInt64, isBnsHolder: Bool) -> SNProtoEnvelopeBuilder {
+        return SNProtoEnvelopeBuilder(type: type, timestamp: timestamp, isBnsHolder: isBnsHolder)
     }
 
     // asBuilder() constructs a builder that reflects the proto's contents.
     @objc public func asBuilder() -> SNProtoEnvelopeBuilder {
-        let builder = SNProtoEnvelopeBuilder(type: type, timestamp: timestamp)
+        let builder = SNProtoEnvelopeBuilder(type: type, timestamp: timestamp, isBnsHolder: isBnsHolder)
         if let _value = source {
             builder.setSource(_value)
         }
@@ -56,6 +56,9 @@ public enum SNProtoError: Error {
         if hasServerTimestamp {
             builder.setServerTimestamp(serverTimestamp)
         }
+        if isBnsHolder {
+            builder.setBnsHolder(isBnsHolder)
+        }
         return builder
     }
 
@@ -65,11 +68,12 @@ public enum SNProtoError: Error {
 
         @objc fileprivate override init() {}
 
-        @objc fileprivate init(type: SNProtoEnvelopeType, timestamp: UInt64) {
+        @objc fileprivate init(type: SNProtoEnvelopeType, timestamp: UInt64, isBnsHolder: Bool) {
             super.init()
 
             setType(type)
             setTimestamp(timestamp)
+            setBnsHolder(isBnsHolder)
         }
 
         @objc public func setType(_ valueParam: SNProtoEnvelopeType) {
@@ -90,6 +94,10 @@ public enum SNProtoError: Error {
 
         @objc public func setContent(_ valueParam: Data) {
             proto.content = valueParam
+        }
+        
+        @objc public func setBnsHolder(_ valueParam: Bool) {
+            proto.isBnsHolder = valueParam
         }
 
         @objc public func setServerTimestamp(_ valueParam: UInt64) {
@@ -137,7 +145,9 @@ public enum SNProtoError: Error {
     @objc public var hasContent: Bool {
         return proto.hasContent
     }
-
+    @objc public var isBnsHolder: Bool {
+        return proto.isBnsHolder
+    }
     @objc public var serverTimestamp: UInt64 {
         return proto.serverTimestamp
     }

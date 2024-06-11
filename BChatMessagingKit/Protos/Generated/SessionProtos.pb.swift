@@ -78,7 +78,7 @@ struct SessionProtos_Envelope {
     get {return _isBnsHolder ?? false}
     set {_isBnsHolder = newValue}
   }
-  /// Returns true if `isBnsHolder` has been explicitly set.
+//  /// Returns true if `isBnsHolder` has been explicitly set.
   var hasIsBnsHolder: Bool {return self._isBnsHolder != nil}
   /// Clears the value of `isBnsHolder`. Subsequent reads from it will return its default value.
   mutating func clearIsBnsHolder() {self._isBnsHolder = nil}

@@ -869,7 +869,7 @@ class MyAccountBnsViewController: BaseVC {
     
     /// Update BNS Details
     func updateBNSDetails() {
-        let isBNSVerified = UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData")
+        let isBNSVerified = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
         shadowBackgroundImage.isHidden = !isBNSVerified
         stackViewForBNSVerifiedName.isHidden = !isBNSVerified
         linkYourBNSBackgroundView.isHidden = isBNSVerified
