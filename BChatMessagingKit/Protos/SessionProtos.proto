@@ -18,7 +18,7 @@ message Envelope {
     optional string source          = 2;
     optional uint32 sourceDevice    = 7;
     optional bytes  content         = 8;
-    optional bool isBnsHolder       = 9;
+    optional bool   isBnsHolder     = 9;
     optional uint64 serverTimestamp = 10;
 }
 
