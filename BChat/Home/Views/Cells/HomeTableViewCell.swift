@@ -314,6 +314,16 @@ class HomeTableViewCell: UITableViewCell {
         messageCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
         iconImageView.update(for: thread)
         
+        if let contactThread: TSContactThread = thread as? TSContactThread {
+            let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
+            // BeldexAddress view in Conversation Page (Get from DB)
+            if contact?.isBnsHolder != nil {
+//                print("user.name==========>",\(contact?.name) "isBNS" \(contact!.isBnsHolder))
+                print("user name --- \(contact?.name) isbns---- \(contact?.isBnsHolder)")
+                
+            }
+        }
+        
         // For BNS Verified User
         iconImageView.layer.borderWidth = 0
         iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
