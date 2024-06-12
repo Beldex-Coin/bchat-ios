@@ -66,14 +66,10 @@ public final class VisibleMessage : Message {
     // MARK: Proto Conversion
     public class func fromProto(_ proto: SNProtoContent,beldexAdd: String,isBnsHolder: Bool) -> VisibleMessage? {
         guard let dataMessage = proto.dataMessage else { return nil }
-        print("--1---\(proto)")
-        print("---2--\(dataMessage)")
         let result = VisibleMessage()
-        print("---3--\(result)")
         result.text = dataMessage.body
         result.beldexAddress = beldexAdd
         result.isBnsHolder = isBnsHolder
-        print("isBNS.1==========>",result.isBnsHolder)
         // Attachments are handled in MessageReceiver
         if let quoteProto = dataMessage.quote, let quote = Quote.fromProto(quoteProto) { result.quote = quote }
         if let linkPreviewProto = dataMessage.preview.first, let linkPreview = LinkPreview.fromProto(linkPreviewProto) { result.linkPreview = linkPreview }

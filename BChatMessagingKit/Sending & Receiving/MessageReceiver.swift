@@ -57,7 +57,6 @@ public enum MessageReceiver {
         let isOpenGroupMessage = (openGroupMessageServerID != nil)
         // Parse the envelope
         let envelope = try SNProtoEnvelope.parseData(data)
-        print("isBNS.Received2==========>",envelope.isBnsHolder)
         let storage = SNMessagingKitConfiguration.shared.storage
         // Decrypt the contents
         guard let ciphertext = envelope.content else { throw Error.noData }

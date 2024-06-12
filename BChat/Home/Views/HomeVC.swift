@@ -868,7 +868,7 @@ final class HomeVC : BaseVC {
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
         
         if UserDefaults.standard.bool(forKey: Constants.isBnsVerified) {
-            button.layer.borderWidth = 1
+            button.layer.borderWidth = 3
             verifiedImageView.isHidden = false
         } else {
             button.layer.borderWidth = 0

@@ -451,10 +451,7 @@ extension MessageReceiver {
         // Beldex address insert into Contact DB
         let senderBeldexAddress = message.beldexAddress!
         let isBnsHolder = message.isBnsHolder
-        print("isBNS.receiver side==========>",isBnsHolder)
-        print("--senderBeldexAddress in receiver side---> \(senderBeldexAddress))")
         let userBchatID = message.sender!
-        print("--senderBeldexAddress in receiver side userBchatID---> \(userBchatID))")
         if let contact: Contact = Storage.shared.getContact(with: userBchatID) {
             contact.beldexAddress = senderBeldexAddress
             contact.isBnsHolder = isBnsHolder

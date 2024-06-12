@@ -318,16 +318,21 @@ class HomeTableViewCell: UITableViewCell {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
             if contact?.isBnsHolder != nil {
-//                print("user.name==========>",\(contact?.name) "isBNS" \(contact!.isBnsHolder))
-                print("user name --- \(contact?.name) isbns---- \(contact?.isBnsHolder)")
-                
+                if contact!.isBnsHolder {
+                    // For BNS Verified User
+                    iconImageView.layer.borderWidth = 3
+                    iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    verifiedImageView.isHidden = false
+                } else {
+                    // For BNS Verified User
+                    iconImageView.layer.borderWidth = 0
+                    iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+                    verifiedImageView.isHidden = true
+                }
             }
         }
         
-        // For BNS Verified User
-        iconImageView.layer.borderWidth = 0
-        iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-        verifiedImageView.isHidden = true
+        
 
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)

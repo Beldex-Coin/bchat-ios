@@ -101,7 +101,6 @@ public final class Poller : NSObject {
             var processedMessages: [JSON] = []
             messages.forEach { json in
                 guard let envelope = SNProtoEnvelope.from(json) else { return }
-                print("isBNS.Received==========>",envelope.isBnsHolder)
                 do {
                     let data = try envelope.serializedData()
                     let job = MessageReceiveJob(data: data, serverHash: json["hash"] as? String, isBackgroundPoll: false)
