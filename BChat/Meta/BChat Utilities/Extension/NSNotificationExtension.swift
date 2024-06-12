@@ -25,4 +25,6 @@ extension Notification.Name {
     static let doodleChangeNotification = Notification.Name(rawValue: Constants.doodleChangeNotification)
     static var unblockContactNotification = Notification.Name(rawValue: Constants.unblockContact)
     static var clearChatHistoryNotification = Notification.Name(rawValue: Constants.clearChatHistory)
+    static var dismissLinkBNSPopUpNotification = Notification.Name(rawValue: Constants.dismissLinkBNSPopUp)
+    static var navigateToMyAccountNotification = Notification.Name(rawValue: Constants.navigateToMyAccount)
 }

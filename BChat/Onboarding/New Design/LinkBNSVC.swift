@@ -181,7 +181,7 @@ class LinkBNSVC: BaseVC {
         ])
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: .dismissLinkBNSPopUpNotification, object: nil)
     }
     
     /// <#Description#>

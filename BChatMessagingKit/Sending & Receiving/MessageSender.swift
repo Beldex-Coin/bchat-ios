@@ -196,7 +196,7 @@ public final class MessageSender : NSObject {
             case .openGroup(_, _), .openGroupV2(_, _): preconditionFailure()
         }
         let wrappedMessage: Data
-        let isBnsHolder = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
+        let isBnsHolder = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         do {
             wrappedMessage = try MessageWrapper.wrap(type: kind, timestamp: message.sentTimestamp!,
                 senderPublicKey: senderPublicKey, base64EncodedContent: ciphertext.base64EncodedString(), isBnsHolder: isBnsHolder)

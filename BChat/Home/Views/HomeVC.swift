@@ -867,7 +867,7 @@ final class HomeVC : BaseVC {
         verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
         
-        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         button.layer.borderWidth = isBnsUser ? 3 : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
         

@@ -21,6 +21,7 @@ let globalDynamicNodeUrl = "https://testdeb.beldex.dev/Beldex-Projects/Beldex-fl
 
 struct Constants: Equatable {
     
+    /// NotificationCenter name strings
     static let callTapBackToReturn = "connectingCallTapToReturnToTheCall"
     static let callConnectingShowView = "connectingCallShowView"
     static let callConnectionHideView = "connectingCallHideView"
@@ -44,6 +45,10 @@ struct Constants: Equatable {
     static let doodleChangeNotification = "doodleChangeNotification"
     static let unblockContact = "unblockContact"
     static let clearChatHistory = "clearChatHistory"
+    static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
+    static let navigateToMyAccount = "navigateToMyAccount"
     
-    static let isBnsVerified = "isBnsVerifiedData"
+    
+    /// Userdefaults strings
+    static let isBnsVerifiedUser = "isBnsVerifiedUser"
 }
