@@ -317,23 +317,11 @@ class HomeTableViewCell: UITableViewCell {
         if let contactThread: TSContactThread = thread as? TSContactThread {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
-            if contact?.isBnsHolder != nil {
-                if contact!.isBnsHolder {
-                    // For BNS Verified User
-                    iconImageView.layer.borderWidth = 3
-                    iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-                    verifiedImageView.isHidden = false
-                } else {
-                    // For BNS Verified User
-                    iconImageView.layer.borderWidth = 0
-                    iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-                    verifiedImageView.isHidden = true
-                }
-            }
+            guard let contactInfo = contact, let isBnsUser = contact?.isBnsHolder else { return }
+            iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            verifiedImageView.isHidden = isBnsUser ? false : true
         }
-        
-        
-
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {

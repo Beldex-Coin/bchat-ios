@@ -867,13 +867,9 @@ final class HomeVC : BaseVC {
         verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
         
-        if UserDefaults.standard.bool(forKey: Constants.isBnsVerified) {
-            button.layer.borderWidth = 3
-            verifiedImageView.isHidden = false
-        } else {
-            button.layer.borderWidth = 0
-            verifiedImageView.isHidden = true
-        }
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
+        button.layer.borderWidth = isBnsUser ? 3 : 0
+        verifiedImageView.isHidden = isBnsUser ? false : true
         
         if let statusView = view.viewWithTag(333222) {
             statusView.removeFromSuperview()
