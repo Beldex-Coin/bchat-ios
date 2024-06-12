@@ -15,6 +15,7 @@ public final class VisibleMessage : Message {
     @objc public var openGroupInvitation: OpenGroupInvitation?
     @objc public var payment: Payment?
     @objc public var beldexAddress: String?
+    @objc public var isBnsHolder: Bool = false
 
     public override var isSelfSendValid: Bool { true }
     
@@ -44,6 +45,7 @@ public final class VisibleMessage : Message {
         if let openGroupInvitation = coder.decodeObject(forKey: "openGroupInvitation") as! OpenGroupInvitation? { self.openGroupInvitation = openGroupInvitation }
         if let payment = coder.decodeObject(forKey: "payment") as! Payment? { self.payment = payment }
         if let beldexAddress = coder.decodeObject(forKey: "beldexAddress") as! String? { self.beldexAddress = beldexAddress }
+        if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -58,10 +60,11 @@ public final class VisibleMessage : Message {
         coder.encode(openGroupInvitation, forKey: "openGroupInvitation")
         coder.encode(payment, forKey: "payment")
         coder.encode(beldexAddress,forKey: "beldexAddress")
+        coder.encode(isBnsHolder,forKey: "isBnsHolder")
     }
 
     // MARK: Proto Conversion
-    public class func fromProto(_ proto: SNProtoContent,beldexAdd: String) -> VisibleMessage? {
+    public class func fromProto(_ proto: SNProtoContent,beldexAdd: String,isBnsHolder: Bool) -> VisibleMessage? {
         guard let dataMessage = proto.dataMessage else { return nil }
         print("--1---\(proto)")
         print("---2--\(dataMessage)")
@@ -69,6 +72,8 @@ public final class VisibleMessage : Message {
         print("---3--\(result)")
         result.text = dataMessage.body
         result.beldexAddress = beldexAdd
+        result.isBnsHolder = isBnsHolder
+        print("isBNS.1==========>",result.isBnsHolder)
         // Attachments are handled in MessageReceiver
         if let quoteProto = dataMessage.quote, let quote = Quote.fromProto(quoteProto) { result.quote = quote }
         if let linkPreviewProto = dataMessage.preview.first, let linkPreview = LinkPreview.fromProto(linkPreviewProto) { result.linkPreview = linkPreview }

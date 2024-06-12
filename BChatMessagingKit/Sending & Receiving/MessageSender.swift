@@ -199,7 +199,7 @@ public final class MessageSender : NSObject {
         let isBnsHolder = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
         do {
             wrappedMessage = try MessageWrapper.wrap(type: kind, timestamp: message.sentTimestamp!,
-                senderPublicKey: senderPublicKey, base64EncodedContent: ciphertext.base64EncodedString(), isBnsHolder: true) // ?????isBnsHolder)
+                senderPublicKey: senderPublicKey, base64EncodedContent: ciphertext.base64EncodedString(), isBnsHolder: isBnsHolder)
         } catch {
             SNLog("Couldn't wrap message due to error: \(error).")
             handleFailure(with: error, using: transaction)
