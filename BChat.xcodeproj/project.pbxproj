@@ -6781,6 +6781,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D TESTNET";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatUtilitiesKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -6869,6 +6870,7 @@
 					"-framework",
 					"\"UIKit\"",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D TESTNET";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.BChatUtilitiesKit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
