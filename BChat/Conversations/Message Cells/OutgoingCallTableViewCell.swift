@@ -43,9 +43,6 @@ final class OutgoingCallTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    private lazy var iconImageViewWidthConstraint = iconImageView.set(.width, to: 0)
-    private lazy var iconImageViewHeightConstraint = iconImageView.set(.height, to: 0)
-    
     private lazy var infoImageViewWidthConstraint = infoImageView.set(.width, to: 0)
     private lazy var infoImageViewHeightConstraint = infoImageView.set(.height, to: 0)
     
@@ -132,14 +129,16 @@ final class OutgoingCallTableViewCell: UITableViewCell {
             containerView.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -6),
             containerView.widthAnchor.constraint(equalToConstant: 147),
             
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -18),
-            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
-            titleLabel.widthAnchor.constraint(equalToConstant: 61),
-            
+            iconImageView.widthAnchor.constraint(equalToConstant: 28),
+            iconImageView.heightAnchor.constraint(equalToConstant: 28),
             iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
             iconImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 6),
             iconImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -7),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor, constant: -18),
+            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor),
+            titleLabel.widthAnchor.constraint(equalToConstant: 61),
             
             timeLabel.trailingAnchor.constraint(equalTo: mainContainerView.trailingAnchor, constant: -16),
             timeLabel.bottomAnchor.constraint(equalTo: mainContainerView.bottomAnchor, constant: -7),
@@ -173,8 +172,6 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         }
         
         iconImageView.image = icon
-        iconImageViewWidthConstraint.constant = (icon != nil) ? OutgoingCallTableViewCell.iconSize : 0
-        iconImageViewHeightConstraint.constant = (icon != nil) ? OutgoingCallTableViewCell.iconSize : 0
         
         let shouldShowInfoIcon = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
         infoImageViewWidthConstraint.constant = shouldShowInfoIcon ? OutgoingCallTableViewCell.iconSize : 0

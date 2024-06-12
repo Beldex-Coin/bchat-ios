@@ -245,7 +245,7 @@ final class CallTableViewCell: UITableViewCell {
         containerView.backgroundColor = Colors.smallBackGroundViewCellColor
         
         timeLabel.textColor = UIColor(hex: 0xA7A7BA)
-        titleLabel.textColor = Colors.messageTimeLabelColor
+        titleLabel.textColor = Colors.titleColor
         
         self.titleLabel.text = "Missed call"
     }

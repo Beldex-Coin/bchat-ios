@@ -76,6 +76,7 @@ public class PlayerProgressBar: UIView {
     private let slider = TrackingSlider()
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     weak private var progressObserver: AnyObject?
+    private let fullScreenButton = UIButton()
 
     private let kPreferredTimeScale: CMTimeScale = 100
 
@@ -152,6 +153,11 @@ public class PlayerProgressBar: UIView {
         // the MediaPageView.
         let panAbsorber = UIPanGestureRecognizer(target: self, action: nil)
         self.addGestureRecognizer(panAbsorber)
+        
+        // Configure fullScreen button
+        fullScreenButton.setImage(UIImage(named: "ic_fullScreen"), for: .normal)
+        fullScreenButton.addTarget(self, action: #selector(fullScreenButtonTapped), for: .touchUpInside)
+        
 
         // Layout Subviews
 
@@ -160,6 +166,7 @@ public class PlayerProgressBar: UIView {
         addSubview(remainingLabel)
         addSubview(speakerOptionButton)
         addSubview(slider)
+        addSubview(fullScreenButton)
         
         let buttonWidth: CGFloat = 14
         let buttonHeight: CGFloat = 14
@@ -181,8 +188,12 @@ public class PlayerProgressBar: UIView {
         
         speakerOptionButton.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
         speakerOptionButton.autoPinEdge(.leading, to: .trailing, of: remainingLabel, withOffset: kSliderMargin)
-        speakerOptionButton.autoPinEdge(toSuperviewMargin: .trailing)
         speakerOptionButton.autoVCenterInSuperview()
+        
+        fullScreenButton.autoPinEdge(.leading, to: .trailing, of: speakerOptionButton, withOffset: kSliderMargin)
+        fullScreenButton.autoPinEdge(toSuperviewMargin: .trailing)
+        fullScreenButton.autoVCenterInSuperview()
+        
         
 //        // Notifications
         let notificationCenter = NotificationCenter.default
@@ -231,6 +242,11 @@ public class PlayerProgressBar: UIView {
                 print("Failed to disable speaker: \(error)")
             }
         }
+    }
+    
+    // fullScreen button action
+    @objc func fullScreenButtonTapped(notification: NSNotification) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
     }
 
     @objc

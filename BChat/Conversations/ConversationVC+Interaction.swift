@@ -1243,6 +1243,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     @objc func deleteAudioButtonTapped() {
         deleteAudioView.isHidden = true
         cancelVoiceMessageRecording()
+        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
     }
     
     // MARK: - Data Extraction Notifications

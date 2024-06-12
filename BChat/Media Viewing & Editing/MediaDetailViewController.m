@@ -124,6 +124,10 @@ NS_ASSUME_NONNULL_BEGIN
             selector:@selector(isFromPlaySmallButtonTapped:)
             name:@"isFromPlaySmallButton"
             object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(fullScreenButtonTapped:)
+            name:@"fullScreenButtonTapped"
+            object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -459,6 +463,20 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
+}
+
+- (void) fullScreenButtonTapped:(NSNotification *) notification
+{
+    OWSAssertDebug(self.videoPlayer);
+    _mediaView.frame = self.view.bounds;
+    AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
+    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [self.view.layer addSublayer:playerLayer];
+    CGFloat angle = M_PI / 2;
+    CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
+    playerLayer.transform = rotationTransform;
+    playerLayer.frame = self.view.bounds;
+    [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
 }
 
 - (void)pauseVideo

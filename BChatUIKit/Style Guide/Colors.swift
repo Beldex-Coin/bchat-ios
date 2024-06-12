@@ -90,7 +90,6 @@ public final class Colors : NSObject {
     @objc public static var buttonBackgroundColor2: UIColor { UIColor(named: "buttonBackgroundColor2")! }
     @objc public static var buttonTextColor: UIColor { UIColor(named: "buttonTextColor")! }
     @objc public static var cellBackgroundColor2: UIColor { UIColor(named: "cellBackgroundColor2")! }
-    
     @objc public static var searchViewBackgroundColor: UIColor { UIColor(named: "searchViewBackgroundColor")! }
     @objc public static var viewBackgroundColorNew: UIColor { UIColor(named: "viewBackgroundColorNew")! }
     @objc public static var addressBookSaveAddressLabelColor: UIColor { UIColor(named: "addressBookSaveAddressLabelColor")! }
@@ -117,7 +116,6 @@ public final class Colors : NSObject {
     @objc public static var refreshNodePopUpBackgroundColor: UIColor { UIColor(named: "refreshNodePopUpBackgroundColor")! }
     @objc public static var popUpBackgroundColor: UIColor { UIColor(named: "popUpBackgroundColor")! }
     @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
-
     @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
     @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
     @objc public static var bothBlueColor: UIColor { UIColor(named: "0085FF")! }
@@ -130,7 +128,6 @@ public final class Colors : NSObject {
     @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }
     @objc public static var titleColor4: UIColor { UIColor(named: "FFFFFF-222222")! }
     @objc public static var titleColor5: UIColor { UIColor(named: "A7A7BA-333333")! }
-    
     @objc public static var mainBackGroundColor: UIColor { UIColor(named: "111119-EBEBEB")! }
     @objc public static var mainBackGroundColor2: UIColor { UIColor(named: "11111A-EBEBEB")! }
     @objc public static var mainBackGroundColor3: UIColor { UIColor(named: "11111A-F8F8F8")! }
@@ -144,13 +141,10 @@ public final class Colors : NSObject {
     @objc public static var noBorderColor2: UIColor { UIColor(named: "4B4B64-FFFFFF")! }
     @objc public static var noBorderColor3: UIColor { UIColor(named: "24242F-FFFFFF")! }
     @objc public static var borderColor3: UIColor { UIColor(named: "353544-A7A7BA")! }
-    
     @objc public static var cancelButtonBackgroundColor: UIColor { UIColor(named: "1C1C26-F0F0F0")! }
     @objc public static var cancelButtonBackgroundColor2: UIColor { UIColor(named: "282836-ECECEC")! }
     @objc public static var cancelButtonTitleColor: UIColor { UIColor(named: "ACACAC")! }
-    
     @objc public static var cancelButtonTitleColor1: UIColor { UIColor(named: "ACACAC-333333")! }
-    
     @objc public static var smallBackGroundColor: UIColor { UIColor(named: "111119-F8F8F8")! }
     @objc public static var smallTitleColor: UIColor { UIColor(named: "6A6A77")! }
     @objc public static var yellowColor: UIColor { UIColor(named: "F0AF13-ECAB0F")! }
@@ -165,22 +159,16 @@ public final class Colors : NSObject {
     @objc public static var incomingMessageColor: UIColor { UIColor(named: "2C2C3B-E0E0E0")! }
     @objc public static var textViewColor: UIColor { UIColor(named: "2C2C3B-F4F4F4")! }
     @objc public static var holdViewbackgroundColor: UIColor { UIColor(named: "2C2C3B-ECECEC")! }
-    
     @objc public static var viewBackgroundColorSocialGroup: UIColor { UIColor(named: "viewBackgroundColorSocialGroup")! }
     @objc public static var letsBChatButtonColor: UIColor { UIColor(named: "letsBChatButtonColor")! }
     @objc public static var scanButtonBackgroundColor: UIColor { UIColor(named: "scanButtonBackgroundColor")! }
     @objc public static var qrCodeBackgroundColor: UIColor { UIColor(named: "qrCodeBackgroundColor")! }
     @objc public static var confirmSendingViewBackgroundColor: UIColor { UIColor(named: "confirmSendingViewBackgroundColor")! }
     @objc public static var viewBackgroundColorNew2: UIColor { UIColor(named: "viewBackgroundColorNew2")! }
-    
-    
-    
     @objc public static var walletHomeTopViewBackgroundColor: UIColor { UIColor(named: "walletHomeTopViewBackgroundColor")! }
     @objc public static var walletHomeReconnectBackgroundColor: UIColor { UIColor(named: "walletHomeReconnectBackgroundColor")! }
     @objc public static var walletHomeFilterLabelColor: UIColor { UIColor(named: "walletHomeFilterLabelColor")! }
     @objc public static var walletHomeDateViewBackgroundColor: UIColor { UIColor(named: "walletHomeDateViewBackgroundColor")! }
-    
-    
     @objc public static var darkThemeTextBoxColor: UIColor { UIColor(named: "1C1C26")! }
     @objc public static var homeScreenFloatingbackgroundColor: UIColor { UIColor(named: "1C1C26-ECECEC")! }
     @objc public static var newChatbackgroundColor: UIColor { UIColor(named: "2C2C3B-F4F4F4")! }
@@ -188,16 +176,13 @@ public final class Colors : NSObject {
     @objc public static var alertBackGroundColor: UIColor { UIColor(named: "080812-E0E0E0")! }
     @objc public static var messageTimeLabelColor: UIColor { UIColor(named: "5F5F76-A7A7BA")! }
     @objc public static var titleNewColor: UIColor { UIColor(named: "ACACAC-8A8A9D")! }
-    
     @objc public static var paymentViewInsideColor: UIColor { UIColor(named: "3F3F56-EBEBEB")! }
     @objc public static var paymentViewInsideReciverColor: UIColor { UIColor(named: "00A939")! }
     @objc public static var bdxColor: UIColor { UIColor(named: "ACACAC-ACACAC")! }
-    
     @objc public static var callPermissionCancelbtnColor: UIColor { UIColor(named: "333333-ACACAC")! }
     @objc public static var attachmentViewBackgroundColor: UIColor { UIColor(named: "21212C-EBEBEB")! }
     @objc public static var switchBackgroundColor: UIColor { UIColor(named: "363645-FFFFFF")! }
     @objc public static var switchOffBackgroundColor: UIColor { UIColor(named: "9595B5")! }
-    
     @objc public static var separatorHomeTableViewCellColor: UIColor { UIColor(named: "1C1C26-D5D5D5")! }
     @objc public static var smallBackGroundViewCellColor: UIColor { UIColor(named: "1C1C26-EBEBEB")! }
     @objc public static var chatSettingsGrayColor: UIColor { UIColor(named: "ACACAC-8A8A9D-Alpha")! }

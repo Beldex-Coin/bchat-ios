@@ -6,13 +6,9 @@ final class PaymentView : UIView {
     private let rawAmount: String
     private let textColor: UIColor
     private let isOutgoing: Bool
+    private let viewItem: ConversationViewItem
     
     private lazy var amount: String = {
-        //        if let range = rawAmount.range(of: "?public_key=") {
-        //            return String(rawAmount[..<range.lowerBound])
-        //        } else {
-        //            return rawAmount
-        //        }
         return rawAmount
     }()
     
@@ -21,11 +17,12 @@ final class PaymentView : UIView {
     private static let iconImageViewSize: CGFloat = 40
     
     // MARK: Lifecycle
-    init(txnid: String, rawAmount: String, textColor: UIColor, isOutgoing: Bool) {
+    init(txnid: String, rawAmount: String, textColor: UIColor, isOutgoing: Bool, viewItem: ConversationViewItem) {
         self.txnid = txnid
         self.rawAmount = rawAmount
         self.textColor = textColor
         self.isOutgoing = isOutgoing
+        self.viewItem = viewItem
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
@@ -47,12 +44,14 @@ final class PaymentView : UIView {
         if let rangeBeldex = fullText.range(of: "\(rawAmount)"),
            let rangeAddress = fullText.range(of: "BDX  ") {
             let attributedString = NSMutableAttributedString(string: fullText)
-            attributedString.addAttribute(.foregroundColor, value: Colors.aboutContentLabelColor, range: NSRange(rangeBeldex, in: fullText))
+//            attributedString.addAttribute(.foregroundColor, value: Colors.aboutContentLabelColor, range: NSRange(rangeBeldex, in: fullText))
             let direction = isOutgoing ? "send" : "receive"
             if direction == "send" {
+                attributedString.addAttribute(.foregroundColor, value: Colors.titleColor, range: NSRange(rangeBeldex, in: fullText))
                 let colorCode = isLightMode ? UIColor(hex: 0xACACAC) : UIColor(hex: 0xACACAC)
                 attributedString.addAttribute(.foregroundColor, value: colorCode, range: NSRange(rangeAddress, in: fullText))
-            }else{
+            } else {
+                attributedString.addAttribute(.foregroundColor, value: Colors.bothWhiteColor, range: NSRange(rangeBeldex, in: fullText))
                 let colorCode2 = isLightMode ? UIColor(hex: 0xCCFFDD) : UIColor(hex: 0xCCFFDD)
                 attributedString.addAttribute(.foregroundColor, value: colorCode2, range: NSRange(rangeAddress, in: fullText))
             }
@@ -72,6 +71,20 @@ final class PaymentView : UIView {
         } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
         }
+        
+        // Bottom time label
+        let timeLabel = UILabel()
+        timeLabel.lineBreakMode = .byTruncatingTail
+        timeLabel.font = Fonts.OpenSans(ofSize: 9)
+        let date = viewItem.interaction.dateForUI()
+        let description = DateUtil.formatDate(forDisplay2: date)
+        timeLabel.text = description
+        if direction == "send" {
+            timeLabel.textColor = Colors.messageTimeLabelColor
+        } else {
+            timeLabel.textColor = Colors.callCellTitle
+        }
+        
         
         // Tick mark imageView
         let tickMarkImageView = UIImageView()
@@ -113,7 +126,10 @@ final class PaymentView : UIView {
         
         // Icon
         let iconSize = PaymentView.iconSize
-        let iconName = isLightMode ? "beldeximg2" : "beldeximg"
+        var iconName = isLightMode ? "beldeximg2" : "beldeximg"
+        if direction == "receive" && isLightMode {
+            iconName = "beldeximg"
+        }
         let icon = UIImage(named: iconName)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
         let iconImageViewSize = PaymentView.iconImageViewSize
         let iconImageView = UIImageView(image: icon)
@@ -127,10 +143,10 @@ final class PaymentView : UIView {
         let titleLabelContainer = UIView()
         let labelStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
         titleLabelContainer.set(.height, to: PaymentView.iconImageViewSize)
-        labelStackView.layer.cornerRadius = 6
+        labelStackView.layer.cornerRadius = 16
         if direction == "send" {
             labelStackView.backgroundColor = Colors.paymentViewInsideColor
-        }else {
+        } else {
             labelStackView.backgroundColor = Colors.paymentViewInsideReciverColor
         }
         labelStackView.axis = .horizontal
@@ -147,11 +163,14 @@ final class PaymentView : UIView {
         if direction1 == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
             subtitleLabel.textColor = Colors.greenColor
-        }else {
+        } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
             subtitleLabel.textColor = UIColor.white
         }
         addSubview(mainStackView)
+        addSubview(timeLabel)
         mainStackView.pin(to: self, withInset: Values.mediumSpacing)
+        timeLabel.pin(.right, to: .right, of: self, withInset: -15)
+        timeLabel.pin(.bottom, to: .bottom, of: self, withInset: -9)
     }
 }
