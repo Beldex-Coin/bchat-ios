@@ -301,4 +301,9 @@ extension LinkBNSVC: UITextFieldDelegate {
         verifyButtonUpdate(newString.suffix(4).lowercased() == ".bdx")
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
