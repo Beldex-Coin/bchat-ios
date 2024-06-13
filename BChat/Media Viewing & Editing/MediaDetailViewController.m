@@ -62,6 +62,8 @@ NS_ASSUME_NONNULL_BEGIN
     [self stopAnyVideo];
 }
 
+AVPlayerLayer *_playerLayer;
+
 - (instancetype)initWithGalleryItemBox:(GalleryItemBox *)galleryItemBox
                               viewItem:(nullable id<ConversationViewItem>)viewItem
 {
@@ -316,6 +318,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     VideoPlayerView *playerView = [VideoPlayerView new];
     playerView.player = player.avPlayer;
+    _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
+    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+            [self.view.layer addSublayer:_playerLayer];
 
     [NSLayoutConstraint autoSetPriority:UILayoutPriorityDefaultLow
                          forConstraints:^{
@@ -473,16 +478,17 @@ NS_ASSUME_NONNULL_BEGIN
 {
     OWSAssertDebug(self.videoPlayer);
     /*
+    
     if (_isVideoPlayingInFullscreen == NO) {
         _isVideoPlayingInFullscreen = YES;
         _mediaView.frame = self.view.bounds;
-        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        [self.view.layer addSublayer:playerLayer];
+//        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
+//        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//        [self.view.layer addSublayer:playerLayer];
         CGFloat angle = M_PI / 2;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
-        playerLayer.transform = rotationTransform;
-        playerLayer.frame = self.view.bounds;
+        _playerLayer.transform = rotationTransform;
+        _playerLayer.frame = self.view.bounds;
         
         [self.videoProgressBar removeFromSuperview];
         if (self.isVideo) {
@@ -493,6 +499,7 @@ NS_ASSUME_NONNULL_BEGIN
             self.videoProgressBar = videoProgressBar;
             [self.view addSubview:videoProgressBar];
             videoProgressBar.layer.cornerRadius = 22;
+            //            videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
             videoProgressBar.layer.masksToBounds = YES;
             [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
             [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
@@ -502,14 +509,21 @@ NS_ASSUME_NONNULL_BEGIN
         }
     } else {
         _isVideoPlayingInFullscreen = NO;
+//        self.mediaView = [self buildVideoPlayerView];
+//        [self updateContents];
+//        [_mediaView removeFromSuperview];
+//        [self.scrollView addSubview:self.mediaView];
         _mediaView.frame = _initialMediaViewFrame;
-        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        [self.view.layer addSublayer:playerLayer];
+//        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
+//        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//        [self.view.layer addSublayer:playerLayer];
         CGFloat angle = 0;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
-        playerLayer.transform = rotationTransform;
-        playerLayer.frame = _initialMediaViewFrame;
+        _playerLayer.transform = rotationTransform;
+        _playerLayer.frame = _initialMediaViewFrame;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationBarForFullscreenVideo"
+                                                            object:nil
+                                                          userInfo:nil];
     }
     
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
