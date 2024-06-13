@@ -241,7 +241,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         snContentView.pin(.right, to: .right, of: bubbleView, withInset: -5)
         snContentView.pin(.left, to: .left, of: bubbleView, withInset: 5)
         snContentView.pin(.top, to: .top, of: bubbleView, withInset: 5)
-        bubbleView.backgroundColor = .red
         messageTimeBottomLabel.pin(.right, to: .right, of: bubbleView, withInset: -10)
         messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
         messageTimeCenterLabel.isHidden = true
@@ -444,17 +443,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     openGroupInvitationView.pin(to: snContentView)
                     openGroupInvitationView.layer.mask = bubbleViewMaskLayer
                 } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
-                    let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing)
-                    paymentView.layer.mask = bubbleViewMaskLayer
+                    let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing, viewItem: viewItem)
+                    paymentView.layer.cornerRadius = 18
                     snContentView.addSubview(paymentView)
+                    bubbleView.backgroundColor = .clear
                     paymentView.pin(to: snContentView)
                     let direction = isOutgoing ? "send" : "receive"
                     if direction == "send" {
                         paymentView.backgroundColor = Colors.incomingMessageColor
-                    }else {
+                    } else {
                         paymentView.backgroundColor = Colors.greenColor
                     }
-                    paymentView.layer.mask = bubbleViewMaskLayer
+                    messageTimeBottomLabel.isHidden = true
                 } else {
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])

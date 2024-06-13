@@ -51,6 +51,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         slider.maximumTrackTintColor = .clear
         slider.thumbTintColor = .clear
         slider.setThumbImage(UIImage(named: "wallet_slider_Image"), for: .normal)
+        slider.isUserInteractionEnabled = false
         return slider
     }()
     
@@ -1071,8 +1072,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             progressStatusLabel.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 18),
             isCurrencyResultLabel.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -18),
             isCurrencyResultLabel.centerYAnchor.constraint(equalTo: progressStatusLabel.centerYAnchor),
-            progressView.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 0),
-            progressView.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -0),
+            progressView.leadingAnchor.constraint(equalTo: topBackgroundView.leadingAnchor, constant: 2),
+            progressView.trailingAnchor.constraint(equalTo: topBackgroundView.trailingAnchor, constant: -2),
             progressView.topAnchor.constraint(equalTo: progressStatusLabel.bottomAnchor, constant: 16),
             progressView.heightAnchor.constraint(equalToConstant: 1.5),
             beldexLogoImg.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 23),

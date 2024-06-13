@@ -76,6 +76,7 @@ public class PlayerProgressBar: UIView {
     private let slider = TrackingSlider()
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     weak private var progressObserver: AnyObject?
+    private let fullScreenButton = UIButton()
 
     private let kPreferredTimeScale: CMTimeScale = 100
 
@@ -152,6 +153,11 @@ public class PlayerProgressBar: UIView {
         // the MediaPageView.
         let panAbsorber = UIPanGestureRecognizer(target: self, action: nil)
         self.addGestureRecognizer(panAbsorber)
+        
+        // Configure fullScreen button
+        fullScreenButton.setImage(UIImage(named: "ic_fullScreen"), for: .normal)
+        fullScreenButton.addTarget(self, action: #selector(fullScreenButtonTapped), for: .touchUpInside)
+        
 
         // Layout Subviews
 
@@ -160,6 +166,7 @@ public class PlayerProgressBar: UIView {
         addSubview(remainingLabel)
         addSubview(speakerOptionButton)
         addSubview(slider)
+        addSubview(fullScreenButton)
         
         let buttonWidth: CGFloat = 14
         let buttonHeight: CGFloat = 14
@@ -181,8 +188,12 @@ public class PlayerProgressBar: UIView {
         
         speakerOptionButton.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
         speakerOptionButton.autoPinEdge(.leading, to: .trailing, of: remainingLabel, withOffset: kSliderMargin)
-        speakerOptionButton.autoPinEdge(toSuperviewMargin: .trailing)
         speakerOptionButton.autoVCenterInSuperview()
+        
+        fullScreenButton.autoPinEdge(.leading, to: .trailing, of: speakerOptionButton, withOffset: kSliderMargin)
+        fullScreenButton.autoPinEdge(toSuperviewMargin: .trailing)
+        fullScreenButton.autoVCenterInSuperview()
+        
         
 //        // Notifications
         let notificationCenter = NotificationCenter.default
@@ -203,7 +214,7 @@ public class PlayerProgressBar: UIView {
         if passAndPaly.isSelected {
             passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPassSmallButton"), object: nil)
-        }else {
+        } else {
             passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPlaySmallButton"), object: nil)
         }
@@ -222,7 +233,7 @@ public class PlayerProgressBar: UIView {
                 print("Failed to enable speaker: \(error)")
             }
         }else {
-            speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
+            speakerOptionButton.setImage(UIImage(named: "ic_speaker_mute"), for: .normal)
             do {
                 try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
                 try AVAudioSession.sharedInstance().setActive(true)
@@ -231,6 +242,14 @@ public class PlayerProgressBar: UIView {
                 print("Failed to disable speaker: \(error)")
             }
         }
+    }
+    
+    // fullScreen button action
+    @objc func fullScreenButtonTapped(notification: NSNotification) {
+        /*
+         NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideNavigationBarForFullscreenVideo"), object: nil)
+         */
     }
 
     @objc
