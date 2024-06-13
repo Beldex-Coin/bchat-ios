@@ -130,6 +130,7 @@ public final class Colors : NSObject {
     @objc public static var titleColor3: UIColor { UIColor(named: "FFFFFF-333333")! }
     @objc public static var titleColor4: UIColor { UIColor(named: "FFFFFF-222222")! }
     @objc public static var titleColor5: UIColor { UIColor(named: "A7A7BA-333333")! }
+    @objc public static var titleColor6: UIColor { UIColor(named: "333333-FFFFFF")! }
     
     @objc public static var mainBackGroundColor: UIColor { UIColor(named: "111119-EBEBEB")! }
     @objc public static var mainBackGroundColor2: UIColor { UIColor(named: "11111A-EBEBEB")! }
