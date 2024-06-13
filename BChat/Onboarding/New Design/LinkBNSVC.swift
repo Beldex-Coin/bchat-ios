@@ -122,7 +122,7 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
-    var isFromVerfied: Bool!
+    var isFromVerfied: Bool = false
     
     // MARK: - UIViewController life cycle
     
@@ -202,6 +202,7 @@ class LinkBNSVC: BaseVC {
         // No Border
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
+        bnsNameTextField.isUserInteractionEnabled = false
         
         guard let bnsUserName = bnsNameTextField.text else { return }
         let bnsName = bnsUserName.trimmingCharacters(in: .whitespaces)
@@ -209,6 +210,7 @@ class LinkBNSVC: BaseVC {
             self.startNewDM(with: bchatID)
         }.catch { error in
             if let error = error as? SnodeAPI.Error {
+                self.bnsNameTextField.isUserInteractionEnabled = true
                 switch error {
                     case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
                     default: break
@@ -228,7 +230,7 @@ class LinkBNSVC: BaseVC {
     /// <#Description#>
     /// - Parameter sender: <#sender description#>
     @objc private func linkButtonTapped(_ sender: UIButton) {
-        if isFromVerfied ?? false {
+        if isFromVerfied {
             let vc = BNSLinkSuccessVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -262,6 +264,8 @@ class LinkBNSVC: BaseVC {
             // Green
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
+            
+            verifyButton.isUserInteractionEnabled = false
         } else {
             isFromVerfied = false
             
