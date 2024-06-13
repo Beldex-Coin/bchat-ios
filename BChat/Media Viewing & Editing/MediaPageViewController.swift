@@ -288,6 +288,9 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = false
         navigationBar.barTintColor = Colors.navigationBarBackground
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideNavigationBarForFullscreenVideo), name: Notification.Name("hideNavigationBarForFullscreenVideo"), object: nil)
+        
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -626,6 +629,12 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             return
         }
         currentViewController.didPressPauseBarButton(sender)
+    }
+    
+    
+    // Hide navigation bar for fullscreen video
+    @objc private func hideNavigationBarForFullscreenVideo() {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     // MARK: UIPageViewControllerDelegate

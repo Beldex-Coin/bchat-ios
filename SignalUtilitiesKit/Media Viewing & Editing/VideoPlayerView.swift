@@ -233,7 +233,7 @@ public class PlayerProgressBar: UIView {
                 print("Failed to enable speaker: \(error)")
             }
         }else {
-            speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
+            speakerOptionButton.setImage(UIImage(named: "ic_speaker_mute"), for: .normal)
             do {
                 try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
                 try AVAudioSession.sharedInstance().setActive(true)
@@ -246,7 +246,10 @@ public class PlayerProgressBar: UIView {
     
     // fullScreen button action
     @objc func fullScreenButtonTapped(notification: NSNotification) {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
+        /*
+         NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideNavigationBarForFullscreenVideo"), object: nil)
+         */
     }
 
     @objc
