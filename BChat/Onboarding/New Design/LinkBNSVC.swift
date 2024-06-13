@@ -203,8 +203,9 @@ class LinkBNSVC: BaseVC {
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
         
-        let bnsName = bnsNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
-        SnodeAPI.getBChatID(for: bnsName).done { bchatID in
+        guard let bnsUserName = bnsNameTextField.text else { return }
+        let bnsName = bnsUserName.trimmingCharacters(in: .whitespaces)
+        SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             self.startNewDM(with: bchatID)
         }.catch { error in
             if let error = error as? SnodeAPI.Error {
