@@ -314,11 +314,19 @@ class HomeTableViewCell: UITableViewCell {
         messageCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
         iconImageView.update(for: thread)
         
-        // For BNS Verified User
-        iconImageView.layer.borderWidth = 0
-        iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-        verifiedImageView.isHidden = true
-
+        if let contactThread: TSContactThread = thread as? TSContactThread {
+            let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
+            // BeldexAddress view in Conversation Page (Get from DB)
+            guard let _ = contact, let isBnsUser = contact?.isBnsHolder else { return }
+            iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            iconImageView.layer.borderWidth = 0
+            iconImageView.layer.borderColor = UIColor.clear.cgColor
+            verifiedImageView.isHidden = true
+        }
+        
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {

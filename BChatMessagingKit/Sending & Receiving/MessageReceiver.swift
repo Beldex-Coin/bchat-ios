@@ -63,6 +63,7 @@ public enum MessageReceiver {
         var plaintext: Data!
         var sender: String!
         var beldexAddress: String = ""
+        let isBnsHolder = envelope.isBnsHolder
         var groupPublicKey: String? = nil
         if isOpenGroupMessage {
             (plaintext, sender) = (envelope.content!, envelope.source!)
@@ -135,7 +136,7 @@ public enum MessageReceiver {
             if let configurationMessage = ConfigurationMessage.fromProto(proto) { return configurationMessage }
             if let unsendRequest = UnsendRequest.fromProto(proto) { return unsendRequest }
             if let messageRequestResponse = MessageRequestResponse.fromProto(proto) { return messageRequestResponse }
-            if let visibleMessage = VisibleMessage.fromProto(proto,beldexAdd: beldexAddress) { return visibleMessage }
+            if let visibleMessage = VisibleMessage.fromProto(proto,beldexAdd: beldexAddress, isBnsHolder: isBnsHolder) { return visibleMessage }
             if let callMessage = CallMessage.fromProto(proto) { return callMessage }
             return nil
         }()

@@ -1206,13 +1206,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
         duration += 1
         if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty{
-            showCallView()
             callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
             callIconImageView.image = UIImage(named: "End_Call_new")
             callIconImageView.set(.width, to: 18)
             callIconImageView.set(.height, to: 18)
             callIconImageView.layer.masksToBounds = true
             callIconImageView.contentMode = .scaleAspectFit
+            showCallView()
         }else {
             hideCallView()
         }
@@ -1227,9 +1227,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     func showCallView() {
-        callView.isHidden = false
-        self.tableViewTopConstraint.isActive = false
-        self.tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14 + 43)
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                
+                self.tableViewTopConstraint.isActive = false
+                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14 + 43)
+                self.callView.isHidden = false
+            }, completion: nil)
+        }
     }
     
     func hideCallView() {

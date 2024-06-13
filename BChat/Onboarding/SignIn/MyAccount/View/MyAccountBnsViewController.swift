@@ -814,7 +814,7 @@ class MyAccountBnsViewController: BaseVC {
         tableView.showsVerticalScrollIndicator = false
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(updateBNSDetailsTapped), name: Notification.Name("isFromUpdateBNSDetailsNavigateToMyAccount"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateBNSDetailsTapped), name: .navigateToMyAccountNotification, object: nil)
         
     }
     
@@ -869,7 +869,7 @@ class MyAccountBnsViewController: BaseVC {
     
     /// Update BNS Details
     func updateBNSDetails() {
-        let isBNSVerified = UserDefaults.standard.bool(forKey: "isFromBNSVerifiedData")
+        let isBNSVerified = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         shadowBackgroundImage.isHidden = !isBNSVerified
         stackViewForBNSVerifiedName.isHidden = !isBNSVerified
         linkYourBNSBackgroundView.isHidden = isBNSVerified

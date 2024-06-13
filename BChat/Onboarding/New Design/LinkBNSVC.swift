@@ -3,6 +3,7 @@
 import UIKit
 import BChatUIKit
 import BChatSnodeKit
+import NVActivityIndicatorView
 
 class LinkBNSVC: BaseVC {
     
@@ -42,7 +43,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.paddingTop = 13
         result.paddingLeft = 16
         result.paddingRight = 16
@@ -69,7 +70,7 @@ class LinkBNSVC: BaseVC {
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.placeholder = "Enter BNS name"
-        result.backgroundColor = Colors.cellGroundColor2
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(17)
         return result
@@ -80,7 +81,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -92,7 +93,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Verify", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(verifyButtonTapped), for: .touchUpInside)
@@ -104,7 +105,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Link", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
@@ -122,7 +123,15 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
-    var isFromVerfied: Bool!
+    private lazy var loader: NVActivityIndicatorView = {
+        let result = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: Colors.bothGreenColor, padding: nil)
+        result.set(.width, to: 40)
+        result.set(.height, to: 40)
+        return result
+    }()
+
+    
+    var isFromVerfied: Bool = false
     
     // MARK: - UIViewController life cycle
     
@@ -181,7 +190,11 @@ class LinkBNSVC: BaseVC {
         ])
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: .dismissLinkBNSPopUpNotification, object: nil)
+        
+        view.addSubview(loader)
+        loader.autoCenterInSuperview()
+        showLoader(false)
     }
     
     /// <#Description#>
@@ -199,15 +212,21 @@ class LinkBNSVC: BaseVC {
     /// <#Description#>
     /// - Parameter sender: <#sender description#>
     @objc private func verifyButtonTapped(_ sender: UIButton) {
+        showLoader(true)
         // No Border
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
+        bnsNameTextField.isUserInteractionEnabled = false
         
-        let bnsName = bnsNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
-        SnodeAPI.getBChatID(for: bnsName).done { bchatID in
+        guard let bnsUserName = bnsNameTextField.text else { return }
+        let bnsName = bnsUserName.trimmingCharacters(in: .whitespaces)
+        SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
+            self.showLoader(false)
             self.startNewDM(with: bchatID)
         }.catch { error in
+            self.showLoader(false)
             if let error = error as? SnodeAPI.Error {
+                self.bnsNameTextField.isUserInteractionEnabled = true
                 switch error {
                     case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
                     default: break
@@ -227,7 +246,7 @@ class LinkBNSVC: BaseVC {
     /// <#Description#>
     /// - Parameter sender: <#sender description#>
     @objc private func linkButtonTapped(_ sender: UIButton) {
-        if isFromVerfied ?? false {
+        if isFromVerfied {
             let vc = BNSLinkSuccessVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -247,7 +266,7 @@ class LinkBNSVC: BaseVC {
             // Verify Button Border & White Title Color
             verifyButton.layer.borderWidth = 1
             verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-            verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            verifyButton.setTitleColor(Colors.titleColor6, for: .normal)
             verifyButton.setTitle("Verify", for: .normal)
             
             // Verify Button Image & Green Title
@@ -258,9 +277,12 @@ class LinkBNSVC: BaseVC {
             verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
             verifyButton.semanticContentAttribute = .forceRightToLeft
             
+            bnsNameTextField.textColor = Colors.bothGreenColor
             // Green
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
+            
+            verifyButton.isUserInteractionEnabled = false
         } else {
             isFromVerfied = false
             
@@ -271,14 +293,26 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
     }
+    
     /// <#Description#>
     /// - Parameter isEnabled: <#isEnabled description#>
     func verifyButtonUpdate(_ isEnabled: Bool) {
-        verifyButton.isUserInteractionEnabled =  isEnabled ?  false : true
+        verifyButton.isUserInteractionEnabled =  isEnabled
         self.verifyButton.layer.borderWidth = isEnabled ? 1 : 0
         self.verifyButton.layer.borderColor =  isEnabled ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-        self.verifyButton.setTitleColor(isEnabled ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
+        self.verifyButton.setTitleColor(isEnabled ? Colors.titleColor6 : Colors.cancelButtonTitleColor, for: .normal)
     }
+    
+    func showLoader(_ isShow: Bool) {
+        loader.isHidden = !isShow
+        view.isUserInteractionEnabled = !isShow
+        if isShow {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
+    }
+    
 
 }
 
@@ -293,6 +327,11 @@ extension LinkBNSVC: UITextFieldDelegate {
         let currentString: NSString = textField.text! as NSString
         let newString = currentString.replacingCharacters(in: range, with: string)
         verifyButtonUpdate(newString.suffix(4).lowercased() == ".bdx")
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

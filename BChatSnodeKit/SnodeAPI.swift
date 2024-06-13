@@ -340,13 +340,11 @@ public final class SnodeAPI : NSObject {
         }
     }
     
-    public static func getBChatID(for onsName: String) -> Promise<String> {
+    public static func getBChatID(for bnsUserName: String) -> Promise<String> {
         let validationCount = 3
         let bchatIDByteCount = 33
-        // The name must be lowercased
-        let onsName = onsName.lowercased()
         // Hash the BNS name using BLAKE2b
-        let nameAsData = [UInt8](onsName.data(using: String.Encoding.utf8)!)
+        let nameAsData = [UInt8](bnsUserName.data(using: String.Encoding.utf8)!)
         guard let nameHash = sodium.genericHash.hash(message: nameAsData) else { return Promise(error: Error.hashingFailed) }
         
         // Ask 3 different snodes for the BChat ID associated with the given name hash
