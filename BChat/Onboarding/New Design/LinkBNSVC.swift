@@ -42,7 +42,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.paddingTop = 13
         result.paddingLeft = 16
         result.paddingRight = 16
@@ -69,7 +69,7 @@ class LinkBNSVC: BaseVC {
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.placeholder = "Enter BNS name"
-        result.backgroundColor = Colors.cellGroundColor2
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(17)
         return result
@@ -80,7 +80,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Cancel", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -92,7 +92,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Verify", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(verifyButtonTapped), for: .touchUpInside)
@@ -104,7 +104,7 @@ class LinkBNSVC: BaseVC {
         button.setTitle("Link", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor2
+        button.backgroundColor = Colors.cancelButtonBackgroundColor2
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
@@ -247,7 +247,7 @@ class LinkBNSVC: BaseVC {
             // Verify Button Border & White Title Color
             verifyButton.layer.borderWidth = 1
             verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
-            verifyButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            verifyButton.setTitleColor(Colors.titleColor6, for: .normal)
             verifyButton.setTitle("Verify", for: .normal)
             
             // Verify Button Image & Green Title
@@ -258,6 +258,7 @@ class LinkBNSVC: BaseVC {
             verifyButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 7, bottom: 0, right: 0)
             verifyButton.semanticContentAttribute = .forceRightToLeft
             
+            bnsNameTextField.textColor = Colors.bothGreenColor
             // Green
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
@@ -278,7 +279,7 @@ class LinkBNSVC: BaseVC {
         verifyButton.isUserInteractionEnabled =  isEnabled
         self.verifyButton.layer.borderWidth = isEnabled ? 1 : 0
         self.verifyButton.layer.borderColor =  isEnabled ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-        self.verifyButton.setTitleColor(isEnabled ? Colors.bothWhiteColor : Colors.cancelButtonTitleColor, for: .normal)
+        self.verifyButton.setTitleColor(isEnabled ? Colors.titleColor6 : Colors.cancelButtonTitleColor, for: .normal)
     }
 
 }
