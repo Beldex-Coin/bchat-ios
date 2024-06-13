@@ -323,6 +323,8 @@ static NSTimeInterval launchStartedAt;
     
     // This Code will App Update Version
 //    [self forceUpdateIsNeeded];
+    
+    [self verifyBnsName];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

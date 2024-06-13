@@ -129,7 +129,6 @@ class LinkBNSVC: BaseVC {
         result.set(.height, to: 40)
         return result
     }()
-
     
     var isFromVerfied: Bool = false
     
@@ -223,23 +222,23 @@ class LinkBNSVC: BaseVC {
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             self.showLoader(false)
             self.startNewDM(with: bchatID)
+            UserDefaults.standard.set(bnsName, forKey: Constants.bnsUserName)
         }.catch { error in
             self.showLoader(false)
-            if let error = error as? SnodeAPI.Error {
-                self.bnsNameTextField.isUserInteractionEnabled = true
-                switch error {
-                    case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
-                    default: break
-                }
-            }
-            
+            self.bnsNameTextField.isUserInteractionEnabled = true
+//            if let error = error as? SnodeAPI.Error {
+//                switch error {
+//                    case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
+//                    default: break
+//                }
+//            }            
             self.linkButton.backgroundColor = Colors.cellGroundColor2
             self.linkButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
             // Red
             self.bnsNameTextField.layer.borderWidth = 1
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
-            self.verifyButtonUpdate(false)
+//            self.verifyButtonUpdate(false)
         }
     }
     
@@ -312,8 +311,6 @@ class LinkBNSVC: BaseVC {
             loader.stopAnimating()
         }
     }
-    
-
 }
 
 extension LinkBNSVC: UITextFieldDelegate {

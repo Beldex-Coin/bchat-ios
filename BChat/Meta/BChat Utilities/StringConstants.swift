@@ -51,4 +51,5 @@ struct Constants: Equatable {
     
     /// Userdefaults strings
     static let isBnsVerifiedUser = "isBnsVerifiedUser"
+    static let bnsUserName = "bnsUserName"
 }

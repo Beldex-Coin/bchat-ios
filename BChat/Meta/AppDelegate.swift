@@ -188,4 +188,21 @@ extension AppDelegate {
         ClosedGroupPoller.shared.stop()
     }
 
+    @objc
+    func verifyBnsName() {
+        guard let bnsName = UserDefaults.standard.value(forKey: Constants.bnsUserName) as? String else { return }
+        SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
+            if getUserHexEncodedPublicKey() == bchatID {
+                UserDefaults.standard.set(true, forKey: Constants.isBnsVerifiedUser)
+            }
+        }.catch { error in
+            UserDefaults.standard.set(false, forKey: Constants.isBnsVerifiedUser)
+            if let error = error as? SnodeAPI.Error {
+                switch error {
+                    case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
+                    default: break
+                }
+            }
+        }
+    }
 }
