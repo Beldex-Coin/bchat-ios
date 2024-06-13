@@ -122,7 +122,7 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
-    var isFromVerfied: Bool!
+    var isFromVerfied: Bool = false
     
     // MARK: - UIViewController life cycle
     
@@ -181,7 +181,7 @@ class LinkBNSVC: BaseVC {
         ])
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: Notification.Name("dismissLinkBNSVCPopUp"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: .dismissLinkBNSPopUpNotification, object: nil)
     }
     
     /// <#Description#>
@@ -202,12 +202,15 @@ class LinkBNSVC: BaseVC {
         // No Border
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
+        bnsNameTextField.isUserInteractionEnabled = false
         
-        let bnsName = bnsNameTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
-        SnodeAPI.getBChatID(for: bnsName).done { bchatID in
+        guard let bnsUserName = bnsNameTextField.text else { return }
+        let bnsName = bnsUserName.trimmingCharacters(in: .whitespaces)
+        SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             self.startNewDM(with: bchatID)
         }.catch { error in
             if let error = error as? SnodeAPI.Error {
+                self.bnsNameTextField.isUserInteractionEnabled = true
                 switch error {
                     case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
                     default: break
@@ -227,7 +230,7 @@ class LinkBNSVC: BaseVC {
     /// <#Description#>
     /// - Parameter sender: <#sender description#>
     @objc private func linkButtonTapped(_ sender: UIButton) {
-        if isFromVerfied ?? false {
+        if isFromVerfied {
             let vc = BNSLinkSuccessVC()
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
@@ -262,6 +265,8 @@ class LinkBNSVC: BaseVC {
             // Green
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothGreenColor.cgColor
+            
+            verifyButton.isUserInteractionEnabled = false
         } else {
             isFromVerfied = false
             
@@ -295,6 +300,11 @@ extension LinkBNSVC: UITextFieldDelegate {
         let currentString: NSString = textField.text! as NSString
         let newString = currentString.replacingCharacters(in: range, with: string)
         verifyButtonUpdate(newString.suffix(4).lowercased() == ".bdx")
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

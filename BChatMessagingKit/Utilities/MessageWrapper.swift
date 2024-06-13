@@ -31,7 +31,7 @@ public enum MessageWrapper {
     }
 
     private static func createEnvelope(type: SNProtoEnvelope.SNProtoEnvelopeType, timestamp: UInt64, senderPublicKey: String, base64EncodedContent: String, isBnsHolder: Bool) throws -> SNProtoEnvelope {
-        let isBnsHolder = UserDefaults.standard.bool(forKey: Constants.isBnsVerified)
+        let isBnsHolder = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         do {
             let builder = SNProtoEnvelope.builder(type: type, timestamp: timestamp, isBnsHolder: isBnsHolder)
             builder.setSource(senderPublicKey)

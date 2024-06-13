@@ -68,14 +68,34 @@
             <true/>
             <key>NSExceptionDomains</key>
             <dict>
-                <key>149.102.156.174</key>
+                <key>publicnode4.rpcnode.stream</key>
+                <dict>
+                    <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                </dict>
+                <key>publicnode5.rpcnode.stream</key>
+                <dict>
+                    <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                </dict>
+                <key>publicnode3.rpcnode.stream</key>
+                <dict>
+                    <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                </dict>
+                <key>publicnode2.rpcnode.stream</key>
+                <dict>
+                    <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                    <true/>
+                </dict>
+                <key>publicnode1.rpcnode.stream</key>
                 <dict>
                     <key>NSExceptionAllowsInsecureHTTPLoads</key>
                     <true/>
                 </dict>
             </dict>
         </dict>
-        <key>NSAppleMusicUsageDescription</key>
+    <key>NSAppleMusicUsageDescription</key>
 	<string>Signal needs to use Apple Music to play media attachments.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>BChat needs camera access to take pictures and scan QR codes.</string>
