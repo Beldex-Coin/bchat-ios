@@ -3,6 +3,7 @@
 import UIKit
 import BChatUIKit
 import BChatSnodeKit
+import NVActivityIndicatorView
 
 class LinkBNSVC: BaseVC {
     
@@ -122,6 +123,14 @@ class LinkBNSVC: BaseVC {
         return result
     }()
     
+    private lazy var loader: NVActivityIndicatorView = {
+        let result = NVActivityIndicatorView(frame: CGRect.zero, type: .circleStrokeSpin, color: Colors.bothGreenColor, padding: nil)
+        result.set(.width, to: 40)
+        result.set(.height, to: 40)
+        return result
+    }()
+
+    
     var isFromVerfied: Bool = false
     
     // MARK: - UIViewController life cycle
@@ -182,6 +191,10 @@ class LinkBNSVC: BaseVC {
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(dismissLinkBNSTapped), name: .dismissLinkBNSPopUpNotification, object: nil)
+        
+        view.addSubview(loader)
+        loader.autoCenterInSuperview()
+        showLoader(false)
     }
     
     /// <#Description#>
@@ -199,6 +212,7 @@ class LinkBNSVC: BaseVC {
     /// <#Description#>
     /// - Parameter sender: <#sender description#>
     @objc private func verifyButtonTapped(_ sender: UIButton) {
+        showLoader(true)
         // No Border
         bnsNameTextField.layer.borderWidth = 0
         bnsNameTextField.layer.borderColor = UIColor.clear.cgColor
@@ -207,8 +221,10 @@ class LinkBNSVC: BaseVC {
         guard let bnsUserName = bnsNameTextField.text else { return }
         let bnsName = bnsUserName.trimmingCharacters(in: .whitespaces)
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
+            self.showLoader(false)
             self.startNewDM(with: bchatID)
         }.catch { error in
+            self.showLoader(false)
             if let error = error as? SnodeAPI.Error {
                 self.bnsNameTextField.isUserInteractionEnabled = true
                 switch error {
@@ -286,6 +302,17 @@ class LinkBNSVC: BaseVC {
         self.verifyButton.layer.borderColor =  isEnabled ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         self.verifyButton.setTitleColor(isEnabled ? Colors.titleColor6 : Colors.cancelButtonTitleColor, for: .normal)
     }
+    
+    func showLoader(_ isShow: Bool) {
+        loader.isHidden = !isShow
+        view.isUserInteractionEnabled = !isShow
+        if isShow {
+            loader.startAnimating()
+        } else {
+            loader.stopAnimating()
+        }
+    }
+    
 
 }
 
