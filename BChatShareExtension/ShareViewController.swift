@@ -3,7 +3,7 @@ import PromiseKit
 import SignalUtilitiesKit
 import BChatUIKit
 
-final class ShareVC : UINavigationController, ShareViewDelegate, AppModeManagerDelegate {
+final class ShareViewController : UINavigationController, ShareViewDelegate, AppModeManagerDelegate {
     private var areVersionMigrationsComplete = false
     public static var attachmentPrepPromise: Promise<[SignalAttachment]>?
     
@@ -207,7 +207,7 @@ final class ShareVC : UINavigationController, ShareViewDelegate, AppModeManagerD
                     activityIndicator.dismiss { }
                 }
         }
-        ShareVC.attachmentPrepPromise = promise
+        ShareViewController.attachmentPrepPromise = promise
     }
     
     func shareViewWasUnlocked() {
@@ -375,7 +375,7 @@ final class ShareVC : UINavigationController, ShareViewDelegate, AppModeManagerD
                 continue
             }
             
-            if let itemProviders = ShareVC.preferredItemProviders(inputItem: inputItem) {
+            if let itemProviders = ShareViewController.preferredItemProviders(inputItem: inputItem) {
                 return Promise.value(itemProviders)
             }
         }
@@ -422,7 +422,7 @@ final class ShareVC : UINavigationController, ShareViewDelegate, AppModeManagerD
         // * UTIs aren't very descriptive (there are far more MIME types than UTI types)
         //   so in the case of file attachments we try to refine the attachment type
         //   using the file extension.
-        guard let srcUtiType = ShareVC.utiType(itemProvider: itemProvider) else {
+        guard let srcUtiType = ShareViewController.utiType(itemProvider: itemProvider) else {
             let error = ShareViewControllerError.unsupportedMedia
             return Promise(error: error)
         }
@@ -549,7 +549,7 @@ final class ShareVC : UINavigationController, ShareViewDelegate, AppModeManagerD
 
         Logger.debug("building DataSource with url: \(url), utiType: \(utiType)")
 
-        guard let dataSource = ShareVC.createDataSource(utiType: utiType, url: url, customFileName: loadedItem.customFileName) else {
+        guard let dataSource = ShareViewController.createDataSource(utiType: utiType, url: url, customFileName: loadedItem.customFileName) else {
             let error = ShareViewControllerError.assertionError(description: "Unable to read attachment data")
             return Promise(error: error)
         }
