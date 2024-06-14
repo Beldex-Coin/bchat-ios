@@ -116,18 +116,15 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                     }
                     // New flow (with wallet)
                     if SSKPreferences.areWalletEnabled { // Wallet Enable
+                        let viewController = NewPasswordVC()
+                        viewController.isGoingWallet = true
                         if SaveUserDefaultsData.WalletPassword.isEmpty { // empty
-                            let viewController = NewPasswordVC()
                             viewController.isGoingPopUp = true
-                            viewController.isGoingWallet = true
                             viewController.isCreateWalletPassword = true
-                            navigationController?.pushViewController(viewController, animated: true)
                         } else { //Pin Enter
-                            let viewController = NewPasswordVC()
-                            viewController.isGoingWallet = true
                             viewController.isVerifyWalletPassword = true
-                            navigationController!.pushViewController(viewController, animated: true)
                         }
+                        navigationController!.pushViewController(viewController, animated: true)
                     } else { //Not Enable wallet
                         let viewController = EnableWalletVC()
                         navigationController?.pushViewController(viewController, animated: true)
