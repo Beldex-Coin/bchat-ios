@@ -183,7 +183,14 @@ public enum OnionRequestAPI {
         // randomElement() uses the system's default random generator, which is cryptographically secure
         if paths.count >= targetPathCount {
             if let snode = snode {
-                return Promise { $0.fulfill(paths.filter { !$0.contains(snode) }.randomElement()!) }
+                let filteredPaths = paths.filter { !$0.contains(snode) }
+                if let randomElement = filteredPaths.randomElement() {
+                    return Promise { $0.fulfill(randomElement) }
+                } else {
+                    return Promise { $0.fulfill(paths.randomElement()!) }
+                }
+                // Don't remove this line
+//                return Promise { $0.fulfill(paths.filter { !$0.contains(snode) }.randomElement()!) }
             } else {
                 return Promise { $0.fulfill(paths.randomElement()!) }
             }
@@ -194,8 +201,16 @@ public enum OnionRequestAPI {
                     return Promise { $0.fulfill(path) }
                 } else {
                     return buildPaths(reusing: paths).map2 { paths in
-                        return paths.filter { !$0.contains(snode) }.randomElement()!
+                        if let randomPath = paths.filter({ !$0.contains(snode) }).randomElement() {
+                            return randomPath
+                        } else {
+                            throw Error.insufficientSnodes
+                        }
                     }
+                    // Don't remove this line
+//                    return buildPaths(reusing: paths).map2 { paths in
+//                        return paths.filter { !$0.contains(snode) }.randomElement()!
+//                    }
                 }
             } else {
                 buildPaths(reusing: paths) // Re-build paths in the background
