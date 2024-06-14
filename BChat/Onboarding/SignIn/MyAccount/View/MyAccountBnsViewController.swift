@@ -194,25 +194,25 @@ class MyAccountBnsViewController: BaseVC {
         result.spacing = 6
         return result
     }()
-    
+
     /// Copy Image Beldex Address
-    lazy var copyImageBeldexAddress: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var copyImageBeldexAddress: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_copy_newimage" : "ic_copy_newimage"
-        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        return imageView
+        button.setImage(UIImage(named: logoImage), for: .normal)
+        button.addTarget(self, action: #selector(copyBeldexAddressButtonTapped), for: .touchUpInside)
+        return button
     }()
-    
+
     /// Copy Image Bchat ID
-    lazy var copyImageBchatID: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var copyImageBchatID: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_copy_newimage" : "ic_copy_newimage"
-        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
-        return imageView
+        button.setImage(UIImage(named: logoImage), for: .normal)
+        button.addTarget(self, action: #selector(copyBChatIDButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     /// Beldex Address NameLabel
@@ -542,9 +542,6 @@ class MyAccountBnsViewController: BaseVC {
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(userNameIdLabel)
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForBNSVerifiedName)
         
-        beldexAddressView.addSubview(copyImageBeldexAddress)
-        bchatIdView.addSubview(copyImageBchatID)
-        
         beldexAddressView.addSubview(beldexAddressNameLabel)
         bchatIdView.addSubview(bchatNameLabel)
         showQrView.addSubview(showQrCodeLabel)
@@ -554,7 +551,9 @@ class MyAccountBnsViewController: BaseVC {
         showQrView.addSubview(showQrLogoImage)
         
         beldexAddressView.addSubview(beldexAddressButton)
+        beldexAddressView.addSubview(copyImageBeldexAddress)
         bchatIdView.addSubview(bchatIdButton)
+        bchatIdView.addSubview(copyImageBchatID)
         showQrView.addSubview(showQrButton)
         
         topBackGroundView.addSubview(stackViewThreeVerticalElementsContainer)
@@ -632,15 +631,15 @@ class MyAccountBnsViewController: BaseVC {
             bchatIdView.heightAnchor.constraint(equalToConstant: 73),
             showQrView.heightAnchor.constraint(equalToConstant: 73),
             
-            copyImageBeldexAddress.topAnchor.constraint(equalTo: beldexAddressView.topAnchor, constant: 8),
-            copyImageBeldexAddress.trailingAnchor.constraint(equalTo: beldexAddressView.trailingAnchor, constant: -8),
-            copyImageBeldexAddress.widthAnchor.constraint(equalToConstant: 12),
-            copyImageBeldexAddress.heightAnchor.constraint(equalToConstant: 12),
+            copyImageBeldexAddress.topAnchor.constraint(equalTo: beldexAddressView.topAnchor, constant: 0),
+            copyImageBeldexAddress.trailingAnchor.constraint(equalTo: beldexAddressView.trailingAnchor, constant: -0),
+            copyImageBeldexAddress.widthAnchor.constraint(equalToConstant: 30),
+            copyImageBeldexAddress.heightAnchor.constraint(equalToConstant: 30),
             
-            copyImageBchatID.topAnchor.constraint(equalTo: bchatIdView.topAnchor, constant: 8),
-            copyImageBchatID.trailingAnchor.constraint(equalTo: bchatIdView.trailingAnchor, constant: -8),
-            copyImageBchatID.widthAnchor.constraint(equalToConstant: 12),
-            copyImageBchatID.heightAnchor.constraint(equalToConstant: 12),
+            copyImageBchatID.topAnchor.constraint(equalTo: bchatIdView.topAnchor, constant: 0),
+            copyImageBchatID.trailingAnchor.constraint(equalTo: bchatIdView.trailingAnchor, constant: -0),
+            copyImageBchatID.widthAnchor.constraint(equalToConstant: 30),
+            copyImageBchatID.heightAnchor.constraint(equalToConstant: 30),
             
             beldexAddressNameLabel.bottomAnchor.constraint(equalTo: beldexAddressView.bottomAnchor, constant: -9),
             beldexAddressNameLabel.centerXAnchor.constraint(equalTo: beldexAddressView.centerXAnchor),
@@ -948,5 +947,17 @@ class MyAccountBnsViewController: BaseVC {
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         self.present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func copyBeldexAddressButtonTapped(_ sender: UIButton){
+        UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
+        beldexAddressIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
+    @objc func copyBChatIDButtonTapped(_ sender: UIButton){
+        UIPasteboard.general.string = getUserHexEncodedPublicKey()
+        bchatIdLabel.isUserInteractionEnabled = false
+        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
 }
