@@ -190,6 +190,7 @@ extension AppDelegate {
 
     @objc
     func verifyBnsName() {
+        guard NetworkReachabilityStatus.isConnectedToNetworkSignal() else { return }
         guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             if getUserHexEncodedPublicKey() == bchatID {

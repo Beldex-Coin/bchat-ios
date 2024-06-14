@@ -194,6 +194,8 @@ class LinkBNSVC: BaseVC {
         view.addSubview(loader)
         loader.autoCenterInSuperview()
         showLoader(false)
+        
+        verifyButtonUpdate(false)
     }
     
     /// <#Description#>
