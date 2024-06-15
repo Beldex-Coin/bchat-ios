@@ -594,6 +594,7 @@ final class HomeVC : BaseVC {
         alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
             Storage.write(
                 with: { [weak self] transaction in
+                    guard let strongSelf = self else { return }
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
                     // Block the contact
                     if
@@ -604,8 +605,8 @@ final class HomeVC : BaseVC {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)
                         DispatchQueue.main.async {
-                            self?.tableView.reloadData()
-                            self?.messageCollectionView.reloadData()
+                            strongSelf.tableView.reloadData()
+                            strongSelf.messageCollectionView.reloadData()
                         }
                     }
                 },
@@ -681,17 +682,17 @@ final class HomeVC : BaseVC {
                 WalletSharedData.sharedInstance.wallet = nil
                 guard let strongSelf = self else { return }
                 switch result {
-                case .success(let wallet):
-                    strongSelf.wallet = wallet
-                    WalletSharedData.sharedInstance.wallet = wallet
-                    strongSelf.connect(wallet: wallet)
-                    strongSelf.syncedflag = true
-                case .failure(_):
-                    DispatchQueue.main.async {
-                        strongSelf.refreshState.value = true
-                        strongSelf.conncetingState.value = false
-                        strongSelf.syncedflag = false
-                    }
+                    case .success(let wallet):
+                        strongSelf.wallet = wallet
+                        WalletSharedData.sharedInstance.wallet = wallet
+                        strongSelf.connect(wallet: wallet)
+                        strongSelf.syncedflag = true
+                    case .failure(_):
+                        DispatchQueue.main.async {
+                            strongSelf.refreshState.value = true
+                            strongSelf.conncetingState.value = false
+                            strongSelf.syncedflag = false
+                        }
                 }
             }
         }
@@ -711,7 +712,7 @@ final class HomeVC : BaseVC {
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     wallet.start()

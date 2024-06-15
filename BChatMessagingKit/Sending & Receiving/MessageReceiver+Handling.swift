@@ -6,17 +6,17 @@ extension MessageReceiver {
 
     public static func handle(_ message: Message, associatedWithProto proto: SNProtoContent, openGroupID: String?, isBackgroundPoll: Bool, using transaction: Any) throws {
         switch message {
-        case let message as ReadReceipt: handleReadReceipt(message, using: transaction)
-        case let message as TypingIndicator: handleTypingIndicator(message, using: transaction)
-        case let message as ClosedGroupControlMessage: handleClosedGroupControlMessage(message, using: transaction)
-        case let message as DataExtractionNotification: handleDataExtractionNotification(message, using: transaction)
-        case let message as ExpirationTimerUpdate: handleExpirationTimerUpdate(message, using: transaction)
-        case let message as ConfigurationMessage: handleConfigurationMessage(message, using: transaction)
-        case let message as UnsendRequest: handleUnsendRequest(message, using: transaction)
-        case let message as CallMessage: handleCallMessage(message, using: transaction)
-        case let message as MessageRequestResponse: handleMessageRequestResponse(message, using: transaction)
-        case let message as VisibleMessage: try handleVisibleMessage(message, associatedWithProto: proto, openGroupID: openGroupID, isBackgroundPoll: isBackgroundPoll, using: transaction)
-        default: fatalError()
+            case let message as ReadReceipt: handleReadReceipt(message, using: transaction)
+            case let message as TypingIndicator: handleTypingIndicator(message, using: transaction)
+            case let message as ClosedGroupControlMessage: handleClosedGroupControlMessage(message, using: transaction)
+            case let message as DataExtractionNotification: handleDataExtractionNotification(message, using: transaction)
+            case let message as ExpirationTimerUpdate: handleExpirationTimerUpdate(message, using: transaction)
+            case let message as ConfigurationMessage: handleConfigurationMessage(message, using: transaction)
+            case let message as UnsendRequest: handleUnsendRequest(message, using: transaction)
+            case let message as CallMessage: handleCallMessage(message, using: transaction)
+            case let message as MessageRequestResponse: handleMessageRequestResponse(message, using: transaction)
+            case let message as VisibleMessage: try handleVisibleMessage(message, associatedWithProto: proto, openGroupID: openGroupID, isBackgroundPoll: isBackgroundPoll, using: transaction)
+            default: fatalError()
         }
         
         var isMainAppAndActive = false
@@ -455,12 +455,18 @@ extension MessageReceiver {
         if let contact: Contact = Storage.shared.getContact(with: userBchatID) {
             contact.beldexAddress = senderBeldexAddress
             contact.isBnsHolder = isBnsHolder
+//            if let profile = message.profile {
+//                contact.profilePictureURL = profile.profilePictureURL
+//            }
             Storage.shared.setContact(contact, using: transaction)
         } else if !senderBeldexAddress.isEmpty {
             let contact = Contact(bchatID: userBchatID)
             contact.beldexAddress = senderBeldexAddress
             contact.isBnsHolder = isBnsHolder
-            contact.name = message.profile?.displayName
+            if let profile = message.profile {
+                contact.name = profile.displayName
+//                contact.profilePictureURL = profile.profilePictureURL
+            }
             Storage.shared.setContact(contact, using: transaction)
         }
         
