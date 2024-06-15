@@ -194,16 +194,18 @@ extension AppDelegate {
         guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             if getUserHexEncodedPublicKey() == bchatID {
-                UserDefaults.standard.set(true, forKey: Constants.isBnsVerifiedUser)
-                self.setBnsUserToContact(true)
+                self.setBnsUser(true)
             } else {
-                UserDefaults.standard.set(false, forKey: Constants.isBnsVerifiedUser)
-                self.setBnsUserToContact(false)
+                self.setBnsUser(false)
             }
         }.catch { error in
-            UserDefaults.standard.set(false, forKey: Constants.isBnsVerifiedUser)
-            self.setBnsUserToContact(false)
+            self.setBnsUser(false)
         }
+    }
+    
+    func setBnsUser(_ isBnsUser: Bool) {
+        UserDefaults.standard.set(isBnsUser, forKey: Constants.isBnsVerifiedUser)
+        self.setBnsUserToContact(isBnsUser)
     }
     
     func setBnsUserToContact(_ isBnsuser: Bool) {
