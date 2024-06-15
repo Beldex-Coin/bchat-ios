@@ -195,13 +195,25 @@ extension AppDelegate {
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             if getUserHexEncodedPublicKey() == bchatID {
                 UserDefaults.standard.set(true, forKey: Constants.isBnsVerifiedUser)
+                self.setBnsUserToContact(true)
+            } else {
+                UserDefaults.standard.set(false, forKey: Constants.isBnsVerifiedUser)
+                self.setBnsUserToContact(false)
             }
         }.catch { error in
             UserDefaults.standard.set(false, forKey: Constants.isBnsVerifiedUser)
-            if let error = error as? SnodeAPI.Error {
-                switch error {
-                    case .decryptionFailed, .hashingFailed, .validationFailed, .validationNone: break
-                    default: break
+            self.setBnsUserToContact(false)
+        }
+    }
+    
+    func setBnsUserToContact(_ isBnsuser: Bool) {
+        Storage.read { transaction in
+            TSContactThread.enumerateCollectionObjects(with: transaction) { object, _  in
+                guard let thread: TSContactThread = object as? TSContactThread, thread.shouldBeVisible else { return }
+                guard let contact = Storage.shared.getContact(with: thread.contactBChatID()) else { return }
+                Storage.write { transaction in
+                    contact.isBnsHolder = isBnsuser
+                    Storage.shared.setContact(contact, using: transaction)
                 }
             }
         }
