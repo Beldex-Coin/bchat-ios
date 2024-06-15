@@ -473,7 +473,7 @@ final class HomeVC : BaseVC {
             //Dynamic node array
             self.getDynamicNodesFromAPI()
             
-            if UserDefaults.standard.domainSchemas.isEmpty {}else {
+            if UserDefaults.standard.domainSchemas.isEmpty {} else {
                 hashArray2 = UserDefaults.standard.domainSchemas
             }
             myGroup.notify(queue: .main) {
@@ -484,7 +484,7 @@ final class HomeVC : BaseVC {
                         self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
                         SaveUserDefaultsData.SelectedNode = self.randomNodeValue
                     }
-                }else {
+                } else {
                     self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
                     SaveUserDefaultsData.SelectedNode = self.randomNodeValue
                 }
@@ -494,7 +494,7 @@ final class HomeVC : BaseVC {
                         self.isSyncingUI = true
                         self.syncingIsFromDelegateMethod = false
                     }
-                }else {
+                } else {
                     self.init_syncing_wallet()
                 }
             }
@@ -711,7 +711,7 @@ final class HomeVC : BaseVC {
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     wallet.start()
@@ -870,21 +870,6 @@ final class HomeVC : BaseVC {
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         button.layer.borderWidth = isBnsUser ? 3 : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
-        
-        if let statusView = view.viewWithTag(333222) {
-            statusView.removeFromSuperview()
-        }
-        // Path status indicator
-        let pathStatusView = PathStatusView()
-        pathStatusView.tag = 333222
-        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-        pathStatusView.set(.width, to: PathStatusView.size)
-        pathStatusView.set(.height, to: PathStatusView.size)
-        outerView.addSubview(pathStatusView)
-        pathStatusView.layer.borderWidth = 2
-        pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
-        pathStatusView.pin(.trailing, to: .trailing, of: outerView)
-        pathStatusView.pin(.top, to: .top, of: outerView)
 
         let barButton = UIBarButtonItem(customView: outerView)
         self.navigationItem.leftBarButtonItem = barButton

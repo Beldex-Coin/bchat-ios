@@ -94,6 +94,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         
         continueButton.backgroundColor = Colors.cellGroundColor3
         continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        continueButton.isUserInteractionEnabled = false
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -164,9 +165,11 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         if str.count == 0 {
             continueButton.backgroundColor = Colors.cellGroundColor3
             continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            continueButton.isUserInteractionEnabled = false
         } else {
             continueButton.backgroundColor = Colors.bothGreenColor
             continueButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            continueButton.isUserInteractionEnabled = true
         }
     }
     

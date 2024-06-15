@@ -1187,6 +1187,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // Send attachment
         sendAttachments([ attachment ], with: "")
         audioPlayer = nil
+        isAudioRecording = false
     }
 
     func cancelVoiceMessageRecording() {
@@ -1241,6 +1242,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     @objc func deleteAudioButtonTapped() {
+        isAudioRecording = false
         deleteAudioView.isHidden = true
         cancelVoiceMessageRecording()
         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
