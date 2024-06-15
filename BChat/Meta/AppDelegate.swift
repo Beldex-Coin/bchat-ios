@@ -193,24 +193,21 @@ extension AppDelegate {
         guard NetworkReachabilityStatus.isConnectedToNetworkSignal() else { return }
         guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
-            self.setBnsUser(getUserHexEncodedPublicKey() == bchatID)
+            self.setBnsUserToContact(getUserHexEncodedPublicKey() == bchatID)
         }.catch { error in
-            self.setBnsUser(false)
+            self.setBnsUserToContact(false)
         }
     }
     
-    func setBnsUser(_ isBnsUser: Bool) {
+    func setBnsUserToContact(_ isBnsUser: Bool) {
         UserDefaults.standard.set(isBnsUser, forKey: Constants.isBnsVerifiedUser)
-        self.setBnsUserToContact(isBnsUser)
-    }
-    
-    func setBnsUserToContact(_ isBnsuser: Bool) {
+        NotificationCenter.default.post(name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         Storage.read { transaction in
             TSContactThread.enumerateCollectionObjects(with: transaction) { object, _  in
                 guard let thread: TSContactThread = object as? TSContactThread, thread.shouldBeVisible else { return }
                 guard let contact = Storage.shared.getContact(with: thread.contactBChatID()) else { return }
                 Storage.write { transaction in
-                    contact.isBnsHolder = isBnsuser
+                    contact.isBnsHolder = isBnsUser
                     Storage.shared.setContact(contact, using: transaction)
                 }
             }

@@ -800,6 +800,7 @@ final class HomeVC : BaseVC {
     
     @objc private func handleLocalProfileDidChangeNotification(_ notification: Notification) {
         updateNavBarButtons()
+        reload()
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
