@@ -236,8 +236,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                                 }
                             }
                         } else {
-                            payAsChatButton.isHidden = true
-                            progressView?.isHidden = true
+                            if !isAudioRecording {
+                                payAsChatButton.isHidden = false
+                                progressView?.isHidden = true
+                            }
                         }
                     } else {
                         payAsChatButton.isHidden = true
@@ -470,6 +472,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     @objc private func showVoiceMessageUI() {
+        isAudioRecording = true
         payAsChatButton.isHidden = true
         progressView?.isHidden = true
         voiceMessageRecordingView?.removeFromSuperview()

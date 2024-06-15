@@ -149,6 +149,7 @@ class RestoreSeedNewVC: BaseVC {
         self.placeHolderSeedLabel()
         restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
         restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+        restoreButton.isUserInteractionEnabled = false
         
     }
     
@@ -218,6 +219,7 @@ class RestoreSeedNewVC: BaseVC {
         self.placeHolderSeedLabel()
         restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
         restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+        restoreButton.isUserInteractionEnabled = false
         self.restoreButton.isUserInteractionEnabled = true
     }
     
@@ -225,7 +227,7 @@ class RestoreSeedNewVC: BaseVC {
     @objc func restoreActionTapped(_ sender: UIButton){
         if seedFlag == false {
             self.showToastMsg(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
-        }else {
+        } else {
             self.restoreButton.isUserInteractionEnabled = false
             let strings : String! = mnemonicTextView.text.lowercased()
             let spaces = CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters)
@@ -234,7 +236,7 @@ class RestoreSeedNewVC: BaseVC {
             if words.count > 25 {
                 self.showToastMsg(message: NSLocalizedString("INVALID_SEED_ERROR_NEW", comment: ""), seconds: 2.0)
                 self.restoreButton.isUserInteractionEnabled = true
-            }else {
+            } else {
                 let mnemonic = mnemonicTextView.text!.lowercased()
                 do {
                     let hexEncodedSeed = try Mnemonic.decode(mnemonic: mnemonic)
@@ -279,10 +281,12 @@ extension RestoreSeedNewVC: UITextViewDelegate {
             descriptionLabel.isHidden = true
             restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
             restoreButton.setTitleColor(.white, for: .normal)
-        }else {
+            restoreButton.isUserInteractionEnabled = true
+        } else {
             descriptionLabel.isHidden = false
             restoreButton.backgroundColor = UIColor(hex: 0x1C1C26)
             restoreButton.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
+            restoreButton.isUserInteractionEnabled = false
         }
         wordCountLabel.text = "\(words.count)/25"
         if words.count > 25 {
