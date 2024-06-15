@@ -13,6 +13,7 @@ import NVActivityIndicatorView
 
 // Required globle variable for audio is playing or not.
 var isAudioPlaying = false
+var isAudioRecording = false
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {

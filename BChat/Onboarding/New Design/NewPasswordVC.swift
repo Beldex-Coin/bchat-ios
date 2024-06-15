@@ -700,6 +700,9 @@ class NewPasswordVC: BaseVC {
             }
             
             if isPasswordEnterFirstTime {
+                if confirmPasswordText.count != 4 {
+                    return
+                }
                 if passwordText == confirmPasswordText {
                     SaveUserDefaultsData.BChatPassword = confirmPasswordText
                 } else {

@@ -476,15 +476,10 @@ AVPlayerLayer *_playerLayer;
 
 - (void) fullScreenButtonTapped:(NSNotification *) notification
 {
-    OWSAssertDebug(self.videoPlayer);
-    /*
-    
+    OWSAssertDebug(self.videoPlayer);    
     if (_isVideoPlayingInFullscreen == NO) {
         _isVideoPlayingInFullscreen = YES;
         _mediaView.frame = self.view.bounds;
-//        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
-//        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-//        [self.view.layer addSublayer:playerLayer];
         CGFloat angle = M_PI / 2;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
         _playerLayer.transform = rotationTransform;
@@ -509,14 +504,7 @@ AVPlayerLayer *_playerLayer;
         }
     } else {
         _isVideoPlayingInFullscreen = NO;
-//        self.mediaView = [self buildVideoPlayerView];
-//        [self updateContents];
-//        [_mediaView removeFromSuperview];
-//        [self.scrollView addSubview:self.mediaView];
         _mediaView.frame = _initialMediaViewFrame;
-//        AVPlayerLayer *playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
-//        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-//        [self.view.layer addSublayer:playerLayer];
         CGFloat angle = 0;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
         _playerLayer.transform = rotationTransform;
@@ -525,9 +513,7 @@ AVPlayerLayer *_playerLayer;
                                                             object:nil
                                                           userInfo:nil];
     }
-    
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
-     */
 }
 
 - (void)pauseVideo

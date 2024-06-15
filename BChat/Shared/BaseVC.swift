@@ -98,12 +98,23 @@ class BaseVC : UIViewController {
         headingImageView.contentMode = .scaleAspectFit
         headingImageView.set(.width, to: 90)
         headingImageView.set(.height, to: Values.mediumFontSize)
+        if let statusView = view.viewWithTag(333222) {
+            statusView.removeFromSuperview()
+        }
+        // Path status indicator
+        let pathStatusView = PathStatusView()
+        pathStatusView.tag = 333222
+        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
+        pathStatusView.set(.width, to: PathStatusView.size)
+        pathStatusView.set(.height, to: PathStatusView.size)
+        pathStatusView.layer.borderWidth = 2
+        pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
         let spacer = UIView()
         spacer.set(.width, to: UIScreen.main.bounds.width - 261)
         spacer.set(.height, to: Values.mediumFontSize)
-        let stack = UIStackView(arrangedSubviews: [headingImageView, spacer])
+        let stack = UIStackView(arrangedSubviews: [headingImageView, pathStatusView, spacer])
         stack.axis = .horizontal
-        stack.alignment = .leading        
+        stack.alignment = .center
         navigationItem.titleView = stack
     }
 
