@@ -193,11 +193,7 @@ extension AppDelegate {
         guard NetworkReachabilityStatus.isConnectedToNetworkSignal() else { return }
         guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
-            if getUserHexEncodedPublicKey() == bchatID {
-                self.setBnsUser(true)
-            } else {
-                self.setBnsUser(false)
-            }
+            self.setBnsUser(getUserHexEncodedPublicKey() == bchatID)
         }.catch { error in
             self.setBnsUser(false)
         }

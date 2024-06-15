@@ -947,8 +947,9 @@ final class HomeVC : BaseVC {
         self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
     }
     
-    private func delete(_ thread: TSThread) {
-        let openGroupV2 = Storage.shared.getV2OpenGroup(for: thread.uniqueId!)
+    func deleteThread(_ thread: TSThread) {
+        guard let uniqueId = thread.uniqueId else { return }
+        let openGroupV2 = Storage.shared.getV2OpenGroup(for: uniqueId)
         Storage.write { transaction in
             Storage.shared.cancelPendingMessageSendJobs(for: thread.uniqueId!, using: transaction)
             if let openGroupV2 = openGroupV2 {
