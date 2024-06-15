@@ -38,7 +38,7 @@ public final class SnodeAPI : NSObject {
     private static let maxRetryCount: UInt = 8
     private static let minSwarmSnodeCount = 3
     
-    // MAINNET and TESTNET links
+    // Seed Node Pool
     private static let seedNodePool: Set<String> = Features.isTestNet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443" ]
     
     private static let snodeFailureThreshold = 3

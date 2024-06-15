@@ -869,22 +869,22 @@ class MyAccountBnsViewController: BaseVC {
     
     /// Update BNS Details
     func updateBNSDetails() {
-        let isBNSVerified = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
-        shadowBackgroundImage.isHidden = !isBNSVerified
-        stackViewForBNSVerifiedName.isHidden = !isBNSVerified
-        linkYourBNSBackgroundView.isHidden = isBNSVerified
-        readMoreAboutBackgroundView.isHidden = isBNSVerified
-        bchatIDExpandView.isHidden = isBNSVerified
-        showQRExpandView.isHidden = isBNSVerified
-        bnsApprovalIconImage.isHidden = !isBNSVerified
-        profilePictureImage.layer.borderWidth = isBNSVerified ? 3 : 0
-        profilePictureImage.layer.borderColor = isBNSVerified ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
+        shadowBackgroundImage.isHidden = !isBnsUser
+        stackViewForBNSVerifiedName.isHidden = !isBnsUser
+        linkYourBNSBackgroundView.isHidden = isBnsUser
+        readMoreAboutBackgroundView.isHidden = isBnsUser
+        bchatIDExpandView.isHidden = isBnsUser
+        showQRExpandView.isHidden = isBnsUser
+        bnsApprovalIconImage.isHidden = !isBnsUser
+        profilePictureImage.layer.borderWidth = isBnsUser ? 3 : 0
+        profilePictureImage.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         
         beldexAddressExpandView.isHidden = true
         bchatIDExpandView.isHidden = true
         showQRExpandView.isHidden = true
         
-        if isBNSVerified {
+        if isBnsUser {
             stackViewForFinalLinkBNS.isHidden = false
         }
     }
