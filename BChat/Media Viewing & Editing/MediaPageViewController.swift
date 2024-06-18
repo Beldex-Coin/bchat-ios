@@ -488,24 +488,22 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     @objc
     public func didMenuButton(sender: Any) {
         isMenuButtonSelected = !isMenuButtonSelected
-        if isMenuButtonSelected {
-            topBackGroundView.isHidden = false
-        } else {
-            topBackGroundView.isHidden = true
-        }
+        hideMenuPopup(!isMenuButtonSelected)
     }
 
     @objc
     public func didPressAllMediaButton(sender: Any) {
         Logger.debug("")
-        topBackGroundView.isHidden = true
+        hideMenuPopup(true)
         currentViewController.stopAnyVideo()
 
         guard let mediaGalleryDataSource = self.mediaGalleryDataSource else {
             owsFailDebug("mediaGalleryDataSource was unexpectedly nil")
             return
         }
-        mediaGalleryDataSource.showAllMedia(focusedItem: currentItem)
+        //mediaGalleryDataSource.showAllMedia(focusedItem: currentItem)
+        
+        dismissSelf(animated: true)
     }
 
     @objc
@@ -806,13 +804,24 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             }
         }
     }
+    
+    // Hide menu popup
+    func hideMenuPopup(_ isHide: Bool) {
+        isMenuButtonSelected = !isHide
+        topBackGroundView.isHidden = isHide
+    }
 
     // MARK: MediaDetailViewControllerDelegate
+    
+    @objc
+    public func mediaDetailViewControllerHidePopup(_ mediaDetailViewController: MediaDetailViewController) {
+        hideMenuPopup(true)
+    }
 
     @objc
     public func mediaDetailViewControllerDidTapMedia(_ mediaDetailViewController: MediaDetailViewController) {
         Logger.debug("")
-
+        hideMenuPopup(true)
         self.shouldHideToolbars = !self.shouldHideToolbars
     }
 
