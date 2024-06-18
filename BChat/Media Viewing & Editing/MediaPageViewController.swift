@@ -501,6 +501,8 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             owsFailDebug("mediaGalleryDataSource was unexpectedly nil")
             return
         }
+        
+        // Don't delete the below code. Need to analyse.
         //mediaGalleryDataSource.showAllMedia(focusedItem: currentItem)
         
         dismissSelf(animated: true)
