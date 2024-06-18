@@ -589,13 +589,13 @@ final class HomeVC : BaseVC {
     
     func deleteForMessageRequest(_ thread: TSThread) {
         guard let uniqueId: String = thread.uniqueId else { return }
-        
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
         alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
             Storage.write(
                 with: { [weak self] transaction in
                     guard let strongSelf = self else { return }
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
+                    self?.updateContactAndThread(thread: thread, with: transaction)
                     // Block the contact
                     if
                         let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
