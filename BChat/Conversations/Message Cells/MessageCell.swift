@@ -84,8 +84,8 @@ protocol MessageCellDelegate : AnyObject {
     func handleViewItemDoubleTapped(_ viewItem: ConversationViewItem)
     func handleViewItemSwiped(_ viewItem: ConversationViewItem, state: SwipeState)
     func showFullText(_ viewItem: ConversationViewItem)
-    func openURL(_ url: URL)
     func handleReplyButtonTapped(for viewItem: ConversationViewItem)
     func showUserDetails(for bchatID: String)
     func handleTapToCallback()
+    func showOpenURLView(_ url: URL)
 }
