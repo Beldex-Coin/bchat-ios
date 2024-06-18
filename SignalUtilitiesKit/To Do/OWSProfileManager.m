@@ -507,6 +507,14 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
             }
             
             SNContact *latestContact = [LKStorage.shared getContactWithBChatID:contact.bchatID];
+            
+            if (fileName && latestContact) {
+                latestContact.profilePictureFileName = fileName;
+                [LKStorage writeWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
+                    [LKStorage.shared setContact:latestContact usingTransaction:transaction];
+                }];
+                [self updateProfileAvatarCache:image filename:fileName];
+            }
 
             BOOL hasProfileEncryptionKey = (latestContact.profileEncryptionKey != nil
                 && latestContact.profileEncryptionKey.keyData.length > 0);

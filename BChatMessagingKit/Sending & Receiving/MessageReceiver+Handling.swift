@@ -455,9 +455,9 @@ extension MessageReceiver {
         if let contact: Contact = Storage.shared.getContact(with: userBchatID) {
             contact.beldexAddress = senderBeldexAddress
             contact.isBnsHolder = isBnsHolder
-//            if let profile = message.profile {
-//                contact.profilePictureURL = profile.profilePictureURL
-//            }
+            if let profile = message.profile {
+                contact.profilePictureURL = profile.profilePictureURL
+            }
             Storage.shared.setContact(contact, using: transaction)
         } else if !senderBeldexAddress.isEmpty {
             let contact = Contact(bchatID: userBchatID)
@@ -465,7 +465,7 @@ extension MessageReceiver {
             contact.isBnsHolder = isBnsHolder
             if let profile = message.profile {
                 contact.name = profile.displayName
-//                contact.profilePictureURL = profile.profilePictureURL
+                contact.profilePictureURL = profile.profilePictureURL
             }
             Storage.shared.setContact(contact, using: transaction)
         }
