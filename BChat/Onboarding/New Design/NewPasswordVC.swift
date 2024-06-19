@@ -445,7 +445,6 @@ class NewPasswordVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Create Password"

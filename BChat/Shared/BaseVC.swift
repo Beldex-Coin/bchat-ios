@@ -150,4 +150,11 @@ class BaseVC : UIViewController {
         }
         ensureWindowBackground()
     }
+    
+    // Back To BChat Home screen
+    @objc func backToHomeScreen() {
+        if let viewController = navigationController?.viewControllers.first(where: {$0 is HomeVC}) {
+              navigationController?.popToViewController(viewController, animated: true)
+        }
+    }
 }

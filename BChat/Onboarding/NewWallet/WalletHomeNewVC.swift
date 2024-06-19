@@ -946,9 +946,10 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "My Wallet"
         
-        let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysTemplate)
-        let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(isGoingToBChatHomeScreen))
+        let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysOriginal)
+        let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backToHomeScreen))
         navigationItem.leftBarButtonItem = leftBarItem
+        leftBarItem.imageInsets = UIEdgeInsets(top: -1, leading: -6, bottom: 0, trailing: 0)
         
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "icsettings1_New")!, style: .plain, target: self, action: #selector(settingsOptionTapped))
         let rightBarButtonItems = [rightBarItem]
@@ -1492,14 +1493,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
     }
     
-    
-    // MARK: - going To BChat Home
-    @objc func isGoingToBChatHomeScreen() {
-        let homeVC = HomeVC()
-        self.navigationController!.setViewControllers([ homeVC ], animated: true)
-    }
-    
-    // MARK: - Settings Option
+    // Settings Option
     @objc func settingsOptionTapped() {
         let vc = WalletSettingsNewVC()
         navigationController!.pushViewController(vc, animated: true)
