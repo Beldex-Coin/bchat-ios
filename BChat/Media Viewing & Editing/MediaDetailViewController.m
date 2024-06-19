@@ -476,7 +476,6 @@ AVPlayerLayer *_playerLayer;
 
 - (void) fullScreenButtonTapped:(NSNotification *) notification
 {
-    OWSAssertDebug(self.videoPlayer);    
     if (_isVideoPlayingInFullscreen == NO) {
         _isVideoPlayingInFullscreen = YES;
         _mediaView.frame = self.view.bounds;
@@ -484,23 +483,14 @@ AVPlayerLayer *_playerLayer;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
         _playerLayer.transform = rotationTransform;
         _playerLayer.frame = self.view.bounds;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationBarForFullscreenVideo"
+                                                            object:nil
+                                                          userInfo:nil];
         
-        [self.videoProgressBar removeFromSuperview];
         if (self.isVideo) {
-            PlayerProgressBar *videoProgressBar = [PlayerProgressBar new];
-            videoProgressBar.delegate = self;
-            videoProgressBar.player = self.videoPlayer.avPlayer;
-            videoProgressBar.hidden = NO;
-            self.videoProgressBar = videoProgressBar;
-            [self.view addSubview:videoProgressBar];
-            videoProgressBar.layer.cornerRadius = 22;
-            //            videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
-            videoProgressBar.layer.masksToBounds = YES;
-            [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
-            [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
-            [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
-            CGFloat kVideoProgressBarHeight = 42;
-            [videoProgressBar autoSetDimension:ALDimensionHeight toSize:kVideoProgressBarHeight];
+            self.videoProgressBar.translatesAutoresizingMaskIntoConstraints = YES;
+            self.videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
+            self.videoProgressBar.frame =  CGRectMake(20, 50, 42, self.view.frame.size.height - 100);
         }
     } else {
         _isVideoPlayingInFullscreen = NO;
@@ -509,6 +499,21 @@ AVPlayerLayer *_playerLayer;
         CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
         _playerLayer.transform = rotationTransform;
         _playerLayer.frame = _initialMediaViewFrame;
+        [self.videoProgressBar removeFromSuperview];
+        PlayerProgressBar *videoProgressBar = [PlayerProgressBar new];
+        videoProgressBar.delegate = self;
+        videoProgressBar.player = self.videoPlayer.avPlayer;
+        videoProgressBar.hidden = NO;
+        self.videoProgressBar = videoProgressBar;
+        [self.view addSubview:videoProgressBar];
+        videoProgressBar.layer.cornerRadius = 22;
+        //            videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
+        videoProgressBar.layer.masksToBounds = YES;
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
+        CGFloat kVideoProgressBarHeight = 42;
+        [videoProgressBar autoSetDimension:ALDimensionHeight toSize:kVideoProgressBarHeight];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationBarForFullscreenVideo"
                                                             object:nil
                                                           userInfo:nil];

@@ -247,7 +247,6 @@ public class PlayerProgressBar: UIView {
     // fullScreen button action
     @objc func fullScreenButtonTapped(notification: NSNotification) {
          NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideNavigationBarForFullscreenVideo"), object: nil)
     }
 
     @objc
