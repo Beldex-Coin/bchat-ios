@@ -114,7 +114,8 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     }
                     let alert = UIAlertController(title: NSLocalizedString("Delete Conversation?", comment: ""), message: message, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
-                        self?.delete(thread)
+                        guard let strongSelf = self else { return }
+                        strongSelf.deleteThread(thread)
                     })
                     alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in })
                     self.presentAlert(alert)
@@ -126,7 +127,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = true
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                    tableView.reloadRows(at: [indexPath], with: .fade)
                 })
                 pin.backgroundColor = Colors.mainBackGroundColor2
                 pin.image = UIImage(named: "Pin_menu")
@@ -135,7 +136,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = false
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                    tableView.reloadRows(at: [indexPath], with: .fade)
                 })
                 unpin.backgroundColor = Colors.mainBackGroundColor2
                 unpin.image = UIImage(named: "ic_unpin")
@@ -155,7 +156,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                             completion: {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                                 DispatchQueue.main.async {
-                                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                                    tableView.reloadRows(at: [indexPath], with: .fade)
                                 }
                             }
                         )

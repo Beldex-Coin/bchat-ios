@@ -1841,20 +1841,20 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if message.callState == .outgoing {
                 let cell = tableView.dequeueReusableCell(withIdentifier: OutgoingCallTableViewCell.identifier) as! OutgoingCallTableViewCell
                 cell.delegate = self
-                cell.thread = self.thread
+                cell.thread = thread
                 cell.viewItem = viewItem
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: CallTableViewCell.identifier) as! CallTableViewCell
                 cell.delegate = self
-                cell.thread = self.thread
+                cell.thread = thread
                 cell.viewItem = viewItem
                 return cell
             } 
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.getCellType(for: viewItem).identifier) as! MessageCell
             cell.delegate = self
-            cell.thread = self.thread
+            cell.thread = thread
             cell.viewItem = viewItem
             return cell
         }

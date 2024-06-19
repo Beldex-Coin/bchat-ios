@@ -133,6 +133,10 @@ AVPlayerLayer *_playerLayer;
             selector:@selector(fullScreenButtonTapped:)
             name:@"fullScreenButtonTapped"
             object:nil];
+    
+    UITapGestureRecognizer *singleTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidePopupView:)];
+    [self.view addGestureRecognizer:singleTap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -349,6 +353,10 @@ AVPlayerLayer *_playerLayer;
 }
 
 #pragma mark - Gesture Recognizers
+
+- (void)hidePopupView: (UITapGestureRecognizer *)gesture {
+    [self.delegate mediaDetailViewControllerHidePopup: self];
+}
 
 - (void)didSingleTapImage:(UITapGestureRecognizer *)gesture
 {

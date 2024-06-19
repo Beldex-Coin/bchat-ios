@@ -589,12 +589,13 @@ final class HomeVC : BaseVC {
     
     func deleteForMessageRequest(_ thread: TSThread) {
         guard let uniqueId: String = thread.uniqueId else { return }
-        
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
         alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
             Storage.write(
                 with: { [weak self] transaction in
+                    guard let strongSelf = self else { return }
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
+                    self?.updateContactAndThread(thread: thread, with: transaction)
                     // Block the contact
                     if
                         let bchatId: String = (thread as? TSContactThread)?.contactBChatID(),
@@ -604,8 +605,8 @@ final class HomeVC : BaseVC {
                         contact.isBlocked = true
                         Storage.shared.setContact(contact, using: transaction)
                         DispatchQueue.main.async {
-                            self?.tableView.reloadData()
-                            self?.messageCollectionView.reloadData()
+                            strongSelf.tableView.reloadData()
+                            strongSelf.messageCollectionView.reloadData()
                         }
                     }
                 },
@@ -681,17 +682,17 @@ final class HomeVC : BaseVC {
                 WalletSharedData.sharedInstance.wallet = nil
                 guard let strongSelf = self else { return }
                 switch result {
-                case .success(let wallet):
-                    strongSelf.wallet = wallet
-                    WalletSharedData.sharedInstance.wallet = wallet
-                    strongSelf.connect(wallet: wallet)
-                    strongSelf.syncedflag = true
-                case .failure(_):
-                    DispatchQueue.main.async {
-                        strongSelf.refreshState.value = true
-                        strongSelf.conncetingState.value = false
-                        strongSelf.syncedflag = false
-                    }
+                    case .success(let wallet):
+                        strongSelf.wallet = wallet
+                        WalletSharedData.sharedInstance.wallet = wallet
+                        strongSelf.connect(wallet: wallet)
+                        strongSelf.syncedflag = true
+                    case .failure(_):
+                        DispatchQueue.main.async {
+                            strongSelf.refreshState.value = true
+                            strongSelf.conncetingState.value = false
+                            strongSelf.syncedflag = false
+                        }
                 }
             }
         }
@@ -799,6 +800,7 @@ final class HomeVC : BaseVC {
     
     @objc private func handleLocalProfileDidChangeNotification(_ notification: Notification) {
         updateNavBarButtons()
+        reload()
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
@@ -932,8 +934,9 @@ final class HomeVC : BaseVC {
         self.navigationController?.setViewControllers([ self, conversationVC ], animated: true)
     }
     
-    private func delete(_ thread: TSThread) {
-        let openGroupV2 = Storage.shared.getV2OpenGroup(for: thread.uniqueId!)
+    func deleteThread(_ thread: TSThread) {
+        guard let uniqueId = thread.uniqueId else { return }
+        let openGroupV2 = Storage.shared.getV2OpenGroup(for: uniqueId)
         Storage.write { transaction in
             Storage.shared.cancelPendingMessageSendJobs(for: thread.uniqueId!, using: transaction)
             if let openGroupV2 = openGroupV2 {
