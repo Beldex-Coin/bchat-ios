@@ -626,23 +626,23 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
                     let requestRange: Range<Int> = { () -> Range<Int> in
                         let range: Range<Int> = { () -> Range<Int> in
                             switch direction {
-                            case .around:
-                                // To keep it simple, this isn't exactly *amount* sized if `message` window overlaps the end or
-                                // beginning of the view. Still, we have sufficient buffer to fetch more as the user swipes.
-                                let start: Int = initialIndex - Int(amount) / 2
-                                let end: Int = initialIndex + Int(amount) / 2 + 1
+                                case .around:
+                                    // To keep it simple, this isn't exactly *amount* sized if `message` window overlaps the end or
+                                    // beginning of the view. Still, we have sufficient buffer to fetch more as the user swipes.
+                                    let start: Int = initialIndex - Int(amount) / 2
+                                    let end: Int = initialIndex + Int(amount) / 2 + 1
 
-                                return start..<end
-                            case .before:
-                                let start: Int = initialIndex - Int(amount)
-                                let end: Int = initialIndex
+                                    return start..<end
+                                case .before:
+                                    let start: Int = initialIndex - Int(amount)
+                                    let end: Int = initialIndex
 
-                                return start..<end
-                            case  .after:
-                                let start: Int = initialIndex
-                                let end: Int = initialIndex  + Int(amount) + 1
+                                    return start..<end
+                                case  .after:
+                                    let start: Int = initialIndex
+                                    let end: Int = initialIndex  + Int(amount) + 1
 
-                                return start..<end
+                                    return start..<end
                             }
                         }()
 
