@@ -290,7 +290,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         navigationBar.barTintColor = Colors.navigationBarBackground
         
         NotificationCenter.default.addObserver(self, selector: #selector(hideNavigationBarForFullscreenVideo), name: Notification.Name("hideNavigationBarForFullscreenVideo"), object: nil)
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBarForFullscreenVideo), name: Notification.Name("showNavigationBarForFullscreenVideo"), object: nil)
         
     }
