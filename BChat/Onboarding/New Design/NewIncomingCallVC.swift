@@ -583,7 +583,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     func handleEndCallMessage() {
         NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
         SNLog("[Calls] Ending call.")
-        self.incomingCallLabel.isHidden = false
+        self.incomingCallLabel.isHidden = true
         self.callDurationLabel.isHidden = true
         callDurationLabel.text = "Call Ended"
         self.alertOnCallEnding()

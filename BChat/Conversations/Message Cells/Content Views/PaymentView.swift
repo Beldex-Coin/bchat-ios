@@ -46,7 +46,7 @@ final class PaymentView : UIView {
             let attributedString = NSMutableAttributedString(string: fullText)
 //            attributedString.addAttribute(.foregroundColor, value: Colors.aboutContentLabelColor, range: NSRange(rangeBeldex, in: fullText))
             let direction = isOutgoing ? "send" : "receive"
-            if direction == "send" {
+            if direction != "send" {
                 attributedString.addAttribute(.foregroundColor, value: Colors.titleColor, range: NSRange(rangeBeldex, in: fullText))
                 let colorCode = isLightMode ? UIColor(hex: 0xACACAC) : UIColor(hex: 0xACACAC)
                 attributedString.addAttribute(.foregroundColor, value: colorCode, range: NSRange(rangeAddress, in: fullText))
@@ -67,9 +67,13 @@ final class PaymentView : UIView {
         
         if direction == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
-            subtitleLabel.textColor = Colors.greenColor
+//            subtitleLabel.textColor = Colors.greenColor
         } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
+        }
+        
+        if direction == "receive" {
+            subtitleLabel.textColor = Colors.greenColor
         }
         
         // Bottom time label
@@ -79,7 +83,7 @@ final class PaymentView : UIView {
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
         timeLabel.text = description
-        if direction == "send" {
+        if direction != "send" {
             timeLabel.textColor = Colors.messageTimeLabelColor
         } else {
             timeLabel.textColor = Colors.callCellTitle
@@ -89,7 +93,7 @@ final class PaymentView : UIView {
         // Tick mark imageView
         let tickMarkImageView = UIImageView()
         tickMarkImageView.contentMode = .scaleAspectFit
-        if direction == "send" {
+        if direction != "send" {
             tickMarkImageView.image = UIImage(named: "ic_tick_mark")
         } else {
             tickMarkImageView.image = UIImage(named: "ic_tick_mark2")
@@ -126,9 +130,9 @@ final class PaymentView : UIView {
         
         // Icon
         let iconSize = PaymentView.iconSize
-        var iconName = isLightMode ? "beldeximg2" : "beldeximg"
+        var iconName = "beldeximg"
         if direction == "receive" && isLightMode {
-            iconName = "beldeximg"
+            iconName = "beldeximg2"
         }
         let icon = UIImage(named: iconName)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
         let iconImageViewSize = PaymentView.iconImageViewSize
@@ -144,7 +148,7 @@ final class PaymentView : UIView {
         let labelStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
         titleLabelContainer.set(.height, to: PaymentView.iconImageViewSize)
         labelStackView.layer.cornerRadius = 16
-        if direction == "send" {
+        if direction != "send" {
             labelStackView.backgroundColor = Colors.paymentViewInsideColor
         } else {
             labelStackView.backgroundColor = Colors.paymentViewInsideReciverColor
@@ -162,10 +166,10 @@ final class PaymentView : UIView {
         let direction1 = isOutgoing ? "send" : "receive"
         if direction1 == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
-            subtitleLabel.textColor = Colors.greenColor
+            subtitleLabel.textColor = UIColor.white
         } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
-            subtitleLabel.textColor = UIColor.white
+            subtitleLabel.textColor = Colors.greenColor
         }
         addSubview(mainStackView)
         addSubview(timeLabel)

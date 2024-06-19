@@ -449,7 +449,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     bubbleView.backgroundColor = .clear
                     paymentView.pin(to: snContentView)
                     let direction = isOutgoing ? "send" : "receive"
-                    if direction == "send" {
+                    if direction != "send" {
                         paymentView.backgroundColor = Colors.incomingMessageColor
                     } else {
                         paymentView.backgroundColor = Colors.greenColor
@@ -696,7 +696,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        delegate?.openURL(URL)
+        delegate?.showOpenURLView(URL)
         return false
     }
     

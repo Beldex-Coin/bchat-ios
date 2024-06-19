@@ -752,6 +752,92 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return result
     }()
     
+    lazy var openURLView: UIView = {
+        let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = Colors.smallBackGroundColor
+        View.layer.borderWidth = 1
+        View.layer.borderColor = Colors.borderColorNew.cgColor
+        View.layer.cornerRadius = 20
+        View.tag = 5555
+        return View
+    }()
+    
+    lazy var openURLViewTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("modal_open_url_title", comment: "")
+        return result
+    }()
+    
+    lazy var openURLViewSubTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""))
+        result.numberOfLines = 0
+        result.textAlignment = .center
+        result.lineBreakMode = .byWordWrapping
+        return result
+    }()
+    
+    lazy var openURLViewOpenButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Open", for: .normal)
+        button.layer.cornerRadius = 26
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.addTarget(self, action: #selector(openURLViewOpenButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_openUrl")
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        return button
+    }()
+    
+    lazy var openURLViewCopyButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Copy", for: .normal)
+        button.layer.cornerRadius = 26
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
+        button.addTarget(self, action: #selector(openURLViewCopyButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_coprUrl")
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        return button
+    }()
+    
+    lazy var openURLViewStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 7
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
+    lazy var openURLViewCloseButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.setBackgroundImage(UIImage(named: "ic_closeNew"), for: .normal)
+        button.addTarget(self, action: #selector(openURLViewCloseButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    var urlToOpen: URL?
+    
+    
     /// View didload
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1670,6 +1756,77 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             thread.remove(with: transaction)
         }
     }
+    
+    
+    // Show open url view
+    func showOpenURLView() {
+        snInputView.isHidden = true
+        removeOpenURLViewIfAvailable()
+        view.addSubview(openURLView)
+        openURLView.addSubViews(openURLViewTitleLabel, openURLViewSubTitleLabel, openURLViewCloseButton, openURLViewStackView)
+        openURLViewStackView.addArrangedSubview(openURLViewCopyButton)
+        openURLViewStackView.addArrangedSubview(openURLViewOpenButton)
+        
+        let string = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), urlToOpen!.absoluteString)
+        let attributedString = NSMutableAttributedString(string: string)
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: urlToOpen!.absoluteString))
+        openURLViewSubTitleLabel.attributedText = attributedString
+        
+        NSLayoutConstraint.activate([
+            openURLView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            openURLView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            openURLView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            openURLView.heightAnchor.constraint(equalToConstant: 219),
+            
+            openURLViewCloseButton.heightAnchor.constraint(equalToConstant: 22),
+            openURLViewCloseButton.widthAnchor.constraint(equalToConstant: 22),
+            openURLViewCloseButton.topAnchor.constraint(equalTo: openURLView.topAnchor, constant: 15),
+            openURLViewCloseButton.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -15),
+            
+            openURLViewTitleLabel.topAnchor.constraint(equalTo: openURLView.topAnchor, constant: 19),
+            openURLViewTitleLabel.centerXAnchor.constraint(equalTo: openURLView.centerXAnchor),
+            
+            openURLViewSubTitleLabel.topAnchor.constraint(equalTo: openURLViewTitleLabel.bottomAnchor, constant: 10),
+            openURLViewSubTitleLabel.leadingAnchor.constraint(equalTo: openURLView.leadingAnchor, constant: 30),
+            openURLViewSubTitleLabel.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -30),
+            
+            openURLViewStackView.heightAnchor.constraint(equalToConstant: 52),
+            openURLViewOpenButton.heightAnchor.constraint(equalToConstant: 52),
+            openURLViewCopyButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            openURLViewStackView.topAnchor.constraint(equalTo: openURLViewSubTitleLabel.bottomAnchor, constant: 21),
+            openURLViewStackView.leadingAnchor.constraint(equalTo: openURLView.leadingAnchor, constant: 16),
+            openURLViewStackView.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -16),
+            openURLViewStackView.bottomAnchor.constraint(equalTo: openURLView.bottomAnchor, constant: -15),
+        ])
+    }
+    
+    func hideOpenURLView() {
+        snInputView.isHidden = false
+        removeOpenURLViewIfAvailable()
+    }
+    
+    func removeOpenURLViewIfAvailable() {
+        if let openURLView = self.view.viewWithTag(5555) {
+            openURLView.removeFromSuperview()
+        }
+    }
+    
+    @objc func openURLViewCloseButtonTapped() {
+        hideOpenURLView()
+    }
+    
+    @objc func openURLViewOpenButtonTapped() {
+        hideOpenURLView()
+        UIApplication.shared.open(urlToOpen!, options: [:], completionHandler: nil)
+    }
+    
+    @objc func openURLViewCopyButtonTapped() {
+        hideOpenURLView()
+        UIPasteboard.general.string = urlToOpen!.absoluteString
+    }
+    
     
     // MARK: - Table View Data Source
     

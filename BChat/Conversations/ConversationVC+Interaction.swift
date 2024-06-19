@@ -997,26 +997,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     
-    func openURL(_ url: URL) {
-        // URLs can be unsafe, so always ask the user whether they want to open one
-        let title = NSLocalizedString("modal_open_url_title", comment: "")
-        let message = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), url.absoluteString)
-        let alertVC = UIAlertController.init(title: title, message: message, preferredStyle: .actionSheet)
-        let openAction = UIAlertAction.init(title: NSLocalizedString("modal_open_url_button_title", comment: ""), style: .default) { _ in
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            self.showInputAccessoryView()
-        }
-        alertVC.addAction(openAction)
-        let copyAction = UIAlertAction.init(title: NSLocalizedString("modal_copy_url_button_title", comment: ""), style: .default) { _ in
-            UIPasteboard.general.string = url.absoluteString
-            self.showInputAccessoryView()
-        }
-        alertVC.addAction(copyAction)
-        let cancelAction = UIAlertAction.init(title: NSLocalizedString("cancel", comment: ""), style: .cancel) {_ in
-            self.showInputAccessoryView()
-        }
-        alertVC.addAction(cancelAction)
-        self.presentAlert(alertVC)
+    // For open url
+    func showOpenURLView(_ url: URL) {
+        urlToOpen = url
+        showOpenURLView()
     }
     
     func joinOpenGroup(name: String, url: String) {
