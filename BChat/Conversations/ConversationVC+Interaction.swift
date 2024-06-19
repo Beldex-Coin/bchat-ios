@@ -1152,6 +1152,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         stopVoiceMessageRecording()
         // Check for user misunderstanding
         guard duration > 1 else {
+            isAudioRecording = false
             self.audioRecorder = nil
             let title = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
             let message = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
@@ -1182,6 +1183,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioPlayer = nil
         deleteAudioView.isHidden = true
         hideAttachmentExpandedButtons()
+        isAudioRecording = false
     }
     
     func pauseRecording() {

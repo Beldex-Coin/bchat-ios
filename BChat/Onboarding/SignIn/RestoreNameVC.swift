@@ -165,8 +165,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         restoreHeightTextField.delegate = self
         restoreDateHeightTextField.delegate = self
         restoreHeightTextField.keyboardType = .numberPad
-        restoreButton.backgroundColor = Colors.cellGroundColor3
-        restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        disableRestoreButton()
         
         isRestoreFromDateButton.addRightIcon(image: UIImage(named: "ic-Newarrow")!.withRenderingMode(.alwaysTemplate))
         isRestoreFromDateButton.tintColor = .white
@@ -238,6 +237,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateButton.layer.cornerRadius = isRestoreFromDateButton.bounds.height / 2
     }
     
+    func disableRestoreButton() {
+        restoreButton.backgroundColor = Colors.cellGroundColor3
+        restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        restoreButton.isUserInteractionEnabled = false
+    }
+    
+    
     func datePickerTapped() {
         datePicker.show(NSLocalizedString("SELECT_DATE__TITLE_NEW", comment: ""),
                         doneButtonTitle: NSLocalizedString("DONE_BUTTON_NEW", comment: ""),
@@ -294,18 +300,15 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         checkMandatoryFields()
     }
+    
     func checkMandatoryFields() {
         let displayNameText = displayNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let restoreHeightText = restoreHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let restoreDateHeightText = restoreDateHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if displayNameText.isEmpty {
-            restoreButton.isUserInteractionEnabled = false
-            restoreButton.backgroundColor = Colors.cellGroundColor3
-            restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            disableRestoreButton()
         } else if restoreHeightText.isEmpty && restoreDateHeightText.isEmpty {
-            restoreButton.isUserInteractionEnabled = false
-            restoreButton.backgroundColor = Colors.cellGroundColor3
-            restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+            disableRestoreButton()
         } else {
             // All fields have valid values, proceed with your logic here
             restoreButton.isUserInteractionEnabled = true
@@ -325,6 +328,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         }
         return true
     }
+    
     func textLimit(existingText: String?,
                    newText: String,
                    limit: Int) -> Bool {
@@ -483,7 +487,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         if displayNameTextField.text != "" && restoreHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
             showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))
         }
-        if displayNameTextField.text != "" && restoreHeightTextField.text != nil && dateText == ""{ //
+        if displayNameTextField.text != "" && restoreHeightTextField.text != nil && dateText == "" {
             SaveUserDefaultsData.WalletRestoreHeight = restoreHeightTextField.text!
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
@@ -492,11 +496,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             vc.isCreatePassword = true
             navigationController!.pushViewController(vc, animated: true)
         }
-//        else{
-//            // Wallet Seed
-//            self.mnemonicSeedconnect()
-//            SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-//        }
     }
     
 }

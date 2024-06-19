@@ -27,6 +27,13 @@ final class QuoteView : UIView {
         case .draft(let model): return model.thumbnailImage
         }
     }
+    
+    private var thumbnailType: String? {
+        switch mode {
+        case .regular(let viewItem): return viewItem.quotedReply!.contentType
+        case .draft(let model): return model.contentType
+        }
+    }
 
     private var body: String? {
         switch mode {
@@ -147,7 +154,7 @@ final class QuoteView : UIView {
         mainStackView.axis = .horizontal
         mainStackView.spacing = smallSpacing
         mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: smallSpacing)
+        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: smallSpacing, bottom: 0, trailing: smallSpacing)
         mainStackView.alignment = .center
         // Content view
         let contentView = UIView()
@@ -174,6 +181,9 @@ final class QuoteView : UIView {
             mainStackView.addArrangedSubview(imageView)
             if (body ?? "").isEmpty {
                 body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : "Document")
+                if thumbnailType?.lowercased().range(of:"video") != nil {
+                    body = "Video"
+                }
             }
         }
         // Body label

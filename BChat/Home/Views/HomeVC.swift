@@ -322,7 +322,7 @@ final class HomeVC : BaseVC {
             setUpNavBarStyle()
         }
         updateNavBarButtons()
-        setUpNavBarSessionHeading()
+        
                
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
@@ -895,6 +895,7 @@ final class HomeVC : BaseVC {
         rightBarButtonItems.append(walletBarItem)
         
         navigationItem.rightBarButtonItems = rightBarButtonItems
+        setUpNavBarSessionHeading()
     }
     
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {

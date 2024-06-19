@@ -515,7 +515,6 @@ AVPlayerLayer *_playerLayer;
         self.videoProgressBar = videoProgressBar;
         [self.view addSubview:videoProgressBar];
         videoProgressBar.layer.cornerRadius = 22;
-        //            videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
         videoProgressBar.layer.masksToBounds = YES;
         [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
         [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];

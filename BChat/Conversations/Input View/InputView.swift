@@ -497,6 +497,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }, completion: { _ in
             self.voiceMessageRecordingView?.removeFromSuperview()
             self.voiceMessageRecordingView = nil
+            NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
         })
     }
     
