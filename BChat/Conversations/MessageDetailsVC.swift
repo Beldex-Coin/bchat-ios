@@ -4,7 +4,6 @@ import UIKit
 
 class MessageDetailsVC: BaseVC {
     
-    
     private lazy var failedView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -108,13 +107,12 @@ class MessageDetailsVC: BaseVC {
         fatalError("init(coder:) has not been implemented")
     }
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.title = "Message Detail"
         view.backgroundColor = Colors.mainBackGroundColor2
-        
         
         view.addSubViews(failedView, successView)
         failedView.addSubViews(failedLabel, timeLabelFailedView, errorTitleLabel, errorTypeLabel, resendButton)
@@ -127,33 +125,36 @@ class MessageDetailsVC: BaseVC {
             
             failedLabel.topAnchor.constraint(equalTo: failedView.topAnchor, constant: 28),
             failedLabel.leadingAnchor.constraint(equalTo: failedView.leadingAnchor, constant: 23),
+            
             timeLabelFailedView.topAnchor.constraint(equalTo: failedView.topAnchor, constant: 28),
             timeLabelFailedView.leadingAnchor.constraint(equalTo: failedLabel.trailingAnchor, constant: 8),
             timeLabelFailedView.trailingAnchor.constraint(equalTo: failedView.trailingAnchor, constant: -23),
+            
             errorTitleLabel.topAnchor.constraint(equalTo: failedLabel.bottomAnchor, constant: 13),
             errorTitleLabel.leadingAnchor.constraint(equalTo: failedView.leadingAnchor, constant: 23),
+            
             errorTypeLabel.centerYAnchor.constraint(equalTo: errorTitleLabel.centerYAnchor),
             errorTypeLabel.leadingAnchor.constraint(equalTo: errorTitleLabel.trailingAnchor, constant: 8),
             errorTypeLabel.trailingAnchor.constraint(equalTo: failedView.trailingAnchor, constant: -23),
+            
             resendButton.heightAnchor.constraint(equalToConstant: 52),
             resendButton.widthAnchor.constraint(equalToConstant: 148),
             resendButton.centerXAnchor.constraint(equalTo: failedView.centerXAnchor),
             resendButton.topAnchor.constraint(equalTo: errorTypeLabel.bottomAnchor, constant: 27),
             resendButton.bottomAnchor.constraint(equalTo: failedView.bottomAnchor, constant: -25),
-                        
+            
             successView.topAnchor.constraint(equalTo: view.topAnchor, constant: 19),
             successView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             successView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            
             sentLabel.topAnchor.constraint(equalTo: successView.topAnchor, constant: 20),
             sentLabel.leadingAnchor.constraint(equalTo: successView.leadingAnchor, constant: 23),
             sentLabel.bottomAnchor.constraint(equalTo: successView.bottomAnchor, constant: -20),
+            
             timeLabelSuccessView.leadingAnchor.constraint(equalTo: sentLabel.trailingAnchor, constant: 8),
             timeLabelSuccessView.trailingAnchor.constraint(equalTo: successView.trailingAnchor, constant: -23),
             timeLabelSuccessView.centerYAnchor.constraint(equalTo: sentLabel.centerYAnchor),
-            
         ])
-        
-        
         
         if let message = self.viewItem.interaction as? TSOutgoingMessage {
             if message.messageState == .failed {
@@ -170,10 +171,7 @@ class MessageDetailsVC: BaseVC {
                 }
             }
         }
-        
     }
-    
-    
     
     func customDateFormate(message: TSOutgoingMessage) -> String {
         let date = message.dateForUI()
@@ -184,25 +182,24 @@ class MessageDetailsVC: BaseVC {
         return dateString
     }
     
-    
     @objc private func resendButtonTapped(_ sender: UIButton) {
         let thread = self.thread
-        let message = VisibleMessage.from((self.viewItem.interaction as? TSOutgoingMessage)!)
-        Storage.write { transaction in
-            var attachments: [TSAttachmentStream] = []
-            (self.viewItem.interaction as? TSOutgoingMessage)!.attachmentIds.forEach { attachmentID in
-                guard let attachmentID = attachmentID as? String else { return }
-                let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
-                guard let stream = attachment as? TSAttachmentStream else { return }
-                attachments.append(stream)
-            }
-            MessageSender.prep(attachments, for: message, using: transaction)
-            MessageSender.send(message, in: thread, using: transaction)
-            DispatchQueue.main.async {
-                self.navigationController?.popViewController(animated: true)
+        if let tsMessage = viewItem.interaction as? TSOutgoingMessage, tsMessage.messageState == .failed {
+            let message = VisibleMessage.from(tsMessage)
+            Storage.write { transaction in
+                var attachments: [TSAttachmentStream] = []
+                (self.viewItem.interaction as? TSOutgoingMessage)!.attachmentIds.forEach { attachmentID in
+                    guard let attachmentID = attachmentID as? String else { return }
+                    let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
+                    guard let stream = attachment as? TSAttachmentStream else { return }
+                    attachments.append(stream)
+                }
+                MessageSender.prep(attachments, for: message, using: transaction)
+                MessageSender.send(message, in: thread, using: transaction)
+                DispatchQueue.main.async {
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
-
-
 }
