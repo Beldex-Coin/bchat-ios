@@ -251,7 +251,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 self.restoreDateHeightTextField.text = formatter.string(from: dt)
                 checkMandatoryFields()
                 let dateString = formatter.string(from: dt)
-                print("selected date---------String Formate--------------------->: ",dateString)
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
