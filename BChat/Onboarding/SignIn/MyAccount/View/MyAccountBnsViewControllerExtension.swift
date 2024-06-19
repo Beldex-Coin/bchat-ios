@@ -34,6 +34,11 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
         cell.titleLabel.text = myAccountItem.title
         cell.iconImageView.image = UIImage(named: myAccountItem.imageName)
         cell.dotView.isHidden = myAccountItem != .hops
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            cell.dotView.backgroundColor = Colors.bothGreenColor
+        } else {
+            cell.dotView.backgroundColor = Colors.bothRedColor
+        }
         cell.arrowButton.isHidden = myAccountItem == .clearData || myAccountItem == .feedback || myAccountItem == .faq || myAccountItem == .changelog
         
         return cell
