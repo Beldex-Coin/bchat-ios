@@ -209,17 +209,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         ])
     }
 
-    private func indexPath(galleryItem: MediaGalleryItem) -> IndexPath? {
-        guard let sectionIdx = galleryDates.firstIndex(of: galleryItem.galleryDate) else {
-            return nil
-        }
-        guard let rowIdx = galleryItems[galleryItem.galleryDate]!.firstIndex(of: galleryItem) else {
-            return nil
-        }
-
-        return IndexPath(row: rowIdx, section: sectionIdx + 1)
-    }
-
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -246,6 +235,17 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.updateLayout()
+    }
+    
+    private func indexPath(galleryItem: MediaGalleryItem) -> IndexPath? {
+        guard let sectionIdx = galleryDates.firstIndex(of: galleryItem.galleryDate) else {
+            return nil
+        }
+        guard let rowIdx = galleryItems[galleryItem.galleryDate]!.firstIndex(of: galleryItem) else {
+            return nil
+        }
+
+        return IndexPath(row: rowIdx, section: sectionIdx + 1)
     }
     
     // Top SegmentView Changed
@@ -581,14 +581,14 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         }
 
         switch section {
-        case kLoadOlderSectionIdx:
-            // Show "loading older..." iff there is still older data to be fetched
-            return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
-        case loadNewerSectionIdx:
-            // Show "loading newer..." iff there is still more recent data to be fetched
-            return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
-        default:
-            return kMonthHeaderSize
+            case kLoadOlderSectionIdx:
+                // Show "loading older..." iff there is still older data to be fetched
+                return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
+            case loadNewerSectionIdx:
+                // Show "loading newer..." iff there is still more recent data to be fetched
+                return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
+            default:
+                return kMonthHeaderSize
         }
     }
 
