@@ -5,6 +5,7 @@
 import UIKit
 import PromiseKit
 import BChatUIKit
+import Photos
 
 // Objc wrapper for the MediaGalleryItem struct
 @objc
@@ -436,7 +437,49 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         SNLog("Starting download for URL: \(originalMediaURL)")
         
         // Call the download function with the media URL
-        downloadFile(from: originalMediaURL)
+        saveVideoToAlbum(originalMediaURL, isVideo: currentViewController.galleryItem.attachmentStream.isVideo) { (error) in
+            DispatchQueue.main.async {
+                // Optionally, show a success message to the user
+                let alert = UIAlertController(title: "Downloaded successfully", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    
+    func requestAuthorization(completion: @escaping ()->Void) {
+        if PHPhotoLibrary.authorizationStatus() == .notDetermined {
+            PHPhotoLibrary.requestAuthorization { (status) in
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+        } else if PHPhotoLibrary.authorizationStatus() == .authorized{
+            completion()
+        }
+    }
+
+    func saveVideoToAlbum(_ outputURL: URL, isVideo: Bool, _ completion: ((Error?) -> Void)?) {
+        requestAuthorization {
+            PHPhotoLibrary.shared().performChanges({
+                let request = PHAssetCreationRequest.forAsset()
+                if isVideo {
+                    request.addResource(with: .video, fileURL: outputURL, options: nil)
+                } else {
+                    request.addResource(with: .photo, fileURL: outputURL, options: nil)
+                }
+            }) { (result, error) in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        print("Saved successfully")
+                    }
+                    completion?(error)
+                }
+            }
+        }
     }
     
     func downloadFile(from url: URL) {
