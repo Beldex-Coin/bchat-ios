@@ -696,7 +696,6 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
     }
     
     func showMediaGallery() {
-        print("")
 
         let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
         self.mediaGallery = mediaGallery
