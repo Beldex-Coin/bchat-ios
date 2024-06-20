@@ -416,10 +416,23 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 style: .default,
                 handler: { action in
                     print("User tapped Yes")
-                    let vc = NewPasswordVC()
-                    vc.isGoingHome = true
-                    vc.isVerifyPassword = true
-                    self.navigationController!.pushViewController(vc, animated: true)
+                    if SaveUserDefaultsData.WalletPassword.isEmpty {
+                        let viewController = NewPasswordVC()
+                        viewController.isGoingPopUp = true
+                        viewController.isGoingWallet = true
+                        viewController.isCreateWalletPassword = true
+                        self.navigationController?.pushViewController(viewController, animated: true)
+                    } else {
+                        let viewController = NewPasswordVC()
+                        viewController.isGoingWallet = true
+                        viewController.isVerifyWalletPassword = true
+                        self.navigationController!.pushViewController(viewController, animated: true)
+                    }
+                    // Don't Delete
+//                    let vc = NewPasswordVC()
+//                    vc.isGoingHome = true
+//                    vc.isVerifyPassword = true
+//                    self.navigationController!.pushViewController(vc, animated: true)
                 }
             )
             alertController.addAction(yesAction)

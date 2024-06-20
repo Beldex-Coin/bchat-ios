@@ -11,6 +11,7 @@ final class InputViewButton : UIView {
     private var longPressTimer: Timer?
     private var isLongPress = false
     private let isPayButton: Bool
+    private let isAttachmentButton: Bool
     
     // MARK: UI Components
     private lazy var backgroundView = UIView()
@@ -23,7 +24,8 @@ final class InputViewButton : UIView {
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
-    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false) {
+    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false, isAttachmentButton: Bool = false) {
+        self.isAttachmentButton = isAttachmentButton
         self.icon = icon
         self.isSendButton = isSendButton
         self.delegate = delegate
@@ -62,6 +64,9 @@ final class InputViewButton : UIView {
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         layer.cornerRadius = isSendButton ? 24 : 24//isSendButton ? 20 : 6
+        if isAttachmentButton {
+            layer.cornerRadius = 18
+        }
         layer.masksToBounds = true
         isUserInteractionEnabled = true
         widthConstraint.isActive = true
@@ -92,6 +97,9 @@ final class InputViewButton : UIView {
             self.layoutIfNeeded()
             self.frame = frame
             self.layer.cornerRadius = self.isSendButton ? 24 : 24//self.isSendButton ? 20 : 7
+            if self.isAttachmentButton {
+                self.layer.cornerRadius = 18
+            }
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, radius: isLightMode ? 4 : 6)
             self.setCircularGlow(with: glowConfiguration)
             self.backgroundView.backgroundColor = backgroundColor

@@ -40,6 +40,9 @@ extension ContextMenuVC {
             if action.title == "Delete" {
                 titleLabel.textColor = Colors.bothRedColor
             }
+            if action.title == "Save" {
+                iconImageView.tintColor = Colors.bothWhiteColor
+            }
             titleLabel.font = Fonts.OpenSans(ofSize: 12)
             // Stack view
             let stackView = UIStackView(arrangedSubviews: [ iconImageView, titleLabel ])
