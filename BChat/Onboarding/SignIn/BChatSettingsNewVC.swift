@@ -53,6 +53,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         tableView.reloadData()
     }
     
@@ -415,19 +416,15 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 title: NSLocalizedString("Setup", comment: "Setup button title"),
                 style: .default,
                 handler: { action in
-                    print("User tapped Yes")
+                    let viewController = NewPasswordVC()
+                    viewController.isGoingWallet = true
                     if SaveUserDefaultsData.WalletPassword.isEmpty {
-                        let viewController = NewPasswordVC()
                         viewController.isGoingPopUp = true
-                        viewController.isGoingWallet = true
                         viewController.isCreateWalletPassword = true
-                        self.navigationController?.pushViewController(viewController, animated: true)
                     } else {
-                        let viewController = NewPasswordVC()
-                        viewController.isGoingWallet = true
                         viewController.isVerifyWalletPassword = true
-                        self.navigationController!.pushViewController(viewController, animated: true)
                     }
+                    self.navigationController!.pushViewController(viewController, animated: true)
                     // Don't Delete
 //                    let vc = NewPasswordVC()
 //                    vc.isGoingHome = true
