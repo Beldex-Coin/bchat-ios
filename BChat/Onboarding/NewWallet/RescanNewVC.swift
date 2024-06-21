@@ -276,7 +276,7 @@ class RescanNewVC: BaseVC {
     /// Process Block Height Input
     func processBlockHeightInput(_ heightString: String) {
         let number: Int64? = Int64(heightString)
-        if let number = number, number > 0 {
+        if let number = number, number >= 0 {
             if number > daemonBlockChainHeight || number == daemonBlockChainHeight {
                 inValidHeightAlert()
             } else {

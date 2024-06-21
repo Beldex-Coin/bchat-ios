@@ -359,8 +359,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             beldexAddressTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
             beldexAddressTitleLabel.centerYAnchor.constraint(equalTo: scanOptionBackgroundView.centerYAnchor),
             beldexAddressTitleLabel.trailingAnchor.constraint(equalTo: scanOptionBackgroundView.leadingAnchor, constant: -7),
-            scanButton.heightAnchor.constraint(equalToConstant: 14),
-            scanButton.widthAnchor.constraint(equalToConstant: 14),
+            scanButton.heightAnchor.constraint(equalToConstant: 32),
+            scanButton.widthAnchor.constraint(equalToConstant: 32),
             scanButton.centerYAnchor.constraint(equalTo: scanOptionBackgroundView.centerYAnchor),
             scanButton.centerXAnchor.constraint(equalTo: scanOptionBackgroundView.centerXAnchor),
             beldexAddressBackgroundView.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
@@ -421,8 +421,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             flashPriorityValue()
         }
         
-        sendButton.backgroundColor = Colors.backgroundViewColor
-        sendButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+        updateSendButtonStates()
         
         beldexAmountTextField.keyboardType = .decimalPad
         beldexAddressTextview.returnKeyType = .done
@@ -567,6 +566,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         sendButton.isEnabled = isAddressValid && isAmountValid
         sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : Colors.backgroundViewColor
         sendButton.setTitleColor(sendButton.isEnabled ? UIColor.white : UIColor(hex: 0x6E6E7C), for: .normal)
+        sendButton.isUserInteractionEnabled = sendButton.isEnabled
     }
     
     private func isValidAddress(_ address: String?) -> Bool {
@@ -592,7 +592,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             if currentAddress.length == 106 {
                 paymentIdImage.isHidden = false
                 paymentIDTitleLabel.isHidden = false
-            } else{
+            } else {
                 paymentIdImage.isHidden = true
                 paymentIDTitleLabel.isHidden = true
             }
@@ -640,7 +640,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         return super.canPerformAction(action, withSender: sender)
     }
     
-    func saveReceipeinetAddressOnAndOff(){
+    func saveReceipeinetAddressOnAndOff() {
         if SaveUserDefaultsData.SaveReceipeinetSwitch == true {
             recipientAddressON = true
         } else {
@@ -707,9 +707,9 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             SELF.marketsDataRequest = nil
             if showHUD { SELF.loadingState.newState(false) }
             switch resp.result {
-                case .failure(_): break
-                case .success(let value):
-                    SELF.reloadData(value as? [String: [String: Any]] ?? [:])
+            case .failure(_): break
+            case .success(let value):
+                SELF.reloadData(value as? [String: [String: Any]] ?? [:])
             }
             let endTime = CFAbsoluteTimeGetCurrent()
             let requestDuration = endTime - startTime
@@ -885,6 +885,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     func sendBeldexAddressToMyWalletSendVC(myData: String) {
         placeholderLabel?.isHidden = true
         self.beldexAddressTextview.text = myData
+        updateSendButtonStates()
     }
     
 }
