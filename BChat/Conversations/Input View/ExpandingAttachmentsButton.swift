@@ -24,7 +24,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private lazy var cameraButtonContainerBottomConstraint = cameraButtonContainer.pin(.bottom, to: .bottom, of: self)
     // MARK: UI Components
     lazy var documentButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_doc_new"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_doc_new"), delegate: self, hasOpaqueBackground: false, isAttachmentButton: true)
         result.tintColor = UIColor.white
         result.set(.width, to: 36)
         result.set(.height, to: 36)
@@ -34,7 +34,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     }()
     lazy var documentButtonContainer = container(for: documentButton)
     lazy var libraryButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_lib_new"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_lib_new"), delegate: self, hasOpaqueBackground: false, isAttachmentButton: true)
         result.set(.width, to: 36)
         result.set(.height, to: 36)
         result.layer.cornerRadius = 18
@@ -43,7 +43,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     }()
     lazy var libraryButtonContainer = container(for: libraryButton)
     lazy var cameraButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_camera_new"), delegate: self, hasOpaqueBackground: false)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_camera_new"), delegate: self, hasOpaqueBackground: false, isAttachmentButton: true)
         result.set(.width, to: 36)
         result.set(.height, to: 36)
         result.layer.cornerRadius = 18

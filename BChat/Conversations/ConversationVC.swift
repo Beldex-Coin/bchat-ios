@@ -1221,6 +1221,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.customizeSlideToOpen.isHidden = true
             CustomSlideView.isFromExpandAttachment = false
         }
+        hideAttachmentExpandedButtons()
+        hideOpenURLView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1760,6 +1762,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // Show open url view
     func showOpenURLView() {
+        snInputView.resignFirstResponder()
         snInputView.isHidden = true
         removeOpenURLViewIfAvailable()
         view.addSubview(openURLView)

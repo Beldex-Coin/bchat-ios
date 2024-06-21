@@ -558,7 +558,6 @@ final class HomeVC : BaseVC {
             self.threadsForMessageRequest.update(with: transaction)
         }
         threadViewModelCacheForMessageRequest.removeAll()
-        messageCollectionView.reloadData()
     }
     
     private func updateContactAndThread(thread: TSThread, with transaction: YapDatabaseReadWriteTransaction, onComplete: ((Bool) -> ())? = nil) {
@@ -790,8 +789,6 @@ final class HomeVC : BaseVC {
         AssertIsOnMainThread()
         reloadForMessageRequest()
         reload()
-        self.tableView.reloadData()
-        self.messageCollectionView.reloadData()
     }
     
     @objc private func handleProfileDidChangeNotification(_ notification: Notification) {
