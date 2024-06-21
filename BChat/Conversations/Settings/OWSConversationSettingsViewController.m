@@ -1095,7 +1095,8 @@ CGFloat kIconViewLength = 24;
     OWSLogDebug(@"");
 
     MediaGallery *mediaGallery = [[MediaGallery alloc] initWithThread:self.thread
-                                                              options:MediaGalleryOptionSliderEnabled];
+                                                              options:MediaGalleryOptionSliderEnabled
+                                                   isFromChatSettings:YES];
 
     self.mediaGallery = mediaGallery;
 

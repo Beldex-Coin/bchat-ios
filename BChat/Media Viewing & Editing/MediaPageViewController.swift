@@ -67,13 +67,15 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     private let showAllMediaButton: Bool
     private let sliderEnabled: Bool
+    private let isFromChatSettings: Bool
 
-    init(initialItem: MediaGalleryItem, mediaGalleryDataSource: MediaGalleryDataSource, uiDatabaseConnection: YapDatabaseConnection, options: MediaGalleryOption) {
+    init(initialItem: MediaGalleryItem, mediaGalleryDataSource: MediaGalleryDataSource, uiDatabaseConnection: YapDatabaseConnection, options: MediaGalleryOption, isFromChatSettings: Bool = false) {
         assert(uiDatabaseConnection.isInLongLivedReadTransaction())
         self.uiDatabaseConnection = uiDatabaseConnection
         self.showAllMediaButton = options.contains(.showAllMediaButton)
         self.sliderEnabled = options.contains(.sliderEnabled)
         self.mediaGalleryDataSource = mediaGalleryDataSource
+        self.isFromChatSettings = isFromChatSettings
 
         let kSpacingBetweenItems: CGFloat = 20
 
@@ -544,7 +546,13 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             owsFailDebug("mediaGalleryDataSource was unexpectedly nil")
             return
         }
-        mediaGalleryDataSource.showAllMedia(focusedItem: currentItem)
+        
+        if isFromChatSettings {
+            self.dismissSelf(animated: true)
+        } else {
+            mediaGalleryDataSource.showAllMedia(focusedItem: currentItem)
+        }
+        
     }
 
     @objc

@@ -827,6 +827,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else {
             viewItem.copyTextAction()
         }
+        self.showToastMsg(message: "Copied to clipboard", seconds: 1.0)
     }
     
     func copyBChatID(_ viewItem: ConversationViewItem) {

@@ -203,10 +203,10 @@ class LandingNewVC: BaseVC {
             restoreButton.heightAnchor.constraint(equalToConstant: 58),
             termsAndConditionsButton.bottomAnchor.constraint(equalTo: bottomImge.topAnchor, constant: -10),
             termsAndConditionsButton.centerXAnchor.constraint(equalTo: restoreButton.centerXAnchor),
-            checkUncheckButton.trailingAnchor.constraint(equalTo: termsAndConditionsButton.leadingAnchor, constant: -8),
+            checkUncheckButton.trailingAnchor.constraint(equalTo: termsAndConditionsButton.leadingAnchor, constant: -4),
             checkUncheckButton.centerYAnchor.constraint(equalTo: termsAndConditionsButton.centerYAnchor),
-            checkUncheckButton.heightAnchor.constraint(equalToConstant: 16),
-            checkUncheckButton.widthAnchor.constraint(equalToConstant: 16),
+            checkUncheckButton.heightAnchor.constraint(equalToConstant: 25),
+            checkUncheckButton.widthAnchor.constraint(equalToConstant: 25),
             bottomImge.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             bottomImge.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
             bottomImge.widthAnchor.constraint(equalToConstant: 100),
@@ -250,7 +250,7 @@ class LandingNewVC: BaseVC {
             let img = UIImage(named: "ic_Newcheckbox")!
             checkUncheckButton.tintColor = .white
             checkUncheckButton.setImage(img, for: .normal)
-        }else {
+        } else {
             isChecked = false
             let img = UIImage(named: "ic_Newunchecked")!
             checkUncheckButton.tintColor = .white
@@ -274,7 +274,7 @@ class LandingNewVC: BaseVC {
         if isChecked == true {
             let vc = DisplayNameNewVC()
             self.navigationController?.pushViewController(vc, animated: true)
-        }else{
+        } else {
             _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Terms_Condition_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
             })
         }

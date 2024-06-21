@@ -305,6 +305,7 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
     private var initialDetailItem: MediaGalleryItem?
     private let thread: TSThread
     private let options: MediaGalleryOption
+    private let isFromChatSettings: Bool
 
     // we start with a small range size for quick loading.
     private let fetchRangeSize: UInt = 10
@@ -314,13 +315,14 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
     }
 
     @objc
-    init(thread: TSThread, options: MediaGalleryOption = []) {
+    init(thread: TSThread, options: MediaGalleryOption = [], isFromChatSettings: Bool = false) {
         self.thread = thread
 
         self.editingDatabaseConnection = OWSPrimaryStorage.shared().newDatabaseConnection()
 
         self.options = options
         self.mediaGalleryFinder = OWSMediaGalleryFinder(thread: thread)
+        self.isFromChatSettings = isFromChatSettings
         super.init()
 
         NotificationCenter.default.addObserver(self,
@@ -360,7 +362,7 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
 
         self.initialDetailItem = initialDetailItem
 
-        let pageViewController = MediaPageViewController(initialItem: initialDetailItem, mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection, options: self.options)
+        let pageViewController = MediaPageViewController(initialItem: initialDetailItem, mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection, options: self.options, isFromChatSettings: self.isFromChatSettings)
         self.addDataSourceDelegate(pageViewController)
 
         self.pageViewController = pageViewController

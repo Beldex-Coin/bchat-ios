@@ -723,6 +723,9 @@ class NewPasswordVC: BaseVC {
             }
             
             if isPasswordEnterFirstTimeWallet {
+                if confirmPasswordText.count != 4 {
+                    return
+                }
                 if passwordText == confirmPasswordText {
                     SaveUserDefaultsData.WalletPassword = confirmPasswordText
                 } else {
