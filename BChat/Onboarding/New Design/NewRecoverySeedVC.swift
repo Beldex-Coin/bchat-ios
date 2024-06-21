@@ -93,7 +93,7 @@ class NewRecoverySeedVC: BaseVC {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Recovery Seed"
         
-        let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysOriginal)
+        let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysTemplate)
         let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backToHomeScreen))
         navigationItem.leftBarButtonItem = leftBarItem
         leftBarItem.imageInsets = UIEdgeInsets(top: -1, leading: -6, bottom: 0, trailing: 0)
