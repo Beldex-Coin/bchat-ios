@@ -1229,6 +1229,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             }
             if indexPath.row == 1 {
                 self.showMediaGallery()
+                return
             }
             if indexPath.row == 2 {
                 self.tappedConversationSearch()

@@ -12,7 +12,7 @@ final class NukeDataModal : Modal {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.boldOpenSans(ofSize: 18)
-        result.text = "Clear all data"//NSLocalizedString("Clear All Data", comment: "")
+        result.text = NSLocalizedString("CLEAR_ALL_DATA", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -34,7 +34,7 @@ final class NukeDataModal : Modal {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.text = "Are you sure you want to Permanently clear all data from this device?"//NSLocalizedString("This will clear all your BChat data from device.", comment: "")
+        result.text = NSLocalizedString("CLEAR_ALL_DATA_CONFIRMATION_TEXT", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
@@ -44,11 +44,8 @@ final class NukeDataModal : Modal {
     private lazy var clearDataButton: UIButton = {
         let result = UIButton()
         result.set(.height, to: 46)
-        result.layer.cornerRadius = 23//Modal.buttonCornerRadius
-//        if isDarkMode {
-//            result.backgroundColor = Colors.destructive
-//        }
-        result.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.destructive
+        result.layer.cornerRadius = 23
+        result.backgroundColor = Colors.cancelButtonBackgroundColor
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.setTitleColor(Colors.bothRedColor, for: UIControl.State.normal)
         result.setTitle("Clear", for: UIControl.State.normal)
@@ -106,8 +103,6 @@ final class NukeDataModal : Modal {
     
     private lazy var buttonStackViewContainer: UIView = {
         let result = UIView()
-//        result.addSubview(buttonStackView2)
-//        buttonStackView2.pin(to: result)
         result.addSubview(buttonStackView1)
         buttonStackView1.pin(to: result)
         return result

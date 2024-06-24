@@ -803,6 +803,7 @@
 // Clear Data
 "CLEAR_ALL_DATA" = "Clear all data";
 "CLEAR_DATA_FROM_DEVICE" = "Clear Data From Device";
+"CLEAR_ALL_DATA_CONFIRMATION_TEXT" = "Are you sure you want to Permanently clear all data from this device?";
 
 // Alert Recovery Seed
 "NEVER_SHARE_YOUR_SEED_WITH_ANYONE" = "Never share your seed with anyone!";

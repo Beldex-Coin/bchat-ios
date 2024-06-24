@@ -167,8 +167,12 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 
         collectionView.delegate = self
 
-        // feels a bit weird to have content smashed all the way to the bottom edge.
-        collectionView.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
+        
+        if let collectionView = self.collectionView {
+            collectionView.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
+        } else {
+            owsFailDebug("collectionView was unexpectedly nil")
+        }
 
         self.view.addSubview(self.footerBar)
         footerBar.autoPinWidthToSuperview()
