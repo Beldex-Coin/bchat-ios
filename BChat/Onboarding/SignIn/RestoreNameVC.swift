@@ -228,8 +228,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+        super.viewWillAppear(animated)
+        deleteAllWalletFiles()
     }
     
     override func viewDidLayoutSubviews() {
@@ -298,6 +298,42 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
         checkMandatoryFields()
+    }
+    
+    func deleteAllWalletFiles() {
+        let username = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        if username == "" {
+            return
+        }
+        let documentDirectory = allPaths[0]
+        let documentPath = documentDirectory + "/"
+        let pathWithFileName = documentPath + username
+        let pathWithFileKeys = documentPath + "\(username).keys"
+        let pathWithFileAddress = documentPath + "\(username).address.txt"
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponentForFileName = url.appendingPathComponent("\(username)") {
+            let filePath = pathComponentForFileName.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileName)")
+            }
+        }
+        if let pathComponentForFileKeys = url.appendingPathComponent("\(username).keys") {
+            let filePath = pathComponentForFileKeys.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileKeys)")
+            }
+        }
+        if let pathComponentForFileAddress = url.appendingPathComponent("\(username).address.txt") {
+            let filePath = pathComponentForFileAddress.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileAddress)")
+            }
+        }
     }
     
     func checkMandatoryFields() {
@@ -415,7 +451,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(spacer4)
             topStackView.addArrangedSubview(spacer8)
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
-        }else {
+        } else {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
             restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
@@ -470,10 +506,10 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("RESTORE_HEIGHT_IS_LONG_MSG_NEW", comment: ""))
             }
         }
-        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil{
+        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil {
             if !dateHeight.isEmpty {
                 SaveUserDefaultsData.WalletRestoreHeight = dateHeight
-            }else {
+            } else {
                 SaveUserDefaultsData.WalletRestoreHeight = ""
             }
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
