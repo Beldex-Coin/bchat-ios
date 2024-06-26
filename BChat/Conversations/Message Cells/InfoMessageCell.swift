@@ -70,7 +70,6 @@ final class InfoMessageCell : MessageCell {
             if message.messageType == TSInfoMessageType.groupCurrentUserLeft {
                 self.label.textColor = Colors.bothRedColor
             }
-            print("--------->",message.previewText(with: transaction))
         }
     }
 }
