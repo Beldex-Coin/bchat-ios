@@ -243,7 +243,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         restoreButton.isUserInteractionEnabled = false
     }
     
-    
     func datePickerTapped() {
         datePicker.show(NSLocalizedString("SELECT_DATE__TITLE_NEW", comment: ""),
                         doneButtonTitle: NSLocalizedString("DONE_BUTTON_NEW", comment: ""),
