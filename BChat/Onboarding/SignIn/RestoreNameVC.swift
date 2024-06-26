@@ -380,8 +380,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             let seed = Data(hex: hexEncodedSeed)
             let (ed25519KeyPair, x25519KeyPair) = KeyPairUtilities.generate(from: seed)
             Onboarding.Flow.recover.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
-            Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
-            }
         } catch let error {
             let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
             showError(title: error.errorDescription!)
@@ -433,7 +431,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
-            restoreTitleLabel.text = "Pick a Date"//NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
+            restoreTitleLabel.text = "Pick a Date"
             restoreTitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
             dateTitleLabel.isHidden = false
@@ -494,7 +492,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
             }
         }
-        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty { //
+        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty {
             let displayName = restoreHeightTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
                 return showError(title: NSLocalizedString("RESTORE_HEIGHT_DATE_IS_MISSING_NEW", comment: ""))
@@ -518,6 +516,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             vc.isGoingHome = true
             vc.isCreatePassword = true
             navigationController!.pushViewController(vc, animated: true)
+            return
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
             showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))

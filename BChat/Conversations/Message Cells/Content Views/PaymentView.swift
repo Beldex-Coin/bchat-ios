@@ -176,5 +176,9 @@ final class PaymentView : UIView {
         mainStackView.pin(to: self, withInset: Values.mediumSpacing)
         timeLabel.pin(.right, to: .right, of: self, withInset: -15)
         timeLabel.pin(.bottom, to: .bottom, of: self, withInset: -9)
+//        timeLabel.pin(.left, to: .right, of: tickMarkImageView, withInset: 4)
+        NSLayoutConstraint.activate([
+            timeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: tickMarkImageView.trailingAnchor, constant: 4)
+            ])
     }
 }
