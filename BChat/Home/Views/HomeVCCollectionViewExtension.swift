@@ -6,24 +6,6 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if messageRequestCountForMessageRequest == 0 {
-            tableViewTopConstraint.isActive = false
-            setTableViewTopConstraint(16)
-            self.messageCollectionView.isHidden = true
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-        } else {
-            tableViewTopConstraint.isActive = false
-            setTableViewTopConstraint(134) //80 + 38 + 16
-            self.messageCollectionView.isHidden = false
-            self.showOrHideMessageRequestCollectionViewButton.isSelected = true
-            if isManualyCloseMessageRequest {
-                tableViewTopConstraint.isActive = false
-                setTableViewTopConstraint(54) //0 + 38 + 16
-                self.messageCollectionView.isHidden = true
-                self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-            }
-        }
-        
         messageRequestCountLabel.text = "\(Int(messageRequestCountForMessageRequest))"
         messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
@@ -57,7 +39,13 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: MessageRequestCollectionViewCell.reuseidentifier, for: indexPath) as! MessageRequestCollectionViewCell
-        cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
+        // Don't Delete i will delete later.
+//        cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
+        DispatchQueue.main.async {
+            if let threadViewModel = self.threadViewModelForMessageRequest(at: indexPath.row) {
+                cell.profileImageView.update(for: threadViewModel.threadRecord)
+            }
+        }
         
         if threadViewModelForMessageRequest(at: indexPath.row)!.isGroupThread {
             if threadViewModelForMessageRequest(at: indexPath.row)!.name.isEmpty {

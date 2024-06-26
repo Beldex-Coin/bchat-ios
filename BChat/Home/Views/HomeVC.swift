@@ -378,7 +378,6 @@ final class HomeVC : BaseVC {
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.layer.cornerRadius = 22
         tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        self.messageCollectionView.isHidden = true
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -558,6 +557,7 @@ final class HomeVC : BaseVC {
             self.threadsForMessageRequest.update(with: transaction)
         }
         threadViewModelCacheForMessageRequest.removeAll()
+        messageCollectionView.reloadData()
     }
     
     private func updateContactAndThread(thread: TSThread, with transaction: YapDatabaseReadWriteTransaction, onComplete: ((Bool) -> ())? = nil) {
@@ -779,7 +779,6 @@ final class HomeVC : BaseVC {
         threadViewModelCache.removeAll()
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
-        messageCollectionView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
         isReloading = false
     }

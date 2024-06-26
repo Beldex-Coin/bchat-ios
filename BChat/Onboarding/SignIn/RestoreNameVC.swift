@@ -228,8 +228,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+        super.viewWillAppear(animated)
+        deleteAllWalletFiles()
     }
     
     override func viewDidLayoutSubviews() {
@@ -242,7 +242,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         restoreButton.isUserInteractionEnabled = false
     }
-    
     
     func datePickerTapped() {
         datePicker.show(NSLocalizedString("SELECT_DATE__TITLE_NEW", comment: ""),
@@ -300,6 +299,42 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         checkMandatoryFields()
     }
     
+    func deleteAllWalletFiles() {
+        let username = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        if username == "" {
+            return
+        }
+        let documentDirectory = allPaths[0]
+        let documentPath = documentDirectory + "/"
+        let pathWithFileName = documentPath + username
+        let pathWithFileKeys = documentPath + "\(username).keys"
+        let pathWithFileAddress = documentPath + "\(username).address.txt"
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let url = NSURL(fileURLWithPath: path)
+        if let pathComponentForFileName = url.appendingPathComponent("\(username)") {
+            let filePath = pathComponentForFileName.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileName)")
+            }
+        }
+        if let pathComponentForFileKeys = url.appendingPathComponent("\(username).keys") {
+            let filePath = pathComponentForFileKeys.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileKeys)")
+            }
+        }
+        if let pathComponentForFileAddress = url.appendingPathComponent("\(username).address.txt") {
+            let filePath = pathComponentForFileAddress.path
+            let fileManager = FileManager.default
+            if fileManager.fileExists(atPath: filePath) {
+                try? FileManager.default.removeItem(atPath: "\(pathWithFileAddress)")
+            }
+        }
+    }
+    
     func checkMandatoryFields() {
         let displayNameText = displayNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let restoreHeightText = restoreHeightTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -344,8 +379,6 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             let seed = Data(hex: hexEncodedSeed)
             let (ed25519KeyPair, x25519KeyPair) = KeyPairUtilities.generate(from: seed)
             Onboarding.Flow.recover.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
-            Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
-            }
         } catch let error {
             let error = error as? Mnemonic.DecodingError ?? Mnemonic.DecodingError.generic
             showError(title: error.errorDescription!)
@@ -397,7 +430,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
-            restoreTitleLabel.text = "Pick a Date"//NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
+            restoreTitleLabel.text = "Pick a Date"
             restoreTitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
             dateTitleLabel.isHidden = false
@@ -415,7 +448,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(spacer4)
             topStackView.addArrangedSubview(spacer8)
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
-        }else {
+        } else {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
             restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
@@ -458,7 +491,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
             }
         }
-        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty { //
+        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text!.isEmpty {
             let displayName = restoreHeightTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
                 return showError(title: NSLocalizedString("RESTORE_HEIGHT_DATE_IS_MISSING_NEW", comment: ""))
@@ -470,10 +503,10 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("RESTORE_HEIGHT_IS_LONG_MSG_NEW", comment: ""))
             }
         }
-        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil{
+        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil {
             if !dateHeight.isEmpty {
                 SaveUserDefaultsData.WalletRestoreHeight = dateHeight
-            }else {
+            } else {
                 SaveUserDefaultsData.WalletRestoreHeight = ""
             }
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
@@ -482,6 +515,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             vc.isGoingHome = true
             vc.isCreatePassword = true
             navigationController!.pushViewController(vc, animated: true)
+            return
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != "" && restoreDateHeightTextField.text != "" {
             showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))

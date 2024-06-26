@@ -1500,7 +1500,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     //Save Receipent Address fun developed
-    func start(hashid:String,array:[RecipientDomainSchema])->(boolvalue:Bool,address:String){
+    func start(hashid:String,array:[RecipientDomainSchema])->(boolvalue:Bool,address:String) {
         var boolvalue:Bool = false
         var address:String = ""
         for ar in array {
@@ -1904,7 +1904,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
     }
     
-    @objc func filterImageButtonTapped(_ sender: UIButton){
+    @objc func filterImageButtonTapped(_ sender: UIButton) {
         if self.transactionAllArray.count == 0 {
             filterImageButton.isUserInteractionEnabled = true
         } else {
@@ -1934,7 +1934,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         }
     }
     
-    @objc func scanButtonTapped(_ sender: UIButton){
+    @objc func scanButtonTapped(_ sender: UIButton) {
         let vc = ScanNewVC()
         vc.isFromWallet = true
         vc.wallet = self.wallet
@@ -1942,24 +1942,24 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    @objc func transationIDcopyButtonTapped(_ sender: UIButton){
+    @objc func transationIDcopyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = "\(transationDetailsIDLabel.text!)"
         self.showToastMsg(message: "Copied to Transaction ID", seconds: 1.0)
     }
     
-    @objc func sendButtonTapped(_ sender: UIButton){
+    @objc func sendButtonTapped(_ sender: UIButton) {
         let vc = WalletSendNewVC()
         vc.mainBalance = beldexBalanceLabel.text!
         vc.wallet = self.wallet
         navigationController!.pushViewController(vc, animated: true)
     }
     
-    @objc func receiveButtonTapped(_ sender: UIButton){
+    @objc func receiveButtonTapped(_ sender: UIButton) {
         let vc = WalletReceiveNewVC()
         navigationController!.pushViewController(vc, animated: true)
     }
     // Rescan and Reconnect popup
-    @objc func reConnectButtonTapped(_ sender: UIButton){
+    @objc func reConnectButtonTapped(_ sender: UIButton) {
         let vc = SyncingOptionPopUpVC()
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
@@ -1967,25 +1967,25 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.present(vc, animated: true, completion: nil)
     }
     //Rescan
-    @objc func reScaneButtonTapped(_ notification: Notification){
+    @objc func reScaneButtonTapped(_ notification: Notification) {
         self.dismiss(animated: true)
         if syncedflag == true {
             self.navigationController?.navigationBar.isUserInteractionEnabled = true
             let vc = RescanNewVC()
             vc.daemonBlockChainHeight = UInt64(isdaemonHeight)
-            navigationController!.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         } else {
             self.showToastMsg(message: "Can't rescan while wallet is syncing", seconds: 1.0)
         }
     }
     //Reconnect
-    @objc func reconnectButtonTapped(_ notification: Notification){
+    @objc func reconnectButtonTapped(_ notification: Notification) {
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         self.closeWallet()
         init_syncing_wallet()
     }
     
-    @objc func recipientAddresscopyButtonTapped(_ sender: UIButton){
+    @objc func recipientAddresscopyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = "\(recipientAddressDetailsIDLabel.text!)"
         self.showToastMsg(message: "Copied to Recipient Address", seconds: 1.0)
     }
@@ -1999,7 +1999,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     //By Date Filter Cancel action
-    @objc func cancelButtonTapped(_ sender: UIButton){
+    @objc func cancelButtonTapped(_ sender: UIButton) {
         backgroundBlerView.isHidden = true
         selectDateRangePopUpbackgroundView.isHidden = true
         
@@ -2022,7 +2022,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         tableView.reloadData()
     }
     //By Date Filter Ok action
-    @objc func okButtonTapped(_ sender: UIButton){
+    @objc func okButtonTapped(_ sender: UIButton) {
         backgroundBlerView.isHidden = true
         selectDateRangePopUpbackgroundView.isHidden = true
         
@@ -2308,19 +2308,19 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         
     }
     
-    @objc func backImageButtonTapped(_ sender: UIButton){
+    @objc func backImageButtonTapped(_ sender: UIButton) {
         walletSyncingBackgroundView.isHidden = true
         noTransactionsYetBackgroundView.isHidden = true
         filterTransactionsHistoryBackgroundView.isHidden = false
         transactionsDetailsBackgroundView.isHidden = true
     }
     
-    @objc func incomingButtonTapped(_ sender: UIButton){
+    @objc func incomingButtonTapped(_ sender: UIButton) {
         incomingButton.isSelected = !incomingButton.isSelected
         self.filterTransaction()
     }
     
-    @objc func outgoingButtonTapped(_ sender: UIButton){
+    @objc func outgoingButtonTapped(_ sender: UIButton) {
         outgoingButton.isSelected = !outgoingButton.isSelected
         self.filterTransaction()
     }
@@ -2386,7 +2386,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         self.tableView.reloadData()
     }
     
-    @objc func byDateButtonTapped(_ sender: UIButton){
+    @objc func byDateButtonTapped(_ sender: UIButton) {
         backgroundBlerView.isHidden = false
         selectDateRangePopUpbackgroundView.isHidden = false
         fromDate = ""

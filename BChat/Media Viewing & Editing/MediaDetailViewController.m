@@ -323,8 +323,8 @@ AVPlayerLayer *_playerLayer;
     VideoPlayerView *playerView = [VideoPlayerView new];
     playerView.player = player.avPlayer;
     _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
-    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-            [self.view.layer addSublayer:_playerLayer];
+    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    [self.view.layer addSublayer:_playerLayer];
 
     [NSLayoutConstraint autoSetPriority:UILayoutPriorityDefaultLow
                          forConstraints:^{

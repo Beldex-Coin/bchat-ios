@@ -44,7 +44,6 @@ final class PaymentView : UIView {
         if let rangeBeldex = fullText.range(of: "\(rawAmount)"),
            let rangeAddress = fullText.range(of: "BDX  ") {
             let attributedString = NSMutableAttributedString(string: fullText)
-//            attributedString.addAttribute(.foregroundColor, value: Colors.aboutContentLabelColor, range: NSRange(rangeBeldex, in: fullText))
             let direction = isOutgoing ? "send" : "receive"
             if direction != "send" {
                 attributedString.addAttribute(.foregroundColor, value: Colors.titleColor, range: NSRange(rangeBeldex, in: fullText))
@@ -67,7 +66,6 @@ final class PaymentView : UIView {
         
         if direction == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
-//            subtitleLabel.textColor = Colors.greenColor
         } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
         }
@@ -176,5 +174,8 @@ final class PaymentView : UIView {
         mainStackView.pin(to: self, withInset: Values.mediumSpacing)
         timeLabel.pin(.right, to: .right, of: self, withInset: -15)
         timeLabel.pin(.bottom, to: .bottom, of: self, withInset: -9)
+        NSLayoutConstraint.activate([
+            timeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: tickMarkImageView.trailingAnchor, constant: 4)
+            ])
     }
 }
