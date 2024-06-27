@@ -34,6 +34,10 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     private let uiDatabaseConnection: YapDatabaseConnection
 
     public weak var delegate: MediaTileViewControllerDelegate?
+    
+    //documents
+    private var documents: [Document] = []
+    private var documentItems: [GalleryDate: [Document]]?
 
     deinit {
         Logger.debug("deinit")
@@ -211,6 +215,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             noDataMessageLabel.centerXAnchor.constraint(equalTo: noDataView.centerXAnchor),
             noDataMessageLabel.bottomAnchor.constraint(equalTo: noDataView.bottomAnchor, constant: 0),
         ])
+        
+        fetchAllDocuments()
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -254,7 +260,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     
     // Top SegmentView Changed
     @objc func segmentValueChanged(_ sender: AnyObject?) {
-        self.collectionView.reloadData()
         if containerViewForMediaAndDocument.selectedIndex == 0 {
             mediaLineView.backgroundColor = Colors.bothGreenColor
             documentLineView.backgroundColor = Colors.borderColorNew
@@ -269,6 +274,20 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             self.noDataView.isHidden = false
             self.noDataImageView.image = UIImage(named: "no_document_image")
             self.noDataMessageLabel.text = "No Document items to show!"
+        }
+        self.collectionView.reloadData()
+    }
+    
+    func fetchAllDocuments() {
+        if let objects = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as? Data {
+            let decoder = JSONDecoder()
+            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
+                documents = documentsDecoded
+            }
+            
+            documents.forEach { document in
+                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+            }
         }
     }
         
@@ -391,33 +410,37 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     }
 
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection sectionIdx: Int) -> Int {
+        
+        if containerViewForMediaAndDocument.selectedIndex == 0 {
+            guard galleryDates.count > 0 else {
+                // empty gallery
+                return 0
+            }
 
-        guard galleryDates.count > 0 else {
-            // empty gallery
-            return 0
+            if sectionIdx == kLoadOlderSectionIdx {
+                // load older
+                return 0
+            }
+
+            if sectionIdx == loadNewerSectionIdx {
+                // load more recent
+                return 0
+            }
+
+            guard let sectionDate = self.galleryDates[safe: sectionIdx - 1] else {
+                owsFailDebug("unknown section: \(sectionIdx)")
+                return 0
+            }
+
+            guard let section = self.galleryItems[sectionDate] else {
+                owsFailDebug("no section for date: \(sectionDate)")
+                return 0
+            }
+
+            return section.count
+        } else {
+            return 0 //update document dates count
         }
-
-        if sectionIdx == kLoadOlderSectionIdx {
-            // load older
-            return 0
-        }
-
-        if sectionIdx == loadNewerSectionIdx {
-            // load more recent
-            return 0
-        }
-
-        guard let sectionDate = self.galleryDates[safe: sectionIdx - 1] else {
-            owsFailDebug("unknown section: \(sectionIdx)")
-            return 0
-        }
-
-        guard let section = self.galleryItems[sectionDate] else {
-            owsFailDebug("no section for date: \(sectionDate)")
-            return 0
-        }
-
-        return section.count
     }
 
     override public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -475,36 +498,69 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         Logger.debug("indexPath: \(indexPath)")
+        
+        if containerViewForMediaAndDocument.selectedIndex == 0 {
+            let defaultCell = UICollectionViewCell()
 
-        let defaultCell = UICollectionViewCell()
+            guard galleryDates.count > 0 else {
+                owsFailDebug("unexpected cell for loadNewerSectionIdx")
+                return defaultCell
+            }
 
-        guard galleryDates.count > 0 else {
-            owsFailDebug("unexpected cell for loadNewerSectionIdx")
+            switch indexPath.section {
+                case kLoadOlderSectionIdx:
+                    owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
+                    return defaultCell
+                case loadNewerSectionIdx:
+                    owsFailDebug("unexpected cell for loadNewerSectionIdx")
+                    return defaultCell
+                default:
+                    guard let galleryItem = galleryItem(at: indexPath) else {
+                        owsFailDebug("no message for path: \(indexPath)")
+                        return defaultCell
+                    }
+
+                    guard let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: PhotoGridViewCell.reuseIdentifier, for: indexPath) as? PhotoGridViewCell else {
+                        owsFailDebug("unexpected cell for indexPath: \(indexPath)")
+                        return defaultCell
+                    }
+
+                    let gridCellItem = GalleryGridCellItem(galleryItem: galleryItem)
+                    cell.configure(item: gridCellItem)
+
+                    return cell
+            }
+        } else {
+            let defaultCell = UICollectionViewCell()
             return defaultCell
         }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView,
+                               layout collectionViewLayout: UICollectionViewLayout,
+                               referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-        switch indexPath.section {
-        case kLoadOlderSectionIdx:
-            owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
-            return defaultCell
-        case loadNewerSectionIdx:
-            owsFailDebug("unexpected cell for loadNewerSectionIdx")
-            return defaultCell
-        default:
-            guard let galleryItem = galleryItem(at: indexPath) else {
-                owsFailDebug("no message for path: \(indexPath)")
-                return defaultCell
-            }
+        let kMonthHeaderSize: CGSize = CGSize(width: 0, height: 50)
+        let kStaticHeaderSize: CGSize = CGSize(width: 0, height: 100)
 
-            guard let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: PhotoGridViewCell.reuseIdentifier, for: indexPath) as? PhotoGridViewCell else {
-                owsFailDebug("unexpected cell for indexPath: \(indexPath)")
-                return defaultCell
-            }
+        guard galleryDates.count > 0 else {
+            return kStaticHeaderSize
+        }
 
-            let gridCellItem = GalleryGridCellItem(galleryItem: galleryItem)
-            cell.configure(item: gridCellItem)
+        guard let mediaGalleryDataSource = self.mediaGalleryDataSource else {
+            owsFailDebug("mediaGalleryDataSource was unexpectedly nil")
+            return CGSize.zero
+        }
 
-            return cell
+        switch section {
+            case kLoadOlderSectionIdx:
+                // Show "loading older..." iff there is still older data to be fetched
+                return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
+            case loadNewerSectionIdx:
+                // Show "loading newer..." iff there is still more recent data to be fetched
+                return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
+            default:
+                return kMonthHeaderSize
         }
     }
 
@@ -565,34 +621,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         if (newItemSize != mediaTileViewLayout.itemSize) {
             mediaTileViewLayout.itemSize = newItemSize
             mediaTileViewLayout.invalidateLayout()
-        }
-    }
-
-    public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        let kMonthHeaderSize: CGSize = CGSize(width: 0, height: 50)
-        let kStaticHeaderSize: CGSize = CGSize(width: 0, height: 100)
-
-        guard galleryDates.count > 0 else {
-            return kStaticHeaderSize
-        }
-
-        guard let mediaGalleryDataSource = self.mediaGalleryDataSource else {
-            owsFailDebug("mediaGalleryDataSource was unexpectedly nil")
-            return CGSize.zero
-        }
-
-        switch section {
-            case kLoadOlderSectionIdx:
-                // Show "loading older..." iff there is still older data to be fetched
-                return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
-            case loadNewerSectionIdx:
-                // Show "loading newer..." iff there is still more recent data to be fetched
-                return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
-            default:
-                return kMonthHeaderSize
         }
     }
 
