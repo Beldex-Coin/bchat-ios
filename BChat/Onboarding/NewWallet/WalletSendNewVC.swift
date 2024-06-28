@@ -297,7 +297,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         topBackgroundView.addSubview(beldexBalanceLabel)
         view.addSubview(middleBackgroundView)
         middleBackgroundView.addSubview(beldexAmountTitleLabel)
-        middleBackgroundView.addSubview(maxButton)
+        // don't delete below lines
+        //middleBackgroundView.addSubview(maxButton)
         middleBackgroundView.addSubview(beldexAmountTextField)
         middleBackgroundView.addSubview(currencyResultTitleLabel)
         middleBackgroundView.addSubview(addressBookButton)
@@ -337,13 +338,14 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             beldexAmountTitleLabel.topAnchor.constraint(equalTo: middleBackgroundView.topAnchor, constant: 20),
             beldexAmountTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
             beldexAmountTitleLabel.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
-            maxButton.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
-            maxButton.widthAnchor.constraint(equalToConstant: 68),
-            maxButton.heightAnchor.constraint(equalToConstant: 53),
-            maxButton.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
+            // don't delete below lines
+//            maxButton.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
+//            maxButton.widthAnchor.constraint(equalToConstant: 68),
+//            maxButton.heightAnchor.constraint(equalToConstant: 53),
+//            maxButton.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
             beldexAmountTextField.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
             beldexAmountTextField.topAnchor.constraint(equalTo: beldexAmountTitleLabel.bottomAnchor, constant: 13),
-            beldexAmountTextField.trailingAnchor.constraint(equalTo: maxButton.leadingAnchor, constant: -7),
+            beldexAmountTextField.trailingAnchor.constraint(equalTo: middleBackgroundView.trailingAnchor, constant: -19),
             beldexAmountTextField.heightAnchor.constraint(equalToConstant: 53),
             currencyResultTitleLabel.leadingAnchor.constraint(equalTo: middleBackgroundView.leadingAnchor, constant: 19),
             currencyResultTitleLabel.topAnchor.constraint(equalTo: beldexAmountTextField.bottomAnchor, constant: 15),
@@ -806,18 +808,18 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             self.present(alert, animated: true, completion: nil)
         } else if ((beldexAddressTextview.text.count > 106 || beldexAddressTextview.text.count < 95) && beldexAddressTextview.text.suffix(4).lowercased() != ".bdx") {
             let alert = UIAlertController(title: "My Wallet", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else {
             let indexOfString = beldexAmountTextField.text!
             let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
             if beldexAmountTextField.text?.count == 0 {
-                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count > 16 || beldexAmountTextField.text![lastString] == "." {
-                let alert = UIAlertController(title: "My Wallet", message: "Pls Enter Proper amount", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                let alert = UIAlertController(title: NSLocalizedString("MY_WALLET_TITLE", comment: ""), message: NSLocalizedString("PLEASE_ENTER_PROPER_AMOUNT_TEXT", comment: ""), preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OKEY_BUTTON", comment: ""), style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal() {

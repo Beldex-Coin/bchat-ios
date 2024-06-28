@@ -46,7 +46,7 @@ enum SideMenuItem {
         let aKey: String
         switch self {
             case .myAccount:
-                aKey = "My Account"
+                aKey = "Account Settings"
             case .settings:
                 aKey = "Settings"
             case .notification:

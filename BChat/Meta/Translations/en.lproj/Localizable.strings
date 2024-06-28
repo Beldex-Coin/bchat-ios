@@ -788,6 +788,7 @@
 "AMOUNT_TITLE" = "Amount";
 "RECIPIENT_ADDRESS" = "Recipient Address";
 "RECEIVED_TITLE" = "Received";
+"FEE_TITLE" = "Fee";
 
 /* HomeVC */
 "NEW_CHAT_PLUS" = "New Chat";
@@ -796,8 +797,8 @@
 
 /* Receive */
 "MY_WALLET_TITLE" = "My Wallet";
-"PLEASE_ENTER_AMOUNT_TEXT" = "Pls Enter amount";
-"PLEASE_ENTER_PROPER_AMOUNT_TEXT" = "Pls Enter Proper amount";
+"PLEASE_ENTER_AMOUNT_TEXT" = "Please enter amount";
+"PLEASE_ENTER_PROPER_AMOUNT_TEXT" = "Please enter proper amount";
 
 
 // Clear Data

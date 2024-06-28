@@ -253,23 +253,31 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     }
     
     @objc func shareButtonTapped(_ sender: UIButton) {
-        if beldexAmountTextField.text!.isEmpty {
-            amountValidationAlert()
-        }else {
-            let indexOfString = beldexAmountTextField.text!
-            let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
-            if beldexAmountTextField.text?.count == 0 {
-                amountValidationAlert()
-            }
-            else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count
-                        > 16 || beldexAmountTextField.text![lastString] == "." {
-                properAmountValidationAlert()
-            }else {
-                let qrCode = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
-                let shareVC = UIActivityViewController(activityItems: [ qrCode! ], applicationActivities: nil)
-                self.navigationController!.present(shareVC, animated: true, completion: nil)
-            }
-        }
+        
+        guard let amount =  beldexAmountTextField.text else { return }
+        let amountText = amount.isEmpty ? "" : "?amount=\(beldexAmountTextField.text!)"
+        let qrCode = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + amountText)
+        let shareVC = UIActivityViewController(activityItems: [ qrCode! ], applicationActivities: nil)
+        self.navigationController!.present(shareVC, animated: true, completion: nil)
+        
+        // don't delete the below lines
+//        if beldexAmountTextField.text!.isEmpty {
+//            amountValidationAlert()
+//        }else {
+//            let indexOfString = beldexAmountTextField.text!
+//            let lastString = beldexAmountTextField.text!.index(before: beldexAmountTextField.text!.endIndex)
+//            if beldexAmountTextField.text?.count == 0 {
+//                amountValidationAlert()
+//            }
+//            else if beldexAmountTextField.text! == "." || Int(beldexAmountTextField.text!) == 0 || indexOfString.count
+//                        > 16 || beldexAmountTextField.text![lastString] == "." {
+//                properAmountValidationAlert()
+//            }else {
+//                let qrCode = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(beldexAmountTextField.text!)")
+//                let shareVC = UIActivityViewController(activityItems: [ qrCode! ], applicationActivities: nil)
+//                self.navigationController!.present(shareVC, animated: true, completion: nil)
+//            }
+//        }
     }
     
     func amountValidationAlert(){

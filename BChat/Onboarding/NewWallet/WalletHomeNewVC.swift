@@ -690,6 +690,25 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return result
     }()
     
+    lazy var feeDetailsTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("FEE_TITLE", comment: "")
+        return result
+    }()
+    
+    lazy var feeDetailsIDLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
     lazy var isFromSendDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.boldOpenSans(ofSize: 14)
@@ -1033,6 +1052,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         outerBackgroundView.addSubview(amountIDStackView)
         amountIDStackView.addArrangedSubview(subStackView5)
         amountIDStackView.addArrangedSubview(lineBackgroundView7)
+        
+//        subStackView5.addArrangedSubview(feeDetailsTitleLabel)
+//        subStackView5.addArrangedSubview(feeDetailsIDLabel)
         
         //  recipient Address
         outerBackgroundView.addSubview(subStackView6)
@@ -1747,7 +1769,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 walletSyncingBackgroundView.isHidden = false
                 noTransactionsYetBackgroundView.isHidden = true
             } else {
-                self.progressStatusLabel.text = "Synchronized 100%"
+                self.progressStatusLabel.text = "Synchronized"
+                progressStatusLabel.textColor = Colors.bothGreenColor
                 beldexLogoImg.image = UIImage(named: "ic_beldex_green")
                 walletSyncingBackgroundView.isHidden = true
                 if self.transactionAllArray.count == 0 {
@@ -2490,10 +2513,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.sendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
+                    cell.balanceAmountLabel.textColor = Colors.bothRedColor
                 } else {
                     cell.sendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
+                    cell.balanceAmountLabel.textColor = Colors.bothGreenColor
                 }
             } else {
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
@@ -2510,10 +2535,12 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.sendandReceiveLabel.text = "Send"
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
+                    cell.balanceAmountLabel.textColor = Colors.bothRedColor
                 } else {
                     cell.sendandReceiveLabel.text = "Received"
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
+                    cell.balanceAmountLabel.textColor = Colors.bothGreenColor
                 }
             }
         } else if isFromSendTransationFlag == true {
@@ -2550,6 +2577,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
+            cell.balanceAmountLabel.textColor = Colors.bothRedColor
         } else {
             if filteredIncomingTransactionSortingArray.count > 0{
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
@@ -2584,6 +2612,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 }
             }
+            cell.balanceAmountLabel.textColor = Colors.bothGreenColor
         }
         
         return cell
@@ -2637,11 +2666,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     isFromSendDetailsTitleLabel.textColor = .red
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
+                    balanceAmountForDetailsPageLabel.textColor = Colors.bothRedColor
+                    amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
+                    balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
+                    amountDetailsIDLabel.textColor = Colors.bothGreenColor
                 }
             } else {
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
@@ -2679,11 +2712,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     isFromSendDetailsTitleLabel.textColor = .red
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
+                    balanceAmountForDetailsPageLabel.textColor = Colors.bothRedColor
+                    amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
                     isFromSendDetailsTitleLabel.textColor = Colors.greenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
+                    balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
+                    amountDetailsIDLabel.textColor = Colors.bothGreenColor
                 }
             }
         } else if isFromSendTransationFlag == true {
@@ -2770,6 +2807,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
+            amountDetailsIDLabel.textColor = Colors.bothRedColor
+            balanceAmountForDetailsPageLabel.textColor = Colors.bothRedColor
         } else {
             if filteredIncomingTransactionSortingArray.count > 0 {
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
@@ -2854,6 +2893,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }
+            amountDetailsIDLabel.textColor = Colors.bothGreenColor
+            balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
         }
         //Hide the Views
         walletSyncingBackgroundView.isHidden = true
