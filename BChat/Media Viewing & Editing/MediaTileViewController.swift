@@ -361,30 +361,57 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 
     override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Logger.debug("")
-
-        guard let gridCell = self.collectionView(collectionView, cellForItemAt: indexPath) as? PhotoGridViewCell else {
-            owsFailDebug("galleryCell was unexpectedly nil")
-            return
-        }
-
-        guard let galleryItem = (gridCell.item as? GalleryGridCellItem)?.galleryItem else {
-            owsFailDebug("galleryItem was unexpectedly nil")
-            return
-        }
-
-        if isInBatchSelectMode {
-            updateDeleteButton()
+        
+        if containerViewForMediaAndDocument.selectedIndex == 0 {
+            guard let gridCell = self.collectionView(collectionView, cellForItemAt: indexPath) as? PhotoGridViewCell else {
+                owsFailDebug("galleryCell was unexpectedly nil")
+                return
+            }
+            
+            guard let galleryItem = (gridCell.item as? GalleryGridCellItem)?.galleryItem else {
+                owsFailDebug("galleryItem was unexpectedly nil")
+                return
+            }
+            
+            if isInBatchSelectMode {
+                updateDeleteButton()
+            } else {
+                collectionView.deselectItem(at: indexPath, animated: true)
+                self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
+            }
         } else {
-            collectionView.deselectItem(at: indexPath, animated: true)
-            self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
+            let viewItem = documents[indexPath.row]
+            if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
+                viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
+                viewItem.contentType == DocumentContentType.textDocument.rawValue {
+                let fileUrl: URL = URL(fileURLWithPath: viewItem.originalFilePath)
+//                let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+//                interactionController.delegate = self
+//                interactionController.presentPreview(animated: true)
+            }
+            else {
+                // Open the document if possible
+//                if let url = viewItem.originalMediaURL {
+//                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+//                    if UIDevice.current.isIPad {
+//                        shareVC.excludedActivityTypes = []
+//                        shareVC.popoverPresentationController?.permittedArrowDirections = []
+//                        shareVC.popoverPresentationController?.sourceView = self.view
+//                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+//                    }
+//                    navigationController!.present(shareVC, animated: true, completion: nil)
+//                }
+            }
         }
     }
 
     public override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         Logger.debug("")
 
-        if isInBatchSelectMode {
-            updateDeleteButton()
+        if containerViewForMediaAndDocument.selectedIndex == 0 {
+            if isInBatchSelectMode {
+                updateDeleteButton()
+            }
         }
     }
 
@@ -405,7 +432,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             // One for each galleryDate plus a "loading older" and "loading newer" section
             return galleryItems.keys.count + 2
         } else {
-           return 0
+           return 1
         }
     }
 
@@ -439,7 +466,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 
             return section.count
         } else {
-            return 0 //update document dates count
+            return documents.count //update document dates count
         }
     }
 
@@ -533,6 +560,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         } else {
             let defaultCell = UICollectionViewCell()
             return defaultCell
+            
+            //DocumentCollectionViewCell
         }
     }
     
