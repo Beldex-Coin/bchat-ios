@@ -1303,18 +1303,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             self.fetchMarketsData(false)
         }
         
-        //MARK:- Wallet Syncing func
-        if WalletSharedData.sharedInstance.wallet != nil {
-            if self.wallet == nil {
-                isSyncingUI = true
-                syncingIsFromDelegateMethod = false
-                self.closeWallet()
-                init_syncing_wallet()
-            }
-        } else {
-            init_syncing_wallet()
-        }
-        
         if globalDynamicNodeArray.count == 0 {
             globalDynamicNodeArray = self.nodeArray
         }
@@ -1464,8 +1452,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
             let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
             scanButton.setImage(scanButtonImage, for: .normal)
-            self.closeWallet()
-            init_syncing_wallet()
         }
         filteredAllTransactionSortingArray = []
         filteredOutgoingTransactionSortingArray = []
@@ -1475,8 +1461,32 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        scanButton.isUserInteractionEnabled = false
+        sendButton.isUserInteractionEnabled = false
+        scanButton.backgroundColor = Colors.walletDisableButtonColor
+        sendButton.backgroundColor = Colors.walletDisableButtonColor
+        let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+        sendButton.setImage(sendButtonImage, for: .normal)
+        let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+        scanButton.setImage(scanButtonImage, for: .normal)
+        let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+        let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+        reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+        beldexBalanceLabel.text = "-.---"
+        isCurrencyResultLabel.text = "0.00 USD"
+        self.syncedflag = false
+        conncetingState.value = true
+        walletSyncingBackgroundView.isHidden = false
+        noTransactionsYetBackgroundView.isHidden = true
+        progressStatusLabel.textColor = Colors.aboutContentLabelColor
+        progressStatusLabel.text = "Loading Wallet ..."
         if WalletSharedData.sharedInstance.wallet != nil {
-            connect(wallet: WalletSharedData.sharedInstance.wallet!)
+            self.wallet = WalletSharedData.sharedInstance.wallet
+                isSyncingUI = true
+                syncingIsFromDelegateMethod = false
+                connect(wallet: WalletSharedData.sharedInstance.wallet!)
+        } else {
+            init_syncing_wallet()
         }
         if SaveUserDefaultsData.SwitchNode == true {
             SaveUserDefaultsData.SwitchNode = false
@@ -1570,7 +1580,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             let username = SaveUserDefaultsData.NameForWallet
             let pwd = SaveUserDefaultsData.israndomUUIDPassword
             WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
-                WalletSharedData.sharedInstance.wallet = nil
                 DispatchQueue.main.async {
                     self?.scanButton.isUserInteractionEnabled = false
                     self?.sendButton.isUserInteractionEnabled = false
@@ -1591,6 +1600,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     WalletSharedData.sharedInstance.wallet = wallet
                     strongSelf.connect(wallet: wallet)
                 case .failure(_):
+                    WalletSharedData.sharedInstance.wallet = nil
                     DispatchQueue.main.async {
                         strongSelf.refreshState.value = true
                         strongSelf.conncetingState.value = false
@@ -1782,7 +1792,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
             self.tableView.reloadData()
-            WalletSharedData.sharedInstance.wallet = nil
         } else {
             self.progressStatusLabel.textColor = .red
             self.progressStatusLabel.text = "Check your internet"
@@ -3171,6 +3180,9 @@ extension WalletHomeNewVC: BeldexWalletDelegate {
         self.isFromWalletRescan(isCurrentHeight: currentHeight, isdaemonBlockHeight: wallet.daemonBlockChainHeight)
         self.needSynchronized = true
         self.isSyncingUI = true
+        DispatchQueue.main.async {
+            self.beldexBalanceLabel.text = "-.---"
+        }
     }
     
     func isFromWalletRescan(isCurrentHeight:UInt64,isdaemonBlockHeight:UInt64) {

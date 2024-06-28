@@ -678,7 +678,6 @@ final class HomeVC : BaseVC {
             let username = SaveUserDefaultsData.NameForWallet
             let pwd = SaveUserDefaultsData.israndomUUIDPassword
             WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
-                WalletSharedData.sharedInstance.wallet = nil
                 guard let strongSelf = self else { return }
                 switch result {
                     case .success(let wallet):
@@ -687,6 +686,7 @@ final class HomeVC : BaseVC {
                         strongSelf.connect(wallet: wallet)
                         strongSelf.syncedflag = true
                     case .failure(_):
+                    WalletSharedData.sharedInstance.wallet = nil
                         DispatchQueue.main.async {
                             strongSelf.refreshState.value = true
                             strongSelf.conncetingState.value = false

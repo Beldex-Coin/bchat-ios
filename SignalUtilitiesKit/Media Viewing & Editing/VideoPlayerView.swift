@@ -166,7 +166,10 @@ public class PlayerProgressBar: UIView {
         addSubview(remainingLabel)
         addSubview(speakerOptionButton)
         addSubview(slider)
-        addSubview(fullScreenButton)
+        
+        // Don't Delete
+        // For FullScreen uncomment this
+//        addSubview(fullScreenButton)
         
         let buttonWidth: CGFloat = 14
         let buttonHeight: CGFloat = 14
@@ -188,11 +191,14 @@ public class PlayerProgressBar: UIView {
         
         speakerOptionButton.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
         speakerOptionButton.autoPinEdge(.leading, to: .trailing, of: remainingLabel, withOffset: kSliderMargin)
+        speakerOptionButton.autoPinEdge(toSuperviewMargin: .trailing)
         speakerOptionButton.autoVCenterInSuperview()
         
-        fullScreenButton.autoPinEdge(.leading, to: .trailing, of: speakerOptionButton, withOffset: kSliderMargin)
-        fullScreenButton.autoPinEdge(toSuperviewMargin: .trailing)
-        fullScreenButton.autoVCenterInSuperview()
+        // Don't Delete
+        // For FullScreen uncomment this
+//        fullScreenButton.autoPinEdge(.leading, to: .trailing, of: speakerOptionButton, withOffset: kSliderMargin)
+//        fullScreenButton.autoPinEdge(toSuperviewMargin: .trailing)
+//        fullScreenButton.autoVCenterInSuperview()
         
         
 //        // Notifications

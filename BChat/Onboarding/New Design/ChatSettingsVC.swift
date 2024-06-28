@@ -215,6 +215,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
         
+        let groupThread = self.thread as? TSGroupThread
+        if !groupThread!.isCurrentUserMemberInGroup() {
+            closeGroupTitleArray.removeLast()
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -782,7 +787,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
         if self.isClosedGroup() {
             if indexPath.row == 2 {
                 if self.disappearingMessagesConfiguration?.isEnabled ?? false {
-                    return 98 + 21 + 26
+                    return 98 + 21 + 26 + 26
                 } else {
                     return 98
                 }
@@ -1154,6 +1159,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.titleLabel.text = "Disappearing Messgaess"
                 cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                 
+                let groupThread = self.thread as? TSGroupThread
+                if !groupThread!.isCurrentUserMemberInGroup() {
+                    cell.rightSwitch.isEnabled = false
+                }
                 cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
                 if cell.rightSwitch.isOn {
                     cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
@@ -1232,6 +1241,9 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.discriptionLabel.text = "When enabled,you’ll only be notified for messages mentioning you."
                 let groupThread = self.thread as? TSGroupThread
                 let isOnlyNotifyingForMentions = groupThread?.isOnlyNotifyingForMentions ?? false
+                if !groupThread!.isCurrentUserMemberInGroup() {
+                    cell.rightSwitch.isEnabled = false
+                }
                 cell.rightSwitch.isOn = isOnlyNotifyingForMentions
                 
                 if cell.rightSwitch.isOn {
@@ -1242,6 +1254,16 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.rightSwitch.addTarget(self, action: #selector(notifyforMentionsOnlySwitchValueDidChange(_:)), for: .valueChanged)
                 return cell
             }
+            
+            let groupThread = self.thread as? TSGroupThread
+            if !groupThread!.isCurrentUserMemberInGroup() {
+                if indexPath.row == 3 {
+                    cell.titleLabel.alpha = 0.6
+                    cell.rightIconImageView.alpha = 0.6
+                    cell.leftIconImageView.alpha = 0.6
+                }
+            }
+            
         }
         return cell
     }
@@ -1358,7 +1380,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 self.tappedConversationSearch()
             }
             if indexPath.row == 3 {
-                self.editGroup()
+                let groupThread = self.thread as? TSGroupThread
+                if groupThread!.isCurrentUserMemberInGroup() {
+                    self.editGroup()
+                }
             }
             if indexPath.row == 4 {
                 let vc = OWSSoundSettingsViewController()
