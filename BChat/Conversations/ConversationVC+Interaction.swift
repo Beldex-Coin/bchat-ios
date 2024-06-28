@@ -27,7 +27,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     @objc func openSettings() {
         snInputView.resignFirstResponder()
         let settingsVC = ChatSettingsVC()
-        settingsVC.configure(with: thread, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
+        settingsVC.configure(with: thread, viewItems: viewItems, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
         navigationController!.pushViewController(settingsVC, animated: true, completion: nil)
     }
@@ -335,6 +335,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                 // the height of the new message cell
                                 self?.scrollToBottom(isAnimated: false)
                             }
+                            
                         )
                         
                         Storage.shared.write { transaction in
@@ -689,7 +690,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             }
                         }
                         guard let stream = attachment as? TSAttachmentStream else { return }
-                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ])
+                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ]) //*************
                         gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
                     }
                 case .genericAttachment:
@@ -698,11 +699,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                         self.confirmDownload(viewItem)
                     }
-                    else if (
-                        viewItem.attachmentStream?.isText == true ||
+                    else if (viewItem.attachmentStream?.isText == true ||
                         viewItem.attachmentStream?.isMicrosoftDoc == true ||
-                        viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf
-                    ), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
+                        viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
                         let fileUrl: URL = URL(fileURLWithPath: filePathString)
                         let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
                         interactionController.delegate = self

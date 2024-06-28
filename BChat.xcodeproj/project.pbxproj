@@ -369,6 +369,8 @@
 		8A406DE72C10314500E3ED4C /* MyAccountBNSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DE62C10314500E3ED4C /* MyAccountBNSViewModel.swift */; };
 		8A406DEA2C10536600E3ED4C /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DE92C10536600E3ED4C /* HomeTableViewCell.swift */; };
 		8A433C442BF34AB5006C3AE0 /* AddAddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */; };
+		8A4B95D82C2D4B500061C7D4 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B95D72C2D4B500061C7D4 /* Document.swift */; };
+		8A4B95DE2C2E76A40061C7D4 /* DocumentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4B95DD2C2E76A30061C7D4 /* DocumentCollectionViewCell.swift */; };
 		8A5A0B452C04942300288474 /* HostManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B442C04942300288474 /* HostManager.swift */; };
 		8A5A0B4A2C05913300288474 /* HostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B492C05913300288474 /* HostType.swift */; };
 		8A5A0B4C2C05F95100288474 /* CircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */; };
@@ -1517,6 +1519,8 @@
 		8A406DE62C10314500E3ED4C /* MyAccountBNSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountBNSViewModel.swift; sourceTree = "<group>"; };
 		8A406DE92C10536600E3ED4C /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		8A433C432BF34AB5006C3AE0 /* AddAddressBookViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAddressBookViewController.swift; sourceTree = "<group>"; };
+		8A4B95D72C2D4B500061C7D4 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		8A4B95DD2C2E76A30061C7D4 /* DocumentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A5A0B442C04942300288474 /* HostManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostManager.swift; sourceTree = "<group>"; };
 		8A5A0B492C05913300288474 /* HostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostType.swift; sourceTree = "<group>"; };
 		8A5A0B4B2C05F95100288474 /* CircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressView.swift; sourceTree = "<group>"; };
@@ -2946,6 +2950,14 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		8A4B95D62C2D4B350061C7D4 /* DocumentModel */ = {
+			isa = PBXGroup;
+			children = (
+				8A4B95D72C2D4B500061C7D4 /* Document.swift */,
+			);
+			path = DocumentModel;
+			sourceTree = "<group>";
+		};
 		8A5A0B462C04A6AE00288474 /* Host Helper */ = {
 			isa = PBXGroup;
 			children = (
@@ -3766,6 +3778,7 @@
 		C36096BA25AD1B14008B62B2 /* Media Viewing & Editing */ = {
 			isa = PBXGroup;
 			children = (
+				8A4B95D62C2D4B350061C7D4 /* DocumentModel */,
 				C36096B925AD1ACF008B62B2 /* GIFs */,
 				34E3E5671EC4B19400495BAC /* AudioProgressView.swift */,
 				346B66301F4E29B200E5122F /* CropScaleImageViewController.swift */,
@@ -3781,6 +3794,7 @@
 				4CA485BA2232339F004B9E7D /* PhotoCaptureViewController.swift */,
 				4C21D5D7223AC60F00EF8A77 /* PhotoCapture.swift */,
 				4C1885D1218F8E1C00B67051 /* PhotoGridViewCell.swift */,
+				8A4B95DD2C2E76A30061C7D4 /* DocumentCollectionViewCell.swift */,
 				4C4AE69F224AF21900D4AF6F /* SendMediaNavigationController.swift */,
 			);
 			path = "Media Viewing & Editing";
@@ -5745,6 +5759,7 @@
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
 				8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */,
 				814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */,
+				8A4B95DE2C2E76A40061C7D4 /* DocumentCollectionViewCell.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
 				8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */,
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
@@ -5905,6 +5920,7 @@
 				814712142B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift in Sources */,
 				B8269D2925C7A4B400488AB4 /* InputView.swift in Sources */,
 				8129ABEB2B579EA800417EE2 /* PINSuccessPopUp.swift in Sources */,
+				8A4B95D82C2D4B500061C7D4 /* Document.swift in Sources */,
 				81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */,
 				C374EEE225DA26740073A857 /* LinkPreviewModal.swift in Sources */,
 				60408DCA2B8DA479002EE7F8 /* TextView + Ext.swift in Sources */,
@@ -7213,7 +7229,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7299,7 +7315,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 34;
+				CURRENT_PROJECT_VERSION = 37;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (

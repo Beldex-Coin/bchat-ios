@@ -6,7 +6,13 @@ import PromiseKit
 import Foundation
 
 
-
+enum DocumentContentType : String {
+    case mswordDocument = "application/msword"
+    case pdfDocument = "application/pdf"
+    case textDocument = "text/plain"
+        
+    static let allValues = [mswordDocument, pdfDocument, textDocument]
+}
 
 
 let kIconViewLength: CGFloat = 24
@@ -89,6 +95,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     
     var thread: TSThread?
+    var viewItems: [ConversationViewItem]?
     var uiDatabaseConnection: YapDatabaseConnection?
     var disappearingMessagesDurations: [NSNumber]?
     var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
@@ -305,9 +312,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     
-    func configure(with thread: TSThread?, uiDatabaseConnection: YapDatabaseConnection?) {
+    func configure(with thread: TSThread?, viewItems: [ConversationViewItem]?, uiDatabaseConnection: YapDatabaseConnection?) {
         self.thread = thread
+        self.viewItems = viewItems
         self.uiDatabaseConnection = uiDatabaseConnection
+        
+        getAllDcouments()
     }
     
     func didFinishEditingContact() {
@@ -683,6 +693,39 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     
+    func getAllDcouments() {
+        UserDefaults.standard.removeObject(forKey: Constants.attachedDocuments)
+        var allAttachments: [TSAttachmentStream] = []
+        var documents: [Document] = []
+        guard let theViewItems = viewItems else { return }
+        theViewItems.forEach { viewItem in
+            if let message = viewItem.interaction as? TSMessage {
+                Storage.read { transaction in
+                    message.attachmentIds.forEach { attachmentID in
+                        guard let attachmentID = attachmentID as? String else { return }
+                        let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
+                        guard let stream = attachment as? TSAttachmentStream else { return }
+                        allAttachments.append(stream) //appending all attachments
+                        
+                        if stream.contentType == DocumentContentType.mswordDocument.rawValue || stream.contentType == DocumentContentType.pdfDocument.rawValue || stream.contentType == DocumentContentType.textDocument.rawValue {
+                            guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
+                            let theDocument = Document(contentType: stream.contentType,
+                                                       originalFilePath: filePath,
+                                                       originalMediaURL: mediaUrl,
+                                                       createdTimeStamp: stream.creationTimestamp)
+                            documents.append(theDocument) //appending only documents
+                        }
+                    }
+                }
+            }
+        }
+        if !documents.isEmpty {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(documents) {
+                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
+            }
+        }
+    }
 }
 
 

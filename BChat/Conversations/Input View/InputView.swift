@@ -217,7 +217,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
                     if contact.beldexAddress != nil {
-                        print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
                         if SSKPreferences.arePayAsYouChatEnabled {
                             payAsChatButton.isHidden = false
                             progressView?.isHidden = false
