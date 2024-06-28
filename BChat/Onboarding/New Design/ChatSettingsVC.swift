@@ -10,8 +10,6 @@ enum DocumentContentType : String {
     case mswordDocument = "application/msword"
     case pdfDocument = "application/pdf"
     case textDocument = "text/plain"
-        
-    static let allValues = [mswordDocument, pdfDocument, textDocument]
 }
 
 
