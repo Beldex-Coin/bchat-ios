@@ -98,7 +98,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
         // Create an UIImageView and set its image
-        let imageView = UIImageView(image: UIImage(named: "ic_calendar"))
+        let imageView = UIImageView(image: UIImage(named: "ic_calenderNew"))
         imageView.frame = CGRect(x: 0, y: 0, width: 20, height: 20) // Adjust the frame as needed
         imageView.contentMode = .scaleAspectFit // Set the content mode as needed
         // Add tap gesture recognizer to the imageView
@@ -430,6 +430,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         isRestoreFromDateButton.isSelected = !isRestoreFromDateButton.isSelected
         if isRestoreFromDateButton.isSelected {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_FROM_HEIGHT_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            let image = UIImage(named: "ic_restoreHeight")?.withRenderingMode(.alwaysTemplate)
+            isRestoreFromDateButton.setImage(image, for: .normal)
             restoreTitleLabel.text = "Pick a Date"
             restoreTitleLabel.isHidden = true
             restoreHeightTextField.isHidden = true
@@ -450,6 +452,8 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             topStackView.addArrangedSubview(isRestoreFromDateViewContainer)
         } else {
             isRestoreFromDateButton.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+            let image = UIImage(named: "ic_calendar")?.withRenderingMode(.alwaysTemplate)
+            isRestoreFromDateButton.setImage(image, for: .normal)
             restoreTitleLabel.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
             restoreDateHeightTextField.resignFirstResponder()
             dateTitleLabel.isHidden = true
