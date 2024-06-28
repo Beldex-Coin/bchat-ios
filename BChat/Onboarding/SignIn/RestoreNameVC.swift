@@ -503,6 +503,17 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
                 return showError(title: NSLocalizedString("RESTORE_HEIGHT_IS_LONG_MSG_NEW", comment: ""))
             }
         }
+        
+        // For greater blockheight
+        let date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        if Int64(restoreHeightTextField.text!) ?? 0 > RestoreHeight.getInstance().getHeight(dateString) {
+            showError(title: "Enter blockheight less than current blockheight.")
+            return
+        }
+        
         if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil {
             if !dateHeight.isEmpty {
                 SaveUserDefaultsData.WalletRestoreHeight = dateHeight

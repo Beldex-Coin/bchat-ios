@@ -298,6 +298,7 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
+		81056A2C2C2D6B68007E1494 /* RestoreHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81056A2B2C2D6B68007E1494 /* RestoreHeight.swift */; };
 		810A24C32C059F280049050B /* MessageDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A24C22C059F280049050B /* MessageDetailsVC.swift */; };
 		810E3E262C11B398000FB1A1 /* ClearChatPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E3E252C11B398000FB1A1 /* ClearChatPopUp.swift */; };
 		810E87842B58F6E7001133F9 /* WalletTransactionSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */; };
@@ -1450,6 +1451,7 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		81056A2B2C2D6B68007E1494 /* RestoreHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreHeight.swift; sourceTree = "<group>"; };
 		810A24C22C059F280049050B /* MessageDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailsVC.swift; sourceTree = "<group>"; };
 		810E3E252C11B398000FB1A1 /* ClearChatPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearChatPopUp.swift; sourceTree = "<group>"; };
 		810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletTransactionSuccessVC.swift; sourceTree = "<group>"; };
@@ -2342,6 +2344,7 @@
 			children = (
 				6016F9852A822646004C3A90 /* Date + Ext.swift */,
 				6016F9832A8214B7004C3A90 /* DateHeight + Ext.swift */,
+				81056A2B2C2D6B68007E1494 /* RestoreHeight.swift */,
 				6098CA782A1DCD44005A5502 /* Decimal + Ext.swift */,
 				6098CA7C2A1DCD44005A5502 /* LocalRecipientDB.swift */,
 				6098CA7B2A1DCD44005A5502 /* String + Ext.swift */,
@@ -5769,6 +5772,7 @@
 				8A406DDA2C0F09B200E3ED4C /* SideMenuViewModel.swift in Sources */,
 				6098CA7E2A1DCD44005A5502 /* Decimal + Ext.swift in Sources */,
 				6016F9862A822646004C3A90 /* Date + Ext.swift in Sources */,
+				81056A2C2C2D6B68007E1494 /* RestoreHeight.swift in Sources */,
 				8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */,
 				C331FFF32558FF0300070591 /* PathStatusView.swift in Sources */,
 				7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */,

@@ -39,29 +39,25 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = messageCollectionView.dequeueReusableCell(withReuseIdentifier: MessageRequestCollectionViewCell.reuseidentifier, for: indexPath) as! MessageRequestCollectionViewCell
-        // Don't Delete i will delete later.
-//        cell.profileImageView.update(for: threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord)
-        DispatchQueue.main.async {
-            if let threadViewModel = self.threadViewModelForMessageRequest(at: indexPath.row) {
-                cell.profileImageView.update(for: threadViewModel.threadRecord)
-            }
-        }
-        
-        if threadViewModelForMessageRequest(at: indexPath.row)!.isGroupThread {
-            if threadViewModelForMessageRequest(at: indexPath.row)!.name.isEmpty {
-                cell.nameLabel.text =  "Unknown Group"
-            }
-            else {
-                cell.nameLabel.text = threadViewModelForMessageRequest(at: indexPath.row)?.name
-            }
-        } else {
-            if threadViewModelForMessageRequest(at: indexPath.row)!.threadRecord.isNoteToSelf() {
-                cell.nameLabel.text = NSLocalizedString("NOTE_TO_SELF", comment: "")
+
+        if let threadViewModel = self.threadViewModelForMessageRequest(at: indexPath.row) {
+            cell.profileImageView.update(for: threadViewModel.threadRecord)
+            if threadViewModel.isGroupThread {
+                if threadViewModel.name.isEmpty {
+                    cell.nameLabel.text =  "Unknown Group"
+                }
+                else {
+                    cell.nameLabel.text = threadViewModel.name
+                }
             } else {
-                let hexEncodedPublicKey: String = threadViewModelForMessageRequest(at: indexPath.row)!.contactBChatID!
-                let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
-                let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
-                cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
+                if threadViewModel.threadRecord.isNoteToSelf() {
+                    cell.nameLabel.text = NSLocalizedString("NOTE_TO_SELF", comment: "")
+                } else {
+                    let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
+                    let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
+                    let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
+                    cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
+                }
             }
         }
         
