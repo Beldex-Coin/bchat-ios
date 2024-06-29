@@ -789,6 +789,11 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingHome == true {
+                let vc = PINSuccessPopUp()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
+                
                 UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
                 let homeVC = HomeVC()
@@ -799,6 +804,11 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingNewRestoreSeedVC == true {
+                let viewController = PINSuccessPopUp()
+                viewController.modalPresentationStyle = .overFullScreen
+                viewController.modalTransitionStyle = .crossDissolve
+                self.present(viewController, animated: true, completion: nil)
+                
                 let vc = NewRestoreSeedVC()
                 self.navigationController?.pushViewController(vc, animated: true)
             }

@@ -35,6 +35,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             cell.subTitleLabel.text = "ID: \(getUserHexEncodedPublicKey())"
             cell.titleLabel.textColor = Colors.titleColor
             cell.subTitleLabel.textColor = Colors.noDataLabelColor
+            cell.subTitleLabel.isHidden = true
             
             let publicKey = getUserHexEncodedPublicKey()
             cell.iconImageView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))

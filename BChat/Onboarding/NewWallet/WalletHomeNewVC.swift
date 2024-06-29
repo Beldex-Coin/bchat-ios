@@ -2327,6 +2327,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             toDateTextField.placeholder = "To Date"
             fromDateTextField.text = ""
             toDateTextField.text = ""
+            showToastMsg(message: "Filter applied", seconds: 1.0)
         }
         fromDate = ""
         toDate = ""
@@ -2409,7 +2410,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             noTransactionsYetBackgroundView.isHidden = true
             UserDefaults.standard.setValue("incoming", forKey: "btnclicked")
         }
-        
+        showToastMsg(message: "Filter applied", seconds: 1.0)
         //no
         if !self.incomingButton.isSelected && !self.outgoingButton.isSelected {
             self.noTransaction = true

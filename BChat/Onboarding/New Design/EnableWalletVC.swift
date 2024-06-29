@@ -155,7 +155,7 @@ class EnableWalletVC: BaseVC {
 
         view.backgroundColor = Colors.mainBackGroundColor4
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Settings"
+        self.title = "Wallet"
         
         view.addSubview(backGroundView)
         backGroundView.addSubViews(greenDotView1, infoLabel1, greenDotView2, infoLabel2, greenDotView3, infoLabel3, greenDotView4, infoLabel4, bottomStackView)
