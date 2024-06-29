@@ -212,6 +212,46 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.backgroundColor = Colors.cellGroundColor2
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    lazy var feePriorityButtonsStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 0
+        result.isLayoutMarginsRelativeArrangement = true
+        result.layer.borderColor = Colors.borderColor.cgColor
+        result.layer.borderWidth = 1
+        result.layer.cornerRadius = 6
+        return result
+    }()
+    
+    private lazy var flashPriorityButtonInSideStackView: UIButton = {
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
+        button.backgroundColor = Colors.cellGroundColor2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(flashButtonInsideStackViewTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var slowPriorityButtonInSideStackView: UIButton = {
+        let button = UIButton()
+        button.setTitle(NSLocalizedString("SLOW_BUTTON", comment: ""), for: .normal)
+        button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
+        button.backgroundColor = Colors.cellGroundColor2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 8
+        button.addTarget(self, action: #selector(slowButtonInsideStackViewTapped), for: .touchUpInside)
         return button
     }()
     
@@ -396,12 +436,28 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             estimatedFeeIDLabel.centerXAnchor.constraint(equalTo: estimatedFeeBackgroundView.centerXAnchor),
         ])
         
+        view.addSubview(feePriorityButtonsStackView)
+        feePriorityButtonsStackView.addArrangedSubview(flashPriorityButtonInSideStackView)
+        feePriorityButtonsStackView.addArrangedSubview(slowPriorityButtonInSideStackView)
+        
+        
         NSLayoutConstraint.activate([
             sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             sendButton.heightAnchor.constraint(equalToConstant: 58),
             sendButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -33),
+            
+            flashPriorityButtonInSideStackView.heightAnchor.constraint(equalToConstant: 36),
+            flashPriorityButtonInSideStackView.widthAnchor.constraint(equalToConstant: 81),
+            slowPriorityButtonInSideStackView.heightAnchor.constraint(equalToConstant: 36),
+            slowPriorityButtonInSideStackView.widthAnchor.constraint(equalToConstant: 81),
+            
+            feePriorityButtonsStackView.bottomAnchor.constraint(equalTo: flashPriorityButton.topAnchor, constant: -6),
+            feePriorityButtonsStackView.centerXAnchor.constraint(equalTo: flashPriorityButton.centerXAnchor)
+            
         ])
+        
+        feePriorityButtonsStackView.isHidden = true
         
         if !mainBalance.isEmpty {
             beldexBalanceLabel.text = mainBalance
@@ -889,6 +945,24 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         self.beldexAddressTextview.text = myData
         updateSendButtonStates()
     }
+    
+    @objc func flashButtonTapped(_ sender: UIButton) {
+        feePriorityButtonsStackView.isHidden = false
+    }
+    
+    @objc func flashButtonInsideStackViewTapped(_ sender: UIButton) {
+        flashPriorityButton.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
+        flashPriorityValue()
+        feePriorityButtonsStackView.isHidden = true
+    }
+    
+    @objc func slowButtonInsideStackViewTapped(_ sender: UIButton) {
+        flashPriorityButton.setTitle(NSLocalizedString("SLOW_BUTTON", comment: ""), for: .normal)
+        slowPriorityValue()
+        feePriorityButtonsStackView.isHidden = true
+    }
+    
+    
     
 }
 

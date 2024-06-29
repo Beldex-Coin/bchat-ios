@@ -149,7 +149,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Restore Seed"
+        self.title = "Recovery Seed"
         
         self.seedInfoLabel.text = "Copy your Recovery Seed and\nkeep it safe."
         self.infoLabel.text = "Copy and save the seed to continue"

@@ -771,6 +771,7 @@
 "MAX_BUTTON" = "Max";
 "TRANSACTION_PRIORITY" = "Transaction Priority";
 "FLASH_BUTTON" = "Flash";
+"SLOW_BUTTON" = "Slow";
 "ESTIMATED_FEE" = "Estimated Fee :";
 
 /* WalletHomeNewVC */

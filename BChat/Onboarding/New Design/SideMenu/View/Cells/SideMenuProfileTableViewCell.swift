@@ -95,7 +95,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
             
             
             titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 10),
-            titleLabel.centerYAnchor.constraint(equalTo: iconImageView.centerYAnchor, constant: -10),
+            titleLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             
             subTitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),

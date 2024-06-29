@@ -29,7 +29,9 @@ class PINSuccessPopUp: BaseVC {
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Your PIN has been set up successfully!"
+        result.text = "Your password has been set up successfully!"
+        result.numberOfLines = 0
+        result.textAlignment = .center
         return result
     }()
     
@@ -68,6 +70,8 @@ class PINSuccessPopUp: BaseVC {
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 0),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: okButton.topAnchor, constant: -17),
+            titleLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -12),
             
             okButton.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             okButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -24),

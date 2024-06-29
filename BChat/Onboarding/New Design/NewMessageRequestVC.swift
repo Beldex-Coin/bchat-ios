@@ -68,7 +68,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Message Request"
+        self.title = "Message Requests"
         
         view.addSubview(tableView)
         
