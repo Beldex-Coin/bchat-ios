@@ -8,6 +8,7 @@ public final class ProfilePictureView : UIView {
     @objc public var publicKey: String!
     @objc public var additionalPublicKey: String?
     @objc public var openGroupProfilePicture: UIImage?
+    @objc public var isNoteToSelfImage = false
     // Constraints
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -141,6 +142,10 @@ public final class ProfilePictureView : UIView {
                 case Values.mediumProfilePictureSize..<Values.largeProfilePictureSize: imageView.image = #imageLiteral(resourceName: "192x192")
                 default: imageView.image = #imageLiteral(resourceName: "logo")
             }
+        }
+        if isNoteToSelfImage {
+            imageView.image = UIImage(named: "ic_test")
+            isNoteToSelfImage = false
         }
     }
     

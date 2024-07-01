@@ -330,6 +330,8 @@
 		812C9A312BF2007B00175FA3 /* BNSLinkSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */; };
 		812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */; };
 		812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */; };
+		8131662B2C32A8350001DF1B /* AboutBNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131662A2C32A8340001DF1B /* AboutBNSViewController.swift */; };
+		8131662D2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */; };
 		813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */; };
 		813B392D2BF896EC0037FD0F /* ChatSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813B392C2BF896EC0037FD0F /* ChatSettingsVC.swift */; };
 		81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -1483,6 +1485,8 @@
 		812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNSLinkSuccessVC.swift; sourceTree = "<group>"; };
 		812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSecretGroupVC.swift; sourceTree = "<group>"; };
 		812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretGroupTableViewCell.swift; sourceTree = "<group>"; };
+		8131662A2C32A8340001DF1B /* AboutBNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutBNSViewController.swift; sourceTree = "<group>"; };
+		8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnSeedWarningPopUp.swift; sourceTree = "<group>"; };
 		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
 		813B392C2BF896EC0037FD0F /* ChatSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsVC.swift; sourceTree = "<group>"; };
 		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2857,6 +2861,7 @@
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
 				8156B3F52BE37E3400D96158 /* NewMyAccountVC.swift */,
 				8156B3F72BE3832400D96158 /* ChatSettingsNewVC.swift */,
+				8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */,
 				810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */,
 				812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */,
 				8114932D2BF483000087B74B /* NewIncomingCallVC.swift */,
@@ -2911,6 +2916,7 @@
 			children = (
 				8A406DE42C10312200E3ED4C /* View */,
 				8A406DE52C10312D00E3ED4C /* ViewModel */,
+				8131662A2C32A8340001DF1B /* AboutBNSViewController.swift */,
 			);
 			path = MyAccount;
 			sourceTree = "<group>";
@@ -5787,10 +5793,12 @@
 				6007B5DF28ABC75B0004BD61 /* UIImage+Gif.swift in Sources */,
 				B8544E3323D50E4900299F14 /* SNAppearance.swift in Sources */,
 				8A5C46C02BFCC9610031441A /* OutgoingCallTableViewCell.swift in Sources */,
+				8131662D2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift in Sources */,
 				4C586926224FAB83003FD070 /* AVAudioSession+OWS.m in Sources */,
 				C331FFF42558FF0300070591 /* PNOptionView.swift in Sources */,
 				4C4AE6A1224AF35700D4AF6F /* SendMediaNavigationController.swift in Sources */,
 				45F32C222057297A00A300D5 /* MediaDetailViewController.m in Sources */,
+				8131662B2C32A8350001DF1B /* AboutBNSViewController.swift in Sources */,
 				812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */,
 				B82149C125D605C6009C0F2A /* InfoBanner.swift in Sources */,
 				C3DAB3242480CB2B00725F25 /* SRCopyableLabel.swift in Sources */,

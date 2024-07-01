@@ -360,6 +360,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return stackView
     }()
     
+    private lazy var feeLineBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.borderColor
+        return stackView
+    }()
+    
     @objc private lazy var tableView: UITableView = {
         let result = UITableView()
         result.dataSource = self
@@ -690,25 +697,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         return result
     }()
     
-    lazy var feeDetailsTitleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("FEE_TITLE", comment: "")
-        return result
-    }()
-    
-    lazy var feeDetailsIDLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 12)
-        result.textAlignment = .right
-        result.translatesAutoresizingMaskIntoConstraints = false
-        return result
-    }()
-    
     lazy var isFromSendDetailsTitleLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.boldOpenSans(ofSize: 14)
@@ -747,6 +735,48 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.addTarget(self, action: #selector(recipientAddresscopyButtonTapped), for: .touchUpInside)
         button.tintColor = Colors.greenColor
         return button
+    }()
+    
+    
+    lazy var feeSubStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .fill
+        result.distribution = .fillEqually
+        result.spacing = 25
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
+    lazy var feeDetailsTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("FEE_TITLE", comment: "")
+        return result
+    }()
+    
+    lazy var feeDetailsLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.aboutContentLabelColor
+        result.font = Fonts.semiOpenSans(ofSize: 12)
+        result.textAlignment = .right
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    lazy var feeIDStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .vertical
+        result.alignment = .fill
+        result.distribution = .fill
+        result.spacing = 10
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
     }()
     
     private lazy var stackView: UIStackView = {
@@ -1053,8 +1083,6 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         amountIDStackView.addArrangedSubview(subStackView5)
         amountIDStackView.addArrangedSubview(lineBackgroundView7)
         
-//        subStackView5.addArrangedSubview(feeDetailsTitleLabel)
-//        subStackView5.addArrangedSubview(feeDetailsIDLabel)
         
         //  recipient Address
         outerBackgroundView.addSubview(subStackView6)
@@ -1065,6 +1093,15 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         recipientAddressStackView.addArrangedSubview(recipientAddressDetailsTitleLabel)
         recipientAddressStackView.addArrangedSubview(subStackView6)
         
+        // Fee
+        outerBackgroundView.addSubview(feeSubStackView)
+        feeSubStackView.addArrangedSubview(feeDetailsTitleLabel)
+        feeSubStackView.addArrangedSubview(feeDetailsLabel)
+        outerBackgroundView.addSubview(feeLineBackgroundView)
+        outerBackgroundView.addSubview(feeIDStackView)
+        feeIDStackView.addArrangedSubview(feeSubStackView)
+        feeIDStackView.addArrangedSubview(feeLineBackgroundView)
+        
         outerBackgroundView.addSubview(mainStackView)
         mainStackView.addArrangedSubview(transationIDStackView)
         mainStackView.addArrangedSubview(dateIDStackView)
@@ -1072,6 +1109,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         mainStackView.addArrangedSubview(heightIDStackView)
         mainStackView.addArrangedSubview(amountIDStackView)
         mainStackView.addArrangedSubview(recipientAddressStackView)
+        mainStackView.addArrangedSubview(feeIDStackView)
         // Date PopUp
         view.addSubview(backgroundBlerView)
         backgroundBlerView.addSubview(selectDateRangePopUpbackgroundView)
@@ -1232,6 +1270,9 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             lineBackgroundView7.heightAnchor.constraint(equalToConstant: 1),
             lineBackgroundView7.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
             lineBackgroundView7.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
+            feeLineBackgroundView.heightAnchor.constraint(equalToConstant: 1),
+            feeLineBackgroundView.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
+            feeLineBackgroundView.trailingAnchor.constraint(equalTo: outerBackgroundView.trailingAnchor, constant: -0),
             recipientAddresscopyButton.widthAnchor.constraint(equalToConstant: 16),
             recipientAddresscopyButton.heightAnchor.constraint(equalToConstant: 16),
             recipientAddressDetailsTitleLabel.leadingAnchor.constraint(equalTo: outerBackgroundView.leadingAnchor, constant: 0),
@@ -2677,6 +2718,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothRedColor
+                    feeIDStackView.isHidden = false
+                    feeDetailsLabel.text = transaction.networkFee + " BDX"
                     amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
@@ -2685,6 +2728,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
                     amountDetailsIDLabel.textColor = Colors.bothGreenColor
+                    feeIDStackView.isHidden = true
                 }
             } else {
                 let responceData = sortedGroupedTransactionAllArray[indexPath.section].value
@@ -2723,6 +2767,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     let logoImage = isLightMode ? "ic_send_whitethem" : "ic_send_icon"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothRedColor
+                    feeIDStackView.isHidden = false
+                    feeDetailsLabel.text = transaction.networkFee + " BDX"
                     amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
@@ -2731,6 +2777,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
                     amountDetailsIDLabel.textColor = Colors.bothGreenColor
+                    feeIDStackView.isHidden = true
                 }
             }
         } else if isFromSendTransationFlag == true {

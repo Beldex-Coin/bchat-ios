@@ -315,6 +315,11 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.update(for: thread)
         
         if let contactThread: TSContactThread = thread as? TSContactThread {
+            // Don't Delete this is for note to self image
+//            if contactThread.isNoteToSelf() {
+//                iconImageView.isNoteToSelfImage = true
+//                iconImageView.update()
+//            }
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
             guard let _ = contact, let isBnsUser = contact?.isBnsHolder else { return }
