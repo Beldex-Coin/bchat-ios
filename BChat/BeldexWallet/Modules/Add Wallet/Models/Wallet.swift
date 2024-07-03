@@ -9,6 +9,10 @@ public enum CreateWalletStyle {
     case recovery(data: NewWallet, recover: RecoverWallet)
 }
 
+struct WalletSync {
+    static var isInsideWallet = false
+}
+
 public struct NewWallet {
     var name: String = ""
     var pwd: String = ""

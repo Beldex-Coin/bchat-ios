@@ -17,6 +17,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
+    
     let sectionNames = [" ", "Wallet", "Personal"]
     var personalNamesArray = ["Address Book","Change PIN"]
     var backAPI = false
@@ -41,7 +42,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         //Here Random node and Selected node
         if !SaveUserDefaultsData.SelectedNode.isEmpty {
             nodeValue = SaveUserDefaultsData.SelectedNode
-        }else{
+        } else {
             nodeValue = SaveUserDefaultsData.FinalWallet_node
         }
     }
@@ -49,7 +50,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         //Selected node
-        if backAPI == true{
+        if backAPI == true {
             nodeValue = SaveUserDefaultsData.SelectedNode
             tableView.reloadData()
         }
@@ -63,9 +64,9 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
-        }else if section == 1{
+        } else if section == 1 {
             return 1
-        }else {
+        } else {
             return personalNamesArray.count
         }
     }
@@ -80,17 +81,17 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             //Selected node
             if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
                 cell.nodeNameLabel.text = nodeValue
-            }else{
+            } else {
                 cell.nodeNameLabel.text = "Waiting for network.."
             }
             return cell
-        }else if indexPath.section == 1 {
+        } else if indexPath.section == 1 {
             let cell = WalletSettingsTableCell(style: .default, reuseIdentifier: "WalletSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
             
             return cell
-        }else {
+        } else {
             let cell = PersonalSettingsTableCell(style: .default, reuseIdentifier: "PersonalSettingsTableCell")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
@@ -100,7 +101,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.logoImage.image = UIImage(named: logoImage)
                 cell.backGroundView.layer.cornerRadius = 16
                 cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            }else{
+            } else {
                 let logoImage = isLightMode ? "ic_change_pin_dark" : "ic_Change_pin_new"
                 cell.logoImage.image = UIImage(named: logoImage)
                 cell.backGroundView.layer.cornerRadius = 16
@@ -116,13 +117,13 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 let vc = WalletNodeListVC()
                 navigationController!.pushViewController(vc, animated: true)
             }
-        }else if indexPath.section == 1{
+        } else if indexPath.section == 1{
             
-        }else{
+        } else {
             if indexPath.row == 0 {
                 let vc = WalletAddressBookNewVC()
                 navigationController!.pushViewController(vc, animated: true)
-            }else {
+            } else {
                 let vc = NewPasswordVC()
                 vc.isGoingBack = true
                 vc.isCreatePassword = true
@@ -157,9 +158,9 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return UITableView.automaticDimension
-        }else if indexPath.section == 1 {
+        } else if indexPath.section == 1 {
             return 350 + 28
-        }else {
+        } else {
             return 56.5
         }
     }

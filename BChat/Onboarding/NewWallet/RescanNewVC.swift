@@ -304,6 +304,7 @@ class RescanNewVC: BaseVC {
             if count > 1 {
                 let VC = navigationController.viewControllers[count - 2] as! WalletHomeNewVC
                 VC.backApiRescanVC = true
+                WalletSync.isInsideWallet = false
             }
             navigationController.popViewController(animated: true)
         }

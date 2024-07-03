@@ -1388,6 +1388,8 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        
+        WalletSync.isInsideWallet = true
         UIApplication.shared.isIdleTimerDisabled = false
         self.fromcancelAction()
         self.tocancelAction()
@@ -1429,6 +1431,37 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
         incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
+        
+        if !WalletSync.isInsideWallet {
+            scanButton.isUserInteractionEnabled = false
+            sendButton.isUserInteractionEnabled = false
+            scanButton.backgroundColor = Colors.walletDisableButtonColor
+            sendButton.backgroundColor = Colors.walletDisableButtonColor
+            let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
+            sendButton.setImage(sendButtonImage, for: .normal)
+            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+            scanButton.setImage(scanButtonImage, for: .normal)
+            let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
+            let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
+            reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
+            beldexBalanceLabel.text = "-.---"
+            isCurrencyResultLabel.text = "0.00 USD"
+            self.syncedflag = false
+            conncetingState.value = true
+            walletSyncingBackgroundView.isHidden = false
+            noTransactionsYetBackgroundView.isHidden = true
+            progressStatusLabel.textColor = Colors.aboutContentLabelColor
+            progressStatusLabel.text = "Loading Wallet ..."
+            if WalletSharedData.sharedInstance.wallet != nil {
+                self.wallet = WalletSharedData.sharedInstance.wallet
+                isSyncingUI = true
+                syncingIsFromDelegateMethod = false
+                connect(wallet: WalletSharedData.sharedInstance.wallet!)
+            } else {
+                init_syncing_wallet()
+            }
+        }
+        
         if BackAPI == true {
             self.closeWallet()
             init_syncing_wallet()
@@ -1502,33 +1535,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        scanButton.isUserInteractionEnabled = false
-        sendButton.isUserInteractionEnabled = false
-        scanButton.backgroundColor = Colors.walletDisableButtonColor
-        sendButton.backgroundColor = Colors.walletDisableButtonColor
-        let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
-        sendButton.setImage(sendButtonImage, for: .normal)
-        let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-        scanButton.setImage(scanButtonImage, for: .normal)
-        let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
-        let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
-        reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)
-        beldexBalanceLabel.text = "-.---"
-        isCurrencyResultLabel.text = "0.00 USD"
-        self.syncedflag = false
-        conncetingState.value = true
-        walletSyncingBackgroundView.isHidden = false
-        noTransactionsYetBackgroundView.isHidden = true
-        progressStatusLabel.textColor = Colors.aboutContentLabelColor
-        progressStatusLabel.text = "Loading Wallet ..."
-        if WalletSharedData.sharedInstance.wallet != nil {
-            self.wallet = WalletSharedData.sharedInstance.wallet
-                isSyncingUI = true
-                syncingIsFromDelegateMethod = false
-                connect(wallet: WalletSharedData.sharedInstance.wallet!)
-        } else {
-            init_syncing_wallet()
-        }
+        
         if SaveUserDefaultsData.SwitchNode == true {
             SaveUserDefaultsData.SwitchNode = false
             self.closeWallet()

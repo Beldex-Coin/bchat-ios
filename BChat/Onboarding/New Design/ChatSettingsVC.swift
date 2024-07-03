@@ -215,9 +215,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
         
-        let groupThread = self.thread as? TSGroupThread
-        if !groupThread!.isCurrentUserMemberInGroup() {
-            closeGroupTitleArray.removeLast()
+        if let groupThread = self.thread as? TSGroupThread {
+            if !groupThread.isCurrentUserMemberInGroup() {
+                closeGroupTitleArray.removeLast()
+            }
         }
         
     }
