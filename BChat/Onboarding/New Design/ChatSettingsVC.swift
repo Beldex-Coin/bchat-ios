@@ -715,7 +715,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                             let theDocument = Document(contentType: stream.contentType,
                                                        originalFilePath: filePath,
                                                        originalMediaURL: mediaUrl,
-                                                       createdTimeStamp: stream.creationTimestamp)
+                                                       createdTimeStamp: stream.creationTimestamp,
+                                                       documentId: attachmentID)
                             documents.append(theDocument) //appending only documents
                         }
                     }
