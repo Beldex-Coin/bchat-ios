@@ -448,7 +448,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     
     func editGroup() {
-        let editSecretGroupVC = EditSecretGroupVC(with: thread!.uniqueId!)
+        let editSecretGroupVC = EditGroupViewController(with: thread!.uniqueId!)
         navigationController?.pushViewController(editSecretGroupVC, animated: true, completion: nil)
     }
     
