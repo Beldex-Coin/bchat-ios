@@ -181,6 +181,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewBlockContactTableViewCell") as! NewBlockContactTableViewCell
         
+        cell.removeButton.isHidden = true
         if isSelectionEnable {
             cell.selectionButton.isHidden = false
             cell.unblockButton.isHidden = true

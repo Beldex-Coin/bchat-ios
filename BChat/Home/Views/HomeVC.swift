@@ -261,21 +261,21 @@ final class HomeVC : BaseVC {
     }()
     
     lazy var messageRequestLabel: UILabel = {
-       let result = UILabel()
+        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.boldOpenSans(ofSize: 16)
-       result.textAlignment = .left
-       result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
-       return result
-   }()
+        return result
+    }()
     
     lazy var messageRequestCountLabel: UILabel = {
-       let result = PaddingLabel()
+        let result = PaddingLabel()
         result.textColor = Colors.darkThemeTextBoxColor
-       result.font = Fonts.boldOpenSans(ofSize: 12)
-       result.textAlignment = .center
-       result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
         result.paddingTop = 3
         result.paddingBottom = 3
         result.paddingLeft = 5
@@ -283,8 +283,8 @@ final class HomeVC : BaseVC {
         result.layer.masksToBounds = true
         result.layer.cornerRadius = 11
         result.backgroundColor = Colors.messageRequestBackgroundColor
-       return result
-   }()
+        return result
+    }()
     
     lazy var showOrHideMessageRequestCollectionViewButton: UIButton = {
         let button = UIButton()
@@ -463,12 +463,16 @@ final class HomeVC : BaseVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+        }
+        WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
         self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
-        if SSKPreferences.areWalletEnabled{
+        if SSKPreferences.areWalletEnabled {
             //Dynamic node array
             self.getDynamicNodesFromAPI()
             

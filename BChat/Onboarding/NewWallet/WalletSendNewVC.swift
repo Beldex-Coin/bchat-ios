@@ -912,6 +912,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                         UserDefaults.standard.domainSchemas = hashArray
                     }
                 }
+                WalletSync.isInsideWallet = false
                 // Here dismiss with Confirm Sending PopUp
                 self.dismiss(animated: true)
                 // Here display Transaction Success PopUp

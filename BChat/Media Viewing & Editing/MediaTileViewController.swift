@@ -400,39 +400,45 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
             }
         } else {
-            let viewItem = documents[indexPath.item]
-            if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
-                viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
-                viewItem.contentType == DocumentContentType.textDocument.rawValue {
-                let fileUrl: URL = viewItem.originalMediaURL//URL(fileURLWithPath: viewItem.originalFilePath)
-                let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                interactionController.delegate = self
-                interactionController.presentPreview(animated: true)
-            }
-            else {
-                // Open the document if possible
-                let url = viewItem.originalMediaURL
-                let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                if UIDevice.current.isIPad {
-                    shareVC.excludedActivityTypes = []
-                    shareVC.popoverPresentationController?.permittedArrowDirections = []
-                    shareVC.popoverPresentationController?.sourceView = self.view
-                    shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+            
+            if isInBatchSelectMode {
+                updateDeleteButton()
+            } else {
+                collectionView.deselectItem(at: indexPath, animated: true)
+                let viewItem = documents[indexPath.item]
+                if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
+                    viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
+                    viewItem.contentType == DocumentContentType.textDocument.rawValue {
+                    let fileUrl: URL = viewItem.originalMediaURL//URL(fileURLWithPath: viewItem.originalFilePath)
+                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+                    interactionController.delegate = self
+                    interactionController.presentPreview(animated: true)
                 }
-                navigationController!.present(shareVC, animated: true, completion: nil)
-                
+                else {
+                    // Open the document if possible
+                    let url = viewItem.originalMediaURL
+                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+                    if UIDevice.current.isIPad {
+                        shareVC.excludedActivityTypes = []
+                        shareVC.popoverPresentationController?.permittedArrowDirections = []
+                        shareVC.popoverPresentationController?.sourceView = self.view
+                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                    }
+                    navigationController!.present(shareVC, animated: true, completion: nil)
+                }
             }
         }
+        
     }
     
     public override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         Logger.debug("")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             if isInBatchSelectMode {
                 updateDeleteButton()
             }
-        }
+//        }
     }
     
     private var isUserScrolling: Bool = false {
@@ -652,6 +658,20 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         return galleryItem
     }
     
+    
+    func galleryItem2(at indexPath: IndexPath) -> Document? {
+       
+        
+        guard let galleryItem = documents[safe: indexPath.row] else {
+            owsFailDebug("no message for row: \(indexPath.row)")
+            return nil
+        }
+        
+        return galleryItem
+    }
+    
+    
+    
     // MARK: UICollectionViewDelegateFlowLayout
     
     static let kInterItemSpacing: CGFloat = 2
@@ -807,6 +827,13 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         guard let indexPaths = collectionView.indexPathsForSelectedItems else {
             owsFailDebug("indexPaths was unexpectedly nil")
             return
+        }
+        
+        let items222: [Document] = indexPaths.compactMap { return self.galleryItem2(at: $0) }
+        print("aaaaa : ",items222)
+        
+        if containerViewForMediaAndDocument.selectedIndex == 1 {
+           return
         }
         
         let items: [MediaGalleryItem] = indexPaths.compactMap { return self.galleryItem(at: $0) }

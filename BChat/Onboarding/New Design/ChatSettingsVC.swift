@@ -213,9 +213,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
         
-        let groupThread = self.thread as? TSGroupThread
-        if !groupThread!.isCurrentUserMemberInGroup() {
-            closeGroupTitleArray.removeLast()
+        if let groupThread = self.thread as? TSGroupThread {
+            if !groupThread.isCurrentUserMemberInGroup() {
+                closeGroupTitleArray.removeLast()
+            }
         }
         
     }
@@ -445,7 +446,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     
     func editGroup() {
-        let editSecretGroupVC = EditSecretGroupVC(with: thread!.uniqueId!)
+        let editSecretGroupVC = EditGroupViewController(with: thread!.uniqueId!)
         navigationController?.pushViewController(editSecretGroupVC, animated: true, completion: nil)
     }
     

@@ -7,7 +7,7 @@ public final class VoiceMessageView : UIView {
     @objc var progress: Int = 0 { didSet { handleProgressChanged() } }
     @objc var isPlaying = false { didSet { handleIsPlayingChanged() } }
 
-    private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: self, withInset: -VoiceMessageView.width)
+    private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: audioWavesImageView, withInset: -52)
 
     private var attachment: TSAttachment? { viewItem.attachmentStream ?? viewItem.attachmentPointer }
     private var duration: Int { Int(viewItem.audioDurationSeconds) }
@@ -122,6 +122,9 @@ public final class VoiceMessageView : UIView {
         toggleContainer.layer.masksToBounds = true
         
         addSubview(audioWavesImageView)
+        audioWavesImageView.pin(.left, to: .left, of: self, withInset: 28)
+        audioWavesImageView.pin(.right, to: .right, of: self, withInset: -52)
+        audioWavesImageView.center(.vertical, in: self)
         // Line
         let lineView = UIView()
         lineView.backgroundColor = .clear
@@ -134,9 +137,8 @@ public final class VoiceMessageView : UIView {
         speedUpLabel.center(in: countdownLabelContainer)
         // Constraints
         addSubview(progressView)
-        progressView.pin(.left, to: .left, of: self)
+        progressView.pin(.left, to: .left, of: self, withInset: 28)
         progressView.pin(.top, to: .top, of: self)
-        progressViewRightConstraint.isActive = true
         progressView.pin(.bottom, to: .bottom, of: self)
         addSubview(toggleContainer)
         toggleContainer.pin(.left, to: .left, of: self, withInset: inset)
@@ -145,15 +147,13 @@ public final class VoiceMessageView : UIView {
         addSubview(lineView)
         lineView.pin(.left, to: .right, of: toggleContainer)
         lineView.center(.vertical, in: self)
-        audioWavesImageView.pin(.left, to: .right, of: toggleContainer)
-        audioWavesImageView.center(.vertical, in: self)
         addSubview(countdownLabelContainer)
         countdownLabelContainer.pin(.left, to: .right, of: lineView)
-        countdownLabelContainer.pin(.left, to: .right, of: audioWavesImageView)
         countdownLabelContainer.pin(.right, to: .right, of: self, withInset: -inset)
         countdownLabelContainer.center(.vertical, in: self)
         addSubview(loader)
         loader.center(in: toggleContainer)
+        progressViewRightConstraint.isActive = true
     }
 
     // MARK: Updating
@@ -180,10 +180,10 @@ public final class VoiceMessageView : UIView {
         guard isDownloaded else { return }
         countdownLabel.text = OWSFormat.formatDurationSeconds(duration - progress)
         guard viewItem.audioProgressSeconds > 0 && viewItem.audioDurationSeconds > 0 else {
-            return progressViewRightConstraint.constant = -VoiceMessageView.width
+            return progressViewRightConstraint.constant = -120
         }
         let fraction = viewItem.audioProgressSeconds / viewItem.audioDurationSeconds
-        progressViewRightConstraint.constant = -(VoiceMessageView.width * (1 - fraction))
+        progressViewRightConstraint.constant = -(120 * (1 - fraction))
     }
 
     func showSpeedUpLabel() {

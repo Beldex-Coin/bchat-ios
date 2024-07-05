@@ -46,8 +46,30 @@ class DocumentCollectionViewCell: UICollectionViewCell {
         return View
     }()
     
+    private let selectedBadgeView: UIImageView
+    private let selectedView: UIView
+    
+    override public var isSelected: Bool {
+        didSet {
+            self.selectedBadgeView.isHidden = !self.isSelected
+            self.selectedView.isHidden = !self.isSelected
+        }
+    }
+    
+    private static let selectedBadgeImage = #imageLiteral(resourceName: "selected_blue_circle")
     
     override init(frame: CGRect) {
+        
+        self.selectedView = UIView()
+        selectedView.alpha = 0.3
+        selectedView.backgroundColor = Colors.cellSelected
+        selectedView.isHidden = true
+        
+        
+        self.selectedBadgeView = UIImageView()
+        selectedBadgeView.image = DocumentCollectionViewCell.selectedBadgeImage
+        selectedBadgeView.isHidden = true
+        
         super.init(frame: frame)
         
         contentView.addSubview(documentImageView)
@@ -55,6 +77,8 @@ class DocumentCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(sizeLabel)
         contentView.addSubview(dateLabel)
         contentView.addSubview(separatorLine)
+        contentView.addSubview(selectedView)
+        contentView.addSubview(selectedBadgeView)
         
         documentImageView.image = UIImage(named: "user_dark")
         
@@ -82,10 +106,24 @@ class DocumentCollectionViewCell: UICollectionViewCell {
             separatorLine.heightAnchor.constraint(equalToConstant: 0.5),
         ])
         
+        selectedView.autoPinEdgesToSuperviewEdges()
+        
+        let kSelectedBadgeSize = CGSize(width: 31, height: 31)
+        selectedBadgeView.autoPinEdge(toSuperviewEdge: .trailing, withInset: 0)
+        selectedBadgeView.autoPinEdge(toSuperviewEdge: .bottom, withInset: 0)
+        selectedBadgeView.autoSetDimensions(to: kSelectedBadgeSize)
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    override public func prepareForReuse() {
+        super.prepareForReuse()
+        self.selectedView.isHidden = true
+        self.selectedBadgeView.isHidden = true
     }
     
     

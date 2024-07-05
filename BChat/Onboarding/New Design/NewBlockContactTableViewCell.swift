@@ -80,13 +80,24 @@ class NewBlockContactTableViewCell: UITableViewCell {
         return button
     }()
     
+    lazy var removeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.setBackgroundImage(UIImage(named: "ic_removeUser"), for: .normal)
+        button.addTarget(self, action: #selector(removeButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     var unblockCallback: (() -> Void)?
+    var removeCallback: (() -> Void)?
     
     func setUPLayout() {
         
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, unblockButton)
+        backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, unblockButton, removeButton)
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
@@ -110,7 +121,14 @@ class NewBlockContactTableViewCell: UITableViewCell {
             unblockButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             unblockButton.heightAnchor.constraint(equalToConstant: 30),
             unblockButton.widthAnchor.constraint(equalToConstant: 82),
+            
+            removeButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
+            removeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -13),
         ])
+    }
+    
+    @objc private func removeButtonTapped(_ sender: UIButton) {
+        removeCallback?()
     }
     
     @objc private func unblockButtonTapped(_ sender: UIButton) {

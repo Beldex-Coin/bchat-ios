@@ -282,10 +282,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
-            let modal = SendSeedModal()
+            inputAccessoryView?.isHidden = true
+            inputAccessoryView?.alpha = 0
+            let modal = OwnSeedWarningPopUp()
             modal.modalPresentationStyle = .overFullScreen
             modal.modalTransitionStyle = .crossDissolve
-            modal.proceed = { self.sendMessage(hasPermissionToSendSeed: true) }
+            modal.proceed = {
+                self.showInputAccessoryView()
+                self.sendMessage(hasPermissionToSendSeed: true)
+            }
+            modal.cancel = {
+                self.showInputAccessoryView()
+            }
             return present(modal, animated: true, completion: nil)
         }
         

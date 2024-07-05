@@ -572,6 +572,10 @@ class MyAccountBnsViewController: BaseVC {
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSNameLabel)
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSLogoImage)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
+        tap.cancelsTouchesInView = false
+        readMoreAboutBackgroundView.addGestureRecognizer(tap)
+        
         view.addSubview(stackViewForFinalLinkBNS)
         stackViewForFinalLinkBNS.addArrangedSubview(linkYourBNSBackgroundView)
         stackViewForFinalLinkBNS.addArrangedSubview(readMoreAboutBackgroundView)
@@ -959,5 +963,10 @@ class MyAccountBnsViewController: BaseVC {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
         self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+    }
+    
+    @objc func readMoreAboutBNSViewTapped(_ sender: UITapGestureRecognizer? = nil) {
+        let viewController = AboutBNSViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }

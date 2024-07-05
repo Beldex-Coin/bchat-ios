@@ -54,6 +54,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private var ed25519KeyPair: Sign.KeyPair!
     private var x25519KeyPair: ECKeyPair! { didSet { updatePublicKeyLabel() } }
     private var data = NewWallet()
+    var continueButtonYPosition = 0.0
     
     
     override func viewDidLoad() {
@@ -98,6 +99,12 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGestureRecognizer)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        continueButtonYPosition = UIScreen.main.bounds.height / 1.3
+        continueButton.frame.origin.y = continueButtonYPosition
         
     }
     
@@ -146,6 +153,37 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             }
         }
         animate()
+    }
+    
+    
+    @objc func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
+        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
+        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
+        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
+        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
+        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        if keyboardTop <= 100 {
+            continueButtonYPosition = UIScreen.main.bounds.height / 1.3
+            continueButton.frame.origin.y = continueButtonYPosition
+        } else {
+            continueButtonYPosition = UIScreen.main.bounds.height / 2.9
+            continueButton.frame.origin.y = continueButtonYPosition
+        }
+        
+    }
+    
+    
+    @objc func handleKeyboardWillHideNotification(_ notification: Notification) {
+        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
+        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
+        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
+        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
+        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        
+        continueButtonYPosition = UIScreen.main.bounds.height / 1.3
+        continueButton.frame.origin.y = continueButtonYPosition
     }
     
     
