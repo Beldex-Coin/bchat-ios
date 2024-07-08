@@ -34,6 +34,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     private let uiDatabaseConnection: YapDatabaseConnection
     
     public weak var delegate: MediaTileViewControllerDelegate?
+    var viewItems: [ConversationViewItem]?
     
     //documents
     private var documents: [Document] = []
@@ -45,7 +46,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     
     fileprivate let mediaTileViewLayout: MediaTileViewLayout
     
-    init(mediaGalleryDataSource: MediaGalleryDataSource, uiDatabaseConnection: YapDatabaseConnection) {
+    init(mediaGalleryDataSource: MediaGalleryDataSource, uiDatabaseConnection: YapDatabaseConnection, viewItems: [ConversationViewItem] = []) {
         
         self.mediaGalleryDataSource = mediaGalleryDataSource
         assert(uiDatabaseConnection.isInLongLivedReadTransaction())
@@ -53,6 +54,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         
         let layout: MediaTileViewLayout = type(of: self).buildLayout()
         self.mediaTileViewLayout = layout
+        self.viewItems = viewItems
         super.init(collectionViewLayout: layout)
     }
     
@@ -217,6 +219,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             noDataMessageLabel.bottomAnchor.constraint(equalTo: noDataView.bottomAnchor, constant: 0),
         ])
         
+//        getAllDcouments()
         fetchAllDocuments()
     }
     
@@ -279,21 +282,107 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             self.noDataMessageLabel.text = "No Document items to show!"
         }
         updateLayout()
+        updateSelectButton()
         self.collectionView.reloadData()
     }
     
     func fetchAllDocuments() {
+        documents = []
         if let objects = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as? Data {
             let decoder = JSONDecoder()
             if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
                 documents = documentsDecoded
             }
-            
+            self.collectionView.reloadData()
             documents.forEach { document in
                 debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
             }
         }
     }
+    
+    func getAllDcouments() {
+        UserDefaults.standard.removeObject(forKey: Constants.attachedDocuments)
+        
+        var deletedDocuments: [Document] = []
+        if let objects = UserDefaults.standard.value(forKey: Constants.deleteAttachedDocuments) as? Data {
+            let decoder = JSONDecoder()
+            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
+                deletedDocuments = documentsDecoded
+            }
+            deletedDocuments.forEach { document in
+                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+            }
+        }
+        
+        var allAttachments: [TSAttachmentStream] = []
+        var documents: [Document] = []
+        guard let theViewItems = viewItems else { return }
+        theViewItems.forEach { viewItem in
+            if let message = viewItem.interaction as? TSMessage {
+                Storage.read { transaction in
+                    message.attachmentIds.forEach { attachmentID in
+                        guard let attachmentID = attachmentID as? String else { return }
+                        let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
+                        guard let stream = attachment as? TSAttachmentStream else { return }
+                        allAttachments.append(stream) //appending all attachments
+                        
+                        if stream.contentType == DocumentContentType.mswordDocument.rawValue || stream.contentType == DocumentContentType.pdfDocument.rawValue || stream.contentType == DocumentContentType.textDocument.rawValue {
+                            
+                            if !deletedDocuments.isEmpty {
+                                for document in deletedDocuments {
+                                    if document.documentId == attachmentID {
+                                        self.deleteLocally(viewItem)
+                                    }
+                                }
+                            }
+                            
+                            guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
+                            let theDocument = Document(contentType: stream.contentType,
+                                                       originalFilePath: filePath,
+                                                       originalMediaURL: mediaUrl,
+                                                       createdTimeStamp: stream.creationTimestamp,
+                                                       documentId: attachmentID)
+                            documents.append(theDocument) //appending only documents
+                        }
+                    }
+                }
+            }
+        }
+        if !documents.isEmpty {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(documents) {
+                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
+            }
+        }
+        fetchAllDocuments()
+    }
+    
+    func deleteLocally(_ viewItem: ConversationViewItem) {
+        viewItem.deleteLocallyAction()
+//        if let unsendRequest = buildUnsendRequest(viewItem) {
+//            SNMessagingKitConfiguration.shared.storage.write { transaction in
+//                MessageSender.send(unsendRequest, to: .contact(publicKey: getUserHexEncodedPublicKey()), using: transaction).retainUntilComplete()
+//            }
+//        }
+    }
+    
+//    private func buildUnsendRequest(_ viewItem: ConversationViewItem) -> UnsendRequest? {
+//        if let message = viewItem.interaction as? TSMessage,
+//           message.isOpenGroupMessage || message.serverHash == nil { return nil }
+//        let unsendRequest = UnsendRequest()
+//        switch viewItem.interaction.interactionType() {
+//        case .incomingMessage:
+//            if let incomingMessage = viewItem.interaction as? TSIncomingMessage {
+//                unsendRequest.author = incomingMessage.authorId
+//            }
+//        case .outgoingMessage: unsendRequest.author = getUserHexEncodedPublicKey()
+//        default: return nil // Should never occur
+//        }
+//        unsendRequest.timestamp = viewItem.interaction.timestamp
+//        return unsendRequest
+//    }
+
+    
     
     // Date formate for document
     func formatDate(_ date: Date) -> String {
@@ -603,6 +692,18 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 print("Error: \(error)")
             }
             cell.dateLabel.text = formatDate(documentItem.createdTimeStamp)
+            
+            var documentImage = ""
+            if documentItem.contentType == DocumentContentType.mswordDocument.rawValue {
+                documentImage = "ic_documentType_doc"
+            } else if documentItem.contentType == DocumentContentType.pdfDocument.rawValue {
+                documentImage = "ic_documentType_pdf"
+            } else if documentItem.contentType == DocumentContentType.textDocument.rawValue {
+                documentImage = "ic_documentType_text"
+            } else {
+                documentImage = "ic_documentType_doc"
+            }
+            cell.documentImageView.image = UIImage(named: documentImage)
             return cell
         }
     }
@@ -659,8 +760,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     }
     
     
-    func galleryItem2(at indexPath: IndexPath) -> Document? {
-       
+    func galleryItemForDocuments(at indexPath: IndexPath) -> Document? {
         
         guard let galleryItem = documents[safe: indexPath.row] else {
             owsFailDebug("no message for row: \(indexPath.row)")
@@ -751,10 +851,14 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         if isInBatchSelectMode {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
         } else {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
-                                                                     style: .plain,
-                                                                     target: self,
-                                                                     action: #selector(didTapSelect))
+            if containerViewForMediaAndDocument.selectedIndex == 0 {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
+                                                                         style: .plain,
+                                                                         target: self,
+                                                                         action: #selector(didTapSelect))
+            } else {
+                self.navigationItem.rightBarButtonItem = nil
+            }
         }
     }
     
@@ -829,10 +933,27 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return
         }
         
-        let items222: [Document] = indexPaths.compactMap { return self.galleryItem2(at: $0) }
-        print("aaaaa : ",items222)
-        
         if containerViewForMediaAndDocument.selectedIndex == 1 {
+            let documentsItems: [Document] = indexPaths.compactMap { return self.galleryItemForDocuments(at: $0) }
+            print("selected Documents : ",documentsItems)
+            
+            // Don't delete
+            if documentsItems.count > 0 {
+                for documentsItem in documentsItems {
+                    documents = documents.filter { $0.documentId != documentsItem.documentId }
+                    self.collectionView.reloadData()
+                }
+            }
+            
+            if !documentsItems.isEmpty {
+                UserDefaults.standard.removeObject(forKey: Constants.deleteAttachedDocuments)
+                let encoder = JSONEncoder()
+                if let encoded = try? encoder.encode(documentsItems) {
+                    UserDefaults.standard.set(encoded, forKey: Constants.deleteAttachedDocuments)
+                    self.endSelectMode()
+                }
+            }
+            
            return
         }
         

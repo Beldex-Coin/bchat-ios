@@ -1317,7 +1317,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         isFromReceiveTransationFlag = false
         self.incomingButton.isSelected = true
         self.outgoingButton.isSelected = true
-        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        let logoImage = "ic_checked_green"
         incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
@@ -1406,7 +1406,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         isFromReceiveTransationFlag = false
         self.incomingButton.isSelected = true
         self.outgoingButton.isSelected = true
-        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        let logoImage = "ic_checked_green"
         incomingButton.setImage(UIImage(named: logoImage), for: .normal)
         outgoingButton.setImage(UIImage(named: logoImage), for: .normal)
         UserDefaults.standard.setValue(nil, forKey: "btnclicked")
@@ -1428,7 +1428,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         UIApplication.shared.isIdleTimerDisabled = true
-        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        let logoImage = "ic_checked_green"
         incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         outgoingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)
         
@@ -2407,7 +2407,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     func filterTransaction() {
-        let logoImage = isLightMode ? "ic_check_white_theme" : "ic_check"
+        let logoImage = "ic_checked_green"
         let logoImageWhite = isLightMode ? "ic_uncheck_white_Theme" : "ic_uncheck"
         if self.incomingButton.isSelected {
             incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)

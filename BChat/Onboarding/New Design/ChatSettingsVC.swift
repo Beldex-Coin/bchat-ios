@@ -222,6 +222,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        getAllDcouments()
         self.tableView.reloadData()
     }
     
@@ -530,7 +531,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     func showMediaGallery() {
-        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled, isFromChatSettings: true)
+        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled, isFromChatSettings: true, viewItems: self.viewItems ?? [])
         self.mediaGallery = mediaGallery
         assert(self.navigationController is OWSNavigationController)
         mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
@@ -699,6 +700,18 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     func getAllDcouments() {
         UserDefaults.standard.removeObject(forKey: Constants.attachedDocuments)
+        
+        var deletedDocuments: [Document] = []
+        if let objects = UserDefaults.standard.value(forKey: Constants.deleteAttachedDocuments) as? Data {
+            let decoder = JSONDecoder()
+            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
+                deletedDocuments = documentsDecoded
+            }
+            deletedDocuments.forEach { document in
+                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+            }
+        }
+        
         var allAttachments: [TSAttachmentStream] = []
         var documents: [Document] = []
         guard let theViewItems = viewItems else { return }
@@ -712,6 +725,15 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                         allAttachments.append(stream) //appending all attachments
                         
                         if stream.contentType == DocumentContentType.mswordDocument.rawValue || stream.contentType == DocumentContentType.pdfDocument.rawValue || stream.contentType == DocumentContentType.textDocument.rawValue {
+                            
+                            if !deletedDocuments.isEmpty {
+                                for document in deletedDocuments {
+                                    if document.documentId == attachmentID {
+                                        self.deleteLocally(viewItem)
+                                    }
+                                }
+                            }
+                            
                             guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
                             let theDocument = Document(contentType: stream.contentType,
                                                        originalFilePath: filePath,
@@ -731,6 +753,33 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             }
         }
     }
+    
+    func deleteLocally(_ viewItem: ConversationViewItem) {
+        viewItem.deleteLocallyAction()
+        if let unsendRequest = buildUnsendRequest(viewItem) {
+            SNMessagingKitConfiguration.shared.storage.write { transaction in
+                MessageSender.send(unsendRequest, to: .contact(publicKey: getUserHexEncodedPublicKey()), using: transaction).retainUntilComplete()
+            }
+        }
+    }
+    
+    private func buildUnsendRequest(_ viewItem: ConversationViewItem) -> UnsendRequest? {
+        if let message = viewItem.interaction as? TSMessage,
+           message.isOpenGroupMessage || message.serverHash == nil { return nil }
+        let unsendRequest = UnsendRequest()
+        switch viewItem.interaction.interactionType() {
+        case .incomingMessage:
+            if let incomingMessage = viewItem.interaction as? TSIncomingMessage {
+                unsendRequest.author = incomingMessage.authorId
+            }
+        case .outgoingMessage: unsendRequest.author = getUserHexEncodedPublicKey()
+        default: return nil // Should never occur
+        }
+        unsendRequest.timestamp = viewItem.interaction.timestamp
+        return unsendRequest
+    }
+    
+    
 }
 
 

@@ -1094,14 +1094,14 @@ CGFloat kIconViewLength = 24;
 {
     OWSLogDebug(@"");
 
-    MediaGallery *mediaGallery = [[MediaGallery alloc] initWithThread:self.thread
-                                                              options:MediaGalleryOptionSliderEnabled
-                                                   isFromChatSettings:YES];
-
-    self.mediaGallery = mediaGallery;
-
-    OWSAssertDebug([self.navigationController isKindOfClass:[OWSNavigationController class]]);
-    [mediaGallery pushTileViewFromNavController:(OWSNavigationController *)self.navigationController];
+//    MediaGallery *mediaGallery = [[MediaGallery alloc] initWithThread:self.thread
+//                                                              options:MediaGalleryOptionSliderEnabled
+//                                                   isFromChatSettings:YES];
+//
+//    self.mediaGallery = mediaGallery;
+//
+//    OWSAssertDebug([self.navigationController isKindOfClass:[OWSNavigationController class]]);
+//    [mediaGallery pushTileViewFromNavController:(OWSNavigationController *)self.navigationController];
 }
 
 - (void)tappedConversationSearch
