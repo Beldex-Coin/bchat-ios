@@ -33,7 +33,7 @@ class DocumentCollectionViewCell: UICollectionViewCell {
     lazy var documentImageView: UIImageView = {
         let result = UIImageView()
         result.contentMode = .scaleAspectFit
-        result.image = UIImage(named: "user_dark")
+        result.image = UIImage(named: "")
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
         return result
@@ -79,9 +79,7 @@ class DocumentCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(separatorLine)
         contentView.addSubview(selectedView)
         contentView.addSubview(selectedBadgeView)
-        
-        documentImageView.image = UIImage(named: "user_dark")
-        
+                
         NSLayoutConstraint.activate([
             
             documentImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
