@@ -944,14 +944,12 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                     self.collectionView.reloadData()
                 }
             }
-//            print("selected Documents :final " , documents)
             
             if !documentsItems.isEmpty {
                 UserDefaults.standard.removeObject(forKey: Constants.deleteAttachedDocuments)
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(documentsItems) {
                     UserDefaults.standard.set(encoded, forKey: Constants.deleteAttachedDocuments)
-//                    getAllDcouments()
                     self.endSelectMode()
                 }
             }
