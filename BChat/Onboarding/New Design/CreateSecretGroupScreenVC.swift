@@ -312,6 +312,14 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         let isSelected = selectedContacts.contains(publicKey)
         cell.selectionButton.isSelected = isSelected
         cell.update()
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            cell.verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            cell.verifiedImageView.isHidden = true
+        }
         cell.selectionButtonCallback = {
             let publicKey = Array(self.filterDict.keys)[indexPath.row]
             if !self.selectedContacts.contains(publicKey) { self.selectedContacts.insert(publicKey) } else { self.selectedContacts.remove(publicKey) }

@@ -27,6 +27,15 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
        return result
    }()
     
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     var removeCallback: (() -> Void)?
 
     override init(frame: CGRect) {
@@ -35,6 +44,7 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(profileImageView)
         contentView.addSubview(removeButton)
         contentView.addSubview(nameLabel)
+        contentView.addSubview(verifiedImageView)
         
         let profilePictureViewSize = CGFloat(44)
         profileImageView.set(.width, to: profilePictureViewSize)
@@ -55,6 +65,8 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             nameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
+        verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
     }
 
     required init?(coder: NSCoder) {
