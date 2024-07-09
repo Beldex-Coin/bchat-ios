@@ -166,6 +166,15 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         return result
     }()
     
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 54)
+        result.set(.height, to: 54)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     private lazy var backButton: UIButton = {
         let result = UIButton(type: .custom)
         result.isHidden = call.hasConnected
@@ -334,7 +343,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionView)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
-        callerImageBackgroundView.addSubview(callerImageView)
+        callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
         buttonStackView.addArrangedSubview(answerButton)
         buttonStackView.addArrangedSubview(hangUpButton)
         bottomView.addSubViews(stackViewForBottomView)
@@ -411,7 +420,19 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             internalSpeakerButton.centerXAnchor.constraint(equalTo: speakerOptionView.centerXAnchor),
         ])
         
+        verifiedImageView.pin(.trailing, to: .trailing, of: callerImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: callerImageView, withInset: 3)
         callerImageView.image = getProfilePicture(of: 132, for: self.call.bchatID)
+        
+        let contact: Contact? = Storage.shared.getContact(with: self.call.bchatID)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            callerImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            callerImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            verifiedImageView.isHidden = true
+        }
+        
         
         if shouldRestartCamera { cameraManager.prepare() }
         touch(call.videoCapturer)
@@ -513,6 +534,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
                     NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
+                    self.buttonStackView.isHidden = true
+                    self.hangUpButtonSecond.isHidden = false
+                    self.bottomView.isHidden = false
                 }
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false

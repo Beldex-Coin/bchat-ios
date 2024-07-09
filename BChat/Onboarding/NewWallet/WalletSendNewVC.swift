@@ -213,6 +213,10 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_dropdown_sendScreen")?.scaled(to: CGSize(width: 7.53, height: 4.5))
+        button.setImage(image, for: .normal)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 24, bottom: 0, right: 0)
         return button
     }()
     

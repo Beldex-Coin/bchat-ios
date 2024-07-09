@@ -572,9 +572,15 @@ class MyAccountBnsViewController: BaseVC {
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSNameLabel)
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSLogoImage)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
-        tap.cancelsTouchesInView = false
-        readMoreAboutBackgroundView.addGestureRecognizer(tap)
+        let tapGestureForReadmoreAboutBNSLabel = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
+        let tapGestureForReadmoreAboutBNSLogoImage = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
+        tapGestureForReadmoreAboutBNSLabel.numberOfTapsRequired = 1
+        readMoreAboutBNSNameLabel.isUserInteractionEnabled = true
+        readMoreAboutBNSLogoImage.isUserInteractionEnabled = true
+        tapGestureForReadmoreAboutBNSLabel.cancelsTouchesInView = false
+        tapGestureForReadmoreAboutBNSLogoImage.cancelsTouchesInView = false
+        readMoreAboutBNSNameLabel.addGestureRecognizer(tapGestureForReadmoreAboutBNSLabel)
+        readMoreAboutBNSLogoImage.addGestureRecognizer(tapGestureForReadmoreAboutBNSLogoImage)
         
         view.addSubview(stackViewForFinalLinkBNS)
         stackViewForFinalLinkBNS.addArrangedSubview(linkYourBNSBackgroundView)

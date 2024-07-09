@@ -53,4 +53,5 @@ struct Constants: Equatable {
     static let isBnsVerifiedUser = "isBnsVerifiedUser"
     static let bnsUserName = "bnsUserName"
     static let attachedDocuments = "AttachedDocuments"
+    static let deleteAttachedDocuments = "deleteAttachedDocuments"
 }

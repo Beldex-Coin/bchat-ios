@@ -294,6 +294,15 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
             cell.update()
         }
         
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            cell.verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            cell.verifiedImageView.isHidden = true
+        }
+        
         return cell
     }
     

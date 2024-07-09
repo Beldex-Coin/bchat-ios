@@ -57,6 +57,14 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                     let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
                     let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
                     cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
+                    let contact: Contact? = Storage.shared.getContact(with: hexEncodedPublicKey)
+                    if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                        cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                        cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                        cell.verifiedImageView.isHidden = isBnsUser ? false : true
+                    } else {
+                        cell.verifiedImageView.isHidden = true
+                    }
                 }
             }
         }

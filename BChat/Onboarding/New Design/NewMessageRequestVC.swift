@@ -146,6 +146,19 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         cell.threadViewModel = threadViewModel(at: indexPath.row)
         
+        if let thread = threadViewModel(at: indexPath.row)?.threadRecord {
+            let contactThread = thread as! TSContactThread
+            let publicKey = contactThread.contactBChatID()
+            let contact: Contact? = Storage.shared.getContact(with: publicKey)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                cell.verifiedImageView.isHidden = isBnsUser ? false : true
+            } else {
+                cell.verifiedImageView.isHidden = true
+            }
+        }        
+        
         cell.acceptCallback = {
             self.tappedIndex = indexPath.row
             let vc = AcceptMessageRequestPopUp()

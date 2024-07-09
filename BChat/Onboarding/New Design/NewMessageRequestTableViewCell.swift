@@ -43,7 +43,16 @@ class NewMessageRequestTableViewCell: UITableViewCell {
        return stackView
    }()
     
-    private lazy var profileImageView = ProfilePictureView()
+    lazy var profileImageView = ProfilePictureView()
+    
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
@@ -106,7 +115,7 @@ class NewMessageRequestTableViewCell: UITableViewCell {
     
     func setUPLayout() {
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(profileImageView, nameLabel, buttonStackView)
+        backGroundView.addSubViews(profileImageView, nameLabel, buttonStackView, verifiedImageView)
         buttonStackView.addArrangedSubview(deleteButton)
         buttonStackView.addArrangedSubview(declineButton)
         buttonStackView.addArrangedSubview(acceptButton)
@@ -137,6 +146,9 @@ class NewMessageRequestTableViewCell: UITableViewCell {
             acceptButton.heightAnchor.constraint(equalToConstant: 32),
             acceptButton.widthAnchor.constraint(equalToConstant: 32)
         ])
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
     }
     
     

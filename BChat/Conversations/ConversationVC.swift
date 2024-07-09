@@ -1895,16 +1895,45 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            //set image for button
             button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
-            //add function for button
-            //        button.addTarget(self, action: nil, for: UIControl.Event.touchUpInside)
-            //set frame
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
-            button.layer.masksToBounds = true
+            button.layer.masksToBounds = true            
+            button.layer.borderColor = Colors.bothGreenColor.cgColor
             button.transform = CGAffineTransformMakeTranslation(-12, 0)
-            let barButton = UIBarButtonItem(customView: button)
+
+            lazy var verifiedImageView: UIImageView = {
+                let result = UIImageView()
+                result.set(.width, to: 18)
+                result.set(.height, to: 18)
+                result.contentMode = .center
+                result.image = UIImage(named: "ic_verified_image")
+                return result
+            }()
+            
+            lazy var outerView: UIView = {
+                let View = UIView()
+                View.translatesAutoresizingMaskIntoConstraints = false
+                View.backgroundColor = .clear
+                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                return View
+            }()
+            outerView.addSubViews(button, verifiedImageView)
+            // For BNS Verified User
+            verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
+            verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
+            verifiedImageView.transform = CGAffineTransformMakeTranslation(-12, 0)
+            
+            let contact: Contact? = Storage.shared.getContact(with: publicKey)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                button.layer.borderWidth = isBnsUser ? 3 : 0
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            } else {
+                verifiedImageView.isHidden = true
+            }
+
+            let barButton = UIBarButtonItem(customView: outerView)
             self.navigationItem.leftBarButtonItem = barButton
         } else {
             let iconImageView = ProfilePictureView()

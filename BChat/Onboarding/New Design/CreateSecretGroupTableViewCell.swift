@@ -41,7 +41,16 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
        return stackView
    }()
     
-    private lazy var profileImageView = ProfilePictureView()
+    lazy var profileImageView = ProfilePictureView()
+    
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
    
     lazy var nameLabel: UILabel = {
        let result = UILabel()
@@ -66,7 +75,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     
     func setUPLayout() {
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(profileImageView, nameLabel, selectionButton)
+        backGroundView.addSubViews(profileImageView, nameLabel, selectionButton, verifiedImageView)
         let profilePictureViewSize = CGFloat(36)
         profileImageView.set(.width, to: profilePictureViewSize)
         profileImageView.set(.height, to: profilePictureViewSize)
@@ -87,6 +96,9 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -14),
         ])
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
     }
     
     // MARK: Updating

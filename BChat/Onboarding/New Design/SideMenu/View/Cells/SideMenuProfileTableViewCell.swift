@@ -67,6 +67,15 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         return result
     }()
     
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     lazy var scanImageView: UIImageView = {
         let result = UIImageView()
         result.set(.width, to: 33)
@@ -78,7 +87,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
     func setUPLayout() {
         
         contentView.addSubview(backGroundView)
-        backGroundView.addSubViews(titleLabel, iconImageView, subTitleLabel, scanImageView)
+        backGroundView.addSubViews(titleLabel, iconImageView, subTitleLabel, scanImageView, verifiedImageView)
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 75),
@@ -103,6 +112,13 @@ class SideMenuProfileTableViewCell: UITableViewCell {
             titleLabel.trailingAnchor.constraint(equalTo: scanImageView.leadingAnchor, constant: -5),
             subTitleLabel.trailingAnchor.constraint(equalTo: scanImageView.leadingAnchor, constant: -5)
         ])
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: iconImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: iconImageView, withInset: 3)
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
+        iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
+        iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+        verifiedImageView.isHidden = isBnsUser ? false : true
     }
 }
 

@@ -38,18 +38,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         return imageView
     }()
     
-    private lazy var doneButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Done", for: .normal)
-        button.layer.cornerRadius = 13
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
     let tableView : UITableView = {
         let t = UITableView()
         t.translatesAutoresizingMaskIntoConstraints = false
@@ -75,8 +63,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         stackView.backgroundColor = Colors.mainBackGroundColor3
         return stackView
     }()
-    
-    
     
     
     private let thread: TSGroupThread
@@ -112,15 +98,13 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         view.backgroundColor = Colors.mainBackGroundColor2
         self.title = "Edit Group"
         
-        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage, bottomButtonView)
+        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, nameTextField, editIconImage, bottomButtonView)
         bottomButtonView.addSubview(applyChangesButton)
         
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "ic_addMembers"), style: .plain, target: self, action: #selector(addMemberAction))
         let rightBarButtonItems = [rightBarItem]
         navigationItem.rightBarButtonItems = rightBarButtonItems
-        
-        
-        
+                
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: displayNameLabel.bottomAnchor, constant: 25.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -134,15 +118,12 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
         
-        //        let profilePictureTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showProfilePicture(_:)))
         let size = CGFloat(86)
         profilePictureImageView.set(.width, to: size)
         profilePictureImageView.set(.height, to: size)
         profilePictureImageView.size = size
         profilePictureImageView.layer.masksToBounds = true
         profilePictureImageView.layer.cornerRadius = 43
-        //        profilePictureImageView.addGestureRecognizer(profilePictureTapGestureRecognizer)
-        
         profilePictureImageView.update(for: self.thread)
         
         displayNameLabel.text = (self.threadName()!.count > 0) ? self.threadName()! : "Anonymous"
@@ -165,12 +146,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
             editIconImage.leadingAnchor.constraint(equalTo: displayNameLabel.trailingAnchor, constant: 4),
             editIconImage.centerYAnchor.constraint(equalTo: displayNameLabel.centerYAnchor),
             
-            doneButton.widthAnchor.constraint(equalToConstant: 66.7),
-            doneButton.heightAnchor.constraint(equalToConstant: 26),
-            doneButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
-            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15.3),
-            
-            
             bottomButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
             bottomButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             bottomButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
@@ -183,7 +158,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
             
         ])
         
-        doneButton.isHidden = true
         applyChangesButton.backgroundColor = Colors.cancelButtonBackgroundColor
         applyChangesButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         nameTextField.isUserInteractionEnabled = true
@@ -206,10 +180,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     
     private func handleMembersChanged() {
         tableView.reloadData()
-    }
-
-    @objc private func handleDoneButtonTapped() {
-//            updateGroupName()
     }
     
     @objc private func applyChangesButtonTapped() {
@@ -246,17 +216,10 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc func nameTextfieldTapped(textField: UITextField) {
-        doneButton.isHidden = true
         editIconImage.isHidden = true
         applyChangesButton.backgroundColor = Colors.bothGreenColor
         applyChangesButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
     }
-    
-    @objc private func doneButtonTapped(_ sender: UIButton) {
-        handleDoneButtonTapped()
-    }
-    
-    
     
     @objc func addMemberAction() {
         let title = "Add Members"
@@ -300,6 +263,15 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         cell.nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
         cell.profileImageView.image = getProfilePicture(of: 30, for: publicKey)
         
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            cell.verifiedImageView.isHidden = isBnsUser ? false : true
+        }  else {
+            cell.verifiedImageView.isHidden = true
+        }
+        
         let userPublicKey = getUserHexEncodedPublicKey()
         let isCurrentUserAdmin = thread.groupModel.groupAdminIds.contains(userPublicKey)
         cell.removeButton.isHidden = !isCurrentUserAdmin ? true : false
@@ -342,9 +314,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         let members = Set(self.membersAndZombies)
         let name = self.nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let zombies = storage.getZombieMembers(for: groupPublicKey)
-        guard members != Set(thread.groupModel.groupMemberIds + zombies) || name != thread.groupModel.groupName else {
-            return popToConversationVC(self)
-        }
+        guard members != Set(thread.groupModel.groupMemberIds + zombies) || name != thread.groupModel.groupName else { return }
         if !members.contains(getUserHexEncodedPublicKey()) {
             guard Set(thread.groupModel.groupMemberIds).subtracting([ getUserHexEncodedPublicKey() ]) == members else {
                 return showError(title: "Couldn't Update Group", message: "Can't leave while adding or removing other members.")

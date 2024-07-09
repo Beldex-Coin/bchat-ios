@@ -21,6 +21,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var backGroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +29,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.layer.cornerRadius = 16
         return stackView
     }()
+    
     private lazy var profilePictureImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -37,6 +39,16 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
     }()
+    
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 34)
+        result.set(.height, to: 34)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     private lazy var profilePictureImageButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -44,6 +56,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(profilePictureImageButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var cameraImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -52,6 +65,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var cameraImage2: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -253,6 +267,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
     }()
+    
     private lazy var innerProfileCloseButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -262,6 +277,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(innerProfileCloseTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
@@ -272,6 +288,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var saveButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
@@ -283,6 +300,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var buttonStackView1: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ removePictureButton, saveButton ])
         result.axis = .horizontal
@@ -319,7 +337,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             editIconImage.isHidden = true
             nameTextField.isUserInteractionEnabled = false
             nameIdLabel.isUserInteractionEnabled = false
-        }else {
+        } else {
             navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             self.title = "My Account"
             closeButton.isHidden = true
@@ -333,7 +351,8 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
         view.addSubview(doneButton)
-        view.addSubview(profilePictureImageButton)
+//        view.addSubview(profilePictureImageButton)
+        view.addSubview(verifiedImageView)
         view.addSubview(closeButton)
         
         backGroundView.addSubview(lineView)
@@ -342,6 +361,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         backGroundView.addSubview(profilePictureImage)
         backGroundView.addSubview(cameraView)
         cameraView.addSubview(cameraImage)
+        backGroundView.addSubview(profilePictureImageButton)
         backGroundView.addSubview(nameIdLabel)
         backGroundView.addSubview(editIconImage)
         backGroundView.addSubview(nameTextField)
@@ -366,7 +386,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            backGroundView.topAnchor.constraint(equalTo: profilePictureImage.firstBaselineAnchor, constant: 48),
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
             //Close
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 15),
             closeButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: -15),
@@ -375,17 +395,14 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             //Profile
             profilePictureImage.widthAnchor.constraint(equalToConstant: 96.5),
             profilePictureImage.heightAnchor.constraint(equalToConstant: 96.5),
+            profilePictureImage.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 21),
             profilePictureImage.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             profilePictureImage.bottomAnchor.constraint(equalTo: nameIdLabel.topAnchor, constant: -12),
-            cameraView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
-            cameraView.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
             cameraView.widthAnchor.constraint(equalToConstant: 30),
             cameraView.heightAnchor.constraint(equalToConstant: 30),
             
             profilePictureImageButton.widthAnchor.constraint(equalToConstant: 96.5),
             profilePictureImageButton.heightAnchor.constraint(equalToConstant: 96.5),
-            profilePictureImageButton.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
-            profilePictureImageButton.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
             
             cameraImage.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
             cameraImage.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
@@ -453,10 +470,36 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             shareButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             shareButton.heightAnchor.constraint(equalToConstant: 58),
         ])
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: profilePictureImage, withInset: 1)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureImage, withInset: 6)
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
+        profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
+        profilePictureImage.layer.borderWidth = isBnsUser ? 3 : 0
+        verifiedImageView.isHidden = isBnsUser ? false : true
+        
+        if isBnsUser {
+            NSLayoutConstraint.activate([
+                cameraView.leadingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: 9),
+                cameraView.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
+                profilePictureImageButton.leadingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: 9),
+                profilePictureImageButton.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                cameraView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: -1),
+                cameraView.bottomAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: -1),
+                profilePictureImageButton.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
+                profilePictureImageButton.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
+            ])
+        }
+        
+        
+        
         if isNavigationBarHideInChatNewVC == true {
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
-        }else{
+        } else {
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
         }
@@ -562,17 +605,17 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     }
     
     // MARK: General
-    @objc func profilePictureImageTapped(){
+    @objc func profilePictureImageTapped() {
         self.outerProfileView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     //Profile pic action
-    @objc func profilePictureImageButtonTapped(){
+    @objc func profilePictureImageButtonTapped() {
         self.outerProfileView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    @objc func innerProfileImageTapped(){
+    @objc func innerProfileImageTapped() {
         let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
         let cameraAction = UIAlertAction(title: "Camera", style: UIAlertAction.Style.default) {
             UIAlertAction in

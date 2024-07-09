@@ -101,12 +101,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.textColor = UIColor(hex: 0xEBEBEB)
         return result
     }()
+    
     lazy var messageTimeCenterLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.OpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
         return result
     }()
+    
     lazy var stackHorizontalView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -116,6 +118,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.spacing = 0
         return result
     }()
+    
     lazy var stackVerticalView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -123,6 +126,15 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.alignment = .fill
         result.distribution = .fill
         result.spacing = 0
+        return result
+    }()
+    
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 11)
+        result.set(.height, to: 11)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_verified_image")
         return result
     }()
     
@@ -218,9 +230,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         authorLabel.pin(.top, to: .bottom, of: headerView)
         // Profile picture view
         addSubview(profilePictureView)
+        addSubview(verifiedImageView)
         profilePictureViewLeftConstraint.isActive = true
         profilePictureViewWidthConstraint.isActive = true
         profilePictureView.pin(.bottom, to: .bottom, of: self, withInset: -1)
+        profilePictureView.layer.masksToBounds = true
+        profilePictureView.layer.cornerRadius = 13
+        verifiedImageView.pin(.trailing, to: .trailing, of: profilePictureView, withInset: 0)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureView, withInset: 0)
         // Moderator icon image view
         moderatorIconImageView.set(.width, to: 20)
         moderatorIconImageView.set(.height, to: 20)
@@ -268,6 +285,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         statusImageIncoming.isActive = true
         statusImageOutgoing.isActive = true
         messageStatusImageViewNew.center(.vertical, in: bubbleView)
+        verifiedImageView.isHidden = true
     }
     
     override func setUpGestureRecognizers() {
@@ -284,6 +302,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     // MARK: Updating
     override func update() {
+        verifiedImageView.isHidden = true
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
         let isGroupThread = viewItem.isGroupThread
         // Profile picture view
@@ -291,6 +310,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         profilePictureViewWidthConstraint.constant = isGroupThread ? VisibleMessageCell.profilePictureSize : 0
         let senderBChatID = (message as? TSIncomingMessage)?.authorId
         profilePictureView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
+        verifiedImageView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
         if let senderBChatID = senderBChatID {
             profilePictureView.update(for: senderBChatID)
         }
@@ -304,6 +324,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else {
             moderatorIconImageView.isHidden = true
         }
+        
+        if let senderBChatID = senderBChatID {
+            let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            }
+        }
+        
         // Bubble view
         bubbleViewLeftConstraint1.isActive = (direction == .incoming)
         bubbleViewLeftConstraint1.constant = isGroupThread ? VisibleMessageCell.groupThreadHSpacing : VisibleMessageCell.contactThreadHSpacing
@@ -583,7 +613,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -661,7 +691,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
             case .began:
@@ -701,7 +731,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
