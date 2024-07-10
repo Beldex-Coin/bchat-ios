@@ -226,12 +226,12 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
             }
         }
         if qrCodeLink.isEmpty {
-            self.showToastMsg(message: NSLocalizedString("INVALID_QR_CODE", comment: ""), seconds: 1.0)
+            self.showToast(message: NSLocalizedString("INVALID_QR_CODE", comment: ""), seconds: 1.0)
         } else {
             if ECKeyPair.isValidHexEncodedPublicKey(candidate: qrCodeLink) {
                 startNewDM(with: qrCodeLink)
             } else {
-                self.showToastMsg(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
+                self.showToast(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
             }
         }
         self.dismiss(animated: true)

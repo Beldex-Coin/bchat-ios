@@ -436,7 +436,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
                     addresscopy = filterBeldexAddressArray[indexPath.item]
                 }
                 UIPasteboard.general.string = "\(addresscopy)"
-                self.showToastMsg(message: "Copied to clipboard", seconds: 1.0)
+                showToast(message: "Copied to clipboard", seconds: 1.0)
             }
         }
     }

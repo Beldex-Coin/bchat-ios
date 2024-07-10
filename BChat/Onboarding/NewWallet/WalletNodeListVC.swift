@@ -267,7 +267,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArrayDynamic![indexPath.row])
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
-                self.showToastMsg(message: "Please connect some another node", seconds: 1.0)
+                self.showToast(message: "Please connect some another node", seconds: 1.0)
             }else{
                 selectedIndex = indexPath.row
                 selectedValue = self.nodeArrayDynamic![indexPath.row]

@@ -293,7 +293,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     
     @objc func copyButtonTapped(_ sender: UIButton){
         UIPasteboard.general.string = "\(SaveUserDefaultsData.WalletpublicAddress)"
-        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+        self.showToast(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
 }

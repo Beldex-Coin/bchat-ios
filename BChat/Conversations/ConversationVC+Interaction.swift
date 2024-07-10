@@ -304,7 +304,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             
         }else{
             if text.count == 4096 || text.count > 4096 {
-                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+                self.showToast(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
             }else {
                 let thread = self.thread
                 
@@ -834,7 +834,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else {
             viewItem.copyTextAction()
         }
-        self.showToastMsg(message: "Copied to clipboard", seconds: 1.0)
+        self.showToast(message: "Copied to clipboard", seconds: 1.0)
     }
     
     func copyBChatID(_ viewItem: ConversationViewItem) {

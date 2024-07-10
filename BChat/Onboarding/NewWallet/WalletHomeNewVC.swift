@@ -1661,7 +1661,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         } else {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
     }
     
@@ -2024,7 +2024,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     @objc func transationIDcopyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = "\(transationDetailsIDLabel.text!)"
-        self.showToastMsg(message: "Copied to Transaction ID", seconds: 1.0)
+        self.showToast(message: "Copied to Transaction ID", seconds: 1.0)
     }
     
     @objc func sendButtonTapped(_ sender: UIButton) {
@@ -2055,7 +2055,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             vc.daemonBlockChainHeight = UInt64(isdaemonHeight)
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            self.showToastMsg(message: "Can't rescan while wallet is syncing", seconds: 1.0)
+            self.showToast(message: "Can't rescan while wallet is syncing", seconds: 1.0)
         }
     }
     //Reconnect
@@ -2067,7 +2067,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     @objc func recipientAddresscopyButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = "\(recipientAddressDetailsIDLabel.text!)"
-        self.showToastMsg(message: "Copied to Recipient Address", seconds: 1.0)
+        self.showToast(message: "Copied to Recipient Address", seconds: 1.0)
     }
     
     //Explorer after clicking the transaction ID
@@ -2375,7 +2375,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             toDateTextField.placeholder = "To Date"
             fromDateTextField.text = ""
             toDateTextField.text = ""
-            showToastMsg(message: "Filter applied", seconds: 1.0)
+            showToast(message: "Filter applied", seconds: 1.0)
         }
         fromDate = ""
         toDate = ""
@@ -2458,7 +2458,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             noTransactionsYetBackgroundView.isHidden = true
             UserDefaults.standard.setValue("incoming", forKey: "btnclicked")
         }
-        showToastMsg(message: "Filter applied", seconds: 1.0)
+        showToast(message: "Filter applied", seconds: 1.0)
         //no
         if !self.incomingButton.isSelected && !self.outgoingButton.isSelected {
             self.noTransaction = true

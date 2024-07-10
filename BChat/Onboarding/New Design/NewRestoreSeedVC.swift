@@ -208,13 +208,13 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             syncTokensJob.uploadOnlyIfStale = false
             let _: Promise<Void> = syncTokensJob.run()
         } else {
-            self.showToastMsg(message: "Please copy the Seed...", seconds: 1.0)
+            self.showToast(message: "Please copy the Seed...", seconds: 1.0)
         }
     }
     
     @objc private func copyButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
-        self.showToastMsg(message: "Copied", seconds: 1.0)
+        self.showToast(message: "Copied", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true

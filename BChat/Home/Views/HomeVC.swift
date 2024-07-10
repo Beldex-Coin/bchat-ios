@@ -1102,7 +1102,7 @@ final class HomeVC : BaseVC {
                 navigationController!.pushViewController(vc, animated: true)
             }
         } else {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
 
     }

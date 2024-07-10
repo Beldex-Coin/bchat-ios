@@ -900,7 +900,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                     vc.finalWalletAmount = self.finalWalletAmount
                     navigationController!.pushViewController(vc, animated: true)
                 } else {
-                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+                    self.showToast(message: "Please check your internet connection", seconds: 1.0)
                 }
             }
         }
@@ -933,7 +933,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                 self.present(vc, animated: true, completion: nil)
             }
         } else {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
     }
     

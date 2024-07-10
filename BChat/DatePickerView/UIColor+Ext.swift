@@ -1,10 +1,4 @@
-//
-//  UIColor+Ext.swift
-//  DatePickerDialog
-//
-//  Created by Vini Soares on 15/10/20.
-//  Copyright © 2020 squimer. All rights reserved.
-//
+// Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
 

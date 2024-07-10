@@ -340,7 +340,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
                     verifyNodeURICheking(host_port: txtfldStr)
                 }
             }else {
-                self.showToastMsg(message: "Make sure you test the node before adding it", seconds: 1.0)
+                self.showToast(message: "Make sure you test the node before adding it", seconds: 1.0)
             }
         }
     }
