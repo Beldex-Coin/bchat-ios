@@ -79,7 +79,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.titleLabel.text = menuItem.title
             cell.iconImageView.image = UIImage(named: menuItem.imageName)
-            cell.betaTitleLabel.isHidden = viewModel.menuTitles[indexPath.row] != .wallet
+            cell.betaTitleLabel.isHidden = menuItem.title != SideMenuItem.wallet.title
             
             return cell
         }
@@ -108,31 +108,31 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                     let viewController = NewAlertRecoverySeedVC()
                     navigationController?.pushViewController(viewController, animated: true)
                 case .wallet:
-                if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-                    // Old flow (without wallet)
-                    if SaveUserDefaultsData.israndomUUIDPassword == "" {
-                        let viewController = EnableWalletVC()
-                        navigationController?.pushViewController(viewController, animated: true)
-                        return
-                    }
-                    // New flow (with wallet)
-                    if SSKPreferences.areWalletEnabled { // Wallet Enable
-                        let viewController = NewPasswordVC()
-                        viewController.isGoingWallet = true
-                        if SaveUserDefaultsData.WalletPassword.isEmpty { // empty
-                            viewController.isGoingPopUp = true
-                            viewController.isCreateWalletPassword = true
-                        } else { //Pin Enter
-                            viewController.isVerifyWalletPassword = true
+                    if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                        // Old flow (without wallet)
+                        if SaveUserDefaultsData.israndomUUIDPassword == "" {
+                            let viewController = EnableWalletVC()
+                            navigationController?.pushViewController(viewController, animated: true)
+                            return
                         }
-                        navigationController!.pushViewController(viewController, animated: true)
-                    } else { //Not Enable wallet
-                        let viewController = EnableWalletVC()
-                        navigationController?.pushViewController(viewController, animated: true)
+                        // New flow (with wallet)
+                        if SSKPreferences.areWalletEnabled { // Wallet Enable
+                            let viewController = NewPasswordVC()
+                            viewController.isGoingWallet = true
+                            if SaveUserDefaultsData.WalletPassword.isEmpty { // empty
+                                viewController.isGoingPopUp = true
+                                viewController.isCreateWalletPassword = true
+                            } else { //Pin Enter
+                                viewController.isVerifyWalletPassword = true
+                            }
+                            navigationController?.pushViewController(viewController, animated: true)
+                        } else { //Not Enable wallet
+                            let viewController = EnableWalletVC()
+                            navigationController?.pushViewController(viewController, animated: true)
+                        }
+                    } else {
+                        self.showToast(message: "Please check your internet connection", seconds: 1.0)
                     }
-                } else {
-                    self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
-                }
                 case .reportIssue:
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: "\(bchat_report_IssueID)")
                     SignalApp.shared().presentConversation(for: thread, action: .compose, animated: true)
