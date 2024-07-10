@@ -145,7 +145,7 @@ public final class ProfilePictureView : UIView {
         }
         if isNoteToSelfImage {
             imageView.image = UIImage(named: "ic_noteToSelf")
-            imageView.backgroundColor = Colors.callScreenBottomViewBackgroundColor
+            imageView.backgroundColor = Colors.smallBackGroundViewCellColor
             imageView.contentMode = .center
             isNoteToSelfImage = false
         }

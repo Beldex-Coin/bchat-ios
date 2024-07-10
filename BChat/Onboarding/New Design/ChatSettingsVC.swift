@@ -28,6 +28,15 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     private lazy var profilePictureImageView = ProfilePictureView()
     
+    private lazy var bnsApprovalIconImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.image = UIImage(named: "ic_Bns_Approval_icon", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        return imageView
+    }()
+    
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
         result.text = ""
@@ -138,7 +147,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             self.title = "Note to self"
         }
         
-        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage)
+        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage, bnsApprovalIconImage)
         
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: displayNameLabel.bottomAnchor, constant: 25.0).isActive = true
@@ -176,6 +185,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             profilePictureImageView.heightAnchor.constraint(equalToConstant: 86),
             profilePictureImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             profilePictureImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            bnsApprovalIconImage.trailingAnchor.constraint(equalTo: profilePictureImageView.trailingAnchor, constant: -1),
+            bnsApprovalIconImage.bottomAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 9),
+            bnsApprovalIconImage.widthAnchor.constraint(equalToConstant: 34),
+            bnsApprovalIconImage.heightAnchor.constraint(equalToConstant: 34),
             
             displayNameLabel.topAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 8),
             displayNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -216,6 +230,16 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         if let groupThread = self.thread as? TSGroupThread {
             if !groupThread.isCurrentUserMemberInGroup() {
                 closeGroupTitleArray.removeLast()
+            }
+        }
+        bnsApprovalIconImage.isHidden = true
+        if let contactThread = self.thread as? TSContactThread {
+            let publicKey = contactThread.contactBChatID()
+            let contact: Contact? = Storage.shared.getContact(with: publicKey)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                profilePictureImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                bnsApprovalIconImage.isHidden = isBnsUser ? false : true
             }
         }
         

@@ -295,9 +295,15 @@ final class ConversationCell : UITableViewCell {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
             guard let _ = contact, let isBnsUser = contact?.isBnsHolder else { return }
-            profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
-            profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-            verifiedImageView.isHidden = isBnsUser ? false : true
+            if contactThread.isNoteToSelf() {
+                profilePictureView.layer.borderWidth = 0
+                profilePictureView.layer.borderColor = UIColor.clear.cgColor
+                verifiedImageView.isHidden = true
+            } else {
+                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            }
         } else {
             profilePictureView.layer.borderWidth = 0
             profilePictureView.layer.borderColor = UIColor.clear.cgColor

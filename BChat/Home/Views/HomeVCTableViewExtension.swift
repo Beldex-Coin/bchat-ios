@@ -12,17 +12,24 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        messageRequestCountLabel.text = "\(Int(unreadMessageRequestCount))"
-        messageRequestCountLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
-        messageRequestLabel.isHidden = (Int(unreadMessageRequestCount) <= 0)
-        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(unreadMessageRequestCount) <= 0)
+        messageRequestCountLabel.text = "\(Int(messageRequestCountForMessageRequest))"
+        messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        
+        setUpNavBarSessionHeading()
+        noInternetView.isHidden = NetworkReachabilityStatus.isConnectedToNetworkSignal()
+        messageRequestLabelTopConstraint.isActive = false
+        messageRequestLabelTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16) : messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16 + 69)
+        collectionViewTopConstraint.isActive = false
+        collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
         
         if !messageRequestLabel.isHidden {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
+            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ?  tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16 + 69)
         } else {
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 16)
+            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: 0 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 16 + 69)
         }
         self.messageCollectionView.isHidden = true
         
