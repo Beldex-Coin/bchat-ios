@@ -524,6 +524,11 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 }, completion: nil)
+                self.incomingCallLabel.isHidden = true
+                self.callDurationLabel.isHidden = false
+                self.buttonStackView.isHidden = true
+                self.hangUpButtonSecond.isHidden = false
+                self.bottomView.isHidden = false
             }
         }
         self.call.hasConnectedDidChange = {

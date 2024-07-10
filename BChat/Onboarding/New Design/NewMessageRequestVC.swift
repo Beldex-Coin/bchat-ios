@@ -145,7 +145,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewMessageRequestTableViewCell") as! NewMessageRequestTableViewCell
         
         cell.threadViewModel = threadViewModel(at: indexPath.row)
-        
+        cell.verifiedImageView.isHidden = true
         if let thread = threadViewModel(at: indexPath.row)?.threadRecord {
             let contactThread = thread as! TSContactThread
             let publicKey = contactThread.contactBChatID()
@@ -154,8 +154,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
                 cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 cell.verifiedImageView.isHidden = isBnsUser ? false : true
-            } else {
-                cell.verifiedImageView.isHidden = true
             }
         }        
         

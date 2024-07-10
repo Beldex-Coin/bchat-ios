@@ -568,12 +568,12 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         self.backAPI = false
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
-        {
-            let touch = touches.first
-            if touch?.view != self.feePriorityButtonsStackView
-            { feePriorityButtonsStackView.isHidden = true }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first
+        if touch?.view != self.feePriorityButtonsStackView && !feePriorityButtonsStackView.isHidden {
+            feePriorityButtonsStackView.isHidden = true
         }
+    }
     
     
     // transation FeePriority values

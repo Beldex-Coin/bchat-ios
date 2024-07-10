@@ -199,5 +199,6 @@ public final class Colors : NSObject {
     @objc public static var callScreenBottomViewBackgroundColor: UIColor { UIColor(named: "11111A-E8E8E8")! }
     @objc public static var callScreenSpeakerOptionBackgroundColor: UIColor { UIColor(named: "11111A-F4F4F4")! }
     @objc public static var switchOnTintColor: UIColor { UIColor(named: "363645")! }
+    @objc public static var noInternetTitleColor: UIColor { UIColor(named: "A7A7BA-6A6A77")! }
     
 }

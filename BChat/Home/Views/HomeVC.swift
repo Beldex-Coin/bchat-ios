@@ -9,6 +9,8 @@ final class HomeVC : BaseVC {
     private var threads: YapDatabaseViewMappings!
     internal var threadViewModelCache: [String:ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     internal  var tableViewTopConstraint: NSLayoutConstraint!
+    internal  var messageRequestLabelTopConstraint: NSLayoutConstraint!
+    internal  var collectionViewTopConstraint: NSLayoutConstraint!
     internal var unreadMessageRequestCount: UInt {
         var count: UInt = 0
         dbConnection.read { transaction in
@@ -297,6 +299,37 @@ final class HomeVC : BaseVC {
         return button
     }()
     
+    lazy var noInternetView: UIView = {
+        let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = .clear
+        View.layer.cornerRadius = 12
+        View.layer.borderColor = Colors.borderColorNew.cgColor
+        View.layer.borderWidth = 1
+        View.isHidden = true
+        return View
+    }()
+    
+    lazy var noInternetImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "ic_noInternet")
+        return imageView
+    }()
+    
+    private lazy var noInternetLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.OpenSans(ofSize: 10)
+        result.text = "You are not connected to the Hop. Check your internet connection or Restart the app!"
+        result.textColor = Colors.noInternetTitleColor
+        result.textAlignment = .left
+        result.numberOfLines = 0
+        return result
+    }()
+    
+    
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
@@ -323,6 +356,26 @@ final class HomeVC : BaseVC {
         }
         updateNavBarButtons()
         
+        view.addSubview(noInternetView)
+        noInternetView.addSubViews(noInternetImageView, noInternetLabel)
+        noInternetView.isHidden = true
+        
+        NSLayoutConstraint.activate([
+            noInternetView.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            noInternetView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            noInternetView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            noInternetView.heightAnchor.constraint(equalToConstant: 57),
+            
+            noInternetImageView.leadingAnchor.constraint(equalTo: noInternetView.leadingAnchor, constant: 18),
+            noInternetImageView.centerYAnchor.constraint(equalTo: noInternetView.centerYAnchor),
+            noInternetImageView.heightAnchor.constraint(equalToConstant: 20),
+            noInternetImageView.widthAnchor.constraint(equalToConstant: 20),
+            
+            noInternetLabel.leadingAnchor.constraint(equalTo: noInternetImageView.trailingAnchor, constant: 13),
+            noInternetLabel.trailingAnchor.constraint(equalTo: noInternetView.trailingAnchor, constant: -18),
+            noInternetLabel.centerYAnchor.constraint(equalTo: noInternetView.centerYAnchor),
+            
+        ])
                
         view.addSubview(messageRequestLabel)
         view.addSubview(messageRequestCountLabel)
@@ -331,7 +384,6 @@ final class HomeVC : BaseVC {
         
         NSLayoutConstraint.activate([
             messageRequestLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
-            messageRequestLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             
             messageRequestCountLabel.leadingAnchor.constraint(equalTo: messageRequestLabel.trailingAnchor, constant: 6),
             messageRequestCountLabel.centerYAnchor.constraint(equalTo: messageRequestLabel.centerYAnchor),
@@ -343,6 +395,7 @@ final class HomeVC : BaseVC {
             showOrHideMessageRequestCollectionViewButton.heightAnchor.constraint(equalToConstant: 24),
             showOrHideMessageRequestCollectionViewButton.widthAnchor.constraint(equalToConstant: 24),
         ])
+        messageRequestLabelTopConstraint = messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16)
                 
         // CollectionView
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -358,10 +411,12 @@ final class HomeVC : BaseVC {
         // Add constraints for collectionView
         NSLayoutConstraint.activate([
             messageCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            messageCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0 + 38 + 8),
             messageCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             messageCollectionView.heightAnchor.constraint(equalToConstant: 80),
         ])
+        
+        collectionViewTopConstraint = messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8)
+        
         self.messageCollectionView.isHidden = true
         messageCollectionView.reloadData()
         
@@ -463,8 +518,17 @@ final class HomeVC : BaseVC {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        setUpNavBarSessionHeading()
+        messageRequestLabelTopConstraint.isActive = false
+        collectionViewTopConstraint.isActive = false
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.noInternetView.isHidden = false
+            messageRequestLabelTopConstraint = messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16 + 69)
+            collectionViewTopConstraint = messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
+        } else {
+            self.noInternetView.isHidden = true
+            messageRequestLabelTopConstraint = messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16)
+            collectionViewTopConstraint = messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8)
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
@@ -816,14 +880,20 @@ final class HomeVC : BaseVC {
         if sender.isSelected {
             self.isManualyCloseMessageRequest = false
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16)
+            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 80 + 38 + 16 + 69)
             self.messageCollectionView.isHidden = false
         } else {
             self.isManualyCloseMessageRequest = true
             tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16)
+            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16 + 69)
             self.messageCollectionView.isHidden = true
         }
+        noInternetView.isHidden = NetworkReachabilityStatus.isConnectedToNetworkSignal()
+        messageRequestLabelTopConstraint.isActive = false
+        messageRequestLabelTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16) : messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16 + 69)
+        collectionViewTopConstraint.isActive = false
+        collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
+        setUpNavBarSessionHeading()
     }
     
     private func updateNavBarButtons() {
@@ -1128,7 +1198,13 @@ extension HomeVC: BeldexWalletDelegate {
     }
     
     func setTableViewTopConstraint(_ inset: CGFloat = 0) {
-        tableViewTopConstraint = tableView.pin(.top, to: .top, of: view, withInset: inset)
+        noInternetView.isHidden = NetworkReachabilityStatus.isConnectedToNetworkSignal()
+        messageRequestLabelTopConstraint.isActive = false
+        messageRequestLabelTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16) : messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16 + 69)
+        collectionViewTopConstraint.isActive = false
+        collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
+        tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: inset) : tableView.pin(.top, to: .top, of: view, withInset: inset + 69)
+        setUpNavBarSessionHeading()
     }
 }
 
