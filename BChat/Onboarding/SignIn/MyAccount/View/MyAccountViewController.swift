@@ -810,13 +810,13 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     @objc func copyForBeldexAddressButtonTapped(){
         UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexAddressIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+        self.showToast(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func copyForBChatIdButtonTapped() {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+        self.showToast(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
 }

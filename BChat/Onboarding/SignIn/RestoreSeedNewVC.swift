@@ -207,7 +207,7 @@ class RestoreSeedNewVC: BaseVC {
             }
             mnemonicTextView.insertText(myString)
         } else {
-            self.showToastMsg(message: NSLocalizedString("Make sure you have copied the seed!", comment: ""), seconds: 1.0)
+            showToast(message: NSLocalizedString("Make sure you have copied the seed!", comment: ""), seconds: 1.0)
         }
     }
     
@@ -226,7 +226,7 @@ class RestoreSeedNewVC: BaseVC {
     /// Restore Action Tapped
     @objc func restoreActionTapped(_ sender: UIButton){
         if seedFlag == false {
-            self.showToastMsg(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
+            showToast(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
         } else {
             self.restoreButton.isUserInteractionEnabled = false
             let strings : String! = mnemonicTextView.text.lowercased()
@@ -234,7 +234,7 @@ class RestoreSeedNewVC: BaseVC {
             let words = strings.components(separatedBy: spaces)
             print(words.count)
             if words.count > 25 {
-                self.showToastMsg(message: NSLocalizedString("INVALID_SEED_ERROR_NEW", comment: ""), seconds: 2.0)
+                showToast(message: NSLocalizedString("INVALID_SEED_ERROR_NEW", comment: ""), seconds: 2.0)
                 self.restoreButton.isUserInteractionEnabled = true
             } else {
                 let mnemonic = mnemonicTextView.text!.lowercased()

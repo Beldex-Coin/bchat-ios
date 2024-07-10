@@ -14,6 +14,8 @@ class SideMenuViewController: BaseVC {
         result.register(SideMenuTableViewCell.self, forCellReuseIdentifier: SideMenuTableViewCell.reuseIdentifier)
         result.register(SideMenuProfileTableViewCell.self, forCellReuseIdentifier: SideMenuProfileTableViewCell.reuseIdentifier)
         result.showsVerticalScrollIndicator = false
+        result.dataSource = self
+        result.delegate = self
         return result
     }()
     
@@ -101,14 +103,8 @@ class SideMenuViewController: BaseVC {
         
         view.addSubViews(closeButton, menuTitleLabel, darkLightModeSwitch, lblversion, lblmodeTitle)
         
-        
-        if isLightMode {
-            darkLightModeSwitch.isOn = false
-        } else {
-            darkLightModeSwitch.isOn = true
-        }
-        
-        let origImage = UIImage(named: isLightMode ? "X" : "X")
+        darkLightModeSwitch.isOn = !isLightMode
+        let origImage = UIImage(named: "X")
         let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         closeButton.setImage(tintedImage, for: .normal)
         closeButton.tintColor = isLightMode ? .black : .white
@@ -116,10 +112,7 @@ class SideMenuViewController: BaseVC {
         guard let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] else { return }
         guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] else { return }
         self.lblversion.text = "BChat \(version) (\(buildNumber))"
-        
-        // Table view
-        tableView.dataSource = self
-        tableView.delegate = self
+
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
@@ -174,15 +167,10 @@ class SideMenuViewController: BaseVC {
     
     /// darkLightModeValueChanged
     @objc func darkLightModeValueChanged(_ sender: UISwitch) {
-        if darkLightModeSwitch.isOn {
-            AppModeManager.shared.setCurrentAppMode(to: .dark)
-        } else {
-            AppModeManager.shared.setCurrentAppMode(to: .light)
-        }
-        let origImage = UIImage(named: isLightMode ? "X" : "X")
-        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
-        closeButton.setImage(tintedImage, for: .normal)
-        closeButton.tintColor = isLightMode ? UIColor.black : UIColor.white
+        AppModeManager.shared.setCurrentAppMode(to: darkLightModeSwitch.isOn ? .dark : .light)
+        let image = UIImage(named: "X")?.withRenderingMode(.alwaysTemplate)
+        closeButton.setImage(image, for: .normal)
+        closeButton.tintColor = isLightMode ? .black : .white
         let userInfo = [ "text" : "dark" ]
         NotificationCenter.default.post(name: .doodleChangeNotification, object: nil, userInfo: userInfo)
         tableView.reloadData()

@@ -925,13 +925,13 @@ class MyAccountBnsViewController: BaseVC {
     @objc func copyForBeldexAddressButtonTapped(_ sender: UIButton){
         UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexAddressIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+        showToast(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func copyForBChatIdButtonTapped(_ sender: UIButton) {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+        showToast(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func beldexAddressButtonTapped(_ sender: UIButton){
@@ -962,13 +962,13 @@ class MyAccountBnsViewController: BaseVC {
     @objc func copyBeldexAddressButtonTapped(_ sender: UIButton){
         UIPasteboard.general.string = SaveUserDefaultsData.WalletpublicAddress
         beldexAddressIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
+        showToast(message: NSLocalizedString("BELDEX_ADDRESS_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func copyBChatIDButtonTapped(_ sender: UIButton){
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         bchatIdLabel.isUserInteractionEnabled = false
-        self.showToastMsg(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
+        showToast(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
     @objc func readMoreAboutBNSViewTapped(_ sender: UITapGestureRecognizer? = nil) {

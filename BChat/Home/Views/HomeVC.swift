@@ -464,7 +464,7 @@ final class HomeVC : BaseVC {
         super.viewDidAppear(animated)
         
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
@@ -1032,7 +1032,7 @@ final class HomeVC : BaseVC {
                 navigationController!.pushViewController(vc, animated: true)
             }
         } else {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
 
     }

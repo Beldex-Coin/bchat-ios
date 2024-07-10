@@ -1166,7 +1166,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         super.viewWillAppear(animated)
             
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            self.showToastMsg(message: "Please check your internet connection", seconds: 1.0)
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
 
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -1631,7 +1631,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                        total > 0 {
                         let percentage = CGFloat(current * 100) / CGFloat(total)
                         let formattedPercentage = String(format: "%.2f", percentage)
-                        self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
+                        self.showToast(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
                     } else {
                         // Handle the case where total is 0 or nil
                         // You can choose to show a different message or take appropriate action
@@ -1641,7 +1641,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 print("Height-->",blockChainHeight,daemonBlockChainHeight)
             } else {
                 if !isSyncingStatus {
-                    self.showToastMsg(message: "Failed to Connect", seconds: 1.5)
+                    self.showToast(message: "Failed to Connect", seconds: 1.5)
                 }
             }
         } else {

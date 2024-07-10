@@ -1,10 +1,4 @@
-//
-//  CopyLabel.swift
-//  QRScanner
-//
-//  Created by KM, Abhilash a on 15/03/19.
-//  Copyright © 2019 KM, Abhilash. All rights reserved.
-//
+// Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import UIKit
 
