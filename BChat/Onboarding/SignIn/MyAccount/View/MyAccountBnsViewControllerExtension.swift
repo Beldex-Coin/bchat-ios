@@ -39,7 +39,7 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
         } else {
             cell.dotView.backgroundColor = Colors.bothRedColor
         }
-        cell.arrowButton.isHidden = myAccountItem == .clearData || myAccountItem == .feedback || myAccountItem == .faq || myAccountItem == .changelog
+        cell.arrowButton.isHidden = myAccountItem == .clearData || myAccountItem == .feedback || myAccountItem == .faq
         
         return cell
     }

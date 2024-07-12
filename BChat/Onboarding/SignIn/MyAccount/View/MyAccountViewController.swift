@@ -74,18 +74,21 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     private lazy var cameraView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.cameraViewBackgroundColor
         return stackView
     }()
+    
     private lazy var cameraView2: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.cameraViewBackgroundColor
         return stackView
     }()
+    
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.myAccountViewBackgroundColor
@@ -98,6 +101,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var copyForBeldexAddressButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -106,6 +110,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var beldexAddressBgView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -113,6 +118,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.backgroundColor = Colors.backgroundViewColor2
         return stackView
     }()
+    
     private lazy var beldexAddressLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_ADDRESS_TITLE_NEW", comment: "")
@@ -122,6 +128,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
@@ -132,6 +139,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var copyForBChatIdButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Colors.greenColor
@@ -140,6 +148,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var doneButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
@@ -149,6 +158,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var bchatIdBgView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -156,6 +166,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.backgroundColor = Colors.backgroundViewColor2
         return stackView
     }()
+    
     private lazy var bchatLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BCHAT_ID_NEW", comment: "")
@@ -165,6 +176,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var bchatIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
@@ -175,6 +187,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var qrBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -184,6 +197,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.layer.cornerRadius = 16
         return stackView
     }()
+    
     private lazy var qrCodeImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -193,6 +207,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         imageView.layer.masksToBounds = true
         return imageView
     }()
+    
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
@@ -205,6 +220,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         }
         return result
     }()
+    
     private lazy var nameIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
@@ -219,14 +235,19 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.addGestureRecognizer(tapGesture)
         return result
     }()
+    
     private lazy var editIconImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_newedit" : "ic_newedit"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGesture)
         return imageView
     }()
+    
     private lazy var lineView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -240,6 +261,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.backgroundColor = Colors.outerProfileViewbackgroundColor
         return stackView
     }()
+    
     private lazy var innerProfileImageView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -249,6 +271,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
     private lazy var profilePictureLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
@@ -258,6 +281,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var innerProfileImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -325,7 +349,9 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
+        var backGroundViewTopAnchor: CGFloat = 32
         if isNavigationBarHideInChatNewVC == true {
+            backGroundViewTopAnchor = 82
             self.navigationController?.setNavigationBarHidden(true, animated: true)
             closeButton.isHidden = false
             cameraView.isHidden = true
@@ -350,8 +376,6 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
-        view.addSubview(doneButton)
-//        view.addSubview(profilePictureImageButton)
         view.addSubview(verifiedImageView)
         view.addSubview(closeButton)
         
@@ -375,18 +399,19 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         beldexAddressBgView.addSubview(beldexAddressIdLabel)
         view.addSubview(outerProfileView)
         outerProfileView.addSubview(innerProfileImageView)
+        view.addSubview(doneButton)
      
         NSLayoutConstraint.activate([
             doneButton.widthAnchor.constraint(equalToConstant: 80),
             doneButton.heightAnchor.constraint(equalToConstant: 28),
-            doneButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -0),
-            doneButton.bottomAnchor.constraint(equalTo: backGroundView.topAnchor, constant: -10),
+            doneButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -12),
+            doneButton.centerYAnchor.constraint(equalTo: nameTextField.centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 32),
+            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: backGroundViewTopAnchor),
             //Close
             closeButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: 15),
             closeButton.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: -15),
@@ -636,8 +661,12 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         self.present(alert, animated: true, completion: nil)
     }
     
-    @objc func innerProfileCloseTapped(){
+    @objc func innerProfileCloseTapped() {
         self.outerProfileView.isHidden = true
+        profilePictureToBeUploaded = nil
+        let publicKey = getUserHexEncodedPublicKey()
+        profilePictureImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        innerProfileImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
@@ -678,13 +707,9 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         let tempImage:UIImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)!
         let maxSize = Int(kOWSProfileManager_MaxAvatarDiameter)
         profilePictureToBeUploaded = tempImage.resizedImage(toFillPixelSize: CGSize(width: maxSize, height: maxSize))
-        profilePictureImage.image = profilePictureToBeUploaded
-        profilePictureImage.contentMode = .scaleAspectFit
         innerProfileImage.image = profilePictureToBeUploaded
         innerProfileImage.contentMode = .scaleAspectFit
         imagePicker.dismiss(animated: true, completion: nil)
-        self.outerProfileView.isHidden = true
-        updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -761,9 +786,19 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         clearAvatar()
     }
     
-    @objc func saveButtonAction(){
-        
+    @objc func saveButtonAction() {
+        if profilePictureToBeUploaded != nil {
+            profilePictureImage.image = profilePictureToBeUploaded
+            profilePictureImage.contentMode = .scaleAspectFit
+            self.outerProfileView.isHidden = true
+            updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
+        } else {
+            let alert = UIAlertController(title: "Please pick a profile picture", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
+    
     //name Edit Save Button
     @objc func doneButtonTapped(_ sender: UIButton){
         if isEditingDisplayName {
