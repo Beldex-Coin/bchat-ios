@@ -51,7 +51,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audioNew"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audio_inputView"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result

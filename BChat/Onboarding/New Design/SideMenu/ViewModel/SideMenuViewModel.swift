@@ -76,7 +76,7 @@ enum SideMenuItem {
             case .myAccount:
                 aKey = "ic_menu_account"
             case .settings:
-                aKey = "ic_menu_setting"
+                aKey = "ic_settings_sideMenu"
             case .notification:
                 aKey = "ic_menu_notification"
             case .messageRequests:
