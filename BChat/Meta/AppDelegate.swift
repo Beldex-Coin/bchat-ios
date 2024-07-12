@@ -193,13 +193,13 @@ extension AppDelegate {
         guard NetworkReachabilityStatus.isConnectedToNetworkSignal() else { return }
         guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
-            self.setBnsUserToContact(getUserHexEncodedPublicKey() == bchatID)
+            self.updateBnsUserContact(getUserHexEncodedPublicKey() == bchatID)
         }.catch { error in
-            self.setBnsUserToContact(false)
+            self.updateBnsUserContact(false)
         }
     }
     
-    func setBnsUserToContact(_ isBnsUser: Bool) {
+    func updateBnsUserContact(_ isBnsUser: Bool) {
         UserDefaults.standard.set(isBnsUser, forKey: Constants.isBnsVerifiedUser)
         NotificationCenter.default.post(name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         Storage.read { transaction in

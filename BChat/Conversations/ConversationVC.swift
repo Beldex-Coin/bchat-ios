@@ -1138,7 +1138,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if contact?.beldexAddress != nil {
                 let belexAddress = contact?.beldexAddress
                 finalWalletAddress = belexAddress!
-                print("--belexAddress in conversation VCbelexAddress---> \(belexAddress!)")
             }
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages

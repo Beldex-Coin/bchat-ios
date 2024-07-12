@@ -1175,7 +1175,6 @@ extension HomeVC: BeldexWalletDelegate {
         }
     }
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
-        print("NewBlock--currentHeight ----> \(currentHeight)---DaemonBlockHeight---->\(wallet.daemonBlockChainHeight)")
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         isdaemonHeight = Int64(wallet.daemonBlockChainHeight)

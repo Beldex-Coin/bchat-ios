@@ -232,11 +232,12 @@ class ChatNewVC: BaseVC  {
     
     /// Start New DM If Possible
     fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
-        if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
-            startNewDM(with: bnsNameOrPublicKey)
+        let newChatId = bnsNameOrPublicKey.lowercased()
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: newChatId) {
+            startNewDM(with: newChatId)
         } else {
             ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self] modalActivityIndicator in
-                SnodeAPI.getBChatID(for: bnsNameOrPublicKey).done { bchatID in
+                SnodeAPI.getBChatID(for: newChatId).done { bchatID in
                     modalActivityIndicator.dismiss {
                         self?.startNewDM(with: bchatID)
                     }
@@ -245,8 +246,8 @@ class ChatNewVC: BaseVC  {
                         var messageOrNil: String?
                         if let error = error as? SnodeAPI.Error {
                             switch error {
-                            case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
-                            default: break
+                                case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                                default: break
                             }
                         }
                         let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
