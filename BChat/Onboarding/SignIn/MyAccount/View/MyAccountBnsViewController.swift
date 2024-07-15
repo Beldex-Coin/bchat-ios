@@ -523,6 +523,7 @@ class MyAccountBnsViewController: BaseVC {
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setUpTopCornerRadius()
         self.title = "Account Settings"
         
         shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))

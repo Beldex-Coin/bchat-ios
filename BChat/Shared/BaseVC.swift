@@ -117,6 +117,11 @@ class BaseVC : UIViewController {
         stack.alignment = .center
         navigationItem.titleView = stack
     }
+    
+    internal func setUpTopCornerRadius() {
+        view.layer.cornerRadius = 18
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+    }
 
     internal func setUpNavBarSessionIcon() {
         let logoImageView = UIImageView()

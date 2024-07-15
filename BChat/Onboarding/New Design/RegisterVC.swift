@@ -114,6 +114,7 @@ class RegisterVC: BaseVC {
 
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setUpTopCornerRadius()
         self.title = "Register"
         self.titleLabel.text = "Hey \(userNameString!), Welcome to BChat"
         self.bChatIdLabel.text = bchatIDString

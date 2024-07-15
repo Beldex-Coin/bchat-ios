@@ -193,6 +193,7 @@ class NewHopsVC: BaseVC {
 
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setUpTopCornerRadius()
         self.title = "Hops"
         
         view.addSubViews(infoLabel, youLabel, filledDotView1, lineView1, borderDotView1, entryNodeLabel, entryNodeInfoLabel, lineView2, filledDotView2, masterNodeLabel1, masterNodeInfoLabel1, lineView3, borderDotView2, masterNodeLabel2, masterNodeInfoLabel2, lineView4, filledDotView3, destinationLabel)

@@ -158,6 +158,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         // Do any additional setup after loading the view.
         self.title = "Restore from seed"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setUpTopCornerRadius()
         view.backgroundColor = UIColor(hex: 0x11111A)
         recovery_seed.seed = seedPassing
         displayNameTextField.returnKeyType = .done

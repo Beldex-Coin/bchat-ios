@@ -664,7 +664,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     } else {
                         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
-                        let albumView = cell.subviews[5]
+                        let albumView = cell.subviews[6]
                         let albumCheck = gestureRecognizer.location(in: albumView)
                         if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
                             return

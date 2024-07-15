@@ -92,7 +92,7 @@ class NewRecoverySeedVC: BaseVC {
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Recovery Seed"
-        
+        setUpTopCornerRadius()
         let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysTemplate)
         let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backToHomeScreen))
         navigationItem.leftBarButtonItem = leftBarItem

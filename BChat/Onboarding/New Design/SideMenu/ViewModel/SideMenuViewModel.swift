@@ -74,7 +74,7 @@ enum SideMenuItem {
         let aKey: String
         switch self {
             case .myAccount:
-                aKey = "ic_menu_account"
+                aKey = "ic_sideMenu_accountSetting"
             case .settings:
                 aKey = "ic_settings_sideMenu"
             case .notification:
@@ -82,7 +82,7 @@ enum SideMenuItem {
             case .messageRequests:
                 aKey = "ic_menu_msg_rqst"
             case .recoverySeed:
-                aKey = "ic_menu_recovery_seed"
+                aKey = "ic_sideMenu_recoveryseed"
             case .wallet:
                 aKey = "ic_menu_wallet"
             case .reportIssue:
