@@ -1258,7 +1258,7 @@ class NewPasswordVC: BaseVC {
                             let vc = WalletHomeNewVC()
                             self.navigationController!.pushViewController(vc, animated: true)
                         } else {
-                            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_Incorrect_Pin) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                             })
                             passwordText = ""
                             self.pin1.isHidden = true
