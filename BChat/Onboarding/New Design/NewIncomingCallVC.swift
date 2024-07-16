@@ -178,10 +178,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     private lazy var backButton: UIButton = {
         let result = UIButton(type: .custom)
         result.isHidden = call.hasConnected
-        var image = UIImage(named: "NavBarBack")!.withTint(.white)
-        if isLightMode {
-            image = UIImage(named: "NavBarBack")!.withRenderingMode(.alwaysTemplate).withTint(.black)
-        }
+        let image = UIImage(named: "NavBarBack")!.withTint(isLightMode ? .black : .white)
         result.setImage(image, for: UIControl.State.normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
@@ -655,7 +652,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         }
     }
     
-    func alertOnCallEnding() {
+    func alertOnCallEnding(){
         guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
             print("error");
             return;
