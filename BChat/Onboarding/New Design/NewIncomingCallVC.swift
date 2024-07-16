@@ -787,7 +787,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     private func enableSpeaker() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothA2DP, .allowAirPlay, .allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
             print("Speaker enabled")
         } catch {
