@@ -229,8 +229,17 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     
     @objc func nameTextfieldTapped(textField: UITextField) {
         editIconImage.isHidden = true
-        applyChangesButton.backgroundColor = Colors.bothGreenColor
-        applyChangesButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        let name = self.nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if name == thread.groupModel.groupName {
+            applyChangesButton.backgroundColor = Colors.cancelButtonBackgroundColor
+            applyChangesButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        } else {
+            applyChangesButton.backgroundColor = Colors.bothGreenColor
+            applyChangesButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        }
     }
     
     @objc func addMemberAction() {

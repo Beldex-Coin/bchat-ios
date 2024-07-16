@@ -105,7 +105,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-//        result.text = "Incoming Call.."
         if call.hasStartedConnecting { result.text = "Connecting..." }
         return result
     }()

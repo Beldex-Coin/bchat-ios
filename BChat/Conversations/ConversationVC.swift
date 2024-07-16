@@ -186,17 +186,29 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIView = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isHidden = !thread.isMessageRequest()
-        result.setGradient(Gradients.defaultBackground)
-        
+        result.backgroundColor = Colors.smallBackGroundColor
+        result.layer.cornerRadius = 20
+        result.layer.borderWidth = 1
+        result.layer.borderColor = Colors.borderColorNew.cgColor
+        return result
+    }()
+    
+    private let messageRequestTitleLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.text = NSLocalizedString("Message request", comment: "")
+        result.textColor = Colors.titleColor
+        result.textAlignment = .center
         return result
     }()
     
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
-        result.textColor = Colors.bchatMessageRequestsInfoText
+        result.textColor = Colors.titleColor
         result.textAlignment = .center
         result.numberOfLines = 3
         return result
@@ -206,29 +218,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         result.setTitle(NSLocalizedString("TXT_DELETE_ACCEPT", comment: ""), for: .normal)
         result.setTitleColor(Colors.bchatHeading, for: .normal)
-        result.setBackgroundImage(
-            Colors.bchatHeading
-                .withAlphaComponent(isDarkMode ? 0.2 : 0.06)
-                .toImage(isDarkMode: isDarkMode),
-            for: .highlighted
-        )
-        result.layer.cornerRadius = 6
-        result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
-        result.layer.borderColor = {
-            if #available(iOS 13.0, *) {
-                return Colors.bchatHeading
-                    .resolvedColor(
-                        // Note: This is needed for '.cgColor' to support dark mode
-                        with: UITraitCollection(userInterfaceStyle: isDarkMode ? .dark : .light)
-                    ).cgColor
-            }
-            
-            return Colors.bchatHeading.cgColor
-        }()
+        result.layer.cornerRadius = 26
+        result.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        result.layer.backgroundColor = Colors.bothGreenColor.cgColor
         result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
         return result
     }()
@@ -237,29 +232,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         result.setTitle(NSLocalizedString("Decline", comment: ""), for: .normal)
         result.setTitleColor(Colors.destructive, for: .normal)
-        result.setBackgroundImage(
-            Colors.destructive
-                .withAlphaComponent(isDarkMode ? 0.2 : 0.06)
-                .toImage(isDarkMode: isDarkMode),
-            for: .highlighted
-        )
-        result.layer.cornerRadius = 6
-        result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.destructive.cgColor
-        result.layer.borderColor = {
-            if #available(iOS 13.0, *) {
-                return Colors.destructive
-                    .resolvedColor(
-                        // Note: This is needed for '.cgColor' to support dark mode
-                        with: UITraitCollection(userInterfaceStyle: isDarkMode ? .dark : .light)
-                    ).cgColor
-            }
-            
-            return Colors.destructive.cgColor
-        }()
+        result.layer.cornerRadius = 26
+        result.setTitleColor(Colors.bothRedColor, for: .normal)
+        result.layer.backgroundColor = Colors.homeScreenFloatingbackgroundColor.cgColor
+        result.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
         return result
     }()
@@ -1045,31 +1024,36 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
                 
+        messageRequestView.addSubview(messageRequestTitleLabel)
         messageRequestView.addSubview(messageRequestDescriptionLabel)
         messageRequestView.addSubview(messageRequestAcceptButton)
         messageRequestView.addSubview(messageRequestDeleteButton)
         scrollButton.pin(.right, to: .right, of: view, withInset: -20)
-        messageRequestView.pin(.left, to: .left, of: view)
-        messageRequestView.pin(.right, to: .right, of: view)
-        self.messageRequestsViewBotomConstraint = messageRequestView.pin(.bottom, to: .bottom, of: view, withInset: -16)
+        messageRequestView.pin(.left, to: .left, of: view, withInset: 14)
+        messageRequestView.pin(.right, to: .right, of: view, withInset: -14)
+        self.messageRequestsViewBotomConstraint = messageRequestView.pin(.bottom, to: .bottom, of: view, withInset: -10)
         self.scrollButtonBottomConstraint = scrollButton.pin(.bottom, to: .bottom, of: view, withInset: -16)
         self.scrollButtonBottomConstraint?.isActive = false // Note: Need to disable this to avoid a conflict with the other bottom constraint
         self.scrollButtonMessageRequestsBottomConstraint = scrollButton.pin(.bottom, to: .top, of: messageRequestView, withInset: -16)
         self.scrollButtonMessageRequestsBottomConstraint?.isActive = thread.isMessageRequest()
         self.scrollButtonBottomConstraint?.isActive = !thread.isMessageRequest()
-        messageRequestDescriptionLabel.pin(.top, to: .top, of: messageRequestView, withInset: 10)
-        messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 40)
-        messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -40)
+        
+        messageRequestTitleLabel.pin(.top, to: .top, of: messageRequestView, withInset: 20)
+        messageRequestTitleLabel.pin(.left, to: .left, of: messageRequestView, withInset: 25)
+        messageRequestTitleLabel.pin(.right, to: .right, of: messageRequestView, withInset: -25)
+        messageRequestDescriptionLabel.pin(.top, to: .bottom, of: messageRequestTitleLabel, withInset: 9)
+        messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 25)
+        messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -25)
         messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
-        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        messageRequestDeleteButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
+        messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 17)
+        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView, withInset: -13)
+        messageRequestDeleteButton.set(.height, to: 52)
         messageRequestAcceptButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        messageRequestAcceptButton.pin(.left, to: .right, of: messageRequestDeleteButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 20)
-        messageRequestAcceptButton.pin(.right, to: .right, of: messageRequestView, withInset: -20)
-        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
+        messageRequestAcceptButton.pin(.left, to: .right, of: messageRequestDeleteButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 7)
+        messageRequestAcceptButton.pin(.right, to: .right, of: messageRequestView, withInset: -17)
+        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView, withInset: -13)
         messageRequestAcceptButton.set(.width, to: .width, of: messageRequestDeleteButton)
-        messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
+        messageRequestAcceptButton.set(.height, to: 52)
         // Unread count view
         view.addSubview(unreadCountView)
         unreadCountView.addSubview(unreadCountLabel)
@@ -1921,7 +1905,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             outerView.addSubViews(button, verifiedImageView)
             // For BNS Verified User
             verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
-            verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
+            verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
             verifiedImageView.transform = CGAffineTransformMakeTranslation(-12, 0)
             
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
