@@ -298,7 +298,6 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-            SaveUserDefaultsData.SwitchNode = true
             SaveUserDefaultsData.SaveLocalNodelist = []
             if self.nodeArrayDynamic!.count > 0 {
                 for i in 0 ..< self.nodeArrayDynamic!.count {

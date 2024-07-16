@@ -442,10 +442,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if direction == "send" {
             statusImageIncoming.isActive = false
             statusImageOutgoing.isActive = true
-            
         } else {
             statusImageOutgoing.isActive = false
             statusImageIncoming.isActive = true
+            if isLightMode {
+                messageTimeBottomLabel.textColor = Colors.noDataLabelColor
+            }
         }
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)

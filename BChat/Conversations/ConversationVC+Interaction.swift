@@ -1074,11 +1074,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func payAsYouChatLongPress() {
-        snInputView.isHidden = true
-        let vc = PayAsYouChatPopUpVC()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        if !SSKPreferences.arePayAsYouChatEnabled {
+            snInputView.isHidden = true
+            let vc = PayAsYouChatPopUpVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 
     // MARK: Voice Message Recording

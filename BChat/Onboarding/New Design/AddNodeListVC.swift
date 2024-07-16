@@ -76,7 +76,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
@@ -94,7 +94,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
@@ -110,9 +110,11 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         let result = UITextField()
         result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
+        result.layer.borderWidth = 1
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
@@ -127,8 +129,10 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
+        result.layer.borderWidth = 1
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
@@ -143,8 +147,10 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.textColor = Colors.titleColor4
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
+        result.layer.borderWidth = 1
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 12
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(

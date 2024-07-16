@@ -1033,6 +1033,9 @@ final class HomeVC : BaseVC {
         } else {
             mainButton.setImage(UIImage(named: "ic_HomeVcLogo_close"), for: .normal)
         }
+        if isLightMode {
+            mainButtonPopUpView.setShadow(radius: 30, opacity: 0.1, offset: .zero, color: UIColor.black.cgColor)
+        }
     }
     // New Chat
     @objc private func newChatButtonTapped(_ sender: UIButton) {

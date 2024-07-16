@@ -293,6 +293,7 @@ class LinkBNSVC: BaseVC {
             bnsNameTextField.layer.borderWidth = 1
             bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
         }
+        bnsNameTextField.isUserInteractionEnabled = true
     }
     
     /// <#Description#>
