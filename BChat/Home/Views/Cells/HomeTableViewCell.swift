@@ -315,27 +315,16 @@ class HomeTableViewCell: UITableViewCell {
         iconImageView.update(for: thread)
         
         if let contactThread: TSContactThread = thread as? TSContactThread {
-            // Don't Delete this is for note to self image
-//            if contactThread.isNoteToSelf() {
-//                iconImageView.isNoteToSelfImage = true
-//                iconImageView.update()
-//            }
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
             guard let _ = contact, let isBnsUser = contact?.isBnsHolder else { return }
-            iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
-            iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-            verifiedImageView.isHidden = isBnsUser ? false : true
+            setBnsUserProfile(isBnsUser: isBnsUser)
             if contactThread.contactBChatID() == getUserHexEncodedPublicKey() {
                 let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
-                iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
-                iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-                verifiedImageView.isHidden = isBnsUser ? false : true
+                setBnsUserProfile(isBnsUser: isBnsUser)
             }
         } else {
-            iconImageView.layer.borderWidth = 0
-            iconImageView.layer.borderColor = UIColor.clear.cgColor
-            verifiedImageView.isHidden = true
+            setBnsUserProfile(isBnsUser: false)
         }
         
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
@@ -346,6 +335,12 @@ class HomeTableViewCell: UITableViewCell {
             lastMessageLabel.attributedText = getSnippet()
         }
         let lastMessage = threadViewModel.lastMessageForInbox
+    }
+    
+    private func setBnsUserProfile(isBnsUser: Bool) {
+        iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+        iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+        verifiedImageView.isHidden = isBnsUser ? false : true
     }
     
     private func getMessageAuthorName(message: TSMessage) -> String? {
