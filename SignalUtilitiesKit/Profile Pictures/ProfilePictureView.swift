@@ -111,7 +111,7 @@ public final class ProfilePictureView : UIView {
                 size = 74
             }
             else {
-                size = Values.smallProfilePictureSize
+                size = 37
             }
             imageViewWidthConstraint.constant = size
             imageViewHeightConstraint.constant = size
@@ -134,6 +134,10 @@ public final class ProfilePictureView : UIView {
         if self.size == CGFloat(86) {
             imageView.layer.cornerRadius = 37
             additionalImageView.layer.cornerRadius = 37
+        }
+        if size == 37 {
+            imageView.layer.cornerRadius = 18.5
+            additionalImageView.layer.cornerRadius = 18.5
         }
         imageView.contentMode = useFallbackPicture ? .center : .scaleAspectFit
         if useFallbackPicture {

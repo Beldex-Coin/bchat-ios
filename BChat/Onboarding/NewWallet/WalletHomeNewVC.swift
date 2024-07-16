@@ -1598,6 +1598,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     //syncWalletData
     @objc func syncWalletData(_ notification: Notification) {
+        WalletSync.isInsideWallet = true
         self.closeWallet()
         init_syncing_wallet()
     }
