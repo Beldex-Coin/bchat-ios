@@ -180,7 +180,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.isHidden = call.hasConnected
         var image = UIImage(named: "NavBarBack")!.withTint(.white)
         if isLightMode {
-            var image = UIImage(named: "NavBarBack")!.withTint(.black)
+            image = UIImage(named: "NavBarBack")!.withTint(.black)
         }
         result.setImage(image, for: UIControl.State.normal)
         result.set(.width, to: 60)
