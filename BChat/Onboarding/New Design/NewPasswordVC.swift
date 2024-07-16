@@ -21,6 +21,8 @@ class NewPasswordVC: BaseVC {
     var isChangePassword = false
     var isCreateWalletPassword = false
     var isVerifyWalletPassword = false
+    var isWalletPassword = false
+    var isFromAccountSettings = false
     
     var wallet: BDXWallet?
     var finalWalletAddress = ""
@@ -473,6 +475,14 @@ class NewPasswordVC: BaseVC {
         if isVerifyWalletPassword {
             self.title = "Verify PIN"
             self.pinLabel.text = "Enter your 4 digit PIN"
+        }
+        
+        if isWalletPassword {
+            self.title = "Wallet Password"
+        }
+        
+        if isFromAccountSettings {
+            self.title = "Change Password"
         }
         
         pinStackView.addArrangedSubview(firstPinView)

@@ -326,6 +326,12 @@ class HomeTableViewCell: UITableViewCell {
             iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
             iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
             verifiedImageView.isHidden = isBnsUser ? false : true
+            if contactThread.contactBChatID() == getUserHexEncodedPublicKey() {
+                let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
+                iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            }
         } else {
             iconImageView.layer.borderWidth = 0
             iconImageView.layer.borderColor = UIColor.clear.cgColor

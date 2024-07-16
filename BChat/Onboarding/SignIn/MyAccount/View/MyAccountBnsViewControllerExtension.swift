@@ -61,6 +61,7 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
                 vc.isGoingBack = true
                 vc.isCreatePassword = true
                 vc.isChangePassword = true
+                vc.isFromAccountSettings = true
                 navigationController?.pushViewController(vc, animated: true)
             case .blockedContacts:
                 let vc = NewBlockedContactVC()
