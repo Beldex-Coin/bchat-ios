@@ -462,7 +462,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         label.layer.masksToBounds = true
         if isDarkMode {
             label.backgroundColor = Colors.buttonBackground
-        }else {
+        } else {
             label.backgroundColor = UIColor.lightGray
         }
         label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
@@ -503,7 +503,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         if isDarkMode {
             button.backgroundColor = Colors.buttonBackground
-        }else {
+        } else {
             button.backgroundColor = UIColor.lightGray
         }
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
@@ -606,7 +606,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             } catch {
                 print(error)
             }
-        }else {
+        } else {
             do {
                 let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
                 theImageView.image = UIImage.gif(data: imageData)
@@ -1301,7 +1301,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             callIconImageView.layer.masksToBounds = true
             callIconImageView.contentMode = .scaleAspectFit
             showCallView()
-        }else {
+        } else {
             hideCallView()
         }
     }

@@ -49,7 +49,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.titleColor])
+        let attributes = [
+            NSAttributedString.Key.foregroundColor: Colors.titleColor,
+            NSAttributedString.Key.font: Fonts.OpenSans(ofSize: 18)
+        ]
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
@@ -147,6 +151,14 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             self.title = "Note to self"
         }
         
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .font: Fonts.OpenSans(ofSize: 16),
+            .foregroundColor: Colors.titleColor
+        ]
+        let attributedPlaceholder = NSAttributedString(string: "Display name", attributes: placeholderAttributes)
+        nameTextField.attributedPlaceholder = attributedPlaceholder
+        nameTextField.font = Fonts.boldOpenSans(ofSize: 18)
+        setUpTopCornerRadius()
         view.addSubViews(profilePictureImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage, bnsApprovalIconImage)
         
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true

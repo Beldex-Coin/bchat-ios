@@ -21,7 +21,11 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter a group name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.titleColor])
+        let attributes = [
+            NSAttributedString.Key.foregroundColor: Colors.titleColor,
+            NSAttributedString.Key.font: Fonts.OpenSans(ofSize: 16)
+        ]
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter a group name", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
@@ -101,6 +105,14 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         view.addSubViews(profilePictureImageView, displayNameLabel, tableView, nameTextField, editIconImage, bottomButtonView)
         bottomButtonView.addSubview(applyChangesButton)
         
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .font: Fonts.OpenSans(ofSize: 16),
+            .foregroundColor: Colors.titleColor
+        ]
+        let attributedPlaceholder = NSAttributedString(string: "Enter a group name", attributes: placeholderAttributes)
+        nameTextField.attributedPlaceholder = attributedPlaceholder
+        nameTextField.font = Fonts.boldOpenSans(ofSize: 18)
+        
         let rightBarItem = UIBarButtonItem(image: UIImage(named: "ic_addMembers"), style: .plain, target: self, action: #selector(addMemberAction))
         let rightBarButtonItems = [rightBarItem]
         navigationItem.rightBarButtonItems = rightBarButtonItems
@@ -114,7 +126,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         tableView.delegate = self
         tableView.separatorColor = .clear
         tableView.register(NewBlockContactTableViewCell.self, forCellReuseIdentifier: "NewBlockContactTableViewCell")
-        tableView.backgroundColor = .clear//Colors.cellGroundColor
+        tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
         

@@ -139,6 +139,7 @@ class RescanNewVC: BaseVC {
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Rescan"
+        setUpTopCornerRadius()
         
         iKnowTheBlockHeightButton.addRightIconLongSpace(image: UIImage(named: "ic_right_arrow_New")!.withRenderingMode(.alwaysTemplate))
         iKnowTheBlockHeightButton.tintColor = Colors.greenColor

@@ -35,6 +35,7 @@ class AboutBNSViewController: BaseVC {
         view.backgroundColor = Colors.setUpScreenBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "About BNS"
+        setUpTopCornerRadius()
         
         view.addSubview(backgroundView)
         backgroundView.addSubview(aboutDetailsLabel)

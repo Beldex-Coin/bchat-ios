@@ -137,7 +137,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     tableView.reloadRows(at: [indexPath], with: .fade)
                 })
                 pin.backgroundColor = Colors.mainBackGroundColor2
-                pin.image = UIImage(named: "Pin_menu")
+                pin.image = UIImage(named: "ic_pinNew_Home")
                 //UnPin Option
                 let unpin = UIContextualAction(style: .destructive, title: "Unpin", handler: { (action, view, success) in
                     thread.isPinned = false
@@ -146,7 +146,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     tableView.reloadRows(at: [indexPath], with: .fade)
                 })
                 unpin.backgroundColor = Colors.mainBackGroundColor2
-                unpin.image = UIImage(named: "ic_unpin")
+                unpin.image = UIImage(named: "ic_unPinNew_Home")
                 
                 if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                     let publicKey = thread.contactBChatID()
@@ -169,7 +169,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                         )
                     })
                     block.backgroundColor = Colors.mainBackGroundColor2
-                    block.image = UIImage(named: "block")
+                    block.image = UIImage(named: "ic_blockNew_Home")
                     
                     let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: { (action, view, success) in
                         
@@ -192,7 +192,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                         )
                     })
                     unblock.backgroundColor = Colors.mainBackGroundColor2
-                    unblock.image = UIImage(named: "unblock_big")
+                    unblock.image = UIImage(named: "ic_unBlockNew_Home")
                     
                     return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isPinned ? unpin : pin) ])
                 }

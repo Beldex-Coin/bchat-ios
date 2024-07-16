@@ -69,6 +69,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         view.addSubViews(subTitleLabel)
         view.addSubViews(continueButton)
         view.addSubViews(nameTextField)
+        setUpTopCornerRadius()
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 39),

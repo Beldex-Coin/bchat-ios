@@ -37,6 +37,7 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Changelog"
+        setUpTopCornerRadius()
         
         view.addSubview(tableView)
         NSLayoutConstraint.activate([

@@ -108,6 +108,7 @@ class RestoreSeedNewVC: BaseVC {
         // Do any additional setup after loading the view.
         self.title = "Restore seed"
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setUpTopCornerRadius()
         view.backgroundColor = UIColor(hex: 0x11111A)
         
         view.addSubview(backGroundView)

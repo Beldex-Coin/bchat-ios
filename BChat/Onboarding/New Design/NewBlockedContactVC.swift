@@ -52,9 +52,10 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Colors.mainBackGroundColor2//UIColor(hex: 0x11111A)
+        view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Blocked contacts"
+        setUpTopCornerRadius()
         
         view.addSubview(tableView)
         view.addSubview(bottomButtonView)

@@ -240,6 +240,8 @@ class ChatNewVC: BaseVC  {
                 SnodeAPI.getBChatID(for: newChatId).done { bchatID in
                     modalActivityIndicator.dismiss {
                         self?.startNewDM(with: bchatID)
+                        BNSBool.bnsName = newChatId
+                        BNSBool.isFromBNS = true
                     }
                 }.catch { error in
                     modalActivityIndicator.dismiss {
@@ -250,6 +252,8 @@ class ChatNewVC: BaseVC  {
                                 default: break
                             }
                         }
+                        BNSBool.bnsName = ""
+                        BNSBool.isFromBNS = false
                         let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
                         _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                         })

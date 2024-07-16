@@ -373,6 +373,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             nameTextField.isHidden = true
             editIconImage.isHidden = false
         }
+        setUpTopCornerRadius()
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
         view.addSubview(shareButton)
