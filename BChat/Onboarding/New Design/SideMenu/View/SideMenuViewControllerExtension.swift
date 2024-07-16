@@ -79,6 +79,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.titleLabel.text = menuItem.title
             cell.iconImageView.image = UIImage(named: menuItem.imageName)
+            ///?.withRenderingMode(.alwaysOriginal)
             cell.betaTitleLabel.isHidden = menuItem.title != SideMenuItem.wallet.title
             
             return cell

@@ -90,6 +90,7 @@ class NewSettingsTableViewCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.setBackgroundImage(UIImage(named: "ic_arrow"), for: .normal)
+        button.isUserInteractionEnabled = false
         return button
     }()
     

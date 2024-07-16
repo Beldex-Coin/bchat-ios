@@ -42,7 +42,7 @@ class InitiatingTransactionVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Please don’t close the window or attend calls or negative to another app until the transaction gets initiated"
+        result.text = "Please don’t close the window or attend calls or navigate to another app until the transaction gets initiated"
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping

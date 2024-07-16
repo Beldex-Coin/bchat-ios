@@ -181,8 +181,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         var image = UIImage(named: "NavBarBack")!.withTint(.white)
         if isLightMode {
             image = UIImage(named: "NavBarBack")!.withRenderingMode(.alwaysTemplate).withTint(.black)
-        } else {
-            
         }
         result.setImage(image, for: UIControl.State.normal)
         result.set(.width, to: 60)

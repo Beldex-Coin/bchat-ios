@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "receipt-edit 1.png",
+      "filename" : "receipt-edit (3).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -17,7 +17,7 @@
       "scale" : "1x"
     },
     {
-      "filename" : "receipt-edit@2x 1.png",
+      "filename" : "receipt-edit (4).png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "receipt-edit@2x.png",
+      "filename" : "receipt-edit (1).png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "receipt-edit@3x 1.png",
+      "filename" : "receipt-edit (5).png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "receipt-edit@3x.png",
+      "filename" : "receipt-edit (2).png",
       "idiom" : "universal",
       "scale" : "3x"
     }
