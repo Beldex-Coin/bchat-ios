@@ -121,7 +121,7 @@ class BaseVC : UIViewController {
     internal func setUpNavBarSessionIcon() {
         let logoImageView = UIImageView()
         logoImageView.image = #imageLiteral(resourceName: "192x192")
-        logoImageView.contentMode = .scaleAspectFit 
+        logoImageView.contentMode = .scaleAspectFit
         logoImageView.set(.width, to: 32)
         logoImageView.set(.height, to: 32)
         navigationItem.titleView = logoImageView
