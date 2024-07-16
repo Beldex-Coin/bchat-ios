@@ -346,33 +346,36 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = Colors.viewBackgroundColorNew
+        
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.title = "My Account"
         
         // Do any additional setup after loading the view.
-        view.backgroundColor = Colors.viewBackgroundColorNew
-        var backGroundViewTopAnchor: CGFloat = 32
+        let backGroundViewTopAnchor: CGFloat = 32
+        closeButton.isHidden = true
+        lineView.isHidden = true
+        
         if isNavigationBarHideInChatNewVC == true {
-            backGroundViewTopAnchor = 82
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
-            closeButton.isHidden = false
+            // Don't delete the below lines
+            //backGroundViewTopAnchor = 82
+            //self.navigationController?.setNavigationBarHidden(true, animated: true)
             cameraView.isHidden = true
             profilePictureImage.isUserInteractionEnabled = false
             profilePictureImageButton.isUserInteractionEnabled = false
-            lineView.isHidden = true
             doneButton.isHidden = true
             nameTextField.isHidden = true
             editIconImage.isHidden = true
             nameTextField.isUserInteractionEnabled = false
             nameIdLabel.isUserInteractionEnabled = false
         } else {
-            navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            self.title = "My Account"
             closeButton.isHidden = true
             cameraView.isHidden = false
-            lineView.isHidden = true
             doneButton.isHidden = false
             nameTextField.isHidden = true
             editIconImage.isHidden = false
         }
+        
         setUpTopCornerRadius()
         self.outerProfileView.isHidden = true
         view.addSubview(backGroundView)
@@ -522,13 +525,13 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         
         
         
-        if isNavigationBarHideInChatNewVC == true {
-            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
-            shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
-        } else {
+//        if isNavigationBarHideInChatNewVC == true {
+//            backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 160).isActive = true
+//            shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
+//        } else {
             backGroundView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
-        }
+//        }
         
         shareButton.backgroundColor = Colors.greenColor
         shareButton.setTitleColor(.white, for: .normal)

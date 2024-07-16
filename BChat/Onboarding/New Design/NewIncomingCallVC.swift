@@ -582,16 +582,16 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         }
         
         switch UIDevice.current.orientation {
-        case .portrait:
-            rotateAllButtons(rotationAngle: 0)
-        case .portraitUpsideDown:
-            rotateAllButtons(rotationAngle: .pi)
-        case .landscapeLeft:
-            rotateAllButtons(rotationAngle: .halfPi)
-        case .landscapeRight:
-            rotateAllButtons(rotationAngle: .pi + .halfPi)
-        default:
-            break
+            case .portrait:
+                rotateAllButtons(rotationAngle: 0)
+            case .portraitUpsideDown:
+                rotateAllButtons(rotationAngle: .pi)
+            case .landscapeLeft:
+                rotateAllButtons(rotationAngle: .halfPi)
+            case .landscapeRight:
+                rotateAllButtons(rotationAngle: .pi + .halfPi)
+            default:
+                break
         }
     }
     
