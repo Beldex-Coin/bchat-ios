@@ -532,7 +532,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callDurationLabel.text = "Connected"
-                self.backButton.isHidden = true
                 self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                     self.updateDuration()
                     NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
