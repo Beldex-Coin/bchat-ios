@@ -204,7 +204,6 @@ extension AppDelegate {
         NotificationCenter.default.post(name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         Storage.read { transaction in
             TSContactThread.enumerateCollectionObjects(with: transaction) { object, _  in
-                //guard let thread: TSContactThread = object as? TSContactThread, thread.shouldBeVisible else { return }
                 guard let contact = Storage.shared.getContact(with: bChatID) else { return }
                 Storage.write { transaction in
                     contact.isBnsHolder = isBnsUser
