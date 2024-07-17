@@ -387,6 +387,7 @@
 		8A60F48B2C184D6D009AB837 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
 		8A60F48E2C19529F009AB837 /* SessionProtos.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48C2C19529F009AB837 /* SessionProtos.proto */; };
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
+		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE793CE2BD62582007F5086 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE793CB2BD6254B007F5086 /* libwallet_api.a */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
@@ -1540,6 +1541,7 @@
 		8A60F4892C1815F5009AB837 /* SessionProtos.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProtos.pb.swift; sourceTree = "<group>"; };
 		8A60F48C2C19529F009AB837 /* SessionProtos.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = SessionProtos.proto; sourceTree = "<group>"; };
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
+		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AE793CA2BD62541007F5086 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		8AE793CB2BD6254B007F5086 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2256,6 +2258,7 @@
 				D221A08E169C9E5E00537ABF /* UIKit.framework in Frameworks */,
 				D221A090169C9E5E00537ABF /* Foundation.framework in Frameworks */,
 				D221A0E8169DFFC500537ABF /* AVFoundation.framework in Frameworks */,
+				8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */,
 				D24B5BD5169F568C00681372 /* AudioToolbox.framework in Frameworks */,
 				5BCD6C8A5D825112EE431F34 /* Pods_GlobalDependencies_BChat.framework in Frameworks */,
 			);
@@ -4376,6 +4379,7 @@
 		D221A08C169C9E5E00537ABF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8AE01A992C47A580000EDB1D /* PhotosUI.framework */,
 				81934DA82A304C9400505F24 /* FirebaseCore.framework */,
 				81934DA42A304A2C00505F24 /* FirebaseMessaging.framework */,
 				B8DE1FAF26C228780079C9CE /* SignalRingRTC.framework */,
