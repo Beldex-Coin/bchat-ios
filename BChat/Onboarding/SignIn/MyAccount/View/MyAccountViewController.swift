@@ -238,7 +238,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var editIconImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .left
         imageView.translatesAutoresizingMaskIntoConstraints = false
         let logoImage = isLightMode ? "ic_newedit" : "ic_newedit"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
@@ -447,8 +447,8 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             nameTextField.heightAnchor.constraint(equalToConstant: 30),
             nameTextField.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
-            editIconImage.widthAnchor.constraint(equalToConstant: 14),
-            editIconImage.heightAnchor.constraint(equalToConstant: 14),
+            editIconImage.widthAnchor.constraint(equalToConstant: 25),
+            editIconImage.heightAnchor.constraint(equalToConstant: 22),
             editIconImage.leadingAnchor.constraint(equalTo: nameIdLabel.trailingAnchor, constant: 4),
             editIconImage.centerYAnchor.constraint(equalTo: nameIdLabel.centerYAnchor),
             

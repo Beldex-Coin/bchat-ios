@@ -23,6 +23,7 @@ class NewPasswordVC: BaseVC {
     var isVerifyWalletPassword = false
     var isWalletPassword = false
     var isFromAccountSettings = false
+    var isChangeWalletPassword = false
     
     var wallet: BDXWallet?
     var finalWalletAddress = ""
@@ -478,7 +479,7 @@ class NewPasswordVC: BaseVC {
         }
         
         if isWalletPassword {
-            self.title = "Wallet Password"
+            self.title = "Wallet PIN"
         }
         
         if isFromAccountSettings {
@@ -639,6 +640,46 @@ class NewPasswordVC: BaseVC {
     @objc private func nextButtonTapped() {
         if passwordText.count == 4 {
             if isChangePassword {
+                
+                if isChangeWalletPassword {
+                    if passwordText == SaveUserDefaultsData.WalletPassword {
+                        isChangePassword = false
+                        self.pinLabel.text = "Enter New PIN"
+                        passwordText = ""
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        self.nextButton.isHidden = true
+                        return
+                        
+                    } else {
+                        isChangePassword = true
+                        self.pinLabel.text = "Enter Old PIN"
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                        passwordText = ""
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        return
+                    }
+
+                }
+                
                 if passwordText == SaveUserDefaultsData.BChatPassword {
                     isChangePassword = false
                     self.pinLabel.text = "Enter New PIN"
@@ -712,23 +753,25 @@ class NewPasswordVC: BaseVC {
                 if confirmPasswordText.count != 4 {
                     return
                 }
-                if passwordText == confirmPasswordText {
-                    SaveUserDefaultsData.BChatPassword = confirmPasswordText
-                } else {
-                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
-                    })
-                    confirmPasswordText = ""
-                    self.pin1.isHidden = true
-                    self.pin2.isHidden = true
-                    self.pin3.isHidden = true
-                    self.pin4.isHidden = true
-                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
-                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
-                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
-                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
-                    nextButton.backgroundColor = Colors.cellGroundColor2
-                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
-                    return
+                if !isChangeWalletPassword {
+                    if passwordText == confirmPasswordText {
+                        SaveUserDefaultsData.BChatPassword = confirmPasswordText
+                    } else {
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                        confirmPasswordText = ""
+                        self.pin1.isHidden = true
+                        self.pin2.isHidden = true
+                        self.pin3.isHidden = true
+                        self.pin4.isHidden = true
+                        firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                        nextButton.backgroundColor = Colors.cellGroundColor2
+                        nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                        return
+                    }
                 }
             }
             
@@ -755,6 +798,28 @@ class NewPasswordVC: BaseVC {
                     return
                 }
             }
+            
+            if isGoingBack && isWalletPassword && isChangeWalletPassword {
+                if passwordText == confirmPasswordText {
+                    SaveUserDefaultsData.WalletPassword = confirmPasswordText
+                } else {
+                    _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Enter_Pin_Message2) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                    })
+                    confirmPasswordText = ""
+                    self.pin1.isHidden = true
+                    self.pin2.isHidden = true
+                    self.pin3.isHidden = true
+                    self.pin4.isHidden = true
+                    firstPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    secondPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    thirdPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    fourthPinView.layer.borderColor = Colors.borderColorNew.cgColor
+                    nextButton.backgroundColor = Colors.cellGroundColor2
+                    nextButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+                    return
+                }
+            }
+            
             
             if isVerifyPassword {
                 if passwordText == SaveUserDefaultsData.BChatPassword {
@@ -817,6 +882,7 @@ class NewPasswordVC: BaseVC {
                 let viewController = PINSuccessPopUp()
                 viewController.modalPresentationStyle = .overFullScreen
                 viewController.modalTransitionStyle = .crossDissolve
+                viewController.titleLabelContent = "Your password has been set up successfully!"
                 self.present(viewController, animated: true, completion: nil)
                 
                 let vc = NewRestoreSeedVC()
@@ -827,6 +893,7 @@ class NewPasswordVC: BaseVC {
                 let vc = PINSuccessPopUp()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
+                vc.titleLabelContent = "Your password has been set up successfully!"
                 self.present(vc, animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
             }
@@ -870,6 +937,11 @@ class NewPasswordVC: BaseVC {
                 let vc = PINSuccessPopUp()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
+                if isWalletPassword && isChangeWalletPassword {
+                    vc.titleLabelContent = "Your PIN has been changed successfully!"
+                } else {
+                    vc.titleLabelContent = "Your password has been changed successfully!"
+                }
                 self.present(vc, animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
             }
@@ -1264,7 +1336,7 @@ class NewPasswordVC: BaseVC {
                     fourthPinView.layer.borderColor = Colors.bothGreenColor.cgColor
                     
                     if isVerifyPassword && isGoingWallet {
-                        if passwordText == SaveUserDefaultsData.BChatPassword {
+                        if passwordText == SaveUserDefaultsData.WalletPassword {
                             let vc = WalletHomeNewVC()
                             self.navigationController!.pushViewController(vc, animated: true)
                         } else {
@@ -1286,7 +1358,7 @@ class NewPasswordVC: BaseVC {
                     }
                     
                     if isVerifyWalletPassword && isGoingWallet {
-                        if passwordText == SaveUserDefaultsData.BChatPassword {
+                        if passwordText == SaveUserDefaultsData.WalletPassword {
                             let vc = WalletHomeNewVC()
                             self.navigationController!.pushViewController(vc, animated: true)
                         } else {
