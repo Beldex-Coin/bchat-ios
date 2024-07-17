@@ -218,8 +218,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
                     if contact.beldexAddress != nil {
                         if SSKPreferences.arePayAsYouChatEnabled {
-                            payAsChatButton.isHidden = false
-                            progressView?.isHidden = false
+                            payAsChatButton.isHidden = isAudioRecording ? true : false
+                            progressView?.isHidden = isAudioRecording ? true : false
                             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
                                 let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
                                 guard let current = current, let total = total else { return }
@@ -235,10 +235,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                                 }
                             }
                         } else {
-                            if !isAudioRecording {
-                                payAsChatButton.isHidden = false
+                                payAsChatButton.isHidden = true
                                 progressView?.isHidden = true
-                            }
                         }
                     } else {
                         payAsChatButton.isHidden = true
@@ -489,6 +487,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     func hideVoiceMessageUI() {
+        isAudioRecording = false
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25, animations: {
             allOtherViews.forEach { $0.alpha = 1 }

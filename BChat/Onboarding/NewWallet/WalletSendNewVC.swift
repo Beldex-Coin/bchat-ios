@@ -966,12 +966,14 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         flashPriorityButton.setTitle(NSLocalizedString("FLASH_BUTTON", comment: ""), for: .normal)
         flashPriorityValue()
         feePriorityButtonsStackView.isHidden = true
+        SaveUserDefaultsData.FeePriority = "Flash"
     }
     
     @objc func slowButtonInsideStackViewTapped(_ sender: UIButton) {
         flashPriorityButton.setTitle(NSLocalizedString("SLOW_BUTTON", comment: ""), for: .normal)
         slowPriorityValue()
         feePriorityButtonsStackView.isHidden = true
+        SaveUserDefaultsData.FeePriority = "Slow"
     }
     
     
