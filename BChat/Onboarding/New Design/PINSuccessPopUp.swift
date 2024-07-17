@@ -48,6 +48,8 @@ class PINSuccessPopUp: BaseVC {
     }()
     
 
+    var titleLabelContent = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,6 +60,8 @@ class PINSuccessPopUp: BaseVC {
         view.addSubview(blurView)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconView, titleLabel, okButton)
+        
+        titleLabel.text = titleLabelContent
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),

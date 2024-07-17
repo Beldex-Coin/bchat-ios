@@ -343,6 +343,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
         bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         updateBubbleViewCorners()
+        messageTimeBottomLabel.isHidden = false
         // Content view
         populateContentView(for: viewItem, message: message)
         // Date break
@@ -437,6 +438,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
         albumView = nil
         bodyTextView = nil
+        messageTimeBottomLabel.textColor = UIColor(hex: 0xEBEBEB)
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         let direction = isOutgoing ? "send" : "receive"
         if direction == "send" {

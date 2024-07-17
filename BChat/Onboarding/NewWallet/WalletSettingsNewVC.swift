@@ -130,6 +130,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 vc.isCreatePassword = true
                 vc.isChangePassword = true
                 vc.isWalletPassword = true
+                vc.isChangeWalletPassword = true
                 navigationController!.pushViewController(vc, animated: true)
             }
         }
