@@ -867,6 +867,7 @@ class NewPasswordVC: BaseVC {
                 let vc = PINSuccessPopUp()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
+                vc.titleLabelContent = "Your password has been set up successfully!"
                 self.present(vc, animated: true, completion: nil)
                 
                 UserDefaults.standard[.isUsingFullAPNs] = true
