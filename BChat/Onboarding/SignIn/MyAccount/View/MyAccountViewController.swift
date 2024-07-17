@@ -401,9 +401,9 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         backGroundView.addSubview(beldexAddressLabel)
         backGroundView.addSubview(beldexAddressBgView)
         beldexAddressBgView.addSubview(beldexAddressIdLabel)
+        view.addSubview(doneButton)
         view.addSubview(outerProfileView)
         outerProfileView.addSubview(innerProfileImageView)
-        view.addSubview(doneButton)
      
         NSLayoutConstraint.activate([
             doneButton.widthAnchor.constraint(equalToConstant: 80),

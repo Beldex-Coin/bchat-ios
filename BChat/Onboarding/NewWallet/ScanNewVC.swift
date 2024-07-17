@@ -62,6 +62,7 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
     var isFromWallet = false
     var wallet: BDXWallet?
     var mainBalanceForScan = ""
+    var isFromSocialGroup: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +99,10 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         }
         if isFromWallet == true {
             descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE", comment: "")
+        }
+        
+        if isFromSocialGroup {
+            descriptionLabel.text = NSLocalizedString("SCAN_SOCIAL_GROUP_MESSAGE", comment: "")
         }
     }
     

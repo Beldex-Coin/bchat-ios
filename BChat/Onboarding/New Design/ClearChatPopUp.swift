@@ -31,7 +31,7 @@ class ClearChatPopUp: BaseVC {
         result.textColor = Colors.titleColor3
         result.font = Fonts.extraBoldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Clear Chat"
+        result.text = "Delete Chat"
         return result
     }()
     
@@ -41,14 +41,14 @@ class ClearChatPopUp: BaseVC {
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Are you sure you want to clear all the chat from this contact?"
+        result.text = "Are you sure you want to delete this chat from this contact?"
         result.numberOfLines = 0
         return result
     }()
     
     private lazy var clearButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Clear", for: .normal)
+        button.setTitle("Delete", for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.homeScreenFloatingbackgroundColor

@@ -113,8 +113,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
             stackView.bottomAnchor.constraint(equalTo: urlBackgroundView.bottomAnchor, constant: -5),
             scannerImg.widthAnchor.constraint(equalToConstant: 28),
             scannerImg.heightAnchor.constraint(equalToConstant: 28),
-            groupUrlTextField.centerXAnchor.constraint(equalTo: urlBackgroundView.centerXAnchor),
-            groupUrlTextField.trailingAnchor.constraint(equalTo: scannerImg.trailingAnchor, constant: 5),
+            groupUrlTextField.trailingAnchor.constraint(equalTo: urlBackgroundView.trailingAnchor, constant: -38),
         ])
         NSLayoutConstraint.activate([
             topView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22),
@@ -207,6 +206,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     @objc func scannerimageViewTapped() {
         let vc = ScanNewVC()
         vc.newChatScanflag = true
+        vc.isFromSocialGroup = true
         navigationController!.pushViewController(vc, animated: true)
     }
     

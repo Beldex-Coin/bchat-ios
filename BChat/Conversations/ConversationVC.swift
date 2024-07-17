@@ -599,7 +599,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     private lazy var clearChatButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Clear Chat", for: .normal)
+        button.setTitle("Delete Chat", for: .normal)
         button.setTitleColor(Colors.bothRedColor, for: .normal)
         button.layer.cornerRadius = 23.5
         button.translatesAutoresizingMaskIntoConstraints = false

@@ -760,7 +760,8 @@
 "ERROR_MSG" = "Error";
 "ERROR_SCANNING_PLS_TRY_AGAIN" = "Scanning Failed. Please try again";
 "VALID_URL_CHECKING" = "Please check the URL you entered and try again.";
-"SCAN_SUB_TITLE_FOR_NEWCHAT" = "Scan a user's QR code to start a BChat.QR Code can be found by tapping the QR code icon in account settings";
+"SCAN_SUB_TITLE_FOR_NEWCHAT" = "Scan a user's QR code to start a BChat. QR Code can be found by tapping the QR code icon in account settings";
+"SCAN_SOCIAL_GROUP_MESSAGE" = "Scan a Social group's QR code for Joining a social group. QR codes can be found on the social group website link.";
 
 /* WalletReceiveNewVC */
 "BELDEX_ADDRESS" = "Beldex Address";
