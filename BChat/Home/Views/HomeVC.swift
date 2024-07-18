@@ -428,16 +428,6 @@ final class HomeVC : BaseVC {
         self.messageCollectionView.isHidden = true
         messageCollectionView.reloadData()
         
-        view.addSubview(callView)
-        callView.pin(.top, to: .top, of: view, withInset: 14)
-        callView.pin(.left, to: .left, of: view, withInset: 0)
-        callView.pin(.right, to: .right, of: view, withInset: 0)
-        callView.isHidden = true
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
-        tap.cancelsTouchesInView = false
-        callView.addGestureRecognizer(tap)
-        
         
         // Table view
         tableView.dataSource = self
@@ -533,6 +523,17 @@ final class HomeVC : BaseVC {
         let tapGestureForMainView = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
         tapGestureForMainView.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureForMainView)
+        
+        view.addSubview(callView)
+        callView.pin(.top, to: .top, of: view, withInset: 14)
+        callView.pin(.left, to: .left, of: view, withInset: 0)
+        callView.pin(.right, to: .right, of: view, withInset: 0)
+        callView.isHidden = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
+        tap.cancelsTouchesInView = false
+        callView.addGestureRecognizer(tap)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
