@@ -1423,10 +1423,14 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         walletSyncingBackgroundView.isHidden = false
         noTransactionsYetBackgroundView.isHidden = true
         
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         UIApplication.shared.isIdleTimerDisabled = true
         let logoImage = "ic_checked_green"
         incomingButton.setImage(UIImage(named: logoImage)?.scaled(to: CGSize(width: 20.0, height: 20.0)), for: .normal)

@@ -894,7 +894,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                     self.finalWalletAmount = self.beldexAmountTextField.text!
                     let vc = NewPasswordVC()
                     vc.isGoingSendBDX = true
-                    vc.isVerifyPassword = true
+                    vc.isVerifyWalletPassword = true
                     vc.wallet = self.wallet
                     vc.finalWalletAddress = self.finalWalletAddress
                     vc.finalWalletAmount = self.finalWalletAmount
