@@ -1132,6 +1132,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
         hideInputViewForBlockedContact()
+        
+        if AppEnvironment.shared.callManager.currentCall == nil {
+            callView.isHidden = true
+        } else {
+            callView.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1226,24 +1232,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     @objc func callViewTapped(_ sender: UITapGestureRecognizer? = nil) {
-        if SSKPreferences.areCallsEnabled {
-            requestMicrophonePermissionIfNeeded { }
-            guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
-            guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
-            guard AppEnvironment.shared.callManager.currentCall == nil else { return }
-            let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-            let callVC = NewIncomingCallVC(for: call)
-            callVC.conversationVC = self
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
-            present(callVC, animated: true, completion: nil)
-        } else {
-            snInputView.isHidden = true
-            let vc = CallPermissionRequestModalNewVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
+        showCallScreen()
     }    
     
     @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
