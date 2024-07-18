@@ -590,6 +590,12 @@ final class HomeVC : BaseVC {
             WalletSharedData.sharedInstance.wallet = nil
             closeWallet()
         }
+        
+        if AppEnvironment.shared.callManager.currentCall == nil {
+            callView.isHidden = true
+        } else {
+            callView.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
