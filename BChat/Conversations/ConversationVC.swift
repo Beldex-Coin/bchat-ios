@@ -1277,16 +1277,36 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
         duration += 1
-        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty{
+        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty {
             callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
             callIconImageView.image = UIImage(named: "End_Call_new")
             callIconImageView.set(.width, to: 18)
             callIconImageView.set(.height, to: 18)
             callIconImageView.layer.masksToBounds = true
             callIconImageView.contentMode = .scaleAspectFit
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleCallDeclineTapped(_:)))
+            tap.cancelsTouchesInView = false
+            callIconImageView.addGestureRecognizer(tap)
             showCallView()
         } else {
             hideCallView()
+            if let recognizers = callIconImageView.gestureRecognizers {
+              for recognizer in recognizers {
+                  callIconImageView.removeGestureRecognizer(recognizer)
+              }
+            }
+        }
+    }
+    
+    
+    @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
+        if let call = AppEnvironment.shared.callManager.currentCall {
+            AppEnvironment.shared.callManager.endCall(call) { error in
+                if let _ = error {
+                    call.endBChatCall()
+                    AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
+                }
+            }
         }
     }
     
