@@ -329,11 +329,19 @@ final class HomeVC : BaseVC {
         return result
     }()
     
+    lazy var callView: CallView = {
+        let result = CallView()
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.height, to: 32)
+        return result
+    }()
+    
     
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
     var isManualyCloseMessageRequest = false
+    var duration: Int = 0
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -420,6 +428,16 @@ final class HomeVC : BaseVC {
         self.messageCollectionView.isHidden = true
         messageCollectionView.reloadData()
         
+        view.addSubview(callView)
+        callView.pin(.top, to: .top, of: view, withInset: 14)
+        callView.pin(.left, to: .left, of: view, withInset: 0)
+        callView.pin(.right, to: .right, of: view, withInset: 0)
+        callView.isHidden = true
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
+        tap.cancelsTouchesInView = false
+        callView.addGestureRecognizer(tap)
+        
         
         // Table view
         tableView.dataSource = self
@@ -484,6 +502,8 @@ final class HomeVC : BaseVC {
         notificationCenter.addObserver(self, selector: #selector(handleLocalProfileDidChangeNotification(_:)), name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleSeedViewedNotification(_:)), name: .seedViewed, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleBlockedContactsUpdatedNotification(_:)), name: .blockedContactsUpdated, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
         // Threads (part 2)
         threads = YapDatabaseViewMappings(groups: [ TSMessageRequestGroup, TSInboxGroup ], view: TSThreadDatabaseViewExtensionName) // The extension should be registered at this point
         threads.setIsReversed(true, forGroup: TSInboxGroup)
@@ -510,9 +530,9 @@ final class HomeVC : BaseVC {
         // Get default open group rooms if needed
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
+        let tapGestureForMainView = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+        tapGestureForMainView.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGestureForMainView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1144,6 +1164,37 @@ final class HomeVC : BaseVC {
             return threadViewModel
         }
     }
+    
+    @objc func callViewTapped(_ sender: UITapGestureRecognizer? = nil) {
+        showCallScreen()
+    }
+    
+    @objc func connectingCallHideViewTapped(notification: NSNotification) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                self.callView.isHidden = true
+            }, completion: nil)
+        }
+    }
+    
+    @objc func connectingCallTapToReturnToTheCall(notification: NSNotification) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                self.callView.isHidden = false
+            }, completion: nil)
+        }
+    }
+    
 }
 
 extension HomeVC: BeldexWalletDelegate {

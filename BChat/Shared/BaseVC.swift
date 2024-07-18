@@ -163,3 +163,26 @@ class BaseVC : UIViewController {
         }
     }
 }
+
+
+extension BaseVC {
+    
+    func showCallScreen() {
+        if SSKPreferences.areCallsEnabled {
+            requestMicrophonePermissionIfNeeded { }
+            guard let call = AppEnvironment.shared.callManager.currentCall else { return }
+            guard MiniCallView.current == nil else { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
+            guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
+            let callVC = NewIncomingCallVC(for: call)
+            presentingVC.present(callVC, animated: true, completion: nil)
+        } else {
+            let vc = CallPermissionRequestModalNewVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    
+}

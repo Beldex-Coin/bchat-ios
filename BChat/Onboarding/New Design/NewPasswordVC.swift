@@ -460,7 +460,7 @@ class NewPasswordVC: BaseVC {
         }
         
         if isCreateWalletPassword {
-            self.title = "Create Password"
+            self.title = "Create PIN"
             self.pinLabel.text = "Enter your PIN"
         }
         
@@ -894,7 +894,7 @@ class NewPasswordVC: BaseVC {
                 let vc = PINSuccessPopUp()
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
-                vc.titleLabelContent = "Your password has been set up successfully!"
+                vc.titleLabelContent = "Your PIN has been set up successfully!"
                 self.present(vc, animated: true, completion: nil)
                 self.navigationController?.popViewController(animated: true)
             }
