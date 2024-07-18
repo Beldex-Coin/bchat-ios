@@ -258,7 +258,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     
     private var tableViewTopConstraint: NSLayoutConstraint!
-    var duration: Int = 0
     
     // MARK: Lifecycle
     init(thread: TSThread, focusedMessageID: String? = nil) {
@@ -705,29 +704,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return button
     }()
     
-    lazy var callView: UIView = {
-        let result = UIView()
+    lazy var callView: CallView = {
+        let result = CallView()
         result.backgroundColor = Colors.bothGreenColor
         result.set(.height, to: 32)
-        return result
-    }()
-    
-    private lazy var callInfoLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.bothWhiteColor
-        result.font = Fonts.semiOpenSans(ofSize: 10)
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Tap to Return to the Call"
-        return result
-    }()
-    
-    private lazy var callIconImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "Outgoing_Call_top_banner")//Outgoing_Call_top_banner_decline
-        result.set(.width, to: 18)
-        result.set(.height, to: 18)
-        result.layer.masksToBounds = true
-        result.contentMode = .scaleAspectFit
         return result
     }()
     
@@ -845,16 +825,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
         view.addSubview(callView)
-        callView.addSubViews(callInfoLabel, callIconImageView)
         callView.pin(.top, to: .top, of: view, withInset: 14)
         callView.pin(.left, to: .left, of: view, withInset: 0)
         callView.pin(.right, to: .right, of: view, withInset: 0)
-        NSLayoutConstraint.activate([
-            callInfoLabel.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-            callInfoLabel.leadingAnchor.constraint(equalTo: callView.leadingAnchor, constant: 16),
-            callIconImageView.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-            callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
-        ])
         callView.isHidden = true
         
         // Message requests view & scroll to bottom
@@ -1192,8 +1165,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: .connectingCallShowViewNotification, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1273,31 +1244,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
         }
-    }
-    
-    @objc func connectingCallShowViewTapped(notification: NSNotification) {
-        duration += 1
-        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty {
-            callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
-            callIconImageView.image = UIImage(named: "End_Call_new")
-            callIconImageView.set(.width, to: 18)
-            callIconImageView.set(.height, to: 18)
-            callIconImageView.layer.masksToBounds = true
-            callIconImageView.contentMode = .scaleAspectFit
-            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleCallDeclineTapped(_:)))
-            tap.cancelsTouchesInView = false
-            callIconImageView.addGestureRecognizer(tap)
-            showCallView()
-        } else {
-            hideCallView()
-            if let recognizers = callIconImageView.gestureRecognizers {
-              for recognizer in recognizers {
-                  callIconImageView.removeGestureRecognizer(recognizer)
-              }
-            }
-        }
-    }
-    
+    }    
     
     @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
         if let call = AppEnvironment.shared.callManager.currentCall {

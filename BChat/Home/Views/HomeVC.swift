@@ -329,29 +329,10 @@ final class HomeVC : BaseVC {
         return result
     }()
     
-    lazy var callView: UIView = {
-        let result = UIView()
+    lazy var callView: CallView = {
+        let result = CallView()
         result.backgroundColor = Colors.bothGreenColor
         result.set(.height, to: 32)
-        return result
-    }()
-    
-    private lazy var callInfoLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.bothWhiteColor
-        result.font = Fonts.semiOpenSans(ofSize: 10)
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Tap to Return to the Call"
-        return result
-    }()
-    
-    private lazy var callIconImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "Outgoing_Call_top_banner")
-        result.set(.width, to: 18)
-        result.set(.height, to: 18)
-        result.layer.masksToBounds = true
-        result.contentMode = .scaleAspectFit
         return result
     }()
     
@@ -448,16 +429,9 @@ final class HomeVC : BaseVC {
         messageCollectionView.reloadData()
         
         view.addSubview(callView)
-        callView.addSubViews(callInfoLabel, callIconImageView)
         callView.pin(.top, to: .top, of: view, withInset: 14)
         callView.pin(.left, to: .left, of: view, withInset: 0)
         callView.pin(.right, to: .right, of: view, withInset: 0)
-        NSLayoutConstraint.activate([
-            callInfoLabel.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-            callInfoLabel.leadingAnchor.constraint(equalTo: callView.leadingAnchor, constant: 16),
-            callIconImageView.centerYAnchor.constraint(equalTo: callView.centerYAnchor),
-            callIconImageView.trailingAnchor.constraint(equalTo: callView.trailingAnchor, constant: -20),
-        ])
         callView.isHidden = true
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
@@ -528,7 +502,6 @@ final class HomeVC : BaseVC {
         notificationCenter.addObserver(self, selector: #selector(handleLocalProfileDidChangeNotification(_:)), name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleSeedViewedNotification(_:)), name: .seedViewed, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleBlockedContactsUpdatedNotification(_:)), name: .blockedContactsUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(connectingCallShowViewTapped), name: .connectingCallShowViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
         // Threads (part 2)
@@ -1209,30 +1182,7 @@ final class HomeVC : BaseVC {
         }
     }
     
-    @objc func connectingCallShowViewTapped(notification: NSNotification) {
-        duration += 1
-        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty{
-            callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
-            callIconImageView.image = UIImage(named: "End_Call_new")
-            callIconImageView.set(.width, to: 18)
-            callIconImageView.set(.height, to: 18)
-            callIconImageView.layer.masksToBounds = true
-            callIconImageView.contentMode = .scaleAspectFit
-            showCallView()
-        } else {
-            hideCallView()
-        }
-    }
-    
     @objc func connectingCallHideViewTapped(notification: NSNotification) {
-        hideCallView()
-    }
-    
-    @objc func connectingCallTapToReturnToTheCall(notification: NSNotification) {
-        showCallView()
-    }
-    
-    func showCallView() {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 1.0,
                            delay: 0.0,
@@ -1240,27 +1190,23 @@ final class HomeVC : BaseVC {
                            initialSpringVelocity: 1,
                            options: [],
                            animations: {
-                
+                self.callView.isHidden = true
+            }, completion: nil)
+        }
+    }
+    
+    @objc func connectingCallTapToReturnToTheCall(notification: NSNotification) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
                 self.callView.isHidden = false
             }, completion: nil)
         }
     }
-    
-    func hideCallView() {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 1.0,
-                           delay: 0.0,
-                           usingSpringWithDamping: 0.9,
-                           initialSpringVelocity: 1,
-                           options: [],
-                           animations: {
-
-                self.callView.isHidden = true
-                
-            }, completion: nil)
-        }
-    }
-    
     
 }
 
