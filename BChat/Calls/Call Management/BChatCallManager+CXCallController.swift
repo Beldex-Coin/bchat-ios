@@ -46,6 +46,7 @@ extension BChatCallManager {
             endCallAction()
             completion?(nil)
         }
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
     }
     
     // Not currently in use

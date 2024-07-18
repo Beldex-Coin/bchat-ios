@@ -235,6 +235,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
             self.webRTCBChat.endCall(with: self.bchatID, using: transaction)
         }
         hasEnded = true
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
     }
     
     // MARK: Update call message
