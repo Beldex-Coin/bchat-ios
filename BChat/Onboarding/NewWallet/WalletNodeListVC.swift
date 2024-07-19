@@ -3,6 +3,7 @@
 import UIKit
 import Alamofire
 import BChatUIKit
+import SignalUtilitiesKit
 
 class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
@@ -100,10 +101,9 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         randomNodeValue = SaveUserDefaultsData.FinalWallet_node
         self.navigationController?.navigationBar.isUserInteractionEnabled = true
         
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-        }else{
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             nodeArrayDynamic = []
-            tableView.reloadData();
+            tableView.reloadData()
         }
         
         myGroup.notify(queue: .main) {
@@ -122,8 +122,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if SaveUserDefaultsData.SaveLocalNodelist != []{
-            if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+        if SaveUserDefaultsData.SaveLocalNodelist != [] {
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                 getDynamicNodesFromAPI()
                 tableView.reloadData()
             }
@@ -132,8 +132,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        refreshButton.layer.cornerRadius = refreshButton.frame.height/2
-        addNodeButton.layer.cornerRadius = addNodeButton.frame.height/2
+        refreshButton.layer.cornerRadius = refreshButton.frame.height / 2
+        addNodeButton.layer.cornerRadius = addNodeButton.frame.height / 2
     }
     
     func getDynamicNodesFromAPI() {
@@ -238,7 +238,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        if(!SaveUserDefaultsData.SelectedNode.isEmpty) {
+        if (!SaveUserDefaultsData.SelectedNode.isEmpty) {
             let selectedNodeData = SaveUserDefaultsData.SelectedNode
             if(nodeArrayDynamic![indexPath.row] == selectedNodeData) {
                 selectedIndex = indexPath.row
@@ -249,7 +249,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
             }
         } else {
-            if(nodeArrayDynamic![indexPath.row] == randomNodeValue) {
+            if (nodeArrayDynamic![indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
                 cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
                 cell.isUserInteractionEnabled = false
@@ -269,7 +269,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
             if notError == "CONNECTION ERROR" {
                 self.showToast(message: "Please connect some another node", seconds: 1.0)
-            }else{
+            } else {
                 selectedIndex = indexPath.row
                 selectedValue = self.nodeArrayDynamic![indexPath.row]
                 let vc = SwitchNodePopUpVC()
@@ -298,16 +298,29 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             SaveUserDefaultsData.SaveLocalNodelist = []
             if self.nodeArrayDynamic!.count > 0 {
                 for i in 0 ..< self.nodeArrayDynamic!.count {
                     self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])
                 }
             }
-            SaveUserDefaultsData.SelectedNode = randomNodeValue
+            
+            let random = (0...((nodeArrayDynamic?.count ?? nodeArray.count)-1)).random(without: [selectedIndex])
+            if checkedDataForTimeInterval.keys.contains(nodeArrayDynamic![random]) {
+                let dictionaryIndex = checkedDataForTimeInterval.index(forKey: nodeArrayDynamic![random])
+                let notError = checkedDataForTimeInterval.values[dictionaryIndex!]
+                if notError == "CONNECTION ERROR" {
+                    self.showToast(message: "Please connect some another node", seconds: 1.0)
+                } else {
+                    selectedIndex = random
+                    selectedValue = self.nodeArrayDynamic![random]
+                    SaveUserDefaultsData.SelectedNode = selectedValue
+                }
+            }
+            
             self.tableView.reloadData()
-        }else{
+        } else {
             nodeArrayDynamic = []
             tableView.reloadData();
         }
@@ -335,6 +348,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
+
 class NodeListTableCell: UITableViewCell {
     // MARK: - Properties
     lazy var backGroundView: UIView = {
@@ -344,6 +359,7 @@ class NodeListTableCell: UITableViewCell {
         view.layer.cornerRadius = 16
         return view
     }()
+    
     lazy var circularView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -351,6 +367,7 @@ class NodeListTableCell: UITableViewCell {
         imageView.image = UIImage(named: "ic_fullCircle", in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         return imageView
     }()
+    
     lazy var nodeNameTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
@@ -359,6 +376,7 @@ class NodeListTableCell: UITableViewCell {
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     lazy var nodeIPLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.cellIpLabelColor

@@ -324,7 +324,6 @@
 		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
 		8122EE532BC8F5D70083AD6B /* MissedCallPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */; };
 		8122EE552BC904A60083AD6B /* CallPermissionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */; };
-		8123878E2B5A38C7002B4EB8 /* NodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */; };
 		8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */; };
 		8129ABEB2B579EA800417EE2 /* PINSuccessPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */; };
 		8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */; };
@@ -1483,7 +1482,6 @@
 		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
 		8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedCallPopUp.swift; sourceTree = "<group>"; };
 		8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionPopUp.swift; sourceTree = "<group>"; };
-		8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeListVC.swift; sourceTree = "<group>"; };
 		8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordVC.swift; sourceTree = "<group>"; };
 		8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINSuccessPopUp.swift; sourceTree = "<group>"; };
 		8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableWalletVC.swift; sourceTree = "<group>"; };
@@ -2856,7 +2854,6 @@
 				810E87832B58F6E7001133F9 /* WalletTransactionSuccessVC.swift */,
 				810E87852B58FAED001133F9 /* InitiatingTransactionVC.swift */,
 				810E87872B5919ED001133F9 /* ConfirmSendingVC.swift */,
-				8123878D2B5A38C7002B4EB8 /* NodeListVC.swift */,
 				81DBDA012B5F7C740006C404 /* DisplayBalanceOptionVC.swift */,
 				81DBDA032B5FB5B80006C404 /* DecimalsPopUpVC.swift */,
 				81DBDA052B5FB8BB0006C404 /* FeePriorityVC.swift */,
@@ -5753,7 +5750,6 @@
 				6049BEF92B5A37B4003DD410 /* RescanNewVC.swift in Sources */,
 				817DC5E12B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift in Sources */,
 				B8F5F72325F1B4CA003BF8D4 /* DownloadAttachmentModal.swift in Sources */,
-				8123878E2B5A38C7002B4EB8 /* NodeListVC.swift in Sources */,
 				C3DFFAC623E96F0D0058DAF8 /* Sheet.swift in Sources */,
 				C31FFE57254A5FFE00F19441 /* KeyPairUtilities.swift in Sources */,
 				6007B5D128ABC6420004BD61 /* UserDefaultsData.swift in Sources */,
