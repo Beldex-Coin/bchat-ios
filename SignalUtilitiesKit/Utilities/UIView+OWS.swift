@@ -410,7 +410,7 @@ public extension UIBarButtonItem {
     }
 }
 
-extension ClosedRange where Element: Hashable {
+public extension ClosedRange where Element: Hashable {
     func random(without excluded:[Element]) -> Element {
         let valid = Set(self).subtracting(Set(excluded))
         let random = Int(arc4random_uniform(UInt32(valid.count)))
