@@ -509,7 +509,7 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             let logoImage = isLightMode ? "ic_saverecepientaddress_dark" : "ic_save_new"
             cell.logoImage.image = UIImage(named: logoImage)
             cell.toggleSwitch.tag = indexPath.row
-            cell.toggleSwitch.addTarget(self, action: #selector(self.saveRecipientAddressButtonTapped(_:)), for: .valueChanged)
+            cell.toggleSwitch.addTarget(self, action: #selector(self.saveRecipientAddressValueChanged(_:)), for: .valueChanged)
             if SaveUserDefaultsData.SaveReceipeinetSwitch == false {
                 cell.toggleSwitch.isOn = false
                 cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
@@ -560,13 +560,13 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
     }
     
     // Save Recipient Address
-     @objc func saveRecipientAddressButtonTapped(_ x: UISwitch) {
-         if (x.isOn) {
+     @objc func saveRecipientAddressValueChanged(_ sender: UISwitch) {
+         if (sender.isOn) {
              SaveUserDefaultsData.SaveReceipeinetSwitch = true
-             x.thumbTintColor = Colors.bothGreenColor
+             sender.thumbTintColor = Colors.bothGreenColor
          } else {
              SaveUserDefaultsData.SaveReceipeinetSwitch = false
-             x.thumbTintColor = Colors.switchOffBackgroundColor
+             sender.thumbTintColor = Colors.switchOffBackgroundColor
          }
      }
 }
