@@ -51,10 +51,8 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         //Selected node
-        if backAPI == true {
             nodeValue = SaveUserDefaultsData.SelectedNode
             tableView.reloadData()
-        }
     }
     
     // MARK: - UITableViewDataSource
@@ -80,7 +78,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             let logoImage = isLightMode ? "ic_current_node_dark" : "ic_current_node_new"
             cell.logoImage.image = UIImage(named: logoImage)
             //Selected node
-            if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                 cell.nodeNameLabel.text = nodeValue
             } else {
                 cell.nodeNameLabel.text = "Waiting for network.."
@@ -435,7 +433,7 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return walletNameArray.count
-        }else {
+        } else {
             return 1
         }
     }
@@ -452,13 +450,13 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 cell.logoImage.image = UIImage(named: logoImage)
                 cell.spaceView.layer.cornerRadius = 14
                 cell.spaceView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                if !SaveUserDefaultsData.SelectedBalance.isEmpty{
+                if !SaveUserDefaultsData.SelectedBalance.isEmpty {
                     cell.subTitleLabel.text = SaveUserDefaultsData.SelectedBalance
-                }else{
+                } else {
                     cell.subTitleLabel.text = "Beldex Full Balance"
                 }
                 return cell
-            }else if indexPath.row == 1 {
+            } else if indexPath.row == 1 {
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
@@ -466,13 +464,13 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 cell.subTitleLabel.text = "2 - Two (0.00)"
                 let logoImage = isLightMode ? "ic_decimal_dark" : "ic_Decimal_new"
                 cell.logoImage.image = UIImage(named: logoImage)
-                if !SaveUserDefaultsData.SelectedDecimal.isEmpty{
+                if !SaveUserDefaultsData.SelectedDecimal.isEmpty {
                     cell.subTitleLabel.text = SaveUserDefaultsData.SelectedDecimal
-                }else{
+                } else {
                     cell.subTitleLabel.text = "4 - Four (0.0000)"
                 }
                 return cell
-            }else if indexPath.row == 2 {
+            } else if indexPath.row == 2 {
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
@@ -480,13 +478,13 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 cell.subTitleLabel.text = "USD"
                 let logoImage = isLightMode ? "ic_currency_dark" : "ic_currency_new"
                 cell.logoImage.image = UIImage(named: logoImage)
-                if !SaveUserDefaultsData.SelectedCurrency.isEmpty{
+                if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
                     cell.subTitleLabel.text = SaveUserDefaultsData.SelectedCurrency.uppercased()
-                }else{
+                } else {
                     cell.subTitleLabel.text = "USD".uppercased()
                 }
                 return cell
-            }else {
+            } else {
                 let cell = WalletSettingsSubTableCell33(style: .default, reuseIdentifier: "WalletSettingsSubTableCell33")
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
@@ -496,12 +494,12 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                 cell.logoImage.image = UIImage(named: logoImage)
                 if !SaveUserDefaultsData.FeePriority.isEmpty {
                     cell.subTitleLabel.text = SaveUserDefaultsData.FeePriority
-                }else{
+                } else {
                     cell.subTitleLabel.text = "Flash"
                 }
                 return cell
             }
-        }else {
+        } else {
             let cell = WalletSettingsSubTableCell2(style: .default, reuseIdentifier: "WalletSettingsSubTableCell2")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
@@ -515,7 +513,7 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
             if SaveUserDefaultsData.SaveReceipeinetSwitch == false {
                 cell.toggleSwitch.isOn = false
                 cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-            }else{
+            } else {
                 cell.toggleSwitch.isOn = true
                 cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
             }
@@ -532,21 +530,21 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
                     vc.modalTransitionStyle = .crossDissolve
                     viewController.present(vc, animated: true, completion: nil)
                 }
-            }else if indexPath.row == 1{
+            } else if indexPath.row == 1{
                 if let viewController = parentViewController() as? WalletSettingsNewVC {
                     let vc = DecimalsPopUpVC()
                     vc.modalPresentationStyle = .overFullScreen
                     vc.modalTransitionStyle = .crossDissolve
                     viewController.present(vc, animated: true, completion: nil)
                 }
-            }else if indexPath.row == 2{
+            } else if indexPath.row == 2{
                 if let viewController = parentViewController() as? WalletSettingsNewVC {
                     let vc = CurrencyPopUpVC()
                     vc.modalPresentationStyle = .overFullScreen
                     vc.modalTransitionStyle = .crossDissolve
                     viewController.present(vc, animated: true, completion: nil)
                 }
-            }else if indexPath.row == 3{
+            } else if indexPath.row == 3{
                 if let viewController = parentViewController() as? WalletSettingsNewVC {
                     let vc = FeePriorityVC()
                     vc.modalPresentationStyle = .overFullScreen
@@ -563,10 +561,10 @@ class WalletSettingsTableCell: UITableViewCell, UITableViewDataSource, UITableVi
     
     // Save Recipient Address
      @objc func saveRecipientAddressButtonTapped(_ x: UISwitch) {
-         if (x.isOn){
+         if (x.isOn) {
              SaveUserDefaultsData.SaveReceipeinetSwitch = true
              x.thumbTintColor = Colors.bothGreenColor
-         }else{
+         } else {
              SaveUserDefaultsData.SaveReceipeinetSwitch = false
              x.thumbTintColor = Colors.switchOffBackgroundColor
          }
@@ -825,7 +823,7 @@ class WalletSettingsSubTableCell2: UITableViewCell {
         
         if toggleSwitch.isOn == true {
             toggleSwitch.thumbTintColor = Colors.bothGreenColor
-        }else {
+        } else {
             toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
         }
         

@@ -477,6 +477,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
+        setupStateChangeCallbacks()
     }
     
     override func viewWillAppear(_ animated: Bool) {
