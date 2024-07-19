@@ -483,6 +483,23 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
+        
+        if call.hasConnected {
+            self.incomingCallLabel.isHidden = true
+            self.buttonStackView.isHidden = true
+            self.hangUpButtonSecond.isHidden = false
+            self.callDurationLabel.isHidden = false
+            self.bottomView.isHidden = false
+        }
+        if call.hasStartedConnecting {
+            self.incomingCallLabel.isHidden = true
+            self.buttonStackView.isHidden = true
+            self.hangUpButtonSecond.isHidden = false
+            self.callDurationLabel.isHidden = false
+            self.bottomView.isHidden = false
+            callDurationLabel.text = "Connecting..."
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
