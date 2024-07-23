@@ -70,7 +70,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Call"
+        result.text = "Voice Call"
         return result
     }()
     
@@ -336,6 +336,14 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         view.addSubview(backgroundImageView)
         backgroundImageView.pin(to: view)
         
+        // Remote video view
+        call.attachRemoteVideoRenderer(remoteVideoView)
+        view.addSubview(remoteVideoView)
+        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+        remoteVideoView.pin(to: view)
+        // Local video view
+        call.attachLocalVideoRenderer(localVideoView)
+        
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionView)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
         callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
@@ -354,14 +362,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         self.hangUpButtonSecond.isHidden = true
         self.callDurationLabel.isHidden = true
         self.speakerOptionView.isHidden = true
-        
-        // Remote video view
-        call.attachRemoteVideoRenderer(remoteVideoView)
-        view.addSubview(remoteVideoView)
-        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
-        remoteVideoView.pin(to: view)
-        // Local video view
-        call.attachLocalVideoRenderer(localVideoView)
         
         self.incomingCallLabel.isHidden = true
         self.buttonStackView.isHidden = true
@@ -578,18 +578,20 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             }
         }
-        
-        
     }
     
     func updateTimer() {
         self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.updateDuration()
+            self.callDurationLabel.text = self.call.duration.stringFromTimeInterval()
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             self.buttonStackView.isHidden = true
             self.hangUpButtonSecond.isHidden = false
             self.bottomView.isHidden = false
             self.backButton.isHidden = false
+            self.callerImageView.isHidden = self.call.isRemoteVideoEnabled
+            self.callerNameLabel.isHidden = self.call.isRemoteVideoEnabled
+            self.remoteVideoView.alpha = self.call.isRemoteVideoEnabled ? 1 : 0
+            self.voiceCallLabel.text = self.call.isVideoEnabled ? "Video Call" : "Voice Call"
         }
     }
     
@@ -624,10 +626,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     // MARK: Call signalling
     func handleAnswerMessage(_ message: CallMessage) {
         callDurationLabel.text = "Connecting..."
-    }
-    
-    @objc private func updateDuration() {
-        callDurationLabel.text = call.duration.stringFromTimeInterval()
     }
     
     func handleEndCallMessage() {
