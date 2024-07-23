@@ -67,9 +67,9 @@ class CallView : UIView {
     
     
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
-        duration += 1
-        if !String(format: "%.2d:%.2d", duration/60, duration%60).isEmpty {
-            callInfoLabel.text = "\(String(format: "%.2d:%.2d", duration/60, duration%60)) Person in call"
+       guard let currentCall = AppEnvironment.shared.callManager.currentCall else { return }
+        if Int(currentCall.duration) != 0 {
+            callInfoLabel.text = currentCall.duration.stringFromTimeInterval() + " Person in call"
             callIconImageView.image = UIImage(named: "End_Call_new")
             callIconImageView.set(.width, to: 18)
             callIconImageView.set(.height, to: 18)

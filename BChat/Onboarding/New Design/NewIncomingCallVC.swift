@@ -289,7 +289,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "0:00"
         return result
     }()
     
@@ -439,7 +438,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                     self.incomingCallLabel.text = "Can't start a call."
                     self.endCall()
                 } else {
-                    self.callDurationLabel.text = "Ringing..."
+                    self.callDurationLabel.text = "Calling..."
                 }
             }
         }
@@ -481,6 +480,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
         
@@ -497,9 +497,11 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             self.hangUpButtonSecond.isHidden = false
             self.callDurationLabel.isHidden = false
             self.bottomView.isHidden = false
-            callDurationLabel.text = "Connecting..."
         }
         
+        if call.hasConnected {
+            updateTimer()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -549,13 +551,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callDurationLabel.text = "Connected"
-                self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                    self.updateDuration()
-                    NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
-                    self.buttonStackView.isHidden = true
-                    self.hangUpButtonSecond.isHidden = false
-                    self.bottomView.isHidden = false
-                }
+                self.updateTimer()
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
             }
@@ -581,6 +577,19 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 self.callDurationLabel.isHidden = false
                 NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             }
+        }
+        
+        
+    }
+    
+    func updateTimer() {
+        self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            self.updateDuration()
+            NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
+            self.buttonStackView.isHidden = true
+            self.hangUpButtonSecond.isHidden = false
+            self.bottomView.isHidden = false
+            self.backButton.isHidden = false
         }
     }
     
@@ -618,8 +627,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     }
     
     @objc private func updateDuration() {
-        callDurationLabel.text = String(format: "%.2d:%.2d", duration/60, duration%60)
-        duration += 1
+        callDurationLabel.text = call.duration.stringFromTimeInterval()
     }
     
     func handleEndCallMessage() {

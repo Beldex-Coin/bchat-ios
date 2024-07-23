@@ -228,6 +228,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         self.answerBChatCall()
     }
     
+    @objc
     func endBChatCall() {
         guard !hasEnded else { return }
         webRTCBChat.hangUp()

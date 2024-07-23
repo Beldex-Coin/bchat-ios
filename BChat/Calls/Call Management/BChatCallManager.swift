@@ -4,6 +4,8 @@ import BChatMessagingKit
 public final class BChatCallManager: NSObject {
     let provider: CXProvider?
     let callController: CXCallController?
+    
+    @objc
     var currentCall: BChatCall? = nil {
         willSet {
             if (newValue != nil) {

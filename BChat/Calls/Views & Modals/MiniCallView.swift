@@ -16,16 +16,16 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     private var topT: NSLayoutConstraint?
     private var bottomB: NSLayoutConstraint?
     
-#if targetEnvironment(simulator)
-    // Note: 'RTCMTLVideoView' doesn't seem to work on the simulator so use 'RTCEAGLVideoView' instead
-    private lazy var remoteVideoView: RTCEAGLVideoView = {
-        let result = RTCEAGLVideoView()
-        result.delegate = self
-        result.alpha = self.callVC.call.isRemoteVideoEnabled ? 1 : 0
-        result.backgroundColor = .black
-        return result
-    }()
-#else
+//#if targetEnvironment(simulator)
+//    // Note: 'RTCMTLVideoView' doesn't seem to work on the simulator so use 'RTCEAGLVideoView' instead
+//    private lazy var remoteVideoView: RTCEAGLVideoView = {
+//        let result = RTCEAGLVideoView()
+//        result.delegate = self
+//        result.alpha = self.callVC.call.isRemoteVideoEnabled ? 1 : 0
+//        result.backgroundColor = .black
+//        return result
+//    }()
+//#else
     private lazy var remoteVideoView: RTCMTLVideoView = {
         let result = RTCMTLVideoView()
         result.delegate = self
@@ -34,7 +34,7 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         result.backgroundColor = .black
         return result
     }()
-#endif
+//#endif
    
     // MARK: Initialization
     public static var current: MiniCallView?

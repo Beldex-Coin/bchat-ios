@@ -854,7 +854,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("delete_message_for_me", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteLocallyAction)
             
@@ -864,12 +866,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
                 self.deleteForEveryone(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteRemotelyAction)
             
             let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(cancelAction)
             
@@ -880,7 +886,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteLocallyAction)
             var title = NSLocalizedString("Report & Delete", comment: "")
@@ -894,12 +902,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }))
                 uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
                     self.deleteLocally(viewItem)
-                    self.showInputAccessoryView()
+                    if !self.thread.isBlocked() {
+                        self.showInputAccessoryView()
+                    }
                 }))
             }
             alertVC.addAction(deleteRemotelyAction)
             let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(cancelAction)
             self.inputAccessoryView?.isHidden = true

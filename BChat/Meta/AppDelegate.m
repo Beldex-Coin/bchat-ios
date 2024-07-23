@@ -136,6 +136,10 @@ static NSTimeInterval launchStartedAt;
     [self stopPoller];
     [self stopClosedGroupPoller];
     [self stopOpenGroupPollers];
+    
+    if ([AppEnvironment shared].callManager.currentCall) {
+        [[AppEnvironment shared].callManager.currentCall endBChatCall];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
