@@ -387,6 +387,7 @@
 		8A60F48B2C184D6D009AB837 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
 		8A60F48E2C19529F009AB837 /* SessionProtos.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48C2C19529F009AB837 /* SessionProtos.proto */; };
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
+		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE793CE2BD62582007F5086 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE793CB2BD6254B007F5086 /* libwallet_api.a */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
@@ -1541,6 +1542,7 @@
 		8A60F4892C1815F5009AB837 /* SessionProtos.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProtos.pb.swift; sourceTree = "<group>"; };
 		8A60F48C2C19529F009AB837 /* SessionProtos.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = SessionProtos.proto; sourceTree = "<group>"; };
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
+		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AE793CA2BD62541007F5086 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
 		8AE793CB2BD6254B007F5086 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
@@ -2732,6 +2734,7 @@
 				C3548F0724456AB6009433A8 /* UIView+Wrapping.swift */,
 				7BAADFCD27B215FE007BCF92 /* UIView+Draggable.swift */,
 				7BFD1A892745C4F000FB91B9 /* Permissions.swift */,
+				8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */,
 				811391B42C182478005C7BC8 /* CustomSwitch */,
 			);
 			path = Utilities;
@@ -5721,6 +5724,7 @@
 				60D882502B721D6600CA2CC2 /* RefreshNodePopUpVC.swift in Sources */,
 				7BA68909272A27BE00EFC32F /* BChatCall.swift in Sources */,
 				B835247925C38D880089A44F /* MessageCell.swift in Sources */,
+				8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */,
 				B86BD08623399CEF000F5AE3 /* SeedModal.swift in Sources */,
 				81DBDA082B5FBA950006C404 /* CurrencyPopUpVC.swift in Sources */,
 				810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */,
@@ -7249,7 +7253,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7335,7 +7339,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 48;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
