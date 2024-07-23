@@ -69,7 +69,7 @@ class CallView : UIView {
     @objc func connectingCallShowViewTapped(notification: NSNotification) {
        guard let currentCall = AppEnvironment.shared.callManager.currentCall else { return }
         if Int(currentCall.duration) != 0 {
-            callInfoLabel.text = currentCall.duration.stringFromTimeInterval() + " Person in call"
+            callInfoLabel.text = currentCall.duration.stringFromTimeInterval() + " Call inprogress"
             callIconImageView.image = UIImage(named: "End_Call_new")
             callIconImageView.set(.width, to: 18)
             callIconImageView.set(.height, to: 18)
