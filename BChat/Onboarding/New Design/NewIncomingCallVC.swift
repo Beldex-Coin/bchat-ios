@@ -592,6 +592,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             self.callerNameLabel.isHidden = self.call.isRemoteVideoEnabled
             self.remoteVideoView.alpha = self.call.isRemoteVideoEnabled ? 1 : 0
             self.voiceCallLabel.text = self.call.isVideoEnabled ? "Video Call" : "Voice Call"
+            self.callerImageBackgroundView.isHidden = self.call.isVideoEnabled || self.call.isRemoteVideoEnabled
         }
     }
     
