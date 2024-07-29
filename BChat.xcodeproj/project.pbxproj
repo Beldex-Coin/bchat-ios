@@ -298,7 +298,17 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
-		81315AC42B68EE650027A622 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81315AC32B68EE650027A622 /* libwallet_api.a */; };
+		8104420A2C57865F00FCEC15 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 810442092C57865F00FCEC15 /* libwallet_api.a */; };
+		8104423A2C57877400FCEC15 /* EmojiPickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8104422F2C57877400FCEC15 /* EmojiPickerCollectionView.swift */; };
+		8104423B2C57877400FCEC15 /* Emoji+Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442312C57877400FCEC15 /* Emoji+Category.swift */; };
+		8104423C2C57877400FCEC15 /* EmojiWithSkinTones+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442322C57877400FCEC15 /* EmojiWithSkinTones+String.swift */; };
+		8104423D2C57877400FCEC15 /* Emoji+SkinTones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442332C57877400FCEC15 /* Emoji+SkinTones.swift */; };
+		8104423E2C57877400FCEC15 /* EmojiWithSkinTones.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442342C57877400FCEC15 /* EmojiWithSkinTones.swift */; };
+		8104423F2C57877400FCEC15 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442352C57877400FCEC15 /* Emoji.swift */; };
+		810442402C57877400FCEC15 /* Emoji+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442362C57877400FCEC15 /* Emoji+Name.swift */; };
+		810442412C57877400FCEC15 /* Emoji+Available.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442372C57877400FCEC15 /* Emoji+Available.swift */; };
+		810442422C57877400FCEC15 /* EmojiSkinTonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442382C57877400FCEC15 /* EmojiSkinTonePicker.swift */; };
+		810442432C57877400FCEC15 /* EmojiPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810442392C57877400FCEC15 /* EmojiPickerSheet.swift */; };
 		81056A2C2C2D6B68007E1494 /* RestoreHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81056A2B2C2D6B68007E1494 /* RestoreHeight.swift */; };
 		810A24C32C059F280049050B /* MessageDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810A24C22C059F280049050B /* MessageDetailsVC.swift */; };
 		810C96AB2C492E0F0006114E /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810C96AA2C492E0F0006114E /* CallView.swift */; };
@@ -333,6 +343,7 @@
 		812C9A312BF2007B00175FA3 /* BNSLinkSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */; };
 		812D68292B47CC5D008B3595 /* NewDesignSecretGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */; };
 		812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */; };
+		81315AC42B68EE650027A622 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81315AC32B68EE650027A622 /* libwallet_api.a */; };
 		8131662B2C32A8350001DF1B /* AboutBNSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131662A2C32A8340001DF1B /* AboutBNSViewController.swift */; };
 		8131662D2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */; };
 		813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */; };
@@ -390,7 +401,6 @@
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
-		8AE793CE2BD62582007F5086 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE793CB2BD6254B007F5086 /* libwallet_api.a */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
@@ -1458,7 +1468,18 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
-		81315AC32B68EE650027A622 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
+		810442072C57865E00FCEC15 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
+		810442092C57865F00FCEC15 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
+		8104422F2C57877400FCEC15 /* EmojiPickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerCollectionView.swift; sourceTree = "<group>"; };
+		810442312C57877400FCEC15 /* Emoji+Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Emoji+Category.swift"; sourceTree = "<group>"; };
+		810442322C57877400FCEC15 /* EmojiWithSkinTones+String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmojiWithSkinTones+String.swift"; sourceTree = "<group>"; };
+		810442332C57877400FCEC15 /* Emoji+SkinTones.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Emoji+SkinTones.swift"; sourceTree = "<group>"; };
+		810442342C57877400FCEC15 /* EmojiWithSkinTones.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiWithSkinTones.swift; sourceTree = "<group>"; };
+		810442352C57877400FCEC15 /* Emoji.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
+		810442362C57877400FCEC15 /* Emoji+Name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Emoji+Name.swift"; sourceTree = "<group>"; };
+		810442372C57877400FCEC15 /* Emoji+Available.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Emoji+Available.swift"; sourceTree = "<group>"; };
+		810442382C57877400FCEC15 /* EmojiSkinTonePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiSkinTonePicker.swift; sourceTree = "<group>"; };
+		810442392C57877400FCEC15 /* EmojiPickerSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmojiPickerSheet.swift; sourceTree = "<group>"; };
 		81056A2B2C2D6B68007E1494 /* RestoreHeight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreHeight.swift; sourceTree = "<group>"; };
 		810A24C22C059F280049050B /* MessageDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailsVC.swift; sourceTree = "<group>"; };
 		810C96AA2C492E0F0006114E /* CallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.swift; sourceTree = "<group>"; };
@@ -1493,6 +1514,7 @@
 		812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BNSLinkSuccessVC.swift; sourceTree = "<group>"; };
 		812D68282B47CC5D008B3595 /* NewDesignSecretGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSecretGroupVC.swift; sourceTree = "<group>"; };
 		812D682A2B47F5B3008B3595 /* SecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretGroupTableViewCell.swift; sourceTree = "<group>"; };
+		81315AC32B68EE650027A622 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8131662A2C32A8340001DF1B /* AboutBNSViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutBNSViewController.swift; sourceTree = "<group>"; };
 		8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnSeedWarningPopUp.swift; sourceTree = "<group>"; };
 		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
@@ -1546,8 +1568,6 @@
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
-		8AE793CA2BD62541007F5086 /* wallet2_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wallet2_api.h; sourceTree = "<group>"; };
-		8AE793CB2BD6254B007F5086 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
 		8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.app store release.xcconfig"; sourceTree = "<group>"; };
 		948239851C08032C842937CC /* Pods-SignalMessaging.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.test.xcconfig"; sourceTree = "<group>"; };
@@ -2238,6 +2258,7 @@
 				455A16DD1F1FEA0000F86704 /* Metal.framework in Frameworks */,
 				455A16DE1F1FEA0000F86704 /* MetalKit.framework in Frameworks */,
 				45847E871E4283C30080EAB3 /* Intents.framework in Frameworks */,
+				8104420A2C57865F00FCEC15 /* libwallet_api.a in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
 				4C9CA25D217E676900607C63 /* ZXingObjC.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
@@ -2250,7 +2271,6 @@
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
-				8AE793CE2BD62582007F5086 /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -2424,18 +2444,10 @@
 		6007B5A328A4D5A40004BD61 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				60D3A49A29ED312D0059472A /* libs */,
-				6007B5A428A4D5B60004BD61 /* include */,
+				810442062C57865E00FCEC15 /* include */,
+				810442082C57865F00FCEC15 /* libs */,
 			);
 			path = External;
-			sourceTree = "<group>";
-		};
-		6007B5A428A4D5B60004BD61 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				8AE793CA2BD62541007F5086 /* wallet2_api.h */,
-			);
-			path = include;
 			sourceTree = "<group>";
 		};
 		6007B5A628A4D5D40004BD61 /* Utils */ = {
@@ -2681,14 +2693,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		60D3A49A29ED312D0059472A /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				8AE793CB2BD6254B007F5086 /* libwallet_api.a */,
-			);
-			path = libs;
-			sourceTree = "<group>";
-		};
 		60F0F17E29FA3513000BEF3F /* BChatUIKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2817,6 +2821,47 @@
 			path = TurnServers;
 			sourceTree = "<group>";
 		};
+		810442062C57865E00FCEC15 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				810442072C57865E00FCEC15 /* wallet2_api.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		810442082C57865F00FCEC15 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				810442092C57865F00FCEC15 /* libwallet_api.a */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		8104422E2C57877400FCEC15 /* Emoji Picker */ = {
+			isa = PBXGroup;
+			children = (
+				8104422F2C57877400FCEC15 /* EmojiPickerCollectionView.swift */,
+				810442302C57877400FCEC15 /* Emoji */,
+				810442382C57877400FCEC15 /* EmojiSkinTonePicker.swift */,
+				810442392C57877400FCEC15 /* EmojiPickerSheet.swift */,
+			);
+			path = "Emoji Picker";
+			sourceTree = "<group>";
+		};
+		810442302C57877400FCEC15 /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				810442312C57877400FCEC15 /* Emoji+Category.swift */,
+				810442322C57877400FCEC15 /* EmojiWithSkinTones+String.swift */,
+				810442332C57877400FCEC15 /* Emoji+SkinTones.swift */,
+				810442342C57877400FCEC15 /* EmojiWithSkinTones.swift */,
+				810442352C57877400FCEC15 /* Emoji.swift */,
+				810442362C57877400FCEC15 /* Emoji+Name.swift */,
+				810442372C57877400FCEC15 /* Emoji+Available.swift */,
+			);
+			path = Emoji;
+			sourceTree = "<group>";
+		};
 		811391B42C182478005C7BC8 /* CustomSwitch */ = {
 			isa = PBXGroup;
 			children = (
@@ -2829,6 +2874,7 @@
 			isa = PBXGroup;
 			children = (
 				60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */,
+				81315AC32B68EE650027A622 /* libwallet_api.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -3143,6 +3189,7 @@
 				C328252E25CA54F70062D0A7 /* Context Menu */,
 				B821493625D4D6A7009C0F2A /* Views & Modals */,
 				C302094625DCDFD3001F572D /* Settings */,
+				8104422E2C57877400FCEC15 /* Emoji Picker */,
 			);
 			path = Conversations;
 			sourceTree = "<group>";
@@ -5647,10 +5694,13 @@
 				B877E24626CA13BA0007970A /* CallVC+Camera.swift in Sources */,
 				454A84042059C787008B8C75 /* MediaTileViewController.swift in Sources */,
 				34D1F0871F8678AA0066283D /* ConversationViewItem.m in Sources */,
+				810442422C57877400FCEC15 /* EmojiSkinTonePicker.swift in Sources */,
+				810442412C57877400FCEC15 /* Emoji+Available.swift in Sources */,
 				451A13B11E13DED2000A50FD /* AppNotifications.swift in Sources */,
 				811237192C36A20D00F0224C /* EditGroupViewController.swift in Sources */,
 				816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */,
 				6098CA802A1DCD44005A5502 /* WKActivityIndicatorView.swift in Sources */,
+				8104423A2C57877400FCEC15 /* EmojiPickerCollectionView.swift in Sources */,
 				810E87882B5919ED001133F9 /* ConfirmSendingVC.swift in Sources */,
 				34D99CE4217509C2000AFB39 /* AppEnvironment.swift in Sources */,
 				C328255225CA64470062D0A7 /* ContextMenuVC+ActionView.swift in Sources */,
@@ -5740,6 +5790,7 @@
 				6007B5B528A4D75F0004BD61 /* BChatWallet.swift in Sources */,
 				6052A3872B47C1E1007C99E4 /* SocialGroupNewVC.swift in Sources */,
 				6098CA672A1DCC42005A5502 /* BeldexSubAddress.m in Sources */,
+				8104423F2C57877400FCEC15 /* Emoji.swift in Sources */,
 				810E3E262C11B398000FB1A1 /* ClearChatPopUp.swift in Sources */,
 				8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */,
 				6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */,
@@ -5768,6 +5819,7 @@
 				60D8824A2B70D07E00CA2CC2 /* SwitchNodePopUpVC.swift in Sources */,
 				B8214A2B25D63EB9009C0F2A /* MessagesTableView.swift in Sources */,
 				B835246E25C38ABF0089A44F /* ConversationVC.swift in Sources */,
+				8104423B2C57877400FCEC15 /* Emoji+Category.swift in Sources */,
 				B8AF4BB426A5204600583500 /* SendSeedModal.swift in Sources */,
 				6007B5B828A4D77D0004BD61 /* Wallet.swift in Sources */,
 				601CE18B2BFDB55F0075ADD6 /* MyAccountBnsViewController.swift in Sources */,
@@ -5778,6 +5830,7 @@
 				B88FA7F2260C3EB10049422F /* OpenGroupSuggestionGrid.swift in Sources */,
 				8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */,
 				604BA2DE29F7974900C9A7A4 /* CustomAlertController.swift in Sources */,
+				8104423C2C57877400FCEC15 /* EmojiWithSkinTones+String.swift in Sources */,
 				6098CA682A1DCC42005A5502 /* BeldexWalletListener.m in Sources */,
 				4CA485BB2232339F004B9E7D /* PhotoCaptureViewController.swift in Sources */,
 				34330AA31E79686200DF2FB9 /* OWSProgressView.m in Sources */,
@@ -5846,6 +5899,7 @@
 				8113C48E2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift in Sources */,
 				C354E75A23FE2A7600CE22E3 /* BaseVC.swift in Sources */,
 				6007B5BA28A4D7920004BD61 /* WalletService.swift in Sources */,
+				8104423E2C57877400FCEC15 /* EmojiWithSkinTones.swift in Sources */,
 				8A5A0B452C04942300288474 /* HostManager.swift in Sources */,
 				7B1581E827210ECC00848B49 /* RenderView.swift in Sources */,
 				811391B62C18249D005C7BC8 /* CustomSwitch.swift in Sources */,
@@ -5870,6 +5924,7 @@
 				6049BEFF2B60C881003DD410 /* WalletNodeListVC.swift in Sources */,
 				34D1F0C01F8EC1760066283D /* MessageRecipientStatusUtils.swift in Sources */,
 				7B7CB189270430D20079FF93 /* CallMessageView.swift in Sources */,
+				810442432C57877400FCEC15 /* EmojiPickerSheet.swift in Sources */,
 				C328250F25CA06020062D0A7 /* VoiceMessageView.swift in Sources */,
 				8122EE552BC904A60083AD6B /* CallPermissionPopUp.swift in Sources */,
 				60376BDD2B4BBE98004A602F /* ChatNewVC.swift in Sources */,
@@ -5908,10 +5963,12 @@
 				8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */,
 				7B7CB18E270D066F0079FF93 /* IncomingCallBanner.swift in Sources */,
 				6007B5EE28ABC9DF0004BD61 /* UIColor+Ext.swift in Sources */,
+				810442402C57877400FCEC15 /* Emoji+Name.swift in Sources */,
 				B8569AE325CBB19A00DBA3DB /* DocumentView.swift in Sources */,
 				7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */,
 				B821494F25D4E163009C0F2A /* BodyTextView.swift in Sources */,
 				C35E8AAE2485E51D00ACB629 /* IP2Country.swift in Sources */,
+				8104423D2C57877400FCEC15 /* Emoji+SkinTones.swift in Sources */,
 				B835249B25C3AB650089A44F /* VisibleMessageCell.swift in Sources */,
 				340FC8AE204DAC8D007AEB0F /* OWSSoundSettingsViewController.m in Sources */,
 				60376BEA2B4E9590004A602F /* NotificationsNewVC.swift in Sources */,

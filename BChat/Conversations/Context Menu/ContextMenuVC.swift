@@ -18,14 +18,39 @@ final class ContextMenuVC : UIViewController {
         return result
     }()
     
-//    private lazy var timestampLabel: UILabel = {
-//        let result = UILabel()
-//        let date = viewItem.interaction.dateForUI()
-//        result.text = DateUtil.formatDate(forDisplay: date)
-//        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
-//        result.textColor = isLightMode ? .black : .white
-//        return result
-//    }()
+    private lazy var timestampLabel: UILabel = {
+        let result = UILabel()
+        let date = viewItem.interaction.dateForUI()
+        result.text = DateUtil.formatDate(forDisplay: date)
+        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        result.textColor = isLightMode ? .black : .white
+        return result
+    }()
+    
+    
+    private lazy var emojiView: UIView = {
+        let result = UIView()
+        result.layer.shadowColor = UIColor.black.cgColor
+        result.layer.shadowOffset = CGSize.zero
+        result.layer.shadowOpacity = 0.4
+        result.layer.shadowRadius = 4
+        result.backgroundColor = isLightMode ? UIColor(hex: 0xF8F8F8) : UIColor(hex: 0x2C2C3B)
+        result.layer.cornerRadius = 20
+        return result
+    }()
+    
+    private let addEmojiButton: UIButton = {
+        let result: UIButton = UIButton()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.clipsToBounds = true
+        result.setTitle("+", for: .normal)
+        result.layer.cornerRadius = 20
+        result.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        result.layer.backgroundColor = Colors.bothGreenColor.cgColor
+        result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
+        return result
+    }()
+    
     
     // MARK: Settings
     private static let actionViewHeight: CGFloat = 40
@@ -66,6 +91,12 @@ final class ContextMenuVC : UIViewController {
         snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
         snapshot.set(.width, to: frame.width)
         snapshot.set(.height, to: frame.height)
+        
+        // emojiView
+        view.addSubview(emojiView)
+        
+        
+        
         // Timestamp
 //        view.addSubview(timestampLabel)
 //        timestampLabel.center(.vertical, in: snapshot)
@@ -93,17 +124,29 @@ final class ContextMenuVC : UIViewController {
         let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
+            emojiView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
         } else {
             menuView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+            emojiView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
         }
         switch viewItem.interaction.interactionType() {
         case .outgoingMessage: menuView.pin(.right, to: .right, of: snapshot)
+            emojiView.pin(.right, to: .right, of: snapshot)
         case .incomingMessage: menuView.pin(.left, to: .left, of: snapshot)
+            emojiView.pin(.left, to: .left, of: snapshot)
         default: break // Should never occur
         }
+        emojiView.set(.width, to: 221)
+        emojiView.set(.height, to: 40)
         // Tap gesture
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
+        
+        addEmojiButton.set(.width, to: 40)
+        addEmojiButton.set(.height, to: 40)
+        emojiView.addSubview(addEmojiButton)
+        addEmojiButton.pin(.right, to: .right, of: emojiView)
+        
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -135,4 +178,10 @@ final class ContextMenuVC : UIViewController {
             self.delegate?.contextMenuDismissed()
         })
     }
+    
+    @objc func addEmojiButtonTapped() {
+        snDismiss()
+        delegate?.showFullEmojiKeyboard(viewItem)
+    }
+    
 }

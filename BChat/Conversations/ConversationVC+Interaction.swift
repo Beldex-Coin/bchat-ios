@@ -1046,6 +1046,20 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         userDetailsSheet.modalTransitionStyle = .crossDissolve
         present(userDetailsSheet, animated: true, completion: nil)
     }
+    
+    func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { [weak self] emoji in
+                guard let emoji: EmojiWithSkinTones = emoji else { return }
+                
+//                self?.react(cellViewModel, with: emoji, using: dependencies)
+            },
+            dismissHandler: { [weak self] in
+//                self?.showInputAccessoryView()
+            }
+        )
+        present(emojiPicker, animated: true, completion: nil)
+    }
 
     // MARK: Voice Message Playback
     @objc func handleAudioDidFinishPlayingNotification(_ notification: Notification) {

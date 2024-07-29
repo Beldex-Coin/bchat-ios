@@ -11,7 +11,7 @@ abstract_target 'GlobalDependencies' do
   pod 'Sodium', '~> 0.9.1'
   pod 'YapDatabase/SQLCipher', :git => 'https://github.com/oxen-io/session-ios-yap-database.git', branch: 'signal-release'
   pod 'WebRTC-lib'
-  
+  pod 'GRDB.swift/SQLCipher'
   pod 'SocketRocket', '~> 0.5.1'
   
   target 'BChat' do
@@ -27,6 +27,7 @@ abstract_target 'GlobalDependencies' do
     pod 'SwiftyRSA'
     pod 'Alamofire'
     pod 'FSCalendar'
+    pod 'DifferenceKit'
   end
   
   # Dependencies to be included only in all extensions/frameworks
@@ -53,23 +54,29 @@ abstract_target 'GlobalDependencies' do
         pod 'SAMKeychain'
         pod 'SwiftProtobuf', '~> 1.5.0'
         pod 'YYImage', git: 'https://github.com/signalapp/YYImage'
+        pod 'DifferenceKit'
       end
       
       target 'BChatMessagingKit' do
         pod 'Reachability'
         pod 'SAMKeychain'
         pod 'SwiftProtobuf', '~> 1.5.0'
+        pod 'DifferenceKit'
       end
       
       target 'BChatUtilitiesKit' do
         pod 'SAMKeychain'
+        pod 'DifferenceKit'
       end
     end
   end
 end
 
 # No dependencies for this
-target 'BChatUIKit'
+target 'BChatUIKit' do
+  pod 'DifferenceKit'
+  pod 'GRDB.swift/SQLCipher'
+  end
 
 # Actions to perform post-install
 post_install do |installer|

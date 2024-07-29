@@ -69,13 +69,13 @@ extension ContextMenuVC {
                 // Payment Card View and openGroupInvitation Both "Replay" Option is disabled
                 if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid {
                     if txnid.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
+                } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
                     if txnid.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
+                } else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
                     if openGroupInvitationURL.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
+                } else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
                     if openGroupInvitationURL.isEmpty { }
-                }else {
+                } else {
                     result.append(Action.reply(viewItem, delegate))
                 }
             }
@@ -139,4 +139,5 @@ protocol ContextMenuActionDelegate : AnyObject {
     func banAndDeleteAllMessages(_ viewItem: ConversationViewItem)
     func contextMenuDismissed()
     func messageDetail(_ viewItem: ConversationViewItem)
+    func showFullEmojiKeyboard(_ viewItem: ConversationViewItem)
 }
