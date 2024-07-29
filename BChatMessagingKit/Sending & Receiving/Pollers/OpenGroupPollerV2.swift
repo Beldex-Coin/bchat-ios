@@ -70,7 +70,8 @@ public final class OpenGroupPollerV2 : NSObject {
                 guard let data = Data(base64Encoded: message.base64EncodedData) else {
                     return SNLog("Ignoring open group message with invalid encoding.")
                 }
-                let envelope = SNProtoEnvelope.builder(type: .sessionMessage, timestamp: message.sentTimestamp)
+                let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
+                let envelope = SNProtoEnvelope.builder(type: .sessionMessage, timestamp: message.sentTimestamp, isBnsHolder: isBnsUser)
                 envelope.setContent(data)
                 envelope.setSource(message.sender!) // Safe because messages with a nil sender are filtered out
                 do {

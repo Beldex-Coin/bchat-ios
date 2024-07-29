@@ -9,6 +9,8 @@ public final class SnodeAPI : NSObject {
     private static var hasLoadedSnodePool = false
     private static var loadedSwarms: Set<String> = []
     private static var getSnodePoolPromise: Promise<Set<Snode>>?
+   
+    private static var getfrBctStatus = false
     
     /// - Note: Should only be accessed from `Threading.workQueue` to avoid race conditions.
     internal static var snodeFailureCount: [Snode:UInt] = [:]
@@ -36,11 +38,8 @@ public final class SnodeAPI : NSObject {
     private static let maxRetryCount: UInt = 8
     private static let minSwarmSnodeCount = 3
     
-    // MAINNET links
-    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
-    
-    // TESTNET links
-//    private static let seedNodePool: Set<String> = Features.useTestnet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "https://publicnode5.rpcnode.stream:443" ]
+    // Seed Node Pool
+    private static let seedNodePool: Set<String> = Features.isTestNet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "publicnode5.rpcnode.stream:29095"]
     
     private static let snodeFailureThreshold = 3
     private static let targetSwarmSnodeCount = 2
@@ -59,20 +58,22 @@ public final class SnodeAPI : NSObject {
         case decryptionFailed
         case hashingFailed
         case validationFailed
+        case validationNone
 
         public var errorDescription: String? {
             switch self {
-            case .generic: return "An error occurred."
-            case .clockOutOfSync: return "Your clock is out of sync with the Master Node network. Please check that your device's clock is set to automatic time."
-            case .snodePoolUpdatingFailed: return "Failed to update the Master Node pool."
-            case .inconsistentSnodePools: return "Received inconsistent Master Node pool information from the Master Node network."
-            case .noKeyPair: return "Missing user key pair."
-            case .signingFailed: return "Couldn't sign message."
-            case . signatureVerificationFailed: return "Failed to verify the signature."
-            // BNS
-            case .decryptionFailed: return "Couldn't decrypt BNS name."
-            case .hashingFailed: return "Couldn't compute BNS name hash."
-            case .validationFailed: return "BNS name validation failed."
+                case .generic: return "An error occurred."
+                case .clockOutOfSync: return "Your clock is out of sync with the Master Node network. Please check that your device's clock is set to automatic time."
+                case .snodePoolUpdatingFailed: return "Failed to update the Master Node pool."
+                case .inconsistentSnodePools: return "Received inconsistent Master Node pool information from the Master Node network."
+                case .noKeyPair: return "Missing user key pair."
+                case .signingFailed: return "Couldn't sign message."
+                case . signatureVerificationFailed: return "Failed to verify the signature."
+                // BNS
+                case .decryptionFailed: return "Couldn't decrypt BNS name."
+                case .hashingFailed: return "Couldn't compute BNS name hash."
+                case .validationFailed, .validationNone:
+                    return "BNS name validation failed."
             }
         }
     }
@@ -193,7 +194,7 @@ public final class SnodeAPI : NSObject {
             "method" : "get_n_master_nodes",
             "params" : [
                 "active_only" : true,
-                "limit" : 256,
+                "frBct" : true,
                 "fields" : [
                     "public_ip" : true, "storage_port" : true, "pubkey_ed25519" : true, "pubkey_x25519" : true
                 ]
@@ -211,6 +212,7 @@ public final class SnodeAPI : NSObject {
                             SNLog("Failed to parse snode from: \(rawSnode).")
                             return nil
                         }
+                        getfrBctStatus = true
                         return Snode(address: "https://\(address)", port: UInt16(port), publicKeySet: Snode.KeySet(ed25519Key: ed25519PublicKey, x25519Key: x25519PublicKey))
                     })
                 }
@@ -242,6 +244,7 @@ public final class SnodeAPI : NSObject {
                     "endpoint" : "get_master_nodes",
                     "params" : [
                         "active_only" : true,
+                        "frBct" : true,
                         "fields" : [
                             "public_ip" : true, "storage_port" : true, "pubkey_ed25519" : true, "pubkey_x25519" : true
                         ]
@@ -289,10 +292,11 @@ public final class SnodeAPI : NSObject {
         let hasSnodePoolExpired = given(Storage.shared.getLastSnodePoolRefreshDate()) { now.timeIntervalSince($0) > 2 * 60 * 60 } ?? true
         let snodePool = SnodeAPI.snodePool
         let hasInsufficientSnodes = (snodePool.count < minSnodePoolCount)
-        if hasInsufficientSnodes || hasSnodePoolExpired {
+        if hasInsufficientSnodes || hasSnodePoolExpired  || !getfrBctStatus{
             if let getSnodePoolPromise = getSnodePoolPromise { return getSnodePoolPromise }
             let promise: Promise<Set<Snode>>
-            if snodePool.count < minSnodePoolCount {
+            if snodePool.count < minSnodePoolCount || !getfrBctStatus{
+                clearPath()
                 promise = getSnodePoolFromSeedNode()
             } else {
                 promise = getSnodePoolFromSnode().recover2 { _ in
@@ -329,13 +333,18 @@ public final class SnodeAPI : NSObject {
         }
     }
     
-    public static func getBChatID(for onsName: String) -> Promise<String> {
+    public static func clearPath(){
+        SNSnodeKitConfiguration.shared.storage.writeSync { transaction in
+            SNSnodeKitConfiguration.shared.storage.setOnionRequestPaths(to: [], using: transaction)
+            (transaction as! YapDatabaseReadWriteTransaction).removeAllObjects(inCollection: Storage.onionRequestPathCollection)
+        }
+    }
+    
+    public static func getBChatID(for bnsUserName: String) -> Promise<String> {
         let validationCount = 3
         let bchatIDByteCount = 33
-        // The name must be lowercased
-        let onsName = onsName.lowercased()
         // Hash the BNS name using BLAKE2b
-        let nameAsData = [UInt8](onsName.data(using: String.Encoding.utf8)!)
+        let nameAsData = [UInt8](bnsUserName.data(using: String.Encoding.utf8)!)
         guard let nameHash = sodium.genericHash.hash(message: nameAsData) else { return Promise(error: Error.hashingFailed) }
         
         // Ask 3 different snodes for the BChat ID associated with the given name hash
@@ -405,11 +414,25 @@ public final class SnodeAPI : NSObject {
 
     public static func getSwarm(for publicKey: String) -> Promise<Set<Snode>> {
         loadSwarmIfNeeded(for: publicKey)
-        if let cachedSwarm = swarmCache[publicKey], cachedSwarm.count >= minSwarmSnodeCount {
-            return Promise<Set<Snode>> { $0.fulfill(cachedSwarm) }
+        if let cachedSwarm = swarmCache[publicKey], cachedSwarm.count >= minSwarmSnodeCount{
+            if getfrBctStatus == false{
+                SNLog("Getting swarm for false: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
+                let parameters: [String:Any] = [ "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
+                return getRandomSnode().then2 { snode in
+                    attempt(maxRetryCount: 4, recoveringOn: Threading.workQueue) {
+                        return invoke(.getSwarm, on: snode, associatedWith: publicKey, parameters: parameters)
+                    }
+                }.map2 { rawSnodes in
+                    let swarm = parseSnodes(from: rawSnodes)
+                    setSwarm(to: swarm, for: publicKey)
+                    return swarm
+                }
+            }else {
+                return Promise<Set<Snode>> { $0.fulfill(cachedSwarm) }
+            }
         } else {
             SNLog("Getting swarm for: \((publicKey == SNSnodeKitConfiguration.shared.storage.getUserPublicKey()) ? "self" : publicKey).")
-            let parameters: [String:Any] = [ "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
+            let parameters: [String:Any] = [ "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey ]
             return getRandomSnode().then2 { snode in
                 attempt(maxRetryCount: 4, recoveringOn: Threading.workQueue) {
                     invoke(.getSwarm, on: snode, associatedWith: publicKey, parameters: parameters)
@@ -471,9 +494,10 @@ public final class SnodeAPI : NSObject {
         guard let verificationData = ("retrieve" + namespaceVerificationString + String(timestamp)).data(using: String.Encoding.utf8),
               let signature = sodium.sign.signature(message: Bytes(verificationData), secretKey: userED25519KeyPair.secretKey)
         else { return Promise(error: Error.signingFailed) }
+        
         // Make the request
         let parameters: JSON = [
-            "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey,
+            "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey,
             "namespace": namespace,
             "lastHash" : lastHash,
             "timestamp" : timestamp,
@@ -492,7 +516,7 @@ public final class SnodeAPI : NSObject {
 
         // Make the request
         var parameters: JSON = [
-            "pubKey" : Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey,
+            "pubKey" : Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey,
             "lastHash" : lastHash,
         ]
         // Don't include namespace if polling for 0 with no authentication
@@ -521,7 +545,7 @@ public final class SnodeAPI : NSObject {
         else { return Promise(error: Error.signingFailed) }
         // Make the request
         let (promise, seal) = Promise<Set<RawResponsePromise>>.pending()
-        let publicKey = Features.useTestnet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
+        let publicKey = Features.isTestNet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
         Threading.workQueue.async {
             getTargetSnodes(for: publicKey).map2 { targetSnodes in
                 var parameters = message.toJSON()
@@ -541,7 +565,7 @@ public final class SnodeAPI : NSObject {
     
     private static func sendMessageUnauthenticated(_ message: SnodeMessage, isClosedGroupMessage: Bool) -> Promise<Set<RawResponsePromise>> {
         let (promise, seal) = Promise<Set<RawResponsePromise>>.pending()
-        let publicKey = Features.useTestnet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
+        let publicKey = Features.isTestNet ? message.recipient.removing05PrefixIfNeeded() : message.recipient
         Threading.workQueue.async {
             getTargetSnodes(for: publicKey).map2 { targetSnodes in
                 var rawResponsePromises: Set<RawResponsePromise> = Set()
@@ -582,7 +606,7 @@ public final class SnodeAPI : NSObject {
         let storage = SNSnodeKitConfiguration.shared.storage
         guard let userX25519PublicKey = storage.getUserPublicKey(),
             let userED25519KeyPair = storage.getUserED25519KeyPair() else { return Promise(error: Error.noKeyPair) }
-        let publicKey = Features.useTestnet ? publicKey.removing05PrefixIfNeeded() : publicKey
+        let publicKey = Features.isTestNet ? publicKey.removing05PrefixIfNeeded() : publicKey
         return attempt(maxRetryCount: maxRetryCount, recoveringOn: Threading.workQueue) {
             getSwarm(for: publicKey).then2 { swarm -> Promise<[String:Bool]> in
                 let snode = swarm.randomElement()!

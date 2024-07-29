@@ -2,12 +2,12 @@
 import WebRTC
 import Foundation
 
-#if targetEnvironment(simulator)
-// Note: 'RTCMTLVideoView' doesn't seem to work on the simulator so use 'RTCEAGLVideoView' instead
-typealias TargetView = RTCEAGLVideoView
-#else
+//#if targetEnvironment(simulator)
+//// Note: 'RTCMTLVideoView' doesn't seem to work on the simulator so use 'RTCEAGLVideoView' instead
+//typealias TargetView = RTCEAGLVideoView
+//#else
 typealias TargetView = RTCMTLVideoView
-#endif
+//#endif
 
 // MARK: RemoteVideoView
 

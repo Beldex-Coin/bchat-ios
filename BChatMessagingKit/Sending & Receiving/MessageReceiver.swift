@@ -33,21 +33,21 @@ public enum MessageReceiver {
 
         public var errorDescription: String? {
             switch self {
-            case .duplicateMessage: return "Duplicate message."
-            case .invalidMessage: return "Invalid message."
-            case .unknownMessage: return "Unknown message type."
-            case .unknownEnvelopeType: return "Unknown envelope type."
-            case .noUserX25519KeyPair: return "Couldn't find user X25519 key pair."
-            case .noUserED25519KeyPair: return "Couldn't find user ED25519 key pair."
-            case .invalidSignature: return "Invalid message signature."
-            case .noData: return "Received an empty envelope."
-            case .senderBlocked: return "Received a message from a blocked user."
-            case .noThread: return "Couldn't find thread for message."
-            case .selfSend: return "Message addressed at self."
-            case .decryptionFailed: return "Decryption failed."
-            // Shared sender keys
-            case .invalidGroupPublicKey: return "Invalid group public key."
-            case .noGroupKeyPair: return "Missing group key pair."
+                case .duplicateMessage: return "Duplicate message."
+                case .invalidMessage: return "Invalid message."
+                case .unknownMessage: return "Unknown message type."
+                case .unknownEnvelopeType: return "Unknown envelope type."
+                case .noUserX25519KeyPair: return "Couldn't find user X25519 key pair."
+                case .noUserED25519KeyPair: return "Couldn't find user ED25519 key pair."
+                case .invalidSignature: return "Invalid message signature."
+                case .noData: return "Received an empty envelope."
+                case .senderBlocked: return "Received a message from a blocked user."
+                case .noThread: return "Couldn't find thread for message."
+                case .selfSend: return "Message addressed at self."
+                case .decryptionFailed: return "Decryption failed."
+                // Shared sender keys
+                case .invalidGroupPublicKey: return "Invalid group public key."
+                case .noGroupKeyPair: return "Missing group key pair."
             }
         }
     }
@@ -63,52 +63,53 @@ public enum MessageReceiver {
         var plaintext: Data!
         var sender: String!
         var beldexAddress: String = ""
+        let isBnsHolder = envelope.isBnsHolder
         var groupPublicKey: String? = nil
         if isOpenGroupMessage {
             (plaintext, sender) = (envelope.content!, envelope.source!)
         } else {
             switch envelope.type {
-            case .sessionMessage:
-                guard let userX25519KeyPair = SNMessagingKitConfiguration.shared.storage.getUserKeyPair() else { throw Error.noUserX25519KeyPair }
-                (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: userX25519KeyPair)
-            case .closedGroupMessage:
-                guard let hexEncodedGroupPublicKey = envelope.source, SNMessagingKitConfiguration.shared.storage.isClosedGroup(hexEncodedGroupPublicKey) else { throw Error.invalidGroupPublicKey }
-                var encryptionKeyPairs = Storage.shared.getClosedGroupEncryptionKeyPairs(for: hexEncodedGroupPublicKey)
-                guard !encryptionKeyPairs.isEmpty else { throw Error.noGroupKeyPair }
-                // Loop through all known group key pairs in reverse order (i.e. try the latest key pair first (which'll more than
-                // likely be the one we want) but try older ones in case that didn't work)
-                var encryptionKeyPair = encryptionKeyPairs.removeLast()
-                func decrypt() throws {
-                    do {
-                        (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: encryptionKeyPair)
-                    } catch {
-                        if !encryptionKeyPairs.isEmpty {
-                            encryptionKeyPair = encryptionKeyPairs.removeLast()
-                            try decrypt()
-                        } else {
-                            throw error
+                case .sessionMessage:
+                    guard let userX25519KeyPair = SNMessagingKitConfiguration.shared.storage.getUserKeyPair() else { throw Error.noUserX25519KeyPair }
+                    (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: userX25519KeyPair)
+                case .closedGroupMessage:
+                    guard let hexEncodedGroupPublicKey = envelope.source, SNMessagingKitConfiguration.shared.storage.isClosedGroup(hexEncodedGroupPublicKey) else { throw Error.invalidGroupPublicKey }
+                    var encryptionKeyPairs = Storage.shared.getClosedGroupEncryptionKeyPairs(for: hexEncodedGroupPublicKey)
+                    guard !encryptionKeyPairs.isEmpty else { throw Error.noGroupKeyPair }
+                    // Loop through all known group key pairs in reverse order (i.e. try the latest key pair first (which'll more than
+                    // likely be the one we want) but try older ones in case that didn't work)
+                    var encryptionKeyPair = encryptionKeyPairs.removeLast()
+                    func decrypt() throws {
+                        do {
+                            (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: encryptionKeyPair)
+                        } catch {
+                            if !encryptionKeyPairs.isEmpty {
+                                encryptionKeyPair = encryptionKeyPairs.removeLast()
+                                try decrypt()
+                            } else {
+                                throw error
+                            }
                         }
                     }
-                }
-                groupPublicKey = envelope.source
-                try decrypt()
-                /*
-                do {
+                    groupPublicKey = envelope.source
                     try decrypt()
-                } catch {
+                    /*
                     do {
-                        let now = Date()
-                        // Don't spam encryption key pair requests
-                        let shouldRequestEncryptionKeyPair = given(lastEncryptionKeyPairRequest[groupPublicKey!]) { now.timeIntervalSince($0) > 30 } ?? true
-                        if shouldRequestEncryptionKeyPair {
-                            try MessageSender.requestEncryptionKeyPair(for: groupPublicKey!, using: transaction as! YapDatabaseReadWriteTransaction)
-                            lastEncryptionKeyPairRequest[groupPublicKey!] = now
+                        try decrypt()
+                    } catch {
+                        do {
+                            let now = Date()
+                            // Don't spam encryption key pair requests
+                            let shouldRequestEncryptionKeyPair = given(lastEncryptionKeyPairRequest[groupPublicKey!]) { now.timeIntervalSince($0) > 30 } ?? true
+                            if shouldRequestEncryptionKeyPair {
+                                try MessageSender.requestEncryptionKeyPair(for: groupPublicKey!, using: transaction as! YapDatabaseReadWriteTransaction)
+                                lastEncryptionKeyPairRequest[groupPublicKey!] = now
+                            }
                         }
+                        throw error // Throw the * decryption * error and not the error generated by requestEncryptionKeyPair (if it generated one)
                     }
-                    throw error // Throw the * decryption * error and not the error generated by requestEncryptionKeyPair (if it generated one)
-                }
-                 */
-            default: throw Error.unknownEnvelopeType
+                     */
+                default: throw Error.unknownEnvelopeType
             }
         }
         
@@ -135,7 +136,7 @@ public enum MessageReceiver {
             if let configurationMessage = ConfigurationMessage.fromProto(proto) { return configurationMessage }
             if let unsendRequest = UnsendRequest.fromProto(proto) { return unsendRequest }
             if let messageRequestResponse = MessageRequestResponse.fromProto(proto) { return messageRequestResponse }
-            if let visibleMessage = VisibleMessage.fromProto(proto,beldexAdd: beldexAddress) { return visibleMessage }
+            if let visibleMessage = VisibleMessage.fromProto(proto, beldexAdd: beldexAddress, isBnsHolder: isBnsHolder) { return visibleMessage }
             if let callMessage = CallMessage.fromProto(proto) { return callMessage }
             return nil
         }()

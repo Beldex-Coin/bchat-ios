@@ -1,17 +1,11 @@
-//
-//  QRScannerView.swift
-//  QRCodeReader
-//
-//  Created by KM, Abhilash a on 08/03/19.
-//  Copyright © 2019 KM, Abhilash. All rights reserved.
-//
+// Copyright © 2024 Beldex International Limited OU. All rights reserved.
 
 import Foundation
 import UIKit
 import AVFoundation
 
 /// Delegate callback for the QRScannerView.
-protocol QRScannerViewDelegate: class {
+protocol QRScannerViewDelegate: AnyObject {
     func qrScanningDidFail()
     func qrScanningSucceededWithCode(_ str: String?)
     func qrScanningDidStop()

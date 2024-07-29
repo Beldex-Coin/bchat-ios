@@ -26,15 +26,23 @@ class BaseVC : UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppModeChangedNotification(_:)), name: .appModeChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive(_:)), name: .OWSApplicationDidBecomeActive, object: nil)
+        
+        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func resignKeyboard() {
+        view.endEditing(true)
     }
     
     internal func ensureWindowBackground() {
         let appMode = AppModeManager.shared.currentAppMode
         switch appMode {
-        case .light:
-            UIApplication.shared.delegate?.window??.backgroundColor = .white
-        case .dark:
-            UIApplication.shared.delegate?.window??.backgroundColor = .black
+            case .light:
+                UIApplication.shared.delegate?.window??.backgroundColor = .white
+            case .dark:
+                UIApplication.shared.delegate?.window??.backgroundColor = .black
         }
     }
 
@@ -51,7 +59,7 @@ class BaseVC : UIViewController {
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.navigationBarBackground
             appearance.shadowColor = .clear
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
@@ -88,9 +96,31 @@ class BaseVC : UIViewController {
         headingImageView.tintColor = Colors.text
         headingImageView.image = UIImage(named: "BChat_")?.withRenderingMode(.alwaysTemplate)
         headingImageView.contentMode = .scaleAspectFit
-        headingImageView.set(.width, to: 175)
+        headingImageView.set(.width, to: 90)
         headingImageView.set(.height, to: Values.mediumFontSize)
-        navigationItem.titleView = headingImageView
+        if let statusView = view.viewWithTag(333222) {
+            statusView.removeFromSuperview()
+        }
+        // Path status indicator
+        let pathStatusView = PathStatusView()
+        pathStatusView.tag = 333222
+        pathStatusView.accessibilityLabel = "Current onion routing path indicator"
+        pathStatusView.set(.width, to: PathStatusView.size)
+        pathStatusView.set(.height, to: PathStatusView.size)
+        pathStatusView.layer.borderWidth = 2
+        pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
+        let spacer = UIView()
+        spacer.set(.width, to: UIScreen.main.bounds.width - 261)
+        spacer.set(.height, to: Values.mediumFontSize)
+        let stack = UIStackView(arrangedSubviews: [headingImageView, pathStatusView, spacer])
+        stack.axis = .horizontal
+        stack.alignment = .center
+        navigationItem.titleView = stack
+    }
+    
+    internal func setUpTopCornerRadius() {
+        view.layer.cornerRadius = 18
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
 
     internal func setUpNavBarSessionIcon() {
@@ -125,4 +155,34 @@ class BaseVC : UIViewController {
         }
         ensureWindowBackground()
     }
+    
+    // Back To BChat Home screen
+    @objc func backToHomeScreen() {
+        if let viewController = navigationController?.viewControllers.first(where: {$0 is HomeVC}) {
+              navigationController?.popToViewController(viewController, animated: true)
+        }
+    }
+}
+
+
+extension BaseVC {
+    
+    func showCallScreen() {
+        if SSKPreferences.areCallsEnabled {
+            requestMicrophonePermissionIfNeeded { }
+            guard let call = AppEnvironment.shared.callManager.currentCall else { return }
+            guard MiniCallView.current == nil else { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
+            guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
+            let callVC = NewIncomingCallVC(for: call)
+            presentingVC.present(callVC, animated: true, completion: nil)
+        } else {
+            let vc = CallPermissionRequestModalNewVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    
 }

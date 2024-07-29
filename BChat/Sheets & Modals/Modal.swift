@@ -19,16 +19,17 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
     
     lazy var cancelButton: UIButton = {
         let result = UIButton()
-        result.set(.height, to: Values.mediumButtonHeight)
-        result.layer.cornerRadius = Modal.buttonCornerRadius
-        if isDarkMode {
-            result.backgroundColor = Colors.buttonBackground
-        }else {
-            result.backgroundColor = UIColor.lightGray
-        }
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.setTitle(NSLocalizedString("cancel", comment: ""), for: UIControl.State.normal)
+        result.set(.height, to: 46)
+        result.layer.cornerRadius = 23//Modal.buttonCornerRadius
+//        if isDarkMode {
+//            result.backgroundColor = Colors.buttonBackground
+//        }else {
+//            result.backgroundColor = UIColor.lightGray
+//        }
+        result.backgroundColor = Colors.cancelButtonBackgroundColor2
+        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.setTitleColor(Colors.bothGrayColor, for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         return result
     }()
     

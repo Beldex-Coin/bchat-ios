@@ -7,6 +7,7 @@
 
 #pragma mark - const
 
+// MAINNET
 const Wallet::NetworkType netType = Wallet::MAINNET;
 
 #pragma mark - method

@@ -4,15 +4,25 @@ import PromiseKit
 @objc(LKPushNotificationAPI)
 public final class PushNotificationAPI : NSObject {
 
-    // MARK: Settings
+    // MARK: Properties
     
-    // For Testnet
-//    public static let server = "http://194.233.68.227:1900"
-//    public static let serverPublicKey = "aea4fcf485fb267fa98c5f24b1848a6a865ea8769c2823ac385de051723b5954"
+    /// Specifies the Server for the Push Notification
+    public static var server: String {
+        #if MAINNET
+            return "http://notification.rpcnode.stream"
+        #else
+            return "http://194.233.68.227:1900"
+        #endif
+    }
     
-   // For Mainnet
-    public static let server = "http://notification.rpcnode.stream"
-    public static let serverPublicKey = "54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911"
+    /// Specifies the Server Public key for the Push Notification
+    public static var serverPublicKey: String {
+        #if MAINNET
+            return "54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911"
+        #else
+            return "aea4fcf485fb267fa98c5f24b1848a6a865ea8769c2823ac385de051723b5954"
+        #endif
+    }
     
     private static let maxRetryCount: UInt = 4
     private static let tokenExpirationInterval: TimeInterval = 12 * 60 * 60
@@ -22,16 +32,18 @@ public final class PushNotificationAPI : NSObject {
         
         public var endpoint: String {
             switch self {
-            case .subscribe: return "subscribe_closed_group"
-            case .unsubscribe: return "unsubscribe_closed_group"
+                case .subscribe: return "subscribe_closed_group"
+                case .unsubscribe: return "unsubscribe_closed_group"
             }
         }
     }
 
-    // MARK: Initialization
+    // MARK: - Initialization
+    
     private override init() { }
 
-    // MARK: Registration
+    // MARK: - Registration
+    
     public static func unregister(_ token: Data) -> Promise<Void> {
         let hexEncodedToken = token.toHexString()
         let parameters = [ "token" : hexEncodedToken ]

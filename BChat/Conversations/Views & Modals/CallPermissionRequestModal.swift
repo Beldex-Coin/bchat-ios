@@ -39,7 +39,7 @@ final class CallPermissionRequestModal : Modal {
         // Cancel button
         let cancelButtonForCall = UIButton()
         cancelButtonForCall.set(.height, to: Values.mediumButtonHeight)
-        cancelButtonForCall.layer.cornerRadius = Modal.buttonCornerRadius
+        cancelButtonForCall.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             cancelButtonForCall.backgroundColor = Colors.buttonBackground
         }else {
@@ -52,7 +52,7 @@ final class CallPermissionRequestModal : Modal {
         // Enable button
         let goToSettingsButton = UIButton()
         goToSettingsButton.set(.height, to: Values.mediumButtonHeight)
-        goToSettingsButton.layer.cornerRadius = Modal.buttonCornerRadius
+        goToSettingsButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             goToSettingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             goToSettingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -70,6 +70,7 @@ final class CallPermissionRequestModal : Modal {
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButtonForCall, goToSettingsButton ])
         buttonStackView.axis = .horizontal
+        buttonStackView.spacing = Values.mediumSpacing
         buttonStackView.distribution = .fillEqually
         // Main stack view
         let spacing = Values.largeSpacing - Values.smallFontSize / 2
@@ -84,21 +85,30 @@ final class CallPermissionRequestModal : Modal {
     }
 
     // MARK: Interaction
+//    @objc func goToSettings(_ sender: Any) {
+//        dismiss(animated: true, completion: {
+//            if let vc = CurrentAppContext().frontmostViewController() {
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                privacySettingsVC.shouldShowCloseButton = true
+//                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
+//                nav.modalPresentationStyle = .fullScreen
+//                vc.present(nav, animated: true, completion: nil)
+//            }
+//        })
+//    }
+    
     @objc func goToSettings(_ sender: Any) {
         dismiss(animated: true, completion: {
-            if let vc = CurrentAppContext().frontmostViewController() {
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                privacySettingsVC.shouldShowCloseButton = true
-                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
-                nav.modalPresentationStyle = .fullScreen
-                vc.present(nav, animated: true, completion: nil)
+            if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
             }
         })
     }
     
     @objc func cancelButtonForCallAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
     
 }
@@ -197,20 +207,29 @@ final class PayAsYouChatPermissionRequestModal : Modal {
     }
 
     // MARK: Interaction
+//    @objc func goToSettings(_ sender: Any) {
+//        dismiss(animated: true, completion: {
+//            if let vc = CurrentAppContext().frontmostViewController() {
+//                let privacySettingsVC = PrivacySettingsTableViewController()
+//                privacySettingsVC.shouldShowCloseButton = true
+//                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
+//                nav.modalPresentationStyle = .fullScreen
+//                vc.present(nav, animated: true, completion: nil)
+//            }
+//        })
+//    }
+    
     @objc func goToSettings(_ sender: Any) {
         dismiss(animated: true, completion: {
-            if let vc = CurrentAppContext().frontmostViewController() {
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                privacySettingsVC.shouldShowCloseButton = true
-                let nav = OWSNavigationController(rootViewController: privacySettingsVC)
-                nav.modalPresentationStyle = .fullScreen
-                vc.present(nav, animated: true, completion: nil)
+            if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
             }
         })
     }
     
     @objc func cancelButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
 }

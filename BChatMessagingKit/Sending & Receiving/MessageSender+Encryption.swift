@@ -4,8 +4,8 @@ import Sodium
 extension MessageSender {
     
     internal static func encryptWithSessionProtocol(_ plaintext: Data, for recipientHexEncodedX25519PublicKey: String) throws -> Data {
-        let beldexAddres = UserDefaults.standard.string(forKey: "WalletpublicAddress")
-        let senderBeldexAddress = Data(beldexAddres!.utf8)
+        guard let beldexAddres = UserDefaults.standard.string(forKey: "WalletpublicAddress") else { return Data() }
+        let senderBeldexAddress = Data(beldexAddres.utf8)
         let plaintextWithBeldexAddress = senderBeldexAddress + plaintext
         guard let userED25519KeyPair = SNMessagingKitConfiguration.shared.storage.getUserED25519KeyPair() else { throw Error.noUserED25519KeyPair }
         let recipientX25519PublicKey = Data(hex: recipientHexEncodedX25519PublicKey.removing05PrefixIfNeeded())

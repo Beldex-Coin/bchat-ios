@@ -28,20 +28,26 @@ extension ContextMenuVC {
         private func setUpViewHierarchy() {
             // Icon
             let iconSize = ActionView.iconSize
-            let iconImageView = UIImageView(image: action.icon.resizedImage(to: CGSize(width: iconSize, height: iconSize))!.withTint(Colors.text))
-            let iconImageViewSize = ActionView.iconImageViewSize
+            let iconImageView = UIImageView(image: action.icon)
+            let iconImageViewSize = CGFloat(15)
             iconImageView.set(.width, to: iconImageViewSize)
             iconImageView.set(.height, to: iconImageViewSize)
-            iconImageView.contentMode = .center
+            iconImageView.contentMode = .scaleAspectFit
             // Title
             let titleLabel = UILabel()
             titleLabel.text = action.title
-            titleLabel.textColor = Colors.text
-            titleLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+            titleLabel.textColor = UIColor(hex: 0xEBEBEB)
+            if action.title == "Delete" {
+                titleLabel.textColor = Colors.bothRedColor
+            }
+            if action.title == "Save" {
+                iconImageView.tintColor = Colors.bothWhiteColor
+            }
+            titleLabel.font = Fonts.OpenSans(ofSize: 12)
             // Stack view
             let stackView = UIStackView(arrangedSubviews: [ iconImageView, titleLabel ])
             stackView.axis = .horizontal
-            stackView.spacing = Values.smallSpacing
+            stackView.spacing = 10
             stackView.alignment = .center
             stackView.isLayoutMarginsRelativeArrangement = true
             let smallSpacing = Values.smallSpacing

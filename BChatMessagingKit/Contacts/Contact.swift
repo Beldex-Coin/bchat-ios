@@ -25,6 +25,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     }
     
     @objc public var beldexAddress: String?
+    @objc public var isBnsHolder: Bool = false
     
     /// This flag is used to determine whether this contact has approved the current users message request
     @objc public var didApproveMe = false
@@ -40,14 +41,14 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
     @objc public func displayName(for context: Context) -> String? {
         if let nickname = nickname { return nickname }
         switch context {
-        case .regular: return name
-        case .openGroup:
-            // In open groups, where it's more likely that multiple users have the same name, we display a bit of the BChat ID after
-            // a user's display name for added context.
-            guard let name = name else { return nil }
-            let endIndex = bchatID.endIndex
-            let cutoffIndex = bchatID.index(endIndex, offsetBy: -8)
-            return "\(name) (...\(bchatID[cutoffIndex..<endIndex]))"
+            case .regular: return name
+            case .openGroup:
+                // In open groups, where it's more likely that multiple users have the same name, we display a bit of the BChat ID after
+                // a user's display name for added context.
+                guard let name = name else { return nil }
+                let endIndex = bchatID.endIndex
+                let cutoffIndex = bchatID.index(endIndex, offsetBy: -8)
+                return "\(name) (...\(bchatID[cutoffIndex..<endIndex]))"
         }
     }
     
@@ -77,6 +78,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
         guard let bchatID = coder.decodeObject(forKey: "sessionID") as! String? else { return nil }
         self.bchatID = bchatID
         if let beldexAddress = coder.decodeObject(forKey: "beldexAddress") as! String? { self.beldexAddress = beldexAddress }
+        if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
         isTrusted = coder.decodeBool(forKey: "isTrusted")
         if let name = coder.decodeObject(forKey: "displayName") as! String? { self.name = name }
         if let nickname = coder.decodeObject(forKey: "nickname") as! String? { self.nickname = nickname }
@@ -106,6 +108,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
         coder.encode(didApproveMe, forKey: "didApproveMe")
         coder.encode(hasBeenBlocked, forKey: "hasBeenBlocked")
         coder.encode(beldexAddress, forKey: "beldexAddress")
+        coder.encode(isBnsHolder, forKey: "isBnsHolder")
     }
     
     // MARK: Equality

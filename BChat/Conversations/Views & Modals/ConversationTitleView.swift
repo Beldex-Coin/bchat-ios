@@ -10,8 +10,8 @@ final class ConversationTitleView : UIView {
     // MARK: UI Components
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.text
-        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.semiOpenSans(ofSize: Values.mediumFontSize)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()
@@ -27,7 +27,7 @@ final class ConversationTitleView : UIView {
     private lazy var stackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ titleLabel, subtitleLabel ])
         result.axis = .vertical
-        result.alignment = .center
+        result.alignment = .leading
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -52,7 +52,7 @@ final class ConversationTitleView : UIView {
         stackView.pin(to: self)
         let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isGroupThread()
         let leftMargin: CGFloat = shouldShowCallButton ? 54 : 8 // Contact threads also have the call button to compensate for
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: leftMargin, bottom: 0, right: 0)
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: -6, bottom: 0, right: 0)
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGestureRecognizer)
@@ -69,11 +69,11 @@ final class ConversationTitleView : UIView {
 
     // MARK: Updating
     @objc private func update() {
-        titleLabel.text = getTitle()
+        titleLabel.text = getTitle().firstCharacterUpperCase()
         let subtitle = getSubtitle()
         subtitleLabel.attributedText = subtitle
-        let titleFontSize = (subtitle != nil) ? Values.mediumFontSize : Values.veryLargeFontSize
-        titleLabel.font = Fonts.boldOpenSans(ofSize: titleFontSize)
+        let titleFontSize = (subtitle != nil) ? Values.mediumFontSize : Values.mediumFontSize
+        titleLabel.font = Fonts.semiOpenSans(ofSize: titleFontSize)
     }
 
     // MARK: General
@@ -91,6 +91,26 @@ final class ConversationTitleView : UIView {
                 let displayName: String = ((Storage.shared.getContact(with: bchatID)?.displayName(for: .regular)) ?? bchatID)
                 let middleTruncatedHexKey: String = "\(bchatID.prefix(4))...\(bchatID.suffix(4))"
                 result = (displayName == bchatID ? middleTruncatedHexKey : displayName)
+                
+                if BNSBool.isFromBNS {
+                    result = (displayName == bchatID) ? BNSBool.bnsName : displayName
+                    if displayName == bchatID {
+                        if let contact: Contact = Storage.shared.getContact(with: bchatID) {
+                            Storage.write(
+                                with: { transaction in
+                                    contact.name = BNSBool.bnsName
+                                    Storage.shared.setContact(contact, using: transaction)
+                                    BNSBool.isFromBNS = false
+                                    BNSBool.bnsName = ""
+                                },
+                                completion: {
+                                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                                }
+                            )
+                        }
+                    }
+                }
+                
             }
             return result
         }
@@ -135,8 +155,14 @@ final class ConversationTitleView : UIView {
     }
 }
 
-// MARK: Delegate
-protocol ConversationTitleViewDelegate : AnyObject {
-    
+// MARK: - ConversationTitleViewDelegate
+
+protocol ConversationTitleViewDelegate: AnyObject {
     func handleTitleViewTapped()
+}
+
+
+struct BNSBool {
+    static var isFromBNS = false
+    static var bnsName = ""
 }

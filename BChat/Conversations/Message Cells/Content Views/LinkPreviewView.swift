@@ -146,7 +146,7 @@ final class LinkPreviewView : UIView {
         // Body text view
         bodyTextViewContainer.subviews.forEach { $0.removeFromSuperview() }
         if let viewItem = viewItem {
-            let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: sentLinkPreviewTextColor, delegate: delegate)
+            let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: sentLinkPreviewTextColor, delegate: delegate, lastString: delegate.lastSearchedText)
             self.bodyTextView = bodyTextView
             bodyTextViewContainer.addSubview(bodyTextView)
             bodyTextView.pin(to: bodyTextViewContainer, withInset: 12)

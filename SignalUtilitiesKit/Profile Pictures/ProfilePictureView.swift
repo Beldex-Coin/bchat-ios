@@ -8,6 +8,7 @@ public final class ProfilePictureView : UIView {
     @objc public var publicKey: String!
     @objc public var additionalPublicKey: String?
     @objc public var openGroupProfilePicture: UIImage?
+    @objc public var isNoteToSelfImage = false
     // Constraints
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -106,8 +107,11 @@ public final class ProfilePictureView : UIView {
                 size = 32
             } else if self.size == Values.largeProfilePictureSize {
                 size = 56
-            } else {
-                size = Values.smallProfilePictureSize
+            } else if self.size == CGFloat(86) {
+                size = 74
+            }
+            else {
+                size = 37
             }
             imageViewWidthConstraint.constant = size
             imageViewHeightConstraint.constant = size
@@ -127,13 +131,27 @@ public final class ProfilePictureView : UIView {
         imageView.backgroundColor = useFallbackPicture ? UIColor(rgbHex: 0x353535) : Colors.unimportant
         imageView.layer.cornerRadius = 3
         additionalImageView.layer.cornerRadius = 3
+        if self.size == CGFloat(86) {
+            imageView.layer.cornerRadius = 37
+            additionalImageView.layer.cornerRadius = 37
+        }
+        if size == 37 {
+            imageView.layer.cornerRadius = 18.5
+            additionalImageView.layer.cornerRadius = 18.5
+        }
         imageView.contentMode = useFallbackPicture ? .center : .scaleAspectFit
         if useFallbackPicture {
             switch size {
-            case Values.smallProfilePictureSize..<Values.mediumProfilePictureSize: imageView.image = #imageLiteral(resourceName: "96x96")
-            case Values.mediumProfilePictureSize..<Values.largeProfilePictureSize: imageView.image = #imageLiteral(resourceName: "192x192")
-            default: imageView.image = #imageLiteral(resourceName: "logo")
+                case Values.smallProfilePictureSize..<Values.mediumProfilePictureSize: imageView.image = #imageLiteral(resourceName: "96x96")
+                case Values.mediumProfilePictureSize..<Values.largeProfilePictureSize: imageView.image = #imageLiteral(resourceName: "192x192")
+                default: imageView.image = #imageLiteral(resourceName: "logo")
             }
+        }
+        if isNoteToSelfImage {
+            imageView.image = UIImage(named: "ic_noteToSelf")
+            imageView.backgroundColor = Colors.smallBackGroundViewCellColor
+            imageView.contentMode = .center
+            isNoteToSelfImage = false
         }
     }
     

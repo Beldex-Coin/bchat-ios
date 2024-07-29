@@ -60,6 +60,21 @@ static NSString *const DATE_FORMAT_WEEKDAY = @"EEEE";
     return formatter;
 }
 
+
++ (NSDateFormatter *)displayDateFormatterNew
+{
+    static NSDateFormatter *formatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSDateFormatter new];
+        formatter.locale = [NSLocale currentLocale];
+        // Mon 11:36 pm
+        formatter.dateFormat = [NSString stringWithFormat:@"d/MM/yy"];
+    });
+
+    return formatter;
+}
+
 + (NSDateFormatter *)displayDateThisYearDateFormatter
 {
     static NSDateFormatter *formatter;
@@ -343,19 +358,29 @@ static NSString *const DATE_FORMAT_WEEKDAY = @"EEEE";
 
     if (![self dateIsThisYear:date]) {
         // last year formatter: Nov 11 13:32 am, 2017
-        return [self.displayDateOldDateFormatter stringFromDate:date];
+//        return [self.displayDateOldDateFormatter stringFromDate:date];
+        return [self.displayDateFormatterNew stringFromDate:date];
     } else if (![self dateIsThisWeek:date]) {
         // this year formatter: Jun 6 10:12 am
-        return [self.displayDateThisYearDateFormatter stringFromDate:date];
+//        return [self.displayDateThisYearDateFormatter stringFromDate:date];
+        return [self.displayDateFormatterNew stringFromDate:date];
     } else if (![self dateIsToday:date]) {
         // day of week formatter: Thu 9:11 pm
-        return [self.displayDateThisWeekDateFormatter stringFromDate:date];
+//        return [self.displayDateThisWeekDateFormatter stringFromDate:date];
+        return [self.displayDateFormatterNew stringFromDate:date];
     } else if (![self isWithinOneMinute:date]) {
         // today formatter: 8:32 am
         return [self.displayDateTodayFormatter stringFromDate:date];
     } else {
         return NSLocalizedString(@"DATE_NOW", @"");
     }
+}
+
++ (NSString *)formatDateForDisplay2:(NSDate *)date
+{
+    OWSAssertDebug(date);
+
+    return [self.displayDateTodayFormatter stringFromDate:date];
 }
 
 + (NSString *)formatTimestampAsTime:(uint64_t)timestamp

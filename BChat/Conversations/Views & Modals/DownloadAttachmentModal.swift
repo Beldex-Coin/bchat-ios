@@ -40,7 +40,7 @@ final class DownloadAttachmentModal : Modal {
         // Download button
         let downloadButton = UIButton()
         downloadButton.set(.height, to: Values.mediumButtonHeight)
-        downloadButton.layer.cornerRadius = Modal.buttonCornerRadius
+        downloadButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         downloadButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         downloadButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: UIControl.State.normal)
@@ -51,6 +51,7 @@ final class DownloadAttachmentModal : Modal {
         }
         downloadButton.addTarget(self, action: #selector(trust), for: UIControl.Event.touchUpInside)
         // Button stack view
+        cancelButton.layer.cornerRadius = 17
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, downloadButton ])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = Values.mediumSpacing

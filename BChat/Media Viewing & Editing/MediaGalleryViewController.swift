@@ -305,6 +305,8 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
     private var initialDetailItem: MediaGalleryItem?
     private let thread: TSThread
     private let options: MediaGalleryOption
+    private let isFromChatSettings: Bool
+    var viewItems: [ConversationViewItem]?
 
     // we start with a small range size for quick loading.
     private let fetchRangeSize: UInt = 10
@@ -314,13 +316,15 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
     }
 
     @objc
-    init(thread: TSThread, options: MediaGalleryOption = []) {
+    init(thread: TSThread, options: MediaGalleryOption = [], isFromChatSettings: Bool = false, viewItems: [ConversationViewItem] = []) {
         self.thread = thread
 
         self.editingDatabaseConnection = OWSPrimaryStorage.shared().newDatabaseConnection()
 
         self.options = options
         self.mediaGalleryFinder = OWSMediaGalleryFinder(thread: thread)
+        self.isFromChatSettings = isFromChatSettings
+        self.viewItems = viewItems
         super.init()
 
         NotificationCenter.default.addObserver(self,
@@ -360,7 +364,7 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
 
         self.initialDetailItem = initialDetailItem
 
-        let pageViewController = MediaPageViewController(initialItem: initialDetailItem, mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection, options: self.options)
+        let pageViewController = MediaPageViewController(initialItem: initialDetailItem, mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection, options: self.options, isFromChatSettings: self.isFromChatSettings)
         self.addDataSourceDelegate(pageViewController)
 
         self.pageViewController = pageViewController
@@ -538,7 +542,7 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
     // MARK: - MediaGalleryDataSource
 
     lazy var mediaTileViewController: MediaTileViewController = {
-        let vc = MediaTileViewController(mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection)
+        let vc = MediaTileViewController(mediaGalleryDataSource: self, uiDatabaseConnection: self.uiDatabaseConnection, viewItems: self.viewItems ?? [])
         vc.delegate = self
 
         self.addDataSourceDelegate(vc)
@@ -626,23 +630,23 @@ class MediaGallery: NSObject, MediaGalleryDataSource, MediaTileViewControllerDel
                     let requestRange: Range<Int> = { () -> Range<Int> in
                         let range: Range<Int> = { () -> Range<Int> in
                             switch direction {
-                            case .around:
-                                // To keep it simple, this isn't exactly *amount* sized if `message` window overlaps the end or
-                                // beginning of the view. Still, we have sufficient buffer to fetch more as the user swipes.
-                                let start: Int = initialIndex - Int(amount) / 2
-                                let end: Int = initialIndex + Int(amount) / 2 + 1
+                                case .around:
+                                    // To keep it simple, this isn't exactly *amount* sized if `message` window overlaps the end or
+                                    // beginning of the view. Still, we have sufficient buffer to fetch more as the user swipes.
+                                    let start: Int = initialIndex - Int(amount) / 2
+                                    let end: Int = initialIndex + Int(amount) / 2 + 1
 
-                                return start..<end
-                            case .before:
-                                let start: Int = initialIndex - Int(amount)
-                                let end: Int = initialIndex
+                                    return start..<end
+                                case .before:
+                                    let start: Int = initialIndex - Int(amount)
+                                    let end: Int = initialIndex
 
-                                return start..<end
-                            case  .after:
-                                let start: Int = initialIndex
-                                let end: Int = initialIndex  + Int(amount) + 1
+                                    return start..<end
+                                case  .after:
+                                    let start: Int = initialIndex
+                                    let end: Int = initialIndex  + Int(amount) + 1
 
-                                return start..<end
+                                    return start..<end
                             }
                         }()
 

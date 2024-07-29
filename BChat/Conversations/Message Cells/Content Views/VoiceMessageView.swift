@@ -7,7 +7,7 @@ public final class VoiceMessageView : UIView {
     @objc var progress: Int = 0 { didSet { handleProgressChanged() } }
     @objc var isPlaying = false { didSet { handleIsPlayingChanged() } }
 
-    private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: self, withInset: -VoiceMessageView.width)
+    private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: audioWavesImageView, withInset: -52)
 
     private var attachment: TSAttachment? { viewItem.attachmentStream ?? viewItem.attachmentPointer }
     private var duration: Int { Int(viewItem.audioDurationSeconds) }
@@ -16,13 +16,18 @@ public final class VoiceMessageView : UIView {
     private lazy var progressView: UIView = {
         let result = UIView()
         result.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        result.layer.cornerRadius = 22
         return result
     }()
 
     private lazy var toggleImageView: UIImageView = {
-        let result = UIImageView(image: UIImage(named: "Play"))
-        result.set(.width, to: 8)
-        result.set(.height, to: 8)
+        var result = UIImageView(image: UIImage(named: "ic_playNew"))
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result = UIImageView(image: UIImage(named: "ic_playNew")?.withTint(tint))
+        }
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
         result.contentMode = .scaleAspectFit
         return result
     }()
@@ -36,7 +41,7 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabelContainer: UIView = {
         let result = UIView()
-        result.backgroundColor = .white
+        result.backgroundColor = .clear
         result.layer.masksToBounds = true
         result.set(.height, to: VoiceMessageView.toggleContainerSize)
         result.set(.width, to: 44)
@@ -45,8 +50,12 @@ public final class VoiceMessageView : UIView {
 
     private lazy var countdownLabel: UILabel = {
         let result = UILabel()
-        result.textColor = .black
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.textColor = .white
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result.textColor = tint
+        }
+        result.font = Fonts.OpenSans(ofSize: 11)
         result.text = "0:00"
         return result
     }()
@@ -60,9 +69,22 @@ public final class VoiceMessageView : UIView {
         result.textAlignment = .center
         return result
     }()
+    
+    private lazy var audioWavesImageView: UIImageView = {
+        var result = UIImageView(image: UIImage(named: "ic_audioWaves"))
+        if viewItem.interaction is TSIncomingMessage {
+            let tint = Colors.titleColor
+            result = UIImageView(image: UIImage(named: "ic_audioWaves")?.withTint(tint))
+        }
+        result.set(.height, to: 24)
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    
 
     // MARK: Settings
-    private static let width: CGFloat = 160
+    private static let width: CGFloat = 200
     private static let toggleContainerSize: CGFloat = 20
     private static let inset = Values.smallSpacing
 
@@ -88,18 +110,24 @@ public final class VoiceMessageView : UIView {
         let inset = VoiceMessageView.inset
         // Width & height
         set(.width, to: VoiceMessageView.width)
+        set(.height, to: 44)
         // Toggle
         let toggleContainer = UIView()
-        toggleContainer.backgroundColor = .white
+        toggleContainer.backgroundColor = .clear
         toggleContainer.set(.width, to: toggleContainerSize)
         toggleContainer.set(.height, to: toggleContainerSize)
         toggleContainer.addSubview(toggleImageView)
         toggleImageView.center(in: toggleContainer)
         toggleContainer.layer.cornerRadius = toggleContainerSize / 2
         toggleContainer.layer.masksToBounds = true
+        
+        addSubview(audioWavesImageView)
+        audioWavesImageView.pin(.left, to: .left, of: self, withInset: 28)
+        audioWavesImageView.pin(.right, to: .right, of: self, withInset: -52)
+        audioWavesImageView.center(.vertical, in: self)
         // Line
         let lineView = UIView()
-        lineView.backgroundColor = .white
+        lineView.backgroundColor = .clear
         lineView.set(.height, to: 1)
         // Countdown label
         countdownLabelContainer.addSubview(countdownLabel)
@@ -109,9 +137,8 @@ public final class VoiceMessageView : UIView {
         speedUpLabel.center(in: countdownLabelContainer)
         // Constraints
         addSubview(progressView)
-        progressView.pin(.left, to: .left, of: self)
+        progressView.pin(.left, to: .left, of: self, withInset: 28)
         progressView.pin(.top, to: .top, of: self)
-        progressViewRightConstraint.isActive = true
         progressView.pin(.bottom, to: .bottom, of: self)
         addSubview(toggleContainer)
         toggleContainer.pin(.left, to: .left, of: self, withInset: inset)
@@ -126,6 +153,7 @@ public final class VoiceMessageView : UIView {
         countdownLabelContainer.center(.vertical, in: self)
         addSubview(loader)
         loader.center(in: toggleContainer)
+        progressViewRightConstraint.isActive = true
     }
 
     // MARK: Updating
@@ -135,7 +163,13 @@ public final class VoiceMessageView : UIView {
     }
 
     private func handleIsPlayingChanged() {
-        toggleImageView.image = isPlaying ? UIImage(named: "Pause") : UIImage(named: "Play")
+        toggleImageView.image = isPlaying ? UIImage(named: "ic_pauseNew") : UIImage(named: "ic_playNew")
+        if viewItem.interaction is TSIncomingMessage {
+            if isLightMode {
+                let tint = UIColor(hex: 0x333333)
+                toggleImageView.image = isPlaying ? UIImage(named: "ic_pauseNew")?.withTint(tint) : UIImage(named: "ic_playNew")?.withTint(tint)
+            }
+        }
         if !isPlaying { progress = 0 }
     }
 
@@ -146,10 +180,10 @@ public final class VoiceMessageView : UIView {
         guard isDownloaded else { return }
         countdownLabel.text = OWSFormat.formatDurationSeconds(duration - progress)
         guard viewItem.audioProgressSeconds > 0 && viewItem.audioDurationSeconds > 0 else {
-            return progressViewRightConstraint.constant = -VoiceMessageView.width
+            return progressViewRightConstraint.constant = -120
         }
         let fraction = viewItem.audioProgressSeconds / viewItem.audioDurationSeconds
-        progressViewRightConstraint.constant = -(VoiceMessageView.width * (1 - fraction))
+        progressViewRightConstraint.constant = -(120 * (1 - fraction))
     }
 
     func showSpeedUpLabel() {

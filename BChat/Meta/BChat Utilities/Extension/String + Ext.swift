@@ -31,13 +31,20 @@ extension String {
         return dec.scaleString(scale)
     }
     
-    
     func repeatString(_ count: Int) -> String {
         var repeatStr = ""
         stride(from: 0, to: count, by: 1).forEach { (i) in
             repeatStr += self
         }
         return repeatStr
+    }
+    
+    var isNumeric: Bool {
+        guard self.count > 0 else { return false }
+        // Regular expression pattern for the specified format
+        let pattern = "^[0-9]{0,9}(\\.[0-9]{0,5})?$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluate(with: self)
     }
 }
 
@@ -79,4 +86,32 @@ extension String {
   func indexInt(of char: Character) -> Int? {
     return firstIndex(of: char)?.utf16Offset(in: self)
   }
+}
+
+extension String {
+    func firstCharacterUpperCase() -> String? {
+        guard !isEmpty else { return nil }
+        let lowerCasedString = self.lowercased()
+        return lowerCasedString.replacingCharacters(in: lowerCasedString.startIndex...lowerCasedString.startIndex, with: String(lowerCasedString[lowerCasedString.startIndex]).uppercased())
+    }
+}
+
+extension String {
+    func withBoldText(text: String, font: UIFont? = nil) -> NSAttributedString {
+        let _font = font ?? Fonts.OpenSans(ofSize: 14)
+        let fullString = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: _font])
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        let range = (self as NSString).range(of: text)
+        fullString.addAttributes(boldFontAttribute, range: range)
+        return fullString
+    }
+}
+
+public extension String {
+    func setColor(_ color: UIColor, ofSubstring substring: String) -> NSMutableAttributedString {
+        let range = (self as NSString).range(of: substring)
+        let attributedString = NSMutableAttributedString(string: self)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: color, range: range)
+        return attributedString
+    }
 }

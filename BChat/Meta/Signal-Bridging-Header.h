@@ -81,3 +81,5 @@
 #import <BChatUtilitiesKit/UIImage+OWS.h>
 #import <YYImage/YYImage.h>
 #import "BChatWalletWrapper.h"
+#import "NotificationSettingsOptionsViewController.h"
+#import "OWSSoundSettingsViewController.h"

@@ -1,4 +1,5 @@
 import BChatUIKit
+import AVFAudio
 import BChatMessagingKit
 import UIKit
 import SVGKit
@@ -10,7 +11,25 @@ import NVActivityIndicatorView
 // • Photo rounding (the small corners don't have the correct rounding)
 // • Remaining search glitchiness
 
+// Required globle variable for audio is playing or not.
+var isAudioPlaying = false
+var isAudioRecording = false
+
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate, MTSlideToOpenDelegate {
+    func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
+        showSearchUI()
+        popAllConversationSettingsViews {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
+                self.searchController.uiSearchController.searchBar.becomeFirstResponder()
+                self.searchController.uiSearchController.searchBar.showsCancelButton = true
+            }
+        }
+    }
+    
+    func popAllConversationSettingsViewsWithCompletion(_ completionBlock: (() -> Void)?) {
+        print("")
+    }
+    
     let thread: TSThread
     let threadStartedAsMessageRequest: Bool
     let focusedMessageID: String? // This is used for global search
@@ -125,6 +144,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             trailing: 0
         )
         
+        result.register(OutgoingCallTableViewCell.self, forCellReuseIdentifier: "OutgoingCallTableViewCell")
         return result
     }()
         
@@ -147,22 +167,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return result
     }()
     
-    lazy var blockedBanner: InfoBanner = {
-        let name: String
-        if let thread = thread as? TSContactThread {
-            let publicKey = thread.contactBChatID()
-            let context = Contact.context(for: thread)
-            name = Storage.shared.getContact(with: publicKey)?.displayName(for: context) ?? publicKey
-        } else {
-            name = "Thread"
-        }
-        let message = "\(name) is blocked. Unblock them?"
-        let result = InfoBanner(message: message, backgroundColor: Colors.destructive)
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(unblock))
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
     lazy var footerControlsStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -182,17 +186,29 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIView = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isHidden = !thread.isMessageRequest()
-        result.setGradient(Gradients.defaultBackground)
-        
+        result.backgroundColor = Colors.smallBackGroundColor
+        result.layer.cornerRadius = 20
+        result.layer.borderWidth = 1
+        result.layer.borderColor = Colors.borderColorNew.cgColor
+        return result
+    }()
+    
+    private let messageRequestTitleLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.text = NSLocalizedString("Message request", comment: "")
+        result.textColor = Colors.titleColor
+        result.textAlignment = .center
         return result
     }()
     
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
-        result.textColor = Colors.bchatMessageRequestsInfoText
+        result.textColor = Colors.titleColor
         result.textAlignment = .center
         result.numberOfLines = 3
         return result
@@ -202,29 +218,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         result.setTitle(NSLocalizedString("TXT_DELETE_ACCEPT", comment: ""), for: .normal)
         result.setTitleColor(Colors.bchatHeading, for: .normal)
-        result.setBackgroundImage(
-            Colors.bchatHeading
-                .withAlphaComponent(isDarkMode ? 0.2 : 0.06)
-                .toImage(isDarkMode: isDarkMode),
-            for: .highlighted
-        )
-        result.layer.cornerRadius = 6
-        result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
-        result.layer.borderColor = {
-            if #available(iOS 13.0, *) {
-                return Colors.bchatHeading
-                    .resolvedColor(
-                        // Note: This is needed for '.cgColor' to support dark mode
-                        with: UITraitCollection(userInterfaceStyle: isDarkMode ? .dark : .light)
-                    ).cgColor
-            }
-            
-            return Colors.bchatHeading.cgColor
-        }()
+        result.layer.cornerRadius = 26
+        result.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        result.layer.backgroundColor = Colors.bothGreenColor.cgColor
         result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
         return result
     }()
@@ -233,29 +232,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
         result.setTitle(NSLocalizedString("Decline", comment: ""), for: .normal)
         result.setTitleColor(Colors.destructive, for: .normal)
-        result.setBackgroundImage(
-            Colors.destructive
-                .withAlphaComponent(isDarkMode ? 0.2 : 0.06)
-                .toImage(isDarkMode: isDarkMode),
-            for: .highlighted
-        )
-        result.layer.cornerRadius = 6
-        result.setTitleColor(UIColor.white, for: .normal)
-        result.layer.backgroundColor = Colors.destructive.cgColor
-        result.layer.borderColor = {
-            if #available(iOS 13.0, *) {
-                return Colors.destructive
-                    .resolvedColor(
-                        // Note: This is needed for '.cgColor' to support dark mode
-                        with: UITraitCollection(userInterfaceStyle: isDarkMode ? .dark : .light)
-                    ).cgColor
-            }
-            
-            return Colors.destructive.cgColor
-        }()
+        result.layer.cornerRadius = 26
+        result.setTitleColor(Colors.bothRedColor, for: .normal)
+        result.layer.backgroundColor = Colors.homeScreenFloatingbackgroundColor.cgColor
+        result.backgroundColor = Colors.homeScreenFloatingbackgroundColor
         result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
         return result
     }()
@@ -272,6 +255,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     static let scrollButtonNoVisibilityThreshold: CGFloat = 20
     /// Automatically scroll to the bottom of the conversation when sending a message if the scroll distance from the bottom is less than this number.
     static let scrollToBottomMargin: CGFloat = 60
+    
+    
+    private var tableViewTopConstraint: NSLayoutConstraint!
     
     // MARK: Lifecycle
     init(thread: TSThread, focusedMessageID: String? = nil) {
@@ -318,15 +304,20 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             } else {
                 self.timer.invalidate()
             }
-            
         }
     }()
     
     lazy var snInputView: InputView = InputView(delegate: self, thread: thread)
+    private lazy var attachmentBackgroundView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.incomingMessageColor
+        return stackView
+    }()
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {
-        let slide = MTSlideToOpenView(frame: CGRect(x: 60, y: UIScreen.main.bounds.height/1.4, width: 250, height: 50))
+        let slide = MTSlideToOpenView(frame: CGRect(x: 40, y: UIScreen.main.bounds.height/1.4, width: 300, height: 50))
         slide.sliderViewTopDistance = 0
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
@@ -334,7 +325,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         slide.draggedView.backgroundColor = .clear
         slide.delegate = self
         slide.thumnailImageView.image = #imageLiteral(resourceName: "ic_sliderImage").imageFlippedForRightToLeftLayoutDirection()
-        slide.thumnailImageViewRight.image = #imageLiteral(resourceName: "send_icon").imageFlippedForRightToLeftLayoutDirection()
+        slide.thumnailImageViewRight.image = UIImage(named: "ic_bdx_send_logo")
         slide.sliderBackgroundColor = .darkGray
         return slide
     }()
@@ -347,6 +338,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private var currentBlockChainHeight: UInt64 = 0
     private var daemonBlockChainHeight: UInt64 = 0
     lazy var conncetingState = { return Observable<Bool>(false) }()
+    var isKeyboardPresented = false
     private var needSynchronized = false {
         didSet {
             guard needSynchronized, !oldValue,
@@ -359,7 +351,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var recipientAddressON = false
     var isdaemonHeight : Int64 = 0
     
-    private lazy var HiddenView: UIView = {
+    private lazy var hiddenView: UIView = {
         let result = UIView()
         result.layer.cornerRadius = 8
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -448,7 +440,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         label.layer.masksToBounds = true
         if isDarkMode {
             label.backgroundColor = Colors.buttonBackground
-        }else {
+        } else {
             label.backgroundColor = UIColor.lightGray
         }
         label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
@@ -489,7 +481,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         if isDarkMode {
             button.backgroundColor = Colors.buttonBackground
-        }else {
+        } else {
             button.backgroundColor = UIColor.lightGray
         }
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
@@ -592,7 +584,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             } catch {
                 print(error)
             }
-        }else {
+        } else {
             do {
                 let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
                 theImageView.image = UIImage.gif(data: imageData)
@@ -604,40 +596,253 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return theImageView
     }()
     
+    private lazy var clearChatButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Delete Chat", for: .normal)
+        button.setTitleColor(Colors.bothRedColor, for: .normal)
+        button.layer.cornerRadius = 23.5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.incomingMessageColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 13)
+        button.addTarget(self, action: #selector(clearChatButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_clear_chat")?.scaled(to: CGSize(width: 18, height: 18))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        return button
+    }()
     
+    private lazy var unblockButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Unblock", for: .normal)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.layer.cornerRadius = 23.5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 13)
+        let image = UIImage(named: "ic_unblock_chat")?.scaled(to: CGSize(width: 18, height: 18))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
+        button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var clearChatAndUnblockButtonStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 9
+        return result
+    }()
+    
+    lazy var blockedBannerView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        return stackView
+    }()
+    
+    lazy var blockedBannerLabel: UILabel = {
+        let result = PaddingLabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 10)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.adjustsFontSizeToFitWidth = true
+        result.backgroundColor = Colors.incomingMessageColor
+        result.paddingTop = 6
+        result.paddingBottom = 6
+        result.paddingLeft = 16
+        result.paddingRight = 16
+        result.layer.cornerRadius = 13
+        result.layer.masksToBounds = true
+        return result
+    }()
+    
+    lazy var backgroundViewForClearChatAndUnblockButtonStackView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.mainBackGroundColor2
+        return stackView
+    }()
+    
+    
+    lazy var deleteAudioView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.incomingMessageColor
+        stackView.layer.cornerRadius = 18
+        return stackView
+    }()
+    
+    lazy var deleteAudioImageView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "ic_delete_record")
+        result.set(.width, to: 14)
+        result.set(.height, to: 14)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        return result
+    }()
+    
+    lazy var deleteAudioLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.semiOpenSans(ofSize: 11)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Delete"
+        result.adjustsFontSizeToFitWidth = true
+        return result
+    }()
+    
+    lazy var deleteAudioButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(deleteAudioButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    lazy var callView: CallView = {
+        let result = CallView()
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.height, to: 32)
+        return result
+    }()
+    
+    lazy var openURLView: UIView = {
+        let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = Colors.smallBackGroundColor
+        View.layer.borderWidth = 1
+        View.layer.borderColor = Colors.borderColorNew.cgColor
+        View.layer.cornerRadius = 20
+        View.tag = 5555
+        return View
+    }()
+    
+    lazy var openURLViewTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = NSLocalizedString("modal_open_url_title", comment: "")
+        return result
+    }()
+    
+    lazy var openURLViewSubTitleLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""))
+        result.numberOfLines = 0
+        result.textAlignment = .center
+        result.lineBreakMode = .byWordWrapping
+        return result
+    }()
+    
+    lazy var openURLViewOpenButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Open", for: .normal)
+        button.layer.cornerRadius = 26
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.addTarget(self, action: #selector(openURLViewOpenButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_openUrl")
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        return button
+    }()
+    
+    lazy var openURLViewCopyButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Copy", for: .normal)
+        button.layer.cornerRadius = 26
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
+        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
+        button.addTarget(self, action: #selector(openURLViewCopyButtonTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_coprUrl")
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
+        return button
+    }()
+    
+    lazy var openURLViewStackView: UIStackView = {
+        let result: UIStackView = UIStackView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.axis = .horizontal
+        result.alignment = .center
+        result.distribution = .fillEqually
+        result.spacing = 7
+        result.isLayoutMarginsRelativeArrangement = true
+        return result
+    }()
+    
+    lazy var openURLViewCloseButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.setBackgroundImage(UIImage(named: "ic_closeNew"), for: .normal)
+        button.addTarget(self, action: #selector(openURLViewCloseButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    var urlToOpen: URL?
+    
+    
+    /// View didload
     override func viewDidLoad() {
         super.viewDidLoad()
         // Gradient
-        setUpGradientBackground()
+//        setUpGradientBackground()
         // Nav bar
         setUpNavBarStyle()
         navigationItem.titleView = titleView
         updateNavBarButtons()
         
         //adding Bg Image
-        view.addSubview(someImageView)
-        someImageView.pin(to: view)
+//        view.addSubview(someImageView)
+//        someImageView.pin(to: view)
+        view.backgroundColor = Colors.cancelButtonBackgroundColor
         
         // Constraints
         view.addSubview(messagesTableView)
-        messagesTableView.pin(to: view)
+//        messagesTableView.pin(to: view)
+//        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
+        tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
+        messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
+        messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
+        messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
         
-        // Blocked banner
-        addOrRemoveBlockedBanner()
+        messagesTableView.layer.cornerRadius = 20
+        messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+        view.addSubview(callView)
+        callView.pin(.top, to: .top, of: view, withInset: 14)
+        callView.pin(.left, to: .left, of: view, withInset: 0)
+        callView.pin(.right, to: .right, of: view, withInset: 0)
+        callView.isHidden = true
         
         // Message requests view & scroll to bottom
         view.addSubview(scrollButton)
         view.addSubview(messageRequestView)
         
         // Add your HiddenView to the main view
-        HiddenView.isHidden = true
-        view.addSubview(HiddenView)
+        hiddenView.isHidden = true
+        view.addSubview(hiddenView)
         // Set up constraints for HiddenView
         NSLayoutConstraint.activate([
-            HiddenView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            HiddenView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            HiddenView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            HiddenView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            hiddenView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            hiddenView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            hiddenView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            hiddenView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
         
         initiatingTransactionPopView.isHidden = true
@@ -666,7 +871,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         
 //        isPaymentDetailsView.isHidden = true
-        HiddenView.addSubview(isPaymentDetailsView)
+        hiddenView.addSubview(isPaymentDetailsView)
 //        view.addSubview(isPaymentDetailsView)
         // Add constraints to center the isPaymentFeeValueView and set its size
         NSLayoutConstraint.activate([
@@ -705,11 +910,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         NSLayoutConstraint.activate([
             cancelButton.widthAnchor.constraint(equalToConstant: 120),
             cancelButton.heightAnchor.constraint(equalToConstant: 35),
+            cancelButton.trailingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: -15),
+            cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
+
             okButton.widthAnchor.constraint(equalToConstant: 120),
             okButton.heightAnchor.constraint(equalToConstant: 35),
-            cancelButton.trailingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: -15),
             okButton.leadingAnchor.constraint(equalTo: nestedView3.centerXAnchor, constant: +15),
-            cancelButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor),
             okButton.centerYAnchor.constraint(equalTo: nestedView3.centerYAnchor)
         ])
         
@@ -783,6 +989,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         
         customizeSlideToOpen.isHidden = true
+        CustomSlideView.isFromExpandAttachment = false
         view.addSubview(customizeSlideToOpen)
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
@@ -790,31 +997,36 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
                 
+        messageRequestView.addSubview(messageRequestTitleLabel)
         messageRequestView.addSubview(messageRequestDescriptionLabel)
         messageRequestView.addSubview(messageRequestAcceptButton)
         messageRequestView.addSubview(messageRequestDeleteButton)
         scrollButton.pin(.right, to: .right, of: view, withInset: -20)
-        messageRequestView.pin(.left, to: .left, of: view)
-        messageRequestView.pin(.right, to: .right, of: view)
-        self.messageRequestsViewBotomConstraint = messageRequestView.pin(.bottom, to: .bottom, of: view, withInset: -16)
+        messageRequestView.pin(.left, to: .left, of: view, withInset: 14)
+        messageRequestView.pin(.right, to: .right, of: view, withInset: -14)
+        self.messageRequestsViewBotomConstraint = messageRequestView.pin(.bottom, to: .bottom, of: view, withInset: -10)
         self.scrollButtonBottomConstraint = scrollButton.pin(.bottom, to: .bottom, of: view, withInset: -16)
         self.scrollButtonBottomConstraint?.isActive = false // Note: Need to disable this to avoid a conflict with the other bottom constraint
         self.scrollButtonMessageRequestsBottomConstraint = scrollButton.pin(.bottom, to: .top, of: messageRequestView, withInset: -16)
         self.scrollButtonMessageRequestsBottomConstraint?.isActive = thread.isMessageRequest()
         self.scrollButtonBottomConstraint?.isActive = !thread.isMessageRequest()
-        messageRequestDescriptionLabel.pin(.top, to: .top, of: messageRequestView, withInset: 10)
-        messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 40)
-        messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -40)
+        
+        messageRequestTitleLabel.pin(.top, to: .top, of: messageRequestView, withInset: 20)
+        messageRequestTitleLabel.pin(.left, to: .left, of: messageRequestView, withInset: 25)
+        messageRequestTitleLabel.pin(.right, to: .right, of: messageRequestView, withInset: -25)
+        messageRequestDescriptionLabel.pin(.top, to: .bottom, of: messageRequestTitleLabel, withInset: 9)
+        messageRequestDescriptionLabel.pin(.left, to: .left, of: messageRequestView, withInset: 25)
+        messageRequestDescriptionLabel.pin(.right, to: .right, of: messageRequestView, withInset: -25)
         messageRequestDeleteButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 20)
-        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView)
-        messageRequestDeleteButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
+        messageRequestDeleteButton.pin(.left, to: .left, of: messageRequestView, withInset: 17)
+        messageRequestDeleteButton.pin(.bottom, to: .bottom, of: messageRequestView, withInset: -13)
+        messageRequestDeleteButton.set(.height, to: 52)
         messageRequestAcceptButton.pin(.top, to: .bottom, of: messageRequestDescriptionLabel, withInset: 20)
-        messageRequestAcceptButton.pin(.left, to: .right, of: messageRequestDeleteButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 20)
-        messageRequestAcceptButton.pin(.right, to: .right, of: messageRequestView, withInset: -20)
-        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView)
+        messageRequestAcceptButton.pin(.left, to: .right, of: messageRequestDeleteButton, withInset: UIDevice.current.isIPad ? Values.iPadButtonSpacing : 7)
+        messageRequestAcceptButton.pin(.right, to: .right, of: messageRequestView, withInset: -17)
+        messageRequestAcceptButton.pin(.bottom, to: .bottom, of: messageRequestView, withInset: -13)
         messageRequestAcceptButton.set(.width, to: .width, of: messageRequestDeleteButton)
-        messageRequestAcceptButton.set(.height, to: ConversationVC.messageRequestButtonHeight)
+        messageRequestAcceptButton.set(.height, to: 52)
         // Unread count view
         view.addSubview(unreadCountView)
         unreadCountView.addSubview(unreadCountLabel)
@@ -826,6 +1038,25 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         unreadCountView.center(.horizontal, in: scrollButton)
         updateUnreadCountView()
         
+        
+        view.addSubview(deleteAudioView)
+        deleteAudioView.addSubViews(deleteAudioImageView, deleteAudioLabel)
+        deleteAudioView.addSubview(deleteAudioButton)
+        deleteAudioView.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        deleteAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            deleteAudioImageView.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
+            deleteAudioImageView.leadingAnchor.constraint(equalTo: deleteAudioView.leadingAnchor, constant: 14),
+            deleteAudioLabel.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
+            deleteAudioLabel.leadingAnchor.constraint(equalTo: deleteAudioImageView.trailingAnchor, constant: 5),
+            deleteAudioLabel.trailingAnchor.constraint(equalTo: deleteAudioView.trailingAnchor, constant: -15)
+        ])
+        deleteAudioButton.pin(to: deleteAudioView)
+        deleteAudioView.isHidden = true
+        
+        
+        
         // Notifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -835,6 +1066,17 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
         notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleMessageSentStatusChanged), name: .messageSentStatusDidChange, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
+        
+        notificationCenter.addObserver(self, selector: #selector(inChatPaymentOkButtonTapped), name: Notification.Name("confirmsendingButtonTapped"), object: nil)
+        
+        notificationCenter.addObserver(self, selector: #selector(cancelVoiceMessageRecordingWhenDeviceLock), name: Notification.Name("cancelVoiceMessageRecordingWhenDeviceLock"), object: nil)
+                
+        notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(unblock), name: .unblockContactNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .clearChatHistoryNotification, object: nil)
+                
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
         // Draft
@@ -853,7 +1095,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if contact?.beldexAddress != nil {
                 let belexAddress = contact?.beldexAddress
                 finalWalletAddress = belexAddress!
-                print("--belexAddress in conversation VCbelexAddress---> \(belexAddress!)")
             }
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
@@ -870,15 +1111,94 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             OpenGroupAPIV2.getMemberCount(for: v2OpenGroup.room, on: v2OpenGroup.server).retainUntilComplete()
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: Notification.Name(rawValue: "hideOrShowInputView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .hideOrShowInputViewNotification, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
+        tap.cancelsTouchesInView = false
+        callView.addGestureRecognizer(tap)
     }
     
-    @objc func hideOrShowInputViewAction(_ notification: Notification) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+            
+        if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
+        }
+        self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
+        hideInputViewForBlockedContact()
+        
+        if AppEnvironment.shared.callManager.currentCall == nil {
+            callView.isHidden = true
+        } else {
+            callView.isHidden = false
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if backAPI == true {
+            let vc = InitiatingTransactionVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+        highlightFocusedMessageIfNeeded()
+        didFinishInitialLayout = true
+        markAllAsRead()
+        recoverInputView()
+        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
+        
+        if backAPI == true {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
+            }
+            if hiddenView.isHidden == false {
+                navigationController?.navigationBar.isHidden = true
+                snInputView.isUserInteractionEnabled = false
+            } else {
+                navigationController?.navigationBar.isHidden = false
+                snInputView.isUserInteractionEnabled = true
+            }
+        }
+        newSlidePositionY = UIScreen.main.bounds.height/1.4
+        customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.backAPI = false
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
+        }
+        hideAttachmentExpandedButtons()
+        hideOpenURLView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        let text = snInputView.text
+        Storage.write { transaction in
+            self.thread.setDraft(text, transaction: transaction)
+        }
+        mediaCache.removeAllObjects()
+        self.resignFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
         if !didFinishInitialLayout {
             // Scroll to the last unread message if possible; otherwise scroll to the bottom.
             // When the unread message count is more than the number of view items of a page,
@@ -903,61 +1223,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        highlightFocusedMessageIfNeeded()
-        didFinishInitialLayout = true
-        markAllAsRead()
-        recoverInputView()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
-        if backAPI == true{
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                self.customizeSlideToOpen.isHidden = true
-            }
-            if WalletSharedData.sharedInstance.wallet != nil {
-                connect(wallet: WalletSharedData.sharedInstance.wallet!)
-            }
-            if HiddenView.isHidden == false{
-                navigationController?.navigationBar.isHidden = true
-                snInputView.isUserInteractionEnabled = false
-            }else {
-                navigationController?.navigationBar.isHidden = false
-                snInputView.isUserInteractionEnabled = true
-            }
-        }
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        let text = snInputView.text
-        Storage.write { transaction in
-            self.thread.setDraft(text, transaction: transaction)
-        }
-        self.backAPI = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.customizeSlideToOpen.isHidden = true
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        snInputView.isHidden = false
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.customizeSlideToOpen.isHidden = true
-        }
-        self.saveReceipeinetAddressOnAndOff()
-        if backAPI == true{
-            initiatingTransactionPopView.isHidden = false
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        mediaCache.removeAllObjects()
-        self.resignFirstResponder()
-    }
-    
     override func appDidBecomeActive(_ notification: Notification) {
         recoverInputView()
     }
@@ -966,8 +1231,70 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         NotificationCenter.default.removeObserver(self)
     }
     
-    private func synchronizedUI() {
-        
+    @objc func callViewTapped(_ sender: UITapGestureRecognizer? = nil) {
+        showCallScreen()
+    }    
+    
+    @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
+        if let call = AppEnvironment.shared.callManager.currentCall {
+            AppEnvironment.shared.callManager.endCall(call) { error in
+                if let _ = error {
+                    call.endBChatCall()
+                    AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
+                }
+            }
+        }
+    }
+    
+    @objc func connectingCallHideViewTapped(notification: NSNotification) {
+        hideCallView()
+    }
+    
+    @objc func connectingCallTapToReturnToTheCall(notification: NSNotification) {
+        showCallView()
+    }
+    
+    func showCallView() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                
+                self.tableViewTopConstraint.isActive = false
+                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14 + 43)
+                self.callView.isHidden = false
+            }, completion: nil)
+        }
+    }
+    
+    func hideCallView() {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 1.0,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.9,
+                           initialSpringVelocity: 1,
+                           options: [],
+                           animations: {
+                
+                self.tableViewTopConstraint.isActive = false
+                self.tableViewTopConstraint = self.messagesTableView.pin(.top, to: .top, of: self.view, withInset: 14)
+                self.callView.isHidden = true
+                
+            }, completion: nil)
+        }
+    }
+    
+    @objc func hideOrShowInputViewAction(_ notification: Notification) {
+        snInputView.isHidden = false
+    }
+    
+    @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
+        if WalletSharedData.sharedInstance.wallet != nil {
+            connect(wallet: WalletSharedData.sharedInstance.wallet!)
+        }
     }
     
     @objc private func cancelButtonTapped() {
@@ -975,7 +1302,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationController?.navigationBar.isHidden = false
         snInputView.isUserInteractionEnabled = true
         print("Cancel button tapped!")
-        HiddenView.isHidden = true
+        hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
         initiatingTransactionPopView.isHidden = true
     }
@@ -983,9 +1310,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc private func inChatPaymentOkButtonTapped() {
         // Handle ok button tap
         print("OK button tapped!")
-        HiddenView.isHidden = true
+        self.dismiss(animated: true)
+        hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
-        var txid = self.wallet!.txid()
+        var txid = WalletSharedData.sharedInstance.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
@@ -994,14 +1322,17 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     hashArray = UserDefaults.standard.domainSchemas
                     hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                     UserDefaults.standard.domainSchemas = hashArray
-                }else {
+                } else {
                     hashArray.append(.init(localhash: txid, localaddress: finalWalletAddress))
                     UserDefaults.standard.domainSchemas = hashArray
                 }
             }
             
             initiatingTransactionPopView.isHidden = true
-            isSuccessPopView.isHidden = false
+            let vc = WalletTransactionSuccessVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
             
             //Message and BDX display
             let thread = self.thread
@@ -1054,9 +1385,51 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationController?.navigationBar.isHidden = false
     }
     
+    @objc private func cancelVoiceMessageRecordingWhenDeviceLock() {
+        cancelVoiceMessageRecording()
+    }
+    
+    func hideInputViewForBlockedContact() {
+        guard let thread = thread as? TSContactThread else { return }
+        if let clearChatButtonStackView = view.viewWithTag(111) {
+            clearChatButtonStackView.removeFromSuperview()
+        }
+        if thread.isBlocked() {
+            snInputView.isHidden = true
+            view.addSubview(blockedBannerView)
+            blockedBannerView.addSubview(backgroundViewForClearChatAndUnblockButtonStackView)
+            blockedBannerView.addSubview(clearChatAndUnblockButtonStackView)
+            clearChatAndUnblockButtonStackView.addArrangedSubview(clearChatButton)
+            clearChatAndUnblockButtonStackView.addArrangedSubview(unblockButton)
+            blockedBannerView.addSubview(blockedBannerLabel)
+            blockedBannerView.tag = 111
+            clearChatAndUnblockButtonStackView.tag = 111
+            NSLayoutConstraint.activate([
+                blockedBannerView.heightAnchor.constraint(equalToConstant: 126),
+                blockedBannerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+                blockedBannerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+                blockedBannerView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.heightAnchor.constraint(equalToConstant: 65),
+                backgroundViewForClearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: blockedBannerView.leadingAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: blockedBannerView.trailingAnchor, constant: 0),
+                backgroundViewForClearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: blockedBannerView.bottomAnchor, constant: 0),
+                clearChatButton.heightAnchor.constraint(equalToConstant: 47),
+                unblockButton.heightAnchor.constraint(equalToConstant: 47),
+                clearChatAndUnblockButtonStackView.leadingAnchor.constraint(equalTo: blockedBannerView.leadingAnchor, constant: 14),
+                clearChatAndUnblockButtonStackView.trailingAnchor.constraint(equalTo: blockedBannerView.trailingAnchor, constant: -14),
+                clearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: blockedBannerView.bottomAnchor, constant: -18),
+                blockedBannerLabel.heightAnchor.constraint(equalToConstant: 26),
+                blockedBannerLabel.topAnchor.constraint(equalTo: blockedBannerView.topAnchor),
+                blockedBannerLabel.centerXAnchor.constraint(equalTo: blockedBannerView.centerXAnchor)
+            ])
+            let userName = Storage.shared.getContact(with: thread.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            blockedBannerLabel.text = "You Blocked \(userName)! Click here to Unblock."
+        }
+    }
+    
     @objc func isSuccessPopTappedButton() {
         // Handle button tap action
-        HiddenView.isHidden = true
+        hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
     }
     
@@ -1116,20 +1489,22 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             snInputView.text = ""
-            let vc = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyWalletPasscodeVC") as! MyWalletPasscodeVC
-            vc.isSendConversionWalletVC = true
+            let vc = NewPasswordVC()
+            vc.isGoingConversionVC = true
+            vc.isVerifyPassword = true
             vc.wallet = WalletSharedData.sharedInstance.wallet
             vc.finalWalletAddress = self.finalWalletAddress
             vc.finalWalletAmount = self.finalWalletAmount
             self.navigationController?.pushViewController(vc, animated: true)
-        }else {
+        } else {
             self.customizeSlideToOpen.resetStateWithAnimation(false)
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+                let vc = BChatSettingsNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
             }))
             alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 
@@ -1145,8 +1520,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
                 let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
                 if blockChainHeight == daemonBlockChainHeight {
-                    customizeSlideToOpen.isHidden = true
-                    
+                    CustomSlideView.isFromExpandAttachment = false
                     var balance = WalletSharedData.sharedInstance.wallet!.balance
                     var unlockBalance = WalletSharedData.sharedInstance.wallet!.unlockedBalance
                     
@@ -1196,7 +1570,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                        total > 0 {
                         let percentage = CGFloat(current * 100) / CGFloat(total)
                         let formattedPercentage = String(format: "%.2f", percentage)
-                        self.showToastMsg(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
+                        self.showToast(message: "Wallet Synchronizing \(formattedPercentage)%", seconds: 1.5)
                     } else {
                         // Handle the case where total is 0 or nil
                         // You can choose to show a different message or take appropriate action
@@ -1206,14 +1580,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 print("Height-->",blockChainHeight,daemonBlockChainHeight)
             } else {
                 if !isSyncingStatus {
-                    self.showToastMsg(message: "Failed to Connect", seconds: 1.5)
+                    self.showToast(message: "Failed to Connect", seconds: 1.5)
                 }
             }
         } else {
             let alertView = UIAlertController(title: "", message: "Hold to Enable Pay as you chat", preferredStyle: UIAlertController.Style.alert)
             alertView.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action: UIAlertAction!) in
-                let privacySettingsVC = PrivacySettingsTableViewController()
-                self.navigationController!.pushViewController(privacySettingsVC, animated: true)
+                let vc = BChatSettingsNewVC()
+                self.navigationController!.pushViewController(vc, animated: true)
             }))
             alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 
@@ -1226,6 +1600,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func connect(wallet: BDXWallet) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
         }
         wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
             guard let `self` = self else { return }
@@ -1236,7 +1611,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         let height = lastElementHeight!.components(separatedBy: ":")
                         SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
                         wallet.restoreHeight = UInt64("\(height[1])")!
-                    }else {
+                    } else {
                         wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
                     }
                     wallet.start()
@@ -1253,9 +1628,22 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let feeValue = BChatWalletWrapper.displayAmount(fee)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
-            isPaymentDetailsView.isHidden = false
-            HiddenView.isHidden = false
+            
+            // Here dismiss with Initiating Transaction PopUp
+            self.dismiss(animated: true)
+            // Here display Confirm Sending PopUp
+            DispatchQueue.main.async {
+                let vc = ConfirmSendingVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                vc.finalWalletAddress = self.finalWalletAddress
+                vc.finalWalletAmount = self.finalWalletAmount
+                vc.feeValue = feeValue
+                self.present(vc, animated: true, completion: nil)
+            }
+            
             inChatPaymentAmountlabel.text = "Amount : \(finalWalletAmount)"
             inChatPaymentAddresslabel.text = "\(finalWalletAddress)"
             let attributedString = NSMutableAttributedString(string: "Fee : \(feeValue)")
@@ -1263,9 +1651,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             attributedString.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: Values.verySmallFontSize), range: boldRange)
             inChatPaymentFeelabel.attributedText = attributedString
             initiatingTransactionPopView.isHidden = true
-        }else {
+        } else {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
+                CustomSlideView.isFromExpandAttachment = false
             }
             initiatingTransactionPopView.isHidden = true
             let errMsg = wallet.commitPendingTransactionError()
@@ -1278,25 +1667,239 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
+    /// Clear Chat function
+    @objc func clearChat() {
+        delete(thread)
+    }
     
-    // MARK: Table View Data Source
+    
+    @objc func clearChatButtonTapped() {
+        let vc = ClearChatPopUp()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func unblockButtonTapped() {
+        let vc = BlockContactPopUpVC()
+        vc.isBlocked = true
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
+    }
+    
+    /// Delete Chat
+    private func delete(_ thread: TSThread) {
+        guard let thread = thread as? TSContactThread else { return }
+        Storage.write { transaction in
+            Storage.shared.cancelPendingMessageSendJobs(for: thread.uniqueId!, using: transaction)
+            thread.removeAllThreadInteractions(with: transaction)
+            thread.remove(with: transaction)
+        }
+    }
+    
+    
+    // Show open url view
+    func showOpenURLView() {
+        snInputView.resignFirstResponder()
+        snInputView.isHidden = true
+        removeOpenURLViewIfAvailable()
+        view.addSubview(openURLView)
+        openURLView.addSubViews(openURLViewTitleLabel, openURLViewSubTitleLabel, openURLViewCloseButton, openURLViewStackView)
+        openURLViewStackView.addArrangedSubview(openURLViewCopyButton)
+        openURLViewStackView.addArrangedSubview(openURLViewOpenButton)
+        
+        let string = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), urlToOpen!.absoluteString)
+        let attributedString = NSMutableAttributedString(string: string)
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: urlToOpen!.absoluteString))
+        openURLViewSubTitleLabel.attributedText = attributedString
+        
+        NSLayoutConstraint.activate([
+            openURLView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            openURLView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            openURLView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+            openURLView.heightAnchor.constraint(equalToConstant: 219),
+            
+            openURLViewCloseButton.heightAnchor.constraint(equalToConstant: 22),
+            openURLViewCloseButton.widthAnchor.constraint(equalToConstant: 22),
+            openURLViewCloseButton.topAnchor.constraint(equalTo: openURLView.topAnchor, constant: 15),
+            openURLViewCloseButton.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -15),
+            
+            openURLViewTitleLabel.topAnchor.constraint(equalTo: openURLView.topAnchor, constant: 19),
+            openURLViewTitleLabel.centerXAnchor.constraint(equalTo: openURLView.centerXAnchor),
+            
+            openURLViewSubTitleLabel.topAnchor.constraint(equalTo: openURLViewTitleLabel.bottomAnchor, constant: 10),
+            openURLViewSubTitleLabel.leadingAnchor.constraint(equalTo: openURLView.leadingAnchor, constant: 30),
+            openURLViewSubTitleLabel.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -30),
+            
+            openURLViewStackView.heightAnchor.constraint(equalToConstant: 52),
+            openURLViewOpenButton.heightAnchor.constraint(equalToConstant: 52),
+            openURLViewCopyButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            openURLViewStackView.topAnchor.constraint(equalTo: openURLViewSubTitleLabel.bottomAnchor, constant: 21),
+            openURLViewStackView.leadingAnchor.constraint(equalTo: openURLView.leadingAnchor, constant: 16),
+            openURLViewStackView.trailingAnchor.constraint(equalTo: openURLView.trailingAnchor, constant: -16),
+            openURLViewStackView.bottomAnchor.constraint(equalTo: openURLView.bottomAnchor, constant: -15),
+        ])
+    }
+    
+    func hideOpenURLView() {
+        snInputView.isHidden = false
+        removeOpenURLViewIfAvailable()
+    }
+    
+    func removeOpenURLViewIfAvailable() {
+        if let openURLView = self.view.viewWithTag(5555) {
+            openURLView.removeFromSuperview()
+        }
+    }
+    
+    @objc func openURLViewCloseButtonTapped() {
+        hideOpenURLView()
+    }
+    
+    @objc func openURLViewOpenButtonTapped() {
+        hideOpenURLView()
+        UIApplication.shared.open(urlToOpen!, options: [:], completionHandler: nil)
+    }
+    
+    @objc func openURLViewCopyButtonTapped() {
+        hideOpenURLView()
+        UIPasteboard.general.string = urlToOpen!.absoluteString
+    }
+    
+    
+    // MARK: - Table View Data Source
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let viewItem = viewItems[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.getCellType(for: viewItem).identifier) as! MessageCell
-        cell.delegate = self
-        cell.thread = thread
-        cell.viewItem = viewItem
-        return cell
+        if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
+            if message.callState == .outgoing {
+                let cell = tableView.dequeueReusableCell(withIdentifier: OutgoingCallTableViewCell.identifier) as! OutgoingCallTableViewCell
+                cell.delegate = self
+                cell.thread = thread
+                cell.viewItem = viewItem
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: CallTableViewCell.identifier) as! CallTableViewCell
+                cell.delegate = self
+                cell.thread = thread
+                cell.viewItem = viewItem
+                return cell
+            } 
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MessageCell.getCellType(for: viewItem).identifier) as! MessageCell
+            cell.delegate = self
+            cell.thread = thread
+            cell.viewItem = viewItem
+            return cell
+        }
+    }
+    
+    // MARK: - Table View Delegate
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
     }
     
     // MARK: Updating
     
     func updateNavBarButtons() {
         navigationItem.hidesBackButton = isShowingSearchUI
+        // get profile image
+        self.navigationItem.leftItemsSupplementBackButton = true
+        if let contactThread: TSContactThread = (thread as? TSContactThread) {
+            let publicKey = contactThread.contactBChatID()
+            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+            button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+            button.frame = CGRectMake(0, 0, 42, 42)
+            button.layer.cornerRadius = 21
+            button.layer.masksToBounds = true            
+            button.layer.borderColor = Colors.bothGreenColor.cgColor
+            button.transform = CGAffineTransformMakeTranslation(-12, 0)
+
+            lazy var verifiedImageView: UIImageView = {
+                let result = UIImageView()
+                result.set(.width, to: 18)
+                result.set(.height, to: 18)
+                result.contentMode = .center
+                result.image = UIImage(named: "ic_verified_image")
+                return result
+            }()
+            
+            lazy var outerView: UIView = {
+                let View = UIView()
+                View.translatesAutoresizingMaskIntoConstraints = false
+                View.backgroundColor = .clear
+                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                return View
+            }()
+            outerView.addSubViews(button, verifiedImageView)
+            // For BNS Verified User
+            verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
+            verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
+            verifiedImageView.transform = CGAffineTransformMakeTranslation(-12, 0)
+            
+            let contact: Contact? = Storage.shared.getContact(with: publicKey)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                button.layer.borderWidth = isBnsUser ? 3 : 0
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            } else {
+                verifiedImageView.isHidden = true
+            }
+
+            let barButton = UIBarButtonItem(customView: outerView)
+            self.navigationItem.leftBarButtonItem = barButton
+        } else {
+            let iconImageView = ProfilePictureView()
+            iconImageView.update(for: self.thread)
+            let profilePictureViewSize = CGFloat(42)
+            iconImageView.set(.width, to: profilePictureViewSize)
+            iconImageView.set(.height, to: profilePictureViewSize)
+            iconImageView.size = profilePictureViewSize
+            iconImageView.layer.masksToBounds = true
+            iconImageView.layer.cornerRadius = 21
+            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
+            button.frame = CGRectMake(0, 0, 42, 42)
+            button.layer.cornerRadius = 21
+            button.layer.masksToBounds = true
+            button.transform = CGAffineTransformMakeTranslation(-12, 0)
+            if let thread = thread as? TSGroupThread {
+                if thread.groupModel.groupType == .closedGroup {
+                    button.addSubview(iconImageView)
+                } else {
+                    button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+                }
+            }
+            let barButton = UIBarButtonItem(customView: button)
+            self.navigationItem.leftBarButtonItem = barButton
+        }
         
         if isShowingSearchUI {
             navigationItem.leftBarButtonItem = nil
@@ -1307,15 +1910,22 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
-                    let settingsButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(openSettings))
-                    settingsButton.accessibilityLabel = "Settings button"
-                    settingsButton.isAccessibilityElement = true
-                    rightBarButtonItems.append(settingsButton)
+                    let setting = UIButton(type: .custom)
+                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
+                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+                      let settingBarItem = UIBarButtonItem(customView: setting)
+                    rightBarButtonItems.append(settingBarItem)
+                    
                     let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isMessageRequest()
                     if shouldShowCallButton {
-                        let callButton = UIBarButtonItem(image: UIImage(named: "Phone")!, style: .plain, target: self, action: #selector(startCall))
-                        rightBarButtonItems.append(callButton)
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+                        let callBtn = UIButton(type: .custom)
+                        callBtn.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        callBtn.setImage(UIImage(named:"ic_call_new"), for: .normal)
+                        callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
+                        let callBarItem = UIBarButtonItem(customView: callBtn)
+                        rightBarButtonItems.append(callBarItem)
+                        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
                     }
                 }
                 else {
@@ -1326,7 +1936,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 }
             }
             else {
-                let settingsButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .plain, target: self, action: #selector(openSettings))
+                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
                 settingsButton.accessibilityLabel = "Settings button"
                 settingsButton.isAccessibilityElement = true
                 rightBarButtonItems.append(settingsButton)
@@ -1352,7 +1962,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        newSlidePositionY = UIScreen.main.bounds.height / 2.8
+        newSlidePositionY = UIScreen.main.bounds.height / 2.9
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
         
         // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
@@ -1369,11 +1979,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
         if keyboardTop <= 100 {
+            messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
             newSlidePositionY = UIScreen.main.bounds.height / 1.4
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
+            self.isKeyboardPresented = false
         } else {
-            newSlidePositionY = UIScreen.main.bounds.height / 2.8
+            newSlidePositionY = UIScreen.main.bounds.height / 2.9
             customizeSlideToOpen.frame.origin.y = newSlidePositionY
+            self.isKeyboardPresented = true
         }
         let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
         let oldContentInset: UIEdgeInsets = messagesTableView.contentInset
@@ -1428,6 +2041,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         newSlidePositionY = UIScreen.main.bounds.height / 1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
+        self.isKeyboardPresented = false
         
         UIView.animate(
             withDuration: duration,
@@ -1468,19 +2082,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let batchUpdates: () -> Void = {
             for update in conversationUpdate.updateItems! {
                 switch update.updateItemType {
-                case .delete:
-                    self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
-                case .insert:
-                    // Perform inserts before updates
-                    self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)
-                    if update.viewItem?.interaction is TSOutgoingMessage {
-                        shouldScrollToBottom = true
-                    } else {
-                        shouldScrollToBottom = self.isCloseToBottom
-                    }
-                case .update:
-                    self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
-                default: preconditionFailure()
+                    case .delete:
+                        self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                    case .insert:
+                        // Perform inserts before updates
+                        self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)
+                        if update.viewItem?.interaction is TSOutgoingMessage {
+                            shouldScrollToBottom = true
+                        } else {
+                            shouldScrollToBottom = self.isCloseToBottom
+                        }
+                    case .update:
+                        self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                    default: preconditionFailure()
                 }
                 
                 // Update the nav items if the message request was approved
@@ -1542,7 +2156,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         thread.reload() // Needed so that thread.isCurrentUserMemberInGroup() is up to date
         reloadInputViews()
     }
-    
     @objc private func handleMessageSentStatusChanged() {
         DispatchQueue.main.async {
             guard let indexPaths = self.messagesTableView.indexPathsForVisibleRows else { return }
@@ -1563,17 +2176,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: General
     @objc func addOrRemoveBlockedBanner() {
-        func detach() {
-            blockedBanner.removeFromSuperview()
-        }
-        guard let thread = thread as? TSContactThread else { return detach() }
-        if thread.isBlocked() {
-            view.addSubview(blockedBanner)
-            blockedBanner.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.HorizontalEdge.right ], to: view)
-        }
-        else {
-            detach()
-        }
+        hideInputViewForBlockedContact()
     }
     
     func recoverInputView() {
@@ -1594,36 +2197,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         SSKEnvironment.shared.disappearingMessagesJob.cleanupMessagesWhichFailedToStartExpiringFromNow()
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
     func getMediaCache() -> NSCache<NSString, AnyObject> {
         return mediaCache
-    }
-    
-    func scrollToBottom(isAnimated: Bool) {
-        guard !isUserScrolling && !viewItems.isEmpty else { return }
-        messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isUserScrolling = true
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        isUserScrolling = false
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollButton.alpha = getScrollButtonOpacity()
-        unreadCountView.alpha = scrollButton.alpha
-        autoLoadMoreIfNeeded()
-        updateUnreadCountView()
     }
     
     func updateUnreadCountView() {
@@ -1693,6 +2268,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         searchBarContainer.addSubview(searchBar)
         navigationItem.titleView = searchBarContainer
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            searchBar.becomeFirstResponder()
+        }
+        
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
         if UIDevice.current.isIPad {
@@ -1711,36 +2290,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         // Nav bar buttons
         updateNavBarButtons()
-        // Hack so that the ResultsBar stays on the screen when dismissing the search field
-        // keyboard.
-        //
-        // Details:
-        //
-        // When the search UI is activated, both the SearchField and the ConversationVC
-        // have the resultsBar as their inputAccessoryView.
-        //
-        // So when the SearchField is first responder, the ResultsBar is shown on top of the keyboard.
-        // When the ConversationVC is first responder, the ResultsBar is shown at the bottom of the
-        // screen.
-        //
-        // When the user swipes to dismiss the keyboard, trying to see more of the content while
-        // searching, we want the ResultsBar to stay at the bottom of the screen - that is, we
-        // want the ConversationVC to becomeFirstResponder.
-        //
-        // If the SearchField were a subview of ConversationVC.view, this would all be automatic,
-        // as first responder status is percolated up the responder chain via `nextResponder`, which
-        // basically travereses each superView, until you're at a rootView, at which point the next
-        // responder is the ViewController which controls that View.
-        //
-        // However, because SearchField lives in the Navbar, it's "controlled" by the
-        // NavigationController, not the ConversationVC.
-        //
-        // So here we stub the next responder on the navBar so that when the searchBar resigns
-        // first responder, the ConversationVC will be in it's responder chain - keeeping the
-        // ResultsBar on the bottom of the screen after dismissing the keyboard.
-        
-        //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
-        //        navBar.stubbedNextResponder = self
         
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
@@ -1752,14 +2301,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         isShowingSearchUI = false
         navigationItem.titleView = titleView
         updateNavBarButtons()
-        if navigationController!.navigationBar as? OWSNavigationBar != nil{
+        if navigationController!.navigationBar as? OWSNavigationBar != nil {
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = nil
         }
-        
-        //        let navBar = navigationController!.navigationBar as! OWSNavigationBar
-        //        navBar.stubbedNextResponder = nil
-        
         becomeFirstResponder()
         reloadInputViews()
     }
@@ -1788,9 +2333,31 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
 }
+
+extension ConversationVC {
+    func scrollToBottom(isAnimated: Bool) {
+        guard !isUserScrolling && !viewItems.isEmpty else { return }
+        messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isUserScrolling = true
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        isUserScrolling = false
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollButton.alpha = getScrollButtonOpacity()
+        unreadCountView.alpha = scrollButton.alpha
+        autoLoadMoreIfNeeded()
+        updateUnreadCountView()
+    }
+}
+
 extension ConversationVC: BeldexWalletDelegate {
     func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
-        print("Refreshed---------->blockChainHeight-->\(wallet.blockChainHeight) ---------->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
         isdaemonHeight = Int64(wallet.blockChainHeight)
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
@@ -1819,6 +2386,11 @@ extension ConversationVC: BeldexWalletDelegate {
             }
         }
     }
+    
+    private func synchronizedUI() {
+            
+    }
+    
     func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
         self.currentBlockChainHeight = currentHeight
         self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
@@ -1826,11 +2398,10 @@ extension ConversationVC: BeldexWalletDelegate {
         self.needSynchronized = true
         self.isSyncingUI = true
     }
+    
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
-        DispatchQueue.main.async {
-        }
     }
 }
 
@@ -1920,5 +2491,5 @@ extension ConversationVC {
                 }
             }
     }
-
+    
 }

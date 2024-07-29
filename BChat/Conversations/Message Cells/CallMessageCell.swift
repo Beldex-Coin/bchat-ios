@@ -16,25 +16,25 @@ final class CallMessageCell : MessageCell {
     private lazy var timestampLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.boldOpenSans(ofSize: Values.verySmallFontSize)
-        result.textColor = Colors.text
+        result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
     }()
     
     private lazy var label: UILabel = {
         let result = UILabel()
-        result.numberOfLines = 0
+        result.numberOfLines = 1
         result.lineBreakMode = .byWordWrapping
-        result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.textColor = Colors.text
+        result.font = Fonts.semiOpenSans(ofSize: 11)
+        result.textColor = Colors.messageTimeLabelColor//Colors.text
         result.textAlignment = .center
         return result
     }()
     
     private lazy var container: UIView = {
         let result = UIView()
-        result.set(.height, to: 42)
-        result.layer.cornerRadius = 10
+        result.set(.height, to: 25)
+        result.layer.cornerRadius = 12.5
         result.backgroundColor = Colors.bchatMessageRequestsBubble
         result.addSubview(label)
         label.autoCenterInSuperview()
@@ -44,6 +44,8 @@ final class CallMessageCell : MessageCell {
         result.addSubview(infoImageView)
         infoImageView.autoVCenterInSuperview()
         infoImageView.pin(.right, to: .right, of: result, withInset: -CallMessageCell.inset)
+        label.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 8).isActive = true
+        label.trailingAnchor.constraint(equalTo: infoImageView.leadingAnchor, constant: -8).isActive = true
         return result
     }()
     
@@ -58,16 +60,38 @@ final class CallMessageCell : MessageCell {
     // MARK: Settings
     private static let iconSize: CGFloat = 16
     private static let inset = Values.mediumSpacing
-    private static let margin = UIScreen.main.bounds.width * 0.1
+    private static let margin = UIScreen.main.bounds.width * 0.2 //UIScreen.main.bounds.width * 0.1
     
     override class var identifier: String { "CallMessageCell" }
     
     // MARK: Lifecycle
     override func setUpViewHierarchy() {
         super.setUpViewHierarchy()
+        
         iconImageViewWidthConstraint.isActive = true
         iconImageViewHeightConstraint.isActive = true
         addSubview(stackView)
+        
+        // Add left line view
+        let leftLineView = UIView()
+        leftLineView.backgroundColor = Colors.borderColor
+        leftLineView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(leftLineView)
+        leftLineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        leftLineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        leftLineView.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        leftLineView.trailingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
+
+        // Add right line view
+        let rightLineView = UIView()
+        rightLineView.backgroundColor = Colors.borderColor
+        rightLineView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(rightLineView)
+        rightLineView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        rightLineView.heightAnchor.constraint(equalToConstant: 0.5).isActive = true
+        rightLineView.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
+        rightLineView.leadingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
+        
         container.autoPinWidthToSuperview()
         stackView.pin(.left, to: .left, of: self, withInset: CallMessageCell.margin)
         stackView.pin(.top, to: .top, of: self, withInset: CallMessageCell.inset)
@@ -115,5 +139,4 @@ final class CallMessageCell : MessageCell {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
     }
-
 }
