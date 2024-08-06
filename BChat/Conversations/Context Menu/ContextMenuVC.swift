@@ -47,7 +47,7 @@ final class ContextMenuVC : UIViewController {
         result.layer.cornerRadius = 20
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.layer.backgroundColor = Colors.bothGreenColor.cgColor
-        result.addTarget(ContextMenuVC.self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
+        result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
         return result
     }()
     

@@ -99,7 +99,7 @@ class EmojiPickerCollectionView: UICollectionView {
         self.allSendableEmojiByCategory = [:]
          */
         
-        
+        /*
         
 //         Fetch the emoji data from the database
         let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
@@ -127,6 +127,7 @@ class EmojiPickerCollectionView: UICollectionView {
             self.recentEmoji = emojiData.recent
             self.allSendableEmojiByCategory = emojiData.allGrouped
         }
+         */
     }
 
     required init?(coder: NSCoder) {
