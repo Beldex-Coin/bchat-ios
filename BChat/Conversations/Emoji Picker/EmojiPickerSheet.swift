@@ -45,7 +45,7 @@ class EmojiPickerSheet: BaseVC {
     private lazy var searchBar: SearchBar = {
         let result = SearchBar()
         result.tintColor = .lightGray
-        result.backgroundColor = .clear
+        result.backgroundColor = isLightMode ? .white : .black
         result.delegate = self
         
         return result

@@ -28,7 +28,7 @@ final class ContextMenuVC : UIViewController {
     }()
     
     
-    private lazy var emojiView: UIView = {
+    private lazy var emojiBar: UIView = {
         let result = UIView()
         result.layer.shadowColor = UIColor.black.cgColor
         result.layer.shadowOffset = CGSize.zero
@@ -39,7 +39,7 @@ final class ContextMenuVC : UIViewController {
         return result
     }()
     
-    private let addEmojiButton: UIButton = {
+    private let emojiPlusButton: UIButton = {
         let result: UIButton = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
@@ -47,7 +47,7 @@ final class ContextMenuVC : UIViewController {
         result.layer.cornerRadius = 20
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.layer.backgroundColor = Colors.bothGreenColor.cgColor
-        result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
+        result.addTarget(ContextMenuVC.self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -93,7 +93,7 @@ final class ContextMenuVC : UIViewController {
         snapshot.set(.height, to: frame.height)
         
         // emojiView
-        view.addSubview(emojiView)
+        view.addSubview(emojiBar)
         
         
         
@@ -124,28 +124,28 @@ final class ContextMenuVC : UIViewController {
         let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
-            emojiView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+            emojiBar.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
         } else {
             menuView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
-            emojiView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
+            emojiBar.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
         }
         switch viewItem.interaction.interactionType() {
         case .outgoingMessage: menuView.pin(.right, to: .right, of: snapshot)
-            emojiView.pin(.right, to: .right, of: snapshot)
+            emojiBar.pin(.right, to: .right, of: snapshot)
         case .incomingMessage: menuView.pin(.left, to: .left, of: snapshot)
-            emojiView.pin(.left, to: .left, of: snapshot)
+            emojiBar.pin(.left, to: .left, of: snapshot)
         default: break // Should never occur
         }
-        emojiView.set(.width, to: 221)
-        emojiView.set(.height, to: 40)
+        emojiBar.set(.width, to: 221)
+        emojiBar.set(.height, to: 40)
         // Tap gesture
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
         
-        addEmojiButton.set(.width, to: 40)
-        addEmojiButton.set(.height, to: 40)
-        emojiView.addSubview(addEmojiButton)
-        addEmojiButton.pin(.right, to: .right, of: emojiView)
+        emojiPlusButton.set(.width, to: 40)
+        emojiPlusButton.set(.height, to: 40)
+        emojiBar.addSubview(emojiPlusButton)
+        emojiPlusButton.pin(.right, to: .right, of: emojiBar)
         
     }
 

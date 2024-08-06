@@ -57,33 +57,33 @@ public struct EmojiWithSkinTones: Hashable, Equatable, ContentEquatable, Content
 @available(iOS 13, *)
 @available(iOS 13, *)
 extension Emoji {
-//    static func getRecent(_ db: Database, withDefaultEmoji: Bool) throws -> [String] {
-//        let recentReactionEmoji: [String] = (db[.recentReactionEmoji]?
-//            .components(separatedBy: ","))
-//            .defaulting(to: [])
-//
-//        // No need to continue if we don't want the default emoji to pad out the list
-//        guard withDefaultEmoji else { return recentReactionEmoji }
-//
-//        // Add in our default emoji if desired
-//        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"] // stringlint:disable
-//            .filter { !recentReactionEmoji.contains($0) }
-//
-//        return Array(recentReactionEmoji
-//            .appending(contentsOf: defaultEmoji)
-//            .prefix(6))
-//    }
+    static func getRecent(_ db: Database, withDefaultEmoji: Bool) throws -> [String] {
+        let recentReactionEmoji: [String] = (db[.recentReactionEmoji]?
+            .components(separatedBy: ","))
+            .defaulting(to: [])
+
+        // No need to continue if we don't want the default emoji to pad out the list
+        guard withDefaultEmoji else { return recentReactionEmoji }
+
+        // Add in our default emoji if desired
+        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"] // stringlint:disable
+            .filter { !recentReactionEmoji.contains($0) }
+
+        return Array(recentReactionEmoji
+            .appending(contentsOf: defaultEmoji)
+            .prefix(6))
+    }
     
-//    static func addRecent(_ db: Database, emoji: String) {
-//        // Add/move the emoji to the start of the most recent list
-//        db[.recentReactionEmoji] = (db[.recentReactionEmoji]?
-//            .components(separatedBy: ","))
-//            .defaulting(to: [])
-//            .filter { $0 != emoji }
-//            .inserting(emoji, at: 0)
-//            .prefix(6)
-//            .joined(separator: ",")
-//    }
+    static func addRecent(_ db: Database, emoji: String) {
+        // Add/move the emoji to the start of the most recent list
+        db[.recentReactionEmoji] = (db[.recentReactionEmoji]?
+            .components(separatedBy: ","))
+            .defaulting(to: [])
+            .filter { $0 != emoji }
+            .inserting(emoji, at: 0)
+            .prefix(6)
+            .joined(separator: ",")
+    }
 
     static func allSendableEmojiByCategoryWithPreferredSkinTones(_ db: Database) -> [Category: [EmojiWithSkinTones]] {
         return Category.allCases

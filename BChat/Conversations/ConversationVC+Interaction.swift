@@ -1055,7 +1055,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 //                self?.react(cellViewModel, with: emoji, using: dependencies)
             },
             dismissHandler: { [weak self] in
-//                self?.showInputAccessoryView()
+                self?.showInputAccessoryView()
             }
         )
         present(emojiPicker, animated: true, completion: nil)

@@ -65,7 +65,8 @@ class EmojiPickerCollectionView: UICollectionView {
             withReuseIdentifier: EmojiSectionHeader.reuseIdentifier
         )
 
-        backgroundColor = .clear
+        backgroundColor = isLightMode ? .white : .black
+        backgroundColor = isLightMode ? .white : .black
 
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         panGestureRecognizer.require(toFail: longPressGesture)
@@ -74,29 +75,7 @@ class EmojiPickerCollectionView: UICollectionView {
         addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.delegate = self
         
-        // Fetch the emoji data from the database
-//        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
-//            // Some emoji have two different code points but identical appearances. Let's remove them!
-//            // If we normalize to a different emoji than the one currently in our array, we want to drop
-//            // the non-normalized variant if the normalized variant already exists. Otherwise, map to the
-//            // normalized variant.
-//            let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"]
-//            let recentEmoji: [EmojiWithSkinTones] = defaultEmoji//try Emoji.getRecent(db, withDefaultEmoji: false)
-//                .compactMap { EmojiWithSkinTones(rawValue: $0) }
-//                .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
-//                    guard !emoji.isNormalized else {
-//                        result.append(emoji)
-//                        return
-//                    }
-//                    guard !result.contains(emoji.normalized) else { return }
-//
-//                    result.append(emoji.normalized)
-//                }
-//            let allSendableEmojiByCategory: [Emoji.Category: [EmojiWithSkinTones]] = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(db)
-//
-//            return (recentEmoji, allSendableEmojiByCategory)
-//        }
-        
+        /*
         let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"]
         let recentEmoji: [EmojiWithSkinTones] = defaultEmoji//try Emoji.getRecent(db, withDefaultEmoji: false)
             .compactMap { EmojiWithSkinTones(rawValue: $0) }
@@ -118,6 +97,36 @@ class EmojiPickerCollectionView: UICollectionView {
 //        }
         self.recentEmoji = recentEmoji
         self.allSendableEmojiByCategory = [:]
+         */
+        
+        
+        
+//         Fetch the emoji data from the database
+        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
+            // Some emoji have two different code points but identical appearances. Let's remove them!
+            // If we normalize to a different emoji than the one currently in our array, we want to drop
+            // the non-normalized variant if the normalized variant already exists. Otherwise, map to the
+            // normalized variant.
+            let recentEmoji: [EmojiWithSkinTones] = try Emoji.getRecent(db, withDefaultEmoji: false)
+                .compactMap { EmojiWithSkinTones(rawValue: $0) }
+                .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
+                    guard !emoji.isNormalized else {
+                        result.append(emoji)
+                        return
+                    }
+                    guard !result.contains(emoji.normalized) else { return }
+                    
+                    result.append(emoji.normalized)
+                }
+            let allSendableEmojiByCategory: [Emoji.Category: [EmojiWithSkinTones]] = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(db)
+            
+            return (recentEmoji, allSendableEmojiByCategory)
+        }
+        
+        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
+            self.recentEmoji = emojiData.recent
+            self.allSendableEmojiByCategory = emojiData.allGrouped
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -360,7 +369,7 @@ private class EmojiSectionHeader: UICollectionReusableView {
         )
 
         label.font = .systemFont(ofSize: Values.smallFontSize)
-        label.backgroundColor = .darkGray
+        label.backgroundColor = .clear
         addSubview(label)
         label.autoPinEdgesToSuperviewMargins()
         label.setCompressionResistanceHigh()
