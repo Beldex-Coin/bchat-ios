@@ -849,85 +849,85 @@ struct SessionProtos_DataMessage {
     fileprivate var _image: SessionProtos_AttachmentPointer? = nil
   }
 
-  struct Reaction {
-    // SwiftProtobuf.Message conformance is added in an extension below. See the
-    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-    // methods supported on all messages.
-
-    /// @required
-    var id: UInt64 {
-      get {return _id ?? 0}
-      set {_id = newValue}
-    }
-    /// Returns true if `id` has been explicitly set.
-    var hasID: Bool {return self._id != nil}
-    /// Clears the value of `id`. Subsequent reads from it will return its default value.
-    mutating func clearID() {self._id = nil}
-
-    /// @required
-    var author: String {
-      get {return _author ?? String()}
-      set {_author = newValue}
-    }
-    /// Returns true if `author` has been explicitly set.
-    var hasAuthor: Bool {return self._author != nil}
-    /// Clears the value of `author`. Subsequent reads from it will return its default value.
-    mutating func clearAuthor() {self._author = nil}
-
-    var emoji: String {
-      get {return _emoji ?? String()}
-      set {_emoji = newValue}
-    }
-    /// Returns true if `emoji` has been explicitly set.
-    var hasEmoji: Bool {return self._emoji != nil}
-    /// Clears the value of `emoji`. Subsequent reads from it will return its default value.
-    mutating func clearEmoji() {self._emoji = nil}
-
-    /// @required
-    var action: SessionProtos_DataMessage.Reaction.Action {
-      get {return _action ?? .react}
-      set {_action = newValue}
-    }
-    /// Returns true if `action` has been explicitly set.
-    var hasAction: Bool {return self._action != nil}
-    /// Clears the value of `action`. Subsequent reads from it will return its default value.
-    mutating func clearAction() {self._action = nil}
-
-    var unknownFields = SwiftProtobuf.UnknownStorage()
-
-    enum Action: SwiftProtobuf.Enum {
-      typealias RawValue = Int
-      case react // = 0
-      case remove // = 1
-
-      init() {
-        self = .react
-      }
-
-      init?(rawValue: Int) {
-        switch rawValue {
-        case 0: self = .react
-        case 1: self = .remove
-        default: return nil
+    struct Reaction {
+        // SwiftProtobuf.Message conformance is added in an extension below. See the
+        // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+        // methods supported on all messages.
+        
+        /// @required
+        var id: UInt64 {
+            get {return _id ?? 0}
+            set {_id = newValue}
         }
-      }
-
-      var rawValue: Int {
-        switch self {
-        case .react: return 0
-        case .remove: return 1
+        /// Returns true if `id` has been explicitly set.
+        var hasID: Bool {return self._id != nil}
+        /// Clears the value of `id`. Subsequent reads from it will return its default value.
+        mutating func clearID() {self._id = nil}
+        
+        /// @required
+        var author: String {
+            get {return _author ?? String()}
+            set {_author = newValue}
         }
-      }
-
+        /// Returns true if `author` has been explicitly set.
+        var hasAuthor: Bool {return self._author != nil}
+        /// Clears the value of `author`. Subsequent reads from it will return its default value.
+        mutating func clearAuthor() {self._author = nil}
+        
+        var emoji: String {
+            get {return _emoji ?? String()}
+            set {_emoji = newValue}
+        }
+        /// Returns true if `emoji` has been explicitly set.
+        var hasEmoji: Bool {return self._emoji != nil}
+        /// Clears the value of `emoji`. Subsequent reads from it will return its default value.
+        mutating func clearEmoji() {self._emoji = nil}
+        
+        /// @required
+        var action: SessionProtos_DataMessage.Reaction.Action {
+            get {return _action ?? .react}
+            set {_action = newValue}
+        }
+        /// Returns true if `action` has been explicitly set.
+        var hasAction: Bool {return self._action != nil}
+        /// Clears the value of `action`. Subsequent reads from it will return its default value.
+        mutating func clearAction() {self._action = nil}
+        
+        var unknownFields = SwiftProtobuf.UnknownStorage()
+        
+        enum Action: SwiftProtobuf.Enum {
+            typealias RawValue = Int
+            case react // = 0
+            case remove // = 1
+            
+            init() {
+                self = .react
+            }
+            
+            init?(rawValue: Int) {
+                switch rawValue {
+                    case 0: self = .react
+                    case 1: self = .remove
+                    default: return nil
+                }
+            }
+            
+            var rawValue: Int {
+                switch self {
+                case .react: return 0
+                case .remove: return 1
+                }
+            }
+            
+        }
+        
+        init() {}
+        
+        fileprivate var _id: UInt64? = nil
+        fileprivate var _author: String? = nil
+        fileprivate var _emoji: String? = nil
+        fileprivate var _action: SessionProtos_DataMessage.Reaction.Action? = nil
     }
-
-    init() {}
-
-    fileprivate var _id: UInt64? = nil
-    fileprivate var _author: String? = nil
-    fileprivate var _emoji: String? = nil
-    fileprivate var _action: SessionProtos_DataMessage.Reaction.Action? = nil
-  }
 
   struct BeldexProfile {
     // SwiftProtobuf.Message conformance is added in an extension below. See the

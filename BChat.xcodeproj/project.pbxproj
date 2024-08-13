@@ -403,6 +403,10 @@
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
 		8A9D6EF72C5CD0A600B8322F /* VisibleMessage+Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6EF62C5CD0A600B8322F /* VisibleMessage+Reaction.swift */; };
 		8A9D6EFC2C620CDB00B8322F /* Optional+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6EFB2C620CDB00B8322F /* Optional+Utilities.swift */; };
+		8A9D6EFE2C6339BD00B8322F /* ContextMenuVCExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6EFD2C6339BD00B8322F /* ContextMenuVCExtension.swift */; };
+		8A9D6F012C633A2F00B8322F /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6F002C633A2F00B8322F /* EmojiCell.swift */; };
+		8A9D6F032C633A4500B8322F /* EmojiSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6F022C633A4500B8322F /* EmojiSectionHeader.swift */; };
+		8A9D6F052C63403500B8322F /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9D6F042C63403500B8322F /* Dependencies.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
@@ -1574,6 +1578,10 @@
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
 		8A9D6EF62C5CD0A600B8322F /* VisibleMessage+Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+Reaction.swift"; sourceTree = "<group>"; };
 		8A9D6EFB2C620CDB00B8322F /* Optional+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Utilities.swift"; sourceTree = "<group>"; };
+		8A9D6EFD2C6339BD00B8322F /* ContextMenuVCExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuVCExtension.swift; sourceTree = "<group>"; };
+		8A9D6F002C633A2F00B8322F /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
+		8A9D6F022C633A4500B8322F /* EmojiSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSectionHeader.swift; sourceTree = "<group>"; };
+		8A9D6F042C63403500B8322F /* Dependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependencies.swift; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2848,6 +2856,7 @@
 		8104422E2C57877400FCEC15 /* Emoji Picker */ = {
 			isa = PBXGroup;
 			children = (
+				8A9D6EFF2C633A0B00B8322F /* Cells */,
 				811A429D2C60EEDF00393CE9 /* ReactionContainerView.swift */,
 				811A429E2C60EEDF00393CE9 /* ReactionView.swift */,
 				8104422F2C57877400FCEC15 /* EmojiPickerCollectionView.swift */,
@@ -3042,6 +3051,15 @@
 				8A5A0B492C05913300288474 /* HostType.swift */,
 			);
 			path = "Host Helper";
+			sourceTree = "<group>";
+		};
+		8A9D6EFF2C633A0B00B8322F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8A9D6F002C633A2F00B8322F /* EmojiCell.swift */,
+				8A9D6F022C633A4500B8322F /* EmojiSectionHeader.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
@@ -3545,6 +3563,7 @@
 			children = (
 				C328252F25CA55360062D0A7 /* ContextMenuWindow.swift */,
 				C328253F25CA55880062D0A7 /* ContextMenuVC.swift */,
+				8A9D6EFD2C6339BD00B8322F /* ContextMenuVCExtension.swift */,
 				C328254825CA60E60062D0A7 /* ContextMenuVC+Action.swift */,
 				C328255125CA64470062D0A7 /* ContextMenuVC+ActionView.swift */,
 			);
@@ -4143,6 +4162,7 @@
 				C33FDA88255A57FD00E217F9 /* YapDatabaseTransaction+OWS.h */,
 				C33FDB5B255A580E00E217F9 /* YapDatabaseTransaction+OWS.m */,
 				8A9D6EFB2C620CDB00B8322F /* Optional+Utilities.swift */,
+				8A9D6F042C63403500B8322F /* Dependencies.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5531,6 +5551,7 @@
 				B8856D08256F10F1001CE70E /* DeviceSleepManager.swift in Sources */,
 				C3471F4C25553AB000297E91 /* MessageReceiver+Decryption.swift in Sources */,
 				C300A5D32554B05A00555489 /* TypingIndicator.swift in Sources */,
+				8A9D6F052C63403500B8322F /* Dependencies.swift in Sources */,
 				C3A3A156256E1B91004D228D /* ProtoUtils.m in Sources */,
 				C3471ECB2555356A00297E91 /* MessageSender+Encryption.swift in Sources */,
 				7B703747283CA919000DCF35 /* Storage+Calls.swift in Sources */,
@@ -5741,6 +5762,7 @@
 				7B0EFDF62755CC5400FFAAE7 /* CallMissedTipsModal.swift in Sources */,
 				C374EEF425DB31D40073A857 /* VoiceMessageRecordingView.swift in Sources */,
 				7B1581E6271FD2A100848B49 /* VideoPreviewVC.swift in Sources */,
+				8A9D6F012C633A2F00B8322F /* EmojiCell.swift in Sources */,
 				817DC5DF2B4E965700A37CC9 /* NewBlockedContactVC.swift in Sources */,
 				B83F2B88240CB75A000A54AB /* UIImage+Scaling.swift in Sources */,
 				3430FE181F7751D4000EC51B /* GiphyAPI.swift in Sources */,
@@ -5767,6 +5789,7 @@
 				34B0796D1FCF46B100E248C2 /* MainAppContext.m in Sources */,
 				6086250729DA89B200CBF0D2 /* PaymentView.swift in Sources */,
 				8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */,
+				8A9D6F032C633A4500B8322F /* EmojiSectionHeader.swift in Sources */,
 				8114932E2BF483000087B74B /* NewIncomingCallVC.swift in Sources */,
 				34A8B3512190A40E00218A25 /* MediaAlbumView.swift in Sources */,
 				7B7CB18B270591630079FF93 /* ShareLogsModal.swift in Sources */,
@@ -5866,6 +5889,7 @@
 				6016F9862A822646004C3A90 /* Date + Ext.swift in Sources */,
 				81056A2C2C2D6B68007E1494 /* RestoreHeight.swift in Sources */,
 				8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */,
+				8A9D6EFE2C6339BD00B8322F /* ContextMenuVCExtension.swift in Sources */,
 				C331FFF32558FF0300070591 /* PathStatusView.swift in Sources */,
 				7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */,
 				4CC1ECFB211A553000CC13BE /* AppUpdateNag.swift in Sources */,
@@ -6172,7 +6196,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BChatShareExtension/Meta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6254,7 +6278,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = BChatShareExtension/Meta/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6315,7 +6339,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6396,7 +6420,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6455,7 +6479,7 @@
 				INFOPLIST_FILE = BChatNotificationServiceExtension/Meta/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BChatNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6534,7 +6558,7 @@
 				INFOPLIST_FILE = BChatNotificationServiceExtension/Meta/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BChatNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Beldex International Limited OU. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6606,7 +6630,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = SignalUtilitiesKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6697,7 +6721,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = SignalUtilitiesKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6761,7 +6785,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BChatSnodeKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6840,7 +6864,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = BChatSnodeKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6900,7 +6924,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BChatUtilitiesKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6989,7 +7013,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = BChatUtilitiesKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7059,7 +7083,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = BChatMessagingKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7139,7 +7163,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = BChatMessagingKit/Meta/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7362,7 +7386,7 @@
 				);
 				INFOPLIST_FILE = "BChat/Meta/BChat-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -7448,7 +7472,7 @@
 				);
 				INFOPLIST_FILE = "BChat/Meta/BChat-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

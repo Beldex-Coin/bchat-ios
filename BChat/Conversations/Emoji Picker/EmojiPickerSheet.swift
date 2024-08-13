@@ -156,6 +156,7 @@ class EmojiPickerSheet: BaseVC {
             withDuration: duration,
             delay: 0,
             options: options,
+            
             animations: { [weak self] in
                 // Note: We don't need to completely avoid the keyboard here for this to be useful (and
                 // probably don't want to on smaller screens anyway)

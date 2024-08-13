@@ -4,6 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatUtilitiesKit
 import SignalCoreKit
+import GRDB
 
 protocol EmojiPickerCollectionViewDelegate: AnyObject {
     func emojiPicker(_ emojiPicker: EmojiPickerCollectionView?, didSelectEmoji emoji: EmojiWithSkinTones)
@@ -77,7 +78,7 @@ class EmojiPickerCollectionView: UICollectionView {
         
         /*
         let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"]
-        let recentEmoji: [EmojiWithSkinTones] = defaultEmoji//try Emoji.getRecent(db, withDefaultEmoji: false)
+        let recentEmoji: [EmojiWithSkinTones] = defaultEmoji
             .compactMap { EmojiWithSkinTones(rawValue: $0) }
             .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
                 guard !emoji.isNormalized else {
@@ -88,46 +89,41 @@ class EmojiPickerCollectionView: UICollectionView {
 
                 result.append(emoji.normalized)
             }
-//        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = (recentEmoji, [])
-        
-        
-//        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
-//            self.recentEmoji = emojiData.recent
-//            self.allSendableEmojiByCategory = emojiData.allGrouped
-//        }
         self.recentEmoji = recentEmoji
         self.allSendableEmojiByCategory = [:]
          */
         
-        /*
+        
         
 //         Fetch the emoji data from the database
-        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
-            // Some emoji have two different code points but identical appearances. Let's remove them!
-            // If we normalize to a different emoji than the one currently in our array, we want to drop
-            // the non-normalized variant if the normalized variant already exists. Otherwise, map to the
-            // normalized variant.
-            let recentEmoji: [EmojiWithSkinTones] = try Emoji.getRecent(db, withDefaultEmoji: false)
-                .compactMap { EmojiWithSkinTones(rawValue: $0) }
-                .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
-                    guard !emoji.isNormalized else {
-                        result.append(emoji)
-                        return
-                    }
-                    guard !result.contains(emoji.normalized) else { return }
-                    
-                    result.append(emoji.normalized)
-                }
-            let allSendableEmojiByCategory: [Emoji.Category: [EmojiWithSkinTones]] = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(db)
-            
-            return (recentEmoji, allSendableEmojiByCategory)
-        }
+//        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
+//            // Some emoji have two different code points but identical appearances. Let's remove them!
+//            // If we normalize to a different emoji than the one currently in our array, we want to drop
+//            // the non-normalized variant if the normalized variant already exists. Otherwise, map to the
+//            // normalized variant.
+//            let recentEmoji: [EmojiWithSkinTones] = try Emoji.getRecent(db, withDefaultEmoji: false)
+//                .compactMap { EmojiWithSkinTones(rawValue: $0) }
+//                .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
+//                    guard !emoji.isNormalized else {
+//                        result.append(emoji)
+//                        return
+//                    }
+//                    guard !result.contains(emoji.normalized) else { return }
+//                    
+//                    result.append(emoji.normalized)
+//                }
+//            let allSendableEmojiByCategory: [Emoji.Category: [EmojiWithSkinTones]] = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(db)
+//            
+//            return (recentEmoji, allSendableEmojiByCategory)
+//        }
+//         
+//        
+//        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
+//            self.recentEmoji = emojiData.recent
+//            self.allSendableEmojiByCategory = emojiData.allGrouped
+//        }
+         
         
-        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
-            self.recentEmoji = emojiData.recent
-            self.allSendableEmojiByCategory = emojiData.allGrouped
-        }
-         */
     }
 
     required init?(coder: NSCoder) {
@@ -152,7 +148,7 @@ class EmojiPickerCollectionView: UICollectionView {
         }
 
         guard let categoryEmoji = allSendableEmojiByCategory[category] else {
-//            owsFailDebug("Unexpectedly missing emoji for category \(category)")
+            //owsFailDebug("Unexpectedly missing emoji for category \(category)")
             return []
         }
 
@@ -214,16 +210,16 @@ class EmojiPickerCollectionView: UICollectionView {
 
             currentSkinTonePicker?.dismiss()
             currentSkinTonePicker = EmojiSkinTonePicker.present(referenceView: cell, emoji: emoji) { [weak self] emoji in
-//                if let emoji: EmojiWithSkinTones = emoji {
-//                    Storage.shared.writeAsync { db in
-//                        emoji.baseEmoji?.setPreferredSkinTones(
-//                            db,
-//                            preferredSkinTonePermutation: emoji.skinTones
-//                        )
-//                    }
-//
-//                    self?.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
-//                }
+                if let emoji: EmojiWithSkinTones = emoji {
+                    Storage.shared.writeSync { db in
+                        emoji.baseEmoji?.setPreferredSkinTones(
+                            db as! Database,
+                            preferredSkinTonePermutation: emoji.skinTones
+                        )
+                    }
+
+                    self?.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
+                }
 
                 self?.currentSkinTonePicker?.dismiss()
                 self?.currentSkinTonePicker = nil
@@ -321,70 +317,5 @@ extension EmojiPickerCollectionView: UICollectionViewDelegateFlowLayout {
         let measureCell = EmojiSectionHeader()
         measureCell.label.text = nameForSection(section)
         return measureCell.sizeThatFits(CGSize(width: self.width(), height: .greatestFiniteMagnitude))
-    }
-}
-
-private class EmojiCell: UICollectionViewCell {
-    static let reuseIdentifier = "EmojiCell" // stringlint:disable
-
-    let emojiLabel = UILabel()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        backgroundColor = .clear
-
-        emojiLabel.font = .boldSystemFont(ofSize: 32)
-        contentView.addSubview(emojiLabel)
-        emojiLabel.autoPinEdgesToSuperviewEdges()
-
-        // For whatever reason, some emoji glyphs occasionally have different typographic widths on certain devices
-        // e.g. 👩‍🦰: 36x38.19, 👱‍♀️: 40x38. (See: commit message for more info)
-        // To workaround this, we can clip the label instead of truncating. It appears to only clip the additional
-        // typographic space. In either case, it's better than truncating and seeing an ellipsis.
-        emojiLabel.lineBreakMode = .byClipping
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func configure(emoji: EmojiWithSkinTones) {
-        emojiLabel.text = emoji.rawValue
-    }
-}
-
-private class EmojiSectionHeader: UICollectionReusableView {
-    static let reuseIdentifier = "EmojiSectionHeader" // stringlint:disable
-
-    let label = UILabel()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        layoutMargins = UIEdgeInsets(
-            top: 16,
-            leading: EmojiPickerCollectionView.margins,
-            bottom: 6,
-            trailing: EmojiPickerCollectionView.margins
-        )
-
-        label.font = .systemFont(ofSize: Values.smallFontSize)
-        label.backgroundColor = .clear
-        addSubview(label)
-        label.autoPinEdgesToSuperviewMargins()
-        label.setCompressionResistanceHigh()
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var labelSize = label.sizeThatFits(size)
-        labelSize.width += layoutMargins.left + layoutMargins.right
-        labelSize.height += layoutMargins.top + layoutMargins.bottom
-        
-        return labelSize
     }
 }
