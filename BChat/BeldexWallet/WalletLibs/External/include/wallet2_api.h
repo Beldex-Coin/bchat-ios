@@ -438,9 +438,11 @@ struct bnsInfo{
     std::string value_bchat; 
     std::string value_wallet; 
     std::string value_belnet; 
+    std::string value_eth_addr;
     std::string encrypted_bchat_value;
     std::string encrypted_wallet_value;
     std::string encrypted_belnet_value;
+    std::string encrypted_eth_addr_value;
 };
 
 /**
@@ -907,6 +909,7 @@ struct Wallet
      * \param value_bchat           bchat_id
      * \param value_wallet          wallet address
      * \param value_belnet          belnet_id
+     * \param value_eth_addr        ethereum address
      * \param name                  bns name
      * \param subaddr_account       subaddress account from which the input funds are taken
      * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
@@ -919,6 +922,7 @@ struct Wallet
                                                   std::string &value_bchat,
                                                   std::string &value_wallet,
                                                   std::string &value_belnet,
+                                                  std::string &value_eth_addr,
                                                   std::string &name,
                                                   uint32_t priority                  = 0,
                                                   uint32_t subaddr_account           = 0,
@@ -930,6 +934,7 @@ struct Wallet
      * \param value_bchat           bchat_id
      * \param value_wallet          wallet address
      * \param value_belnet          belnet_id
+     * \param value_eth_addr        ethereum address
      * \param name                  bns name
      * \param subaddr_account       subaddress account from which the input funds are taken
      * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
@@ -941,6 +946,7 @@ struct Wallet
                                                       std::string& value_bchat,
                                                       std::string& value_wallet,
                                                       std::string& value_belnet,
+                                                      std::string &value_eth_addr,
                                                       std::string& name,
                                                       uint32_t priority = 0,
                                                       uint32_t subaddr_account = 0,

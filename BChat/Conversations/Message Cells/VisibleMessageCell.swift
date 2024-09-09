@@ -599,6 +599,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 deletedMessageView.pin(to: snContentView)
             default: return
         }
+        
+        //messageTimeBottomLabel.isHidden = true
     }
     
     override func layoutSubviews() {
@@ -607,7 +609,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func updateBubbleViewCorners() {
-        let cornersToRound = getCornersToRound()
+        let cornersToRound = getCornersToRound()    
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath

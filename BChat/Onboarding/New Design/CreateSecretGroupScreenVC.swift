@@ -383,8 +383,10 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
                 
             }
         }
-        // Reload the table view with the filtered or unfiltered data
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            // Reload the table view with the filtered or unfiltered data
+            self.tableView.reloadData()
+        }
         return true
     }
     

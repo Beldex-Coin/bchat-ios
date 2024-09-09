@@ -43,21 +43,21 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
-        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MessageRequestsCell.reuseIdentifier) as! MessageRequestsCell
-            cell.update(with: Int(unreadMessageRequestCount))
-            
-            let logoName = isLightMode ? "arrowmsg1" : "arrowmsg2"
-            let image = UIImage(named: logoName)!
-            let checkmark = UIImageView(frame:CGRect(x:0, y:0, width:(image.size.width), height:(image.size.height)));
-            checkmark.image = image
-            cell.accessoryView = checkmark
-            return cell
-            
-        default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
-            cell.threadViewModel = threadViewModel(at: indexPath.row)
-            return cell
+            case 0:
+                let cell = tableView.dequeueReusableCell(withIdentifier: MessageRequestsCell.reuseIdentifier) as! MessageRequestsCell
+                cell.update(with: Int(unreadMessageRequestCount))
+                
+                let logoName = isLightMode ? "arrowmsg1" : "arrowmsg2"
+                let image = UIImage(named: logoName)!
+                let checkmark = UIImageView(frame:CGRect(x:0, y:0, width:(image.size.width), height:(image.size.height)));
+                checkmark.image = image
+                cell.accessoryView = checkmark
+                return cell
+                
+            default:
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
+                cell.threadViewModel = threadViewModel(at: indexPath.row)
+                return cell
         }
     }
     

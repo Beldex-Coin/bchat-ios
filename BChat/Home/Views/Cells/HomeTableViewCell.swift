@@ -170,12 +170,12 @@ class HomeTableViewCell: UITableViewCell {
         messageCountStackView.addArrangedSubview(notifyMentionImageView)
         messageCountStackView.addArrangedSubview(messageCountLabel)
 
-        let profilePictureViewSize = CGFloat(42)
+        let profilePictureViewSize = CGFloat(60)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
         iconImageView.size = profilePictureViewSize
         iconImageView.layer.masksToBounds = true
-        iconImageView.layer.cornerRadius = 21
+        iconImageView.layer.cornerRadius = 30
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),

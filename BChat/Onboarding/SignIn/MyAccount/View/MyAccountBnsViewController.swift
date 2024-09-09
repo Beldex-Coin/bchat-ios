@@ -524,7 +524,7 @@ class MyAccountBnsViewController: BaseVC {
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
-        self.title = "Account Settings"
+        self.title = "My Account"
         
         shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))
         shareButton.tintColor = .white
