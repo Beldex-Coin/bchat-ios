@@ -501,6 +501,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             CustomSlideView.isFromExpandAttachment = false
         }
         updateMentions(for: newText)
+        applyColorToMentionedUsers(text: newText)
     }
 
     func showLinkPreviewSuggestionModal() {
@@ -547,6 +548,25 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         oldText = newText
     }
+    
+    func applyColorToMentionedUsers(text : String) {
+        let text = text
+        let Attribute = [ NSAttributedString.Key.foregroundColor: Colors.text]
+        let attributedString = NSMutableAttributedString(string: text, attributes: Attribute)
+        let words = text.split(separator: " ")
+        let mentionColor = Colors.accent
+        for word in words {
+            if word.hasPrefix("@") {
+                if let range = text.range(of: String(word)) {
+                    let nsRange = NSRange(range, in: text)
+                    attributedString.addAttribute(.foregroundColor, value: mentionColor, range: nsRange)
+                }
+            }
+        }
+        snInputView.inputTextView.attributedText = attributedString
+        snInputView.inputTextView.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+    }
+    
 
     func resetMentions() {
         oldText = ""
