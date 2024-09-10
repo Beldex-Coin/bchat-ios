@@ -516,9 +516,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     // MARK: Mentions
     func updateMentions(for newText: String) {
         if newText.count < oldText.count {
-            currentMentionStartIndex = nil
-            snInputView.hideMentionsUI()
-            mentions = mentions.filter { $0.isContained(in: newText) }
+            if !newText.hasPrefix("@") {
+                currentMentionStartIndex = nil
+                snInputView.hideMentionsUI()
+                mentions = mentions.filter { $0.isContained(in: newText) }
+            }
         }
         if !newText.isEmpty {
             let lastCharacterIndex = newText.index(before: newText.endIndex)
@@ -543,6 +545,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let query = String(newText[newText.index(after: currentMentionStartIndex)...]) // + 1 to get rid of the @
                     let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                     snInputView.showMentionsUI(for: candidates, in: thread)
+                } else {
+                    if newText.hasPrefix("@") {
+                        let query = newText.replacingOccurrences(of: "@", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
+                        snInputView.showMentionsUI(for: candidates, in: thread)
+                    }
                 }
             }
         }
