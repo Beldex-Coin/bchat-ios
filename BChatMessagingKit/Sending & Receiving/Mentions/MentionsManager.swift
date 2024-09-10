@@ -43,9 +43,12 @@ public final class MentionsManager : NSObject {
         candidates = candidates.filter { $0.publicKey != getUserHexEncodedPublicKey() }
         // Sort alphabetically first
         candidates.sort { $0.displayName < $1.displayName }
-        if query.count >= 2 {
+        if query.count >= 1 {
+            // Don't remove
             // Filter out any non-matching candidates
-            candidates = candidates.filter { $0.displayName.lowercased().contains(query.lowercased()) }
+            //            candidates = candidates.filter { $0.displayName.lowercased().hasPrefix(query.lowercased()) }
+            candidates = filterCandidates(candidates: candidates, query: query)
+            
             // Sort based on where in the candidate the query occurs
             candidates.sort {
                 $0.displayName.lowercased().range(of: query.lowercased())!.lowerBound < $1.displayName.lowercased().range(of: query.lowercased())!.lowerBound
@@ -90,4 +93,19 @@ public final class MentionsManager : NSObject {
             userPublicKeyCache[threadID] = result
         }
     }
+    
+    
+    // Function for filter candidates
+    @objc public static func filterCandidates(candidates: [Mention], query: String) -> [Mention] {
+        let queryLowercased = query.lowercased()
+        
+        return candidates.filter { candidate in
+            
+            let words = candidate.displayName.components(separatedBy: .whitespacesAndNewlines)
+            return words.contains { word in
+                word.lowercased().hasPrefix(queryLowercased)
+            }
+        }
+    }
+    
 }
