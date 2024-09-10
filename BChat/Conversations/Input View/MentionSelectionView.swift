@@ -2,7 +2,7 @@
 final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDelegate {
     var candidates: [Mention] = [] {
         didSet {
-            tableView.isScrollEnabled = (candidates.count > 4)
+            tableView.isScrollEnabled = (candidates.count > 5)
             tableView.reloadData()
         }
     }
@@ -10,7 +10,7 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
     var openGroupChannel: UInt64?
     var openGroupRoom: String?
     weak var delegate: MentionSelectionViewDelegate?
-
+    
     // MARK: Components
     lazy var tableView: UITableView = { // TODO: Make this private
         let result = UITableView()
@@ -22,18 +22,18 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
         result.showsVerticalScrollIndicator = false
         return result
     }()
-
+    
     // MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpViewHierarchy()
     }
-
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpViewHierarchy()
     }
-
+    
     private func setUpViewHierarchy() {
         // Table view
         addSubview(tableView)
@@ -55,12 +55,12 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
         bottomSeparator.pin(.trailing, to: .trailing, of: self)
         bottomSeparator.pin(.bottom, to: .bottom, of: self)
     }
-
+    
     // MARK: Data
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return candidates.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! Cell
         let mentionCandidate = candidates[indexPath.row]
@@ -71,7 +71,7 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
         cell.separator.isHidden = (indexPath.row == (candidates.count - 1))
         return cell
     }
-
+    
     // MARK: Interaction
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let mentionCandidate = candidates[indexPath.row]
@@ -82,18 +82,18 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
 // MARK: - Cell
 
 private extension MentionSelectionView {
-
+    
     final class Cell : UITableViewCell {
         var mentionCandidate = Mention(publicKey: "", displayName: "") { didSet { update() } }
         var openGroupServer: String?
         var openGroupChannel: UInt64?
         var openGroupRoom: String?
-
+        
         // MARK: Components
         private lazy var profilePictureView = ProfilePictureView()
-
+        
         private lazy var moderatorIconImageView = UIImageView(image: #imageLiteral(resourceName: "Crown"))
-
+        
         private lazy var displayNameLabel: UILabel = {
             let result = UILabel()
             result.textColor = Colors.text
@@ -101,25 +101,25 @@ private extension MentionSelectionView {
             result.lineBreakMode = .byTruncatingTail
             return result
         }()
-
+        
         lazy var separator: UIView = {
             let result = UIView()
             result.backgroundColor = Colors.separator
             result.set(.height, to: Values.separatorThickness)
             return result
         }()
-
+        
         // MARK: Initialization
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
             super.init(style: style, reuseIdentifier: reuseIdentifier)
             setUpViewHierarchy()
         }
-
+        
         required init?(coder: NSCoder) {
             super.init(coder: coder)
             setUpViewHierarchy()
         }
-
+        
         private func setUpViewHierarchy() {
             // Cell background color
             backgroundColor = .clear
@@ -156,7 +156,7 @@ private extension MentionSelectionView {
             separator.pin(.trailing, to: .trailing, of: self)
             separator.pin(.bottom, to: .bottom, of: self)
         }
-
+        
         // MARK: Updating
         private func update() {
             displayNameLabel.text = mentionCandidate.displayName
@@ -175,6 +175,6 @@ private extension MentionSelectionView {
 // MARK: - Delegate
 
 protocol MentionSelectionViewDelegate : class {
-
+    
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
 }

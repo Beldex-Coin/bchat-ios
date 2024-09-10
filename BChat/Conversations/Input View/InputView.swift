@@ -2,7 +2,7 @@ import UIKit
 import BChatUIKit
 
 protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, VoiceMessageRecordingViewDelegate {
-
+    
     func showLinkPreviewSuggestionModal()
     func handleSendButtonTapped()
     func handlePaySendButtonTapped()
@@ -99,7 +99,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         return result
     }()
     
-    private lazy var inputTextView: InputTextView = {
+     lazy var inputTextView: InputTextView = {
         // HACK: When restoring a draft the input text view won't have a frame yet, and therefore it won't
         // be able to calculate what size it should be to accommodate the draft text. As a workaround, we
         // just calculate the max width that the input text view is allowed to be and pass it in. See
@@ -404,7 +404,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         
-        if attachmentsButton.isExpanded {
+        if attachmentsButton.isExpanded || self.mentionsViewContainer.alpha == 1 {
             let buttonContainers = [ attachmentsButton.documentButtonContainer,
                                      attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
             let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
@@ -515,7 +515,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
         mentionsView.candidates = candidates
         let mentionCellHeight = Values.smallProfilePictureSize + 2 * Values.smallSpacing
-        mentionsViewHeightConstraint.constant = CGFloat(min(3, candidates.count)) * mentionCellHeight
+        mentionsViewHeightConstraint.constant = CGFloat(min(5, candidates.count)) * mentionCellHeight
         layoutIfNeeded()
         UIView.animate(withDuration: 0.25) {
             self.mentionsViewContainer.alpha = 1
