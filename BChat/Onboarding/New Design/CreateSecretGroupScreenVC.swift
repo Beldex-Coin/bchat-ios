@@ -2,6 +2,7 @@
 
 import UIKit
 import PromiseKit
+import BChatMessagingKit
 
 class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
@@ -155,8 +156,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         self.titleLabel.text = "Create Secret Group"
         
-//        createButton.backgroundColor = Colors.cancelButtonBackgroundColor
-//        createButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         createButton.backgroundColor = Colors.bothGreenColor
         createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         
@@ -241,7 +240,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    func isFilterContacts(){
+    func isFilterContacts() {
         let currentText = searchTextField.text ?? ""
         searchText = currentText
         if searchText.isEmpty {
@@ -276,7 +275,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         }
     }
     
-    func isFilterSearchContact(text:String){
+    func isFilterSearchContact(text:String) {
         let currentText = text
         searchText = currentText
         if searchText.isEmpty {
@@ -321,12 +320,14 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             cell.verifiedImageView.isHidden = true
         }
         cell.selectionButtonCallback = {
-            let publicKey = Array(self.filterDict.keys)[indexPath.row]
-            if !self.selectedContacts.contains(publicKey) { self.selectedContacts.insert(publicKey) } else { self.selectedContacts.remove(publicKey) }
-            guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
-            let isSelected = self.selectedContacts.contains(publicKey)
-            cell.selectionButton.isSelected = isSelected
-            cell.update()
+            if self.filterDict.count > 0 {
+                let publicKey = Array(self.filterDict.keys)[indexPath.row]
+                if !self.selectedContacts.contains(publicKey) { self.selectedContacts.insert(publicKey) } else { self.selectedContacts.remove(publicKey) }
+                guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
+                let isSelected = self.selectedContacts.contains(publicKey)
+                cell.selectionButton.isSelected = isSelected
+                cell.update()
+            }
         }
         return cell
     }
@@ -338,13 +339,15 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let publicKey = Array(filterDict.keys)[indexPath.row]
-        if !selectedContacts.contains(publicKey) { selectedContacts.insert(publicKey) } else { selectedContacts.remove(publicKey) }
-        guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
-        let isSelected = selectedContacts.contains(publicKey)
-        cell.selectionButton.isSelected = isSelected
-        cell.update()
-        tableView.deselectRow(at: indexPath, animated: true)
+        if self.filterDict.count > 0 {
+            let publicKey = Array(filterDict.keys)[indexPath.row]
+            if !selectedContacts.contains(publicKey) { selectedContacts.insert(publicKey) } else { selectedContacts.remove(publicKey) }
+            guard let cell = tableView.cellForRow(at: indexPath) as? CreateSecretGroupTableViewCell else { return }
+            let isSelected = selectedContacts.contains(publicKey)
+            cell.selectionButton.isSelected = isSelected
+            cell.update()
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
@@ -420,24 +423,29 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         }
         let selectedContacts = self.selectedContacts
         let message: String? = (selectedContacts.count > 20) ? "Please wait while the group is created..." : nil
+        var promise: Promise<TSGroupThread>!
         ModalActivityIndicatorViewController.present(fromViewController: navigationController!, message: message) { [weak self] _ in
-            var promise: Promise<TSGroupThread>!
-            Storage.writeSync { transaction in
+            Storage.write(with: { transaction in
                 promise = MessageSender.createClosedGroup(name: name, members: selectedContacts, transaction: transaction)
-            }
-            let _ = promise.done(on: DispatchQueue.main) { thread in
-                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                self?.presentingViewController?.dismiss(animated: true, completion: nil)
-                SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
-            }
-            promise.catch(on: DispatchQueue.main) { _ in
-                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                let title = "Couldn't Create Group"
-                let message = "Please check your internet connection and try again."
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-                self?.presentAlert(alert)
-            }
+            }, completion: {
+                let _ = promise.done(on: DispatchQueue.main) { thread in
+                    MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                    self?.presentingViewController?.dismiss(animated: true, completion: nil)
+                    SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
+                }
+                promise.catch(on: DispatchQueue.main) { error in
+                    self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                    if error.localizedDescription == "HTTP request failed with status code: 0." {
+                        self?.navigationController?.popViewController(animated: true)
+                        return
+                    }
+                    let title = "Couldn't Create Group"
+                    let message = "Please check your internet connection and try again."
+                    let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                    self?.presentAlert(alert)
+                }
+            })
         }
     }
 

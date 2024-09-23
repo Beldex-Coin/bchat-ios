@@ -11,6 +11,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     ConversationTitleViewDelegate {
 
     func handleTitleViewTapped() {
+        
+        if self.thread is TSGroupThread {
+            openSettings()
+        }
+        
         // Don't take the user to settings for message requests
         guard
             let contactThread: TSContactThread = thread as? TSContactThread,
@@ -302,10 +307,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // I have develop word count 4096 perpose logic
         if spaceCount < 0 {
             
-        }else{
+        } else {
             if text.count == 4096 || text.count > 4096 {
                 self.showToast(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
-            }else {
+            } else {
                 let thread = self.thread
                 
                 let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
@@ -326,33 +331,33 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     isNewThread: !oldThreadShouldBeVisible,
                     timestamp: (sentTimestamp - 1)  // Set 1ms earlier as this is used for sorting
                 )
-                .map { [weak self] _ in
-                    self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
-            
-                    Storage.write(with: { transaction in
-                        message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
-                    }, completion: { [weak self] in
-                        tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
+                    .map { [weak self] _ in
+                        self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
                         
-                        Storage.shared.write(
-                            with: { transaction in
-                                tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
-                            },
-                            completion: { [weak self] in
-                                // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
-                                // the height of the new message cell
-                                self?.scrollToBottom(isAnimated: false)
+                        Storage.write(with: { transaction in
+                            message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
+                        }, completion: { [weak self] in
+                            tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
+                            
+                            Storage.shared.write(
+                                with: { transaction in
+                                    tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
+                                },
+                                completion: { [weak self] in
+                                    // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
+                                    // the height of the new message cell
+                                    self?.scrollToBottom(isAnimated: false)
+                                }
+                                
+                            )
+                            
+                            Storage.shared.write { transaction in
+                                MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
                             }
                             
-                        )
-                        
-                        Storage.shared.write { transaction in
-                            MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
-                        }
-                        
-                        self?.handleMessageSent()
-                    })
-                }
+                            self?.handleMessageSent()
+                        })
+                    }
                 
                 // Show an error indicating that approving the thread failed
                 promise.catch(on: DispatchQueue.main) { [weak self] _ in
@@ -862,7 +867,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else {
             viewItem.copyTextAction()
         }
-        self.showToast(message: "Copied to clipboard", seconds: 1.0)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            self.showToast(message: "Copied to clipboard", seconds: 1.0)
+        }
     }
     
     func copyBChatID(_ viewItem: ConversationViewItem) {

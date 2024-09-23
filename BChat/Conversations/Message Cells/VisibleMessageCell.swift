@@ -330,7 +330,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
                 profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-                verifiedImageView.isHidden = isBnsUser ? false : true
+                if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
+                    verifiedImageView.isHidden = isBnsUser ? false : true
+                }
             }
         }
         
@@ -505,7 +507,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
                     // Body text view
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     stackView.addArrangedSubview(bodyTextView)
                     // Constraints

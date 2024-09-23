@@ -143,7 +143,11 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
 
         Logger.debug("presenting notification with identifier: \(notificationIdentifier)")
         if isReplacingNotification { cancelNotification(identifier: notificationIdentifier) }
-        notificationCenter.add(request)
+        notificationCenter.add(request) { error in
+            if let error = error {
+                Logger.error("Failed to add notification: \(error.localizedDescription)")
+            }
+        }
         notifications[notificationIdentifier] = request
     }
 
