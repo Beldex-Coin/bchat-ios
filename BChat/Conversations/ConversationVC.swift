@@ -1839,7 +1839,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true            
             button.layer.borderColor = Colors.bothGreenColor.cgColor
-            button.transform = CGAffineTransformMakeTranslation(-12, 0)
 
             lazy var verifiedImageView: UIImageView = {
                 let result = UIImageView()
@@ -1862,7 +1861,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             // For BNS Verified User
             verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
             verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
-            verifiedImageView.transform = CGAffineTransformMakeTranslation(-12, 0)
             
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
@@ -1889,7 +1887,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
-            button.transform = CGAffineTransformMakeTranslation(-12, 0)
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)
@@ -1910,12 +1907,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
-                    let setting = UIButton(type: .custom)
-                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
-                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
-                      let settingBarItem = UIBarButtonItem(customView: setting)
-                    rightBarButtonItems.append(settingBarItem)
+                    
+                   // Don't Delete this is for three dots menu
+//                    let setting = UIButton(type: .custom)
+//                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+//                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
+//                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+//                      let settingBarItem = UIBarButtonItem(customView: setting)
+//                    rightBarButtonItems.append(settingBarItem)
                     
                     let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isMessageRequest()
                     if shouldShowCallButton {
@@ -1936,10 +1935,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 }
             }
             else {
-                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
-                settingsButton.accessibilityLabel = "Settings button"
-                settingsButton.isAccessibilityElement = true
-                rightBarButtonItems.append(settingsButton)
+                
+                // Don't Delete this is for three dots menu
+//                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
+//                settingsButton.accessibilityLabel = "Settings button"
+//                settingsButton.isAccessibilityElement = true
+//                rightBarButtonItems.append(settingsButton)
             }
             navigationItem.rightBarButtonItems = rightBarButtonItems
         }

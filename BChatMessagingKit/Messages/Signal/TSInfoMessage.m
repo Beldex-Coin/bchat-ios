@@ -146,6 +146,8 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
             return [self getCallMessagePreviewTextWithTransaction:transaction];
         case TSInfoMessageTypeMessageRequestAccepted:
             return NSLocalizedString(@"MESSAGE_REQUESTS_ACCEPTED", @"");
+        case TSInfoMessageTypeGroupCurrentUserRemoved:
+            return NSLocalizedString(@"YOU_WERE_REMOVED", @"");
         default:
             break;
     }

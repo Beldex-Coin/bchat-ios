@@ -769,7 +769,7 @@ extension MessageReceiver {
             thread.setGroupModel(newGroupModel, with: transaction)
             // Notify the user if needed
             guard members != Set(group.groupMemberIds) else { return }
-            let infoMessageType: TSInfoMessageType = wasCurrentUserRemoved ? .groupCurrentUserLeft : .groupUpdated
+            let infoMessageType: TSInfoMessageType = wasCurrentUserRemoved ? .groupCurrentUserRemoved : .groupUpdated
             let updateInfo = group.getInfoStringAboutUpdate(to: newGroupModel)
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: infoMessageType, customMessage: updateInfo)
             infoMessage.save(with: transaction)

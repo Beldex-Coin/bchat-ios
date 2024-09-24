@@ -162,20 +162,19 @@ class HomeTableViewCell: UITableViewCell {
         pinImageView.image = UIImage(named: "ic_pinned")
         backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
-//        messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
-        messageCountAndDateStackView.addArrangedSubview(messageCountStackView)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
+        messageCountAndDateStackView.addArrangedSubview(messageCountStackView)
         
         messageCountStackView.addArrangedSubview(muteImageView)
         messageCountStackView.addArrangedSubview(notifyMentionImageView)
         messageCountStackView.addArrangedSubview(messageCountLabel)
 
-        let profilePictureViewSize = CGFloat(60)
+        let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
         iconImageView.size = profilePictureViewSize
         iconImageView.layer.masksToBounds = true
-        iconImageView.layer.cornerRadius = 30
+        iconImageView.layer.cornerRadius = 21
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),
