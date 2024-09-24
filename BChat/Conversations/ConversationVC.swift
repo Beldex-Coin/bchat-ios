@@ -1839,7 +1839,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true            
             button.layer.borderColor = Colors.bothGreenColor.cgColor
-//            button.transform = CGAffineTransformMakeTranslation(-12, 0)
 
             lazy var verifiedImageView: UIImageView = {
                 let result = UIImageView()
@@ -1862,7 +1861,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             // For BNS Verified User
             verifiedImageView.pin(.trailing, to: .trailing, of: outerView, withInset: 2)
             verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
-//            verifiedImageView.transform = CGAffineTransformMakeTranslation(-12, 0)
             
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
@@ -1889,7 +1887,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true
-//            button.transform = CGAffineTransformMakeTranslation(-12, 0)
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)

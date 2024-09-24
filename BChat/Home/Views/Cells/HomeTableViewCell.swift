@@ -162,7 +162,6 @@ class HomeTableViewCell: UITableViewCell {
         pinImageView.image = UIImage(named: "ic_pinned")
         backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
         
-//        messageCountAndDateStackView.addArrangedSubview(messageCountLabel)
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         messageCountAndDateStackView.addArrangedSubview(messageCountStackView)
         
