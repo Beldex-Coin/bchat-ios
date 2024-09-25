@@ -169,12 +169,12 @@ class HomeTableViewCell: UITableViewCell {
         messageCountStackView.addArrangedSubview(notifyMentionImageView)
         messageCountStackView.addArrangedSubview(messageCountLabel)
 
-        let profilePictureViewSize = CGFloat(42)
+        let profilePictureViewSize = CGFloat(60)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
         iconImageView.size = profilePictureViewSize
         iconImageView.layer.masksToBounds = true
-        iconImageView.layer.cornerRadius = 21
+        iconImageView.layer.cornerRadius = 30
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),
@@ -192,11 +192,11 @@ class HomeTableViewCell: UITableViewCell {
             verifiedImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
             verifiedImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
             
-            nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
+            nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor, constant: 2),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
             
-            lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor),
+            lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: -10),
             lastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             lastMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
             
