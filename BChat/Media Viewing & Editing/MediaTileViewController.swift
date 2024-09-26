@@ -271,8 +271,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             documentLineView.backgroundColor = Colors.borderColorNew
             
             self.noDataView.isHidden = true
-            self.noDataImageView.image = UIImage(named: "no_document_image")
-            self.noDataMessageLabel.text = "No Document items to show!"
+            self.noDataImageView.image = UIImage(named: "no_media_image")
+            self.noDataMessageLabel.text = "No Media items to show!"
         } else {
             documentLineView.backgroundColor = Colors.bothGreenColor
             mediaLineView.backgroundColor = Colors.borderColorNew
@@ -598,6 +598,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 }
                 let title = NSLocalizedString("GALLERY_TILES_EMPTY_GALLERY", comment: "Label indicating media gallery is empty")
                 sectionHeader.configure(title: title)
+                self.noDataView.isHidden = false
+                self.noDataImageView.image = UIImage(named: "no_media_image")
+                self.noDataMessageLabel.text = "No Media items to show!"
                 return sectionHeader
             }
             

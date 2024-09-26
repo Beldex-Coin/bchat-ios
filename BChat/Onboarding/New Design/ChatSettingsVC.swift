@@ -205,8 +205,13 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             
             displayNameLabel.topAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 8),
             displayNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            displayNameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 12),
+            displayNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -12),
             nameTextField.topAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 8),
             nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameTextField.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 12),
+            nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -12),
+            
             editIconImage.widthAnchor.constraint(equalToConstant: 14),
             editIconImage.heightAnchor.constraint(equalToConstant: 14),
             editIconImage.leadingAnchor.constraint(equalTo: displayNameLabel.trailingAnchor, constant: 4),

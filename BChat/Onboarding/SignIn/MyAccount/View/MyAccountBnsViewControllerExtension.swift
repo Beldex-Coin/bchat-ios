@@ -51,6 +51,13 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if !showQRExpandView.isHidden || !beldexAddressExpandView.isHidden || !bchatIDExpandView.isHidden {
+            showQRExpandView.isHidden = true
+            beldexAddressExpandView.isHidden = true
+            bchatIDExpandView.isHidden = true
+            return
+        }
 
         switch viewModel.menuTitles[indexPath.row] {
             case .hops:

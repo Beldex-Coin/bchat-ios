@@ -648,7 +648,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.adjustsFontSizeToFitWidth = true
+//        result.adjustsFontSizeToFitWidth = true
         result.backgroundColor = Colors.incomingMessageColor
         result.paddingTop = 6
         result.paddingBottom = 6
@@ -1054,9 +1054,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         deleteAudioButton.pin(to: deleteAudioView)
         deleteAudioView.isHidden = true
-        
-        
-        
+                
         // Notifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleKeyboardWillChangeFrameNotification(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -1420,7 +1418,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 clearChatAndUnblockButtonStackView.bottomAnchor.constraint(equalTo: blockedBannerView.bottomAnchor, constant: -18),
                 blockedBannerLabel.heightAnchor.constraint(equalToConstant: 26),
                 blockedBannerLabel.topAnchor.constraint(equalTo: blockedBannerView.topAnchor),
-                blockedBannerLabel.centerXAnchor.constraint(equalTo: blockedBannerView.centerXAnchor)
+                blockedBannerLabel.centerXAnchor.constraint(equalTo: blockedBannerView.centerXAnchor),
+                blockedBannerLabel.leadingAnchor.constraint(greaterThanOrEqualTo: blockedBannerView.leadingAnchor, constant: 12),
+                blockedBannerLabel.trailingAnchor.constraint(lessThanOrEqualTo: blockedBannerView.trailingAnchor, constant: -12),
             ])
             let userName = Storage.shared.getContact(with: thread.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
             blockedBannerLabel.text = "You Blocked \(userName)! Click here to Unblock."

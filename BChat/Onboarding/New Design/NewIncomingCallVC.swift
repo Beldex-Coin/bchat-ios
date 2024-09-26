@@ -385,6 +385,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             callerImageView.centerYAnchor.constraint(equalTo: callerImageBackgroundView.centerYAnchor),
             callerNameLabel.topAnchor.constraint(equalTo: callerImageBackgroundView.bottomAnchor, constant: 18),
             callerNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            callerNameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 12),
+            callerNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -12),
             iconView.topAnchor.constraint(equalTo: backGroundViewForIconAndLabel.topAnchor),
             iconView.leadingAnchor.constraint(equalTo: backGroundViewForIconAndLabel.leadingAnchor),
             iconView.bottomAnchor.constraint(equalTo: backGroundViewForIconAndLabel.bottomAnchor),

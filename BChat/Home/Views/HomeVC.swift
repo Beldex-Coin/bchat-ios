@@ -1246,9 +1246,6 @@ extension HomeVC: BeldexWalletDelegate {
     private func postData(balance: String, history: TransactionHistory) {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
-        DispatchQueue.main.async { [self] in
-            self.tableView.reloadData()
-        }
     }
     
     func updateTableViewCell(_ indexPath: IndexPath) {
