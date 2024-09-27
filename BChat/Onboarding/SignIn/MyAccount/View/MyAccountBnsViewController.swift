@@ -360,7 +360,7 @@ class MyAccountBnsViewController: BaseVC {
     }()
     
     /// Beldex Address Expand View
-    private lazy var beldexAddressExpandView: UIView = {
+    lazy var beldexAddressExpandView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
@@ -369,7 +369,7 @@ class MyAccountBnsViewController: BaseVC {
     }()
     
     /// bchat ID Expand View
-    private lazy var bchatIDExpandView: UIView = {
+    lazy var bchatIDExpandView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
@@ -378,7 +378,7 @@ class MyAccountBnsViewController: BaseVC {
     }()
     
     /// Show QR Expand View
-    private lazy var showQRExpandView: UIView = {
+    lazy var showQRExpandView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor

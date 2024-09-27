@@ -385,6 +385,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             callerImageView.centerYAnchor.constraint(equalTo: callerImageBackgroundView.centerYAnchor),
             callerNameLabel.topAnchor.constraint(equalTo: callerImageBackgroundView.bottomAnchor, constant: 18),
             callerNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            callerNameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 12),
+            callerNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -12),
             iconView.topAnchor.constraint(equalTo: backGroundViewForIconAndLabel.topAnchor),
             iconView.leadingAnchor.constraint(equalTo: backGroundViewForIconAndLabel.leadingAnchor),
             iconView.bottomAnchor.constraint(equalTo: backGroundViewForIconAndLabel.bottomAnchor),
@@ -706,6 +708,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             cameraManager.stop()
             call.isVideoEnabled = false
             cameraButton.isEnabled = false
+            cameraButton.isSelected = false
             videoButton.tintColor = .white
             videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
         } else {
@@ -722,6 +725,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         cameraManager.start()
         call.isVideoEnabled = true
         cameraButton.isEnabled = true
+        cameraButton.isSelected = true
         videoButton.tintColor = UIColor(hex: 0x1F1F1F)
         videoButton.backgroundColor = .white
         let currentSession = AVAudioSession.sharedInstance()

@@ -1612,13 +1612,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     func init_syncing_wallet() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             scanButton.isUserInteractionEnabled = false
-            sendButton.isUserInteractionEnabled = false
             scanButton.backgroundColor = Colors.walletDisableButtonColor
+            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
+            scanButton.setImage(scanButtonImage, for: .normal)
+            sendButton.isUserInteractionEnabled = false
             sendButton.backgroundColor = Colors.walletDisableButtonColor
             let sendButtonImage = UIImage(named: "ic_send_new")?.withTint(Colors.bothGrayColor)
             sendButton.setImage(sendButtonImage, for: .normal)
-            let scanButtonImage = UIImage(named: "ic_Newqr")?.scaled(to: CGSize(width: 25, height: 25)).withRenderingMode(.alwaysTemplate).withTint(Colors.bothGrayColor)
-            scanButton.setImage(scanButtonImage, for: .normal)
             let reConnectButtonImage = isLightMode ? "ic_rotate_dark" : "ic_rotate_new"
             let reConnectButtonImageWithTint = UIImage(named: reConnectButtonImage)?.scaled(to: CGSize(width: 25, height: 25)).withTint(Colors.bothGrayColor)
             reConnectButton.setImage(reConnectButtonImageWithTint, for: .normal)

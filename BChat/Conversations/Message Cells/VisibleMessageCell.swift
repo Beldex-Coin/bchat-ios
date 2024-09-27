@@ -541,7 +541,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
                         let inset: CGFloat = 12
                         let maxWidth = size.width - 2 * inset
-                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 20, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                         self.bodyTextView = bodyTextView
                         stackView.addArrangedSubview(UIView(wrapping: bodyTextView, withInsets: UIEdgeInsets(top: 0, left: inset, bottom: inset, right: inset)))
                     }
@@ -585,7 +585,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     stackView.addArrangedSubview(documentView)
                     // Body text view
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
-                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                        let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 4, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                         self.bodyTextView = bodyTextView
                         stackView.addArrangedSubview(bodyTextView)
                     }
