@@ -708,6 +708,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             cameraManager.stop()
             call.isVideoEnabled = false
             cameraButton.isEnabled = false
+            cameraButton.isSelected = false
             videoButton.tintColor = .white
             videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
         } else {
@@ -724,6 +725,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         cameraManager.start()
         call.isVideoEnabled = true
         cameraButton.isEnabled = true
+        cameraButton.isSelected = true
         videoButton.tintColor = UIColor(hex: 0x1F1F1F)
         videoButton.backgroundColor = .white
         let currentSession = AVAudioSession.sharedInstance()
