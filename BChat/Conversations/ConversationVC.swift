@@ -648,7 +648,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
-//        result.adjustsFontSizeToFitWidth = true
         result.backgroundColor = Colors.incomingMessageColor
         result.paddingTop = 6
         result.paddingBottom = 6
@@ -870,9 +869,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             initiatingTransactionPopView.heightAnchor.constraint(equalToConstant: 175)
         ])
         
-//        isPaymentDetailsView.isHidden = true
         hiddenView.addSubview(isPaymentDetailsView)
-//        view.addSubview(isPaymentDetailsView)
         // Add constraints to center the isPaymentFeeValueView and set its size
         NSLayoutConstraint.activate([
             isPaymentDetailsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
