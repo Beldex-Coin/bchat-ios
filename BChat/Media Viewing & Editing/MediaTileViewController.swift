@@ -250,7 +250,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.updateLayout()
+        self.updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
     }
     
     private func indexPath(galleryItem: MediaGalleryItem) -> IndexPath? {
@@ -281,7 +281,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             self.noDataImageView.image = UIImage(named: "no_document_image")
             self.noDataMessageLabel.text = "No Document items to show!"
         }
-        updateLayout()
+        updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
         updateSelectButton()
         self.collectionView.reloadData()
     }
@@ -791,12 +791,17 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         return layout
     }
     
-    func updateLayout() {
+    func updateLayout(selectedIndex: Int) {
         
-        if documents.count > 0 {
-            self.noDataView.isHidden = true
+        self.noDataView.isHidden = false
+        if selectedIndex == 0 {
+            if galleryDates.count > 0 {
+                self.noDataView.isHidden = true
+            }
         } else {
-            self.noDataView.isHidden = false
+            if documents.count > 0 {
+                self.noDataView.isHidden = true
+            }
         }
         
         var kItemsPerPortraitRow = 4
