@@ -250,7 +250,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.updateLayout()
+        self.updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
     }
     
     private func indexPath(galleryItem: MediaGalleryItem) -> IndexPath? {
@@ -271,8 +271,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             documentLineView.backgroundColor = Colors.borderColorNew
             
             self.noDataView.isHidden = true
-            self.noDataImageView.image = UIImage(named: "no_document_image")
-            self.noDataMessageLabel.text = "No Document items to show!"
+            self.noDataImageView.image = UIImage(named: "no_media_image")
+            self.noDataMessageLabel.text = "No Media items to show!"
         } else {
             documentLineView.backgroundColor = Colors.bothGreenColor
             mediaLineView.backgroundColor = Colors.borderColorNew
@@ -281,7 +281,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             self.noDataImageView.image = UIImage(named: "no_document_image")
             self.noDataMessageLabel.text = "No Document items to show!"
         }
-        updateLayout()
+        updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
         updateSelectButton()
         self.collectionView.reloadData()
     }
@@ -598,6 +598,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 }
                 let title = NSLocalizedString("GALLERY_TILES_EMPTY_GALLERY", comment: "Label indicating media gallery is empty")
                 sectionHeader.configure(title: title)
+                self.noDataView.isHidden = false
+                self.noDataImageView.image = UIImage(named: "no_media_image")
+                self.noDataMessageLabel.text = "No Media items to show!"
                 return sectionHeader
             }
             
@@ -788,12 +791,17 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         return layout
     }
     
-    func updateLayout() {
+    func updateLayout(selectedIndex: Int) {
         
-        if documents.count > 0 {
-            self.noDataView.isHidden = true
+        self.noDataView.isHidden = false
+        if selectedIndex == 0 {
+            if galleryDates.count > 0 {
+                self.noDataView.isHidden = true
+            }
         } else {
-            self.noDataView.isHidden = false
+            if documents.count > 0 {
+                self.noDataView.isHidden = true
+            }
         }
         
         var kItemsPerPortraitRow = 4
