@@ -1126,6 +1126,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
+        recoverInputView()
+        self.showInputAccessoryView()
         hideInputViewForBlockedContact()
         
         if AppEnvironment.shared.callManager.currentCall == nil {
