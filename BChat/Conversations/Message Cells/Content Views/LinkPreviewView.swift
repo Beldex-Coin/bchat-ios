@@ -137,7 +137,7 @@ final class LinkPreviewView : UIView {
         if image != nil { loader.stopAnimating() } else { loader.startAnimating() }
         // Title
         titleLabel.textColor = sentLinkPreviewTextColor
-        titleLabel.text = linkPreviewState.title()
+        titleLabel.text = (linkPreviewState.title() == nil) ? "" : linkPreviewState.title()
         // Horizontal stack view
         switch linkPreviewState {
         case is LinkPreviewSent: hStackViewContainer.backgroundColor = isDarkMode ? .black : UIColor.black.withAlphaComponent(0.06)
