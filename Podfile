@@ -75,6 +75,10 @@ target 'BChatUIKit'
 post_install do |installer|
   enable_whole_module_optimization_for_crypto_swift(installer)
   set_minimum_deployment_target(installer)
+  
+  
+
+       
 end
 
 def enable_whole_module_optimization_for_crypto_swift(installer)
@@ -83,6 +87,7 @@ def enable_whole_module_optimization_for_crypto_swift(installer)
       target.build_configurations.each do |config|
         config.build_settings['GCC_OPTIMIZATION_LEVEL'] = 'fast'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-O'
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
       end
     end
   end

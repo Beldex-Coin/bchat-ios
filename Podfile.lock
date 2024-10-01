@@ -29,7 +29,7 @@ PODS:
   - NVActivityIndicatorView (5.1.1):
     - NVActivityIndicatorView/Base (= 5.1.1)
   - NVActivityIndicatorView/Base (5.1.1)
-  - OpenSSL-Universal (1.1.1900)
+  - OpenSSL-Universal (3.2.2000)
   - PromiseKit (6.18.1):
     - PromiseKit/CorePromise (= 6.18.1)
     - PromiseKit/Foundation (= 6.18.1)
@@ -217,7 +217,7 @@ SPEC CHECKSUMS:
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   NVActivityIndicatorView: 1f6c5687f1171810aa27a3296814dc2d7dec3667
-  OpenSSL-Universal: 84efb8a29841f2764ac5403e0c4119a28b713346
+  OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
   PromiseKit: 49d70c53d5d20e346beaea4b276b5dd2ab446bb4
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -235,6 +235,6 @@ SPEC CHECKSUMS:
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 10454b87f998be3dfe281cf3ac339ec5a98e6fc5
+PODFILE CHECKSUM: 05bb0237600cd364ae8904d592a3e96cec02a003
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2
