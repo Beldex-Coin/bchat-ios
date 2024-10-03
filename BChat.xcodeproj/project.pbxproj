@@ -166,6 +166,7 @@
 		6042B18C29EE5713005FC06B /* NewMessage_ring.aifc in Resources */ = {isa = PBXBuildFile; fileRef = 6042B18B29EE5713005FC06B /* NewMessage_ring.aifc */; };
 		6042B18E29EE578C005FC06B /* ringback_tone_ansi_ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6042B18D29EE578B005FC06B /* ringback_tone_ansi_ring.caf */; };
 		6042B19029EE57E4005FC06B /* sonarping_ring.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6042B18F29EE57E4005FC06B /* sonarping_ring.mp3 */; };
+		604322642B88CE950035DE3D /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 604322632B88CE950035DE3D /* libwallet_api.a */; };
 		6045DC9629CAEEB800321B43 /* gifAnimation_white.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6045DC9529CAEEB700321B43 /* gifAnimation_white.gif */; };
 		604BA2D529F63F5600C9A7A4 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 604BA2D429F63F5600C9A7A4 /* OpenSans-Regular.ttf */; };
 		604BA2D729F63F8400C9A7A4 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 604BA2D629F63F8400C9A7A4 /* OpenSans-Bold.ttf */; };
@@ -319,7 +320,6 @@
 		7BFD1A8A2745C4F000FB91B9 /* Permissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A892745C4F000FB91B9 /* Permissions.swift */; };
 		7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */; };
 		7BFFB33C27D02F5800BEA04E /* CallPermissionRequestModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */; };
-		81315AC42B68EE650027A622 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81315AC32B68EE650027A622 /* libwallet_api.a */; };
 		81423A9E2A29DEC7001BBBFA /* BChatNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		81423AA32A29E2B6001BBBFA /* BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A6F025539DE700C340D1 /* BChatMessagingKit.framework */; };
 		81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A59F255385C100C340D1 /* BChatSnodeKit.framework */; };
@@ -1260,6 +1260,7 @@
 		6042B18B29EE5713005FC06B /* NewMessage_ring.aifc */ = {isa = PBXFileReference; lastKnownFileType = file; path = NewMessage_ring.aifc; sourceTree = "<group>"; };
 		6042B18D29EE578B005FC06B /* ringback_tone_ansi_ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ringback_tone_ansi_ring.caf; sourceTree = "<group>"; };
 		6042B18F29EE57E4005FC06B /* sonarping_ring.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sonarping_ring.mp3; sourceTree = "<group>"; };
+		604322632B88CE950035DE3D /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		6045DC9529CAEEB700321B43 /* gifAnimation_white.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = gifAnimation_white.gif; sourceTree = "<group>"; };
 		604BA2D429F63F5600C9A7A4 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		604BA2D629F63F8400C9A7A4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -1430,7 +1431,6 @@
 		7BFD1A8B2747150E00FB91B9 /* TurnServerInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TurnServerInfo.swift; sourceTree = "<group>"; };
 		7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionRequestModal.swift; sourceTree = "<group>"; };
 		7DD180F770F8518B4E8796F2 /* Pods-SessionUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SessionUtilitiesKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SessionUtilitiesKit/Pods-SessionUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
-		81315AC32B68EE650027A622 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		816564BE2AA729C800477BC7 /* WalletHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHelper.swift; sourceTree = "<group>"; };
 		818C2F672AF0FE1300202F05 /* AlertForWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertForWalletVC.swift; sourceTree = "<group>"; };
@@ -2145,12 +2145,12 @@
 				45BD60821DE9547E00A8F436 /* Contacts.framework in Frameworks */,
 				B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */,
 				FC3BD9881A30A790005B96BB /* Social.framework in Frameworks */,
-				81315AC42B68EE650027A622 /* libwallet_api.a in Frameworks */,
 				FCB11D8C1A129A76002F93FB /* CoreMedia.framework in Frameworks */,
 				70377AAB1918450100CAF501 /* MobileCoreServices.framework in Frameworks */,
 				B9EB5ABD1884C002007CBB57 /* MessageUI.framework in Frameworks */,
 				3496956021A2FC8100DCFE74 /* CloudKit.framework in Frameworks */,
 				76C87F19181EFCE600C4ACAB /* MediaPlayer.framework in Frameworks */,
+				604322642B88CE950035DE3D /* libwallet_api.a in Frameworks */,
 				768A1A2B17FC9CD300E00ED8 /* libz.dylib in Frameworks */,
 				A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */,
 				A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */,
@@ -2587,7 +2587,7 @@
 		60D3A49A29ED312D0059472A /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				81315AC32B68EE650027A622 /* libwallet_api.a */,
+				604322632B88CE950035DE3D /* libwallet_api.a */,
 			);
 			path = libs;
 			sourceTree = "<group>";
@@ -5788,7 +5788,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
@@ -5814,7 +5814,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5864,7 +5864,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
@@ -5895,7 +5895,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.ShareExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6076,7 +6076,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
@@ -6095,7 +6095,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;
@@ -6149,7 +6149,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
@@ -6173,7 +6173,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.beldex.bchat.NotificationServiceExtension;

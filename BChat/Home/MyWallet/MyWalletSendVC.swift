@@ -85,7 +85,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         scanRefbtn.isUserInteractionEnabled = true
         addressRefbtn.isUserInteractionEnabled = true
         placeholderLabel = UILabel()
-        placeholderLabel.text = "Beldex address"
+        placeholderLabel.text = "Enter Address or BNS name"
         placeholderLabel.font = Fonts.OpenSans(ofSize: (txtaddress.font?.pointSize)!)
         placeholderLabel.sizeToFit()
         txtaddress.addSubview(placeholderLabel)
@@ -223,21 +223,21 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
         if text == "\n" {
             textView.resignFirstResponder()
         }
-        if textView == txtaddress{
-            let currentString: NSString = txtaddress.text! as NSString
-            let newString: NSString = currentString.replacingCharacters(in: range, with: text) as NSString
-            return newString.length <= 97
-        }
+//        if textView == txtaddress{
+//            let currentString: NSString = txtaddress.text! as NSString
+//            let newString: NSString = currentString.replacingCharacters(in: range, with: text) as NSString
+//            return newString.length <= 97
+//        }
         return true
     }
     
     // txtamout only sigle . enter and txtaddress lenth fixed
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == txtaddress{
-            let currentString: NSString = textField.text! as NSString
-            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-            return newString.length <= 97
-        }else{
+//        if textField == txtaddress{
+//            let currentString: NSString = textField.text! as NSString
+//            let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
+//            return newString.length <= 97
+//        }else{
             // Get the current text in the text field
             guard let currentText = txtamount.text else {
                 return true
@@ -248,7 +248,7 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
             let amountPattern = "^(\\d{0,9})(\\.\\d{0,5})?$"
             let amountTest = NSPredicate(format: "SELF MATCHES %@", amountPattern)
             return amountTest.evaluate(with: newText)
-        }
+//        }
     }
     
     // Textfiled Paste option hide
@@ -341,15 +341,19 @@ class MyWalletSendVC: BaseVC,UITextFieldDelegate,MyDataSendingDelegateProtocol,U
                 let alert = UIAlertController(title: "My Wallet", message: "fill the all fileds", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
-            }else {
+            } else if ((txtaddress.text.count > 106 || txtaddress.text.count < 95) && txtaddress.text.suffix(4).lowercased() != ".bdx") {
+                let alert = UIAlertController(title: "My Wallet", message: "Invalid destination address", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
                 let indexOfString = txtamount.text!
                 let lastString = txtamount.text!.index(before: txtamount.text!.endIndex)
-                guard BChatWalletWrapper.validAddress(txtaddress.text!) else {
-                    let alert = UIAlertController(title: "My Wallet", message: "Not a valid address", preferredStyle: UIAlertController.Style.alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    return
-                }
+//                guard BChatWalletWrapper.validAddress(txtaddress.text!) else {
+//                    let alert = UIAlertController(title: "My Wallet", message: "Not a valid address", preferredStyle: UIAlertController.Style.alert)
+//                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+//                    self.present(alert, animated: true, completion: nil)
+//                    return
+//                }
                 if txtamount.text?.count == 0 {
                     let alert = UIAlertController(title: "My Wallet", message: "Pls Enter amount", preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
