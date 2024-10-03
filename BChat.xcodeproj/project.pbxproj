@@ -88,11 +88,6 @@
 		6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */; };
 		6007B5B828A4D77D0004BD61 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B728A4D77D0004BD61 /* Wallet.swift */; };
 		6007B5BA28A4D7920004BD61 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B928A4D7920004BD61 /* WalletService.swift */; };
-		6007B5C228A5280D0004BD61 /* publicnode1.der in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5BD28A5280B0004BD61 /* publicnode1.der */; };
-		6007B5C328A5280D0004BD61 /* publicnode4.der in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5BE28A5280B0004BD61 /* publicnode4.der */; };
-		6007B5C428A5280D0004BD61 /* publicnode5.der in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5BF28A5280C0004BD61 /* publicnode5.der */; };
-		6007B5C528A5280D0004BD61 /* publicnode2.der in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5C028A5280C0004BD61 /* publicnode2.der */; };
-		6007B5C628A5280D0004BD61 /* publicnode3.der in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5C128A5280D0004BD61 /* publicnode3.der */; };
 		6007B5CC28ABC5C80004BD61 /* svg_dark.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5CA28ABC5C70004BD61 /* svg_dark.svg */; };
 		6007B5CD28ABC5C80004BD61 /* svg_light.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5CB28ABC5C70004BD61 /* svg_light.svg */; };
 		6007B5D128ABC6420004BD61 /* UserDefaultsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5D028ABC6420004BD61 /* UserDefaultsData.swift */; };
@@ -337,6 +332,11 @@
 		819AE3982A29EB4800F15166 /* NotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC01A3D241F40AB00BC7C55 /* NotificationServiceExtension.swift */; };
 		819AE3992A29EB4800F15166 /* NSENotificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1D74A927BCC16E0030B423 /* NSENotificationPresenter.swift */; };
 		819AE39A2A29EB4800F15166 /* NotificationServiceExtensionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDCFC07242186E700641C39 /* NotificationServiceExtensionContext.swift */; };
+		8A059D142CAC44F4001DA42D /* publicnode1.der in Resources */ = {isa = PBXBuildFile; fileRef = 8A059D132CAC44F4001DA42D /* publicnode1.der */; };
+		8A059D162CAC47F4001DA42D /* publicnode2.der in Resources */ = {isa = PBXBuildFile; fileRef = 8A059D152CAC47F4001DA42D /* publicnode2.der */; };
+		8A059D182CAC484F001DA42D /* publicnode3.der in Resources */ = {isa = PBXBuildFile; fileRef = 8A059D172CAC484F001DA42D /* publicnode3.der */; };
+		8A059D1A2CAC4996001DA42D /* publicnode4.der in Resources */ = {isa = PBXBuildFile; fileRef = 8A059D192CAC4996001DA42D /* publicnode4.der */; };
+		8A059D1C2CAC49A1001DA42D /* publicnode5.der in Resources */ = {isa = PBXBuildFile; fileRef = 8A059D1B2CAC49A1001DA42D /* publicnode5.der */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A13FC3642BE5D37A004D0EC8 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19942D14DEF67D588752ADB2 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_SignalUtilitiesKit.framework */; };
@@ -1180,11 +1180,6 @@
 		6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BChatWalletBuilder.swift; sourceTree = "<group>"; };
 		6007B5B728A4D77D0004BD61 /* Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		6007B5B928A4D7920004BD61 /* WalletService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
-		6007B5BD28A5280B0004BD61 /* publicnode1.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode1.der; sourceTree = "<group>"; };
-		6007B5BE28A5280B0004BD61 /* publicnode4.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode4.der; sourceTree = "<group>"; };
-		6007B5BF28A5280C0004BD61 /* publicnode5.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode5.der; sourceTree = "<group>"; };
-		6007B5C028A5280C0004BD61 /* publicnode2.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode2.der; sourceTree = "<group>"; };
-		6007B5C128A5280D0004BD61 /* publicnode3.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode3.der; sourceTree = "<group>"; };
 		6007B5CA28ABC5C70004BD61 /* svg_dark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = svg_dark.svg; sourceTree = "<group>"; };
 		6007B5CB28ABC5C70004BD61 /* svg_light.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = svg_light.svg; sourceTree = "<group>"; };
 		6007B5D028ABC6420004BD61 /* UserDefaultsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsData.swift; sourceTree = "<group>"; };
@@ -1445,6 +1440,11 @@
 		826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
+		8A059D132CAC44F4001DA42D /* publicnode1.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode1.der; sourceTree = "<group>"; };
+		8A059D152CAC47F4001DA42D /* publicnode2.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode2.der; sourceTree = "<group>"; };
+		8A059D172CAC484F001DA42D /* publicnode3.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode3.der; sourceTree = "<group>"; };
+		8A059D192CAC4996001DA42D /* publicnode4.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode4.der; sourceTree = "<group>"; };
+		8A059D1B2CAC49A1001DA42D /* publicnode5.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = publicnode5.der; sourceTree = "<group>"; };
 		8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.app store release.xcconfig"; sourceTree = "<group>"; };
 		948239851C08032C842937CC /* Pods-SignalMessaging.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.test.xcconfig"; sourceTree = "<group>"; };
 		957AF4803F564499A352497A /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-BChatSnodeKit.app store release.xcconfig"; sourceTree = "<group>"; };
@@ -2840,11 +2840,11 @@
 		B81D260326158DF5004D1FE1 /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
-				6007B5BD28A5280B0004BD61 /* publicnode1.der */,
-				6007B5C028A5280C0004BD61 /* publicnode2.der */,
-				6007B5C128A5280D0004BD61 /* publicnode3.der */,
-				6007B5BE28A5280B0004BD61 /* publicnode4.der */,
-				6007B5BF28A5280C0004BD61 /* publicnode5.der */,
+				8A059D132CAC44F4001DA42D /* publicnode1.der */,
+				8A059D152CAC47F4001DA42D /* publicnode2.der */,
+				8A059D172CAC484F001DA42D /* publicnode3.der */,
+				8A059D192CAC4996001DA42D /* publicnode4.der */,
+				8A059D1B2CAC49A1001DA42D /* publicnode5.der */,
 			);
 			path = Certificates;
 			sourceTree = "<group>";
@@ -4698,6 +4698,7 @@
 				6098CAC42A207DAB005A5502 /* MyWalletAddressXibCell.xib in Resources */,
 				4C6F527C20FFE8400097DEEE /* SignalUBSan.supp in Resources */,
 				604BA2D729F63F8400C9A7A4 /* OpenSans-Bold.ttf in Resources */,
+				8A059D1C2CAC49A1001DA42D /* publicnode5.der in Resources */,
 				6042B18429EE548C005FC06B /* Opening.m4r in Resources */,
 				6061624729BEFE7B00B20546 /* BChat-Turn-Server in Resources */,
 				6098CAB92A207DAB005A5502 /* MyWalletSettingsXibCell3.xib in Resources */,
@@ -4712,8 +4713,10 @@
 				6042B17C29EE548C005FC06B /* aurora-quiet.aifc in Resources */,
 				6098CAB52A207DAB005A5502 /* MyWalletSettingsXibCell2.xib in Resources */,
 				B66DBF4A19D5BBC8006EA940 /* Images.xcassets in Resources */,
-				6007B5C328A5280D0004BD61 /* publicnode4.der in Resources */,
+				8A059D1A2CAC4996001DA42D /* publicnode4.der in Resources */,
+				8A059D182CAC484F001DA42D /* publicnode3.der in Resources */,
 				C3CA3AB4255CDAE600F4C6D4 /* japanese.txt in Resources */,
+				8A059D162CAC47F4001DA42D /* publicnode2.der in Resources */,
 				6042B17229EE548C005FC06B /* ringing.mp3 in Resources */,
 				6042B16529EE548C005FC06B /* aurora.aifc in Resources */,
 				6007B5DA28ABC75B0004BD61 /* bchatlogo_animation.gif in Resources */,
@@ -4737,6 +4740,7 @@
 				6042B17529EE548C005FC06B /* bamboo.aifc in Resources */,
 				6042B16729EE548C005FC06B /* complete.aifc in Resources */,
 				6007B5DB28ABC75B0004BD61 /* Pop_up_3.gif in Resources */,
+				8A059D142CAC44F4001DA42D /* publicnode1.der in Resources */,
 				6042B18329EE548C005FC06B /* make-quiet.sh in Resources */,
 				6042B17329EE548C005FC06B /* synth.aifc in Resources */,
 				6042B17829EE548C005FC06B /* circles.aifc in Resources */,
@@ -4747,7 +4751,6 @@
 				B8FF8E7425C10FC3004D1F22 /* GeoLite2-Country-Locations-English in Resources */,
 				6045DC9629CAEEB800321B43 /* gifAnimation_white.gif in Resources */,
 				6007B5CC28ABC5C80004BD61 /* svg_dark.svg in Resources */,
-				6007B5C628A5280D0004BD61 /* publicnode3.der in Resources */,
 				C3CA3ABE255CDB0D00F4C6D4 /* portuguese.txt in Resources */,
 				6098CABD2A207DAB005A5502 /* MyWalletNodeXibCell.xib in Resources */,
 				6042B16429EE548C005FC06B /* keys.aifc in Resources */,
@@ -4756,7 +4759,6 @@
 				6040691728B4A8340094E74D /* ProfileCell.xib in Resources */,
 				6042B17629EE548C005FC06B /* pulse.aifc in Resources */,
 				6042B17B29EE548C005FC06B /* input-quiet.aifc in Resources */,
-				6007B5C528A5280D0004BD61 /* publicnode2.der in Resources */,
 				6042B19029EE57E4005FC06B /* sonarping_ring.mp3 in Resources */,
 				C3CA3AC8255CDB2900F4C6D4 /* spanish.txt in Resources */,
 				B8FF8E6225C10DA5004D1F22 /* GeoLite2-Country-Blocks-IPv4 in Resources */,
@@ -4764,8 +4766,6 @@
 				6042B16929EE548C005FC06B /* chord.aifc in Resources */,
 				60E6122528BE1E3A00EEE73B /* BlockedXibCell.xib in Resources */,
 				6042B17429EE548C005FC06B /* synth-quiet.aifc in Resources */,
-				6007B5C228A5280D0004BD61 /* publicnode1.der in Resources */,
-				6007B5C428A5280D0004BD61 /* publicnode5.der in Resources */,
 				6042B18629EE5603005FC06B /* busy_tone_ansi_ring.caf in Resources */,
 				6042B16F29EE548C005FC06B /* hello.aifc in Resources */,
 				6042B18C29EE5713005FC06B /* NewMessage_ring.aifc in Resources */,
@@ -6948,7 +6948,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6994,7 +6994,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.3;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -7035,7 +7035,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3X33AB44S7;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7081,7 +7081,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.3;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
