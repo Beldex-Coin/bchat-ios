@@ -109,6 +109,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
+    lazy var messageTimeRightLabel: UILabel = {
+        let result = UILabel()
+        result.font = Fonts.OpenSans(ofSize: 9)
+        result.textColor = UIColor(hex: 0xEBEBEB)
+        return result
+    }()
+    
     lazy var stackHorizontalView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -260,14 +267,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         snContentView.pin(.top, to: .top, of: bubbleView, withInset: 5)
         messageTimeBottomLabel.pin(.right, to: .right, of: bubbleView, withInset: -10)
         messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
-        messageTimeCenterLabel.isHidden = true
-        bubbleView.addSubview(stackHorizontalView)
-        stackHorizontalView.addArrangedSubview(snContentView)
-        stackHorizontalView.addArrangedSubview(messageTimeCenterLabel)
-        stackHorizontalView.pin(.right, to: .right, of: bubbleView, withInset: -10)
-        stackHorizontalView.pin(.bottom, to: .bottom, of: messageTimeBottomLabel, withInset: -5)
-        stackHorizontalView.pin(.left, to: .left, of: bubbleView, withInset: 5)
-        stackHorizontalView.pin(.top, to: .top, of: bubbleView, withInset: 5)
+//        messageTimeCenterLabel.isHidden = false
+//        bubbleView.addSubview(stackHorizontalView)
+//        stackHorizontalView.addArrangedSubview(snContentView)
+//        stackHorizontalView.addArrangedSubview(messageTimeCenterLabel)
+//        stackHorizontalView.pin(.right, to: .right, of: bubbleView, withInset: -10)
+//        stackHorizontalView.pin(.bottom, to: .bottom, of: messageTimeBottomLabel, withInset: -5)
+//        stackHorizontalView.pin(.left, to: .left, of: bubbleView, withInset: 5)
+//        stackHorizontalView.pin(.top, to: .top, of: bubbleView, withInset: 5)
         addSubview(messageStatusImageView)
         messageStatusImageViewTopConstraint.isActive = true
         messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -5)
@@ -346,6 +353,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         updateBubbleViewCorners()
         messageTimeBottomLabel.isHidden = false
+//        messageTimeCenterLabel.isHidden = false
         // Content view
         populateContentView(for: viewItem, message: message)
         // Date break
@@ -441,6 +449,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         albumView = nil
         bodyTextView = nil
         messageTimeBottomLabel.textColor = UIColor(hex: 0xEBEBEB)
+//        messageTimeCenterLabel.textColor = UIColor(hex: 0xEBEBEB)
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         let direction = isOutgoing ? "send" : "receive"
         if direction == "send" {
@@ -451,6 +460,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             statusImageIncoming.isActive = true
             if isLightMode {
                 messageTimeBottomLabel.textColor = Colors.noDataLabelColor
+//                messageTimeCenterLabel.textColor = Colors.noDataLabelColor
             }
         }
         let date = viewItem.interaction.dateForUI()
@@ -491,6 +501,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         paymentView.backgroundColor = Colors.greenColor
                     }
                     messageTimeBottomLabel.isHidden = true
+//                    messageTimeCenterLabel.isHidden = true
                 } else {
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])
@@ -509,10 +520,47 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     // Body text view
                     let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
-                    stackView.addArrangedSubview(bodyTextView)
-                    // Constraints
-                    snContentView.addSubview(stackView)
-                    stackView.pin(to: snContentView, withInset: inset)
+//                    stackView.addArrangedSubview(bodyTextView)
+//                    // Constraints
+//                    snContentView.addSubview(stackView)
+//                    stackView.pin(to: snContentView, withInset: inset)
+                    
+//                    messageTimeBottomLabel.isHidden = false
+                    guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
+                    if message.body?.count ?? 0 < 25 && viewItem.quotedReply == nil {
+                        messageTimeBottomLabel.isHidden = true
+                        
+                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+                        stackViewForMessageAndTime.axis = .horizontal
+                        stackViewForMessageAndTime.spacing = 5
+                                                
+                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+                        
+                        messageTimeRightLabel.textColor = UIColor(hex: 0xEBEBEB)
+                        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+                        let direction = isOutgoing ? "send" : "receive"
+                        if direction == "receive" {
+                            if isLightMode {
+                                messageTimeRightLabel.textColor = Colors.noDataLabelColor
+                            }
+                        }
+                        
+                        let date = viewItem.interaction.dateForUI()
+                        let description = DateUtil.formatDate(forDisplay2: date)
+                        messageTimeRightLabel.text = description
+                        
+                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        // Constraints
+                        snContentView.addSubview(stackView)
+                        stackView.pin(to: snContentView, withInset: inset)
+                        
+                    } else {
+                        messageTimeBottomLabel.isHidden = false
+                        stackView.addArrangedSubview(bodyTextView)
+                        snContentView.addSubview(stackView)
+                        stackView.pin(to: snContentView, withInset: inset)
+                    }
                 }
             case .mediaMessage:
                 bubbleViewBottomConstraint.isActive = false
