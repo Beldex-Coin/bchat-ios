@@ -53,6 +53,11 @@ class ChangeLogVC: BaseVC, UITableViewDelegate, UITableViewDataSource,Expandable
                 movies: ["- Integrated BNS in BChat",
                          "- Minor Bug fixes"],
                 expandable: false),
+        Section(genre: "1.4.4",
+                movies: ["- Added BNS feature to start new chats",
+                         "- Updated App Content",
+                         "- Minor Bug fixes"],
+                expandable: false),
     ]
     
     override func viewDidLoad() {
