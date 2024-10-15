@@ -19,7 +19,7 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
     }()
     var isExpanded: Bool = false
     var selectedRowIndex: Int?
-    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2"]
+    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5"]
     var descArray = ["\u{2022} Initial release\n\u{2022} Added changelog",
                      "\u{2022} Message request implementation\n\u{2022} Link Preview will be turn on by default\n\u{2022} Add the images for SwipeActionsConfiguration",
                      "\u{2022} Call Feature Added\n\u{2022} Blocked Contact list added\n\u{2022} Minor Bug Fixes",
@@ -29,7 +29,9 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
                      "\u{2022} Minor bug fixes",
                      "\u{2022} Fixed message delay issue\n\u{2022} Introduced BNS feature for starting new chat and sending funds\n\u{2022} Fixed missing payment ID details for integrated address transaction\n\u{2022} Updated Node list\n\u{2022} Minor Bug fixes",
                      "\u{2022} New design implemented\n\u{2022} Minor bug fixes",
-                     "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Fixed minor issues in social group \n\u{2022} Minor bug fixes \n"]
+                     "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Fixed minor issues in social group \n\u{2022} Minor bug fixes",
+                     "\u{2022} Added BNS feature to start new chats \n\u{2022} Updated App Content \n\u{2022} Minor bug fixes",
+                     "\u{2022} New design revamp \n\u{2022} Minor bug fixes",]
     
     override func viewDidLoad() {
         super.viewDidLoad()

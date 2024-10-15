@@ -72,7 +72,7 @@ struct PendingTransaction
         Priority_Medium = 2,
         Priority_High = 3,
         Priority_Last
-      };
+    };
 
     virtual ~PendingTransaction() = 0;
     /// returns true if the status is currently set to Status_Ok, false otherwise.

@@ -539,7 +539,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
     }
     
     @objc private func sendInvitation() {
-        let invitation = "Hey, I've been using BChat to chat with complete privacy and security. Come join me! Download it at My BChat ID is \(getUserHexEncodedPublicKey()) !"
+        let invitation = "Hey, I've been using BChat to chat securely and confidentially. Come join me! Download it at My BChat ID is \(getUserHexEncodedPublicKey()) !"
         let shareVC = UIActivityViewController(activityItems: [ invitation ], applicationActivities: nil)
         if UIDevice.current.isIPad {
             shareVC.excludedActivityTypes = []
