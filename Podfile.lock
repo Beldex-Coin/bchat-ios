@@ -29,7 +29,7 @@ PODS:
   - NVActivityIndicatorView (5.2.0):
     - NVActivityIndicatorView/Base (= 5.2.0)
   - NVActivityIndicatorView/Base (5.2.0)
-  - OpenSSL-Universal (3.1.5001)
+  - OpenSSL-Universal (3.2.2000)
   - PromiseKit (8.1.1):
     - PromiseKit/CorePromise (= 8.1.1)
     - PromiseKit/Foundation (= 8.1.1)
@@ -48,10 +48,10 @@ PODS:
     - OpenSSL-Universal
   - SocketRocket (0.5.1)
   - Sodium (0.9.1)
-  - SQLCipher (4.5.6):
-    - SQLCipher/standard (= 4.5.6)
-  - SQLCipher/common (4.5.6)
-  - SQLCipher/standard (4.5.6):
+  - SQLCipher (4.6.0):
+    - SQLCipher/standard (= 4.6.0)
+  - SQLCipher/common (4.6.0)
+  - SQLCipher/standard (4.6.0):
     - SQLCipher/common
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
@@ -59,7 +59,7 @@ PODS:
   - SwiftyRSA (1.7.0):
     - SwiftyRSA/ObjC (= 1.7.0)
   - SwiftyRSA/ObjC (1.7.0)
-  - WebRTC-lib (123.0.0)
+  - WebRTC-lib (127.0.0)
   - YapDatabase/SQLCipher (3.1.1):
     - YapDatabase/SQLCipher/Core (= 3.1.1)
     - YapDatabase/SQLCipher/Extensions (= 3.1.1)
@@ -217,7 +217,7 @@ SPEC CHECKSUMS:
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53
-  OpenSSL-Universal: 29a9c9d4baf23f5fcd1294b657e4cc275e605bc3
+  OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
   PromiseKit: d1be44b474e5acfa16adf007a1f49f104e10fead
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
@@ -226,11 +226,11 @@ SPEC CHECKSUMS:
   SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
-  SQLCipher: 838309284f29953a28ad2e81d87d55ea6b7c74fd
+  SQLCipher: 30a8e81afa6128e600b17ffa77d0f92fa05ed208
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
-  WebRTC-lib: bb973dd47acf5bc48d8a935a92ae836b70599bc1
+  WebRTC-lib: 3e56b5c5fe21b0d6b682e543c39f68c81ccc8f26
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5

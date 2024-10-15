@@ -32,3 +32,4 @@ Index/
 # CocoaPods
 Pods
 Bchat/BeldexWallet/WalletLibs/External/libs/*
+*.der
