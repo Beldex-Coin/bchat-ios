@@ -11,7 +11,7 @@ final class NukeDataModal : Modal {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.text = NSLocalizedString("CLEAR_ALL_DATA", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -21,7 +21,7 @@ final class NukeDataModal : Modal {
     
     private lazy var titleLabel2: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bchatButtonColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("Chat ID", comment: "")
         result.numberOfLines = 0
@@ -43,11 +43,11 @@ final class NukeDataModal : Modal {
     
     private lazy var clearDataButton: UIButton = {
         let result = UIButton()
-        result.set(.height, to: 46)
-        result.layer.cornerRadius = 23
-        result.backgroundColor = Colors.cancelButtonBackgroundColor
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.setTitleColor(Colors.bothRedColor, for: UIControl.State.normal)
+        result.set(.height, to: 52)
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothRedColor
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.setTitle("Clear", for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
         return result
@@ -56,7 +56,7 @@ final class NukeDataModal : Modal {
     private lazy var buttonStackView1: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ cancelButton, clearDataButton ])
         result.axis = .horizontal
-        result.spacing = Values.mediumSpacing
+        result.spacing = 8
         result.distribution = .fillEqually
         return result
     }()

@@ -19,7 +19,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Add Node"
         return result
@@ -28,10 +28,10 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -39,10 +39,12 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -54,7 +56,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 12
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -77,7 +79,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Address",
@@ -95,7 +97,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Port",
@@ -115,7 +117,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Node Name (optional)",
@@ -133,7 +135,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "User Name (optional)",
@@ -151,7 +153,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(20)
         result.attributedPlaceholder = NSAttributedString(
             string: "Password (optional)",

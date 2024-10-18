@@ -16,8 +16,8 @@ class DisplayBalanceOptionVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Display Balance As"
         return result
@@ -34,30 +34,30 @@ class DisplayBalanceOptionVC: BaseVC {
     lazy var fullBalanceButton: UIButton = {
         let button = UIButton()
         button.setTitle("Beldex Full Balance", for: .normal)
-        button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(fullBalanceButtonTapped), for: .touchUpInside)
         return button
     }()
     lazy var availableBalanceButton: UIButton = {
         let button = UIButton()
         button.setTitle("Beldex Available Balance", for: .normal)
-        button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(availableBalanceButtonTapped), for: .touchUpInside)
         return button
     }()
     lazy var hiddenBalanceButton: UIButton = {
         let button = UIButton()
         button.setTitle("Beldex Hidden", for: .normal)
-        button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(hiddenBalanceButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -102,15 +102,16 @@ class DisplayBalanceOptionVC: BaseVC {
         ])
         
         if !SaveUserDefaultsData.SelectedBalance.isEmpty {
-            if SaveUserDefaultsData.SelectedBalance.contains("Beldex Full Balance"){
+            if SaveUserDefaultsData.SelectedBalance.contains("Beldex Full Balance") {
                 fullBalanceButtonUtilities()
-            }else if SaveUserDefaultsData.SelectedBalance.contains("Beldex Available Balance"){
+            } else if SaveUserDefaultsData.SelectedBalance.contains("Beldex Available Balance") {
                 availableBalanceButtonUtilities()
-            }else{
+            } else {
                 hiddenBalanceButtonUtilities()
             }
-        }else{
+        } else {
             fullBalanceButton.setTitle("Beldex Full Balance", for: .normal)
+            fullBalanceButtonUtilities()
         }
         
     }
@@ -136,54 +137,54 @@ class DisplayBalanceOptionVC: BaseVC {
         displayBalanceString = "Beldex Hidden"
     }
     
-    func fullBalanceButtonUtilities(){
-        fullBalanceButton.layer.borderWidth = 2
+    func fullBalanceButtonUtilities() {
+        fullBalanceButton.layer.borderWidth = 1
         fullBalanceButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        fullBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        fullBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         fullBalanceButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         availableBalanceButton.layer.borderWidth = 1
         availableBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        availableBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        availableBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         availableBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         hiddenBalanceButton.layer.borderWidth = 1
         hiddenBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        hiddenBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        hiddenBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         hiddenBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     
-    func availableBalanceButtonUtilities(){
-        availableBalanceButton.layer.borderWidth = 2
+    func availableBalanceButtonUtilities() {
+        availableBalanceButton.layer.borderWidth = 1
         availableBalanceButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        availableBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        availableBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         availableBalanceButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         fullBalanceButton.layer.borderWidth = 1
         fullBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        fullBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        fullBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         fullBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         hiddenBalanceButton.layer.borderWidth = 1
         hiddenBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        hiddenBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        hiddenBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         hiddenBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     
-    func hiddenBalanceButtonUtilities(){
-        hiddenBalanceButton.layer.borderWidth = 2
+    func hiddenBalanceButtonUtilities() {
+        hiddenBalanceButton.layer.borderWidth = 1
         hiddenBalanceButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        hiddenBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        hiddenBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         hiddenBalanceButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         availableBalanceButton.layer.borderWidth = 1
         availableBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        availableBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        availableBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         availableBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         fullBalanceButton.layer.borderWidth = 1
         fullBalanceButton.layer.borderColor = Colors.borderColorNew.cgColor
-        fullBalanceButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        fullBalanceButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         fullBalanceButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
 

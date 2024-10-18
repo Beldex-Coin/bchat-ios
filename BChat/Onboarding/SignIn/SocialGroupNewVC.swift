@@ -9,39 +9,44 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.textColor
-        result.font = Fonts.extraBoldOpenSans(ofSize: 24)
+        result.textColor = Colors.textFieldPlaceHolderColor
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
+    
     private lazy var topView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = 14
         stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 1
         return stackView
     }()
+    
     private lazy var groupUrlTextField: UITextField = {
         let result = UITextField()
-        result.textColor = Colors.placeholderColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.OpenSans(ofSize: 14)
+        result.setLeftPaddingPoints(8)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.placeholder = NSLocalizedString("Enter_Group_Url_New", comment: "")
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString(NSLocalizedString("Enter_Group_Url_New", comment: ""), comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor])
         result.backgroundColor = .clear
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
+    
     private lazy var urlBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = Values.buttonRadius
         stackView.backgroundColor = Colors.backgroundViewColor
         return stackView
     }()
+    
     private lazy var scannerImg: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -52,21 +57,23 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
     }()
+    
     private lazy var nextButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("Next_Button_New", comment: ""), for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(Colors.buttonTextColor, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
+    
     private lazy var subTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.textColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.textColor = Colors.titleColor5
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -88,22 +95,15 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         self.subTitleLabel.text = "Or Join"
         groupUrlTextField.delegate = self
         
-        view.addSubViews(titleLabel)
         view.addSubViews(topView)
         view.addSubViews(subTitleLabel)
+        topView.addSubview(titleLabel)
         topView.addSubview(urlBackgroundView)
         topView.addSubview(nextButton)
         
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            topView.heightAnchor.constraint(equalToConstant: 161),
-        ])
-        
         let stackView = UIStackView(arrangedSubviews: [groupUrlTextField, scannerImg])
         stackView.axis = .horizontal
-        stackView.spacing = 5
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
         urlBackgroundView.addSubview(stackView)
         
@@ -113,24 +113,33 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
             stackView.bottomAnchor.constraint(equalTo: urlBackgroundView.bottomAnchor, constant: -5),
             scannerImg.widthAnchor.constraint(equalToConstant: 28),
             scannerImg.heightAnchor.constraint(equalToConstant: 28),
-            groupUrlTextField.trailingAnchor.constraint(equalTo: urlBackgroundView.trailingAnchor, constant: -38),
+            scannerImg.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16),
+            groupUrlTextField.trailingAnchor.constraint(equalTo: urlBackgroundView.trailingAnchor, constant: -56),
         ])
+        
         NSLayoutConstraint.activate([
-            topView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 22),
-            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            urlBackgroundView.topAnchor.constraint(equalTo: topView.topAnchor, constant: 18),
-            urlBackgroundView.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 18),
-            urlBackgroundView.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -18),
-            nextButton.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 18),
-            nextButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -18),
-            nextButton.topAnchor.constraint(equalTo: urlBackgroundView.bottomAnchor, constant: 10),
-            urlBackgroundView.heightAnchor.constraint(equalTo: nextButton.heightAnchor),
-            nextButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -18),
+            topView.topAnchor.constraint(equalTo: view.topAnchor, constant: 18),
+            topView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            topView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            
+            titleLabel.topAnchor.constraint(equalTo: topView.topAnchor, constant: 13),
+            titleLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 15),
+            titleLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -15),
+            
+            urlBackgroundView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            urlBackgroundView.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 11),
+            urlBackgroundView.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -10),
+            nextButton.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: 11),
+            nextButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -10),
+            nextButton.topAnchor.constraint(equalTo: urlBackgroundView.bottomAnchor, constant: 7),
+            urlBackgroundView.heightAnchor.constraint(equalToConstant: 60),
+            nextButton.bottomAnchor.constraint(equalTo: topView.bottomAnchor, constant: -12),
+            nextButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
         NSLayoutConstraint.activate([
-            subTitleLabel.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 27),
-            subTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
+            subTitleLabel.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 21),
+            subTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             subTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
         ])
         
@@ -190,10 +199,10 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
             nextButton.isUserInteractionEnabled = false
             nextButton.backgroundColor = Colors.backgroundViewColor
             nextButton.setTitleColor(Colors.buttonTextColor, for: .normal)
-        }else {
+        } else {
             nextButton.isUserInteractionEnabled = true
-            nextButton.backgroundColor = Colors.greenColor
-            nextButton.setTitleColor(UIColor.white, for: .normal)
+            nextButton.backgroundColor = Colors.bothGreenColor
+            nextButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         }
     }
     

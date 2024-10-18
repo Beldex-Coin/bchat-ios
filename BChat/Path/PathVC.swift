@@ -49,7 +49,7 @@ final class PathVC : BaseVC {
         result.addTarget(self, action: #selector(learnMore), for: UIControl.Event.touchUpInside)
         result.layer.borderWidth = 0
         result.setTitleColor(Colors.bchatLabelNameColor, for: .normal)
-        result.layer.backgroundColor = Colors.bchatButtonColor.cgColor
+        result.layer.backgroundColor = Colors.bothGreenColor.cgColor
         return result
     }()
     
@@ -218,7 +218,7 @@ private final class LineView : UIView {
         let glowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
         let glowConfiguration = UIView.CircularGlowConfiguration(size: PathVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
         result.setCircularGlow(with: glowConfiguration)
-        result.backgroundColor = Colors.accent
+        result.backgroundColor = Colors.bothGreenColor
         return result
     }()
     
@@ -281,7 +281,7 @@ private final class LineView : UIView {
     private func expandDot() {
         let newSize = PathVC.expandedDotSize
         let newGlowRadius: CGFloat = isLightMode ? 4 : 6
-        let newGlowColor = Colors.accent.withAlphaComponent(0.6)
+        let newGlowColor = Colors.bothGreenColor.withAlphaComponent(0.6)
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
     }
 
@@ -302,7 +302,7 @@ private final class LineView : UIView {
             self.dotView.layer.cornerRadius = size / 2
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
             self.dotView.setCircularGlow(with: glowConfiguration)
-            self.dotView.backgroundColor = Colors.accent
+            self.dotView.backgroundColor = Colors.bothGreenColor
         }
     }
 }

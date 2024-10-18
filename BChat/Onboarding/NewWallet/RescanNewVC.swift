@@ -31,7 +31,7 @@ class RescanNewVC: BaseVC {
     /// Current Block height Id Title Label
     private lazy var currentBlockheightIdTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 20)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -55,10 +55,10 @@ class RescanNewVC: BaseVC {
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
@@ -87,10 +87,10 @@ class RescanNewVC: BaseVC {
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_FROM_BLOCKHEIGHT", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_FROM_BLOCKHEIGHT", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
         result.leftViewMode = .always
@@ -101,11 +101,11 @@ class RescanNewVC: BaseVC {
     private lazy var rescanButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("RESCAN_BUTTON_TITLE", comment: ""), for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(rescanButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -119,7 +119,7 @@ class RescanNewVC: BaseVC {
         button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         button.layer.borderColor = Colors.borderColor.cgColor
         button.layer.borderWidth = 1
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(iKnowTheBlockHeightButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -142,7 +142,7 @@ class RescanNewVC: BaseVC {
         setUpTopCornerRadius()
         
         iKnowTheBlockHeightButton.addRightIconLongSpace(image: UIImage(named: "ic_right_arrow_New")!.withRenderingMode(.alwaysTemplate))
-        iKnowTheBlockHeightButton.tintColor = Colors.greenColor
+        iKnowTheBlockHeightButton.tintColor = Colors.bothGreenColor
         restoreFromBlockHeightTextField.isHidden = true
         restoreDateHeightTextField.isHidden = false
         
@@ -194,7 +194,7 @@ class RescanNewVC: BaseVC {
     /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        topBackgroundView.layer.cornerRadius = topBackgroundView.frame.height/2
+        topBackgroundView.layer.cornerRadius = Values.buttonRadius
         iKnowTheBlockHeightButton.layer.cornerRadius = iKnowTheBlockHeightButton.frame.height/2
     }
     
@@ -352,7 +352,7 @@ class RescanNewVC: BaseVC {
 extension RescanNewVC: UITextFieldDelegate {
     /// UI Text View Delegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if(textField == restoreFromBlockHeightTextField){
+        if (textField == restoreFromBlockHeightTextField) {
             let aSet = NSCharacterSet(charactersIn:"0123456789").inverted
             let compSepByCharInSet = string.components(separatedBy: aSet)
             let numberFiltered = compSepByCharInSet.joined(separator: "")

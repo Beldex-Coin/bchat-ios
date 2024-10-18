@@ -7,9 +7,9 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
     lazy var contentView: UIView = {
         let result = UIView()
         result.backgroundColor = Colors.modalBackground
-        result.layer.cornerRadius = Modal.cornerRadius
+        result.layer.cornerRadius = 20
         result.layer.masksToBounds = false
-        result.layer.borderColor = isLightMode ? UIColor.white.cgColor : Colors.modalBorder.cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         result.layer.borderWidth = 1
         result.layer.shadowColor = UIColor.black.cgColor
         result.layer.shadowRadius = isLightMode ? 2 : 8
@@ -19,15 +19,12 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
     
     lazy var cancelButton: UIButton = {
         let result = UIButton()
-        result.set(.height, to: 46)
-        result.layer.cornerRadius = 23//Modal.buttonCornerRadius
-//        if isDarkMode {
-//            result.backgroundColor = Colors.buttonBackground
-//        }else {
-//            result.backgroundColor = UIColor.lightGray
-//        }
-        result.backgroundColor = Colors.cancelButtonBackgroundColor2
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.set(.height, to: 52)
+        result.layer.cornerRadius = Values.buttonRadius
+        result.layer.borderWidth = 0.5
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
+        result.backgroundColor = Colors.bothGreenWithAlpha10
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothGrayColor, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         return result

@@ -40,7 +40,7 @@ public final class TextField : UITextField {
         let placeholderColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         placeholder.addAttribute(.foregroundColor, value: placeholderColor, range: NSRange(location: 0, length: placeholder.length))
         attributedPlaceholder = placeholder
-        tintColor = Colors.accent
+        tintColor = Colors.bothGreenColor
         keyboardAppearance = isLightMode ? .light : .dark
         if usesDefaultHeight {
             set(.height, to: height)

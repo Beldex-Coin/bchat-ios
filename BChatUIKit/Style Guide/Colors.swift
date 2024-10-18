@@ -85,7 +85,7 @@ public final class Colors : NSObject {
     @objc public static var textColor: UIColor { UIColor(named: "textColor")! }
     @objc public static var backgroundViewColor2: UIColor { UIColor(named: "backgroundViewColor2")! }
     @objc public static var placeholderColor: UIColor { UIColor(named: "placeholderColor")! }
-    @objc public static var greenColor: UIColor { UIColor(named: "greenColor")! }
+    @objc public static var greenColor: UIColor { UIColor(named: "078720")! }
     @objc public static var blueColor: UIColor { UIColor(named: "blueColor")! }
     @objc public static var buttonBackgroundColor2: UIColor { UIColor(named: "buttonBackgroundColor2")! }
     @objc public static var buttonTextColor: UIColor { UIColor(named: "buttonTextColor")! }
@@ -116,7 +116,7 @@ public final class Colors : NSObject {
     @objc public static var refreshNodePopUpBackgroundColor: UIColor { UIColor(named: "refreshNodePopUpBackgroundColor")! }
     @objc public static var popUpBackgroundColor: UIColor { UIColor(named: "popUpBackgroundColor")! }
     @objc public static var walletSettingsSubTitleLabelColor: UIColor { UIColor(named: "walletSettingsSubTitleLabelColor")! }
-    @objc public static var bothGreenColor: UIColor { UIColor(named: "00BD40")! }
+    @objc public static var bothGreenColor: UIColor { UIColor(named: "078720")! }
     @objc public static var bothRedColor: UIColor { UIColor(named: "FF3E3E")! }
     @objc public static var bothBlueColor: UIColor { UIColor(named: "0085FF")! }
     @objc public static var bothWhiteColor: UIColor { UIColor(named: "FFFFFF")! }
@@ -200,5 +200,7 @@ public final class Colors : NSObject {
     @objc public static var callScreenSpeakerOptionBackgroundColor: UIColor { UIColor(named: "11111A-F4F4F4")! }
     @objc public static var switchOnTintColor: UIColor { UIColor(named: "363645")! }
     @objc public static var noInternetTitleColor: UIColor { UIColor(named: "A7A7BA-6A6A77")! }
+    @objc public static var bothGreenWithAlpha10: UIColor { UIColor(named: "078720-Alpha")! }
+    @objc public static var newBorderColor: UIColor { UIColor(named: "2C2C3B-A7A7BA")! }
     
 }

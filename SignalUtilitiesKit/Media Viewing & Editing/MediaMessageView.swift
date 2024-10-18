@@ -245,11 +245,11 @@ public class MediaMessageView: UIView, OWSAudioPlayerDelegate {
                 
             case .large:
                 label.font = UIFont.ows_regularFont(withSize: ScaleFromIPhone5To7Plus(18, 24))
-                label.textColor = Colors.accent
+                label.textColor = Colors.bothGreenColor
                 
             case .small:
                 label.font = UIFont.ows_regularFont(withSize: ScaleFromIPhone5To7Plus(14, 14))
-                label.textColor = Colors.accent
+                label.textColor = Colors.bothGreenColor
         }
         
         // Content
@@ -300,11 +300,11 @@ public class MediaMessageView: UIView, OWSAudioPlayerDelegate {
                 
             case .large:
                 label.font = UIFont.ows_regularFont(withSize: ScaleFromIPhone5To7Plus(18, 24))
-                label.textColor = Colors.accent
+                label.textColor = Colors.bothGreenColor
                 
             case .small:
                 label.font = UIFont.ows_regularFont(withSize: ScaleFromIPhone5To7Plus(14, 14))
-                label.textColor = Colors.accent
+                label.textColor = Colors.bothGreenColor
         }
         
         // Content
@@ -314,7 +314,7 @@ public class MediaMessageView: UIView, OWSAudioPlayerDelegate {
                 if let targetUrl: URL = URL(string: linkPreviewURL), targetUrl.scheme?.lowercased() != "https" {
                     label.font = UIFont.ows_regularFont(withSize: Values.verySmallFontSize)
                     label.text = "vc_share_link_previews_unsecure".localized()
-                    label.textColor = (mode == .attachmentApproval ? Colors.pinIcon : Colors.accent)
+                    label.textColor = (mode == .attachmentApproval ? Colors.pinIcon : Colors.bothGreenColor)
                 }
             }
             // If we have no link preview info at this point then assume link previews are disabled
@@ -574,7 +574,7 @@ public class MediaMessageView: UIView, OWSAudioPlayerDelegate {
                 else {
                     self?.subtitleLabel.font = UIFont.ows_regularFont(withSize: Values.verySmallFontSize)
                     self?.subtitleLabel.text = "vc_share_link_previews_error".localized()
-                    self?.subtitleLabel.textColor = (self?.mode == .attachmentApproval ? Colors.pinIcon : Colors.accent )
+                    self?.subtitleLabel.textColor = (self?.mode == .attachmentApproval ? Colors.pinIcon : Colors.bothGreenColor )
                     self?.subtitleLabel.textAlignment = .left
                 }
             }

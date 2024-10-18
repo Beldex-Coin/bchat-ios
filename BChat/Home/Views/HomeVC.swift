@@ -303,7 +303,7 @@ final class HomeVC : BaseVC {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
-        View.layer.cornerRadius = 12
+        View.layer.cornerRadius = Values.buttonRadius
         View.layer.borderColor = Colors.borderColorNew.cgColor
         View.layer.borderWidth = 1
         View.isHidden = true

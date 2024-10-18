@@ -16,8 +16,8 @@ class FeePriorityVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Fee Priority"
         return result
@@ -33,20 +33,20 @@ class FeePriorityVC: BaseVC {
     lazy var flashButton: UIButton = {
         let button = UIButton()
         button.setTitle("Flash", for: .normal)
-        button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         return button
     }()
     lazy var slowButton: UIButton = {
         let button = UIButton()
         button.setTitle("Slow", for: .normal)
-        button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(slowButtonButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -93,6 +93,7 @@ class FeePriorityVC: BaseVC {
             }
         }else{
             flashButton.setTitle("Flash", for: .normal)
+            flashButtonUtilities()
         }
         
     }
@@ -114,25 +115,25 @@ class FeePriorityVC: BaseVC {
     }
     
     func flashButtonUtilities(){
-        flashButton.layer.borderWidth = 2
+        flashButton.layer.borderWidth = 1
         flashButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        flashButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         flashButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         slowButton.layer.borderWidth = 1
         slowButton.layer.borderColor = Colors.borderColorNew.cgColor
-        slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        slowButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         slowButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func slowButtonButtonUtilities(){
-        slowButton.layer.borderWidth = 2
+        slowButton.layer.borderWidth = 1
         slowButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        slowButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 18)
+        slowButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         slowButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         flashButton.layer.borderWidth = 1
         flashButton.layer.borderColor = Colors.borderColorNew.cgColor
-        flashButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
+        flashButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
         flashButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
 

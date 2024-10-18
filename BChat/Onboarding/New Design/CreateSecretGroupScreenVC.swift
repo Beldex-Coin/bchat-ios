@@ -6,16 +6,6 @@ import BChatMessagingKit
 
 class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
-    private lazy var titleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.titleColor3
-        result.font = Fonts.boldOpenSans(ofSize: 22)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.numberOfLines = 0
-        return result
-    }()
-    
     private lazy var groupNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor3
@@ -23,8 +13,8 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor3
-        result.layer.cornerRadius = 16
-        result.setLeftPaddingPoints(23)
+        result.layer.cornerRadius = Values.buttonRadius
+        result.setLeftPaddingPoints(12)
         result.attributedPlaceholder = NSAttributedString(
             string: "Enter Group name",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
@@ -66,7 +56,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         // Create an UIImageView and set its image for search icon
         let searchIconImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
-        searchIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 12)
+        searchIconImageView.frame = CGRect(x: 0, y: 0, width: 16, height: 16)
         searchIconImageView.contentMode = .scaleAspectFit
         paddingViewRight.addSubview(searchIconImageView)
         
@@ -111,7 +101,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     private lazy var createButton: UIButton = {
         let button = UIButton()
         button.setTitle("Create", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
@@ -136,7 +126,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "Secret Group"
         
-        view.addSubViews(titleLabel, groupNameTextField, separatorView, searchTextField, bottomButtonView, searchImageView)
+        view.addSubViews(groupNameTextField, separatorView, searchTextField, bottomButtonView, searchImageView)
         bottomButtonView.addSubview(createButton)
         view.addSubview(tableView)
         
@@ -144,7 +134,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         searchTextField.delegate = self
         
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
-        tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 14.0).isActive = true
+        tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 12.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
         tableView.bottomAnchor.constraint(equalTo: bottomButtonView.topAnchor, constant: 0).isActive = true
         tableView.dataSource = self
@@ -154,7 +144,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         tableView.backgroundColor = .clear
         tableView.showsVerticalScrollIndicator = false
         
-        self.titleLabel.text = "Create Secret Group"
         
         createButton.backgroundColor = Colors.bothGreenColor
         createButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
@@ -166,23 +155,21 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             
-            groupNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            groupNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            groupNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            groupNameTextField.heightAnchor.constraint(equalToConstant: 60),
+            groupNameTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            groupNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            groupNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            groupNameTextField.heightAnchor.constraint(equalToConstant: 48),
             
             
-            separatorView.topAnchor.constraint(equalTo: groupNameTextField.bottomAnchor, constant: 20),
+            separatorView.topAnchor.constraint(equalTo: groupNameTextField.bottomAnchor, constant: 14),
             separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             separatorView.heightAnchor.constraint(equalToConstant: 0.5),
             
-            searchTextField.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 19),
-            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            searchTextField.topAnchor.constraint(equalTo: separatorView.bottomAnchor, constant: 14),
+            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             searchTextField.heightAnchor.constraint(equalToConstant: 48),
             
             searchImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -34),

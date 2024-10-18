@@ -17,7 +17,7 @@ class NewDesignSecretGroupVC: BaseVC, UITableViewDataSource, UITableViewDelegate
         button.setTitle(NSLocalizedString("CREATE_GROUP", comment: ""), for: .normal)
         button.layer.cornerRadius = 20
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         return button

@@ -43,7 +43,7 @@ class RestoreSeedNewVC: BaseVC {
     private lazy var mnemonicTextView: UITextView = {
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.borderColor = Colors.bchatButtonColor.cgColor
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = .clear
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.font = Fonts.OpenSans(ofSize: 14)
@@ -55,13 +55,13 @@ class RestoreSeedNewVC: BaseVC {
         let button = UIButton()
         button.backgroundColor = UIColor(hex: 0x1C1C26)
         button.setTitle(NSLocalizedString("CLEAR_BUTTON", comment: ""), for: .normal)
-        let image = UIImage(named: "ic_EraseNew")?.scaled(to: CGSize(width: 20.0, height: 20.0))
+        let image = UIImage(named: "ic_EraseNew")?.scaled(to: CGSize(width: 15.0, height: 15.0))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: 0xA7A7BA) // Set the tint color to white
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor(hex: 0xA7A7BA), for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -71,9 +71,9 @@ class RestoreSeedNewVC: BaseVC {
         let result = UIButton(type: .custom)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : Values.mediumFontSize)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreActionTapped), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)
         return result
@@ -84,7 +84,7 @@ class RestoreSeedNewVC: BaseVC {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.text = NSLocalizedString("PASTE_THE_SEED_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -165,7 +165,7 @@ class RestoreSeedNewVC: BaseVC {
     /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        clearButton.layer.cornerRadius = clearButton.bounds.height / 2
+        clearButton.layer.cornerRadius = Values.buttonRadius
     }
     
     deinit {
@@ -183,7 +183,7 @@ class RestoreSeedNewVC: BaseVC {
         placeholderLabel.sizeToFit()
         mnemonicTextView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 2, y: 8)
-        placeholderLabel.textColor = UIColor.lightGray
+        placeholderLabel.textColor = Colors.noDataLabelColor
         placeholderLabel.isHidden = !mnemonicTextView.text.isEmpty
     }
     
@@ -280,7 +280,7 @@ extension RestoreSeedNewVC: UITextViewDelegate {
         if words.count == 25 {
             seedFlag = true
             descriptionLabel.isHidden = true
-            restoreButton.backgroundColor = UIColor(hex: 0x00BD40)
+            restoreButton.backgroundColor = Colors.bothGreenColor
             restoreButton.setTitleColor(.white, for: .normal)
             restoreButton.isUserInteractionEnabled = true
         } else {

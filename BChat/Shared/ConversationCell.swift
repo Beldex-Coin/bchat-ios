@@ -30,7 +30,7 @@ final class ConversationCell : UITableViewCell {
     private lazy var unreadCountView: UIView = {
         let result = UIView()
       //  result.backgroundColor = Colors.text.withAlphaComponent(Values.veryLowOpacity)
-        result.backgroundColor = Colors.bchatButtonColor
+        result.backgroundColor = Colors.bothGreenColor
         let size = ConversationCell.unreadCountViewSize
         result.set(.width, greaterThanOrEqualTo: size)
         result.set(.height, to: size)

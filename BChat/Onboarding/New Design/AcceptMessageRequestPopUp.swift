@@ -17,7 +17,7 @@ class AcceptMessageRequestPopUp: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -27,7 +27,7 @@ class AcceptMessageRequestPopUp: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to accept this request?"
         result.numberOfLines = 0
@@ -38,10 +38,11 @@ class AcceptMessageRequestPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Yes", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothRedColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -49,10 +50,12 @@ class AcceptMessageRequestPopUp: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -64,7 +67,7 @@ class AcceptMessageRequestPopUp: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -86,8 +89,8 @@ class AcceptMessageRequestPopUp: BaseVC {
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
-            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
+            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
@@ -133,7 +136,7 @@ class DeleteMessageRequestPopUp: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -143,7 +146,7 @@ class DeleteMessageRequestPopUp: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to delete this request?"
         result.numberOfLines = 0
@@ -154,10 +157,11 @@ class DeleteMessageRequestPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Yes", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothRedColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -165,10 +169,12 @@ class DeleteMessageRequestPopUp: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -180,7 +186,7 @@ class DeleteMessageRequestPopUp: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -202,8 +208,8 @@ class DeleteMessageRequestPopUp: BaseVC {
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
-            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
+            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
@@ -250,7 +256,7 @@ class BlockMessageRequestPopUp: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Message Request"
@@ -260,7 +266,7 @@ class BlockMessageRequestPopUp: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to Block this user?"
         result.numberOfLines = 0
@@ -271,10 +277,11 @@ class BlockMessageRequestPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Yes", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothRedColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -282,10 +289,12 @@ class BlockMessageRequestPopUp: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -297,7 +306,7 @@ class BlockMessageRequestPopUp: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -319,8 +328,8 @@ class BlockMessageRequestPopUp: BaseVC {
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 17),
-            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -17),
+            backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
             titleLabel.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),

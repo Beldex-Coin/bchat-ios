@@ -52,8 +52,8 @@ final class QuoteView : UIView {
     private var lineColor: UIColor {
         switch (mode, AppModeManager.shared.currentAppMode) {
         case (.regular, .light), (.draft, .light): return .black
-        case (.regular, .dark): return (direction == .outgoing) ? .black : Colors.accent
-        case (.draft, .dark): return Colors.accent
+        case (.regular, .dark): return (direction == .outgoing) ? .black : Colors.bothGreenColor
+        case (.draft, .dark): return Colors.bothGreenColor
         }
     }
 

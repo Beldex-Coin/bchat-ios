@@ -283,7 +283,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.bothGreenColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -323,7 +323,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -364,7 +364,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -373,7 +373,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -382,7 +382,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     

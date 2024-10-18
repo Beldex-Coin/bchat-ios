@@ -29,7 +29,7 @@ class OwnSeedWarningPopUp: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Warning"
         return result
@@ -49,11 +49,11 @@ class OwnSeedWarningPopUp: BaseVC {
     private lazy var sendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Send", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(Colors.bothRedColor, for: .normal)
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -61,10 +61,12 @@ class OwnSeedWarningPopUp: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -76,7 +78,7 @@ class OwnSeedWarningPopUp: BaseVC {
         result.axis = .horizontal
         result.alignment = .fill
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()

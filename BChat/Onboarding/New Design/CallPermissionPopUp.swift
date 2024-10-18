@@ -52,7 +52,7 @@ class CallPermissionPopUp: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Voice/Video Calls"
         return result
@@ -72,10 +72,10 @@ class CallPermissionPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("Enable", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -84,10 +84,12 @@ class CallPermissionPopUp: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -99,7 +101,7 @@ class CallPermissionPopUp: BaseVC {
         result.axis = .horizontal
         result.alignment = .fill
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -129,7 +131,6 @@ class CallPermissionPopUp: BaseVC {
             iconView.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             iconView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 24),
             
-            
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 14),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
             
@@ -143,9 +144,7 @@ class CallPermissionPopUp: BaseVC {
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -16),
             buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -21),
             buttonStackView.heightAnchor.constraint(equalToConstant: 52),
-            
             okButton.heightAnchor.constraint(equalToConstant: 52),
-            
             cancelButton.heightAnchor.constraint(equalToConstant: 52),
         ])
         

@@ -149,6 +149,24 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
+    private lazy var messageTailRightView: UIView = {
+        let result = RightTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
+    private lazy var messageTailLeftView: UIView = {
+        let result = LeftTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
     private lazy var replyIconImageView: UIImageView = {
         let result = UIImageView()
         let size = VisibleMessageCell.replyButtonSize
@@ -161,12 +179,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var timerView = OWSMessageTimerView()
     
     // MARK: Settings
-    private static let messageStatusImageViewSize: CGFloat = 0//16
+    private static let messageStatusImageViewSize: CGFloat = 0
     private static let authorLabelBottomSpacing: CGFloat = 4
     private static let groupThreadHSpacing: CGFloat = 12
     private static let profilePictureSize = Values.verySmallProfilePictureSize
     private static let authorLabelInset: CGFloat = 12
-    private static let replyButtonSize: CGFloat = 18//24
+    private static let replyButtonSize: CGFloat = 18
     private static let maxBubbleTranslationX: CGFloat = 40
     private static let swipeToReplyThreshold: CGFloat = 110
     static let smallCornerRadius: CGFloat = 4
@@ -226,6 +244,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         moderatorIconImageView.pin(.bottom, to: .bottom, of: profilePictureView, withInset: 4.5)
         // Bubble view
         addSubview(bubbleView)
+        addSubview(messageTailRightView)
+        addSubview(messageTailLeftView)
         bubbleViewLeftConstraint1.isActive = true
         bubbleViewTopConstraint.isActive = true
         bubbleViewRightConstraint1.isActive = true
@@ -258,6 +278,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         statusImageOutgoing.isActive = true
         messageStatusImageViewNew.center(.vertical, in: bubbleView)
         verifiedImageView.isHidden = true
+        
+        messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
+        messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
+        messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
+        messageTailLeftView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
     }
     
     override func setUpGestureRecognizers() {
@@ -316,6 +341,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewRightConstraint1.isActive = (direction == .outgoing)
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
         bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
+        messageTailRightView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
+        messageTailLeftView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         updateBubbleViewCorners()
         messageTimeBottomLabel.isHidden = false
         // Content view
@@ -628,7 +655,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath
-        bubbleView.layer.cornerRadius = 18
+        bubbleView.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
+        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
     }
     
     override func prepareForReuse() {
@@ -666,7 +694,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     func highlight() {
-        let shawdowColour = isLightMode ? UIColor.black.cgColor : Colors.accent.cgColor
+        let shawdowColour = isLightMode ? UIColor.black.cgColor : Colors.bothGreenColor.cgColor
         let opacity : Float = isLightMode ? 0.5 : 1
         bubbleView.setShadow(radius: 10, opacity: opacity, offset: .zero, color: shawdowColour)
         DispatchQueue.main.async {
@@ -771,15 +799,28 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     // MARK: Convenience
     private func getCornersToRound() -> UIRectCorner {
-        guard !isOnlyMessageInCluster else { return .allCorners }
+        messageTailRightView.isHidden = true
+        messageTailLeftView.isHidden = true
+        guard !isOnlyMessageInCluster else {
+            switch (direction) {
+                case (.outgoing):
+                messageTailRightView.isHidden = false
+                return [ .topLeft, .topRight, .bottomLeft ]
+                case (.incoming):
+                messageTailLeftView.isHidden = false
+                return [ .topLeft, .topRight, .bottomRight]
+            }
+        }
         let result: UIRectCorner
         switch (positionInCluster, direction) {
-            case (.top, .outgoing): result = [ .bottomLeft, .topLeft, .topRight ]
-            case (.middle, .outgoing): result = [ .bottomLeft, .topLeft ]
-            case (.bottom, .outgoing): result = [ .bottomRight, .bottomLeft, .topLeft ]
-            case (.top, .incoming): result = [ .topLeft, .topRight, .bottomRight ]
-            case (.middle, .incoming): result = [ .topRight, .bottomRight ]
-            case (.bottom, .incoming): result = [ .topRight, .bottomRight, .bottomLeft ]
+            case (.top, .outgoing): result = .allCorners
+            case (.middle, .outgoing): result = .allCorners
+        case (.bottom, .outgoing): result = [ .topLeft, .topRight, .bottomLeft ]
+            messageTailRightView.isHidden = false
+            case (.top, .incoming): result = .allCorners
+            case (.middle, .incoming): result = .allCorners
+        case (.bottom, .incoming): result = [ .topLeft, .topRight, .bottomRight]
+            messageTailLeftView.isHidden = false
             case (nil, _): result = .allCorners
         }
         return result
