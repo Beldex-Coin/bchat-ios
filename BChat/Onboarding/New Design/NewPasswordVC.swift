@@ -42,10 +42,10 @@ class NewPasswordVC: BaseVC {
     private lazy var nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("Next", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
@@ -72,7 +72,7 @@ class NewPasswordVC: BaseVC {
     private lazy var firstPinView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 8
+        result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
@@ -81,7 +81,7 @@ class NewPasswordVC: BaseVC {
     private lazy var secondPinView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 8
+        result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
@@ -90,7 +90,7 @@ class NewPasswordVC: BaseVC {
     private lazy var thirdPinView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 8
+        result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
@@ -99,7 +99,7 @@ class NewPasswordVC: BaseVC {
     private lazy var fourthPinView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 8
+        result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         return result
@@ -148,7 +148,7 @@ class NewPasswordVC: BaseVC {
     private lazy var pinLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleNewColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -159,7 +159,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -167,7 +167,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -175,7 +175,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -183,7 +183,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -191,7 +191,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -199,7 +199,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -207,7 +207,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -215,7 +215,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -223,7 +223,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -231,7 +231,7 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -239,14 +239,14 @@ class NewPasswordVC: BaseVC {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
     private lazy var emptyView: UIView = {
         let result = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 13
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -293,7 +293,7 @@ class NewPasswordVC: BaseVC {
     private lazy var oneButton: UIButton = {
         let button = UIButton()
         button.setTitle("1", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -306,7 +306,7 @@ class NewPasswordVC: BaseVC {
     private lazy var twoButton: UIButton = {
         let button = UIButton()
         button.setTitle("2", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -319,7 +319,7 @@ class NewPasswordVC: BaseVC {
     private lazy var threeButton: UIButton = {
         let button = UIButton()
         button.setTitle("3", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -332,7 +332,7 @@ class NewPasswordVC: BaseVC {
     private lazy var fourButton: UIButton = {
         let button = UIButton()
         button.setTitle("4", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -345,7 +345,7 @@ class NewPasswordVC: BaseVC {
     private lazy var fiveButton: UIButton = {
         let button = UIButton()
         button.setTitle("5", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -358,7 +358,7 @@ class NewPasswordVC: BaseVC {
     private lazy var sixButton: UIButton = {
         let button = UIButton()
         button.setTitle("6", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -371,7 +371,7 @@ class NewPasswordVC: BaseVC {
     private lazy var sevenButton: UIButton = {
         let button = UIButton()
         button.setTitle("7", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -384,7 +384,7 @@ class NewPasswordVC: BaseVC {
     private lazy var eightButton: UIButton = {
         let button = UIButton()
         button.setTitle("8", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -397,7 +397,7 @@ class NewPasswordVC: BaseVC {
     private lazy var nineButton: UIButton = {
         let button = UIButton()
         button.setTitle("9", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -410,7 +410,7 @@ class NewPasswordVC: BaseVC {
     private lazy var zeroButton: UIButton = {
         let button = UIButton()
         button.setTitle("0", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
@@ -423,7 +423,7 @@ class NewPasswordVC: BaseVC {
     private lazy var clearButton: UIButton = {
         let button = UIButton()
         button.setTitle("", for: .normal)
-        button.layer.cornerRadius = 13
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)

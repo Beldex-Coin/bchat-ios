@@ -11,7 +11,6 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         let stackView = QRScannerView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = UIColor(hex: 0x000000)
-        stackView.layer.cornerRadius = 16
         stackView.delegate = self
         return stackView
     }()
@@ -24,13 +23,13 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 15, height: 15))
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 9)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
-        button.layer.borderColor = Colors.greenColor.cgColor
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.layer.borderWidth = 1
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(uploadFromGalleryButtonTapped), for: .touchUpInside)
         return button
     }()

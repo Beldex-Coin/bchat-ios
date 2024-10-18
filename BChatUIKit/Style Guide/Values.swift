@@ -53,4 +53,7 @@ public final class Values : NSObject {
     @objc public static let iPadButtonSpacing = CGFloat(32)
     @objc public static let iPadUserBChatIdContainerWidth = iPadButtonWidth * 2 + iPadButtonSpacing
     @objc public static let iPadButtonContainerMargin = (UIScreen.main.bounds.width - iPadButtonSpacing) / 2 - iPadButtonWidth - largeSpacing
+    
+    // MARK: - Corner Radius
+    @objc public static let buttonRadius = CGFloat(12)
 }

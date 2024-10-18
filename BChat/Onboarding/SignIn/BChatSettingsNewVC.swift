@@ -322,9 +322,9 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         footerView.backgroundColor = Colors.viewBackgroundColorNew
         let label = UILabel()
         label.text = sectionNames[section]
-        label.textColor = Colors.greenColor
+        label.textColor = Colors.bothGreenColor
         label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
-        label.font = Fonts.semiOpenSans(ofSize: 18)
+        label.font = Fonts.semiOpenSans(ofSize: 16)
         footerView.addSubview(label)
         return footerView
     }
@@ -665,7 +665,7 @@ class BChatSettingsTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -754,7 +754,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -852,7 +852,7 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.text = "Screen Lock Timeout"
         result.translatesAutoresizingMaskIntoConstraints = false

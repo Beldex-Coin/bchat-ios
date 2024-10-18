@@ -17,7 +17,7 @@ class NewRecoverySeedVC: BaseVC {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.yellowColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.semiOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Copy your Recovery Seed and\nkeep it safe."
         result.adjustsFontSizeToFitWidth = true
@@ -30,7 +30,7 @@ class NewRecoverySeedVC: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.seedBackgroundColor
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = Values.buttonRadius
          stackView.layer.borderWidth = 1
         stackView.layer.borderColor = Colors.noBorderColor2.cgColor
         return stackView
@@ -56,10 +56,10 @@ class NewRecoverySeedVC: BaseVC {
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 0, right: 0)
         button.semanticContentAttribute = .forceRightToLeft
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button

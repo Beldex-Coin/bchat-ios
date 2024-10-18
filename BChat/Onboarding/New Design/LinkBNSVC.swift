@@ -22,7 +22,7 @@ class LinkBNSVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 20)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Link BNS"
         return result
@@ -41,7 +41,7 @@ class LinkBNSVC: BaseVC {
     private lazy var bchatIdLabel: UILabel = {
         let result = PaddingLabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.paddingTop = 13
@@ -49,7 +49,7 @@ class LinkBNSVC: BaseVC {
         result.paddingRight = 16
         result.paddingBottom = 13
         result.numberOfLines = 0
-        result.layer.cornerRadius = 10
+        result.layer.cornerRadius = Values.buttonRadius
         result.layer.masksToBounds = true
         return result
     }()
@@ -71,7 +71,7 @@ class LinkBNSVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.placeholder = "Enter BNS name"
         result.backgroundColor = Colors.cancelButtonBackgroundColor2
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(17)
         return result
     }()
@@ -79,10 +79,12 @@ class LinkBNSVC: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -91,10 +93,10 @@ class LinkBNSVC: BaseVC {
     private lazy var verifyButton: UIButton = {
         let button = UIButton()
         button.setTitle("Verify", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(verifyButtonTapped), for: .touchUpInside)
         return button
@@ -103,10 +105,10 @@ class LinkBNSVC: BaseVC {
     private lazy var linkButton: UIButton = {
         let button = UIButton()
         button.setTitle("Link", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
         return button
@@ -118,7 +120,7 @@ class LinkBNSVC: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()

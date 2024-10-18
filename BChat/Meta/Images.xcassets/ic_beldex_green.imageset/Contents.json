@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ic_beldex_green.png",
+      "filename" : "beldex.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ic_beldex_green@2x.png",
+      "filename" : "beldex@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ic_beldex_green@3x.png",
+      "filename" : "beldex@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

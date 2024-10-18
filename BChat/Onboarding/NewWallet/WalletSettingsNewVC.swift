@@ -143,7 +143,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         label.text = sectionNames[section]
         label.textColor = Colors.greenColor
         label.frame = CGRect(x: 30, y: 0, width: tableView.frame.width - 30, height: 30)
-        label.font = Fonts.semiOpenSans(ofSize: 18)
+        label.font = Fonts.boldOpenSans(ofSize: 16)
         footerView.addSubview(label)
         return footerView
     }
@@ -191,7 +191,7 @@ class CurrentNodeTableCell: UITableViewCell {
     lazy var currentNodeTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.greenColor
-        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("CURRENT_NODE_TITLE_NEW", comment: "")
@@ -282,7 +282,7 @@ class PersonalSettingsTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("ADDRESS_BOOK_TITLE_NEW", comment: "")
@@ -602,7 +602,7 @@ class WalletSettingsSubTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -612,7 +612,7 @@ class WalletSettingsSubTableCell: UITableViewCell {
     lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletSettingsSubTitleLabelColor
-        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

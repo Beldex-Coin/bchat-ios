@@ -9,7 +9,7 @@ class AllMediaCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 12
+        imageView.layer.cornerRadius = Values.buttonRadius
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "ic_placeholder_media")
         return imageView

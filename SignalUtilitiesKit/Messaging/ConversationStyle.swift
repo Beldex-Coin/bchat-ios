@@ -215,7 +215,7 @@ public class ConversationStyle: NSObject {
 
     @objc
     public func quotedReplyStripeColor(isIncoming: Bool) -> UIColor {
-        return isLightMode ? UIColor(hex: 0x272726) : Colors.accent
+        return isLightMode ? UIColor(hex: 0x272726) : Colors.bothGreenColor
     }
 
     @objc

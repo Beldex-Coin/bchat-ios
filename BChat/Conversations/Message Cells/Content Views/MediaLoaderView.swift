@@ -17,7 +17,7 @@ final class MediaLoaderView : UIView {
     }
     
     private func setUpViewHierarchy() {
-        bar.backgroundColor = Colors.accent
+        bar.backgroundColor = Colors.bothGreenColor
         bar.set(.height, to: 8)
         addSubview(bar)
         barLeftConstraint.isActive = true

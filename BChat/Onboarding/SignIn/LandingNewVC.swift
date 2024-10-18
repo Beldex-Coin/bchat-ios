@@ -11,13 +11,13 @@ class LandingNewVC: BaseVC {
     private lazy var createButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = Colors.bchatButtonColor
-        result.layer.cornerRadius = result.frame.height / 2
+        result.backgroundColor = Colors.bothGreenColor
+        result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
         result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(createButtonActionTapped), for: UIControl.Event.touchUpInside)
-        result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         return result
     }()
     
@@ -25,15 +25,15 @@ class LandingNewVC: BaseVC {
     private lazy var restoreButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x3B3946)
-        result.layer.cornerRadius = result.frame.height / 2
+        result.backgroundColor = Colors.cellGroundColor3
+        result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
         result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreButtonActionTapped), for: UIControl.Event.touchUpInside)
-        result.setTitleColor(UIColor(hex: 0xFFFFFF), for: .normal)
+        result.setTitleColor(Colors.titleColor3, for: .normal)
         result.layer.borderWidth = 1
-        result.layer.borderColor = UIColor(hex: 0x4B4B64).cgColor
+        result.layer.borderColor = Colors.borderColorNew.cgColor
         return result
     }()
     
@@ -42,7 +42,7 @@ class LandingNewVC: BaseVC {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS_NEW", comment: ""), for: .normal)
-        result.setTitleColor(UIColor(hex: 0xA7A7BA), for: .normal)
+        result.setTitleColor(Colors.textFieldPlaceHolderColor, for: .normal)
         result.contentHorizontalAlignment = .center
         result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(termsAndConditionsButtonActionTapped), for: .touchUpInside)
@@ -114,7 +114,7 @@ class LandingNewVC: BaseVC {
         
         // Set up title label
         let titleLabel0 = UILabel()
-        titleLabel0.textColor = UIColor(hex: 0xFFFFFF)
+        titleLabel0.textColor = Colors.titleColor4
         titleLabel0.font = Fonts.extraBoldOpenSans(ofSize: 28)
         titleLabel0.translatesAutoresizingMaskIntoConstraints = false
         titleLabel0.text = NSLocalizedString("WELCOME_TO_NEW", comment: "")
@@ -129,13 +129,13 @@ class LandingNewVC: BaseVC {
         // Set up title label
         let hellotitleLabel = UILabel()
         hellotitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        hellotitleLabel.textColor = UIColor(hex: 0xFFFFFF)
+        hellotitleLabel.textColor = Colors.titleColor4
         hellotitleLabel.font = Fonts.extraBoldOpenSans(ofSize: 28)
         hellotitleLabel.text = NSLocalizedString("HELLO_NEW", comment: "")
         
         let titleLabel2 = UILabel()
         titleLabel2.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel2.textColor = UIColor(hex: 0xFFFFFF)
+        titleLabel2.textColor = Colors.titleColor4
         titleLabel2.font = Fonts.extraBoldOpenSans(ofSize: 28)
         titleLabel2.text = NSLocalizedString("HELLO_SUBTITLE_NEW1", comment: "")
         titleLabel2.numberOfLines = 0
@@ -143,15 +143,15 @@ class LandingNewVC: BaseVC {
         
         let titleLabel3 = UILabel()
         titleLabel3.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel3.textColor = UIColor(hex: 0xFFFFFF)
-        titleLabel3.font = Fonts.boldOpenSans(ofSize: 28)
+        titleLabel3.textColor = Colors.titleColor4
+        titleLabel3.font = Fonts.extraBoldOpenSans(ofSize: 28)
         titleLabel3.text = NSLocalizedString("HELLO_SUBTITLE_NEW2", comment: "")
         titleLabel3.numberOfLines = 0
         
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
-        explanationLabel.textColor = UIColor(hex: 0xFFFFFF)
+        explanationLabel.textColor = Colors.titleColor4
         explanationLabel.font = Fonts.lightOpenSans(ofSize: 14)
         explanationLabel.text = NSLocalizedString("HELLO_SUBTITLE_DECSC_NEW", comment: "")
         explanationLabel.numberOfLines = 0
@@ -237,8 +237,8 @@ class LandingNewVC: BaseVC {
     /// View Did Layout Subviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        createButton.layer.cornerRadius = createButton.bounds.height / 2
-        restoreButton.layer.cornerRadius = restoreButton.bounds.height / 2
+        createButton.layer.cornerRadius = Values.buttonRadius
+        restoreButton.layer.cornerRadius = Values.buttonRadius
     }
     
     // MARK: - Navigation
@@ -246,7 +246,7 @@ class LandingNewVC: BaseVC {
         termsAndConditionsButton.isSelected = !termsAndConditionsButton.isSelected
         if termsAndConditionsButton.isSelected {
             isChecked = true
-            createButton.backgroundColor = Colors.bchatButtonColor
+            createButton.backgroundColor = Colors.bothGreenColor
             let img = UIImage(named: "ic_Newcheckbox")!
             checkUncheckButton.tintColor = .white
             checkUncheckButton.setImage(img, for: .normal)
@@ -254,7 +254,7 @@ class LandingNewVC: BaseVC {
             isChecked = false
             let img = UIImage(named: "ic_Newunchecked")!
             checkUncheckButton.tintColor = .white
-            createButton.backgroundColor = Colors.bchatButtonColor
+            createButton.backgroundColor = Colors.bothGreenColor
             checkUncheckButton.setImage(img, for: .normal)
         }
     }

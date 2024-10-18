@@ -41,7 +41,7 @@ class SelectDateRangePopUpVC: BaseVC {
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_green"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
@@ -69,7 +69,7 @@ class SelectDateRangePopUpVC: BaseVC {
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_blue"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)

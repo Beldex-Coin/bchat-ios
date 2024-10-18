@@ -19,7 +19,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var seedInfoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.yellowColor
-        result.font = Fonts.boldOpenSans(ofSize: 17)
+        result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         result.lineBreakMode = .byWordWrapping
@@ -52,7 +52,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 6
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         
         return result
@@ -61,10 +61,10 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var saveButton: UIButton = {
         let button = UIButton()
         button.setTitle("Save", for: .normal)
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -76,10 +76,12 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         button.semanticContentAttribute = .forceRightToLeft
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor3
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()    
@@ -87,7 +89,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -96,10 +98,10 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("Continue", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -195,6 +197,9 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
             continueButton.heightAnchor.constraint(equalToConstant: 58),
         ])
         
+        continueButton.backgroundColor = Colors.cellGroundColor2
+        continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
+        
     }
      
     
@@ -215,6 +220,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     @objc private func copyButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
+        continueButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         self.showToast(message: "Copied", seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
@@ -223,7 +229,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     @objc private func saveButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
-//        self.showToastMsg(message: "Please save the seed", seconds: 1.0)
+        continueButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true

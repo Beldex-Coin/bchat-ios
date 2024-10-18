@@ -155,7 +155,7 @@ public final class SearchResultsBar : UIView {
         let icon = #imageLiteral(resourceName: "ic_chevron_up").withRenderingMode(.alwaysTemplate)
         let result = UIButton()
         result.setImage(icon, for: UIControl.State.normal)
-        result.tintColor = Colors.accent
+        result.tintColor = Colors.bothGreenColor
         result.addTarget(self, action: #selector(handleUpButtonTapped), for: UIControl.Event.touchUpInside)
         return result
     }()
@@ -164,7 +164,7 @@ public final class SearchResultsBar : UIView {
         let icon = #imageLiteral(resourceName: "ic_chevron_down").withRenderingMode(.alwaysTemplate)
         let result = UIButton()
         result.setImage(icon, for: UIControl.State.normal)
-        result.tintColor = Colors.accent
+        result.tintColor = Colors.bothGreenColor
         result.addTarget(self, action: #selector(handleDownButtonTapped), for: UIControl.Event.touchUpInside)
         return result
     }()

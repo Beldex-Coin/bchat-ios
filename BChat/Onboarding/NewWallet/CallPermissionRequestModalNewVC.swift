@@ -48,11 +48,11 @@ class CallPermissionRequestModalNewVC: UIViewController {
     private lazy var settingsButton: UIButton = {
         let button = UIButton()
         button.setTitle("Settings", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -60,11 +60,13 @@ class CallPermissionRequestModalNewVC: UIViewController {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.profileImageViewButtonColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(Colors.callPermissionCancelbtnColor, for: .normal)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()

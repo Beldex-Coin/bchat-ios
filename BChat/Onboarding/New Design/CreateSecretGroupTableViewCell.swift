@@ -55,7 +55,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.boldOpenSans(ofSize: 16)
+       result.font = Fonts.OpenSans(ofSize: 16)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result
@@ -91,7 +91,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
             profileImageView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 10),
             profileImageView.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             nameLabel.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 26),
+            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             nameLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -44),
             selectionButton.centerYAnchor.constraint(equalTo: backGroundView.centerYAnchor),
             selectionButton.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -14),

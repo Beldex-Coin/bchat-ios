@@ -15,8 +15,8 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("SEARCH_CONTACT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.placeholderColor])
         result.font = Fonts.OpenSans(ofSize: 14)
-        result.layer.borderColor = Colors.borderColor.cgColor
-        result.backgroundColor = Colors.searchViewBackgroundColor
+        result.layer.borderColor = Colors.borderColor3.cgColor
+        result.backgroundColor = Colors.cellGroundColor3
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 24
         result.layer.borderWidth = 1
@@ -480,7 +480,7 @@ class AddressBookTableCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.addressBookNoContactLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

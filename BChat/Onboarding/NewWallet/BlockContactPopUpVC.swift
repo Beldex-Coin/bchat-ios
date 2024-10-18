@@ -19,8 +19,8 @@ class BlockContactPopUpVC: BaseVC {
     /// Title Label
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
-        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Block contact"
         result.numberOfLines = 0
@@ -32,7 +32,7 @@ class BlockContactPopUpVC: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Are you sure you want to Block this contact?"
         result.numberOfLines = 0
@@ -44,11 +44,11 @@ class BlockContactPopUpVC: BaseVC {
     private lazy var yesButton: UIButton = {
         let button = UIButton()
         button.setTitle("Yes", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -57,11 +57,13 @@ class BlockContactPopUpVC: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.profileImageViewButtonColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        button.setTitleColor(UIColor(hex: 0xACACAC), for: .normal)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -72,7 +74,7 @@ class BlockContactPopUpVC: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 7
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()

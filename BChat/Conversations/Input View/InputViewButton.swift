@@ -47,7 +47,7 @@ final class InputViewButton : UIView {
         backgroundColor = .clear
         if hasOpaqueBackground {
             let backgroundView = UIView()
-            backgroundView.backgroundColor = Colors.accent
+            backgroundView.backgroundColor = Colors.bothGreenColor
             addSubview(backgroundView)
             backgroundView.pin(to: self)
             let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))

@@ -38,10 +38,10 @@ class PINSuccessPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button

@@ -28,7 +28,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var importantLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Important"
         result.adjustsFontSizeToFitWidth = true
@@ -38,7 +38,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var label1: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("NEVER_SHARE_YOUR_SEED_WITH_ANYONE", comment: "")
         result.adjustsFontSizeToFitWidth = true
@@ -61,7 +61,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var label3: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.font = Fonts.semiOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION2", comment: "")
         result.adjustsFontSizeToFitWidth = true
@@ -74,10 +74,10 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var nextButton: UIButton = {
         let button = UIButton()
         button.setTitle("Yes, I’m Safe :)", for: .normal)
-        button.layer.cornerRadius = 24
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button

@@ -17,7 +17,7 @@ class NewClearDataVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("CLEAR_ALL_DATA", comment: "")
         return result
@@ -84,10 +84,11 @@ class NewClearDataVC: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 23
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -95,10 +96,12 @@ class NewClearDataVC: BaseVC {
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 23
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -110,7 +113,7 @@ class NewClearDataVC: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 11
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()
@@ -163,9 +166,9 @@ class NewClearDataVC: BaseVC {
             buttonStackView.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 22),
             buttonStackView.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -22),
             buttonStackView.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -22),
-            buttonStackView.heightAnchor.constraint(equalToConstant: 46),
-            okButton.heightAnchor.constraint(equalToConstant: 46),
-            cancelButton.heightAnchor.constraint(equalToConstant: 46),
+            buttonStackView.heightAnchor.constraint(equalToConstant: 52),
+            okButton.heightAnchor.constraint(equalToConstant: 52),
+            cancelButton.heightAnchor.constraint(equalToConstant: 52),
         ])
     }
     

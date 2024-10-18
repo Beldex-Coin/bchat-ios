@@ -67,7 +67,7 @@ final class OpenGroupInvitationView : UIView {
         iconImageView.contentMode = .center
         iconImageView.layer.cornerRadius = iconImageViewSize / 2
         iconImageView.layer.masksToBounds = true
-        iconImageView.backgroundColor = Colors.accent
+        iconImageView.backgroundColor = Colors.bothGreenColor
         iconImageView.set(.width, to: iconImageViewSize)
         iconImageView.set(.height, to: iconImageViewSize)
         // Main stack

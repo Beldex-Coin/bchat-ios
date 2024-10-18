@@ -305,10 +305,12 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = Colors.profileImageViewButtonColor
-        result.setTitleColor(Colors.profileImageViewButtonTextColor, for: .normal)
+        result.layer.borderWidth = 0.5
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
+        result.backgroundColor = Colors.bothGreenWithAlpha10
+        result.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -316,10 +318,10 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var saveButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -328,7 +330,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var buttonStackView1: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ removePictureButton, saveButton ])
         result.axis = .horizontal
-        result.spacing = 15
+        result.spacing = 8
         result.distribution = .fillEqually
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -608,8 +610,8 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         closeButton.layer.cornerRadius = closeButton.frame.height / 2
         copyForBeldexAddressButton.layer.cornerRadius = copyForBeldexAddressButton.frame.height / 2
         copyForBChatIdButton.layer.cornerRadius = copyForBChatIdButton.frame.height / 2
-        removePictureButton.layer.cornerRadius = removePictureButton.frame.height / 2
-        saveButton.layer.cornerRadius = saveButton.frame.height / 2
+        removePictureButton.layer.cornerRadius = Values.buttonRadius
+        saveButton.layer.cornerRadius = Values.buttonRadius
         doneButton.layer.cornerRadius = doneButton.frame.height / 2
         cameraView.layer.cornerRadius = cameraView.frame.height / 2
         cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
