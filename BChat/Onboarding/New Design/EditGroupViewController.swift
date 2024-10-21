@@ -68,6 +68,18 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         return stackView
     }()
     
+    private lazy var doneButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Done", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     private let thread: TSGroupThread
     private var name = ""
@@ -102,7 +114,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         view.backgroundColor = Colors.mainBackGroundColor2
         self.title = "Edit Group"
         
-        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, nameTextField, editIconImage, bottomButtonView)
+        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, nameTextField, editIconImage, bottomButtonView, doneButton)
         bottomButtonView.addSubview(applyChangesButton)
         
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
@@ -168,6 +180,11 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
             applyChangesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             applyChangesButton.heightAnchor.constraint(equalToConstant: 58),
             
+            doneButton.widthAnchor.constraint(equalToConstant: 66.7),
+            doneButton.heightAnchor.constraint(equalToConstant: 26),
+            doneButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15.3),
+            
         ])
         
         applyChangesButton.backgroundColor = Colors.cancelButtonBackgroundColor
@@ -186,6 +203,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
             + zombies.sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
         name = thread.groupModel.groupName!
         
+        doneButton.isHidden = true
         
     }
     
@@ -195,6 +213,10 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc private func applyChangesButtonTapped() {
+        updateGroupName()
+    }
+    
+    @objc private func doneButtonTapped(_ sender: UIButton) {
         updateGroupName()
     }
 
@@ -208,6 +230,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         }
         self.name = name
         displayNameLabel.text = name
+        doneButton.isHidden = true
         commitChanges()
     }
     
@@ -229,6 +252,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     
     @objc func nameTextfieldTapped(textField: UITextField) {
         editIconImage.isHidden = true
+        doneButton.isHidden = false
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
