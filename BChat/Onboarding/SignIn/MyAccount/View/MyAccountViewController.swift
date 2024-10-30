@@ -448,6 +448,8 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             nameTextField.bottomAnchor.constraint(equalTo: bchatLabel.topAnchor, constant: -21),
             nameTextField.heightAnchor.constraint(equalToConstant: 30),
             nameTextField.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
+            nameTextField.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 100),
+            nameTextField.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -100),
             
             editIconImage.widthAnchor.constraint(equalToConstant: 25),
             editIconImage.heightAnchor.constraint(equalToConstant: 22),
