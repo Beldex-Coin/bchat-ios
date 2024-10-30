@@ -155,7 +155,7 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.bothGreenColor
         toggle.addTarget(self, action: #selector(self.disappearingMessagesSwitchValueChanged(_:)), for: .valueChanged)
         return toggle
     }()
@@ -219,7 +219,7 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
         toggle.translatesAutoresizingMaskIntoConstraints = false
         toggle.isOn = false
         toggle.isEnabled = true
-        toggle.onTintColor = Colors.greenColor
+        toggle.onTintColor = Colors.bothGreenColor
         toggle.addTarget(self, action: #selector(self.muteSwitchValueChanged(_:)), for: .valueChanged)
         return toggle
     }()

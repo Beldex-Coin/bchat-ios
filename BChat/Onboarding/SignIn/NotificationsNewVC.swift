@@ -165,7 +165,7 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         footerView.backgroundColor = Colors.viewBackgroundColorNew
         let label = UILabel()
         label.text = sectionNames[section]
-        label.textColor = Colors.greenColor
+        label.textColor = Colors.bothGreenColor
         label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.semiOpenSans(ofSize: 18)
         footerView.addSubview(label)

@@ -141,7 +141,7 @@ class WalletSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         footerView.backgroundColor = .clear
         let label = UILabel()
         label.text = sectionNames[section]
-        label.textColor = Colors.greenColor
+        label.textColor = Colors.bothGreenColor
         label.frame = CGRect(x: 30, y: 0, width: tableView.frame.width - 30, height: 30)
         label.font = Fonts.boldOpenSans(ofSize: 16)
         footerView.addSubview(label)
@@ -190,7 +190,7 @@ class CurrentNodeTableCell: UITableViewCell {
     /// Current Node Title Label
     lazy var currentNodeTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

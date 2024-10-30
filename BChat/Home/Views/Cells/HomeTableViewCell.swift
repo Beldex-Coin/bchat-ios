@@ -57,7 +57,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.boldOpenSans(ofSize: 15)
+       result.font = Fonts.boldOpenSans(ofSize: 14)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result
@@ -155,12 +155,21 @@ class HomeTableViewCell: UITableViewCell {
        return View
    }()
     
+    lazy var secretGroupImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 16)
+        result.set(.height, to: 16)
+        result.contentMode = .scaleAspectFit
+        result.image = UIImage(named: "ic_secretGroupSmall")
+        return result
+    }()
+    
     func setUPLayout() {
         contentView.addSubview(backGroundView)
         contentView.addSubview(pinImageView)
         contentView.addSubview(separatorLineView)
         pinImageView.image = UIImage(named: "ic_pinned")
-        backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView)
+        backGroundView.addSubViews(iconImageView, verifiedImageView, nameLabel, lastMessageLabel, messageCountAndDateStackView, secretGroupImageView)
         
         messageCountAndDateStackView.addArrangedSubview(dateLabel)
         messageCountAndDateStackView.addArrangedSubview(messageCountStackView)
@@ -169,12 +178,12 @@ class HomeTableViewCell: UITableViewCell {
         messageCountStackView.addArrangedSubview(notifyMentionImageView)
         messageCountStackView.addArrangedSubview(messageCountLabel)
 
-        let profilePictureViewSize = CGFloat(60)
+        let profilePictureViewSize = CGFloat(42)
         iconImageView.set(.width, to: profilePictureViewSize)
         iconImageView.set(.height, to: profilePictureViewSize)
         iconImageView.size = profilePictureViewSize
         iconImageView.layer.masksToBounds = true
-        iconImageView.layer.cornerRadius = 30
+        iconImageView.layer.cornerRadius = 21
         
         NSLayoutConstraint.activate([
             backGroundView.heightAnchor.constraint(equalToConstant: 72),
@@ -192,11 +201,11 @@ class HomeTableViewCell: UITableViewCell {
             verifiedImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
             verifiedImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
             
-            nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor, constant: 2),
+            nameLabel.topAnchor.constraint(equalTo: iconImageView.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
             
-            lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: -10),
+            lastMessageLabel.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor),
             lastMessageLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 17),
             lastMessageLabel.trailingAnchor.constraint(lessThanOrEqualTo: messageCountAndDateStackView.leadingAnchor, constant: -8),
             
@@ -212,6 +221,9 @@ class HomeTableViewCell: UITableViewCell {
             separatorLineView.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
             separatorLineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLineView.heightAnchor.constraint(equalToConstant: 1),
+            
+            secretGroupImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: -1),
+            secretGroupImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
             
         ])
     }
@@ -325,6 +337,13 @@ class HomeTableViewCell: UITableViewCell {
         } else {
             setBnsUserProfile(isBnsUser: false)
         }
+        secretGroupImageView.isHidden = true
+        if let thread = thread as? TSGroupThread {
+            if thread.groupModel.groupType == .closedGroup {
+                secretGroupImageView.isHidden = false
+            }
+        }
+        
         
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
@@ -337,7 +356,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     private func setBnsUserProfile(isBnsUser: Bool) {
-        iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+        iconImageView.layer.borderWidth = isBnsUser ? 1 : 0
         iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         verifiedImageView.isHidden = isBnsUser ? false : true
     }

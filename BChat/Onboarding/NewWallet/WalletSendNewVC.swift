@@ -51,7 +51,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     /// Payment ID Title Label
     private lazy var paymentIDTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.text = "Payment ID integrated"

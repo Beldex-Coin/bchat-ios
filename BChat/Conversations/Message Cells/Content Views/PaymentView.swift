@@ -71,7 +71,7 @@ final class PaymentView : UIView {
         }
         
         if direction == "receive" {
-            subtitleLabel.textColor = Colors.greenColor
+            subtitleLabel.textColor = Colors.bothGreenColor
         }
         
         // Bottom time label
@@ -167,7 +167,7 @@ final class PaymentView : UIView {
             subtitleLabel.textColor = UIColor.white
         } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
-            subtitleLabel.textColor = Colors.greenColor
+            subtitleLabel.textColor = Colors.bothGreenColor
         }
         addSubview(mainStackView)
         addSubview(timeLabel)

@@ -254,7 +254,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             let publicKey = contactThread.contactBChatID()
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureImageView.layer.borderWidth = isBnsUser ? 1 : 0
                 profilePictureImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 bnsApprovalIconImage.isHidden = isBnsUser ? false : true
             }

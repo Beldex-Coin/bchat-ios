@@ -1863,7 +1863,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                button.layer.borderWidth = isBnsUser ? 3 : 0
+                button.layer.borderWidth = isBnsUser ? 1 : 0
                 verifiedImageView.isHidden = isBnsUser ? false : true
             } else {
                 verifiedImageView.isHidden = true

@@ -11,13 +11,13 @@ class SwitchingNodeVC: BaseVC {
         stackView.backgroundColor = Colors.popUpBackgroundColor
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Switching Node, Please wait.."
@@ -31,7 +31,7 @@ class SwitchingNodeVC: BaseVC {
         progressView.center = view.center
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.trackTintColor = Colors.cancelButtonBackgroundColor
-        progressView.tintColor = Colors.greenColor
+        progressView.tintColor = Colors.bothGreenColor
         return progressView
     }()
     

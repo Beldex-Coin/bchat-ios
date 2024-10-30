@@ -243,7 +243,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
             qrCodeImage.contentMode = .scaleAspectFit
         } else {
             shareButton.isUserInteractionEnabled = true
-            shareButton.backgroundColor = Colors.greenColor
+            shareButton.backgroundColor = Colors.bothGreenColor
             shareButton.setTitleColor(.white, for: .normal)
             if let mystring = beldexAmountTextField.text {
                 qrCodeImage.image = UIImage.generateBarcode(from: "\(SaveUserDefaultsData.WalletpublicAddress)" + "?amount=\(mystring)")

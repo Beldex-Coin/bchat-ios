@@ -21,7 +21,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         return result
@@ -300,7 +300,7 @@ final class ConversationCell : UITableViewCell {
                 profilePictureView.layer.borderColor = UIColor.clear.cgColor
                 verifiedImageView.isHidden = true
             } else {
-                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? 1 : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 verifiedImageView.isHidden = isBnsUser ? false : true
             }

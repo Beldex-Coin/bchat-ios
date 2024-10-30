@@ -38,7 +38,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(addNodeButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = Colors.greenColor
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -243,7 +243,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             if(nodeArrayDynamic![indexPath.row] == selectedNodeData) {
                 selectedIndex = indexPath.row
                 cell.backGroundView.layer.borderWidth = 1.5
-                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
                 cell.isUserInteractionEnabled = false
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
@@ -251,7 +251,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         } else {
             if (nodeArrayDynamic![indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
-                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
                 cell.isUserInteractionEnabled = false
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
@@ -370,7 +370,7 @@ class NodeListTableCell: UITableViewCell {
     
     lazy var nodeNameTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false

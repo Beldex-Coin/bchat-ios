@@ -104,8 +104,8 @@ class SelectDateRangePopUpVC: BaseVC {
         result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

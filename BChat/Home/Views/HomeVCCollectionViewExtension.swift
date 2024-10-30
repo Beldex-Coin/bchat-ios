@@ -59,7 +59,7 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
                     cell.nameLabel.text = (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
                     let contact: Contact? = Storage.shared.getContact(with: hexEncodedPublicKey)
                     if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                        cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                        cell.profileImageView.layer.borderWidth = isBnsUser ? 1 : 0
                         cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                         cell.verifiedImageView.isHidden = isBnsUser ? false : true
                     } else {

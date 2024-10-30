@@ -172,7 +172,7 @@ class NewHopsVC: BaseVC {
     lazy var filledDotView3: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = Colors.greenColor
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 8
         return View
     }()
