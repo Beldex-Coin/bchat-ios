@@ -325,7 +325,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if let senderBChatID = senderBChatID {
             let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? 1 : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
                     verifiedImageView.isHidden = isBnsUser ? false : true
@@ -486,7 +486,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if direction != "send" {
                         paymentView.backgroundColor = Colors.incomingMessageColor
                     } else {
-                        paymentView.backgroundColor = Colors.greenColor
+                        paymentView.backgroundColor = Colors.bothGreenColor
                     }
                     messageTimeBottomLabel.isHidden = true
                 } else {
@@ -864,7 +864,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 
             case .sent, .skipped, .delivered:
                 image = #imageLiteral(resourceName: "newTickmark").withRenderingMode(.alwaysTemplate)
-                tintColor = Colors.greenColor
+                tintColor = Colors.bothGreenColor
                 
             case .read:
                 image = isLightMode ? #imageLiteral(resourceName: "FilledCircleCheckLightMode") : #imageLiteral(resourceName: "FilledCircleCheckDarkMode")

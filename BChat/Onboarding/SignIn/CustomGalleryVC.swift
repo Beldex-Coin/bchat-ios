@@ -34,7 +34,7 @@ class CustomGalleryVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.text = "Move and Scale"
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class CustomGalleryVC: BaseVC {
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
         result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

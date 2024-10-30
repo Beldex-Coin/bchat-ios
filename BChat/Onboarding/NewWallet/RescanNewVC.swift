@@ -195,7 +195,7 @@ class RescanNewVC: BaseVC {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         topBackgroundView.layer.cornerRadius = Values.buttonRadius
-        iKnowTheBlockHeightButton.layer.cornerRadius = iKnowTheBlockHeightButton.frame.height/2
+        iKnowTheBlockHeightButton.layer.cornerRadius = Values.buttonRadius
     }
     
     /// Date Picker
@@ -245,10 +245,10 @@ class RescanNewVC: BaseVC {
                 processDateInput()
             }
         } else {
-            if heightString == "" && dateString != ""{
+            if heightString == "" && dateString != "" {
                 if !dateHeight.isEmpty {
                     SaveUserDefaultsData.WalletRestoreHeight = dateHeight
-                }else {
+                } else {
                     SaveUserDefaultsData.WalletRestoreHeight = ""
                 }
                 navigateBack()
@@ -257,7 +257,7 @@ class RescanNewVC: BaseVC {
                 let number: Int64? = Int64("\(heightString!)")
                 if number! > daemonBlockChainHeight {
                     inValidHeightAlert()
-                }else if number! == daemonBlockChainHeight {
+                } else if number! == daemonBlockChainHeight {
                     inValidHeightAlert()
                 }
                 else {

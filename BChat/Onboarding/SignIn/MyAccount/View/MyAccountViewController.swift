@@ -15,7 +15,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 18) : Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
@@ -104,7 +104,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var copyForBeldexAddressButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_Newcopy"), for: .normal)
         button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped), for: .touchUpInside)
@@ -142,7 +142,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var copyForBChatIdButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_Newcopy"), for: .normal)
         button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
@@ -170,7 +170,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var bchatLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BCHAT_ID_NEW", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.semiOpenSans(ofSize: 14) : Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -275,7 +275,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var profilePictureLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 20) : Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -506,7 +506,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureImage, withInset: 6)
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-        profilePictureImage.layer.borderWidth = isBnsUser ? 3 : 0
+        profilePictureImage.layer.borderWidth = isBnsUser ? 1 : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
         
         if isBnsUser {
@@ -535,7 +535,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
 //        }
         
-        shareButton.backgroundColor = Colors.greenColor
+        shareButton.backgroundColor = Colors.bothGreenColor
         shareButton.setTitleColor(.white, for: .normal)
         // Display image
         let publicKey = getUserHexEncodedPublicKey()
@@ -697,7 +697,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         }
         nameTextField.becomeFirstResponder()
         nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
-        doneButton.backgroundColor = Colors.greenColor
+        doneButton.backgroundColor = Colors.bothGreenColor
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = Fonts.semiOpenSans(ofSize: 14)
         isEditingDisplayName = true

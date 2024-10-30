@@ -2564,7 +2564,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
         
         if isFromAllTransationFlag == true {
-            if filteredAllTransactionSortingArray.count > 0{
+            if filteredAllTransactionSortingArray.count > 0 {
                 let responceData = filteredAllTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2607,7 +2607,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         } else if isFromSendTransationFlag == true {
-            if filteredOutgoingTransactionSortingArray.count > 0{
+            if filteredOutgoingTransactionSortingArray.count > 0 {
                 let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2642,7 +2642,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
             cell.balanceAmountLabel.textColor = Colors.bothRedColor
         } else {
-            if filteredIncomingTransactionSortingArray.count > 0{
+            if filteredIncomingTransactionSortingArray.count > 0 {
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2667,7 +2667,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {

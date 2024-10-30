@@ -112,7 +112,7 @@ public final class ProfilePictureView : UIView {
             } else if self.size == 60 {
                 size = 55
             } else {
-                size = 37
+                size = 42//37
             }
             imageViewWidthConstraint.constant = size
             imageViewHeightConstraint.constant = size

@@ -94,9 +94,9 @@ class BaseVC : UIViewController {
     internal func setUpNavBarSessionHeading() {
         let headingImageView = UIImageView()
         headingImageView.tintColor = Colors.text
-        headingImageView.image = UIImage(named: "BChat_")?.withRenderingMode(.alwaysTemplate)
+        headingImageView.image = UIImage(named: "BChat_chats")?.withRenderingMode(.alwaysTemplate)
         headingImageView.contentMode = .scaleAspectFit
-        headingImageView.set(.width, to: 90)
+        headingImageView.set(.width, to: 55)
         headingImageView.set(.height, to: Values.mediumFontSize)
         if let statusView = view.viewWithTag(333222) {
             statusView.removeFromSuperview()
@@ -105,21 +105,24 @@ class BaseVC : UIViewController {
         let pathStatusView = PathStatusView()
         pathStatusView.tag = 333222
         pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-        pathStatusView.set(.width, to: PathStatusView.size)
-        pathStatusView.set(.height, to: PathStatusView.size)
-        pathStatusView.layer.borderWidth = 2
-        pathStatusView.layer.borderColor = UIColor(hex: 0x1C1C26).cgColor
+        pathStatusView.set(.width, to: 7)
+        pathStatusView.set(.height, to: 7)
         let spacer = UIView()
-        spacer.set(.width, to: UIScreen.main.bounds.width - 261)
+        spacer.set(.width, to: UIScreen.main.bounds.width - 261 + 20)
         spacer.set(.height, to: Values.mediumFontSize)
-        let stack = UIStackView(arrangedSubviews: [headingImageView, pathStatusView, spacer])
+        
+        let spacer2 = UIView()
+        spacer2.set(.width, to: 5)
+        spacer2.set(.height, to: Values.mediumFontSize)
+        
+        let stack = UIStackView(arrangedSubviews: [headingImageView, spacer2, pathStatusView, spacer])
         stack.axis = .horizontal
         stack.alignment = .center
         navigationItem.titleView = stack
     }
     
     internal func setUpTopCornerRadius() {
-        view.layer.cornerRadius = 18
+        view.layer.cornerRadius = 22
         view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
 

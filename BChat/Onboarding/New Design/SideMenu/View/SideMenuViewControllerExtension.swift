@@ -40,7 +40,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             let publicKey = getUserHexEncodedPublicKey()
             cell.iconImageView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
             
-            let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
+            let origImage = UIImage(named: "User Settings 1")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             cell.scanImageView.image = tintedImage
             cell.scanImageView.tintColor = isLightMode ? .black : .white

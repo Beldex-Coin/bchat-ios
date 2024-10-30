@@ -423,7 +423,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         
         let contact: Contact? = Storage.shared.getContact(with: self.call.bchatID)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            callerImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            callerImageView.layer.borderWidth = isBnsUser ? 1 : 0
             callerImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
             verifiedImageView.isHidden = isBnsUser ? false : true
         } else {

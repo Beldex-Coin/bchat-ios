@@ -34,7 +34,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = Colors.cellGroundColor3
-        View.layer.cornerRadius = 10
+        View.layer.cornerRadius = 21
         return View
     }()
     
@@ -78,8 +78,8 @@ class SideMenuProfileTableViewCell: UITableViewCell {
     
     lazy var scanImageView: UIImageView = {
         let result = UIImageView()
-        result.set(.width, to: 33)
-        result.set(.height, to: 33)
+        result.set(.width, to: 26)
+        result.set(.height, to: 26)
         result.contentMode = .center
         return result
     }()
@@ -117,7 +117,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         verifiedImageView.pin(.bottom, to: .bottom, of: iconImageView, withInset: 3)
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-        iconImageView.layer.borderWidth = isBnsUser ? 3 : 0
+        iconImageView.layer.borderWidth = isBnsUser ? 1 : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
     }
 }
