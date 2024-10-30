@@ -1107,9 +1107,6 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(updateBNSDetailsTapped), name: .navigateToMyAccountNotification, object: nil)
         
-        let dismiss: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(dismiss)
-        
     }
     
     /// View will appear
