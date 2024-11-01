@@ -111,6 +111,8 @@ public final class ProfilePictureView : UIView {
                 size = 74
             } else if self.size == 60 {
                 size = 55
+            } else if self.size == 36 {
+                size = 36
             } else {
                 size = 42//37
             }
@@ -145,6 +147,12 @@ public final class ProfilePictureView : UIView {
             imageView.layer.cornerRadius = 27.5
             additionalImageView.layer.cornerRadius = 27.5
         }
+        
+        if size == 36 {
+            imageView.layer.cornerRadius = 18
+            additionalImageView.layer.cornerRadius = 18
+        }
+        
         imageView.contentMode = useFallbackPicture ? .center : .scaleAspectFit
         if useFallbackPicture {
             switch size {

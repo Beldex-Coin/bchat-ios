@@ -528,7 +528,6 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         return button
     }()
     
-    
     private lazy var cameraImage: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -664,7 +663,6 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         return result
     }()
     
-    
     lazy var nameIDAndTextfieldViewView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -728,7 +726,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         
         topBackGroundView.addSubview(stackViewForUserNameAndBnsVerifiedContainer)
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(nameIDAndTextfieldViewView)
-        nameIDAndTextfieldViewView.addSubviews([lineView, userNameIdLabel, nameTextField])
+        nameIDAndTextfieldViewView.addSubviews([lineView, nameTextField, userNameIdLabel])
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForBNSVerifiedName)
         
         beldexAddressView.addSubview(beldexAddressNameLabel)
@@ -839,9 +837,9 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             
             
             lineView.heightAnchor.constraint(equalToConstant: 1),
-            lineView.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor, constant: -5),
-            lineView.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor, constant: 3),
-            lineView.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5),
+            lineView.leadingAnchor.constraint(equalTo: userNameIdLabel.leadingAnchor, constant: -5),
+            lineView.trailingAnchor.constraint(equalTo: userNameIdLabel.trailingAnchor, constant: 3),
+            lineView.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 5),
             
             
             bnsTickIconImage.widthAnchor.constraint(equalToConstant: 14),
@@ -1143,7 +1141,6 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         removePictureButton.layer.cornerRadius = Values.buttonRadius
         cameraView.layer.cornerRadius = cameraView.frame.height / 2
         cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
-        
     }
     
     /// UITouch ended

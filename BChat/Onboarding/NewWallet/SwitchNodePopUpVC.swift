@@ -58,7 +58,7 @@ class SwitchNodePopUpVC: BaseVC {
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
