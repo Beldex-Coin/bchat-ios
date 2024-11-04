@@ -56,6 +56,7 @@ final class HomeVC : BaseVC {
         result.showsVerticalScrollIndicator = false
         return result
     }()
+    
     private lazy var fadeView: UIView = {
         let result = UIView()
         let gradient = Gradients.homeVCFade
@@ -63,6 +64,7 @@ final class HomeVC : BaseVC {
         result.isUserInteractionEnabled = false
         return result
     }()
+    
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.bchatPlaceholderColor
@@ -89,6 +91,7 @@ final class HomeVC : BaseVC {
         result.isHidden = true
         return result
     }()
+    
     var someImageView: UIImageView = {
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true

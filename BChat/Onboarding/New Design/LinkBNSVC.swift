@@ -14,7 +14,7 @@ class LinkBNSVC: BaseVC {
         stackView.backgroundColor = Colors.viewBackgroundColorNew2
         stackView.layer.cornerRadius = 20
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderColor = Colors.borderColorNew.cgColor
         return stackView
     }()
     
@@ -85,7 +85,7 @@ class LinkBNSVC: BaseVC {
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()

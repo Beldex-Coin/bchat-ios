@@ -176,93 +176,29 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
+    lazy var inviteFriendImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 36)
+        result.set(.height, to: 36)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_inviteFriend")
+        return result
+    }()
     
+    private lazy var inviteFriendButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Invite a friend", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.setTitleColor(Colors.titleColor3, for: .normal)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
+        button.addTarget(self, action: #selector(inviteFriendButtonTapped(_:)), for: .touchUpInside)
+        return button
+    }()
     
-//    let isRecentSearchResultsEnabled = false
-//    @objc public var searchText = "" {
-//        didSet {
-//            AssertIsOnMainThread()
-//            // Use a slight delay to debounce updates.
-//            refreshSearchResults()
-//        }
-//    }
-//    var recentSearchResults: [String] = Array(Storage.shared.getRecentSearchResults().reversed())
-//    var defaultSearchResults: HomeScreenSearchResultSet = HomeScreenSearchResultSet.noteToSelfOnly
-//    var searchResultSet: HomeScreenSearchResultSet = HomeScreenSearchResultSet.empty
-//    private var lastSearchText: String?
-//    var searcher: FullTextSearcher {
-//        return FullTextSearcher.shared
-//    }
-//    var isLoading = false
-//
-//    enum SearchSection: Int {
-//        case noResults
-//        case contacts
-//        case messages
-//        case recent
-//    }
-//
-//    var dbReadConnection: YapDatabaseConnection {
-//        return OWSPrimaryStorage.shared().dbReadConnection
-//    }
-//
-//    private func reloadTableData() {
-//        tableView.reloadData()
-//    }
-//
-//    // MARK: Update Search Results
-//
-//    var refreshTimer: Timer?
-//
-//    private func refreshSearchResults() {
-//        refreshTimer?.invalidate()
-//        refreshTimer = WeakTimer.scheduledTimer(timeInterval: 0.1, target: self, userInfo: nil, repeats: false) { [weak self] _ in
-//            guard let self = self else { return }
-//            self.updateSearchResults(searchText: self.searchText)
-//        }
-//    }
-//
-//    private func updateSearchResults(searchText rawSearchText: String) {
-//
-//        let searchText = rawSearchText.stripped
-//        guard searchText.count > 0 else {
-//            searchResultSet = defaultSearchResults
-//            lastSearchText = nil
-//            reloadTableData()
-//            return
-//        }
-//        guard lastSearchText != searchText else { return }
-//
-//        lastSearchText = searchText
-//
-//        var searchResults: HomeScreenSearchResultSet?
-//        self.dbReadConnection.asyncRead({[weak self] transaction in
-//            guard let self = self else { return }
-//            self.isLoading = true
-//            // The max search result count is set according to the keyword length. This is just a workaround for performance issue.
-//            // The longer and more accurate the keyword is, the less search results should there be.
-//            searchResults = self.searcher.searchForHomeScreen(searchText: searchText, maxSearchResults: 500,  transaction: transaction)
-//        }, completionBlock: { [weak self] in
-//            AssertIsOnMainThread()
-//            guard let self = self, let results = searchResults, self.lastSearchText == searchText else { return }
-//            self.searchResultSet = results
-//            self.isLoading = false
-//            self.reloadTableData()
-//            self.refreshTimer = nil
-//        })
-//    }
-//
-//    // MARK: Interaction
-//    @objc func clearRecentSearchResults() {
-//        recentSearchResults = []
-//        tableView.reloadSections([ SearchSection.recent.rawValue ], with: .top)
-//        Storage.shared.clearRecentSearchResults()
-//    }
-//
-//    @objc func cancel(_ sender: Any) {
-//        self.navigationController?.popViewController(animated: true)
-//    }
-    
+    internal var threadCount: UInt {
+        threads.numberOfItems(inGroup: TSInboxGroup)
+    }
     
     
     
@@ -276,6 +212,8 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.addSubviews([ searchTextField, newChatImageView, newChatButton, scanerImageView, secretGroupImageView, secretGroupButton, socialGroupImageView, socialGroupButton, noteToSelfImageView, noteToSelfButton])
         view.addSubview(contactListLabel)
+        view.addSubview(inviteFriendImageView)
+        view.addSubview(inviteFriendButton)
         
 //        searchTextField.delegate = self
         
@@ -310,6 +248,12 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             
             contactListLabel.topAnchor.constraint(equalTo: noteToSelfImageView.bottomAnchor, constant: 16),
             contactListLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            
+            inviteFriendImageView.topAnchor.constraint(equalTo: contactListLabel.bottomAnchor, constant: 16),
+            inviteFriendImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
+            
+            inviteFriendButton.centerYAnchor.constraint(equalTo: inviteFriendImageView.centerYAnchor),
+            inviteFriendButton.leadingAnchor.constraint(equalTo: inviteFriendImageView.trailingAnchor, constant: 14),
         ])
         
         // Table view
@@ -318,7 +262,7 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
-        tableView.pin(.top, to: .bottom, of: contactListLabel, withInset: 16)
+        tableView.pin(.top, to: .bottom, of: contactListLabel, withInset: 16 + 36 + 8)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         
@@ -342,11 +286,9 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         reload()
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         reload()
     }
-    
     
     
     
@@ -384,36 +326,23 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         navigationController!.pushViewController(vc, animated: true)
     }
     
+    @objc func inviteFriendButtonTapped(_ sender: UIButton) {
+        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
+        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+        self.navigationController!.present(shareVC, animated: true, completion: nil)
+    }
+    
     
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5//searchResultSet.conversations.count
+        return Int(threadCount)//searchResultSet.conversations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCell") as! NewChatTableViewCell
         
-        
-//        let sectionResults = searchResultSet.conversations
-//        let cell = tableView.dequeueReusableCell(withIdentifier: ConversationCell.reuseIdentifier) as! ConversationCell
-//        cell.isShowingGlobalSearchResult = true
-//        let searchResult = sectionResults[safe: indexPath.row]
-//        cell.threadViewModel = searchResult?.thread
-//        cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText)
-//        return cell
-        
         cell.threadViewModel = threadViewModel(at: indexPath.row)
-        
-        let publicKey = getUserHexEncodedPublicKey()
-        let contact: Contact? = Storage.shared.getContact(with: publicKey)
-        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            cell.profileImageView.layer.borderWidth = isBnsUser ? 1 : 0
-            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-            cell.verifiedImageView.isHidden = isBnsUser ? false : true
-        } else {
-            cell.verifiedImageView.isHidden = true
-        }
         
         return cell
     }
@@ -462,7 +391,6 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             self.threads.update(with: transaction)
         }
         threadViewModelCache.removeAll()
-        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
         isReloading = false
     }
@@ -494,52 +422,3 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     
 }
-
-
-
-
-//extension NewPlusButtonChatVC: UISearchBarDelegate, UITextFieldDelegate {
-//    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        self.updateSearchText()
-//    }
-//
-//    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        self.updateSearchText()
-//    }
-//
-//    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        self.updateSearchText()
-//    }
-//
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        self.updateSearchText()
-//    }
-//
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//        self.updateSearchText()
-//    }
-//
-//
-//
-//    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-//        searchBar.text = nil
-//        searchBar.resignFirstResponder()
-//        self.navigationController?.popViewController(animated: true)
-//    }
-//
-//    func updateSearchText() {
-//        guard let searchText = searchTextField.text?.ows_stripped() else { return }
-//        self.searchText = searchText
-//    }
-//
-//    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-//           DispatchQueue.main.async {
-//               if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
-//                   cancelButton.isEnabled = true
-//               }
-//           }
-//           return true
-//       }
-//
-//
-//}
