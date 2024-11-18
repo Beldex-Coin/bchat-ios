@@ -97,7 +97,7 @@ class BaseVC : UIViewController {
         headingImageView.image = UIImage(named: "BChat_chats")?.withRenderingMode(.alwaysTemplate)
         headingImageView.contentMode = .scaleAspectFit
         headingImageView.set(.width, to: 55)
-        headingImageView.set(.height, to: Values.mediumFontSize)
+        headingImageView.set(.height, to: 27)
         if let statusView = view.viewWithTag(333222) {
             statusView.removeFromSuperview()
         }

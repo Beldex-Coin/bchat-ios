@@ -16,6 +16,40 @@ final class PaymentView : UIView {
     private static let iconSize: CGFloat = 26
     private static let iconImageViewSize: CGFloat = 40
     
+    private lazy var messageTailRightView: UIView = {
+        let result = RightTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
+    private lazy var messageTailLeftView: UIView = {
+        let result = LeftTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
+    // MARK: Direction & Position
+    enum Direction { case incoming, outgoing }
+    enum Position { case top, middle, bottom }
+    
+    private var positionInCluster: Position? {
+        if viewItem.isFirstInCluster { return .top }
+        if viewItem.isLastInCluster { return .bottom }
+        return .middle
+    }
+    
+    private var isOnlyMessageInCluster: Bool { viewItem.isFirstInCluster == true && viewItem.isLastInCluster == true }
+    
+    
+    
+    
+    
     // MARK: Lifecycle
     init(txnid: String, rawAmount: String, textColor: UIColor, isOutgoing: Bool, viewItem: ConversationViewItem) {
         self.txnid = txnid
@@ -177,5 +211,66 @@ final class PaymentView : UIView {
         NSLayoutConstraint.activate([
             timeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: tickMarkImageView.trailingAnchor, constant: 4)
             ])
+        addSubview(messageTailRightView)
+        addSubview(messageTailLeftView)
+        
+        messageTailRightView.pin(.right, to: .right, of: self, withInset: 0)
+        messageTailRightView.pin(.top, to: .bottom, of: self, withInset: 0)
+        messageTailLeftView.pin(.left, to: .left, of: self, withInset: 0)
+        messageTailLeftView.pin(.top, to: .bottom, of: self, withInset: 0)
+        
+        messageTailRightView.backgroundColor = !isOutgoing ? Colors.incomingMessageColor : Colors.bothGreenColor
+        messageTailLeftView.backgroundColor = !isOutgoing ? Colors.incomingMessageColor : Colors.bothGreenColor
+        updateBubbleViewCorners()
     }
+    
+    private func updateBubbleViewCorners() {
+        let cornersToRound = getCornersToRound()
+        let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: cornersToRound,
+            cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
+        self.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
+        self.layer.maskedCorners = getCornerMask(from: cornersToRound)
+    }
+    
+    // MARK: Convenience
+    private func getCornersToRound() -> UIRectCorner {
+        messageTailRightView.isHidden = true
+        messageTailLeftView.isHidden = true
+        guard !isOnlyMessageInCluster else {
+            if isOutgoing {
+                messageTailRightView.isHidden = false
+                return [ .topLeft, .topRight, .bottomLeft ]
+            } else {
+                messageTailLeftView.isHidden = false
+                return [ .topLeft, .topRight, .bottomRight]
+            }
+        }
+        let result: UIRectCorner
+        switch (positionInCluster, isOutgoing) {
+            case (.top, true): result = .allCorners
+            case (.middle, true): result = .allCorners
+        case (.bottom, true): result = [ .topLeft, .topRight, .bottomLeft ]
+            messageTailRightView.isHidden = false
+            case (.top, false): result = .allCorners
+            case (.middle, false): result = .allCorners
+        case (.bottom, false): result = [ .topLeft, .topRight, .bottomRight]
+            messageTailLeftView.isHidden = false
+            case (nil, _): result = .allCorners
+        }
+        return result
+    }
+    
+    private func getCornerMask(from rectCorner: UIRectCorner) -> CACornerMask {
+        var cornerMask = CACornerMask()
+        if rectCorner.contains(.allCorners) {
+            cornerMask = [ .layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        } else {
+            if rectCorner.contains(.topRight) { cornerMask.insert(.layerMaxXMinYCorner) }
+            if rectCorner.contains(.topLeft) { cornerMask.insert(.layerMinXMinYCorner) }
+            if rectCorner.contains(.bottomRight) { cornerMask.insert(.layerMaxXMaxYCorner) }
+            if rectCorner.contains(.bottomLeft) { cornerMask.insert(.layerMinXMaxYCorner) }
+        }
+        return cornerMask
+    }
+    
 }

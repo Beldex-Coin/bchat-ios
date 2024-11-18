@@ -286,11 +286,14 @@ final class ConversationCell : UITableViewCell {
             }
             timestampLabel.isHidden = true
         }
-        
+        self.layer.cornerRadius = 0
+        self.layer.masksToBounds = false
         if let contactThread: TSContactThread = threadViewModel.threadRecord as? TSContactThread {
             if contactThread.isNoteToSelf() {
                 profilePictureView.isNoteToSelfImage = true
                 profilePictureView.update()
+                self.layer.cornerRadius = 34
+                self.layer.masksToBounds = true
             }
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
@@ -300,7 +303,7 @@ final class ConversationCell : UITableViewCell {
                 profilePictureView.layer.borderColor = UIColor.clear.cgColor
                 verifiedImageView.isHidden = true
             } else {
-                profilePictureView.layer.borderWidth = isBnsUser ? 1 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 verifiedImageView.isHidden = isBnsUser ? false : true
             }

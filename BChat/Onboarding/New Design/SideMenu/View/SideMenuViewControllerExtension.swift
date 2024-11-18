@@ -55,8 +55,6 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             
             var menuItem: SideMenuItem = .default
             switch viewModel.menuTitles[indexPath.row] {
-                case .myAccount:
-                    menuItem = .myAccount
                 case .settings:
                     menuItem = .settings
                 case .notification:
@@ -88,13 +86,10 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
-            let viewController = MyAccountViewController()
+            let viewController = MyAccountBnsViewController()
             navigationController?.pushViewController(viewController, animated: true)
         } else {
             switch viewModel.menuTitles[indexPath.row] {
-                case .myAccount:
-                    let viewController = MyAccountBnsViewController()
-                    navigationController?.pushViewController(viewController, animated: true)
                 case .settings:
                     let viewController = BChatSettingsNewVC()
                     navigationController?.pushViewController(viewController, animated: true)

@@ -325,7 +325,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if let senderBChatID = senderBChatID {
             let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureView.layer.borderWidth = isBnsUser ? 1 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
                     verifiedImageView.isHidden = isBnsUser ? false : true
@@ -500,22 +500,26 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
-                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x008D06) : Colors.mainBackGroundColor2
-                        quoteView.layer.cornerRadius = 16
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
                     // Body text view
                     let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
+                    let maxWidthOfTextViewText = widthOfLastLine(in: bodyTextView)
+                    let maxWidthOfLine = maxWidth
+                    let widthOfLastLine = Int(maxWidthOfTextViewText) % Int(maxWidthOfLine)
 
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if message.body?.count ?? 0 < 25 && viewItem.quotedReply == nil {
+                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
                         let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                         stackViewForMessageAndTime.axis = .horizontal
                         stackViewForMessageAndTime.spacing = 5
+                        stackViewForMessageAndTime.alignment = .bottom
                                                 
                         stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
                         stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
@@ -538,20 +542,20 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: 4)
                         
-                        messageTimeRightLabel.isHidden = true
-                        if viewItem.isLastInCluster {
-                            messageTimeRightLabel.isHidden = false
-                        }
+//                        messageTimeRightLabel.isHidden = true
+//                        if viewItem.isLastInCluster {
+//                            messageTimeRightLabel.isHidden = false
+//                        }
                         
                     } else {
                         messageTimeBottomLabel.isHidden = false
                         stackView.addArrangedSubview(bodyTextView)
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: inset)
-                        messageTimeBottomLabel.isHidden = true
-                        if viewItem.isLastInCluster {
-                            messageTimeBottomLabel.isHidden = false
-                        }
+//                        messageTimeBottomLabel.isHidden = true
+//                        if viewItem.isLastInCluster {
+//                            messageTimeBottomLabel.isHidden = false
+//                        }
                     }
                 }
             case .mediaMessage:
@@ -662,7 +666,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -740,7 +744,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
             case .began:
@@ -780,7 +784,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
@@ -969,5 +973,31 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }
     
+    func widthOfLastLine(in textView: UITextView) -> CGFloat {
+        // Get the full text of the UITextView
+        let text = textView.text ?? ""
+        
+        // Split the text into lines based on newlines
+        let lines = text.split(separator: "\n")
+        
+        // Check if there are any lines in the text view
+        guard let lastLine = lines.last else { return 0 }
+        
+        // Create an NSString from the last line to measure its width
+        let lastLineString = NSString(string: String(lastLine))
+        
+        // Define the font of the UITextView (you can adjust this if needed)
+        let font = textView.font ?? UIFont.systemFont(ofSize: 14)
+        
+        // Use boundingRect to measure the width of the last line
+        let width = lastLineString.boundingRect(
+            with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font],
+            context: nil
+        ).width
+        
+        return width
+    }
     
 }

@@ -59,8 +59,18 @@ final class QuoteView : UIView {
 
     private var textColor: UIColor {
         if case .draft = mode { return Colors.text }
-        switch (direction, AppModeManager.shared.currentAppMode) {
-        case (.outgoing, .dark), (.incoming, .light): return .black
+        switch (direction) {
+        case (.outgoing): return Colors.callCellTitle
+        case (.incoming): return Colors.replyMessageColor
+        default: return .white
+        }
+    }
+    
+    private var bodyColor: UIColor {
+        if case .draft = mode { return Colors.text }
+        switch (direction) {
+        case (.outgoing): return Colors.bothWhiteWithAlpha60
+        case (.incoming): return Colors.WhiteBlackWithAlpha60
         default: return .white
         }
     }
@@ -152,7 +162,7 @@ final class QuoteView : UIView {
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [])
         mainStackView.axis = .horizontal
-        mainStackView.spacing = smallSpacing
+        mainStackView.spacing = 0
         mainStackView.isLayoutMarginsRelativeArrangement = true
         mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: smallSpacing, bottom: 0, trailing: smallSpacing)
         mainStackView.alignment = .center
@@ -191,9 +201,9 @@ final class QuoteView : UIView {
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
-        bodyLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        bodyLabel.font = Fonts.OpenSans(ofSize: 11)
         bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
-        bodyLabel.textColor = Colors.titleColor
+        bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
         // Label stack view
         var authorLabelHeight: CGFloat?
@@ -203,7 +213,7 @@ final class QuoteView : UIView {
             let context: Contact.Context = groupThread.isOpenGroup ? .openGroup : .regular
             authorLabel.text = Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
             authorLabel.textColor = textColor
-            authorLabel.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
+            authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
             authorLabel.set(.height, to: authorLabelSize.height)
             authorLabelHeight = authorLabelSize.height
@@ -216,7 +226,24 @@ final class QuoteView : UIView {
             labelStackView.layoutMargins = UIEdgeInsets(top: labelStackViewVMargin, left: 0, bottom: labelStackViewVMargin, right: 0)
             mainStackView.addArrangedSubview(labelStackView)
         } else {
-            mainStackView.addArrangedSubview(bodyLabel)
+            let authorLabel = UILabel()
+            authorLabel.lineBreakMode = .byTruncatingTail
+            let context: Contact.Context = .regular
+            authorLabel.text = Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
+            authorLabel.textColor = textColor
+            authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
+            let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
+            authorLabel.set(.height, to: authorLabelSize.height)
+            authorLabelHeight = authorLabelSize.height
+            let labelStackView = UIStackView(arrangedSubviews: [ authorLabel, bodyLabel ])
+            labelStackView.axis = .vertical
+            labelStackView.spacing = labelStackViewSpacing
+            labelStackView.distribution = .equalCentering
+            labelStackView.set(.width, to: max(bodyLabelSize.width, authorLabelSize.width))
+            labelStackView.isLayoutMarginsRelativeArrangement = true
+            labelStackView.layoutMargins = UIEdgeInsets(top: labelStackViewVMargin, left: 0, bottom: labelStackViewVMargin, right: 0)
+            mainStackView.addArrangedSubview(labelStackView)
+//            mainStackView.addArrangedSubview(bodyLabel)
         }
         // Cancel button
         let cancelButton = UIButton(type: .custom)

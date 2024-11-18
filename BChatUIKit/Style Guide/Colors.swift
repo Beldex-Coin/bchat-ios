@@ -202,5 +202,7 @@ public final class Colors : NSObject {
     @objc public static var noInternetTitleColor: UIColor { UIColor(named: "A7A7BA-6A6A77")! }
     @objc public static var bothGreenWithAlpha10: UIColor { UIColor(named: "078720-Alpha")! }
     @objc public static var newBorderColor: UIColor { UIColor(named: "2C2C3B-A7A7BA")! }
-    
+    @objc public static var replyMessageColor: UIColor { UIColor(named: "078720-333333")! }
+    @objc public static var bothWhiteWithAlpha60: UIColor { UIColor(named: "FFFFFF-Alpha")! }
+    @objc public static var WhiteBlackWithAlpha60: UIColor { UIColor(named: "FFFFFF-333333-Alpha")! }
 }

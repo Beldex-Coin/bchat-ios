@@ -56,4 +56,7 @@ public final class Values : NSObject {
     
     // MARK: - Corner Radius
     @objc public static let buttonRadius = CGFloat(12)
+    
+    // MARK: - Verified User Border
+    @objc public static let borderThickness = CGFloat(2)
 }

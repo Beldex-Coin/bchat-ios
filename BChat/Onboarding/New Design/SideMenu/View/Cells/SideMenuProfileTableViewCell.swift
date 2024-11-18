@@ -117,7 +117,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
         verifiedImageView.pin(.bottom, to: .bottom, of: iconImageView, withInset: 3)
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         iconImageView.layer.borderColor = Colors.bothGreenColor.cgColor
-        iconImageView.layer.borderWidth = isBnsUser ? 1 : 0
+        iconImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
     }
 }

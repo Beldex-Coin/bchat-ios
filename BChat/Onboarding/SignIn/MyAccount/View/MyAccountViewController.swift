@@ -508,7 +508,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureImage, withInset: 6)
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-        profilePictureImage.layer.borderWidth = isBnsUser ? 1 : 0
+        profilePictureImage.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
         
         if isBnsUser {

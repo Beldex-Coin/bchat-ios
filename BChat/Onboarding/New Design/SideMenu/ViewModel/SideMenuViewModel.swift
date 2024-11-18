@@ -6,9 +6,6 @@ import Foundation
 
 enum SideMenuItem {
     
-    /// Indicated Side menu - My Account
-    case myAccount
-    
     /// Indicated Side menu - Settings
     case settings
     
@@ -39,14 +36,12 @@ enum SideMenuItem {
     //MARK: -  Constant
     
     /// the Default SideMenuItem = `.myAccount`
-    static let `default`: SideMenuItem = .myAccount
+    static let `default`: SideMenuItem = .settings
     
     /// title
     var title: String {
         let aKey: String
         switch self {
-            case .myAccount:
-                aKey = "My Account"
             case .settings:
                 aKey = "Settings"
             case .notification:
@@ -73,8 +68,6 @@ enum SideMenuItem {
     var imageName: String {
         let aKey: String
         switch self {
-            case .myAccount:
-                aKey = "ic_menu_account_settings"
             case .settings:
                 aKey = "ic_settings_sideMenu"
             case .notification:
@@ -103,7 +96,7 @@ enum SideMenuItem {
 final class SideMenuViewModel: NSObject {
     
     /// menuTitles
-    var menuTitles: [SideMenuItem] = [.myAccount, .settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
+    var menuTitles: [SideMenuItem] = [.settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
     
     /// hasTappableProfilePictureOSideMenuV
     var hasTappableProfilePicture: Bool = false
