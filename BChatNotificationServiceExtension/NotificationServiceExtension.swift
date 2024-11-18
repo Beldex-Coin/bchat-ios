@@ -53,55 +53,55 @@ public final class NotificationServiceExtension : UNNotificationServiceExtension
                 do {
                     let (message, proto) = try MessageReceiver.parse(envelopeAsData, openGroupMessageServerID: nil, using: transaction)
                     switch message {
-                    case let visibleMessage as VisibleMessage:
-                        let tsMessageID = try MessageReceiver.handleVisibleMessage(visibleMessage, associatedWithProto: proto, openGroupID: nil, isBackgroundPoll: false, using: transaction)
-                        
-                        // Remove the notificaitons if there is an outgoing messages from a linked device
-                        if let tsMessage = TSMessage.fetch(uniqueId: tsMessageID, transaction: transaction), tsMessage.isKind(of: TSOutgoingMessage.self), let threadID = tsMessage.thread(with: transaction).uniqueId {
-                            let semaphore = DispatchSemaphore(value: 0)
-                            let center = UNUserNotificationCenter.current()
-                            center.getDeliveredNotifications { notifications in
-                                let matchingNotifications = notifications.filter({ $0.request.content.userInfo[NotificationServiceExtension.threadIdKey] as? String == threadID})
-                                center.removeDeliveredNotifications(withIdentifiers: matchingNotifications.map({ $0.request.identifier }))
-                                // Hack: removeDeliveredNotifications seems to be async,need to wait for some time before the delivered notifications can be removed.
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { semaphore.signal() }
+                        case let visibleMessage as VisibleMessage:
+                            let tsMessageID = try MessageReceiver.handleVisibleMessage(visibleMessage, associatedWithProto: proto, openGroupID: nil, isBackgroundPoll: false, using: transaction)
+                            
+                            // Remove the notificaitons if there is an outgoing messages from a linked device
+                            if let tsMessage = TSMessage.fetch(uniqueId: tsMessageID, transaction: transaction), tsMessage.isKind(of: TSOutgoingMessage.self), let threadID = tsMessage.thread(with: transaction).uniqueId {
+                                let semaphore = DispatchSemaphore(value: 0)
+                                let center = UNUserNotificationCenter.current()
+                                center.getDeliveredNotifications { notifications in
+                                    let matchingNotifications = notifications.filter({ $0.request.content.userInfo[NotificationServiceExtension.threadIdKey] as? String == threadID})
+                                    center.removeDeliveredNotifications(withIdentifiers: matchingNotifications.map({ $0.request.identifier }))
+                                    // Hack: removeDeliveredNotifications seems to be async,need to wait for some time before the delivered notifications can be removed.
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { semaphore.signal() }
+                                }
+                                semaphore.wait()
                             }
-                            semaphore.wait()
-                        }
-                        
-                    case let unsendRequest as UnsendRequest:
-                        MessageReceiver.handleUnsendRequest(unsendRequest, using: transaction)
-                    case let closedGroupControlMessage as ClosedGroupControlMessage:
-                        MessageReceiver.handleClosedGroupControlMessage(closedGroupControlMessage, using: transaction)
-                    case let callMessage as CallMessage:
-                        MessageReceiver.handleCallMessage(callMessage, using: transaction)
-                        guard case .preOffer = callMessage.kind else { return self.completeSilenty() }
-                        if !SSKPreferences.areCallsEnabled {
-                            if let sender = callMessage.sender, let thread = TSContactThread.fetch(for: sender, using: transaction), !thread.isMessageRequest(using: transaction) {
-                                self.insertCallInfoMessage(for: callMessage, in: thread, reason: .permissionDenied, using: transaction)
+                            
+                        case let unsendRequest as UnsendRequest:
+                            MessageReceiver.handleUnsendRequest(unsendRequest, using: transaction)
+                        case let closedGroupControlMessage as ClosedGroupControlMessage:
+                            MessageReceiver.handleClosedGroupControlMessage(closedGroupControlMessage, using: transaction)
+                        case let callMessage as CallMessage:
+                            MessageReceiver.handleCallMessage(callMessage, using: transaction)
+                            guard case .preOffer = callMessage.kind else { return self.completeSilenty() }
+                            if !SSKPreferences.areCallsEnabled {
+                                if let sender = callMessage.sender, let thread = TSContactThread.fetch(for: sender, using: transaction), !thread.isMessageRequest(using: transaction) {
+                                    self.insertCallInfoMessage(for: callMessage, in: thread, reason: .permissionDenied, using: transaction)
+                                }
+                                break
                             }
-                            break
-                        }
-                        if isCallOngoing {
-                            if let sender = callMessage.sender, let thread = TSContactThread.fetch(for: sender, using: transaction), !thread.isMessageRequest(using: transaction) {
-                                // Handle call in busy state
-                                let message = CallMessage()
-                                message.uuid = callMessage.uuid
-                                message.kind = .endCall
-                                SNLog("[Calls] Sending end call message because there is an ongoing call.")
-                                MessageSender.sendNonDurably(message, in: thread, using: transaction).retainUntilComplete()
-                                self.insertCallInfoMessage(for: callMessage, in: thread, reason: .missed, using: transaction)
+                            if isCallOngoing {
+                                if let sender = callMessage.sender, let thread = TSContactThread.fetch(for: sender, using: transaction), !thread.isMessageRequest(using: transaction) {
+                                    // Handle call in busy state
+                                    let message = CallMessage()
+                                    message.uuid = callMessage.uuid
+                                    message.kind = .endCall
+                                    SNLog("[Calls] Sending end call message because there is an ongoing call.")
+                                    MessageSender.sendNonDurably(message, in: thread, using: transaction).retainUntilComplete()
+                                    self.insertCallInfoMessage(for: callMessage, in: thread, reason: .missed, using: transaction)
+                                }
+                                break
                             }
-                            break
-                        }
-                        self.handleSuccessForIncomingCall(for: callMessage, using: transaction)
-                    default: break
+                            self.handleSuccessForIncomingCall(for: callMessage, using: transaction)
+                        default: break
                     }
                 } catch {
                     if let error = error as? MessageReceiver.Error, error.isRetryable {
                         switch error {
-                        case .invalidGroupPublicKey, .noGroupKeyPair: self.completeSilenty()
-                        default: self.handleFailure(for: notificationContent)
+                            case .invalidGroupPublicKey, .noGroupKeyPair: self.completeSilenty()
+                            default: self.handleFailure(for: notificationContent)
                         }
                     }
                 }

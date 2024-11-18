@@ -16,24 +16,14 @@ final class PathStatusView : UIView {
         registerObservers()
     }
     
-//    private func setUpViewHierarchy() {
-//        layer.cornerRadius = PathStatusView.size / 2
-//        layer.masksToBounds = false
-//        if OnionRequestAPI.paths.isEmpty {
-//            OnionRequestAPI.paths = Storage.shared.getOnionRequestPaths()
-//        }
-//        let color = (!OnionRequestAPI.paths.isEmpty) ? Colors.accent : Colors.pathsBuilding
-//        setColor(to: color, isAnimated: false)
-//    }
-    
     private func setUpViewHierarchy() {
         layer.cornerRadius = PathStatusView.size / 2
         layer.masksToBounds = false
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal(){
-            setColor(to: UIColor(red: 0.07, green: 0.55, blue: 0.08, alpha: 1.00), isAnimated: true)
-        }else{
+        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+            setColor(to: UIColor(hex: 0x00FF05), isAnimated: true)
+        } else {
             OnionRequestAPI.paths = Storage.shared.getOnionRequestPaths()
-            setColor(to: UIColor(red: 1.00, green: 0.81, blue: 0.23, alpha: 1.00), isAnimated: true)
+            setColor(to: UIColor(hex: 0xFF3E3E), isAnimated: true)
         }
     }
 
@@ -59,7 +49,7 @@ final class PathStatusView : UIView {
     }
 
     @objc private func handlePathsBuiltNotification() {
-        setColor(to: Colors.accent, isAnimated: true)
+        setColor(to: UIColor(hex: 0x00FF05), isAnimated: true)
     }
 }
 public class NetworkReachabilityStatus {

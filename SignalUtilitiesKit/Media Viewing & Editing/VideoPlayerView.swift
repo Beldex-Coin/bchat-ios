@@ -4,6 +4,8 @@
 
 import Foundation
 import AVFoundation
+import MediaPlayer
+import BChatUIKit
 
 @objc
 public class VideoPlayerView: UIView {
@@ -69,9 +71,12 @@ public class PlayerProgressBar: UIView {
     // MARK: Subviews
     private let positionLabel = UILabel()
     private let remainingLabel = UILabel()
+    private let passAndPaly = UIButton()
+    private let speakerOptionButton = UIButton()
     private let slider = TrackingSlider()
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     weak private var progressObserver: AnyObject?
+    private let fullScreenButton = UIButton()
 
     private let kPreferredTimeScale: CMTimeScale = 100
 
@@ -109,11 +114,15 @@ public class PlayerProgressBar: UIView {
         super.init(frame: frame)
 
         // Background
-        backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
-        if !UIAccessibility.isReduceTransparencyEnabled {
-            addSubview(blurEffectView)
-            blurEffectView.ows_autoPinToSuperviewEdges()
-        }
+        backgroundColor = Colors.mainBackGroundColor3
+        
+        // Dont remove thos lines
+        
+        //UIColor.lightGray.withAlphaComponent(0.5)
+//        if !UIAccessibility.isReduceTransparencyEnabled {
+//            addSubview(blurEffectView)
+//            blurEffectView.ows_autoPinToSuperviewEdges()
+//        }
 
         // Configure controls
 
@@ -121,11 +130,19 @@ public class PlayerProgressBar: UIView {
         positionLabel.font = kLabelFont
         remainingLabel.font = kLabelFont
 
+        // Configure passAndpaly button
+        passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
+        passAndPaly.addTarget(self, action: #selector(passAndPalyButtonTapped), for: .touchUpInside)
+        
+        // Configure speakerOptionButton
+        speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
+        speakerOptionButton.addTarget(self, action: #selector(speakerButtonTapped), for: .touchUpInside)
+
         // We use a smaller thumb for the progress slider.
         slider.setThumbImage(#imageLiteral(resourceName: "sliderProgressThumb"), for: .normal)
-        slider.maximumTrackTintColor = UIColor.ows_black
-        slider.minimumTrackTintColor = UIColor.ows_black
-
+        slider.maximumTrackTintColor = UIColor(hex: 0xFFFFFF).withAlphaComponent(0.5)
+        slider.minimumTrackTintColor = UIColor(hex: 0xFFFFFF).withAlphaComponent(0.5)
+        
         slider.addTarget(self, action: #selector(handleSliderTouchDown), for: .touchDown)
         slider.addTarget(self, action: #selector(handleSliderTouchUp), for: .touchUpInside)
         slider.addTarget(self, action: #selector(handleSliderTouchUp), for: .touchUpOutside)
@@ -136,14 +153,32 @@ public class PlayerProgressBar: UIView {
         // the MediaPageView.
         let panAbsorber = UIPanGestureRecognizer(target: self, action: nil)
         self.addGestureRecognizer(panAbsorber)
+        
+        // Configure fullScreen button
+        fullScreenButton.setImage(UIImage(named: "ic_fullScreen"), for: .normal)
+        fullScreenButton.addTarget(self, action: #selector(fullScreenButtonTapped), for: .touchUpInside)
+        
 
         // Layout Subviews
 
+        addSubview(passAndPaly)
         addSubview(positionLabel)
         addSubview(remainingLabel)
+        addSubview(speakerOptionButton)
         addSubview(slider)
+        
+        // Don't Delete
+        // For FullScreen uncomment this
+//        addSubview(fullScreenButton)
+        
+        let buttonWidth: CGFloat = 14
+        let buttonHeight: CGFloat = 14
+        
+        passAndPaly.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
+        passAndPaly.autoPinEdge(toSuperviewMargin: .leading)
+        passAndPaly.autoVCenterInSuperview()
 
-        positionLabel.autoPinEdge(toSuperviewMargin: .leading)
+        positionLabel.autoPinEdge(.leading, to: .trailing, of: passAndPaly, withOffset: 8)
         positionLabel.autoVCenterInSuperview()
 
         let kSliderMargin: CGFloat = 8
@@ -152,13 +187,73 @@ public class PlayerProgressBar: UIView {
         slider.autoVCenterInSuperview()
 
         remainingLabel.autoPinEdge(.leading, to: .trailing, of: slider, withOffset: kSliderMargin)
-        remainingLabel.autoPinEdge(toSuperviewMargin: .trailing)
         remainingLabel.autoVCenterInSuperview()
+        
+        speakerOptionButton.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
+        speakerOptionButton.autoPinEdge(.leading, to: .trailing, of: remainingLabel, withOffset: kSliderMargin)
+        speakerOptionButton.autoPinEdge(toSuperviewMargin: .trailing)
+        speakerOptionButton.autoVCenterInSuperview()
+        
+        // Don't Delete
+        // For FullScreen uncomment this
+//        fullScreenButton.autoPinEdge(.leading, to: .trailing, of: speakerOptionButton, withOffset: kSliderMargin)
+//        fullScreenButton.autoPinEdge(toSuperviewMargin: .trailing)
+//        fullScreenButton.autoVCenterInSuperview()
+        
+        
+//        // Notifications
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(isFromPassActionTapped), name: Notification.Name("isFromPassAction"), object: nil)
     }
 
     // MARK: Gesture handling
 
     var wasPlayingWhenScrubbingStarted: Bool = false
+    
+    @objc func isFromPassActionTapped(notification: NSNotification) {
+        passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
+    }
+    
+    ///Small Buton Pass and Paly Button
+    @objc private func passAndPalyButtonTapped() {
+        passAndPaly.isSelected.toggle()
+        if passAndPaly.isSelected {
+            passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPassSmallButton"), object: nil)
+        } else {
+            passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPlaySmallButton"), object: nil)
+        }
+    }
+    
+    ///speaker
+    @objc private func speakerButtonTapped() {
+        speakerOptionButton.isSelected.toggle()
+        if speakerOptionButton.isSelected {
+            speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+                try AVAudioSession.sharedInstance().setActive(true)
+                print("Speaker enabled")
+            } catch {
+                print("Failed to enable speaker: \(error)")
+            }
+        }else {
+            speakerOptionButton.setImage(UIImage(named: "ic_speaker_mute"), for: .normal)
+            do {
+                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
+                try AVAudioSession.sharedInstance().setActive(true)
+                print("Speaker disabled")
+            } catch {
+                print("Failed to disable speaker: \(error)")
+            }
+        }
+    }
+    
+    // fullScreen button action
+    @objc func fullScreenButtonTapped(notification: NSNotification) {
+         NotificationCenter.default.post(name: Notification.Name(rawValue: "fullScreenButtonTapped"), object: nil)
+    }
 
     @objc
     private func handleSliderTouchDown(_ slider: UISlider) {

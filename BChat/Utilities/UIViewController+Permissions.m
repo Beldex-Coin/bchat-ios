@@ -6,6 +6,7 @@
 #import "BChat-Swift.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Photos/Photos.h>
+#import <PhotosUI/PhotosUI.h>
 #import <SignalCoreKit/Threading.h>
 #import <SignalUtilitiesKit/UIUtil.h>
 

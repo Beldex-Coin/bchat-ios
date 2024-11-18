@@ -18,14 +18,14 @@ final class ContextMenuVC : UIViewController {
         return result
     }()
     
-    private lazy var timestampLabel: UILabel = {
-        let result = UILabel()
-        let date = viewItem.interaction.dateForUI()
-        result.text = DateUtil.formatDate(forDisplay: date)
-        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
-        result.textColor = isLightMode ? .black : .white
-        return result
-    }()
+//    private lazy var timestampLabel: UILabel = {
+//        let result = UILabel()
+//        let date = viewItem.interaction.dateForUI()
+//        result.text = DateUtil.formatDate(forDisplay: date)
+//        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+//        result.textColor = isLightMode ? .black : .white
+//        return result
+//    }()
     
     // MARK: Settings
     private static let actionViewHeight: CGFloat = 40
@@ -67,17 +67,17 @@ final class ContextMenuVC : UIViewController {
         snapshot.set(.width, to: frame.width)
         snapshot.set(.height, to: frame.height)
         // Timestamp
-        view.addSubview(timestampLabel)
-        timestampLabel.center(.vertical, in: snapshot)
-        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-        if isOutgoing {
-            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
-        } else {
-            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
-        }
+//        view.addSubview(timestampLabel)
+//        timestampLabel.center(.vertical, in: snapshot)
+//        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+//        if isOutgoing {
+//            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
+//        } else {
+//            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
+//        }
         // Menu
         let menuBackgroundView = UIView()
-        menuBackgroundView.backgroundColor = Colors.receivedMessageBackground
+        menuBackgroundView.backgroundColor = UIColor(hex: 0x2C2C3B)//Colors.receivedMessageBackground
         menuBackgroundView.layer.cornerRadius = ContextMenuVC.menuCornerRadius
         menuBackgroundView.layer.masksToBounds = true
         menuView.addSubview(menuBackgroundView)
@@ -129,7 +129,7 @@ final class ContextMenuVC : UIViewController {
         UIView.animate(withDuration: 0.25, animations: {
             self.blurView.effect = nil
             self.menuView.alpha = 0
-            self.timestampLabel.alpha = 0
+//            self.timestampLabel.alpha = 0
         }, completion: { _ in
             self.dismiss()
             self.delegate?.contextMenuDismissed()

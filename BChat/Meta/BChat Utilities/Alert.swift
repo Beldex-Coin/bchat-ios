@@ -25,6 +25,6 @@ struct Alert
     static let Alert_BChat_Password_Message =  "Password changes successfully"
     static let Alert_BChat_Invalid_ID = "invalid BChat ID"
     static let Alert_BChat_Invalid_Id_or_BNS_Name = "Please check the BChat ID or BNS name and try again"
-    
-    
+    static let Alert_Recording_On = "Audio recording is already on"
+    static let Alert_Incorrect_Pin = "Incorrect pin"
 }

@@ -11,6 +11,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     ConversationTitleViewDelegate {
 
     func handleTitleViewTapped() {
+        
+        if self.thread is TSGroupThread {
+            openSettings()
+        }
+        
         // Don't take the user to settings for message requests
         guard
             let contactThread: TSContactThread = thread as? TSContactThread,
@@ -26,8 +31,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     @objc func openSettings() {
         snInputView.resignFirstResponder()
-        let settingsVC = OWSConversationSettingsViewController()
-        settingsVC.configure(with: thread, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
+        let settingsVC = ChatSettingsVC()
+        settingsVC.configure(with: thread, viewItems: viewItems, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
         navigationController!.pushViewController(settingsVC, animated: true, completion: nil)
     }
@@ -50,7 +55,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let contact: Contact = Storage.shared.getContact(with: publicKey)!
         if contact.isBlocked {
             guard !showBlockedModalIfNeeded() else { return }
-        }else{
+        } else {
             guard BChatCall.isEnabled else { return }
             if SSKPreferences.areCallsEnabled {
                 requestMicrophonePermissionIfNeeded { }
@@ -58,15 +63,19 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
                 guard AppEnvironment.shared.callManager.currentCall == nil else { return }
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-                let callVC = CallVC(for: call)
+                let callVC = NewIncomingCallVC(for: call)
                 callVC.conversationVC = self
                 self.inputAccessoryView?.isHidden = true
                 self.inputAccessoryView?.alpha = 0
                 present(callVC, animated: true, completion: nil)
+                //CallVC
+                //NewIncomingCallVC
             } else {
                 snInputView.isHidden = true
-                let callPermissionRequestModal = CallPermissionRequestModal()
-                self.navigationController?.present(callPermissionRequestModal, animated: true, completion: nil)
+                let vc = CallPermissionRequestModalNewVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
             }
         }
     }
@@ -76,7 +85,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
         UIView.animate(withDuration: 0.25, animations: {
-            self.blockedBanner.alpha = 0
         }, completion: { _ in
             if let contact: Contact = Storage.shared.getContact(with: publicKey) {
                 Storage.shared.write(
@@ -87,6 +95,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         Storage.shared.setContact(contact, using: transaction)
                     },
                     completion: {
+                        self.snInputView.isHidden = false
+                        if let clearChatButtonStackView = self.view.viewWithTag(111) {
+                            clearChatButtonStackView.removeFromSuperview()
+                        }
                         MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                     }
                 )
@@ -275,10 +287,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
-            let modal = SendSeedModal()
+            inputAccessoryView?.isHidden = true
+            inputAccessoryView?.alpha = 0
+            let modal = OwnSeedWarningPopUp()
             modal.modalPresentationStyle = .overFullScreen
             modal.modalTransitionStyle = .crossDissolve
-            modal.proceed = { self.sendMessage(hasPermissionToSendSeed: true) }
+            modal.proceed = {
+                self.showInputAccessoryView()
+                self.sendMessage(hasPermissionToSendSeed: true)
+            }
+            modal.cancel = {
+                self.showInputAccessoryView()
+            }
             return present(modal, animated: true, completion: nil)
         }
         
@@ -287,10 +307,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // I have develop word count 4096 perpose logic
         if spaceCount < 0 {
             
-        }else{
+        } else {
             if text.count == 4096 || text.count > 4096 {
-                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
-            }else {
+                self.showToast(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
+            } else {
                 let thread = self.thread
                 
                 let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
@@ -311,32 +331,33 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     isNewThread: !oldThreadShouldBeVisible,
                     timestamp: (sentTimestamp - 1)  // Set 1ms earlier as this is used for sorting
                 )
-                .map { [weak self] _ in
-                    self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
-            
-                    Storage.write(with: { transaction in
-                        message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
-                    }, completion: { [weak self] in
-                        tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
+                    .map { [weak self] _ in
+                        self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
                         
-                        Storage.shared.write(
-                            with: { transaction in
-                                tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
-                            },
-                            completion: { [weak self] in
-                                // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
-                                // the height of the new message cell
-                                self?.scrollToBottom(isAnimated: false)
+                        Storage.write(with: { transaction in
+                            message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
+                        }, completion: { [weak self] in
+                            tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
+                            
+                            Storage.shared.write(
+                                with: { transaction in
+                                    tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
+                                },
+                                completion: { [weak self] in
+                                    // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
+                                    // the height of the new message cell
+                                    self?.scrollToBottom(isAnimated: false)
+                                }
+                                
+                            )
+                            
+                            Storage.shared.write { transaction in
+                                MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
                             }
-                        )
-                        
-                        Storage.shared.write { transaction in
-                            MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
-                        }
-                        
-                        self?.handleMessageSent()
-                    })
-                }
+                            
+                            self?.handleMessageSent()
+                        })
+                    }
                 
                 // Show an error indicating that approving the thread failed
                 promise.catch(on: DispatchQueue.main) { [weak self] _ in
@@ -349,89 +370,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
         }
     }
-    
-    // Send Msg Button Action
-//    func sendMessage(hasPermissionToSendSeed: Bool = false) {
-//        guard !showBlockedModalIfNeeded() else { return }
-//
-//        let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
-//        // Space count
-//        let spaceCount = text.reduce(0) { $1.isWhitespace && !$1.isNewline ? $0 + 1 : $0 }
-//
-//        // I have develop word count 4096 perpose logic
-//        if spaceCount < 0 {
-//            self.longtextmesg(text:text)
-//        }else {
-//            if text.count == 4096 || text.count > 4096 {
-//                self.showToastMsg(message: "Text limit exceed: Maximum limit of messages is 4096 characters", seconds: 1.5)
-//            }else {
-//                self.longtextmesg(text:text)
-//            }
-//        }
-//    }
-    
-//    func longtextmesg(text:String,hasPermissionToSendSeed: Bool = false) {
-//        let thread = self.thread
-//        guard !text.isEmpty else { return }
-//        if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
-//            // Warn the user if they're about to send their seed to someone
-//            let modal = SendSeedModal()
-//            modal.modalPresentationStyle = .overFullScreen
-//            modal.modalTransitionStyle = .crossDissolve
-//            modal.proceed = { self.sendMessage(hasPermissionToSendSeed: true) }
-//            return present(modal, animated: true, completion: nil)
-//        }
-//        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-//        let message: VisibleMessage = VisibleMessage()
-//        message.sentTimestamp = sentTimestamp
-//        message.text = text
-//        message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-//
-//        // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
-//        // use it to determine if the user is creating a new thread and update the 'isApproved'
-//        // flags appropriately
-//        let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
-//        let linkPreviewDraft = snInputView.linkPreviewInfo?.draft
-//        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
-//
-//        let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
-//            for: self.thread,
-//            isNewThread: !oldThreadShouldBeVisible,
-//            timestamp: (sentTimestamp - 1)  // Set 1ms earlier as this is used for sorting
-//        )
-//        .map { [weak self] _ in
-//            self?.viewModel.appendUnsavedOutgoingTextMessage(tsMessage)
-//            Storage.write(with: { transaction in
-//                message.linkPreview = VisibleMessage.LinkPreview.from(linkPreviewDraft, using: transaction)
-//            }, completion: { [weak self] in
-//                tsMessage.linkPreview = OWSLinkPreview.from(message.linkPreview)
-//
-//                Storage.shared.write(
-//                    with: { transaction in
-//                        tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
-//                    },
-//                    completion: { [weak self] in
-//                        // At this point the TSOutgoingMessage should have its link preview set, so we can scroll to the bottom knowing
-//                        // the height of the new message cell
-//                        self?.scrollToBottom(isAnimated: false)
-//                    }
-//                )
-//
-//                Storage.shared.write { transaction in
-//                    MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
-//                }
-//
-//                self?.handleMessageSent()
-//            })
-//        }
-//        // Show an error indicating that approving the thread failed
-//        promise.catch(on: DispatchQueue.main) { [weak self] _ in
-//            let alert = UIAlertController(title: "BChat", message: "An error occurred when trying to accept this message request", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self?.present(alert, animated: true, completion: nil)
-//        }
-//        promise.retainUntilComplete()
-//    }
 
     func sendAttachments(_ attachments: [SignalAttachment], with text: String, onComplete: (() -> ())? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
@@ -542,26 +480,33 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                             if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
                                                 customizeSlideToOpen.isHidden = false
                                                 inputTextView.textColor = Colors.accent
+                                                CustomSlideView.isFromExpandAttachment = true
+                                                NotificationCenter.default.post(name: .attachmentHiddenNotification, object: nil)
                                             } else {
                                                 customizeSlideToOpen.isHidden = true
+                                                CustomSlideView.isFromExpandAttachment = false
                                             }
                                         }
                                     }
                                 } else {
                                     customizeSlideToOpen.isHidden = true
+                                    CustomSlideView.isFromExpandAttachment = false
                                 }
                             }
                         }
                     } else {
                         customizeSlideToOpen.isHidden = true
+                        CustomSlideView.isFromExpandAttachment = false
                     }
                     print("Height-->",blockChainHeight,daemonBlockChainHeight)
                 }
             }
         } else {
             customizeSlideToOpen.isHidden = true
+            CustomSlideView.isFromExpandAttachment = false
         }
         updateMentions(for: newText)
+        applyColorToMentionedUsers(text: newText)
     }
 
     func showLinkPreviewSuggestionModal() {
@@ -570,16 +515,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         linkPreviewModel.modalPresentationStyle = .overFullScreen
         linkPreviewModel.modalTransitionStyle = .crossDissolve
-       // present(linkPreviewModel, animated: true, completion: nil)
         dismiss(animated: true)
     }
 
     // MARK: Mentions
     func updateMentions(for newText: String) {
         if newText.count < oldText.count {
-            currentMentionStartIndex = nil
-            snInputView.hideMentionsUI()
-            mentions = mentions.filter { $0.isContained(in: newText) }
+            if !newText.hasPrefix("@") {
+                currentMentionStartIndex = nil
+                snInputView.hideMentionsUI()
+                mentions = mentions.filter { $0.isContained(in: newText) }
+            }
         }
         if !newText.isEmpty {
             let lastCharacterIndex = newText.index(before: newText.endIndex)
@@ -604,11 +550,36 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let query = String(newText[newText.index(after: currentMentionStartIndex)...]) // + 1 to get rid of the @
                     let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                     snInputView.showMentionsUI(for: candidates, in: thread)
+                } else {
+                    if newText.hasPrefix("@") {
+                        let query = newText.replacingOccurrences(of: "@", with: "", options: NSString.CompareOptions.literal, range: nil)
+                        let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
+                        snInputView.showMentionsUI(for: candidates, in: thread)
+                    }
                 }
             }
         }
         oldText = newText
     }
+    
+    func applyColorToMentionedUsers(text : String) {
+        let text = text
+        let Attribute = [ NSAttributedString.Key.foregroundColor: Colors.text]
+        let attributedString = NSMutableAttributedString(string: text, attributes: Attribute)
+        let words = text.split(separator: " ")
+        let mentionColor = Colors.accent
+        for word in words {
+            if word.hasPrefix("@") {
+                if let range = text.range(of: String(word)) {
+                    let nsRange = NSRange(range, in: text)
+                    attributedString.addAttribute(.foregroundColor, value: mentionColor, range: nsRange)
+                }
+            }
+        }
+        snInputView.inputTextView.attributedText = attributedString
+        snInputView.inputTextView.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+    }
+    
 
     func resetMentions() {
         oldText = ""
@@ -670,120 +641,153 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         window.makeKeyAndVisible()
         window.backgroundColor = .clear
     }
+    
+    func handleTapToCallback() {
+        if SSKPreferences.areCallsEnabled {
+            requestMicrophonePermissionIfNeeded { }
+            guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
+            guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
+            guard AppEnvironment.shared.callManager.currentCall == nil else { return }
+            let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
+            let callVC = NewIncomingCallVC(for: call)
+            callVC.conversationVC = self
+            snInputView.isHidden = true
+            present(callVC, animated: true, completion: nil)
+            
+        } else {
+            snInputView.isHidden = true
+            let vc = CallPermissionRequestModalNewVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    func confirmDownload(_ viewItem: ConversationViewItem) {
+        snInputView.isHidden = true
+        let vc = DownloadAttachmentPopUpViewController(viewItem: viewItem)
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
+    }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
-        func confirmDownload() {
-            let modal = DownloadAttachmentModal(viewItem: viewItem)
-            modal.modalPresentationStyle = .overFullScreen
-            modal.modalTransitionStyle = .crossDissolve
-            present(modal, animated: true, completion: nil)
+        
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.attachmentsButton.isExpanded = false
+            return
         }
+        
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
-            let callMissedTipsModal = CallMissedTipsModal(caller: caller)
-            present(callMissedTipsModal, animated: true, completion: nil)
+            let vc = MissedCallPopUp(caller: caller)
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            present(vc, animated: true, completion: nil)
         } else if let message = viewItem.interaction as? TSOutgoingMessage, message.messageState == .failed {
             // Show the failed message sheet
             showFailedMessageSheet(for: message)
         } else {
             switch viewItem.messageCellType {
-            case .audio:
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                } else {
+                case .audio:
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        confirmDownload(viewItem)
+                    } else {
+                        guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
+                            let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
+                        let albumView = cell.subviews[6]
+                        let albumCheck = gestureRecognizer.location(in: albumView)
+                        if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                            return
+                        }
+                        playOrPauseAudio(for: viewItem)
+                    }
+                case .mediaMessage:
                     guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                         let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
-                    let albumView = cell.subviews[5]
-                    let albumCheck = gestureRecognizer.location(in: albumView)
-                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
-                        return
-                    }
-                    playOrPauseAudio(for: viewItem)
-                }
-            case .mediaMessage:
-                guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
-                    let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                } else {
-                    guard let albumView = cell.albumView else { return }
-                    let locationInCell = gestureRecognizer.location(in: cell)
-                    // Figure out which of the media views was tapped
-                    let albumCheck = gestureRecognizer.location(in: albumView)
-                    if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
-                        return
-                    }
-                    let locationInAlbumView = cell.convert(locationInCell, to: albumView)
-                    guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
-                    if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
-                        // TODO: Tapped a failed incoming attachment
-                    }
-                    let attachment = mediaView.attachment
-                    if let pointer = attachment as? TSAttachmentPointer {
-                        if pointer.state == .failed {
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        confirmDownload(viewItem)
+                    } else {
+                        guard let albumView = cell.albumView else { return }
+                        let locationInCell = gestureRecognizer.location(in: cell)
+                        // Figure out which of the media views was tapped
+                        let albumCheck = gestureRecognizer.location(in: albumView)
+                        if albumCheck.x < 0 || albumCheck.x > albumView.frame.maxX {
+                            return
+                        }
+                        let locationInAlbumView = cell.convert(locationInCell, to: albumView)
+                        guard let mediaView = albumView.mediaView(forLocation: locationInAlbumView) else { return }
+                        if albumView.isMoreItemsView(mediaView: mediaView) && viewItem.mediaAlbumHasFailedAttachment() {
                             // TODO: Tapped a failed incoming attachment
                         }
+                        let attachment = mediaView.attachment
+                        if let pointer = attachment as? TSAttachmentPointer {
+                            if pointer.state == .failed {
+                                // TODO: Tapped a failed incoming attachment
+                            }
+                        }
+                        guard let stream = attachment as? TSAttachmentStream else { return }
+                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ]) //*************
+                        gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
                     }
-                    guard let stream = attachment as? TSAttachmentStream else { return }
-                    let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ])
-                    gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
-                }
-            case .genericAttachment:
-                if viewItem.interaction is TSIncomingMessage,
-                    let thread = self.thread as? TSContactThread,
-                    Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
-                    confirmDownload()
-                }
-                else if (
-                    viewItem.attachmentStream?.isText == true ||
-                    viewItem.attachmentStream?.isMicrosoftDoc == true ||
-                    viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf
-                ), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
-                    let fileUrl: URL = URL(fileURLWithPath: filePathString)
-                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                    interactionController.delegate = self
-                    interactionController.presentPreview(animated: true)
-                }
-                else {
-                    // Open the document if possible
-                    guard let url = viewItem.attachmentStream?.originalMediaURL else { return }
-                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                    if UIDevice.current.isIPad {
-                        shareVC.excludedActivityTypes = []
-                        shareVC.popoverPresentationController?.permittedArrowDirections = []
-                        shareVC.popoverPresentationController?.sourceView = self.view
-                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                case .genericAttachment:
+                    if viewItem.interaction is TSIncomingMessage,
+                        let thread = self.thread as? TSContactThread,
+                        Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                        self.confirmDownload(viewItem)
                     }
-                    navigationController!.present(shareVC, animated: true, completion: nil)
-                }
-            case .textOnlyMessage:
-                if let reply = viewItem.quotedReply {
-                    // Scroll to the source of the reply
-                    guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
-                    messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
-                } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
-                    let url = message.openGroupInvitationURL {
-                    joinOpenGroup(name: name, url: url)
-                } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
-                    joinBeldexExplorer(id: id, amount: amount)
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
-                    joinBeldexExplorer(id: id, amount: amount)
-                }
-            default: break
+                    else if (viewItem.attachmentStream?.isText == true ||
+                        viewItem.attachmentStream?.isMicrosoftDoc == true ||
+                        viewItem.attachmentStream?.contentType == OWSMimeTypeApplicationPdf), let filePathString: String = viewItem.attachmentStream?.originalFilePath {
+                        let fileUrl: URL = URL(fileURLWithPath: filePathString)
+                        let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+                        interactionController.delegate = self
+                        interactionController.presentPreview(animated: true)
+                    }
+                    else {
+                        // Open the document if possible
+                        guard let url = viewItem.attachmentStream?.originalMediaURL else { return }
+                        let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+                        if UIDevice.current.isIPad {
+                            shareVC.excludedActivityTypes = []
+                            shareVC.popoverPresentationController?.permittedArrowDirections = []
+                            shareVC.popoverPresentationController?.sourceView = self.view
+                            shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                        }
+                        navigationController!.present(shareVC, animated: true, completion: nil)
+                    }
+                case .textOnlyMessage:
+                    if let reply = viewItem.quotedReply {
+                        // Scroll to the source of the reply
+                        guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
+                        messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                    } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
+                        let url = message.openGroupInvitationURL {
+                        joinOpenGroup(name: name, url: url)
+                    } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
+                        joinBeldexExplorer(id: id, amount: amount)
+                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
+                        joinBeldexExplorer(id: id, amount: amount)
+                    } else {
+                        if isKeyboardPresented {
+                            UIApplication.dismissKeyboard()
+                        }
+                    }
+                default: break
             }
         }
     }
     
     func handleViewItemSwiped(_ viewItem: ConversationViewItem, state: SwipeState) {
         switch state {
-        case .began:
-            messagesTableView.isScrollEnabled = false
-        case .ended, .cancelled:
-            messagesTableView.isScrollEnabled = true
+            case .began:
+                messagesTableView.isScrollEnabled = false
+            case .ended, .cancelled:
+                messagesTableView.isScrollEnabled = true
         }
     }
 
@@ -839,39 +843,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
-//        if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid, let amount = payment.paymentAmount {
-//            UserDefaults.standard.set("\(amount)", forKey: "TSIncomingMessageAmount")
-//            var quoteDraftOrNil: OWSQuotedReplyModel?
-//            Storage.read { transaction in
-//                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-//            }
-//            guard let quoteDraft = quoteDraftOrNil else { return }
-//            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-//            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-//            snInputView.becomeFirstResponder()
-//            UserDefaults.standard.removeObject(forKey: "TSOutgoingMessageAmount")
-//        } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid, let amount = payment.paymentAmount {
-//            UserDefaults.standard.set("\(amount)", forKey: "TSOutgoingMessageAmount")
-//            var quoteDraftOrNil: OWSQuotedReplyModel?
-//            Storage.read { transaction in
-//                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-//            }
-//            guard let quoteDraft = quoteDraftOrNil else { return }
-//            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-//            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-//            snInputView.becomeFirstResponder()
-//            UserDefaults.standard.removeObject(forKey: "TSIncomingMessageAmount")
-//        }else {
         customizeSlideToOpen.isHidden = true
-            var quoteDraftOrNil: OWSQuotedReplyModel?
-            Storage.read { transaction in
-                quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
-            }
-            guard let quoteDraft = quoteDraftOrNil else { return }
-            let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-            snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
-            snInputView.becomeFirstResponder()
-//        }
+        CustomSlideView.isFromExpandAttachment = false
+        var quoteDraftOrNil: OWSQuotedReplyModel?
+        Storage.read { transaction in
+            quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+        }
+        guard let quoteDraft = quoteDraftOrNil else { return }
+        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
+        snInputView.becomeFirstResponder()
     }
     
     func copy(_ viewItem: ConversationViewItem) {
@@ -885,6 +866,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             UIPasteboard.general.string = fullDetails
         } else {
             viewItem.copyTextAction()
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+            self.showToast(message: "Copied to clipboard", seconds: 1.0)
         }
     }
     
@@ -905,7 +889,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("delete_message_for_me", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteLocallyAction)
             
@@ -915,12 +901,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
                 self.deleteForEveryone(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteRemotelyAction)
             
             let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(cancelAction)
             
@@ -928,12 +918,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self.inputAccessoryView?.alpha = 0
             self.presentAlert(alertVC)
         } else {
-            // deleteLocally(viewItem)
-            
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
             let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(deleteLocallyAction)
             var title = NSLocalizedString("Report & Delete", comment: "")
@@ -941,21 +931,22 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 title = String(format: NSLocalizedString("Report & Delete", comment: ""), viewItem.interaction.thread.name())
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
-                // self.showToastMsg(message: "Report send", seconds: 1.0)
                 let uiAlert = UIAlertController(title: "Report & Delete", message: "This message will be forwarded to the BChat Team & will be deleted.", preferredStyle: UIAlertController.Style.alert)
                 self.present(uiAlert, animated: true, completion: nil)
                 uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-                    // println("Click of default button")
                 }))
                 uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
-                    //println("Click of cancel button")
                     self.deleteLocally(viewItem)
-                    self.showInputAccessoryView()
+                    if !self.thread.isBlocked() {
+                        self.showInputAccessoryView()
+                    }
                 }))
             }
             alertVC.addAction(deleteRemotelyAction)
             let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
-                self.showInputAccessoryView()
+                if !self.thread.isBlocked() {
+                    self.showInputAccessoryView()
+                }
             }
             alertVC.addAction(cancelAction)
             self.inputAccessoryView?.isHidden = true
@@ -968,10 +959,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let uiAlert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
         self.present(uiAlert, animated: true, completion: nil)
         uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-            // println("Click of default button")
         }))
         uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
-            //println("Click of cancel button")
         }))
     }
     
@@ -1016,6 +1005,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendMediaSavedNotificationIfNeeded(for: viewItem)
     }
     
+    func messageDetail(_ viewItem: ConversationViewItem) {
+        let vc = MessageDetailsVC(with: viewItem, thread: self.thread)
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
     func ban(_ viewItem: ConversationViewItem) {
         guard let message = viewItem.interaction as? TSIncomingMessage, message.isOpenGroupMessage else { return }
         let explanation = "This will ban the selected user from this room. It won't ban them from other rooms."
@@ -1052,26 +1046,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         snInputView.quoteDraftInfo = nil
     }
     
-    func openURL(_ url: URL) {
-        // URLs can be unsafe, so always ask the user whether they want to open one
-        let title = NSLocalizedString("modal_open_url_title", comment: "")
-        let message = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), url.absoluteString)
-        let alertVC = UIAlertController.init(title: title, message: message, preferredStyle: .actionSheet)
-        let openAction = UIAlertAction.init(title: NSLocalizedString("modal_open_url_button_title", comment: ""), style: .default) { _ in
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            self.showInputAccessoryView()
+    func hideAttachmentExpandedButtons() {
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.attachmentsButton.isExpanded = false
         }
-        alertVC.addAction(openAction)
-        let copyAction = UIAlertAction.init(title: NSLocalizedString("modal_copy_url_button_title", comment: ""), style: .default) { _ in
-            UIPasteboard.general.string = url.absoluteString
-            self.showInputAccessoryView()
-        }
-        alertVC.addAction(copyAction)
-        let cancelAction = UIAlertAction.init(title: NSLocalizedString("cancel", comment: ""), style: .cancel) {_ in
-            self.showInputAccessoryView()
-        }
-        alertVC.addAction(cancelAction)
-        self.presentAlert(alertVC)
+    }
+    
+    // For open url
+    func showOpenURLView(_ url: URL) {
+        urlToOpen = url
+        showOpenURLView()
     }
     
     func joinOpenGroup(name: String, url: String) {
@@ -1136,18 +1120,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         viewItem.lastAudioMessageView?.showSpeedUpLabel()
     }
     
-    
     func payAsYouChatLongPress() {
-        snInputView.isHidden = true
-        let payAsYouChatPermissionRequestModal = PayAsYouChatPermissionRequestModal()
-        self.navigationController?.present(payAsYouChatPermissionRequestModal, animated: true, completion: nil)
+        if !SSKPreferences.arePayAsYouChatEnabled {
+            snInputView.isHidden = true
+            let vc = PayAsYouChatPopUpVC()
+            vc.modalPresentationStyle = .overFullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
     }
-    
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
+        CustomSlideView.isFromExpandAttachment = false
         requestMicrophonePermissionIfNeeded() { [weak self] in
             self?.cancelVoiceMessageRecording()
         }
@@ -1198,6 +1185,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SNLog("Couldn't record audio.")
             return cancelVoiceMessageRecording()
         }
+        audioRecorder.pause()
+        audioRecorder.record()
     }
 
     func endVoiceMessageRecording() {
@@ -1208,12 +1197,19 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         // Check preconditions
         guard let audioRecorder = audioRecorder else { return }
+        // For LongPress stop audio
+        let player = try? AVAudioPlayer(contentsOf: audioRecorder.url)
         // Get duration
-        let duration = audioRecorder.currentTime
+        var duration = audioRecorder.currentTime
+        // For LongPress stop audio
+        if player?.duration ?? 0.0 > 1 {
+            duration = player?.duration ?? 0.0
+        }
         // Stop the recording
         stopVoiceMessageRecording()
         // Check for user misunderstanding
         guard duration > 1 else {
+            isAudioRecording = false
             self.audioRecorder = nil
             let title = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
             let message = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
@@ -1232,6 +1228,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         // Send attachment
         sendAttachments([ attachment ], with: "")
+        audioPlayer = nil
+        isAudioRecording = false
     }
 
     func cancelVoiceMessageRecording() {
@@ -1239,14 +1237,61 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         audioTimer?.invalidate()
         stopVoiceMessageRecording()
         audioRecorder = nil
+        audioPlayer = nil
+        deleteAudioView.isHidden = true
+        hideAttachmentExpandedButtons()
+        isAudioRecording = false
+    }
+    
+    func pauseRecording() {
+        deleteAudioView.isHidden = false
+        audioRecorder?.stop()
+    }
+    
+    func showDeleteAudioView() {
+        deleteAudioView.isHidden = false
+    }
+    
+    func resumeAudioRecording() {
+        // For Resume Audio Don't Delete
+//        audioRecorder?.record()
+    }
+    
+    func showAlertForAudioRecordingIsOn() {
+        let alert = UIAlertController(title: Alert.Alert_BChat_title, message: Alert.Alert_Recording_On, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Alert.Alert_BChat_Ok, style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func playRecording() {
+        let url = (audioRecorder?.url)!
+        let owsAudioPlayer = OWSAudioPlayer(mediaUrl: url, audioBehavior: .audioMessagePlayback)
+        owsAudioPlayer.isLooping = false
+        if audioPlayer == nil {
+            audioPlayer = owsAudioPlayer
+        }
+        if isAudioPlaying {
+            audioPlayer!.pause()
+        } else {
+            audioPlayer!.play()
+        }
+        isAudioPlaying = !isAudioPlaying
     }
 
     func stopVoiceMessageRecording() {
         audioRecorder?.stop()
         audioSession.endAudioActivity(recordVoiceMessageActivity)
+        deleteAudioView.isHidden = true
     }
     
-    // MARK: Data Extraction Notifications
+    @objc func deleteAudioButtonTapped() {
+        isAudioRecording = false
+        deleteAudioView.isHidden = true
+        cancelVoiceMessageRecording()
+        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
+    }
+    
+    // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
         /*
         guard thread is TSContactThread else { return }
@@ -1393,7 +1438,7 @@ extension ConversationVC {
         alert.addAction(Cancel)
         let Accept = UIAlertAction(title: "Accept", style: .default, handler: { action in
             
-            let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
+            let promise: Promise<Void> = self.approveMessageRequestIfNeeded (
                 for: self.thread,
                 isNewThread: false,
                 timestamp: NSDate.millisecondTimestamp()
@@ -1478,3 +1523,9 @@ extension ConversationVC {
     }
     
 }
+
+struct CustomSlideView {
+    static var isFromExpandAttachment = false
+    static var isFromNormalAttachment = false
+}
+

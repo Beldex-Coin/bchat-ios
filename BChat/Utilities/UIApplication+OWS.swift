@@ -31,3 +31,10 @@ import Foundation
     }
 
 }
+
+
+extension UIApplication {
+    class func dismissKeyboard() {
+        shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}

@@ -10,18 +10,21 @@ final class InputViewButton : UIView {
     private var longPressTimer: Timer?
     private var isLongPress = false
     private let isPayButton: Bool
+    private let isAttachmentButton: Bool
     
     // MARK: UI Components
     private lazy var backgroundView = UIView()
     
     // MARK: Settings
-    static let size = CGFloat(40)
+    static let size = CGFloat(48)
     static let circularSize = CGFloat(33)
     static let expandedSize = CGFloat(48)
+    static let expandedNewSize = CGFloat(15)
     static let iconSize: CGFloat = 20
     
     // MARK: Lifecycle
-    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false) {
+    init(icon: UIImage, isSendButton: Bool = false, delegate: InputViewButtonDelegate, hasOpaqueBackground: Bool = false, isPayButton: Bool = false, isAttachmentButton: Bool = false) {
+        self.isAttachmentButton = isAttachmentButton
         self.icon = icon
         self.isSendButton = isSendButton
         self.delegate = delegate
@@ -45,7 +48,6 @@ final class InputViewButton : UIView {
         if hasOpaqueBackground {
             let backgroundView = UIView()
             backgroundView.backgroundColor = Colors.accent
-          //  backgroundView.alpha = Values.lowOpacity
             addSubview(backgroundView)
             backgroundView.pin(to: self)
             let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
@@ -55,22 +57,26 @@ final class InputViewButton : UIView {
             let borderColor = (isLightMode ? UIColor.black : UIColor.white).withAlphaComponent(Values.veryLowOpacity)
             layer.borderColor = borderColor.cgColor
         }
-        backgroundView.backgroundColor = isSendButton ? Colors.accent : UIColor.clear
+        backgroundView.backgroundColor = isSendButton ? Colors.bothGreenColor : UIColor.clear
         addSubview(backgroundView)
         backgroundView.pin(to: self)
-        layer.cornerRadius = 6
+        layer.cornerRadius = isSendButton ? 24 : 24
+        if isAttachmentButton {
+            layer.cornerRadius = 18
+        }
         layer.masksToBounds = true
         isUserInteractionEnabled = true
         widthConstraint.isActive = true
         heightConstraint.isActive = true
-        let tint = isSendButton ? UIColor.white : Colors.text
-        let iconImageView = UIImageView(image: icon.withTint(tint))
+        let iconImageView = UIImageView(image: icon)
         iconImageView.contentMode = .scaleAspectFit
         let iconSize = InputViewButton.iconSize
         iconImageView.set(.width, to: iconSize)
         iconImageView.set(.height, to: iconSize)
         addSubview(iconImageView)
+
         iconImageView.center(in: self)
+        
     }
     
     // MARK: Animation
@@ -81,7 +87,10 @@ final class InputViewButton : UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
             self.frame = frame
-            self.layer.cornerRadius = 7
+            self.layer.cornerRadius = self.isSendButton ? 24 : 24
+            if self.isAttachmentButton {
+                self.layer.cornerRadius = 18
+            }
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, radius: isLightMode ? 4 : 6)
             self.setCircularGlow(with: glowConfiguration)
             self.backgroundView.backgroundColor = backgroundColor
@@ -89,11 +98,12 @@ final class InputViewButton : UIView {
     }
     
     private func expand() {
-        animate(to: isPayButton ? InputViewButton.size : InputViewButton.expandedSize, glowColor: isPayButton ? UIColor.clear : Colors.expandedButtonGlowColor, backgroundColor: isPayButton ? UIColor.clear : Colors.accent)
+        let size = InputViewButton.size
+        animate(to: size, glowColor: UIColor.clear, backgroundColor: UIColor.clear)
     }
     
     private func collapse() {
-        let backgroundColor = isSendButton ? Colors.accent : Colors.text.withAlphaComponent(0)
+        let backgroundColor = isSendButton ? Colors.bothGreenColor : Colors.text.withAlphaComponent(0)
         animate(to: InputViewButton.size, glowColor: .clear, backgroundColor: backgroundColor)
     }
     

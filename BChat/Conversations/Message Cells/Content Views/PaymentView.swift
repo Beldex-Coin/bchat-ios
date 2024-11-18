@@ -6,13 +6,9 @@ final class PaymentView : UIView {
     private let rawAmount: String
     private let textColor: UIColor
     private let isOutgoing: Bool
+    private let viewItem: ConversationViewItem
     
     private lazy var amount: String = {
-//        if let range = rawAmount.range(of: "?public_key=") {
-//            return String(rawAmount[..<range.lowerBound])
-//        } else {
-//            return rawAmount
-//        }
         return rawAmount
     }()
     
@@ -21,11 +17,12 @@ final class PaymentView : UIView {
     private static let iconImageViewSize: CGFloat = 40
     
     // MARK: Lifecycle
-    init(txnid: String, rawAmount: String, textColor: UIColor, isOutgoing: Bool) {
+    init(txnid: String, rawAmount: String, textColor: UIColor, isOutgoing: Bool, viewItem: ConversationViewItem) {
         self.txnid = txnid
         self.rawAmount = rawAmount
         self.textColor = textColor
         self.isOutgoing = isOutgoing
+        self.viewItem = viewItem
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
@@ -43,20 +40,84 @@ final class PaymentView : UIView {
         // Amount
         let titleLabel = UILabel()
         titleLabel.lineBreakMode = .byTruncatingTail
-        titleLabel.text = "\(rawAmount) BDX "
-        titleLabel.textColor = UIColor.white
-        titleLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
-        // Direction
-        let subtitleLabel = UILabel()
-        let direction = isOutgoing ? "send" : "receive"
-        if direction == "send" {
-            subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
-        }else {
-            subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
+        let fullText = "\(rawAmount) BDX  "
+        if let rangeBeldex = fullText.range(of: "\(rawAmount)"),
+           let rangeAddress = fullText.range(of: "BDX  ") {
+            let attributedString = NSMutableAttributedString(string: fullText)
+            let direction = isOutgoing ? "send" : "receive"
+            if direction != "send" {
+                attributedString.addAttribute(.foregroundColor, value: Colors.titleColor, range: NSRange(rangeBeldex, in: fullText))
+                let colorCode = isLightMode ? UIColor(hex: 0xACACAC) : UIColor(hex: 0xACACAC)
+                attributedString.addAttribute(.foregroundColor, value: colorCode, range: NSRange(rangeAddress, in: fullText))
+            } else {
+                attributedString.addAttribute(.foregroundColor, value: Colors.bothWhiteColor, range: NSRange(rangeBeldex, in: fullText))
+                let colorCode2 = isLightMode ? UIColor(hex: 0xCCFFDD) : UIColor(hex: 0xCCFFDD)
+                attributedString.addAttribute(.foregroundColor, value: colorCode2, range: NSRange(rangeAddress, in: fullText))
+            }
+            titleLabel.attributedText = attributedString
         }
+        titleLabel.font = Fonts.boldOpenSans(ofSize: 20)
+        // Direction
+        let direction = isOutgoing ? "send" : "receive"
+        let subtitleLabel = UILabel()
         subtitleLabel.lineBreakMode = .byTruncatingTail
         subtitleLabel.textColor = UIColor.white
-        subtitleLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        subtitleLabel.font = Fonts.OpenSans(ofSize: 10)
+        
+        if direction == "send" {
+            subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
+        } else {
+            subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
+        }
+        
+        if direction == "receive" {
+            subtitleLabel.textColor = Colors.greenColor
+        }
+        
+        // Bottom time label
+        let timeLabel = UILabel()
+        timeLabel.lineBreakMode = .byTruncatingTail
+        timeLabel.font = Fonts.OpenSans(ofSize: 9)
+        let date = viewItem.interaction.dateForUI()
+        let description = DateUtil.formatDate(forDisplay2: date)
+        timeLabel.text = description
+        if direction != "send" {
+            timeLabel.textColor = Colors.messageTimeLabelColor
+        } else {
+            timeLabel.textColor = Colors.callCellTitle
+        }
+        
+        
+        // Tick mark imageView
+        let tickMarkImageView = UIImageView()
+        tickMarkImageView.contentMode = .scaleAspectFit
+        if direction != "send" {
+            tickMarkImageView.image = UIImage(named: "ic_tick_mark")
+        } else {
+            tickMarkImageView.image = UIImage(named: "ic_tick_mark2")
+        }
+        
+        // Container for subtitle and tick mark
+        let subtitleContainerView = UIView()
+        subtitleContainerView.addSubview(subtitleLabel)
+        subtitleContainerView.addSubview(tickMarkImageView)
+        // Constraints for subtitle label
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            subtitleLabel.leadingAnchor.constraint(equalTo: subtitleContainerView.leadingAnchor),
+            subtitleLabel.centerYAnchor.constraint(equalTo: subtitleContainerView.centerYAnchor),
+            subtitleLabel.trailingAnchor.constraint(equalTo: tickMarkImageView.leadingAnchor, constant: -3)
+        ])
+        // Constraints for tick mark imageView
+        tickMarkImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tickMarkImageView.leadingAnchor.constraint(equalTo: subtitleLabel.trailingAnchor, constant: 8),
+            tickMarkImageView.trailingAnchor.constraint(equalTo: subtitleContainerView.trailingAnchor),
+            tickMarkImageView.centerYAnchor.constraint(equalTo: subtitleContainerView.centerYAnchor),
+            tickMarkImageView.widthAnchor.constraint(equalToConstant: 12),
+            tickMarkImageView.heightAnchor.constraint(equalToConstant: 12)
+        ])
+        
         // txnid
         let urlLabel = UILabel()
         urlLabel.lineBreakMode = .byCharWrapping
@@ -67,8 +128,11 @@ final class PaymentView : UIView {
         
         // Icon
         let iconSize = PaymentView.iconSize
-        let iconName = isOutgoing ? "beldeximg" : "beldeximg"
-        let icon = UIImage(named: iconName)?.withTint(.white)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
+        var iconName = "beldeximg"
+        if direction == "receive" && isLightMode {
+            iconName = "beldeximg2"
+        }
+        let icon = UIImage(named: iconName)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
         let iconImageViewSize = PaymentView.iconImageViewSize
         let iconImageView = UIImageView(image: icon)
         iconImageView.contentMode = .center
@@ -81,11 +145,11 @@ final class PaymentView : UIView {
         let titleLabelContainer = UIView()
         let labelStackView = UIStackView(arrangedSubviews: [iconImageView, titleLabel])
         titleLabelContainer.set(.height, to: PaymentView.iconImageViewSize)
-        labelStackView.layer.cornerRadius = 6
-        if direction == "send" {
-            labelStackView.backgroundColor = UIColor(red: 0.24, green: 0.53, blue: 1.00, alpha: 1.00)
-        }else {
-            labelStackView.backgroundColor = UIColor(red: 0.13, green: 0.66, blue: 0.15, alpha: 1.00)
+        labelStackView.layer.cornerRadius = 16
+        if direction != "send" {
+            labelStackView.backgroundColor = Colors.paymentViewInsideColor
+        } else {
+            labelStackView.backgroundColor = Colors.paymentViewInsideReciverColor
         }
         labelStackView.axis = .horizontal
         labelStackView.alignment = .center
@@ -93,17 +157,25 @@ final class PaymentView : UIView {
         titleLabelContainer.addSubview(labelStackView)
         
         // Main stack
-        let mainStackView = UIStackView(arrangedSubviews: [ labelStackView, subtitleLabel ])
+        let mainStackView = UIStackView(arrangedSubviews: [ labelStackView, subtitleContainerView ])
         mainStackView.axis = .vertical
-        mainStackView.spacing = Values.mediumSpacingBChat
+        mainStackView.spacing = 17
         mainStackView.alignment = .leading
         let direction1 = isOutgoing ? "send" : "receive"
         if direction1 == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
-        }else {
+            subtitleLabel.textColor = UIColor.white
+        } else {
             subtitleLabel.text = NSLocalizedString("Received Successfully", comment: "")
+            subtitleLabel.textColor = Colors.greenColor
         }
         addSubview(mainStackView)
+        addSubview(timeLabel)
         mainStackView.pin(to: self, withInset: Values.mediumSpacing)
+        timeLabel.pin(.right, to: .right, of: self, withInset: -15)
+        timeLabel.pin(.bottom, to: .bottom, of: self, withInset: -9)
+        NSLayoutConstraint.activate([
+            timeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: tickMarkImageView.trailingAnchor, constant: 4)
+            ])
     }
 }

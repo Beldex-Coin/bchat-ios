@@ -228,6 +228,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         self.answerBChatCall()
     }
     
+    @objc
     func endBChatCall() {
         guard !hasEnded else { return }
         webRTCBChat.hangUp()
@@ -235,6 +236,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
             self.webRTCBChat.endCall(with: self.bchatID, using: transaction)
         }
         hasEnded = true
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
     }
     
     // MARK: Update call message
@@ -250,17 +252,17 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
                     shouldMarkAsRead = true
                 } else {
                     switch mode {
-                    case .local:
-                        shouldMarkAsRead = true
-                        fallthrough
-                    case .remote:
-                        fallthrough
-                    case .unanswered:
-                        if messageToUpdate.callState == .incoming {
-                            messageToUpdate.updateCallInfoMessage(.missed, using: transaction)
-                        }
-                    case .answeredElsewhere:
-                        shouldMarkAsRead = true
+                        case .local:
+                            shouldMarkAsRead = true
+                            fallthrough
+                        case .remote:
+                            fallthrough
+                        case .unanswered:
+                            if messageToUpdate.callState == .incoming {
+                                messageToUpdate.updateCallInfoMessage(.missed, using: transaction)
+                            }
+                        case .answeredElsewhere:
+                            shouldMarkAsRead = true
                     }
                 }
                 if shouldMarkAsRead {
@@ -303,7 +305,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         self.hasEnded = true
         DispatchQueue.main.async {
             if let currentBanner = IncomingCallBanner.current { currentBanner.dismiss() }
-            if let callVC = CurrentAppContext().frontmostViewController() as? CallVC { callVC.handleEndCallMessage() }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC { callVC.handleEndCallMessage() }
             if let miniCallView = MiniCallView.current { miniCallView.dismiss() }
             AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: .remoteEnded)
         }

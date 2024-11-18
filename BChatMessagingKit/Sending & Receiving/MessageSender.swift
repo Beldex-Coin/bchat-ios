@@ -172,11 +172,11 @@ public final class MessageSender : NSObject {
         let ciphertext: Data
         do {
             switch destination {
-            case .contact(let publicKey): ciphertext = try encryptWithSessionProtocol(plaintext, for: publicKey)
-            case .closedGroup(let groupPublicKey):
-                guard let encryptionKeyPair = Storage.shared.getLatestClosedGroupEncryptionKeyPair(for: groupPublicKey) else { throw Error.noKeyPair }
-                ciphertext = try encryptWithSessionProtocol(plaintext, for: encryptionKeyPair.hexEncodedPublicKey)
-            case .openGroup(_, _), .openGroupV2(_, _): preconditionFailure()
+                case .contact(let publicKey): ciphertext = try encryptWithSessionProtocol(plaintext, for: publicKey)
+                case .closedGroup(let groupPublicKey):
+                    guard let encryptionKeyPair = Storage.shared.getLatestClosedGroupEncryptionKeyPair(for: groupPublicKey) else { throw Error.noKeyPair }
+                    ciphertext = try encryptWithSessionProtocol(plaintext, for: encryptionKeyPair.hexEncodedPublicKey)
+                case .openGroup(_, _), .openGroupV2(_, _): preconditionFailure()
             }
         } catch {
             SNLog("Couldn't encrypt message for destination: \(destination) due to error: \(error).")
@@ -187,18 +187,19 @@ public final class MessageSender : NSObject {
         let kind: SNProtoEnvelope.SNProtoEnvelopeType
         let senderPublicKey: String
         switch destination {
-        case .contact(_):
-            kind = .sessionMessage
-            senderPublicKey = ""
-        case .closedGroup(let groupPublicKey):
-            kind = .closedGroupMessage
-            senderPublicKey = groupPublicKey
-        case .openGroup(_, _), .openGroupV2(_, _): preconditionFailure()
+            case .contact(_):
+                kind = .sessionMessage
+                senderPublicKey = ""
+            case .closedGroup(let groupPublicKey):
+                kind = .closedGroupMessage
+                senderPublicKey = groupPublicKey
+            case .openGroup(_, _), .openGroupV2(_, _): preconditionFailure()
         }
         let wrappedMessage: Data
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         do {
             wrappedMessage = try MessageWrapper.wrap(type: kind, timestamp: message.sentTimestamp!,
-                senderPublicKey: senderPublicKey, base64EncodedContent: ciphertext.base64EncodedString())
+                senderPublicKey: senderPublicKey, base64EncodedContent: ciphertext.base64EncodedString(), isBnsHolder: isBnsUser)
         } catch {
             SNLog("Couldn't wrap message due to error: \(error).")
             handleFailure(with: error, using: transaction)
@@ -291,12 +292,12 @@ public final class MessageSender : NSObject {
         }
         // Validate the message
         guard let message = message as? VisibleMessage else {
-            #if DEBUG
-            preconditionFailure()
-            #else
+//            #if DEBUG
+//            preconditionFailure()
+//            #else
             handleFailure(with: Error.invalidMessage, using: transaction)
             return promise
-            #endif
+//            #endif
         }
         guard message.isValid else { handleFailure(with: Error.invalidMessage, using: transaction); return promise }
         // Attach the user's profile

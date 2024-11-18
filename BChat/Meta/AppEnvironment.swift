@@ -4,7 +4,6 @@
 
 import Foundation
 import SignalUtilitiesKit
-import SignalUtilitiesKit
 
 @objc public class AppEnvironment: NSObject {
 

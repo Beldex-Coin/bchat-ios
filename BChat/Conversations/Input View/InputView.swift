@@ -1,6 +1,17 @@
 import UIKit
 import BChatUIKit
 
+protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, VoiceMessageRecordingViewDelegate {
+    
+    func showLinkPreviewSuggestionModal()
+    func handleSendButtonTapped()
+    func handlePaySendButtonTapped()
+    func handleQuoteViewCancelButtonTapped()
+    func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
+    func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
+    func didPasteImageFromPasteboard(_ image: UIImage)
+}
+
 final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, QuoteViewDelegate, LinkPreviewViewDelegate, MentionSelectionViewDelegate {
     enum MessageTypes {
         case all
@@ -13,12 +24,12 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
     private var voiceMessageRecordingView: VoiceMessageRecordingView?
     private lazy var mentionsViewHeightConstraint = mentionsView.set(.height, to: 0)
-
+    
     private lazy var linkPreviewView: LinkPreviewView = {
         let maxWidth = self.additionalContentContainer.bounds.width - InputView.linkPreviewViewInset
         return LinkPreviewView(for: nil, maxWidth: maxWidth, delegate: self)
     }()
-
+    
     var text: String {
         get { inputTextView.text }
         set { inputTextView.text = newValue }
@@ -36,21 +47,22 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // MARK: UI Components
     
     private var bottomStackView: UIStackView?
-    private lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
+    private var finalBottomStack: UIStackView?
+    lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "Microphone"), delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_audio_inputView"), delegate: self)
         result.accessibilityLabel = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_TITLE", comment: "")
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
     }()
     
     private lazy var payAsChatButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "beldeximg"), delegate: self, isPayButton: true)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "pay_as_you_chat_new"), delegate: self, isPayButton: true)
         result.accessibilityLabel = NSLocalizedString("", comment: "")
         result.accessibilityHint = NSLocalizedString("", comment: "")
         // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 3.5, y: 3.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
+        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
         result.addSubview(progressView)
         return result
     }()
@@ -60,19 +72,19 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     private lazy var sendButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_send"), isSendButton: true, delegate: self)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendMessage_new"), isSendButton: true, delegate: self)
         result.isHidden = true
         result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
         return result
     }()
     private lazy var voiceMessageButtonContainer = container(for: voiceMessageButton)
-
+    
     private lazy var mentionsView: MentionSelectionView = {
         let result = MentionSelectionView()
         result.delegate = self
         return result
     }()
-
+    
     private lazy var mentionsViewContainer: UIView = {
         let result = UIView()
         let backgroundView = UIView()
@@ -87,7 +99,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         return result
     }()
     
-    private lazy var inputTextView: InputTextView = {
+     lazy var inputTextView: InputTextView = {
         // HACK: When restoring a draft the input text view won't have a frame yet, and therefore it won't
         // be able to calculate what size it should be to accommodate the draft text. As a workaround, we
         // just calculate the max width that the input text view is allowed to be and pass it in. See
@@ -104,12 +116,12 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0
-        
         return label
     }()
-
+    
     private lazy var additionalContentContainer = UIView()
-
+    private lazy var additionalContentContainerOuterView = UIView()
+    
     // MARK: Settings
     private static let linkPreviewViewInset: CGFloat = 6
     
@@ -121,10 +133,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         setUpViewHierarchy()
     }
     
-    // MARK: Lifecycle
-//    init(thread: TSThread, focusedMessageID: String? = nil) {
-//        self.thread = thread
-//    }
     
     override init(frame: CGRect) {
         preconditionFailure("Use init(delegate:) instead.")
@@ -138,8 +146,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         autoresizingMask = .flexibleHeight
         // Background & blur
         let backgroundView = UIView()
-        backgroundView.backgroundColor = isLightMode ? .white : .black
-        backgroundView.alpha = Values.lowOpacity
+        backgroundView.backgroundColor = Colors.mainBackGroundColor2
         addSubview(backgroundView)
         backgroundView.pin(to: self)
         let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
@@ -147,20 +154,31 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         blurView.pin(to: self)
         // Separator
         let separator = UIView()
-        separator.backgroundColor = Colors.text.withAlphaComponent(0.2)
+        separator.backgroundColor = .clear
         separator.set(.height, to: 1 / UIScreen.main.scale)
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton), container(for: sendButton) ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton)])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.smallSpacing
+        bottomStackView.backgroundColor = Colors.incomingMessageColor
+        bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
         self.bottomStackView = bottomStackView
+        
+        let bottomStackView2 = UIStackView(arrangedSubviews: [ bottomStackView, container(for: sendButton) ])
+        bottomStackView2.axis = .horizontal
+        bottomStackView2.spacing = 4
+        bottomStackView2.backgroundColor = .clear
+        bottomStackView2.layer.cornerRadius = 24
+        bottomStackView2.alignment = .center
+        self.finalBottomStack = bottomStackView2
+        
         // Main stack view
-        let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView ])
+        let mainStackView = UIStackView(arrangedSubviews: [ additionalContentContainer, bottomStackView2 ])
         mainStackView.axis = .vertical
-        mainStackView.backgroundColor = Colors.bchatViewBackgroundColor
+        mainStackView.backgroundColor = Colors.mainBackGroundColor2
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
         mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)
@@ -186,8 +204,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Voice message button
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
+        voiceMessageButtonContainer.backgroundColor = Colors.bothGreenColor
+        voiceMessageButtonContainer.layer.cornerRadius = 24
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: Notification.Name(rawValue: "showPayAsYouChatButton"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: .showPayAsYouChatNotification, object: nil)
         self.hideOrShowPayAsYouChatButton()
     }
     
@@ -197,10 +217,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
                     if contact.beldexAddress != nil {
-                        print("isApproved message BeldexAddress-> ",contact.beldexAddress!)
                         if SSKPreferences.arePayAsYouChatEnabled {
-                            payAsChatButton.isHidden = false
-                            progressView?.isHidden = false
+                            payAsChatButton.isHidden = isAudioRecording ? true : false
+                            progressView?.isHidden = isAudioRecording ? true : false
                             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
                                 let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
                                 guard let current = current, let total = total else { return }
@@ -216,8 +235,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
                                 }
                             }
                         } else {
-                            payAsChatButton.isHidden = false
-                            progressView?.isHidden = true
+                                //payAsChatButton.isHidden = true
+                                progressView?.isHidden = true
                         }
                     } else {
                         payAsChatButton.isHidden = true
@@ -237,18 +256,15 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
     }
     
-    
-    
     @objc func showPayAsYouChatButton(_ notification: Notification) {
         self.hideOrShowPayAsYouChatButton()
     }
-
     
     // MARK: Updating
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView) {
         invalidateIntrinsicContentSize()
     }
-
+    
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
         let hasText = !text.isEmpty
         sendButton.isHidden = !hasText
@@ -260,30 +276,44 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     func didPasteImageFromPasteboard(_ inputTextView: InputTextView, image: UIImage) {
         delegate?.didPasteImageFromPasteboard(image)
     }
-
+    
     // We want to show either a link preview or a quote draft, but never both at the same time. When trying to
     // generate a link preview, wait until we're sure that we'll be able to build a link preview from the given
     // URL before removing the quote draft.
     
     private func handleQuoteDraftChanged() {
         additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
+        additionalContentContainerOuterView.subviews.forEach { $0.removeFromSuperview() }
         linkPreviewInfo = nil
         guard let quoteDraftInfo = quoteDraftInfo else { return }
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
-        let hInset: CGFloat = 6 // Slight visual adjustment
+        let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
         let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
-        additionalContentContainer.addSubview(quoteView)
-        quoteView.pin(.left, to: .left, of: additionalContentContainer, withInset: hInset)
-        quoteView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        quoteView.pin(.right, to: .right, of: additionalContentContainer, withInset: -hInset)
-        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: -6)
+        additionalContentContainerOuterView.addSubview(quoteView)
+        additionalContentContainer.addSubview(additionalContentContainerOuterView)
+        quoteView.backgroundColor = Colors.mainBackGroundColor2
+        quoteView.layer.cornerRadius = 16
+        
+        additionalContentContainerOuterView.backgroundColor = Colors.incomingMessageColor
+        additionalContentContainerOuterView.layer.cornerRadius = 16
+        additionalContentContainerOuterView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        quoteView.pin(.left, to: .left, of: additionalContentContainerOuterView, withInset: 10)
+        quoteView.pin(.top, to: .top, of: additionalContentContainerOuterView, withInset: 12)
+        quoteView.pin(.right, to: .right, of: additionalContentContainerOuterView, withInset: -10)
+        quoteView.pin(.bottom, to: .bottom, of: additionalContentContainerOuterView, withInset: -20)
+        
+        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0)
+        additionalContentContainerOuterView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
+        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -51)
+        additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
-
+    
     private func autoGenerateLinkPreviewIfPossible() {
         // Don't allow link previews on 'none' or 'textOnly' input
         guard enabledMessageTypes == .all else { return }
-            
+        
         // Suggest that the user enable link previews if they haven't already and we haven't
         // told them about link previews yet
         let text = inputTextView.text!
@@ -299,7 +329,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Proceed
         autoGenerateLinkPreview()
     }
-
+    
     func autoGenerateLinkPreview() {
         // Check that a valid URL is present
         guard let linkPreviewURL = OWSLinkPreview.previewUrl(forRawBodyText: text, selectedRange: inputTextView.selectedRange) else {
@@ -344,12 +374,12 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         UIView.animate(withDuration: 0.3) { [weak self] in
             self?.bottomStackView?.alpha = (messageTypes != .none ? 1 : 0)
             self?.attachmentsButton.alpha = (messageTypes == .all ?
-                1 :
-                (messageTypes == .textOnly ? 0.4 : 0)
+                                             1 :
+                                                (messageTypes == .textOnly ? 0.4 : 0)
             )
-            self?.voiceMessageButton.alpha =  (messageTypes == .all ?
-                1 :
-                (messageTypes == .textOnly ? 0.4 : 0)
+            self?.voiceMessageButton.alpha = (messageTypes == .all ?
+                                              1 :
+                                                (messageTypes == .textOnly ? 0.4 : 0)
             )
             self?.disabledInputLabel.alpha = (messageTypes != .none ? 0 : 1)
         }
@@ -358,26 +388,35 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     // MARK: Interaction
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         // Needed so that the user can tap the buttons when the expanding attachments button is expanded
-        let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
-            attachmentsButton.libraryButton, attachmentsButton.documentButton ]
-        let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
-        if let buttonContainer = buttonContainer {
-            return buttonContainer
+        if attachmentsButton.isExpanded {
+            let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
+                                     attachmentsButton.libraryButton, attachmentsButton.documentButton ]
+            let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
+            if let buttonContainer = buttonContainer {
+                return buttonContainer
+            } else {
+                return super.hitTest(point, with: event)
+            }
         } else {
             return super.hitTest(point, with: event)
         }
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        let buttonContainers = [ attachmentsButton.documentButtonContainer,
-            attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
-        let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
-        if isPointInsideAttachmentsButton {
-            // Needed so that the user can tap the buttons when the expanding attachments button is expanded
-            return true
-        } else if mentionsViewContainer.frame.contains(point) {
-            // Needed so that the user can tap mentions
-            return true
+        
+        if attachmentsButton.isExpanded || self.mentionsViewContainer.alpha == 1 {
+            let buttonContainers = [ attachmentsButton.documentButtonContainer,
+                                     attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
+            let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
+            if isPointInsideAttachmentsButton {
+                // Needed so that the user can tap the buttons when the expanding attachments button is expanded
+                return true
+            } else if mentionsViewContainer.frame.contains(point) {
+                // Needed so that the user can tap mentions
+                return true
+            } else {
+                return super.point(inside: point, with: event)
+            }
         } else {
             return super.point(inside: point, with: event)
         }
@@ -386,52 +425,53 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
         if inputViewButton == sendButton {
             delegate?.handleSendButtonTapped()
-        }else if inputViewButton == payAsChatButton {
+        } else if inputViewButton == payAsChatButton {
             delegate?.handlePaySendButtonTapped()
         }
     }
-
+    
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
-        
         if inputViewButton == payAsChatButton {
             delegate?.payAsYouChatLongPress()
         }
-        
         guard inputViewButton == voiceMessageButton else { return }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
     }
-
+    
     func handleInputViewButtonLongPressMoved(_ inputViewButton: InputViewButton, with touch: UITouch) {
         guard let voiceMessageRecordingView = voiceMessageRecordingView, inputViewButton == voiceMessageButton else { return }
         let location = touch.location(in: voiceMessageRecordingView)
         voiceMessageRecordingView.handleLongPressMoved(to: location)
     }
-
+    
     func handleInputViewButtonLongPressEnded(_ inputViewButton: InputViewButton, with touch: UITouch) {
         guard let voiceMessageRecordingView = voiceMessageRecordingView, inputViewButton == voiceMessageButton else { return }
         let location = touch.location(in: voiceMessageRecordingView)
         voiceMessageRecordingView.handleLongPressEnded(at: location)
     }
-
+    
     func handleQuoteViewCancelButtonTapped() {
         delegate?.handleQuoteViewCancelButtonTapped()
     }
-
+    
     override func resignFirstResponder() -> Bool {
         inputTextView.resignFirstResponder()
     }
-
+    
     func handleLongPress() {
         // Not relevant in this case
     }
-
+    
     func handleLinkPreviewCanceled() {
         linkPreviewInfo = nil
         additionalContentContainer.subviews.forEach { $0.removeFromSuperview() }
     }
-
+    
     @objc private func showVoiceMessageUI() {
+        isAudioRecording = true
+        payAsChatButton.isHidden = true
+        progressView?.isHidden = true
         voiceMessageRecordingView?.removeFromSuperview()
         let voiceMessageButtonFrame = voiceMessageButton.superview!.convert(voiceMessageButton.frame, to: self)
         let voiceMessageRecordingView = VoiceMessageRecordingView(voiceMessageButtonFrame: voiceMessageButtonFrame, delegate: delegate)
@@ -445,8 +485,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
             allOtherViews.forEach { $0.alpha = 0 }
         }
     }
-
+    
     func hideVoiceMessageUI() {
+        isAudioRecording = false
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25, animations: {
             allOtherViews.forEach { $0.alpha = 1 }
@@ -454,9 +495,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }, completion: { _ in
             self.voiceMessageRecordingView?.removeFromSuperview()
             self.voiceMessageRecordingView = nil
+            NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
         })
     }
-
+    
     func hideMentionsUI() {
         UIView.animate(withDuration: 0.25, animations: {
             self.mentionsViewContainer.alpha = 0
@@ -465,7 +507,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
             self.mentionsView.tableView.contentOffset = CGPoint.zero
         })
     }
-
+    
     func showMentionsUI(for candidates: [Mention], in thread: TSThread) {
         if let openGroupV2 = Storage.shared.getV2OpenGroup(for: thread.uniqueId!) {
             mentionsView.openGroupServer = openGroupV2.server
@@ -473,17 +515,17 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
         mentionsView.candidates = candidates
         let mentionCellHeight = Values.smallProfilePictureSize + 2 * Values.smallSpacing
-        mentionsViewHeightConstraint.constant = CGFloat(min(3, candidates.count)) * mentionCellHeight
+        mentionsViewHeightConstraint.constant = CGFloat(min(5, candidates.count)) * mentionCellHeight
         layoutIfNeeded()
         UIView.animate(withDuration: 0.25) {
             self.mentionsViewContainer.alpha = 1
         }
     }
-
+    
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView) {
         delegate?.handleMentionSelected(mention, from: view)
     }
-
+    
     // MARK: Convenience
     private func container(for button: InputViewButton) -> UIView {
         let result = UIView()
@@ -492,65 +534,5 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.set(.height, to: InputViewButton.expandedSize)
         button.center(in: result)
         return result
-    }
-}
-
-// MARK: Delegate
-protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, VoiceMessageRecordingViewDelegate {
-
-    func showLinkPreviewSuggestionModal()
-    func handleSendButtonTapped()
-    func handlePaySendButtonTapped()
-    func handleQuoteViewCancelButtonTapped()
-    func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
-    func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
-    func didPasteImageFromPasteboard(_ image: UIImage)
-}
-extension String {
-    var isNumeric: Bool {
-        guard self.count > 0 else { return false }
-        // Regular expression pattern for the specified format
-        let pattern = "^[0-9]{0,9}(\\.[0-9]{0,5})?$"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluate(with: self)
-    }
-}
-
-
-class CircularProgressView: UIView {
-    private var progressLayer = CAShapeLayer()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        configure()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        configure()
-    }
-
-    private func configure() {
-        let center = CGPoint(x: bounds.midX, y: bounds.midY)
-        let circularPath = UIBezierPath(arcCenter: center, radius: bounds.width / 2, startAngle: -CGFloat.pi / 2, endAngle: 2 * CGFloat.pi, clockwise: true)
-        
-        // Background layer
-        let backgroundLayer = CAShapeLayer()
-        backgroundLayer.path = circularPath.cgPath
-        backgroundLayer.strokeColor = Colors.bchatPlaceholderColor.cgColor
-        backgroundLayer.lineWidth = 2.2
-        backgroundLayer.fillColor = UIColor.clear.cgColor
-        layer.addSublayer(backgroundLayer)
-        
-        progressLayer.path = circularPath.cgPath
-        progressLayer.strokeColor = Colors.accent.cgColor
-        progressLayer.lineWidth = 2.2
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.strokeEnd = 0.0
-        layer.addSublayer(progressLayer)
-    }
-
-    func setProgress(_ progress: CGFloat) {
-        progressLayer.strokeEnd = progress
     }
 }

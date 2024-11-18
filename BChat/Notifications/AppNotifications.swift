@@ -85,7 +85,7 @@ extension AppNotificationAction {
 
 // Delay notification of incoming messages when it's a background polling to
 // avoid too many notifications fired at the same time
-let kNotificationDelayForBackgroumdPoll: TimeInterval = 0
+let kNotificationDelayForBackgroumdPoll: TimeInterval = 2
 
 let kAudioNotificationsThrottleCount = 2
 let kAudioNotificationsThrottleInterval: TimeInterval = 5

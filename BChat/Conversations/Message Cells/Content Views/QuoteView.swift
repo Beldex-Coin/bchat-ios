@@ -27,6 +27,13 @@ final class QuoteView : UIView {
         case .draft(let model): return model.thumbnailImage
         }
     }
+    
+    private var thumbnailType: String? {
+        switch mode {
+        case .regular(let viewItem): return viewItem.quotedReply!.contentType
+        case .draft(let model): return model.contentType
+        }
+    }
 
     private var body: String? {
         switch mode {
@@ -73,6 +80,7 @@ final class QuoteView : UIView {
     static let labelStackViewSpacing: CGFloat = 2
     static let labelStackViewVMargin: CGFloat = 4
     static let cancelButtonSize: CGFloat = 33
+    static let cancelButtonSizeNew: CGFloat = 43
 
     // MARK: Lifecycle
     init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat) {
@@ -94,8 +102,16 @@ final class QuoteView : UIView {
         self.hInset = hInset
         self.delegate = delegate
         super.init(frame: CGRect.zero)
-        setUpViewHierarchy()
+        setUpViewHierarchy() 
+        
     }
+    //additional Background View
+    private lazy var additionalBackgroundView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .red
+        return view
+    }()
 
     override init(frame: CGRect) {
         preconditionFailure("Use init(for:maxMessageWidth:) instead.")
@@ -119,6 +135,7 @@ final class QuoteView : UIView {
         let labelStackViewVMargin = QuoteView.labelStackViewVMargin
         let smallSpacing = Values.smallSpacing
         let cancelButtonSize = QuoteView.cancelButtonSize
+        let cancelButtonSizeNew = QuoteView.cancelButtonSizeNew
         var availableWidth: CGFloat
         // Subtract smallSpacing twice; once for the spacing in between the stack view elements and
         // once for the trailing margin.
@@ -137,7 +154,7 @@ final class QuoteView : UIView {
         mainStackView.axis = .horizontal
         mainStackView.spacing = smallSpacing
         mainStackView.isLayoutMarginsRelativeArrangement = true
-        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: smallSpacing)
+        mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: smallSpacing, bottom: 0, trailing: smallSpacing)
         mainStackView.alignment = .center
         // Content view
         let contentView = UIView()
@@ -146,7 +163,7 @@ final class QuoteView : UIView {
         contentView.rightAnchor.constraint(lessThanOrEqualTo: self.rightAnchor).isActive = true
         // Line view
         let lineView = UIView()
-        lineView.backgroundColor = lineColor
+        lineView.backgroundColor = .clear
         lineView.set(.width, to: Values.accentLineThickness)
         if !hasAttachments {
             mainStackView.addArrangedSubview(lineView)
@@ -164,6 +181,9 @@ final class QuoteView : UIView {
             mainStackView.addArrangedSubview(imageView)
             if (body ?? "").isEmpty {
                 body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : "Document")
+                if thumbnailType?.lowercased().range(of:"video") != nil {
+                    body = "Video"
+                }
             }
         }
         // Body label
@@ -173,7 +193,7 @@ final class QuoteView : UIView {
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
-        bodyLabel.textColor = textColor
+        bodyLabel.textColor = Colors.titleColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
         // Label stack view
         var authorLabelHeight: CGFloat?
@@ -201,9 +221,9 @@ final class QuoteView : UIView {
         // Cancel button
         let cancelButton = UIButton(type: .custom)
         let tint: UIColor = isLightMode ? .black : .white
-        cancelButton.setImage(UIImage(named: "X")?.withTint(tint), for: UIControl.State.normal)
-        cancelButton.set(.width, to: cancelButtonSize)
-        cancelButton.set(.height, to: cancelButtonSize)
+        cancelButton.setImage(UIImage(named: "close_new")?.withTint(tint), for: UIControl.State.normal)
+        cancelButton.set(.width, to: cancelButtonSizeNew)
+        cancelButton.set(.height, to: cancelButtonSizeNew)
         cancelButton.addTarget(self, action: #selector(cancel), for: UIControl.Event.touchUpInside)
         // Constraints
         contentView.addSubview(mainStackView)
@@ -227,8 +247,8 @@ final class QuoteView : UIView {
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
             addSubview(cancelButton)
-            cancelButton.center(.vertical, in: self)
-            cancelButton.pin(.right, to: .right, of: self)
+            cancelButton.pin(.top, to: .top, of: self, withInset: -5)
+            cancelButton.pin(.right, to: .right, of: self, withInset: 5)
         }
     }
 

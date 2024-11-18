@@ -11,18 +11,18 @@ public enum MessageWrapper {
 
         public var errorDescription: String? {
             switch self {
-            case .failedToWrapData: return "Failed to wrap data."
-            case .failedToWrapMessageInEnvelope: return "Failed to wrap message in envelope."
-            case .failedToWrapEnvelopeInWebSocketMessage: return "Failed to wrap envelope in web socket message."
-            case .failedToUnwrapData: return "Failed to unwrap data."
+                case .failedToWrapData: return "Failed to wrap data."
+                case .failedToWrapMessageInEnvelope: return "Failed to wrap message in envelope."
+                case .failedToWrapEnvelopeInWebSocketMessage: return "Failed to wrap envelope in web socket message."
+                case .failedToUnwrapData: return "Failed to unwrap data."
             }
         }
     }
 
     /// Wraps the given parameters in an `SNProtoEnvelope` and then a `WebSocketProtoWebSocketMessage` to match the desktop application.
-    public static func wrap(type: SNProtoEnvelope.SNProtoEnvelopeType, timestamp: UInt64, senderPublicKey: String, base64EncodedContent: String) throws -> Data {
+    public static func wrap(type: SNProtoEnvelope.SNProtoEnvelopeType, timestamp: UInt64, senderPublicKey: String, base64EncodedContent: String, isBnsHolder: Bool) throws -> Data {
         do {
-            let envelope = try createEnvelope(type: type, timestamp: timestamp, senderPublicKey: senderPublicKey, base64EncodedContent: base64EncodedContent)
+            let envelope = try createEnvelope(type: type, timestamp: timestamp, senderPublicKey: senderPublicKey, base64EncodedContent: base64EncodedContent, isBnsHolder: isBnsHolder)
             let webSocketMessage = try createWebSocketMessage(around: envelope)
             return try webSocketMessage.serializedData()
         } catch let error {
@@ -30,9 +30,10 @@ public enum MessageWrapper {
         }
     }
 
-    private static func createEnvelope(type: SNProtoEnvelope.SNProtoEnvelopeType, timestamp: UInt64, senderPublicKey: String, base64EncodedContent: String) throws -> SNProtoEnvelope {
+    private static func createEnvelope(type: SNProtoEnvelope.SNProtoEnvelopeType, timestamp: UInt64, senderPublicKey: String, base64EncodedContent: String, isBnsHolder: Bool) throws -> SNProtoEnvelope {
+        let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         do {
-            let builder = SNProtoEnvelope.builder(type: type, timestamp: timestamp)
+            let builder = SNProtoEnvelope.builder(type: type, timestamp: timestamp, isBnsHolder: isBnsUser)
             builder.setSource(senderPublicKey)
             builder.setSourceDevice(1)
             if let content = Data(base64Encoded: base64EncodedContent, options: .ignoreUnknownCharacters) {

@@ -14,9 +14,10 @@ final class MessagesTableView : UITableView {
         register(VisibleMessageCell.self, forCellReuseIdentifier: VisibleMessageCell.identifier)
         register(InfoMessageCell.self, forCellReuseIdentifier: InfoMessageCell.identifier)
         register(TypingIndicatorCell.self, forCellReuseIdentifier: TypingIndicatorCell.identifier)
-        register(CallMessageCell.self, forCellReuseIdentifier: CallMessageCell.identifier)
+        register(CallTableViewCell.self, forCellReuseIdentifier: CallTableViewCell.identifier)
+        register(CallTableViewCell.self, forCellReuseIdentifier: CallTableViewCell.identifier)
         separatorStyle = .none
-        backgroundColor = .clear
+        backgroundColor = Colors.mainBackGroundColor2//.clear
         showsVerticalScrollIndicator = false
         contentInsetAdjustmentBehavior = .never
         keyboardDismissMode = .interactive

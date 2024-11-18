@@ -139,6 +139,7 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         setUpGradientBackground()
         setUpNavBarStyle()
         setNavBarTitle(NSLocalizedString("vc_settings_title", comment: ""))
+        setUpTopCornerRadius()
         // Navigation bar buttons
         updateNavigationBarButtons()
         // Profile picture view

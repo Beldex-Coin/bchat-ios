@@ -613,7 +613,6 @@ extension SwiftAlertView {
         }
     }
     
-    
     // MARK: Actions
     
     @objc private func buttonClicked(_ button: UIButton) {
@@ -752,7 +751,6 @@ extension SwiftAlertView: UITextFieldDelegate {
         }
     }
     
-    
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let maxLength = 4
         let currentString: NSString = textField.text! as NSString
@@ -764,9 +762,6 @@ extension SwiftAlertView: UITextFieldDelegate {
         }
         return newString.length <= maxLength
     }
-
-    
-    
 }
 
 final class _HighlightButton: UIButton {

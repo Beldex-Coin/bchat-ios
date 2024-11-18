@@ -6,17 +6,17 @@ extension MessageReceiver {
 
     public static func handle(_ message: Message, associatedWithProto proto: SNProtoContent, openGroupID: String?, isBackgroundPoll: Bool, using transaction: Any) throws {
         switch message {
-        case let message as ReadReceipt: handleReadReceipt(message, using: transaction)
-        case let message as TypingIndicator: handleTypingIndicator(message, using: transaction)
-        case let message as ClosedGroupControlMessage: handleClosedGroupControlMessage(message, using: transaction)
-        case let message as DataExtractionNotification: handleDataExtractionNotification(message, using: transaction)
-        case let message as ExpirationTimerUpdate: handleExpirationTimerUpdate(message, using: transaction)
-        case let message as ConfigurationMessage: handleConfigurationMessage(message, using: transaction)
-        case let message as UnsendRequest: handleUnsendRequest(message, using: transaction)
-        case let message as CallMessage: handleCallMessage(message, using: transaction)
-        case let message as MessageRequestResponse: handleMessageRequestResponse(message, using: transaction)
-        case let message as VisibleMessage: try handleVisibleMessage(message, associatedWithProto: proto, openGroupID: openGroupID, isBackgroundPoll: isBackgroundPoll, using: transaction)
-        default: fatalError()
+            case let message as ReadReceipt: handleReadReceipt(message, using: transaction)
+            case let message as TypingIndicator: handleTypingIndicator(message, using: transaction)
+            case let message as ClosedGroupControlMessage: handleClosedGroupControlMessage(message, using: transaction)
+            case let message as DataExtractionNotification: handleDataExtractionNotification(message, using: transaction)
+            case let message as ExpirationTimerUpdate: handleExpirationTimerUpdate(message, using: transaction)
+            case let message as ConfigurationMessage: handleConfigurationMessage(message, using: transaction)
+            case let message as UnsendRequest: handleUnsendRequest(message, using: transaction)
+            case let message as CallMessage: handleCallMessage(message, using: transaction)
+            case let message as MessageRequestResponse: handleMessageRequestResponse(message, using: transaction)
+            case let message as VisibleMessage: try handleVisibleMessage(message, associatedWithProto: proto, openGroupID: openGroupID, isBackgroundPoll: isBackgroundPoll, using: transaction)
+            default: fatalError()
         }
         
         var isMainAppAndActive = false
@@ -450,16 +450,23 @@ extension MessageReceiver {
         
         // Beldex address insert into Contact DB
         let senderBeldexAddress = message.beldexAddress!
-        print("--senderBeldexAddress in receiver side---> \(senderBeldexAddress))")
+        let isBnsHolder = message.isBnsHolder
         let userBchatID = message.sender!
-        print("--senderBeldexAddress in receiver side userBchatID---> \(userBchatID))")
         if let contact: Contact = Storage.shared.getContact(with: userBchatID) {
             contact.beldexAddress = senderBeldexAddress
+            contact.isBnsHolder = isBnsHolder
+            if let profile = message.profile {
+                contact.profilePictureURL = profile.profilePictureURL
+            }
             Storage.shared.setContact(contact, using: transaction)
         } else if !senderBeldexAddress.isEmpty {
             let contact = Contact(bchatID: userBchatID)
             contact.beldexAddress = senderBeldexAddress
-            contact.name = message.profile?.displayName
+            contact.isBnsHolder = isBnsHolder
+            if let profile = message.profile {
+                contact.name = profile.displayName
+                contact.profilePictureURL = profile.profilePictureURL
+            }
             Storage.shared.setContact(contact, using: transaction)
         }
         
@@ -494,6 +501,17 @@ extension MessageReceiver {
                     userDefaults[.lastDisplayNameUpdate] = Date(timeIntervalSince1970: TimeInterval(sentTimestamp / 1000))
                 }
                 contact.name = name
+                if let contactUpdate: Contact = Storage.shared.getContact(with: publicKey) {
+                    Storage.write(
+                        with: { transaction in
+                            contactUpdate.name = name
+                            Storage.shared.setContact(contactUpdate, using: transaction)
+                        },
+                        completion: {
+                            MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                        }
+                    )
+                }
             }
         }
         // Profile picture & profile key
@@ -526,13 +544,13 @@ extension MessageReceiver {
     // MARK: - Closed Groups
     public static func handleClosedGroupControlMessage(_ message: ClosedGroupControlMessage, using transaction: Any) {
         switch message.kind! {
-        case .new: handleNewClosedGroup(message, using: transaction)
-        case .encryptionKeyPair: handleClosedGroupEncryptionKeyPair(message, using: transaction)
-        case .nameChange: handleClosedGroupNameChanged(message, using: transaction)
-        case .membersAdded: handleClosedGroupMembersAdded(message, using: transaction)
-        case .membersRemoved: handleClosedGroupMembersRemoved(message, using: transaction)
-        case .memberLeft: handleClosedGroupMemberLeft(message, using: transaction)
-        case .encryptionKeyPairRequest: handleClosedGroupEncryptionKeyPairRequest(message, using: transaction) // Currently not used
+            case .new: handleNewClosedGroup(message, using: transaction)
+            case .encryptionKeyPair: handleClosedGroupEncryptionKeyPair(message, using: transaction)
+            case .nameChange: handleClosedGroupNameChanged(message, using: transaction)
+            case .membersAdded: handleClosedGroupMembersAdded(message, using: transaction)
+            case .membersRemoved: handleClosedGroupMembersRemoved(message, using: transaction)
+            case .memberLeft: handleClosedGroupMemberLeft(message, using: transaction)
+            case .encryptionKeyPairRequest: handleClosedGroupEncryptionKeyPairRequest(message, using: transaction) // Currently not used
         }
     }
     
@@ -751,7 +769,7 @@ extension MessageReceiver {
             thread.setGroupModel(newGroupModel, with: transaction)
             // Notify the user if needed
             guard members != Set(group.groupMemberIds) else { return }
-            let infoMessageType: TSInfoMessageType = wasCurrentUserRemoved ? .groupCurrentUserLeft : .groupUpdated
+            let infoMessageType: TSInfoMessageType = wasCurrentUserRemoved ? .groupCurrentUserRemoved : .groupUpdated
             let updateInfo = group.getInfoStringAboutUpdate(to: newGroupModel)
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: infoMessageType, customMessage: updateInfo)
             infoMessage.save(with: transaction)

@@ -523,7 +523,9 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
                 OWSLogError(@"avatar data for %@ could not be decrypted.", contact.bchatID);
             } else if (!image) {
                 OWSLogError(@"avatar image for %@ could not be loaded.", contact.bchatID);
-            } else {
+            }
+            
+            if (fileName && latestContact) {
                 latestContact.profilePictureFileName = fileName;
                 [LKStorage writeWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                     [LKStorage.shared setContact:latestContact usingTransaction:transaction];
@@ -659,7 +661,7 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
     OWSAssertIsOnMainThread();
 
     NSData *nameData = [profileName dataUsingEncoding:NSUTF8StringEncoding];
-    return nameData.length > kOWSProfileManager_NameDataLength;
+    return nameData.length >= kOWSProfileManager_NameDataLength;
 }
 
 - (nullable NSData *)encryptProfileNameWithUnpaddedName:(NSString *)name

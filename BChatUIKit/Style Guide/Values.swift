@@ -11,6 +11,7 @@ public final class Values : NSObject {
     
     // MARK: - Font Sizes
     @objc public static let verySmallFontSize22 = isIPhone5OrSmaller ? CGFloat(9) : CGFloat(10)
+    @objc public static let verySmallFontSizeNew = isIPhone5OrSmaller ? CGFloat(11) : CGFloat(11)
     @objc public static let verySmallFontSize = isIPhone5OrSmaller ? CGFloat(10) : CGFloat(12)
     @objc public static let smallFontSize = isIPhone5OrSmaller ? CGFloat(13) : CGFloat(15)
     @objc public static let mediumFontSize = isIPhone5OrSmaller ? CGFloat(15) : CGFloat(17)

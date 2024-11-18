@@ -2,7 +2,7 @@ import BChatUtilitiesKit
 
 extension Storage {
     
-    private static let onionRequestPathCollection = "BeldexOnionRequestPathCollection"
+    public static let onionRequestPathCollection = "BeldexOnionRequestPathCollection"
 
     public func getOnionRequestPaths() -> [OnionRequestAPI.Path] {
         let collection = Storage.onionRequestPathCollection

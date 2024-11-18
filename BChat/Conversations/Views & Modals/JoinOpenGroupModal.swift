@@ -39,7 +39,7 @@ final class JoinOpenGroupModal : Modal {
         // Join button
         let joinButton = UIButton()
         joinButton.set(.height, to: Values.mediumButtonHeight)
-        joinButton.layer.cornerRadius = Modal.buttonCornerRadius
+        joinButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         if isDarkMode {
             joinButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
@@ -52,6 +52,7 @@ final class JoinOpenGroupModal : Modal {
         joinButton.setTitle("Join", for: UIControl.State.normal)
         joinButton.addTarget(self, action: #selector(joinOpenGroup), for: UIControl.Event.touchUpInside)
         // Button stack view
+        cancelButton.layer.cornerRadius = 17
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, joinButton ])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = Values.mediumSpacing

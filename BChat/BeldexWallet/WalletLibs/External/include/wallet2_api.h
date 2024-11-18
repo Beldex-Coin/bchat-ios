@@ -67,12 +67,12 @@ struct PendingTransaction
     };
     
     enum Priority {
-            Priority_Default = 5,
-            Priority_Low = 1,
-            Priority_Medium = 2,
-            Priority_High = 3,
-            Priority_Last
-        };
+        Priority_Default = 5,
+        Priority_Low = 1,
+        Priority_Medium = 2,
+        Priority_High = 3,
+        Priority_Last
+    };
 
     virtual ~PendingTransaction() = 0;
     /// returns true if the status is currently set to Status_Ok, false otherwise.
@@ -429,18 +429,20 @@ struct stakeInfo{
 };
 
 struct bnsInfo{
-    uint64_t update_height;
+    uint64_t update_height; 
     uint64_t expiration_height;
-    std::string name_hash;
-    std::string name;
-    std::string owner;
-    std::string backup_owner;
-    std::string value_bchat;
-    std::string value_wallet;
-    std::string value_belnet;
+    std::string name_hash; 
+    std::string name; 
+    std::string owner; 
+    std::string backup_owner; 
+    std::string value_bchat; 
+    std::string value_wallet; 
+    std::string value_belnet; 
+    std::string value_eth_addr;
     std::string encrypted_bchat_value;
     std::string encrypted_wallet_value;
     std::string encrypted_belnet_value;
+    std::string encrypted_eth_addr_value;
 };
 
 /**
@@ -882,12 +884,22 @@ struct Wallet
      * \return                  PendingTransaction object. caller is responsible to check PendingTransaction::status()
      *                          after object returned
      */
-
     virtual PendingTransaction *createTransaction(const std::string &dst_addr,
                                                   std::optional<uint64_t> amount,
                                                   uint32_t priority                  = 0,
                                                   uint32_t subaddr_account           = 0,
                                                   std::set<uint32_t> subaddr_indices = {}) = 0;
+    /*!
+     * \brief createSweepAllTransaction creates transaction for self
+     * \param subaddr_account   subaddress account from which the input funds are taken
+     * \param subaddr_indices   set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
+     * \param priority          set a priority for the transaction. Accepted Values are: default (0), or 0-5 for: default, unimportant, normal, elevated, priority, flash.
+     * \return                  PendingTransaction object. caller is responsible to check PendingTransaction::status()
+     *                          after object returned
+     */
+    virtual PendingTransaction* createSweepAllTransaction(uint32_t priority = 0,
+                                                    uint32_t subaddr_account = 0,
+                                                    std::set<uint32_t> subaddr_indices = {}) = 0;
 
     /*!
      * \brief createBnsTransaction  creates bns transaction
@@ -897,6 +909,7 @@ struct Wallet
      * \param value_bchat           bchat_id
      * \param value_wallet          wallet address
      * \param value_belnet          belnet_id
+     * \param value_eth_addr        ethereum address
      * \param name                  bns name
      * \param subaddr_account       subaddress account from which the input funds are taken
      * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
@@ -909,6 +922,7 @@ struct Wallet
                                                   std::string &value_bchat,
                                                   std::string &value_wallet,
                                                   std::string &value_belnet,
+                                                  std::string &value_eth_addr,
                                                   std::string &name,
                                                   uint32_t priority                  = 0,
                                                   uint32_t subaddr_account           = 0,
@@ -920,6 +934,7 @@ struct Wallet
      * \param value_bchat           bchat_id
      * \param value_wallet          wallet address
      * \param value_belnet          belnet_id
+     * \param value_eth_addr        ethereum address
      * \param name                  bns name
      * \param subaddr_account       subaddress account from which the input funds are taken
      * \param subaddr_indices       set of subaddress indices to use for transfer or sweeping. if set empty, all are chosen when sweeping, and one or more are automatically chosen when transferring. after execution, returns the set of actually used indices
@@ -931,6 +946,7 @@ struct Wallet
                                                       std::string& value_bchat,
                                                       std::string& value_wallet,
                                                       std::string& value_belnet,
+                                                      std::string &value_eth_addr,
                                                       std::string& name,
                                                       uint32_t priority = 0,
                                                       uint32_t subaddr_account = 0,
@@ -956,6 +972,13 @@ struct Wallet
      * \return true if successful, false otherwise
      */
     virtual bool setBnsRecord(const std::string &name) = 0;
+
+    /*!
+     * \brief nameToNamehash - create name to namehash
+     * \param name - the key
+     * \return nameHash if successful, empty otherwise
+     */
+    virtual std::string nameToNamehash(const std::string &name) = 0;
 
     /*!
      * \return struct bnsInfo

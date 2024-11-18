@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) UIView *presentationView;
 @property (nonatomic) UIView *replacingView;
 @property (nonatomic) UIButton *shareButton;
+@property (nonatomic, assign) BOOL isVideoPlayingInFullscreen;
+@property (nonatomic, assign) CGRect initialMediaViewFrame;
 
 @property (nonatomic) TSAttachmentStream *attachmentStream;
 @property (nonatomic, nullable) id<ConversationViewItem> viewItem;
@@ -59,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     [self stopAnyVideo];
 }
+
+AVPlayerLayer *_playerLayer;
 
 - (instancetype)initWithGalleryItemBox:(GalleryItemBox *)galleryItemBox
                               viewItem:(nullable id<ConversationViewItem>)viewItem
@@ -108,6 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
     self.view.backgroundColor = LKColors.navigationBarBackground;
 
     [self updateContents];
+    self.isVideoPlayingInFullscreen = NO;
     
     // Beldex: Set navigation bar background color
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
@@ -115,6 +120,23 @@ NS_ASSUME_NONNULL_BEGIN
     navigationBar.shadowImage = [UIImage new];
     [navigationBar setTranslucent:NO];
     navigationBar.barTintColor = LKColors.navigationBarBackground;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(isFromPassSmallButtonTapped:)
+            name:@"isFromPassSmallButton"
+            object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(isFromPlaySmallButtonTapped:)
+            name:@"isFromPlaySmallButton"
+            object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(fullScreenButtonTapped:)
+            name:@"fullScreenButtonTapped"
+            object:nil];
+    
+    UITapGestureRecognizer *singleTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidePopupView:)];
+    [self.view addGestureRecognizer:singleTap];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -252,24 +274,30 @@ NS_ASSUME_NONNULL_BEGIN
         // We hide the progress bar until either:
         // 1. Video completes playing
         // 2. User taps the screen
-        videoProgressBar.hidden = YES;
-
+        videoProgressBar.hidden = NO;
+        
         self.videoProgressBar = videoProgressBar;
         [self.view addSubview:videoProgressBar];
-        [videoProgressBar autoPinWidthToSuperview];
-        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeTop];
-        CGFloat kVideoProgressBarHeight = 44;
+        
+        // Set corner radius
+        videoProgressBar.layer.cornerRadius = 22;
+        videoProgressBar.layer.masksToBounds = YES;
+        
+        // Adjust the width to match the leading and trailing margins
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
+        
+        CGFloat kVideoProgressBarHeight = 42;
         [videoProgressBar autoSetDimension:ALDimensionHeight toSize:kVideoProgressBarHeight];
-
+        
         UIButton *playVideoButton = [UIButton new];
         self.playVideoButton = playVideoButton;
-
         [playVideoButton addTarget:self action:@selector(playVideo) forControlEvents:UIControlEventTouchUpInside];
-
         UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
         [playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
         playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
-
+        
         [self.view addSubview:playVideoButton];
 
         CGFloat playVideoButtonWidth = 72.f;
@@ -294,6 +322,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     VideoPlayerView *playerView = [VideoPlayerView new];
     playerView.player = player.avPlayer;
+    _playerLayer = [AVPlayerLayer playerLayerWithPlayer:_videoPlayer.avPlayer];
+    _playerLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    [self.view.layer addSublayer:_playerLayer];
 
     [NSLayoutConstraint autoSetPriority:UILayoutPriorityDefaultLow
                          forConstraints:^{
@@ -305,7 +336,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setShouldHideToolbars:(BOOL)shouldHideToolbars
 {
-    self.videoProgressBar.hidden = shouldHideToolbars;
+    self.videoProgressBar.hidden = NO;//shouldHideToolbars;
 }
 
 - (void)addGestureRecognizersToView:(UIView *)view
@@ -322,6 +353,10 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Gesture Recognizers
+
+- (void)hidePopupView: (UITapGestureRecognizer *)gesture {
+    [self.delegate mediaDetailViewControllerHidePopup: self];
+}
 
 - (void)didSingleTapImage:(UITapGestureRecognizer *)gesture
 {
@@ -405,6 +440,7 @@ NS_ASSUME_NONNULL_BEGIN
     // https://stackoverflow.com/questions/27961884/swift-uiimageview-stretched-aspect
     [self.view layoutIfNeeded];
     self.mediaView.frame = self.mediaView.frame;
+    _initialMediaViewFrame = self.mediaView.frame;
 }
 
 #pragma mark - Video Playback
@@ -417,6 +453,78 @@ NS_ASSUME_NONNULL_BEGIN
 
     [self.videoPlayer play];
 
+    [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
+}
+
+
+- (void) isFromPassSmallButtonTapped:(NSNotification *) notification
+{
+    OWSAssertDebug(self.isVideo);
+    OWSAssertDebug(self.videoPlayer);
+    UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
+    [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
+    _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
+    [self.videoPlayer pause];
+
+    [self.delegate mediaDetailViewController:self isPlayingVideo:NO];
+}
+
+- (void) isFromPlaySmallButtonTapped:(NSNotification *) notification
+{
+    OWSAssertDebug(self.videoPlayer);
+
+    self.playVideoButton.hidden = YES;
+
+    [self.videoPlayer play];
+
+    [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
+}
+
+- (void) fullScreenButtonTapped:(NSNotification *) notification
+{
+    if (_isVideoPlayingInFullscreen == NO) {
+        _isVideoPlayingInFullscreen = YES;
+        _mediaView.frame = self.view.bounds;
+        CGFloat angle = M_PI / 2;
+        CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
+        _playerLayer.transform = rotationTransform;
+        _playerLayer.frame = self.view.bounds;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationBarForFullscreenVideo"
+                                                            object:nil
+                                                          userInfo:nil];
+        
+        if (self.isVideo) {
+            self.videoProgressBar.translatesAutoresizingMaskIntoConstraints = YES;
+            self.videoProgressBar.transform =  CGAffineTransformMakeRotation(M_PI_2);
+            self.videoProgressBar.frame =  CGRectMake(20, 50, 42, self.view.frame.size.height - 100);
+        }
+    } else {
+        _isVideoPlayingInFullscreen = NO;
+        _mediaView.frame = _initialMediaViewFrame;
+        CGFloat angle = 0;
+        CATransform3D rotationTransform = CATransform3DMakeRotation(angle, 0.0, 0.0, 1.0);
+        _playerLayer.transform = rotationTransform;
+        _playerLayer.frame = _initialMediaViewFrame;
+        [self.videoProgressBar removeFromSuperview];
+        PlayerProgressBar *videoProgressBar = [PlayerProgressBar new];
+        videoProgressBar.delegate = self;
+        videoProgressBar.player = self.videoPlayer.avPlayer;
+        videoProgressBar.hidden = NO;
+        self.videoProgressBar = videoProgressBar;
+        [self.view addSubview:videoProgressBar];
+        videoProgressBar.layer.cornerRadius = 22;
+        videoProgressBar.layer.masksToBounds = YES;
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:15];
+        [videoProgressBar autoPinEdgeToSuperviewSafeArea:ALEdgeBottom];
+        CGFloat kVideoProgressBarHeight = 42;
+        [videoProgressBar autoSetDimension:ALDimensionHeight toSize:kVideoProgressBarHeight];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationBarForFullscreenVideo"
+                                                            object:nil
+                                                          userInfo:nil];
+    }
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
 }
 
@@ -443,7 +551,9 @@ NS_ASSUME_NONNULL_BEGIN
     OWSAssertDebug(self.videoPlayer);
 
     [self.videoPlayer stop];
-
+    UIImage *playImage = [UIImage imageNamed:@"CirclePlay"];
+    [_playVideoButton setBackgroundImage:playImage forState:UIControlStateNormal];
+    _playVideoButton.contentMode = UIViewContentModeScaleAspectFill;
     self.playVideoButton.hidden = NO;
 
     [self.delegate mediaDetailViewController:self isPlayingVideo:NO];

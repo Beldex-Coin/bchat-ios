@@ -137,7 +137,7 @@ final class LinkPreviewView : UIView {
         if image != nil { loader.stopAnimating() } else { loader.startAnimating() }
         // Title
         titleLabel.textColor = sentLinkPreviewTextColor
-        titleLabel.text = linkPreviewState.title()
+        titleLabel.text = (linkPreviewState.title() == nil) ? "" : linkPreviewState.title()
         // Horizontal stack view
         switch linkPreviewState {
         case is LinkPreviewSent: hStackViewContainer.backgroundColor = isDarkMode ? .black : UIColor.black.withAlphaComponent(0.06)
@@ -146,7 +146,7 @@ final class LinkPreviewView : UIView {
         // Body text view
         bodyTextViewContainer.subviews.forEach { $0.removeFromSuperview() }
         if let viewItem = viewItem {
-            let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: sentLinkPreviewTextColor, delegate: delegate)
+            let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: sentLinkPreviewTextColor, delegate: delegate, lastString: delegate.lastSearchedText)
             self.bodyTextView = bodyTextView
             bodyTextViewContainer.addSubview(bodyTextView)
             bodyTextView.pin(to: bodyTextViewContainer, withInset: 12)

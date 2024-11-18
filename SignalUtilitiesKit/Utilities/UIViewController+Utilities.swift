@@ -23,7 +23,7 @@ public final class ViewControllerUtilities : NSObject {
             let titleLabel = UILabel()
             titleLabel.text = title
             titleLabel.textColor = Colors.text
-            titleLabel.font = Fonts.boldOpenSans(ofSize: Values.veryLargeFontSize)
+            titleLabel.font = Fonts.boldOpenSans(ofSize: Values.largeFontSize)
             vc.navigationItem.titleView = titleLabel
         }
         // Set up back button

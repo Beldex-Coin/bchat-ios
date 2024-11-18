@@ -1,4 +1,5 @@
 import UIKit
+import BChatMessagingKit
 import BChatUIKit
 
 final class ConversationCell : UITableViewCell {
@@ -13,6 +14,8 @@ final class ConversationCell : UITableViewCell {
     
     // MARK: UI Components
     private let accentLineView = UIView()
+    
+    private let profilePictureBackgroundView = UIView()
     
     private lazy var profilePictureView = ProfilePictureView()
     
@@ -118,6 +121,15 @@ final class ConversationCell : UITableViewCell {
         return result
     }()
     
+    lazy var verifiedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_verified_image")
+        return result
+    }()
+    
     // MARK: Settings
     
     public static let unreadCountViewSize: CGFloat = 20
@@ -150,6 +162,13 @@ final class ConversationCell : UITableViewCell {
         profilePictureView.set(.width, to: profilePictureViewSize)
         profilePictureView.set(.height, to: profilePictureViewSize)
         profilePictureView.size = profilePictureViewSize
+        profilePictureBackgroundView.set(.width, to: profilePictureViewSize)
+        profilePictureBackgroundView.set(.height, to: profilePictureViewSize)
+        profilePictureBackgroundView.addSubview(profilePictureView)
+        profilePictureBackgroundView.addSubview(verifiedImageView)
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: profilePictureBackgroundView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureBackgroundView, withInset: 3)
         // Unread count view
         unreadCountView.addSubview(unreadCountLabel)
         unreadCountLabel.pin([ VerticalEdge.top, VerticalEdge.bottom ], to: unreadCountView)
@@ -176,7 +195,7 @@ final class ConversationCell : UITableViewCell {
         labelContainerView.spacing = 6
         labelContainerView.isUserInteractionEnabled = false
         // Main stack view
-        let stackView = UIStackView(arrangedSubviews: [ accentLineView, profilePictureView, labelContainerView ])
+        let stackView = UIStackView(arrangedSubviews: [ accentLineView, profilePictureBackgroundView, labelContainerView ])
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = Values.mediumSpacing
@@ -202,6 +221,9 @@ final class ConversationCell : UITableViewCell {
         // HACK: The two lines below are part of a workaround for a weird layout bug
         stackView.set(.width, to: UIScreen.main.bounds.width - Values.mediumSpacing)
         stackView.set(.height, to: cellHeight)
+        
+        profilePictureView.layer.masksToBounds = true
+        profilePictureView.layer.cornerRadius = 22.5
     }
     
     // MARK: Updating for search results
@@ -263,6 +285,29 @@ final class ConversationCell : UITableViewCell {
                 bottomLabelStackView.isHidden = true
             }
             timestampLabel.isHidden = true
+        }
+        
+        if let contactThread: TSContactThread = threadViewModel.threadRecord as? TSContactThread {
+            if contactThread.isNoteToSelf() {
+                profilePictureView.isNoteToSelfImage = true
+                profilePictureView.update()
+            }
+            let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
+            // BeldexAddress view in Conversation Page (Get from DB)
+            guard let _ = contact, let isBnsUser = contact?.isBnsHolder else { return }
+            if contactThread.isNoteToSelf() {
+                profilePictureView.layer.borderWidth = 0
+                profilePictureView.layer.borderColor = UIColor.clear.cgColor
+                verifiedImageView.isHidden = true
+            } else {
+                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            }
+        } else {
+            profilePictureView.layer.borderWidth = 0
+            profilePictureView.layer.borderColor = UIColor.clear.cgColor
+            verifiedImageView.isHidden = true
         }
     }
     

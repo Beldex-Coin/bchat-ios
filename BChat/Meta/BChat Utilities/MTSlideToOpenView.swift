@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BChatUIKit
 
 @objc public protocol MTSlideToOpenDelegate {
     func mtSlideToOpenDelegateDidFinish(_ sender: MTSlideToOpenView)
@@ -64,7 +65,7 @@ import UIKit
             layoutIfNeeded()
         }
     }
-    public var thumbnailViewStartingDistance: CGFloat = 0.0 {
+    public var thumbnailViewStartingDistance: CGFloat = 5 {
         didSet {
             leadingThumbnailViewConstraint?.constant = thumbnailViewStartingDistance
             trailingDraggedViewConstraint?.constant = thumbnailViewStartingDistance
@@ -102,12 +103,6 @@ import UIKit
         }
     }
     
-//    public var textColor:UIColor = UIColor(red:25.0/255, green:155.0/255, blue:215.0/255, alpha:0.7) {
-//        didSet {
-//            textLabel.textColor = textColor
-//        }
-//    }
-    
     public var textColor:UIColor = .white {
         didSet {
             textLabel.textColor = textColor
@@ -124,13 +119,13 @@ import UIKit
             thumnailImageView.backgroundColor = thumbnailColor
         }
     }
-    public var labelText: String = "Slide to send BDX" {
+    public var labelText: String = "Swipe to send BDX" {
         didSet {
             textLabel.text = labelText
             sliderTextLabel.text = labelText
         }
     }
-    public var textFont: UIFont = UIFont.boldSystemFont(ofSize: 15.0) {
+    public var textFont: UIFont = Fonts.semiOpenSans(ofSize: 14) {
         didSet {
             textLabel.font = textFont
             sliderTextLabel.font = textFont
@@ -173,7 +168,7 @@ import UIKit
         view.bringSubviewToFront(self.thumnailImageView)
         setupConstraint()
         setStyle()
-        thumnailImageViewRight.frame = CGRect(x: 206, y: 10, width: 30, height: 30)
+        thumnailImageViewRight.frame = CGRect(x: 237, y: 17, width: 15, height: 15)
         // Add pan gesture
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(_:)))
         panGestureRecognizer.minimumNumberOfTouches = 1
@@ -192,6 +187,7 @@ import UIKit
         view.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
         // Setup for circle View
         leadingThumbnailViewConstraint = thumnailImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
         leadingThumbnailViewConstraint?.isActive = true
@@ -222,13 +218,13 @@ import UIKit
         draggedView.centerYAnchor.constraint(equalTo: sliderHolderView.centerYAnchor).isActive = true
         trailingDraggedViewConstraint = draggedView.trailingAnchor.constraint(equalTo: thumnailImageView.trailingAnchor, constant: thumbnailViewStartingDistance)
         trailingDraggedViewConstraint?.isActive = true
+        
     }
     
     private func setStyle() {
-//        thumnailImageView.backgroundColor = thumbnailColor
         textLabel.text = labelText
         textLabel.font = textFont
-        textLabel.textColor = Colors.accent//textColor
+        textLabel.textColor = Colors.cancelButtonTitleColor1
         textLabel.textAlignment = .center
 
         sliderTextLabel.text = labelText
@@ -244,6 +240,8 @@ import UIKit
 
         sliderHolderView.backgroundColor = sliderBackgroundColor
         sliderHolderView.layer.cornerRadius = sliderCornerRadius
+        sliderHolderView.layer.borderWidth = 0.5
+        sliderHolderView.layer.borderColor = UIColor(hex: 0xACACAC).cgColor
         draggedView.backgroundColor = slidingColor
         draggedView.layer.cornerRadius = sliderCornerRadius
         draggedView.clipsToBounds = true
@@ -258,6 +256,7 @@ import UIKit
         leadingThumbnailViewConstraint?.constant = x
         setNeedsLayout()
     }
+    
     
     // MARK: UIPanGestureRecognizer
     @objc private func handlePanGesture(_ sender: UIPanGestureRecognizer) {

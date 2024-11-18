@@ -75,10 +75,10 @@ final class TypingIndicatorCell : MessageCell {
         guard !isOnlyMessageInCluster else { return .allCorners }
         let result: UIRectCorner
         switch positionInCluster {
-        case .top: result = [ .topLeft, .topRight, .bottomRight ]
-        case .middle: result = [ .topRight, .bottomRight ]
-        case .bottom: result = [ .topRight, .bottomRight, .bottomLeft ]
-        case nil: result = .allCorners
+            case .top: result = [ .topLeft, .topRight, .bottomRight ]
+            case .middle: result = [ .topRight, .bottomRight ]
+            case .bottom: result = [ .topRight, .bottomRight, .bottomLeft ]
+            case nil: result = .allCorners
         }
         return result
     }

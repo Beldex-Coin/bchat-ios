@@ -156,10 +156,9 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
                             default: break
                             }
                         }
-                        let message = messageOrNil ?? "Please check the BChat ID or BNS name and try again"
-                        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
-                        self?.presentAlert(alert)
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
                     }
                 }
             }

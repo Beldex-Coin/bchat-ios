@@ -8,7 +8,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     private var threads: YapDatabaseViewMappings!
     private var threadViewModelCache: [String: ThreadViewModel] = [:] // Thread ID to ThreadViewModel
     private var selectedThread: TSThread?
-    var shareVC: ShareVC?
+    var shareVC: ShareViewController?
     
     private var threadCount: UInt {
         threads.numberOfItems(inGroup: TSShareExtensionGroup)
@@ -141,7 +141,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let thread = self.thread(at: indexPath.row), let attachments = ShareVC.attachmentPrepPromise?.value else {
+        guard let thread = self.thread(at: indexPath.row), let attachments = ShareViewController.attachmentPrepPromise?.value else {
             return
         }
         

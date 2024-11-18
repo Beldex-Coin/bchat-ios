@@ -34,7 +34,8 @@ final public class Gradients : NSObject {
     @objc public static var defaultBackground: Gradient {
         switch AppModeManager.shared.currentAppMode {
         case .light: return Gradient(start: UIColor(hex: 0xF2F2F2), end: UIColor(hex: 0xF2F2F2))
-        case .dark: return Gradient(start: UIColor(hex: 0x24242F), end: UIColor(hex: 0x24242F))
+//        case .dark: return Gradient(start: UIColor(hex: 0x24242F), end: UIColor(hex: 0x24242F))
+        case .dark: return Gradient(start: Colors.cancelButtonBackgroundColor, end: Colors.cancelButtonBackgroundColor)
         }
     }
 

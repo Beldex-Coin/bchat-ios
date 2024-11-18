@@ -95,23 +95,27 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
         if WalletSharedData.sharedInstance.isCleardataStarting {
             return
         }
-
+        
         let content = UNMutableNotificationContent()
         content.categoryIdentifier = category.identifier
         content.userInfo = userInfo
         let isReplacingNotification = replacingIdentifier != nil
-        var isBackgroudPoll = false
+        var isBackgroundPoll = false
         if let threadIdentifier = userInfo[AppNotificationUserInfoKey.threadId] as? String {
             content.threadIdentifier = threadIdentifier
-            isBackgroudPoll = replacingIdentifier == threadIdentifier
+            isBackgroundPoll = replacingIdentifier == threadIdentifier
         }
         let isAppActive = UIApplication.shared.applicationState == .active
         if let sound = sound, sound != OWSSound.none {
             content.sound = sound.notificationSound(isQuiet: isAppActive)
         }
+        let notificationIdentifier: String
+        if isReplacingNotification, let replacingIdentifier = replacingIdentifier {
+            notificationIdentifier = replacingIdentifier
+        } else {
+            notificationIdentifier = UUID().uuidString
+        }
         
-        let notificationIdentifier = isReplacingNotification ? replacingIdentifier! : UUID().uuidString
-
         if shouldPresentNotification(category: category, userInfo: userInfo) {
             if let displayableTitle = title?.filterForDisplay {
                 content.title = displayableTitle
@@ -125,25 +129,29 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
         }
         
         let trigger: UNNotificationTrigger?
-        if isBackgroudPoll {
+        if isBackgroundPoll {
             trigger = UNTimeIntervalNotificationTrigger(timeInterval: kNotificationDelayForBackgroumdPoll, repeats: false)
-            let numberOfNotifications: Int
-            if let lastRequest = notifications[notificationIdentifier], let counter = lastRequest.content.userInfo[AppNotificationUserInfoKey.threadNotificationCounter] as? Int  {
+            
+            var numberOfNotifications = 1
+            if let lastRequest = notifications[notificationIdentifier],
+               let counter = lastRequest.content.userInfo[AppNotificationUserInfoKey.threadNotificationCounter] as? Int {
                 numberOfNotifications = counter + 1
                 content.body = String(format: NotificationStrings.incomingCollapsedMessagesBody, "\(numberOfNotifications)")
-            } else {
-                numberOfNotifications = 1
             }
             content.userInfo[AppNotificationUserInfoKey.threadNotificationCounter] = numberOfNotifications
         } else {
             trigger = nil
         }
-
+        
         let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)
-
+        
         Logger.debug("presenting notification with identifier: \(notificationIdentifier)")
         if isReplacingNotification { cancelNotification(identifier: notificationIdentifier) }
-        notificationCenter.add(request)
+        notificationCenter.add(request) { error in
+            if let error = error {
+                Logger.error("Failed to add notification: \(error.localizedDescription)")
+            }
+        }
         notifications[notificationIdentifier] = request
     }
 
