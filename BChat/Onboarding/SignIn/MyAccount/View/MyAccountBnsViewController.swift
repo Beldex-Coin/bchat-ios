@@ -71,9 +71,9 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+//        result.isUserInteractionEnabled = true
+//        result.addGestureRecognizer(tapGesture)
         return result
     }()
     
@@ -131,6 +131,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         result.alignment = .center
         result.distribution = .fillEqually
         result.spacing = 5
+        result.isUserInteractionEnabled = true
         return result
     }()
     
@@ -530,9 +531,9 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var cameraImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .center
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "ic_camera_dark" : "ic_camera_white1"
+        let logoImage = "ic_camera_account"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePictureImageTapped))
         imageView.isUserInteractionEnabled = true
@@ -542,10 +543,13 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var cameraImage2: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .center
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        let logoImage = isLightMode ? "ic_camera_dark" : "ic_camera_green"
+        let logoImage = isLightMode ? "ic_camera_black" : "ic_camera_green"
         imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(innerProfileImageTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
         return imageView
     }()
     
@@ -705,7 +709,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
-        self.title = "My Account"
+        self.title = "Account Settings"
         
         shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))
         shareButton.tintColor = .white
@@ -725,9 +729,12 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         stackViewForBNSVerifiedName.addArrangedSubview(bnsTickIconImage)
         
         topBackGroundView.addSubview(stackViewForUserNameAndBnsVerifiedContainer)
-        stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(nameIDAndTextfieldViewView)
-        nameIDAndTextfieldViewView.addSubviews([lineView, nameTextField, userNameIdLabel])
+        topBackGroundView.addSubviews([lineView, nameTextField, userNameIdLabel])
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForBNSVerifiedName)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+        nameTextField.isUserInteractionEnabled = true
+        nameTextField.addGestureRecognizer(tapGesture)
         
         beldexAddressView.addSubview(beldexAddressNameLabel)
         bchatIdView.addSubview(bchatNameLabel)
@@ -831,15 +838,18 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             
             userNameIdLabel.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
             userNameIdLabel.heightAnchor.constraint(equalToConstant: 22),
+            userNameIdLabel.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 4),
             
             nameTextField.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
             nameTextField.heightAnchor.constraint(equalToConstant: 22),
-            
+            nameTextField.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 4),
+            nameTextField.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 5),
+            nameTextField.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -5),
             
             lineView.heightAnchor.constraint(equalToConstant: 1),
-            lineView.leadingAnchor.constraint(equalTo: userNameIdLabel.leadingAnchor, constant: -5),
-            lineView.trailingAnchor.constraint(equalTo: userNameIdLabel.trailingAnchor, constant: 3),
-            lineView.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 5),
+            lineView.leadingAnchor.constraint(equalTo: profilePictureImage.leadingAnchor, constant: 0),
+            lineView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: 0),
+            lineView.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 1),
             
             
             bnsTickIconImage.widthAnchor.constraint(equalToConstant: 14),
@@ -1014,8 +1024,8 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             
             cameraImage.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
             cameraImage.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
-            cameraImage.widthAnchor.constraint(equalToConstant: 18),
-            cameraImage.heightAnchor.constraint(equalToConstant: 18),
+            cameraImage.widthAnchor.constraint(equalToConstant: 30),
+            cameraImage.heightAnchor.constraint(equalToConstant: 30),
             
         ])
         
@@ -1057,8 +1067,8 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             cameraView2.heightAnchor.constraint(equalToConstant: 30),
             cameraImage2.centerYAnchor.constraint(equalTo: cameraView2.centerYAnchor),
             cameraImage2.centerXAnchor.constraint(equalTo: cameraView2.centerXAnchor),
-            cameraImage2.widthAnchor.constraint(equalToConstant: 18),
-            cameraImage2.heightAnchor.constraint(equalToConstant: 18),
+            cameraImage2.widthAnchor.constraint(equalToConstant: 30),
+            cameraImage2.heightAnchor.constraint(equalToConstant: 30),
             buttonStackView1.heightAnchor.constraint(equalToConstant: 52),
             buttonStackView1.topAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: 20),
             buttonStackView1.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -20),
@@ -1341,7 +1351,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         bchatIDExpandView.isHidden = isBnsUser
         showQRExpandView.isHidden = isBnsUser
         bnsApprovalIconImage.isHidden = !isBnsUser
-        profilePictureImage.layer.borderWidth = isBnsUser ? 1 : 0
+        profilePictureImage.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         profilePictureImage.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         
         beldexAddressExpandView.isHidden = true
@@ -1436,6 +1446,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         self.doneButton.isHidden = false
         cameraView.isHidden = false
         lineView.isHidden = false
+        nameIdLabelTapped()
     }
     
     @objc func doneButtonTapped(_ sender: UIButton) {

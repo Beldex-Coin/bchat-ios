@@ -971,7 +971,7 @@ final class HomeVC : BaseVC {
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
         
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
-        button.layer.borderWidth = isBnsUser ? 1 : 0
+        button.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
 
         let barButton = UIBarButtonItem(customView: outerView)

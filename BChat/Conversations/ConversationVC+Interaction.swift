@@ -108,10 +108,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     func showBlockedModalIfNeeded() -> Bool {
         guard let thread = thread as? TSContactThread, thread.isBlocked() else { return false }
-        let blockedModal = BlockedModal(publicKey: thread.contactBChatID())
-        blockedModal.modalPresentationStyle = .overFullScreen
-        blockedModal.modalTransitionStyle = .crossDissolve
-        present(blockedModal, animated: true, completion: nil)
+        let vc = BlockContactPopUpVC()
+        vc.isBlocked = true
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
         return true
     }
 

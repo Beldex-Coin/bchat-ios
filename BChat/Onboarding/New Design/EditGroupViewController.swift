@@ -310,7 +310,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            cell.profileImageView.layer.borderWidth = isBnsUser ? 1 : 0
+            cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
             cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
             cell.verifiedImageView.isHidden = isBnsUser ? false : true
         }  else {

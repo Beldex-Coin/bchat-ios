@@ -9,6 +9,7 @@ public final class ProfilePictureView : UIView {
     @objc public var additionalPublicKey: String?
     @objc public var openGroupProfilePicture: UIImage?
     @objc public var isNoteToSelfImage = false
+    @objc public var groupThreadForGroupImage: TSGroupThread?
     // Constraints
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -62,6 +63,7 @@ public final class ProfilePictureView : UIView {
     public func update(for thread: TSThread) {
         openGroupProfilePicture = nil
         if let thread = thread as? TSGroupThread {
+            groupThreadForGroupImage = thread
             if let openGroupProfilePicture = thread.groupModel.groupImage { // An open group with a profile picture
                 self.openGroupProfilePicture = openGroupProfilePicture
                 useFallbackPicture = false
@@ -108,7 +110,7 @@ public final class ProfilePictureView : UIView {
             } else if self.size == Values.largeProfilePictureSize {
                 size = 56
             } else if self.size == CGFloat(86) {
-                size = 74
+                size = 86//74
             } else if self.size == 60 {
                 size = 55
             } else if self.size == 36 {
@@ -121,7 +123,9 @@ public final class ProfilePictureView : UIView {
             additionalImageViewWidthConstraint.constant = size
             additionalImageViewHeightConstraint.constant = size
             additionalImageView.isHidden = false
-            additionalImageView.image = getProfilePicture(of: size, for: additionalPublicKey)
+            
+            additionalImageView.image = getgroupImage(of: size, for: publicKey, displayName: groupThreadForGroupImage?.groupModel.groupName ?? "")
+//            additionalImageView.image = getProfilePicture(of: size, for: additionalPublicKey)
         } else {
             size = self.size
             imageViewWidthConstraint.constant = size
@@ -181,4 +185,12 @@ public final class ProfilePictureView : UIView {
     @objc public func getProfilePicture() -> UIImage? {
         return hasTappableProfilePicture ? imageView.image : nil
     }
+    
+    
+    func getgroupImage(of size: CGFloat, for publicKey: String, displayName: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+    }
+    
+    
 }

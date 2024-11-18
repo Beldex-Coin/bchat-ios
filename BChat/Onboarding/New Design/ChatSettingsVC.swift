@@ -4,6 +4,8 @@ import UIKit
 import ContactsUI
 import PromiseKit
 import Foundation
+import BChatUtilitiesKit
+import BChatMessagingKit
 
 
 enum DocumentContentType : String {
@@ -254,7 +256,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             let publicKey = contactThread.contactBChatID()
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureImageView.layer.borderWidth = isBnsUser ? 1 : 0
+                profilePictureImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 bnsApprovalIconImage.isHidden = isBnsUser ? false : true
             }
@@ -416,6 +418,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 let message = VisibleMessage()
                 message.sentTimestamp = NSDate.millisecondTimestamp()
                 //                message.openGroupInvitation = OpenGroupInvitation(name: openGroup.name, url: url)
+                let invitation = VisibleMessage.OpenGroupInvitation(name: openGroup.name, url: url)
+                message.openGroupInvitation = invitation
                 
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: user)
                 let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
@@ -1310,6 +1314,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if indexPath.row == 6 {
+                let groupThread = self.thread as? TSGroupThread
+                if !groupThread!.isCurrentUserMemberInGroup() {
+                    cell.rightSwitch.isEnabled = false
+                }
                 if let mutedUntilDate = self.thread?.mutedUntilDate {
                     let now = Date()
                     cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0

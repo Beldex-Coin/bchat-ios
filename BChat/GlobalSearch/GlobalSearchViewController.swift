@@ -370,10 +370,6 @@ extension GlobalSearchViewController {
                 cell.threadViewModel = searchResult?.thread
                 cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText)
             
-            if ((searchResult?.thread.threadRecord.isNoteToSelf()) != nil) {
-                cell.layer.cornerRadius = 34
-                cell.layer.masksToBounds = true
-            }
             
                 return cell
             case .messages:

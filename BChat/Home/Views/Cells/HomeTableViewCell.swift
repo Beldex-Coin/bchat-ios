@@ -310,8 +310,10 @@ class HomeTableViewCell: UITableViewCell {
         backgroundColor = .clear
         if !messageCountLabel.isHidden {
             backGroundView.backgroundColor = Colors.cellGroundColor3
+            dateLabel.textColor = Colors.bothGreenColor
         } else {
             backGroundView.backgroundColor = .clear
+            dateLabel.textColor = Colors.textFieldPlaceHolderColor
         }
         pinImageView.isHidden = true
         if threadViewModel.isPinned {
@@ -356,7 +358,7 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     private func setBnsUserProfile(isBnsUser: Bool) {
-        iconImageView.layer.borderWidth = isBnsUser ? 1 : 0
+        iconImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         iconImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         verifiedImageView.isHidden = isBnsUser ? false : true
     }
