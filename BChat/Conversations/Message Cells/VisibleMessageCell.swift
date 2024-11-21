@@ -489,6 +489,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         paymentView.backgroundColor = Colors.bothGreenColor
                     }
                     messageTimeBottomLabel.isHidden = true
+                    messageTailRightView.isHidden = true
+                    messageTailLeftView.isHidden = true
                 } else {
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])
@@ -516,14 +518,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
-                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
-                        stackViewForMessageAndTime.axis = .horizontal
-                        stackViewForMessageAndTime.spacing = 5
-                        stackViewForMessageAndTime.alignment = .bottom
-                                                
-                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
-                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
-                        
+                        messageTimeRightLabel.isHidden = false
                         messageTimeRightLabel.textColor = UIColor(hex: 0xEBEBEB)
                         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
                         let direction = isOutgoing ? "send" : "receive"
@@ -532,10 +527,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                                 messageTimeRightLabel.textColor = Colors.noDataLabelColor
                             }
                         }
-                        
                         let date = viewItem.interaction.dateForUI()
                         let description = DateUtil.formatDate(forDisplay2: date)
                         messageTimeRightLabel.text = description
+                        
+                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+                        stackViewForMessageAndTime.axis = .horizontal
+                        stackViewForMessageAndTime.spacing = 5
+                        stackViewForMessageAndTime.alignment = .bottom
+                                                
+                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+                                                
                         
                         stackView.addArrangedSubview(stackViewForMessageAndTime)
                         // Constraints
@@ -548,10 +551,24 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 //                        }
                         
                     } else {
+                        
+                        let stackViewForSpacerAndbodyTextView = UIStackView(arrangedSubviews: [])
+                        stackViewForSpacerAndbodyTextView.axis = .horizontal
+                        stackViewForSpacerAndbodyTextView.spacing = 5
+                        stackViewForSpacerAndbodyTextView.alignment = .leading
+                        
+                        let spacer1 = UIView.spacer(withWidth: 2)
+                        stackViewForSpacerAndbodyTextView.addArrangedSubview(spacer1)
+                        stackViewForSpacerAndbodyTextView.addArrangedSubview(bodyTextView)
+                        
                         messageTimeBottomLabel.isHidden = false
-                        stackView.addArrangedSubview(bodyTextView)
+                        stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
                         snContentView.addSubview(stackView)
-                        stackView.pin(to: snContentView, withInset: inset)
+//                        stackView.pin(to: snContentView, withInset: inset)
+                        stackView.pin(.top, to: .top, of: snContentView, withInset: 1)
+                        stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
+                        stackView.pin(.right, to: .right, of: snContentView, withInset: 0)
+                        stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
 //                        messageTimeBottomLabel.isHidden = true
 //                        if viewItem.isLastInCluster {
 //                            messageTimeBottomLabel.isHidden = false
@@ -809,9 +826,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             switch (direction) {
                 case (.outgoing):
                 messageTailRightView.isHidden = false
+                hideMessageTailViewForPaymentView()
                 return [ .topLeft, .topRight, .bottomLeft ]
                 case (.incoming):
                 messageTailLeftView.isHidden = false
+                hideMessageTailViewForPaymentView()
                 return [ .topLeft, .topRight, .bottomRight]
             }
         }
@@ -827,6 +846,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             messageTailLeftView.isHidden = false
             case (nil, _): result = .allCorners
         }
+        hideMessageTailViewForPaymentView()
         return result
     }
     
@@ -871,8 +891,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 tintColor = Colors.bothGreenColor
                 
             case .read:
-                image = isLightMode ? #imageLiteral(resourceName: "FilledCircleCheckLightMode") : #imageLiteral(resourceName: "FilledCircleCheckDarkMode")
-                backgroundColor = isLightMode ? .black : .white
+                image = #imageLiteral(resourceName: "ic_readRecipent").withRenderingMode(.alwaysTemplate)
+                tintColor = Colors.bothGreenColor
                 
             case .failed:
                 image = #imageLiteral(resourceName: "message_status_failed").withRenderingMode(.alwaysTemplate)
@@ -999,5 +1019,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         return width
     }
+    
+    
+    func hideMessageTailViewForPaymentView() {
+        if let message = viewItem?.interaction as? TSMessage {
+            if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                messageTailRightView.isHidden = true
+                messageTailLeftView.isHidden = true
+            }
+        }
+    }
+    
     
 }

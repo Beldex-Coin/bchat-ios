@@ -149,7 +149,7 @@ final class ConversationCell : UITableViewCell {
     private func setUpViewHierarchy() {
         let cellHeight: CGFloat = 68
         // Background color
-        backgroundColor = Colors.cellBackgroundColor
+        backgroundColor = Colors.cellGroundColor3
         // Highlight color
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = Colors.cellSelected

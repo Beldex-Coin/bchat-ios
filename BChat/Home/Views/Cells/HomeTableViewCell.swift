@@ -157,9 +157,9 @@ class HomeTableViewCell: UITableViewCell {
     
     lazy var secretGroupImageView: UIImageView = {
         let result = UIImageView()
-        result.set(.width, to: 16)
-        result.set(.height, to: 16)
-        result.contentMode = .scaleAspectFit
+        result.set(.width, to: 18)
+        result.set(.height, to: 18)
+        result.contentMode = .scaleAspectFill
         result.image = UIImage(named: "ic_secretGroupSmall")
         return result
     }()
@@ -222,7 +222,7 @@ class HomeTableViewCell: UITableViewCell {
             separatorLineView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             separatorLineView.heightAnchor.constraint(equalToConstant: 1),
             
-            secretGroupImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: -1),
+            secretGroupImageView.trailingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 2),
             secretGroupImageView.bottomAnchor.constraint(equalTo: iconImageView.bottomAnchor, constant: 3),
             
         ])

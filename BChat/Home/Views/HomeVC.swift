@@ -144,7 +144,6 @@ final class HomeVC : BaseVC {
     var syncingIsFromDelegateMethod = true
     var isdaemonHeight : Int64 = 0
     var backApiRescanVC = false
-    var isTapped = false
     
     // NewConversation Button Set PopUpView
     lazy var mainButtonPopUpView: UIView = {
@@ -484,9 +483,6 @@ final class HomeVC : BaseVC {
         stackViewButtons.bottomAnchor.constraint(equalTo: mainButtonPopUpView.bottomAnchor, constant: -14).isActive = true
         stackViewButtons.topAnchor.constraint(equalTo: mainButtonPopUpView.topAnchor, constant: 14).isActive = true
         stackViewButtons.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        // main Button Tapped
-        let mainButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleMainButtonTapped))
-        mainButton.addGestureRecognizer(mainButtonTapGestureRecognizer)
         
         // Notifications
         let notificationCenter = NotificationCenter.default
@@ -523,9 +519,6 @@ final class HomeVC : BaseVC {
         // Get default open group rooms if needed
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
         
-        let tapGestureForMainView = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        tapGestureForMainView.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGestureForMainView)
         
         view.addSubview(callView)
         callView.pin(.top, to: .top, of: view, withInset: 14)
@@ -557,7 +550,7 @@ final class HomeVC : BaseVC {
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
-        self.isTapped = false
+//        self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
@@ -610,7 +603,7 @@ final class HomeVC : BaseVC {
     override func viewWillDisappear(_ animated: Bool) {
         self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         self.isManualyCloseMessageRequest = false
-        self.isTapped = false
+//        self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
@@ -631,15 +624,6 @@ final class HomeVC : BaseVC {
         reload()
     }
 
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        if !mainButtonPopUpView.isHidden {
-            self.isTapped = true
-            mainButtonPopUpView.isHidden = true
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-        } else {
-            self.isTapped = false
-        }
-    }
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
@@ -1068,18 +1052,6 @@ final class HomeVC : BaseVC {
         }
     }
     
-    //Main NewConversationButtonSet PopUpView
-    @objc private func handleMainButtonTapped() {
-        mainButtonPopUpView.isHidden = !mainButtonPopUpView.isHidden
-        if mainButtonPopUpView.isHidden == true {
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-        } else {
-            mainButton.setImage(UIImage(named: "ic_HomeVcLogo_close"), for: .normal)
-        }
-        if isLightMode {
-            mainButtonPopUpView.setShadow(radius: 30, opacity: 0.1, offset: .zero, color: UIColor.black.cgColor)
-        }
-    }
     // New Chat
     @objc private func newChatButtonTapped(_ sender: UIButton) {
         mainButtonPopUpView.isHidden = true

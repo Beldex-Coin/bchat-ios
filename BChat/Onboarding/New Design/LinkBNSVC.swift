@@ -242,6 +242,10 @@ class LinkBNSVC: BaseVC {
             self.bnsNameTextField.layer.borderWidth = 1
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
+            let alert = UIAlertController(title: "Couldn’t decrypt bns name", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            self.presentAlert(alert)
+            
 //            self.verifyButtonUpdate(false)
         }
     }

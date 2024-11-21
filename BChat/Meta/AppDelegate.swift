@@ -195,7 +195,7 @@ extension AppDelegate {
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bChatID in
             self.updateBnsUserContact(getUserHexEncodedPublicKey() == bChatID, bChatID: bChatID)
         }.catch { error in
-            self.updateBnsUserContact(false)
+//            self.updateBnsUserContact(false)
         }
     }
     

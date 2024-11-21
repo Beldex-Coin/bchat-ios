@@ -847,15 +847,15 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             nameTextField.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -5),
             
             lineView.heightAnchor.constraint(equalToConstant: 1),
-            lineView.leadingAnchor.constraint(equalTo: profilePictureImage.leadingAnchor, constant: 0),
-            lineView.trailingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: 0),
+            lineView.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 12),
+            lineView.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -12),
             lineView.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 1),
             
             
             bnsTickIconImage.widthAnchor.constraint(equalToConstant: 14),
             bnsTickIconImage.heightAnchor.constraint(equalToConstant: 14),
             
-            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 8),
+            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 5),
             stackViewForUserNameAndBnsVerifiedContainer.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
             
             beldexAddressView.heightAnchor.constraint(equalToConstant: 73),
@@ -1169,6 +1169,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     
     @objc func profilePictureImageTapped() {
+        nameTextField.resignFirstResponder()
         self.outerProfileView.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
@@ -1458,6 +1459,11 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         if isEditingDisplayName {
             lineView.isHidden = true
             func showError(title: String, message: String = "") {
+                self.editButton.isHidden = true
+                self.doneButton.isHidden = false
+                cameraView.isHidden = false
+                lineView.isHidden = false
+                nameIdLabelTapped()
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
                 presentAlert(alert)

@@ -322,8 +322,10 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
     
     
     @objc func newChatButtonTapped(_ sender: UIButton) {
-        let vc = ChatNewVC()
-        navigationController!.pushViewController(vc, animated: true)
+        let vc = NewChatPopUpVC()
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        self.present(vc, animated: true, completion: nil)
     }
     
     @objc func secretGroupButtonTapped(_ sender: UIButton) {
