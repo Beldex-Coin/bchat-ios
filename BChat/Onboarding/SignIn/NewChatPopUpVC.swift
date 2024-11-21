@@ -140,13 +140,61 @@ class NewChatPopUpVC: BaseVC {
     
     
     @objc private func letsBChatButtonTapped() {
-        self.dismiss(animated: true)
+        let text = chatIdTextView.text?.trimmingCharacters(in: .whitespaces) ?? ""
+        self.startNewDMIfPossible(with: text)
     }
     
     @objc private func cancelButtonTapped() {
         self.dismiss(animated: true)
     }
+    
+    func performAction() {
+        let text = chatIdTextView.text?.trimmingCharacters(in: .whitespaces) ?? ""
+        self.startNewDMIfPossible(with: text)
+    }
 
+    /// Start New DM If Possible
+    fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
+        let newChatId = bnsNameOrPublicKey.lowercased()
+        if ECKeyPair.isValidHexEncodedPublicKey(candidate: newChatId) {
+            startNewDM(with: newChatId)
+        } else {
+            ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] modalActivityIndicator in
+                SnodeAPI.getBChatID(for: newChatId).done { bchatID in
+                    modalActivityIndicator.dismiss {
+                        self?.startNewDM(with: bchatID)
+                        BNSBool.bnsName = newChatId
+                        BNSBool.isFromBNS = true
+                    }
+                }.catch { error in
+                    modalActivityIndicator.dismiss {
+                        var messageOrNil: String?
+                        if let error = error as? SnodeAPI.Error {
+                            switch error {
+                                case .decryptionFailed, .hashingFailed, .validationFailed: messageOrNil = error.errorDescription
+                                default: break
+                            }
+                        }
+                        self?.chatIdView.layer.borderColor = Colors.bothRedColor.cgColor
+                        self?.letsBChatButton.isUserInteractionEnabled = false
+                        self?.letsBChatButton.backgroundColor = Colors.backgroundViewColor
+                        self?.letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+                        BNSBool.bnsName = ""
+                        BNSBool.isFromBNS = false
+                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
+                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        })
+                    }
+                }
+            }
+        }
+    }
+    
+    private func startNewDM(with bchatID: String) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
+        presentingViewController?.dismiss(animated: true, completion: nil)
+        SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
+    }
 
 }
 
@@ -171,7 +219,7 @@ extension NewChatPopUpVC: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-//            performAction()
+            performAction()
             return false
         }
         return true

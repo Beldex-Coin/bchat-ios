@@ -130,15 +130,15 @@ class SideMenuViewController: BaseVC {
             menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             
             darkLightModeSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
-            darkLightModeSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 24.333),
+            darkLightModeSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 70),
             darkLightModeSwitch.widthAnchor.constraint(equalToConstant: 41.48),
             darkLightModeSwitch.heightAnchor.constraint(equalToConstant: 22.57),
             
             lblmodeTitle.trailingAnchor .constraint(equalTo: darkLightModeSwitch.leadingAnchor, constant: -12),
             lblmodeTitle.centerYAnchor.constraint(equalTo: darkLightModeSwitch.centerYAnchor),
             
-            lblversion.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
-            lblversion.topAnchor.constraint(equalTo: darkLightModeSwitch.bottomAnchor, constant: 25)
+            lblversion.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 70),
+            lblversion.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
         ])
     }
     

@@ -37,6 +37,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         result.tintColor = Colors.text
         result.delegate = self
         result.showsCancelButton = true
+        result.placeholder = "Search people and groups"
         return result
     }()
     
@@ -61,7 +62,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
     // MARK: View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setUpGradientBackground()
+        view.backgroundColor = Colors.mainBackGroundColor2
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -70,6 +71,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
+        tableView.backgroundColor = Colors.mainBackGroundColor2
 
         navigationItem.hidesBackButton = true
         setupNavigationBar()
@@ -287,7 +289,7 @@ extension GlobalSearchViewController {
         titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         
         let container = UIView()
-        container.backgroundColor = Colors.cellBackground
+        container.backgroundColor = Colors.mainBackGroundColor2
         container.layoutMargins = UIEdgeInsets(top: Values.smallSpacing, left: Values.mediumSpacing, bottom: Values.smallSpacing, right: Values.mediumSpacing)
         container.addSubview(titleLabel)
         titleLabel.autoPinEdgesToSuperviewMargins()

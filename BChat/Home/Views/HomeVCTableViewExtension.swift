@@ -65,17 +65,6 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if !mainButtonPopUpView.isHidden && !self.isTapped {
-            isTapped = false
-            mainButtonPopUpView.isHidden = true
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-            return
-        }
-        if mainButtonPopUpView.isHidden && self.isTapped {
-            isTapped = false
-            return
-        }
-        isTapped = false
         switch indexPath.section {
             case 0:
                 let viewController: MessageRequestsViewController = MessageRequestsViewController()

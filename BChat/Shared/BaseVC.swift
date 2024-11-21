@@ -105,14 +105,15 @@ class BaseVC : UIViewController {
         let pathStatusView = PathStatusView()
         pathStatusView.tag = 333222
         pathStatusView.accessibilityLabel = "Current onion routing path indicator"
-        pathStatusView.set(.width, to: 7)
-        pathStatusView.set(.height, to: 7)
+        pathStatusView.set(.width, to: 6)
+        pathStatusView.set(.height, to: 6)
+        pathStatusView.layer.cornerRadius = 3
         let spacer = UIView()
         spacer.set(.width, to: UIScreen.main.bounds.width - 261 + 20)
         spacer.set(.height, to: Values.mediumFontSize)
         
         let spacer2 = UIView()
-        spacer2.set(.width, to: 5)
+        spacer2.set(.width, to: 3)
         spacer2.set(.height, to: Values.mediumFontSize)
         
         let stack = UIStackView(arrangedSubviews: [headingImageView, spacer2, pathStatusView, spacer])

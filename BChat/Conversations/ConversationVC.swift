@@ -1094,7 +1094,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
             self.snInputView.setEnabledMessageTypes(
-                (thread.isNoteToSelf() || contact?.didApproveMe == true || thread.isMessageRequest() ?
+                (thread.isNoteToSelf() || contact?.didApproveMe == true || thread.isMessageRequest() || contact?.bchatID == bchat_report_IssueID ?
                     .all : .textOnly
                 ),
                 message: nil

@@ -4,13 +4,13 @@ public class PlaceholderIcon {
     private let seed: Int
     // Colour palette
     private var colours: [UIColor] = [
-        0x00DB09,
+//        0x00DB09,
         0x2979FB,
         0xFF6663,
         0xFFC145,
         0xFE64A3,
         0x00B1FF,
-        0x35A544
+//        0x35A544
     ].map { UIColor(hex: $0) }
     
     init(seed: Int, colours: [UIColor]? = nil) {

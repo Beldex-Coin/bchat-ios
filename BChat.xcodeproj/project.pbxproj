@@ -369,6 +369,7 @@
 		81DBDA082B5FBA950006C404 /* CurrencyPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA072B5FBA950006C404 /* CurrencyPopUpVC.swift */; };
 		81FBC2422B4D3E6300B2CA3D /* NewDesignSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */; };
 		81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */; };
+		845355C22CEF558E00B19978 /* LeaveGroupPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */; };
 		84C01AE12CE200060056F82E /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C01AE02CE200060056F82E /* libwallet_api.a */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
@@ -1530,6 +1531,7 @@
 		81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSettingsVC.swift; sourceTree = "<group>"; };
 		81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
+		845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupPopUp.swift; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		84C01AE02CE200060056F82E /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
@@ -2893,6 +2895,7 @@
 				810E3E252C11B398000FB1A1 /* ClearChatPopUp.swift */,
 				811237162C36649900F0224C /* AddMembersViewController.swift */,
 				811237182C36A20D00F0224C /* EditGroupViewController.swift */,
+				845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */,
 			);
 			path = "New Design";
 			sourceTree = "<group>";
@@ -5685,6 +5688,7 @@
 				45CD81EF1DC030E7004C9430 /* SyncPushTokensJob.swift in Sources */,
 				813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */,
 				B83524A525C3BA4B0089A44F /* InfoMessageCell.swift in Sources */,
+				845355C22CEF558E00B19978 /* LeaveGroupPopUp.swift in Sources */,
 				8A406DE72C10314500E3ED4C /* MyAccountBNSViewModel.swift in Sources */,
 				B84A89BC25DE328A0040017D /* ProfilePictureVC.swift in Sources */,
 				810C96AB2C492E0F0006114E /* CallView.swift in Sources */,
@@ -7325,7 +7329,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.4.5;
+				MARKETING_VERSION = 1.5.0;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -7411,7 +7415,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.4.5;
+				MARKETING_VERSION = 1.5.0;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
