@@ -219,10 +219,10 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in
                 switch result {
-                case .success(let wallet):
-                    wallet.close()
-                case .failure(_):
-                    print("in case failyre")
+                    case .success(let wallet):
+                        wallet.close()
+                    case .failure(_):
+                        print("in case failyre")
                 }
             }
             let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress
