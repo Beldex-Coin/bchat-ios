@@ -550,7 +550,6 @@ final class HomeVC : BaseVC {
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
-//        self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
@@ -603,7 +602,6 @@ final class HomeVC : BaseVC {
     override func viewWillDisappear(_ animated: Bool) {
         self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         self.isManualyCloseMessageRequest = false
-//        self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }

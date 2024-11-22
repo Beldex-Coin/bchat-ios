@@ -67,16 +67,22 @@ final class OpenGroupInvitationView : UIView {
 
         // Icon
         let iconSize = OpenGroupInvitationView.iconSize
-        let iconName = isOutgoing ? "Globe" : "Plus"
-        let icon = UIImage(named: iconName)?.withTint(.white)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
+        let iconName = "ic_social_grp_invitation"
+        let icon = UIImage(named: iconName)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))?.withRenderingMode(.alwaysTemplate)
         let iconImageViewSize = OpenGroupInvitationView.iconImageViewSize
         let iconImageView = UIImageView(image: icon)
         iconImageView.contentMode = .center
-        iconImageView.layer.cornerRadius = iconImageViewSize / 2
+        iconImageView.layer.cornerRadius = 8
         iconImageView.layer.masksToBounds = true
-        iconImageView.backgroundColor = Colors.bothGreenColor
+        iconImageView.backgroundColor = isOutgoing ? Colors.bothGreenColor : Colors.incomingMessageColor
         iconImageView.set(.width, to: iconImageViewSize)
         iconImageView.set(.height, to: iconImageViewSize)
+        
+        if !isOutgoing && isLightMode {
+            iconImageView.tintColor = .black
+        } else {
+            iconImageView.tintColor = .white
+        }
         
         addSubview(groupNameView)
         groupNameView.pin(.right, to: .right, of: self, withInset: -6)
