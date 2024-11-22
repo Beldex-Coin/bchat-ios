@@ -133,6 +133,7 @@ class LinkBNSVC: BaseVC {
     }()
     
     var isFromVerfied: Bool = false
+    var bnsNameToLink = ""
     
     // MARK: - UIViewController life cycle
     
@@ -226,7 +227,7 @@ class LinkBNSVC: BaseVC {
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bchatID in
             self.showLoader(false)
             self.startNewDM(with: bchatID)
-            UserDefaults.standard.set(bnsName, forKey: Constants.bnsUserName)
+            self.bnsNameToLink = bnsName
         }.catch { error in
             self.showLoader(false)
             self.bnsNameTextField.isUserInteractionEnabled = true
@@ -255,6 +256,7 @@ class LinkBNSVC: BaseVC {
     @objc private func linkButtonTapped(_ sender: UIButton) {
         if isFromVerfied {
             let vc = BNSLinkSuccessVC()
+            vc.bnsName = bnsNameToLink
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)

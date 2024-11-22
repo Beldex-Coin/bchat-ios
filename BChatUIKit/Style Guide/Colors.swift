@@ -148,6 +148,7 @@ public final class Colors : NSObject {
     @objc public static var cancelButtonBackgroundColor2: UIColor { UIColor(named: "282836-ECECEC")! }
     @objc public static var cancelButtonTitleColor: UIColor { UIColor(named: "ACACAC")! }
     @objc public static var cancelButtonTitleColor1: UIColor { UIColor(named: "ACACAC-333333")! }
+    @objc public static var newCancelButtonTitleColor: UIColor { UIColor(named: "ACACAC-078720")! }
     @objc public static var smallBackGroundColor: UIColor { UIColor(named: "111119-F8F8F8")! }
     @objc public static var smallTitleColor: UIColor { UIColor(named: "6A6A77")! }
     @objc public static var yellowColor: UIColor { UIColor(named: "F0AF13-ECAB0F")! }

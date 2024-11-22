@@ -74,16 +74,16 @@ class NewChatPopUpVC: BaseVC {
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.newCancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
     
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = Colors.backGroundColorWithAlpha
         let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurView = UIVisualEffectView(effect: darkBlur)
@@ -123,7 +123,6 @@ class NewChatPopUpVC: BaseVC {
             buttonStackView.heightAnchor.constraint(equalToConstant: 52)
         ])
         
-        
         chatIdTextView.delegate = self
         chatIdTextView.textAlignment = .left
         chatIdTextView.returnKeyType = .done
@@ -133,10 +132,6 @@ class NewChatPopUpVC: BaseVC {
         letsBChatButton.backgroundColor = Colors.backgroundViewColor
         letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
     }
-    
-    
-    
-    
     
     
     @objc private func letsBChatButtonTapped() {
@@ -202,7 +197,7 @@ class NewChatPopUpVC: BaseVC {
 extension NewChatPopUpVC: UITextViewDelegate {
     /// UI Text View Delegate
     func textViewDidChange(_ textView: UITextView) {
-        let str = textView.text!
+        let str = textView.text.trimmingCharacters(in: .whitespaces)
         if str.count == 0 {
             letsBChatButton.isUserInteractionEnabled = false
             letsBChatButton.backgroundColor = Colors.backgroundViewColor

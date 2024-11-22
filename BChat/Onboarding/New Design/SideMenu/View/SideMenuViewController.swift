@@ -121,13 +121,14 @@ class SideMenuViewController: BaseVC {
         viewModel.tableViewHeightConstraint = tableView.set(.height, to: 550)
         
         NSLayoutConstraint.activate([
-            closeButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 15),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            
+            menuTitleLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 15),
+            menuTitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            closeButton.centerYAnchor.constraint(equalTo: menuTitleLabel.centerYAnchor),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            menuTitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            menuTitleLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             
             darkLightModeSwitch.trailingAnchor .constraint(equalTo: view.trailingAnchor, constant: -20),
             darkLightModeSwitch.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 70),

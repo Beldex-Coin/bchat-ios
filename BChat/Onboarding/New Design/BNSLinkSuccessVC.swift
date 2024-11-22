@@ -46,6 +46,8 @@ class BNSLinkSuccessVC: BaseVC {
         return button
     }()
     
+    var bnsName = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Colors.backGroundColorWithAlpha
@@ -74,6 +76,7 @@ class BNSLinkSuccessVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
+        UserDefaults.standard.set(bnsName, forKey: Constants.bnsUserName)
         UserDefaults.standard.set(true, forKey: Constants.isBnsVerifiedUser)
         NotificationCenter.default.post(name: .dismissLinkBNSPopUpNotification, object: nil)
         NotificationCenter.default.post(name: .navigateToMyAccountNotification, object: nil)
