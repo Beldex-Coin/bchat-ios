@@ -277,6 +277,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         statusImageIncoming.isActive = true
         statusImageOutgoing.isActive = true
         messageStatusImageViewNew.center(.vertical, in: bubbleView)
+        profilePictureView.isHidden = true
         verifiedImageView.isHidden = true
         
         messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
@@ -300,6 +301,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     // MARK: Updating
     override func update() {
         verifiedImageView.isHidden = true
+        profilePictureView.isHidden = true
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
         let isGroupThread = viewItem.isGroupThread
         // Profile picture view
@@ -615,17 +617,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 }
             case .audio:
                 bubbleViewBottomConstraint.isActive = false
-                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 if viewItem.interaction is TSIncomingMessage,
                     let thread = thread as? TSContactThread,
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     showMediaPlaceholder()
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
                 } else {
                     let voiceMessageView = VoiceMessageView(viewItem: viewItem)
                     snContentView.addSubview(voiceMessageView)
                     voiceMessageView.pin(to: snContentView)
                     voiceMessageView.layer.mask = bubbleViewMaskLayer
                     viewItem.lastAudioMessageView = voiceMessageView
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 }
             case .genericAttachment:
                 bubbleViewBottomConstraint.isActive = false
@@ -669,6 +672,22 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateBubbleViewCorners()
+        
+        
+        guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
+        profilePictureView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
+        verifiedImageView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
+        let senderBChatID = (message as? TSIncomingMessage)?.authorId
+        if let senderBChatID = senderBChatID {
+            let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
+                    verifiedImageView.isHidden = isBnsUser ? false : true
+                }
+            }
+        }
     }
     
     private func updateBubbleViewCorners() {

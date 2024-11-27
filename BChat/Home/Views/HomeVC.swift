@@ -305,7 +305,7 @@ final class HomeVC : BaseVC {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
-        View.layer.cornerRadius = Values.buttonRadius
+        View.layer.cornerRadius = 28.5
         View.layer.borderColor = Colors.borderColorNew.cgColor
         View.layer.borderWidth = 1
         View.isHidden = true
@@ -550,7 +550,6 @@ final class HomeVC : BaseVC {
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
-//        self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
@@ -603,7 +602,6 @@ final class HomeVC : BaseVC {
     override func viewWillDisappear(_ animated: Bool) {
         self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         self.isManualyCloseMessageRequest = false
-//        self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
