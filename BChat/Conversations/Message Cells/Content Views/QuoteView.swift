@@ -51,9 +51,10 @@ final class QuoteView : UIView {
 
     private var lineColor: UIColor {
         switch (mode, AppModeManager.shared.currentAppMode) {
-        case (.regular, .light), (.draft, .light): return .black
-        case (.regular, .dark): return (direction == .outgoing) ? .black : Colors.bothGreenColor
-        case (.draft, .dark): return Colors.bothGreenColor
+        case (.regular, .light): return (direction == .incoming) ? Colors.cellGroundColor2 : Colors.bothGreenColor
+        case (.regular, .dark): return (direction == .incoming) ? Colors.cellGroundColor2 : Colors.bothGreenColor
+        case (.draft, .dark): return Colors.cellGroundColor2
+        case (.draft, .light): return Colors.cellGroundColor2
         }
     }
 
@@ -162,10 +163,12 @@ final class QuoteView : UIView {
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [])
         mainStackView.axis = .horizontal
-        mainStackView.spacing = 0
+        mainStackView.spacing = 8
         mainStackView.isLayoutMarginsRelativeArrangement = true
         mainStackView.layoutMargins = UIEdgeInsets(top: 0, leading: smallSpacing, bottom: 0, trailing: smallSpacing)
         mainStackView.alignment = .center
+        mainStackView.distribution = .fill
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
         // Content view
         let contentView = UIView()
         addSubview(contentView)
@@ -179,16 +182,6 @@ final class QuoteView : UIView {
             mainStackView.addArrangedSubview(lineView)
         } else {
             let isAudio = MIMETypeUtil.isAudio(attachments.first!.contentType ?? "")
-            let fallbackImageName = isAudio ? "attachment_audio" : "actionsheet_document_black"
-            let fallbackImage = UIImage(named: fallbackImageName)?.withTint(.white)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
-            let imageView = UIImageView(image: thumbnail ?? fallbackImage)
-            imageView.contentMode = (thumbnail != nil) ? .scaleAspectFill : .center
-            imageView.backgroundColor = lineColor
-            imageView.layer.cornerRadius = VisibleMessageCell.smallCornerRadius
-            imageView.layer.masksToBounds = true
-            imageView.set(.width, to: thumbnailSize)
-            imageView.set(.height, to: thumbnailSize)
-            mainStackView.addArrangedSubview(imageView)
             if (body ?? "").isEmpty {
                 body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : "Document")
                 if thumbnailType?.lowercased().range(of:"video") != nil {
@@ -252,6 +245,38 @@ final class QuoteView : UIView {
         cancelButton.set(.width, to: cancelButtonSizeNew)
         cancelButton.set(.height, to: cancelButtonSizeNew)
         cancelButton.addTarget(self, action: #selector(cancel), for: UIControl.Event.touchUpInside)
+        
+        if hasAttachments {
+            let spacer = UIView()
+            spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            spacer.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            mainStackView.addArrangedSubview(spacer)
+
+            
+            let isAudio = MIMETypeUtil.isAudio(attachments.first!.contentType ?? "")
+            let fallbackImageName = isAudio ? "ic_reply_audio" : "ic_reply_document"
+            var tintColor: UIColor?
+            if (isLightMode && direction == .incoming) {
+                tintColor = .black
+            } else {
+                tintColor = .white
+                if isLightMode {
+                    if case .draft = mode {
+                        tintColor = .black
+                    }
+                }
+            }
+            let fallbackImage = UIImage(named: fallbackImageName)?.withTint(tintColor!)?.resizedImage(to: CGSize(width: iconSize, height: iconSize))
+            let imageView = UIImageView(image: thumbnail ?? fallbackImage)
+            imageView.contentMode = (thumbnail != nil) ? .scaleAspectFill : .center
+            imageView.backgroundColor = lineColor
+            imageView.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
+            imageView.layer.masksToBounds = true
+            imageView.set(.width, to: thumbnailSize)
+            imageView.set(.height, to: thumbnailSize)
+            mainStackView.addArrangedSubview(imageView)
+        }
+        
         // Constraints
         contentView.addSubview(mainStackView)
         mainStackView.pin(to: contentView)
@@ -277,6 +302,12 @@ final class QuoteView : UIView {
             cancelButton.pin(.top, to: .top, of: self, withInset: -5)
             cancelButton.pin(.right, to: .right, of: self, withInset: 5)
         }
+//        contentView.pin(to: self)
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
     }
 
     // MARK: Interaction

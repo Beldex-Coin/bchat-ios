@@ -326,6 +326,7 @@ final class ConversationCell : UITableViewCell {
         
         let range = normalizedSnippet.range(of: searchText)
         result.addAttribute(.foregroundColor, value: Colors.text, range: range)
+        result.addAttribute(.backgroundColor, value: Colors.bothGreenColor, range: range)
         result.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: fontSize), range: range)
         return result
     }
