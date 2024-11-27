@@ -187,8 +187,7 @@ class NewChatPopUpVC: BaseVC {
     
     private func startNewDM(with bchatID: String) {
         let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatID)
-        presentingViewController?.dismiss(animated: true, completion: nil)
-        SignalApp.shared().presentConversation(for: thread, action: .compose, animated: false)
+        SignalApp.shared().presentConversation(for: thread, action: .compose, animated: true)
     }
 
 }
