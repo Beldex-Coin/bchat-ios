@@ -162,5 +162,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>BChat needs access to your Bluetooth</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>BChat needs access to your Bluetooth</string>
 </dict>
 </plist>
