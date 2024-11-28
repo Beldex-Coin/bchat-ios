@@ -767,14 +767,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             isSpeakerEnabled.toggle()
             if isSpeakerEnabled {
                 enableSpeaker()
-                internalSpeakerButton.isSelected = true
-                let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: UIControl.State.normal)
             } else {
                 disableSpeaker()
-                internalSpeakerButton.isSelected = false
-                let image = UIImage(named: "speaker_disable")
-                speakerButton.setImage(image, for: UIControl.State.normal)
             }
         }
         
@@ -840,6 +834,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothA2DP, .allowAirPlay, .allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
             print("Speaker enabled")
+            internalSpeakerButton.isSelected = true
+            let image = UIImage(named: "speaker_enable")
+            speakerButton.setImage(image, for: UIControl.State.normal)
         } catch {
             print("Failed to enable speaker: \(error)")
         }
@@ -850,6 +847,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
             try AVAudioSession.sharedInstance().setActive(true)
             print("Speaker disabled")
+            internalSpeakerButton.isSelected = false
+            let image = UIImage(named: "speaker_disable")
+            speakerButton.setImage(image, for: UIControl.State.normal)
         } catch {
             print("Failed to disable speaker: \(error)")
         }
