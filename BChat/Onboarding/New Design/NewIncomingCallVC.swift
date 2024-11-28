@@ -11,6 +11,8 @@ import CoreBluetooth
 
 final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerDelegate {
     
+    var bluetoothManager: CBPeripheralManager?
+    
     let call: BChatCall
     var latestKnownAudioOutputDeviceName: String?
     var durationTimer: Timer?
@@ -114,7 +116,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var answerButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "call_answer")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
@@ -125,7 +127,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var hangUpButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "call_decline")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
@@ -180,7 +182,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         let result = UIButton(type: .custom)
         result.isHidden = call.hasConnected
         let image = UIImage(named: "NavBarBack")!.withTint(isLightMode ? .black : .white)
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
         result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
@@ -217,9 +219,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var videoButton: UIButton = { // videoButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "video_enable")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "video_disable")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
@@ -230,9 +232,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var cameraButton: UIButton = { //switchCameraButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "cameraRotate_disable")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "cameraRotate_enable")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
@@ -252,9 +254,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var audioButton: UIButton = { //switchAudioButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "audio_enable")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "audio_disable")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
@@ -265,9 +267,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var speakerButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "speaker_disable")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "speaker_disable")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
@@ -278,7 +280,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var hangUpButtonSecond: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "call_decline")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
@@ -312,9 +314,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var bluetoothButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "callScreen_bluetooth_white")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "callScreen_bluetooth_green")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
         result.addTarget(self, action: #selector(bluetoothButtonTapped), for: UIControl.Event.touchUpInside)
@@ -324,17 +326,14 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     private lazy var internalSpeakerButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "callScreen_speaker_white")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "callScreen_speaker_green")
-        result.setImage(imageSelected, for: UIControl.State.selected)
+        result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
         result.addTarget(self, action: #selector(internalSpeakerButtonTapped), for: UIControl.Event.touchUpInside)
         return result
     }()
-    
-    var myBTManager: CBPeripheralManager?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -463,9 +462,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             self.callDurationLabel.isHidden = true
             self.bottomView.isHidden = true
         }
-        
-        myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
-    
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -563,6 +559,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
                 self.buttonStackView.isHidden = true
                 self.hangUpButtonSecond.isHidden = false
                 self.bottomView.isHidden = false
+                self.bluetoothManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
             }
         }
         self.call.hasConnectedDidChange = {
@@ -808,7 +805,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
             let image = UIImage(named: "speaker_bluetooth")
-            speakerButton.setImage(image, for: UIControl.State.normal)
+            speakerButton.setImage(image, for: .normal)
             print("Bluetooth audio enabled")
         } catch {
             print("Failed to enable Bluetooth audio: \(error)")
@@ -821,7 +818,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
             try AVAudioSession.sharedInstance().setActive(true)
             let image = UIImage(named: "speaker_disable")
-            speakerButton.setImage(image, for: UIControl.State.normal)
+            speakerButton.setImage(image, for: .normal)
             print("Bluetooth audio disabled")
         } catch {
             print("Failed to disable Bluetooth audio: \(error)")
@@ -852,7 +849,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             print("Speaker enabled")
             internalSpeakerButton.isSelected = true
             let image = UIImage(named: "speaker_enable")
-            speakerButton.setImage(image, for: UIControl.State.normal)
+            speakerButton.setImage(image, for: .normal)
         } catch {
             print("Failed to enable speaker: \(error)")
         }
@@ -865,7 +862,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             print("Speaker disabled")
             internalSpeakerButton.isSelected = false
             let image = UIImage(named: "speaker_disable")
-            speakerButton.setImage(image, for: UIControl.State.normal)
+            speakerButton.setImage(image, for: .normal)
         } catch {
             print("Failed to disable speaker: \(error)")
         }
@@ -881,13 +878,13 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             switch currentOutput.portType {
                 case .builtInSpeaker:
                 let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: UIControl.State.normal)
+                speakerButton.setImage(image, for: .normal)
                 internalSpeakerButton.isSelected = true
                 bluetoothButton.isHidden = true
                 bluetoothButton.isSelected = false
                 case .headphones:
                 let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: UIControl.State.normal)
+                speakerButton.setImage(image, for: .normal)
                 internalSpeakerButton.isSelected = true
                 bluetoothButton.isHidden = true
                 bluetoothButton.isSelected = false
@@ -897,19 +894,19 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
                 internalSpeakerButton.isSelected = false
                 bluetoothButton.isSelected = true
                 let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: UIControl.State.normal)
+                speakerButton.setImage(image, for: .normal)
                 case .bluetoothHFP:
                 bluetoothButton.isHidden = false
                 internalSpeakerButton.isSelected = false
                 bluetoothButton.isSelected = true
                 let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: UIControl.State.normal)
+                speakerButton.setImage(image, for: .normal)
                 case .builtInReceiver: fallthrough
                 default:
                 bluetoothButton.isHidden = true
                 bluetoothButton.isSelected = false
                 let image = UIImage(named: "speaker_disable")
-                speakerButton.setImage(image, for: UIControl.State.normal)
+                speakerButton.setImage(image, for: .normal)
                 internalSpeakerButton.isSelected = false
             }
         }
@@ -935,10 +932,12 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         if peripheral.state == .poweredOn {
             bluetoothButton.isHidden = false
             isBluetoothConnectedWithDevice = true
+            enableBluetooth()
         } else {
             bluetoothButton.isHidden = true
             bluetoothButton.isSelected = false
             isBluetoothConnectedWithDevice = false
+            disableBluetooth()
         }
     }
     
