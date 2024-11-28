@@ -292,17 +292,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         return result
     }()
     
-    
-//    private lazy var speakerOptionView: UIView = {
-//        let View = UIView()
-//        View.translatesAutoresizingMaskIntoConstraints = false
-//        View.set(.height, to: 110)
-//        View.set(.width, to: 52)
-//        View.layer.cornerRadius = 26
-//        View.backgroundColor = Colors.callScreenSpeakerOptionBackgroundColor
-//        return View
-//    }()
-    
     lazy var speakerOptionStackView: UIStackView = {
         let result: UIStackView = UIStackView()
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -372,7 +361,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         stackViewForBottomView.addArrangedSubview(emptyButton)
         stackViewForBottomView.addArrangedSubview(audioButton)
         stackViewForBottomView.addArrangedSubview(speakerButton)
-//        speakerOptionView.addSubViews(bluetoothButton, internalSpeakerButton)
         speakerOptionStackView.addArrangedSubview(bluetoothButton)
         speakerOptionStackView.addArrangedSubview(internalSpeakerButton)
         self.internalSpeakerButton.isSelected = true
@@ -380,7 +368,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         self.bottomView.isHidden = true
         self.hangUpButtonSecond.isHidden = true
         self.callDurationLabel.isHidden = true
-//        self.speakerOptionView.isHidden = true
         speakerOptionStackView.isHidden = true
         bluetoothButton.isHidden = true
         
@@ -430,14 +417,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             hangUpButtonSecond.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: -33),
             callDurationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             callDurationLabel.bottomAnchor.constraint(equalTo: hangUpButtonSecond.topAnchor, constant: -36),
-//            speakerOptionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-//            speakerOptionView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -9),
+
             speakerOptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             speakerOptionStackView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -9),
-//            bluetoothButton.topAnchor.constraint(equalTo: speakerOptionView.topAnchor, constant: 22),
-//            bluetoothButton.centerXAnchor.constraint(equalTo: speakerOptionView.centerXAnchor),
-//            internalSpeakerButton.topAnchor.constraint(equalTo: bluetoothButton.bottomAnchor, constant: 19),
-//            internalSpeakerButton.centerXAnchor.constraint(equalTo: speakerOptionView.centerXAnchor),
         ])
         
         verifiedImageView.pin(.trailing, to: .trailing, of: callerImageView, withInset: 2)
@@ -778,13 +760,22 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     @objc private func speakerButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
-//        self.speakerOptionView.isHidden = false
         speakerOptionStackView.isHidden = false
+        
+        if !bluetoothButton.isSelected {
+            speakerOptionStackView.isHidden = true
+            isSpeakerEnabled.toggle()
+            if isSpeakerEnabled {
+                enableSpeaker()
+            } else {
+                disableSpeaker()
+            }
+        }
+        
     }
     
     @objc private func bluetoothButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
-//        self.speakerOptionView.isHidden = true
         speakerOptionStackView.isHidden = true
         self.internalSpeakerButton.isSelected = !self.bluetoothButton.isSelected
         
@@ -823,7 +814,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     @objc private func internalSpeakerButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
-//        self.speakerOptionView.isHidden = true
         speakerOptionStackView.isHidden = true
         self.bluetoothButton.isSelected = !self.internalSpeakerButton.isSelected
         
@@ -844,6 +834,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothA2DP, .allowAirPlay, .allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
             print("Speaker enabled")
+            internalSpeakerButton.isSelected = true
+            let image = UIImage(named: "speaker_enable")
+            speakerButton.setImage(image, for: UIControl.State.normal)
         } catch {
             print("Failed to enable speaker: \(error)")
         }
@@ -854,6 +847,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
             try AVAudioSession.sharedInstance().setActive(true)
             print("Speaker disabled")
+            internalSpeakerButton.isSelected = false
+            let image = UIImage(named: "speaker_disable")
+            speakerButton.setImage(image, for: UIControl.State.normal)
         } catch {
             print("Failed to disable speaker: \(error)")
         }
@@ -873,9 +869,11 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 case .builtInSpeaker:
                 let image = UIImage(named: "speaker_disable")
                 speakerButton.setImage(image, for: UIControl.State.normal)
+                bluetoothButton.isHidden = false
                 case .headphones:
                 let image = UIImage(named: "speaker_disable")
                 speakerButton.setImage(image, for: UIControl.State.normal)
+                bluetoothButton.isHidden = false
                 case .bluetoothLE: fallthrough
                 case .bluetoothA2DP:
                 bluetoothButton.isHidden = false
@@ -891,7 +889,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 speakerButton.setImage(image, for: UIControl.State.normal)
                 case .builtInReceiver: fallthrough
                 default:
-                bluetoothButton.isHidden = true
+                bluetoothButton.isHidden = false
                 self.internalSpeakerButton.isSelected = true
                 self.bluetoothButton.isSelected = false
                 let image = UIImage(named: "speaker_disable")

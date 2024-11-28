@@ -302,7 +302,6 @@ final class QuoteView : UIView {
             cancelButton.pin(.top, to: .top, of: self, withInset: -5)
             cancelButton.pin(.right, to: .right, of: self, withInset: 5)
         }
-//        contentView.pin(to: self)
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
