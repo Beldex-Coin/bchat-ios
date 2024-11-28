@@ -770,8 +770,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     }
     
     @objc private func speakerButtonTapped(sender : UIButton) {
-        sender.isSelected = !sender.isSelected
-        speakerOptionStackView.isHidden = false
+        speakerOptionStackView.isHidden = !speakerOptionStackView.isHidden
         
         if !isBluetoothConnectedWithDevice {
             speakerOptionStackView.isHidden = true
@@ -808,6 +807,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         do {
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
             try AVAudioSession.sharedInstance().setActive(true)
+            let image = UIImage(named: "speaker_bluetooth")
+            speakerButton.setImage(image, for: UIControl.State.normal)
             print("Bluetooth audio enabled")
         } catch {
             print("Failed to enable Bluetooth audio: \(error)")
@@ -819,6 +820,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             // Revert to default audio route
             try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
             try AVAudioSession.sharedInstance().setActive(true)
+            let image = UIImage(named: "speaker_disable")
+            speakerButton.setImage(image, for: UIControl.State.normal)
             print("Bluetooth audio disabled")
         } catch {
             print("Failed to disable Bluetooth audio: \(error)")
