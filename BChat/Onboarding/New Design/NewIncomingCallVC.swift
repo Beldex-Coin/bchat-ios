@@ -7,8 +7,9 @@ import BChatUtilitiesKit
 import UIKit
 import MediaPlayer
 import AVFoundation
+import CoreBluetooth
 
-final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
+final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerDelegate {
     
     let call: BChatCall
     var latestKnownAudioOutputDeviceName: String?
@@ -25,6 +26,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     private var isSpeakerEnabled = false
     private var isBluetoothEnabled = false
+    private var isBluetoothConnectedWithDevice = false
     
     // MARK: Lifecycle
     init(for call: BChatCall) {
@@ -306,9 +308,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.spacing = 0
         return result
     }()
-    
-    
-    
+        
     private lazy var bluetoothButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "callScreen_bluetooth_white")
@@ -333,6 +333,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         return result
     }()
     
+    var myBTManager: CBPeripheralManager?
     
     
     override func viewDidLoad() {
@@ -350,7 +351,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         // Local video view
         call.attachLocalVideoRenderer(localVideoView)
         
-        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, /*speakerOptionView*/ speakerOptionStackView)
+        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
         callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
         buttonStackView.addArrangedSubview(answerButton)
@@ -369,7 +370,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         self.hangUpButtonSecond.isHidden = true
         self.callDurationLabel.isHidden = true
         speakerOptionStackView.isHidden = true
-        bluetoothButton.isHidden = true
         
         self.incomingCallLabel.isHidden = true
         self.buttonStackView.isHidden = true
@@ -463,7 +463,18 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             self.callDurationLabel.isHidden = true
             self.bottomView.isHidden = true
         }
+        
+        myBTManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
     
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let firstTouch = touches.first {
+            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            if !speakerOptionStackView.isHidden {
+                speakerOptionStackView.isHidden = true
+            }
+        }
     }
     
     private func addLocalVideoView() {
@@ -762,7 +773,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         sender.isSelected = !sender.isSelected
         speakerOptionStackView.isHidden = false
         
-        if !bluetoothButton.isSelected {
+        if !isBluetoothConnectedWithDevice {
             speakerOptionStackView.isHidden = true
             isSpeakerEnabled.toggle()
             if isSpeakerEnabled {
@@ -770,6 +781,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             } else {
                 disableSpeaker()
             }
+        } else {
+            bluetoothButton.isHidden = false
         }
         
     }
@@ -777,7 +790,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     @objc private func bluetoothButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         speakerOptionStackView.isHidden = true
-        self.internalSpeakerButton.isSelected = !self.bluetoothButton.isSelected
+        internalSpeakerButton.isSelected = false
         
         isBluetoothEnabled.toggle()
         if isBluetoothEnabled {
@@ -815,7 +828,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     @objc private func internalSpeakerButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         speakerOptionStackView.isHidden = true
-        self.bluetoothButton.isSelected = !self.internalSpeakerButton.isSelected
+        bluetoothButton.isSelected = false
         
         isSpeakerEnabled.toggle()
         if isSpeakerEnabled {
@@ -861,39 +874,40 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         if let currentOutput = currentRoute.outputs.first {
             if let latestKnownAudioOutputDeviceName = latestKnownAudioOutputDeviceName, currentOutput.portName == latestKnownAudioOutputDeviceName { return }
             latestKnownAudioOutputDeviceName = currentOutput.portName
-            bluetoothButton.isHidden = true
-            self.internalSpeakerButton.isSelected = true
-            self.bluetoothButton.isSelected = false
             
             switch currentOutput.portType {
                 case .builtInSpeaker:
-                let image = UIImage(named: "speaker_disable")
+                let image = UIImage(named: "speaker_enable")
                 speakerButton.setImage(image, for: UIControl.State.normal)
-                bluetoothButton.isHidden = false
+                internalSpeakerButton.isSelected = true
+                bluetoothButton.isHidden = true
+                bluetoothButton.isSelected = false
                 case .headphones:
-                let image = UIImage(named: "speaker_disable")
+                let image = UIImage(named: "speaker_enable")
                 speakerButton.setImage(image, for: UIControl.State.normal)
-                bluetoothButton.isHidden = false
+                internalSpeakerButton.isSelected = true
+                bluetoothButton.isHidden = true
+                bluetoothButton.isSelected = false
                 case .bluetoothLE: fallthrough
                 case .bluetoothA2DP:
                 bluetoothButton.isHidden = false
-                self.internalSpeakerButton.isSelected = false
-                self.bluetoothButton.isSelected = true
+                internalSpeakerButton.isSelected = false
+                bluetoothButton.isSelected = true
                 let image = UIImage(named: "speaker_bluetooth")
                 speakerButton.setImage(image, for: UIControl.State.normal)
                 case .bluetoothHFP:
                 bluetoothButton.isHidden = false
-                self.internalSpeakerButton.isSelected = false
-                self.bluetoothButton.isSelected = true
+                internalSpeakerButton.isSelected = false
+                bluetoothButton.isSelected = true
                 let image = UIImage(named: "speaker_bluetooth")
                 speakerButton.setImage(image, for: UIControl.State.normal)
                 case .builtInReceiver: fallthrough
                 default:
-                bluetoothButton.isHidden = false
-                self.internalSpeakerButton.isSelected = true
-                self.bluetoothButton.isSelected = false
+                bluetoothButton.isHidden = true
+                bluetoothButton.isSelected = false
                 let image = UIImage(named: "speaker_disable")
                 speakerButton.setImage(image, for: UIControl.State.normal)
+                internalSpeakerButton.isSelected = false
             }
         }
         
@@ -911,6 +925,17 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             // TODO: Pass in context?
             let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
             return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
+    }
+    
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
+        if peripheral.state == .poweredOn {
+            bluetoothButton.isHidden = false
+            isBluetoothConnectedWithDevice = true
+        } else {
+            bluetoothButton.isHidden = true
+            bluetoothButton.isSelected = false
+            isBluetoothConnectedWithDevice = false
         }
     }
     
