@@ -201,6 +201,8 @@ NS_ASSUME_NONNULL_BEGIN
                     objectAtIndexPath:[NSIndexPath indexPathForItem:(NSInteger)item inSection:(NSInteger)section]
                          withMappings:self.threadMappings];
                 if (!thread.shouldBeVisible) { continue; }
+                // need to check for archived 
+                if (thread.isArchived) { continue; }
                 if ([thread isKindOfClass:TSContactThread.class]) {
                     NSString *publicKey = ((TSContactThread *)thread).contactBChatID;
                     if ([[LKStorage.shared getContactWithBChatID:publicKey] name] == nil) { continue; }

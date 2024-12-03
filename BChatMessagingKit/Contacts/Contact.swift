@@ -24,6 +24,8 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
         }
     }
     
+    @objc public var isArchived = false
+    
     @objc public var beldexAddress: String?
     @objc public var isBnsHolder: Bool = false
     
@@ -92,6 +94,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
         isBlocked = isBlockedFlag
         didApproveMe = coder.decodeBool(forKey: "didApproveMe")
         hasBeenBlocked = (coder.decodeBool(forKey: "hasBeenBlocked") || isBlockedFlag)
+        isArchived = coder.decodeBool(forKey: "isArchived")
     }
 
     public func encode(with coder: NSCoder) {
@@ -109,6 +112,7 @@ public class Contact : NSObject, NSCoding { // NSObject/NSCoding conformance is 
         coder.encode(hasBeenBlocked, forKey: "hasBeenBlocked")
         coder.encode(beldexAddress, forKey: "beldexAddress")
         coder.encode(isBnsHolder, forKey: "isBnsHolder")
+        coder.encode(isArchived, forKey: "isArchived")
     }
     
     // MARK: Equality

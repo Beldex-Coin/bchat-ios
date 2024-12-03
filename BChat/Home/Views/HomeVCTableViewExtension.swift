@@ -137,6 +137,17 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 unpin.backgroundColor = Colors.mainBackGroundColor2
                 unpin.image = UIImage(named: "ic_unPinNew_Home")
                 
+            // Archive
+            let isArchived = thread.isArchived
+            let archive = UIContextualAction(style: .destructive, title: "Archive", handler: { (action, view, success) in
+                thread.isArchived = true
+                thread.save()
+                self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            })
+            archive.backgroundColor = Colors.mainBackGroundColor2
+            archive.image = UIImage(named: "ic_archive")
+            
                 if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                     let publicKey = thread.contactBChatID()
                     
@@ -183,10 +194,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     unblock.backgroundColor = Colors.mainBackGroundColor2
                     unblock.image = UIImage(named: "ic_unBlockNew_Home")
                     
-                    return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isPinned ? unpin : pin) ])
+                    return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isArchived ? archive : archive), (isPinned ? unpin : pin) ])
                 }
                 else {
-                    return UISwipeActionsConfiguration(actions: [ delete, (isPinned ? unpin : pin) ])
+                    return UISwipeActionsConfiguration(actions: [ delete, (isArchived ? archive : archive), (isPinned ? unpin : pin) ])
                 }
         }
     }

@@ -23,6 +23,7 @@ BOOL IsNoteToSelfEnabled(void);
 @property (nonatomic, readonly) TSInteraction *lastInteraction;
 @property (atomic, readonly) BOOL isMuted;
 @property (atomic, readonly, nullable) NSDate *mutedUntilDate;
+@property (nonatomic) BOOL isArchived;
 
 /**
  *  Whether the object is a group thread or not.
