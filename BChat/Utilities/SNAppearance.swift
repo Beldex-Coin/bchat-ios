@@ -9,7 +9,7 @@
             UIToolbar.appearance().barTintColor = Colors.navigationBarBackground
             UIToolbar.appearance().isTranslucent = false
             UIToolbar.appearance().tintColor = Colors.text
-            UISwitch.appearance().onTintColor = Colors.accent
+            UISwitch.appearance().onTintColor = Colors.bothGreenColor
             UINavigationBar.appearance().titleTextAttributes = [ NSAttributedString.Key.foregroundColor : Colors.text ]
         }
     }

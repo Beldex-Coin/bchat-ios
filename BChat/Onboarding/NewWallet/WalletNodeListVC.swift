@@ -24,7 +24,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var refreshButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(refreshButtonAction), for: UIControl.Event.touchUpInside)
         result.backgroundColor = Colors.backgroundViewColor
         result.setTitleColor(Colors.addressBookNoContactLabelColor, for: .normal)
@@ -36,9 +36,9 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var addNodeButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(addNodeButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = Colors.greenColor
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -48,7 +48,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var buttonStackView: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ refreshButton, addNodeButton ])
         result.axis = .horizontal
-        result.spacing = 15
+        result.spacing = 11
         result.distribution = .fillEqually
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -132,8 +132,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        refreshButton.layer.cornerRadius = refreshButton.frame.height / 2
-        addNodeButton.layer.cornerRadius = addNodeButton.frame.height / 2
+        refreshButton.layer.cornerRadius = Values.buttonRadius
+        addNodeButton.layer.cornerRadius = Values.buttonRadius
     }
     
     func getDynamicNodesFromAPI() {
@@ -243,7 +243,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             if(nodeArrayDynamic![indexPath.row] == selectedNodeData) {
                 selectedIndex = indexPath.row
                 cell.backGroundView.layer.borderWidth = 1.5
-                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
                 cell.isUserInteractionEnabled = false
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
@@ -251,7 +251,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         } else {
             if (nodeArrayDynamic![indexPath.row] == randomNodeValue) {
                 cell.backGroundView.layer.borderWidth = 1.5
-                cell.backGroundView.layer.borderColor = Colors.greenColor.cgColor
+                cell.backGroundView.layer.borderColor = Colors.bothGreenColor.cgColor
                 cell.isUserInteractionEnabled = false
                 cell.nodeNameTitleLabel.textColor = Colors.textColor
                 cell.nodeIPLabel.textColor = Colors.cellIpLabelColor2
@@ -356,7 +356,7 @@ class NodeListTableCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = Colors.cellBackgroundColorForNodeList
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = Values.buttonRadius
         return view
     }()
     
@@ -370,8 +370,8 @@ class NodeListTableCell: UITableViewCell {
     
     lazy var nodeNameTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
-        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.textColor = Colors.bothGreenColor
+        result.font = Fonts.semiOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

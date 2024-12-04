@@ -19,7 +19,7 @@ class EnableWalletVC: BaseVC {
     lazy var greenDotView1: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00B504)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 4
         return View
     }()
@@ -27,7 +27,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "You can Send and Receive BDX with the BChat integrated wallet."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -37,7 +37,7 @@ class EnableWalletVC: BaseVC {
     lazy var greenDotView2: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00B504)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 4
         return View
     }()
@@ -45,7 +45,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "The 'Pay as you Chat' feature is an easy-pay feature. You can send BDX to your friends right from the chat window."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -55,7 +55,7 @@ class EnableWalletVC: BaseVC {
     lazy var greenDotView3: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00B504)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 4
         return View
     }()
@@ -63,7 +63,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "The BChat wallet is beta. Constant updates are released in newer versions of the app to enhance the integrated wallet functionality."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -73,7 +73,7 @@ class EnableWalletVC: BaseVC {
     lazy var greenDotView4: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = UIColor(hex: 0x00B504)
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 4
         return View
     }()
@@ -81,7 +81,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "You can enable or disable the wallet using the Start wallet feature under Settings > Wallet settings."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -134,10 +134,10 @@ class EnableWalletVC: BaseVC {
     private lazy var enableButton: UIButton = {
         let button = UIButton()
         button.setTitle("Enable Wallet", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 15)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.setTitleColor(Colors.bothWhiteColor, for: .selected)
         button.addTarget(self, action: #selector(enableButtonTapped), for: .touchUpInside)

@@ -73,7 +73,7 @@ class SecretGroupTableViewCell: UITableViewCell {
        result.font = Fonts.boldOpenSans(ofSize: 11)
        result.textAlignment = .center
        result.translatesAutoresizingMaskIntoConstraints = false
-        result.backgroundColor = UIColor(hex: 0x00BD40)
+        result.backgroundColor = Colors.bothGreenColor
         result.layer.masksToBounds = true
         result.layer.cornerRadius = 11
         result.paddingLeft = 5

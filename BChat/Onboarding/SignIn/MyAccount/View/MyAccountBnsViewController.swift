@@ -4,7 +4,7 @@ import UIKit
 import BChatUIKit
 import BChatUtilitiesKit
 
-class MyAccountBnsViewController: BaseVC {
+class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: - UIElements
     
@@ -71,6 +71,9 @@ class MyAccountBnsViewController: BaseVC {
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+//        result.isUserInteractionEnabled = true
+//        result.addGestureRecognizer(tapGesture)
         return result
     }()
     
@@ -128,6 +131,7 @@ class MyAccountBnsViewController: BaseVC {
         result.alignment = .center
         result.distribution = .fillEqually
         result.spacing = 5
+        result.isUserInteractionEnabled = true
         return result
     }()
     
@@ -283,7 +287,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.bothGreenColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -323,7 +327,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -364,7 +368,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -373,7 +377,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -382,7 +386,7 @@ class MyAccountBnsViewController: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.expandBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -467,7 +471,7 @@ class MyAccountBnsViewController: BaseVC {
         button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped(_:)), for: .touchUpInside)
@@ -501,6 +505,177 @@ class MyAccountBnsViewController: BaseVC {
         return table
     }()
     
+    private lazy var editButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Edit", for: .normal)
+        button.layer.cornerRadius = 12
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.cellGroundColor2
+        button.setTitleColor(Colors.bothGreenColor, for: .normal)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 12)
+        button.addTarget(self, action: #selector(editButtonTapped(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var doneButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Done", for: .normal)
+        button.layer.cornerRadius = 13
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.bothGreenColor
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
+        button.addTarget(self, action: #selector(doneButtonTapped(_:)), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var cameraImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let logoImage = "ic_camera_account"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(profilePictureImageTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        return imageView
+    }()
+    
+    private lazy var cameraImage2: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .center
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let logoImage = isLightMode ? "ic_camera_black" : "ic_camera_green"
+        imageView.image = UIImage(named: logoImage, in: Bundle.main, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(innerProfileImageTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        return imageView
+    }()
+    
+    private lazy var cameraView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.cameraViewBackgroundColor
+        return stackView
+    }()
+    
+    private lazy var cameraView2: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.cameraViewBackgroundColor
+        return stackView
+    }()
+    
+    private lazy var outerProfileView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.outerProfileViewbackgroundColor
+        return stackView
+    }()
+    
+    private lazy var innerProfileImageView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.innerProfileImageViewColor
+        stackView.layer.cornerRadius = 16
+        stackView.layer.borderColor = Colors.borderColor.cgColor
+        stackView.layer.borderWidth = 1
+        return stackView
+    }()
+    
+    private lazy var profilePictureLabel: UILabel = {
+        let result = UILabel()
+        result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
+        result.textColor = Colors.bothGreenColor
+        result.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 20) : Fonts.boldOpenSans(ofSize: 18)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var innerProfileImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(innerProfileImageTapped))
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(tapGestureRecognizer)
+        imageView.layer.cornerRadius = 48
+        return imageView
+    }()
+    
+    private lazy var innerProfileCloseButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .clear
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let logoImage = isLightMode ? "ic_close_dark" : "ic_close_white"
+        button.setImage(UIImage(named: logoImage), for: .normal)
+        button.addTarget(self, action: #selector(innerProfileCloseTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var removePictureButton: UIButton = {
+        let result = UIButton()
+        result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.addTarget(self, action: #selector(removePictureButtonAction), for: UIControl.Event.touchUpInside)
+        result.layer.borderWidth = 0.5
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
+        result.backgroundColor = Colors.bothGreenWithAlpha10
+        result.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var saveButton: UIButton = {
+        let result = UIButton()
+        result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothGreenColor
+        result.setTitleColor(UIColor.white, for: .normal)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var buttonStackView1: UIStackView = {
+        let result = UIStackView(arrangedSubviews: [ removePictureButton, saveButton ])
+        result.axis = .horizontal
+        result.spacing = 8
+        result.distribution = .fillEqually
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    private lazy var lineView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Colors.lineViewbackgroundColor
+        return stackView
+    }()
+    
+    private lazy var nameTextField: UITextField = {
+        let result = UITextField()
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.backgroundColor = .clear
+        result.textAlignment = .center
+        result.isUserInteractionEnabled = true
+        return result
+    }()
+    
+    lazy var nameIDAndTextfieldViewView: UIView = {
+        let stackView = UIView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = .clear
+        stackView.layer.cornerRadius = Values.buttonRadius
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }()
+    
     // MARK: - Properties
     
     let viewModel = MyAccountBNSViewModel()
@@ -514,6 +689,16 @@ class MyAccountBnsViewController: BaseVC {
     /// size
     @objc public var size: CGFloat = 30
     
+    
+    private var displayNameToBeUploaded: String?
+    var imagePicker = UIImagePickerController()
+    private var profilePictureToBeUploaded: UIImage?
+    @objc public var useFallbackPicture = false
+    var isProfileRemove = false
+    private var isEditingDisplayName = false { didSet { handleIsEditingDisplayNameChanged() } }
+
+    
+    
     // MARK: - UIViewController life cycle
     
     /// View Did Load
@@ -524,7 +709,7 @@ class MyAccountBnsViewController: BaseVC {
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
-        self.title = "My Account"
+        self.title = "Account Settings"
         
         shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))
         shareButton.tintColor = .white
@@ -532,16 +717,24 @@ class MyAccountBnsViewController: BaseVC {
         view.addSubview(topBackGroundView)
         topBackGroundView.addSubview(shadowBackgroundImage)
         topBackGroundView.addSubview(profilePictureImage)
+        view.addSubview(editButton)
+        view.addSubview(doneButton)
         
         view.addSubview(bnsApprovalIconImage)
+        
+        self.outerProfileView.isHidden = true
         
         topBackGroundView.addSubview(stackViewForBNSVerifiedName)
         stackViewForBNSVerifiedName.addArrangedSubview(bnsVerifiedTitleNameLabel)
         stackViewForBNSVerifiedName.addArrangedSubview(bnsTickIconImage)
         
         topBackGroundView.addSubview(stackViewForUserNameAndBnsVerifiedContainer)
-        stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(userNameIdLabel)
+        topBackGroundView.addSubviews([lineView, nameTextField, userNameIdLabel])
         stackViewForUserNameAndBnsVerifiedContainer.addArrangedSubview(stackViewForBNSVerifiedName)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(nameIdLabelTapped))
+        nameTextField.isUserInteractionEnabled = true
+        nameTextField.addGestureRecognizer(tapGesture)
         
         beldexAddressView.addSubview(beldexAddressNameLabel)
         bchatIdView.addSubview(bchatNameLabel)
@@ -572,6 +765,9 @@ class MyAccountBnsViewController: BaseVC {
         view.addSubview(readMoreAboutBackgroundView)
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSNameLabel)
         readMoreAboutBackgroundView.addSubview(readMoreAboutBNSLogoImage)
+        
+        view.addSubview(cameraView)
+        cameraView.addSubview(cameraImage)
         
         let tapGestureForReadmoreAboutBNSLabel = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
         let tapGestureForReadmoreAboutBNSLogoImage = UITapGestureRecognizer(target: self, action: #selector(self.readMoreAboutBNSViewTapped(_:)))
@@ -614,6 +810,16 @@ class MyAccountBnsViewController: BaseVC {
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             topBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
+            editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            editButton.bottomAnchor.constraint(equalTo: topBackGroundView.topAnchor, constant: -7),
+            editButton.heightAnchor.constraint(equalToConstant: 24),
+            editButton.widthAnchor.constraint(equalToConstant: 49),
+            
+            doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            doneButton.bottomAnchor.constraint(equalTo: topBackGroundView.topAnchor, constant: -14),
+            doneButton.heightAnchor.constraint(equalToConstant: 26),
+            doneButton.widthAnchor.constraint(equalToConstant: 66.7),
+            
             profilePictureImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             profilePictureImage.widthAnchor.constraint(equalToConstant: 86),
             profilePictureImage.heightAnchor.constraint(equalToConstant: 86),
@@ -632,10 +838,24 @@ class MyAccountBnsViewController: BaseVC {
             
             userNameIdLabel.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
             userNameIdLabel.heightAnchor.constraint(equalToConstant: 22),
+            userNameIdLabel.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 4),
+            
+            nameTextField.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
+            nameTextField.heightAnchor.constraint(equalToConstant: 22),
+            nameTextField.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 4),
+            nameTextField.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 5),
+            nameTextField.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -5),
+            
+            lineView.heightAnchor.constraint(equalToConstant: 1),
+            lineView.leadingAnchor.constraint(equalTo: topBackGroundView.leadingAnchor, constant: 12),
+            lineView.trailingAnchor.constraint(equalTo: topBackGroundView.trailingAnchor, constant: -12),
+            lineView.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 1),
+            
+            
             bnsTickIconImage.widthAnchor.constraint(equalToConstant: 14),
             bnsTickIconImage.heightAnchor.constraint(equalToConstant: 14),
             
-            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: profilePictureImage.bottomAnchor, constant: 8),
+            stackViewForUserNameAndBnsVerifiedContainer.topAnchor.constraint(equalTo: userNameIdLabel.bottomAnchor, constant: 5),
             stackViewForUserNameAndBnsVerifiedContainer.centerXAnchor.constraint(equalTo: profilePictureImage.centerXAnchor),
             
             beldexAddressView.heightAnchor.constraint(equalToConstant: 73),
@@ -796,17 +1016,86 @@ class MyAccountBnsViewController: BaseVC {
             shareButton.topAnchor.constraint(equalTo: qrBackgroundView.bottomAnchor, constant: 19),
             shareButton.bottomAnchor.constraint(equalTo: showQRExpandView.bottomAnchor, constant: -26),
             
+            cameraView.widthAnchor.constraint(equalToConstant: 30),
+            cameraView.heightAnchor.constraint(equalToConstant: 30),
+            
+            cameraView.leadingAnchor.constraint(equalTo: profilePictureImage.trailingAnchor, constant: 9),
+            cameraView.centerYAnchor.constraint(equalTo: profilePictureImage.centerYAnchor),
+            
+            cameraImage.centerYAnchor.constraint(equalTo: cameraView.centerYAnchor),
+            cameraImage.centerXAnchor.constraint(equalTo: cameraView.centerXAnchor),
+            cameraImage.widthAnchor.constraint(equalToConstant: 30),
+            cameraImage.heightAnchor.constraint(equalToConstant: 30),
+            
         ])
+        
+        view.addSubview(outerProfileView)
+        outerProfileView.addSubview(innerProfileImageView)
+        
+        nameTextField.isHidden = true
+        lineView.isHidden = true
+        
+        innerProfileImageView.addSubview(profilePictureLabel)
+        innerProfileImageView.addSubview(innerProfileCloseButton)
+        innerProfileImageView.addSubview(innerProfileImage)
+        innerProfileImageView.addSubview(cameraView2)
+        cameraView2.addSubview(cameraImage2)
+        innerProfileImageView.addSubview(buttonStackView1)
+        
+        NSLayoutConstraint.activate([
+            outerProfileView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            outerProfileView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -0),
+            outerProfileView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -0),
+            outerProfileView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            innerProfileImageView.leadingAnchor.constraint(equalTo: outerProfileView.leadingAnchor, constant: 15),
+            innerProfileImageView.trailingAnchor.constraint(equalTo: outerProfileView.trailingAnchor, constant: -15),
+            innerProfileImageView.centerXAnchor.constraint(equalTo: outerProfileView.centerXAnchor),
+            innerProfileImageView.centerYAnchor.constraint(equalTo: outerProfileView.centerYAnchor),
+            profilePictureLabel.topAnchor.constraint(equalTo: innerProfileImageView.topAnchor, constant: 20),
+            profilePictureLabel.centerXAnchor.constraint(equalTo: innerProfileImageView.centerXAnchor),
+            innerProfileCloseButton.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -10),
+            innerProfileCloseButton.centerYAnchor.constraint(equalTo: profilePictureLabel.centerYAnchor),
+            innerProfileCloseButton.widthAnchor.constraint(equalToConstant: 30),
+            innerProfileCloseButton.heightAnchor.constraint(equalToConstant: 30),
+            innerProfileImage.widthAnchor.constraint(equalToConstant: 96),
+            innerProfileImage.heightAnchor.constraint(equalToConstant: 96),
+            innerProfileImage.centerXAnchor.constraint(equalTo: innerProfileImageView.centerXAnchor),
+            innerProfileImage.topAnchor.constraint(equalTo: profilePictureLabel.bottomAnchor, constant: 15),
+            cameraView2.trailingAnchor.constraint(equalTo: innerProfileImage.trailingAnchor, constant: -1),
+            cameraView2.bottomAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: -1),
+            cameraView2.widthAnchor.constraint(equalToConstant: 30),
+            cameraView2.heightAnchor.constraint(equalToConstant: 30),
+            cameraImage2.centerYAnchor.constraint(equalTo: cameraView2.centerYAnchor),
+            cameraImage2.centerXAnchor.constraint(equalTo: cameraView2.centerXAnchor),
+            cameraImage2.widthAnchor.constraint(equalToConstant: 30),
+            cameraImage2.heightAnchor.constraint(equalToConstant: 30),
+            buttonStackView1.heightAnchor.constraint(equalToConstant: 52),
+            buttonStackView1.topAnchor.constraint(equalTo: innerProfileImage.bottomAnchor, constant: 20),
+            buttonStackView1.trailingAnchor.constraint(equalTo: innerProfileImageView.trailingAnchor, constant: -20),
+            buttonStackView1.leadingAnchor.constraint(equalTo: innerProfileImageView.leadingAnchor, constant: 20),
+            buttonStackView1.bottomAnchor.constraint(equalTo: innerProfileImageView.bottomAnchor, constant: -22),
+        ])
+        
+        
+        self.doneButton.isHidden = true
+        cameraView.isHidden = true
         
         // Display image
         let publicKey = getUserHexEncodedPublicKey()
         profilePictureImage.image = isFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
         profilePictureImage.clipsToBounds = true
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height/2
-        
+        innerProfileImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        innerProfileImage.clipsToBounds = true
         // Display name label
         let nam = Storage.shared.getUser()?.name
         userNameIdLabel.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
+        // Edit name textfiled
+        nameTextField.delegate = self
+        nameTextField.text = nam ?? UserDefaults.standard.string(forKey: "WalletName")?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        
+        
         bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
         beldexAddressIdLabel.text = "\(SaveUserDefaultsData.WalletpublicAddress)"
         let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
@@ -857,6 +1146,11 @@ class MyAccountBnsViewController: BaseVC {
         super.viewDidLayoutSubviews()
         
         profilePictureImage.layer.cornerRadius = profilePictureImage.frame.height / 2
+        
+        innerProfileImage.layer.cornerRadius = innerProfileImage.frame.height / 2
+        removePictureButton.layer.cornerRadius = Values.buttonRadius
+        cameraView.layer.cornerRadius = cameraView.frame.height / 2
+        cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
     }
     
     /// UITouch ended
@@ -867,6 +1161,177 @@ class MyAccountBnsViewController: BaseVC {
             beldexAddressExpandView.isHidden = true
             bchatIDExpandView.isHidden = true
         }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    
+    @objc func profilePictureImageTapped() {
+        nameTextField.resignFirstResponder()
+        self.outerProfileView.isHidden = false
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    
+    @objc func innerProfileImageTapped() {
+        let alert:UIAlertController=UIAlertController(title: "Choose Image", message: nil, preferredStyle: UIAlertController.Style.actionSheet)
+        let cameraAction = UIAlertAction(title: "Camera", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.openCamera(UIImagePickerController.SourceType.camera)
+        }
+        let gallaryAction = UIAlertAction(title: "Choose Photo", style: UIAlertAction.Style.default) {
+            UIAlertAction in
+            self.openCamera(UIImagePickerController.SourceType.photoLibrary)
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+            UIAlertAction in
+        }
+        // Add the actions
+        imagePicker.delegate = self as UIImagePickerControllerDelegate & UINavigationControllerDelegate
+        alert.addAction(cameraAction)
+        alert.addAction(gallaryAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func innerProfileCloseTapped() {
+        self.outerProfileView.isHidden = true
+        profilePictureToBeUploaded = nil
+        let publicKey = getUserHexEncodedPublicKey()
+        profilePictureImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        innerProfileImage.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    func openCamera(_ sourceType: UIImagePickerController.SourceType) {
+        imagePicker.sourceType = sourceType
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        isEditingDisplayName = true
+        lineView.isHidden = false
+    }
+    
+    private func handleIsEditingDisplayNameChanged() {
+
+    }
+    
+    //MARK:UIImagePickerControllerDelegate
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let tempImage:UIImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage)!
+        let maxSize = Int(kOWSProfileManager_MaxAvatarDiameter)
+        profilePictureToBeUploaded = tempImage.resizedImage(toFillPixelSize: CGSize(width: maxSize, height: maxSize))
+        innerProfileImage.image = profilePictureToBeUploaded
+        innerProfileImage.contentMode = .scaleAspectFit
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    private func updateProfile(isUpdatingDisplayName: Bool, isUpdatingProfilePicture: Bool) {
+        let userDefaults = UserDefaults.standard
+        let name = displayNameToBeUploaded ?? Storage.shared.getUser()?.name
+        var profilePicture: UIImage?
+        if self.isProfileRemove {
+            profilePicture = openGroupProfilePicture
+        } else {
+            profilePicture = profilePictureToBeUploaded ?? OWSProfileManager.shared().profileAvatar(forRecipientId: getUserHexEncodedPublicKey())
+        }
+        
+        ModalActivityIndicatorViewController.present(fromViewController: navigationController!, canCancel: false) { [weak self, displayNameToBeUploaded, profilePictureToBeUploaded] modalActivityIndicator in
+            OWSProfileManager.shared().updateLocalProfileName(name, avatarImage: profilePicture, success: {
+                if displayNameToBeUploaded != nil {
+                    userDefaults[.lastDisplayNameUpdate] = Date()
+                }
+                if profilePictureToBeUploaded != nil {
+                    userDefaults[.lastProfilePictureUpdate] = Date()
+                } else {
+                    let publicKey = getUserHexEncodedPublicKey()
+                    let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+                    self?.profilePictureImage.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: self!.size)
+                    self?.isProfileRemove = false
+                }
+                let publicKey = getUserHexEncodedPublicKey()
+                self?.innerProfileImage.image = self!.useFallbackPicture ? nil : (self?.openGroupProfilePicture ?? self?.getProfilePicture(of: self!.size, for: publicKey))
+                self?.outerProfileView.isHidden = true
+                
+                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                DispatchQueue.main.async {
+                    modalActivityIndicator.dismiss {
+                        guard let self = self else { return }
+                        self.userNameIdLabel.text = name
+                        //get the Profile picture
+                        let publicKey = getUserHexEncodedPublicKey()
+                        self.profilePictureImage.image = self.useFallbackPicture ? nil : (self.openGroupProfilePicture ?? self.getProfilePicture(of: self.size, for: publicKey))
+                        self.profilePictureToBeUploaded = nil
+                        self.displayNameToBeUploaded = nil
+                    }
+                }
+            }, failure: { error in
+                DispatchQueue.main.async {
+                    modalActivityIndicator.dismiss {
+                        self?.outerProfileView.isHidden = true
+                        var isMaxFileSizeExceeded = false
+                        if let error = error as? FileServerAPIV2.Error {
+                            isMaxFileSizeExceeded = (error == .maxFileSizeExceeded)
+                        }
+                        let title = isMaxFileSizeExceeded ? "Maximum File Size Exceeded" : "Couldn't Update Profile"
+                        let message = isMaxFileSizeExceeded ? "Please select a smaller photo and try again" : "Please check your internet connection and try again"
+                        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                        self?.present(alert, animated: true, completion: nil)
+                    }
+                }
+            }, requiresSync: true)
+        }
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    @objc func removePictureButtonAction(){
+        let publicKey = getUserHexEncodedPublicKey()
+        guard !publicKey.isEmpty else { return  }
+        if OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) == nil {
+            return
+        }
+        self.isProfileRemove = true
+        self.outerProfileView.isHidden = true
+        clearAvatar()
+    }
+    
+    @objc func saveButtonAction() {
+        if profilePictureToBeUploaded != nil {
+            profilePictureImage.image = profilePictureToBeUploaded
+            profilePictureImage.contentMode = .scaleAspectFit
+            self.outerProfileView.isHidden = true
+            updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
+        } else {
+            let alert = UIAlertController(title: "Please pick a profile picture", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func clearAvatar() {
+        profilePictureToBeUploaded = nil
+        updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
+    }
+    
+    
+    @objc private func nameIdLabelTapped() {
+        UIView.animate(withDuration: 0.25) { [self] in
+            userNameIdLabel.text = displayNameToBeUploaded
+        }
+        nameTextField.becomeFirstResponder()
+        isEditingDisplayName = true
+        nameTextField.isHidden = false
+        userNameIdLabel.isHidden = true
+        lineView.isHidden = false
     }
     
      // MARK: - Private methods
@@ -887,7 +1352,7 @@ class MyAccountBnsViewController: BaseVC {
         bchatIDExpandView.isHidden = isBnsUser
         showQRExpandView.isHidden = isBnsUser
         bnsApprovalIconImage.isHidden = !isBnsUser
-        profilePictureImage.layer.borderWidth = isBnsUser ? 3 : 0
+        profilePictureImage.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         profilePictureImage.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
         
         beldexAddressExpandView.isHidden = true
@@ -976,4 +1441,47 @@ class MyAccountBnsViewController: BaseVC {
         let viewController = AboutBNSViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    @objc func editButtonTapped(_ sender: UIButton) {
+        self.editButton.isHidden = true
+        self.doneButton.isHidden = false
+        cameraView.isHidden = false
+        lineView.isHidden = false
+        nameIdLabelTapped()
+    }
+    
+    @objc func doneButtonTapped(_ sender: UIButton) {
+        self.editButton.isHidden = false
+        self.doneButton.isHidden = true
+        cameraView.isHidden = true
+        lineView.isHidden = true
+        
+        if isEditingDisplayName {
+            lineView.isHidden = true
+            func showError(title: String, message: String = "") {
+                self.editButton.isHidden = true
+                self.doneButton.isHidden = false
+                cameraView.isHidden = false
+                lineView.isHidden = false
+                nameIdLabelTapped()
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                presentAlert(alert)
+            }
+            let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            guard !displayName.isEmpty else {
+                return showError(title: NSLocalizedString("vc_settings_display_name_missing_error", comment: ""))
+            }
+            guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
+                return showError(title: NSLocalizedString("vc_settings_display_name_too_long_error", comment: ""))
+            }
+            isEditingDisplayName = false
+            displayNameToBeUploaded = displayName
+            updateProfile(isUpdatingDisplayName: true, isUpdatingProfilePicture: false)
+        }
+        nameTextField.isHidden = true
+        userNameIdLabel.isHidden = false
+        
+    }
+    
 }

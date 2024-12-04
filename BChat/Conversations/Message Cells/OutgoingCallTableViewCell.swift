@@ -2,6 +2,7 @@
 
 import UIKit
 import BChatMessagingKit
+import AVFoundation
 
 final class OutgoingCallTableViewCell: UITableViewCell {
         
@@ -20,6 +21,20 @@ final class OutgoingCallTableViewCell: UITableViewCell {
             }
         }
     }
+    
+    // MARK: Direction & Position
+    enum Direction { case incoming, outgoing }
+    enum Position { case top, middle, bottom }
+    
+    private var positionInCluster: Position? {
+        guard let viewItem = viewItem else { return nil }
+        if viewItem.isFirstInCluster { return .top }
+        if viewItem.isLastInCluster { return .bottom }
+        return .middle
+    }
+    
+    private var isOnlyMessageInCluster: Bool { viewItem?.isFirstInCluster == true && viewItem?.isLastInCluster == true }
+    
     
     // MARK: - Identifier
     
@@ -56,15 +71,15 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.bothGreenColor
-        stackView.layer.cornerRadius = 22
+        stackView.layer.cornerRadius = 10
         return stackView
     }()
     
     private lazy var containerView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.darkGreenColor
-        stackView.layer.cornerRadius = 14
+        stackView.backgroundColor = UIColor(hex: 0x136515)
+        stackView.layer.cornerRadius = 8
         return stackView
     }()
     
@@ -104,6 +119,16 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         return result
     }()
     
+    private lazy var messageTailRightView: UIView = {
+        let result = RightTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
+    
     // MARK: - UI setup
     
     /// SetUp View Hierarchy
@@ -115,6 +140,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         self.selectedBackgroundView = selectedBackgroundView
         
         addSubview(mainContainerView)
+        addSubview(messageTailRightView)
         mainContainerView.addSubViews(containerView, timeLabel)
         containerView.addSubViews(iconImageView, titleLabel, discriptionLabel)
         
@@ -122,6 +148,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             mainContainerView.widthAnchor.constraint(equalToConstant: 124),
+            mainContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
             
             containerView.leadingAnchor.constraint(equalTo: mainContainerView.leadingAnchor, constant: 6),
             containerView.trailingAnchor.constraint(equalTo: mainContainerView.trailingAnchor, constant: -6),
@@ -143,6 +170,8 @@ final class OutgoingCallTableViewCell: UITableViewCell {
             timeLabel.trailingAnchor.constraint(equalTo: mainContainerView.trailingAnchor, constant: -16),
             timeLabel.bottomAnchor.constraint(equalTo: mainContainerView.bottomAnchor, constant: -7),
         ])
+        messageTailRightView.pin(.right, to: .right, of: mainContainerView, withInset: 0)
+        messageTailRightView.pin(.top, to: .bottom, of: mainContainerView, withInset: 0)
     }
     
     /// Setup Gesture Recognizers
@@ -170,6 +199,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
             titleLabel.text = "Call"
             icon = UIImage(named: "call_outgoing")
         }
+        messageTailRightView.backgroundColor = (message.callState == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         
         iconImageView.image = icon
         
@@ -178,9 +208,50 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         infoImageViewHeightConstraint.constant = shouldShowInfoIcon ? OutgoingCallTableViewCell.iconSize : 0
         
         let date = message.dateForUI()
-        let description = DateUtil.formatDate(forDisplay: date)
+        let description = DateUtil.formatDate(forDisplay2: date)
         timeLabel.text = description
+        updateBubbleViewCorners()
+        
     }
+    
+    private func updateBubbleViewCorners() {
+        let cornersToRound = getCornersToRound()
+        let maskPath = UIBezierPath(roundedRect: mainContainerView.bounds, byRoundingCorners: cornersToRound,
+                                    cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
+        mainContainerView.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
+        mainContainerView.layer.maskedCorners = getCornerMask(from: cornersToRound)
+    }
+    
+    private func getCornersToRound() -> UIRectCorner {
+        messageTailRightView.isHidden = true
+        guard !isOnlyMessageInCluster else {
+            messageTailRightView.isHidden = false
+            return [ .topLeft, .topRight, .bottomLeft ]
+        }
+        let result: UIRectCorner
+        switch (positionInCluster) {
+        case (.top): result = .allCorners
+        case (.middle): result = .allCorners
+        case (.bottom): result = [ .topLeft, .topRight, .bottomLeft ]
+            messageTailRightView.isHidden = false
+        case (nil): result = .allCorners
+        }
+        return result
+    }
+    
+    private func getCornerMask(from rectCorner: UIRectCorner) -> CACornerMask {
+        var cornerMask = CACornerMask()
+        if rectCorner.contains(.allCorners) {
+            cornerMask = [ .layerMaxXMinYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        } else {
+            if rectCorner.contains(.topRight) { cornerMask.insert(.layerMaxXMinYCorner) }
+            if rectCorner.contains(.topLeft) { cornerMask.insert(.layerMinXMinYCorner) }
+            if rectCorner.contains(.bottomRight) { cornerMask.insert(.layerMaxXMaxYCorner) }
+            if rectCorner.contains(.bottomLeft) { cornerMask.insert(.layerMinXMaxYCorner) }
+        }
+        return cornerMask
+    }
+    
     
     /// Handle tap gesture
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {

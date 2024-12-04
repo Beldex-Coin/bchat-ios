@@ -17,7 +17,7 @@ class SyncInfoPopUpVC: BaseVC {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = UIColor(hex: 0x00BD40)
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Sync Info"
@@ -27,7 +27,7 @@ class SyncInfoPopUpVC: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xEBEBEB)
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "You have scanned from the block height 2250000. However we recommend to scan the blockchain from the block height at which you created the wallet, to get all the transactions and correct balance."
         result.numberOfLines = 0
@@ -39,9 +39,9 @@ class SyncInfoPopUpVC: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(hex: 0x00BD40)
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button

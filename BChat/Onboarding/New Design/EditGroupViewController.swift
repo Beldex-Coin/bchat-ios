@@ -52,11 +52,11 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     private lazy var applyChangesButton: UIButton = {
         let button = UIButton()
         button.setTitle("Apply Changes", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(applyChangesButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -310,7 +310,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
             cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
             cell.verifiedImageView.isHidden = isBnsUser ? false : true
         }  else {

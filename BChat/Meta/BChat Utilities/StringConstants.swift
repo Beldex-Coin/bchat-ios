@@ -48,6 +48,7 @@ struct Constants: Equatable {
     static let clearChatHistory = "clearChatHistory"
     static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
     static let navigateToMyAccount = "navigateToMyAccount"
+    static let leaveGroup = "leaveGroup"
     
     
     /// Userdefaults strings

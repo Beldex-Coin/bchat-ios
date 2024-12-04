@@ -102,30 +102,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
-    lazy var messageTimeCenterLabel: UILabel = {
+    lazy var messageTimeRightLabel: UILabel = {
         let result = UILabel()
         result.font = Fonts.OpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
-        return result
-    }()
-    
-    lazy var stackHorizontalView: UIStackView = {
-        let result: UIStackView = UIStackView()
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.axis = .horizontal
-        result.alignment = .fill
-        result.distribution = .equalSpacing
-        result.spacing = 0
-        return result
-    }()
-    
-    lazy var stackVerticalView: UIStackView = {
-        let result: UIStackView = UIStackView()
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.axis = .vertical
-        result.alignment = .fill
-        result.distribution = .fill
-        result.spacing = 0
         return result
     }()
     
@@ -169,6 +149,24 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         return result
     }()
     
+    private lazy var messageTailRightView: UIView = {
+        let result = RightTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
+    private lazy var messageTailLeftView: UIView = {
+        let result = LeftTriangleView()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.backgroundColor = Colors.bothGreenColor
+        result.set(.width, to: 12)
+        result.set(.height, to: 8)
+        return result
+    }()
+    
     private lazy var replyIconImageView: UIImageView = {
         let result = UIImageView()
         let size = VisibleMessageCell.replyButtonSize
@@ -181,12 +179,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var timerView = OWSMessageTimerView()
     
     // MARK: Settings
-    private static let messageStatusImageViewSize: CGFloat = 0//16
+    private static let messageStatusImageViewSize: CGFloat = 0
     private static let authorLabelBottomSpacing: CGFloat = 4
     private static let groupThreadHSpacing: CGFloat = 12
     private static let profilePictureSize = Values.verySmallProfilePictureSize
     private static let authorLabelInset: CGFloat = 12
-    private static let replyButtonSize: CGFloat = 18//24
+    private static let replyButtonSize: CGFloat = 18
     private static let maxBubbleTranslationX: CGFloat = 40
     private static let swipeToReplyThreshold: CGFloat = 110
     static let smallCornerRadius: CGFloat = 4
@@ -246,6 +244,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         moderatorIconImageView.pin(.bottom, to: .bottom, of: profilePictureView, withInset: 4.5)
         // Bubble view
         addSubview(bubbleView)
+        addSubview(messageTailRightView)
+        addSubview(messageTailLeftView)
         bubbleViewLeftConstraint1.isActive = true
         bubbleViewTopConstraint.isActive = true
         bubbleViewRightConstraint1.isActive = true
@@ -260,14 +260,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         snContentView.pin(.top, to: .top, of: bubbleView, withInset: 5)
         messageTimeBottomLabel.pin(.right, to: .right, of: bubbleView, withInset: -10)
         messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -5)
-        messageTimeCenterLabel.isHidden = true
-        bubbleView.addSubview(stackHorizontalView)
-        stackHorizontalView.addArrangedSubview(snContentView)
-        stackHorizontalView.addArrangedSubview(messageTimeCenterLabel)
-        stackHorizontalView.pin(.right, to: .right, of: bubbleView, withInset: -10)
-        stackHorizontalView.pin(.bottom, to: .bottom, of: messageTimeBottomLabel, withInset: -5)
-        stackHorizontalView.pin(.left, to: .left, of: bubbleView, withInset: 5)
-        stackHorizontalView.pin(.top, to: .top, of: bubbleView, withInset: 5)
         addSubview(messageStatusImageView)
         messageStatusImageViewTopConstraint.isActive = true
         messageStatusImageView.pin(.right, to: .right, of: bubbleView, withInset: -5)
@@ -285,7 +277,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         statusImageIncoming.isActive = true
         statusImageOutgoing.isActive = true
         messageStatusImageViewNew.center(.vertical, in: bubbleView)
+        profilePictureView.isHidden = true
         verifiedImageView.isHidden = true
+        
+        messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
+        messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
+        messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
+        messageTailLeftView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
     }
     
     override func setUpGestureRecognizers() {
@@ -303,6 +301,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     // MARK: Updating
     override func update() {
         verifiedImageView.isHidden = true
+        profilePictureView.isHidden = true
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
         let isGroupThread = viewItem.isGroupThread
         // Profile picture view
@@ -328,7 +327,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if let senderBChatID = senderBChatID {
             let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
                     verifiedImageView.isHidden = isBnsUser ? false : true
@@ -344,6 +343,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         bubbleViewRightConstraint1.isActive = (direction == .outgoing)
         bubbleViewRightConstraint2.isActive = (direction == .incoming)
         bubbleView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
+        messageTailRightView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
+        messageTailLeftView.backgroundColor = (direction == .incoming) ? Colors.incomingMessageColor : Colors.bothGreenColor
         updateBubbleViewCorners()
         messageTimeBottomLabel.isHidden = false
         // Content view
@@ -456,7 +457,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
         messageTimeBottomLabel.text = description
-        messageTimeCenterLabel.text = description
         
         switch viewItem.messageCellType {
             case .textOnlyMessage:
@@ -488,9 +488,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if direction != "send" {
                         paymentView.backgroundColor = Colors.incomingMessageColor
                     } else {
-                        paymentView.backgroundColor = Colors.greenColor
+                        paymentView.backgroundColor = Colors.bothGreenColor
                     }
                     messageTimeBottomLabel.isHidden = true
+                    messageTailRightView.isHidden = true
+                    messageTailLeftView.isHidden = true
                 } else {
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])
@@ -502,17 +504,78 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
-                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x008D06) : Colors.mainBackGroundColor2
-                        quoteView.layer.cornerRadius = 16
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
                     // Body text view
                     let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
-                    stackView.addArrangedSubview(bodyTextView)
-                    // Constraints
-                    snContentView.addSubview(stackView)
-                    stackView.pin(to: snContentView, withInset: inset)
+                    let maxWidthOfTextViewText = widthOfLastLine(in: bodyTextView)
+                    let maxWidthOfLine = maxWidth
+                    let widthOfLastLine = Int(maxWidthOfTextViewText) % Int(maxWidthOfLine)
+
+                    guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
+                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil {
+                        messageTimeBottomLabel.text = ""
+                        messageTimeBottomLabel.isHidden = true
+                        
+                        messageTimeRightLabel.isHidden = false
+                        messageTimeRightLabel.textColor = UIColor(hex: 0xEBEBEB)
+                        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+                        let direction = isOutgoing ? "send" : "receive"
+                        if direction == "receive" {
+                            if isLightMode {
+                                messageTimeRightLabel.textColor = Colors.noDataLabelColor
+                            }
+                        }
+                        let date = viewItem.interaction.dateForUI()
+                        let description = DateUtil.formatDate(forDisplay2: date)
+                        messageTimeRightLabel.text = description
+                        
+                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+                        stackViewForMessageAndTime.axis = .horizontal
+                        stackViewForMessageAndTime.spacing = 5
+                        stackViewForMessageAndTime.alignment = .bottom
+                                                
+                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+                                                
+                        
+                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        // Constraints
+                        snContentView.addSubview(stackView)
+                        stackView.pin(to: snContentView, withInset: 4)
+                        
+//                        messageTimeRightLabel.isHidden = true
+//                        if viewItem.isLastInCluster {
+//                            messageTimeRightLabel.isHidden = false
+//                        }
+                        
+                    } else {
+                        
+                        let stackViewForSpacerAndbodyTextView = UIStackView(arrangedSubviews: [])
+                        stackViewForSpacerAndbodyTextView.axis = .horizontal
+                        stackViewForSpacerAndbodyTextView.spacing = 5
+                        stackViewForSpacerAndbodyTextView.alignment = .leading
+                        
+                        let spacer1 = UIView.spacer(withWidth: 2)
+                        stackViewForSpacerAndbodyTextView.addArrangedSubview(spacer1)
+                        stackViewForSpacerAndbodyTextView.addArrangedSubview(bodyTextView)
+                        
+                        messageTimeBottomLabel.isHidden = false
+                        stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
+                        snContentView.addSubview(stackView)
+//                        stackView.pin(to: snContentView, withInset: inset)
+                        stackView.pin(.top, to: .top, of: snContentView, withInset: 1)
+                        stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
+                        stackView.pin(.right, to: .right, of: snContentView, withInset: 0)
+                        stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+//                        messageTimeBottomLabel.isHidden = true
+//                        if viewItem.isLastInCluster {
+//                            messageTimeBottomLabel.isHidden = false
+//                        }
+                    }
                 }
             case .mediaMessage:
                 bubbleViewBottomConstraint.isActive = false
@@ -554,17 +617,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 }
             case .audio:
                 bubbleViewBottomConstraint.isActive = false
-                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 if viewItem.interaction is TSIncomingMessage,
                     let thread = thread as? TSContactThread,
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     showMediaPlaceholder()
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
                 } else {
                     let voiceMessageView = VoiceMessageView(viewItem: viewItem)
                     snContentView.addSubview(voiceMessageView)
                     voiceMessageView.pin(to: snContentView)
                     voiceMessageView.layer.mask = bubbleViewMaskLayer
                     viewItem.lastAudioMessageView = voiceMessageView
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 }
             case .genericAttachment:
                 bubbleViewBottomConstraint.isActive = false
@@ -608,6 +672,22 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         updateBubbleViewCorners()
+        
+        
+        guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
+        profilePictureView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
+        verifiedImageView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
+        let senderBChatID = (message as? TSIncomingMessage)?.authorId
+        if let senderBChatID = senderBChatID {
+            let contact: Contact? = Storage.shared.getContact(with: senderBChatID)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                if VisibleMessageCell.shouldShowProfilePicture(for: viewItem) {
+                    verifiedImageView.isHidden = isBnsUser ? false : true
+                }
+            }
+        }
     }
     
     private func updateBubbleViewCorners() {
@@ -615,13 +695,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
             cornerRadii: CGSize(width: VisibleMessageCell.largeCornerRadius, height: VisibleMessageCell.largeCornerRadius))
         bubbleViewMaskLayer.path = maskPath.cgPath
-        bubbleView.layer.cornerRadius = 18
+        bubbleView.layer.cornerRadius = VisibleMessageCell.largeCornerRadius
+        bubbleView.layer.maskedCorners = getCornerMask(from: cornersToRound)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -653,7 +734,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     func highlight() {
-        let shawdowColour = isLightMode ? UIColor.black.cgColor : Colors.accent.cgColor
+        let shawdowColour = isLightMode ? UIColor.black.cgColor : Colors.bothGreenColor.cgColor
         let opacity : Float = isLightMode ? 0.5 : 1
         bubbleView.setShadow(radius: 10, opacity: opacity, offset: .zero, color: shawdowColour)
         DispatchQueue.main.async {
@@ -699,7 +780,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
             case .began:
@@ -739,7 +820,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
@@ -758,17 +839,33 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     // MARK: Convenience
     private func getCornersToRound() -> UIRectCorner {
-        guard !isOnlyMessageInCluster else { return .allCorners }
+        messageTailRightView.isHidden = true
+        messageTailLeftView.isHidden = true
+        guard !isOnlyMessageInCluster else {
+            switch (direction) {
+                case (.outgoing):
+                messageTailRightView.isHidden = false
+                hideMessageTailViewForPaymentView()
+                return [ .topLeft, .topRight, .bottomLeft ]
+                case (.incoming):
+                messageTailLeftView.isHidden = false
+                hideMessageTailViewForPaymentView()
+                return [ .topLeft, .topRight, .bottomRight]
+            }
+        }
         let result: UIRectCorner
         switch (positionInCluster, direction) {
-            case (.top, .outgoing): result = [ .bottomLeft, .topLeft, .topRight ]
-            case (.middle, .outgoing): result = [ .bottomLeft, .topLeft ]
-            case (.bottom, .outgoing): result = [ .bottomRight, .bottomLeft, .topLeft ]
-            case (.top, .incoming): result = [ .topLeft, .topRight, .bottomRight ]
-            case (.middle, .incoming): result = [ .topRight, .bottomRight ]
-            case (.bottom, .incoming): result = [ .topRight, .bottomRight, .bottomLeft ]
+            case (.top, .outgoing): result = .allCorners
+            case (.middle, .outgoing): result = .allCorners
+        case (.bottom, .outgoing): result = [ .topLeft, .topRight, .bottomLeft ]
+            messageTailRightView.isHidden = false
+            case (.top, .incoming): result = .allCorners
+            case (.middle, .incoming): result = .allCorners
+        case (.bottom, .incoming): result = [ .topLeft, .topRight, .bottomRight]
+            messageTailLeftView.isHidden = false
             case (nil, _): result = .allCorners
         }
+        hideMessageTailViewForPaymentView()
         return result
     }
     
@@ -810,11 +907,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 
             case .sent, .skipped, .delivered:
                 image = #imageLiteral(resourceName: "newTickmark").withRenderingMode(.alwaysTemplate)
-                tintColor = Colors.greenColor
+                tintColor = Colors.bothGreenColor
                 
             case .read:
-                image = isLightMode ? #imageLiteral(resourceName: "FilledCircleCheckLightMode") : #imageLiteral(resourceName: "FilledCircleCheckDarkMode")
-                backgroundColor = isLightMode ? .black : .white
+                image = #imageLiteral(resourceName: "ic_readRecipent").withRenderingMode(.alwaysTemplate)
+                tintColor = Colors.bothGreenColor
                 
             case .failed:
                 image = #imageLiteral(resourceName: "message_status_failed").withRenderingMode(.alwaysTemplate)
@@ -913,6 +1010,43 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         return result
+    }
+    
+    func widthOfLastLine(in textView: UITextView) -> CGFloat {
+        // Get the full text of the UITextView
+        let text = textView.text ?? ""
+        
+        // Split the text into lines based on newlines
+        let lines = text.split(separator: "\n")
+        
+        // Check if there are any lines in the text view
+        guard let lastLine = lines.last else { return 0 }
+        
+        // Create an NSString from the last line to measure its width
+        let lastLineString = NSString(string: String(lastLine))
+        
+        // Define the font of the UITextView (you can adjust this if needed)
+        let font = textView.font ?? UIFont.systemFont(ofSize: 14)
+        
+        // Use boundingRect to measure the width of the last line
+        let width = lastLineString.boundingRect(
+            with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude),
+            options: .usesLineFragmentOrigin,
+            attributes: [.font: font],
+            context: nil
+        ).width
+        
+        return width
+    }
+    
+    
+    func hideMessageTailViewForPaymentView() {
+        if let message = viewItem?.interaction as? TSMessage {
+            if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                messageTailRightView.isHidden = true
+                messageTailLeftView.isHidden = true
+            }
+        }
     }
     
     

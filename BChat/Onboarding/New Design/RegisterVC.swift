@@ -11,7 +11,7 @@ class RegisterVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.font = Fonts.semiOpenSans(ofSize: 20)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -21,10 +21,10 @@ class RegisterVC: BaseVC {
     private lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("Continue", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -33,7 +33,7 @@ class RegisterVC: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.cellGroundColor2
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -50,7 +50,7 @@ class RegisterVC: BaseVC {
     private lazy var bChatIdLabel: UILabel = {
         let result = UILabel()
         result.text = ""
-        result.textColor = Colors.titleColor5
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class RegisterVC: BaseVC {
         let result = UILabel()
         result.text = NSLocalizedString("BCHAT_INFO_TITLE_LABEL", comment: "")
         result.textColor = Colors.titleColor5
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.lightOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -73,7 +73,7 @@ class RegisterVC: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.cellGroundColor2
-        stackView.layer.cornerRadius = 16
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     
@@ -90,7 +90,7 @@ class RegisterVC: BaseVC {
     private lazy var beldexIdLabel: UILabel = {
         let result = UILabel()
         result.text = ""
-        result.textColor = Colors.titleColor5
+        result.textColor = Colors.titleColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -102,7 +102,7 @@ class RegisterVC: BaseVC {
         let result = UILabel()
         result.text = NSLocalizedString("BELDEX_INFO_TITLE_LABEL", comment: "")
         result.textColor = Colors.titleColor5
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.lightOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0

@@ -59,7 +59,7 @@ class MessageRequestsCell: UITableViewCell {
         let result: UIView = UIView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
-        result.backgroundColor = Colors.bchatButtonColor
+        result.backgroundColor = Colors.bothGreenColor
         result.layer.cornerRadius = (ConversationCell.unreadCountViewSize / 2)
         
         return result

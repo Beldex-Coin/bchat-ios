@@ -40,7 +40,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             let publicKey = getUserHexEncodedPublicKey()
             cell.iconImageView.image = useFallbackPicture ? nil : (openGroupProfilePicture ?? getProfilePicture(of: size, for: publicKey))
             
-            let origImage = UIImage(named: isLightMode ? "ic_QR_white" : "ic_QR_dark")
+            let origImage = UIImage(named: "User Settings 1")
             let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
             cell.scanImageView.image = tintedImage
             cell.scanImageView.tintColor = isLightMode ? .black : .white
@@ -55,8 +55,6 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
             
             var menuItem: SideMenuItem = .default
             switch viewModel.menuTitles[indexPath.row] {
-                case .myAccount:
-                    menuItem = .myAccount
                 case .settings:
                     menuItem = .settings
                 case .notification:
@@ -88,13 +86,10 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.section == 0 {
-            let viewController = MyAccountViewController()
+            let viewController = MyAccountBnsViewController()
             navigationController?.pushViewController(viewController, animated: true)
         } else {
             switch viewModel.menuTitles[indexPath.row] {
-                case .myAccount:
-                    let viewController = MyAccountBnsViewController()
-                    navigationController?.pushViewController(viewController, animated: true)
                 case .settings:
                     let viewController = BChatSettingsNewVC()
                     navigationController?.pushViewController(viewController, animated: true)

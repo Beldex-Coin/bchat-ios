@@ -17,9 +17,8 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         result.rowHeight = UITableView.automaticDimension
         return result
     }()
-    var isExpanded: Bool = false
-    var selectedRowIndex: Int?
-    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5"]
+    
+    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5", "1.5.0"]
     var descArray = ["\u{2022} Initial release\n\u{2022} Added changelog",
                      "\u{2022} Message request implementation\n\u{2022} Link Preview will be turn on by default\n\u{2022} Add the images for SwipeActionsConfiguration",
                      "\u{2022} Call Feature Added\n\u{2022} Blocked Contact list added\n\u{2022} Minor Bug Fixes",
@@ -31,7 +30,10 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
                      "\u{2022} New design implemented\n\u{2022} Minor bug fixes",
                      "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Fixed minor issues in social group \n\u{2022} Minor bug fixes",
                      "\u{2022} Added BNS feature to start new chats \n\u{2022} Updated App Content \n\u{2022} Minor bug fixes",
-                     "\u{2022} New design revamp \n\u{2022} Minor bug fixes",]
+                     "\u{2022} New design revamp \n\u{2022} Minor bug fixes",
+                     "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Improved search functionality in home screen \n\u{2022} User can block a user on message request \n\u{2022} Minor bug fixes",]
+    var expandedRowArray = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +66,7 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Configure cell for expanded state
-        if isExpanded, let selectedRowIndex = selectedRowIndex, indexPath.row == selectedRowIndex {
+        if expandedRowArray[indexPath.row] == true {
             let cell = ChangeLogTableCell2(style: .default, reuseIdentifier: "ChangeLogTableCell2")
             cell.backgroundColor = .clear
             cell.selectionStyle = .none
@@ -94,35 +96,24 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isExpanded, let selectedRowIndex = selectedRowIndex, indexPath.row == selectedRowIndex {
-            return UITableView.automaticDimension
-        } else {
-            return UITableView.automaticDimension
-        }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if selectedRowIndex == indexPath.row {
-            isExpanded.toggle()
-        } else {
-            isExpanded = true
-        }
-        selectedRowIndex = isExpanded ? indexPath.row : nil
+        expandedRowArray[indexPath.row].toggle()
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     @objc func expandArrowTapped(_ sender: UITapGestureRecognizer) {
         if let index = sender.view?.tag {
-            isExpanded.toggle()
-            selectedRowIndex = isExpanded ? index : nil
+            expandedRowArray[index].toggle()
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
     }
     
     @objc func arrowTapped(_ sender: UITapGestureRecognizer) {
         if let index = sender.view?.tag {
-            isExpanded.toggle()
-            selectedRowIndex = isExpanded ? index : nil
+            expandedRowArray[index].toggle()
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
         }
     }

@@ -145,7 +145,7 @@ class ChatNewVC: BaseVC  {
         rightView.addSubview(scannerImage)
         bottomBackgroundView.addSubview(chatIdDetailsButton)
         chatIdDetailsButton.addRightIcon(image: UIImage(named: "ic-Newarrow")!.withRenderingMode(.alwaysTemplate))
-        chatIdDetailsButton.tintColor = Colors.greenColor
+        chatIdDetailsButton.tintColor = Colors.bothGreenColor
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
@@ -303,7 +303,7 @@ extension ChatNewVC: UITextViewDelegate {
             chatIdTextView.checkPlaceholderChatNew()
         } else {
             letsBChatButton.isUserInteractionEnabled = true
-            letsBChatButton.backgroundColor = Colors.greenColor
+            letsBChatButton.backgroundColor = Colors.bothGreenColor
             letsBChatButton.setTitleColor(.white, for: .normal)
             chatIdTextView.checkPlaceholderChatNew()
         }

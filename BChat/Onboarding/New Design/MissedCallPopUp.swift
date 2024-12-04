@@ -45,7 +45,7 @@ class MissedCallPopUp: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Call Missed!"
         return result
@@ -65,10 +65,10 @@ class MissedCallPopUp: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -97,12 +97,12 @@ class MissedCallPopUp: BaseVC {
             iconView.topAnchor.constraint(equalTo: backGroundView.topAnchor, constant: 25),
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 14),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 7),
+            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 9),
             discriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 17),
             discriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -17),
-            discriptionLabel.bottomAnchor.constraint(equalTo: okButton.topAnchor, constant: -21),
+            discriptionLabel.bottomAnchor.constraint(equalTo: okButton.topAnchor, constant: -22),
             okButton.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            okButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -22),
+            okButton.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -19),
             okButton.heightAnchor.constraint(equalToConstant: 52),
             okButton.widthAnchor.constraint(equalToConstant: 158),
         ])

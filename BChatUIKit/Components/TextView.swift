@@ -42,7 +42,7 @@ public final class TextView : UITextView, UITextViewDelegate {
         backgroundColor = Colors.bchatViewBackgroundColor
         textColor = Colors.text
         font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        tintColor = Colors.accent
+        tintColor = Colors.bothGreenColor
         keyboardAppearance = isLightMode ? .light : .dark
         if usesDefaultHeight {
             set(.height, to: height)

@@ -17,7 +17,7 @@ class SyncingOptionPopUpVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Syncing Option"
@@ -26,10 +26,10 @@ class SyncingOptionPopUpVC: BaseVC {
     private lazy var reconnectButton: UIButton = {
         let button = UIButton()
         button.setTitle("Reconnect", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(reconnectButtonTapped), for: .touchUpInside)
         button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         return button
@@ -37,10 +37,10 @@ class SyncingOptionPopUpVC: BaseVC {
     private lazy var reScaneButton: UIButton = {
         let button = UIButton()
         button.setTitle("Rescan", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(reScaneButtonTapped), for: .touchUpInside)
         button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         return button
@@ -66,7 +66,6 @@ class SyncingOptionPopUpVC: BaseVC {
         blurView.frame = view.bounds
         view.addSubview(blurView)
         
-//        view.backgroundColor = UIColor(hexValue: 0x080812, a: 0.7)
         view.addSubview(backGroundView)
         backGroundView.addSubViews(titleLabel, buttonStackView)
         buttonStackView.addArrangedSubview(reconnectButton)

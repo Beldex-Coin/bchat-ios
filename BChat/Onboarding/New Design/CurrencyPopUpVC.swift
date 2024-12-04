@@ -16,8 +16,8 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.bothGreenColor
-        result.font = Fonts.boldOpenSans(ofSize: 18)
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Currency"
         return result

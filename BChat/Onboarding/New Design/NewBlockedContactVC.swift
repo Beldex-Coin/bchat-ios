@@ -199,7 +199,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         cell.profileImageView.image = Identicon.generatePlaceholderIcon(seed: publicKey, text: arrayNames[indexPath.row], size: 30)
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            cell.profileImageView.layer.borderWidth = isBnsUser ? 3 : 0
+            cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
             cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
             cell.verifiedImageView.isHidden = isBnsUser ? false : true
         } else {

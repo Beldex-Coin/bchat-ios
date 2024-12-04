@@ -30,7 +30,7 @@ public final class MentionUtilities : NSObject {
         }
         let result = NSMutableAttributedString(string: string, attributes: attributes)
         mentions.forEach { mention in
-            let color = isOutgoingMessage ? (isLightMode ? .white : .black) : Colors.accent
+            let color = isOutgoingMessage ? (isLightMode ? .white : .black) : Colors.bothGreenColor
             result.addAttribute(.foregroundColor, value: color, range: mention.range)
             result.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: Values.smallFontSize), range: mention.range)
         }

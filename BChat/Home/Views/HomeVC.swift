@@ -56,6 +56,7 @@ final class HomeVC : BaseVC {
         result.showsVerticalScrollIndicator = false
         return result
     }()
+    
     private lazy var fadeView: UIView = {
         let result = UIView()
         let gradient = Gradients.homeVCFade
@@ -63,6 +64,7 @@ final class HomeVC : BaseVC {
         result.isUserInteractionEnabled = false
         return result
     }()
+    
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.bchatPlaceholderColor
@@ -89,6 +91,7 @@ final class HomeVC : BaseVC {
         result.isHidden = true
         return result
     }()
+    
     var someImageView: UIImageView = {
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true
@@ -141,7 +144,6 @@ final class HomeVC : BaseVC {
     var syncingIsFromDelegateMethod = true
     var isdaemonHeight : Int64 = 0
     var backApiRescanVC = false
-    var isTapped = false
     
     // NewConversation Button Set PopUpView
     lazy var mainButtonPopUpView: UIView = {
@@ -168,7 +170,7 @@ final class HomeVC : BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.text = NSLocalizedString("NEW_CHAT_PLUS", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
     }()
@@ -178,7 +180,7 @@ final class HomeVC : BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.text = NSLocalizedString("SECRET_GROUP_TITLE", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
     }()
@@ -188,7 +190,7 @@ final class HomeVC : BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.text = NSLocalizedString("SOCIAL_GROUP_TITLE", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
     }()
@@ -303,7 +305,7 @@ final class HomeVC : BaseVC {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
         View.backgroundColor = .clear
-        View.layer.cornerRadius = 12
+        View.layer.cornerRadius = 28.5
         View.layer.borderColor = Colors.borderColorNew.cgColor
         View.layer.borderWidth = 1
         View.isHidden = true
@@ -481,9 +483,6 @@ final class HomeVC : BaseVC {
         stackViewButtons.bottomAnchor.constraint(equalTo: mainButtonPopUpView.bottomAnchor, constant: -14).isActive = true
         stackViewButtons.topAnchor.constraint(equalTo: mainButtonPopUpView.topAnchor, constant: 14).isActive = true
         stackViewButtons.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        // main Button Tapped
-        let mainButtonTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleMainButtonTapped))
-        mainButton.addGestureRecognizer(mainButtonTapGestureRecognizer)
         
         // Notifications
         let notificationCenter = NotificationCenter.default
@@ -520,9 +519,6 @@ final class HomeVC : BaseVC {
         // Get default open group rooms if needed
         OpenGroupAPIV2.getDefaultRoomsIfNeeded()
         
-        let tapGestureForMainView = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
-        tapGestureForMainView.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGestureForMainView)
         
         view.addSubview(callView)
         callView.pin(.top, to: .top, of: view, withInset: 14)
@@ -534,6 +530,7 @@ final class HomeVC : BaseVC {
         tap.cancelsTouchesInView = false
         callView.addGestureRecognizer(tap)
         
+        mainButton.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -553,7 +550,6 @@ final class HomeVC : BaseVC {
         }
         WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
-        self.isTapped = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
@@ -606,7 +602,6 @@ final class HomeVC : BaseVC {
     override func viewWillDisappear(_ animated: Bool) {
         self.showOrHideMessageRequestCollectionViewButton.isSelected = false
         self.isManualyCloseMessageRequest = false
-        self.isTapped = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
@@ -627,15 +622,6 @@ final class HomeVC : BaseVC {
         reload()
     }
 
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
-        if !mainButtonPopUpView.isHidden {
-            self.isTapped = true
-            mainButtonPopUpView.isHidden = true
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-        } else {
-            self.isTapped = false
-        }
-    }
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
@@ -967,7 +953,7 @@ final class HomeVC : BaseVC {
         verifiedImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 1)
         
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
-        button.layer.borderWidth = isBnsUser ? 3 : 0
+        button.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
 
         let barButton = UIBarButtonItem(customView: outerView)
@@ -975,21 +961,33 @@ final class HomeVC : BaseVC {
         
         var rightBarButtonItems: [UIBarButtonItem] = []
         
+        
+        let plusButton = UIButton(type: .custom)
+        plusButton.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
+        plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
+        plusButton.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+          let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
+        
+        rightBarButtonItems.append(plusButtonBarItem)
+        
+        
         // Right bar button item - search button
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchUI))
         rightBarButtonItem.accessibilityLabel = "Search button"
         rightBarButtonItem.isAccessibilityElement  = true
         rightBarButtonItems.append(rightBarButtonItem)
         
-        let wallet = UIButton(type: .custom)
-        wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
-        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
-        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
-        wallet.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
-          let walletBarItem = UIBarButtonItem(customView: wallet)
-        
-        rightBarButtonItems.append(walletBarItem)
+//        let wallet = UIButton(type: .custom)
+//        wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+//        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
+//        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
+//        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
+//        wallet.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+//          let walletBarItem = UIBarButtonItem(customView: wallet)
+//
+//        rightBarButtonItems.append(walletBarItem)
         
         navigationItem.rightBarButtonItems = rightBarButtonItems
         setUpNavBarSessionHeading()
@@ -1052,18 +1050,6 @@ final class HomeVC : BaseVC {
         }
     }
     
-    //Main NewConversationButtonSet PopUpView
-    @objc private func handleMainButtonTapped() {
-        mainButtonPopUpView.isHidden = !mainButtonPopUpView.isHidden
-        if mainButtonPopUpView.isHidden == true {
-            mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
-        } else {
-            mainButton.setImage(UIImage(named: "ic_HomeVcLogo_close"), for: .normal)
-        }
-        if isLightMode {
-            mainButtonPopUpView.setShadow(radius: 30, opacity: 0.1, offset: .zero, color: UIColor.black.cgColor)
-        }
-    }
     // New Chat
     @objc private func newChatButtonTapped(_ sender: UIButton) {
         mainButtonPopUpView.isHidden = true
@@ -1107,34 +1093,36 @@ final class HomeVC : BaseVC {
     }
     
     @objc private func showWallet() {
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            // MARK: - Old flow (without wallet)
-            if SaveUserDefaultsData.israndomUUIDPassword == "" {
-                let vc = EnableWalletVC()
-                navigationController!.pushViewController(vc, animated: true)
-                return
-            }
-            // MARK: - New flow (with wallet)
-            if SSKPreferences.areWalletEnabled {
-                if SaveUserDefaultsData.WalletPassword.isEmpty {
-                    let vc = NewPasswordVC()
-                    vc.isGoingWallet = true
-                    vc.isVerifyPassword = true
-                    navigationController!.pushViewController(vc, animated: true)
-                } else {
-                    let vc = NewPasswordVC()
-                    vc.isGoingWallet = true
-                    vc.isVerifyPassword = true
-                    navigationController!.pushViewController(vc, animated: true)
-                }
-            } else {
-                let vc = EnableWalletVC()
-                navigationController!.pushViewController(vc, animated: true)
-            }
-        } else {
-            self.showToast(message: "Please check your internet connection", seconds: 1.0)
-        }
+//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+//            // MARK: - Old flow (without wallet)
+//            if SaveUserDefaultsData.israndomUUIDPassword == "" {
+//                let vc = EnableWalletVC()
+//                navigationController!.pushViewController(vc, animated: true)
+//                return
+//            }
+//            // MARK: - New flow (with wallet)
+//            if SSKPreferences.areWalletEnabled {
+//                if SaveUserDefaultsData.WalletPassword.isEmpty {
+//                    let vc = NewPasswordVC()
+//                    vc.isGoingWallet = true
+//                    vc.isVerifyPassword = true
+//                    navigationController!.pushViewController(vc, animated: true)
+//                } else {
+//                    let vc = NewPasswordVC()
+//                    vc.isGoingWallet = true
+//                    vc.isVerifyPassword = true
+//                    navigationController!.pushViewController(vc, animated: true)
+//                }
+//            } else {
+//                let vc = EnableWalletVC()
+//                navigationController!.pushViewController(vc, animated: true)
+//            }
+//        } else {
+//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+//        }
 
+        let vc = NewPlusButtonChatVC()
+        navigationController!.pushViewController(vc, animated: true)
     }
     
     @objc(createNewDMFromDeepLink:)

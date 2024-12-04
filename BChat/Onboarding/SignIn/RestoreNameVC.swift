@@ -36,7 +36,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.text = NSLocalizedString("DISPLAY_NAME_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -45,7 +45,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.text = NSLocalizedString("RESTORE_HEIGHT_TITLE_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -54,7 +54,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var dateTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.text = NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -63,11 +63,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var displayNameTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
         result.leftViewMode = .always
@@ -76,11 +76,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreHeightTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_BLOCK_HEIGHT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 14)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingView
         result.leftViewMode = .always
@@ -93,7 +93,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         let paddingViewLeft = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
         result.leftView = paddingViewLeft
         result.leftViewMode = .always
@@ -124,7 +124,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         result.tintColor = .white
         result.backgroundColor = Colors.bchatmeassgeReq
         result.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 9)
-        result.layer.cornerRadius = result.frame.height/2
+        result.layer.cornerRadius = Values.buttonRadius
         result.set(.height, to: 39)
         result.set(.width, to: 189)
         return result
@@ -143,11 +143,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: isIPhone5OrSmaller ? 18 : 18)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreButtonAction), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
+        result.layer.cornerRadius = Values.buttonRadius
         result.set(.height, to: 58)
-        result.backgroundColor = Colors.cellGroundColor3
+        result.backgroundColor = Colors.cellGroundColor2
         result.setTitleColor(Colors.buttonDisableColor, for: .normal)
         return result
     }()
@@ -235,11 +235,11 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        isRestoreFromDateButton.layer.cornerRadius = isRestoreFromDateButton.bounds.height / 2
+        isRestoreFromDateButton.layer.cornerRadius = Values.buttonRadius
     }
     
     func disableRestoreButton() {
-        restoreButton.backgroundColor = Colors.cellGroundColor3
+        restoreButton.backgroundColor = Colors.cellGroundColor2
         restoreButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         restoreButton.isUserInteractionEnabled = false
     }

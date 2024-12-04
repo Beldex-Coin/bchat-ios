@@ -1094,7 +1094,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             // If the contact doesn't exist yet then it's a message request without the first message sent
             // so only allow text-based messages
             self.snInputView.setEnabledMessageTypes(
-                (thread.isNoteToSelf() || contact?.didApproveMe == true || thread.isMessageRequest() ?
+                (thread.isNoteToSelf() || contact?.didApproveMe == true || thread.isMessageRequest() || contact?.bchatID == bchat_report_IssueID ?
                     .all : .textOnly
                 ),
                 message: nil
@@ -1863,7 +1863,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                button.layer.borderWidth = isBnsUser ? 3 : 0
+                button.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 verifiedImageView.isHidden = isBnsUser ? false : true
             } else {
                 verifiedImageView.isHidden = true
@@ -1871,6 +1871,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 
             let barButton = UIBarButtonItem(customView: outerView)
             self.navigationItem.leftBarButtonItem = barButton
+            
+            button.addTarget(self, action: #selector(handleProfileTap), for: UIControl.Event.touchUpInside)
         } else {
             let iconImageView = ProfilePictureView()
             iconImageView.update(for: self.thread)
@@ -1893,8 +1895,42 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
                 }
             }
-            let barButton = UIBarButtonItem(customView: button)
+            
+            lazy var outerView: UIView = {
+                let View = UIView()
+                View.translatesAutoresizingMaskIntoConstraints = false
+                View.backgroundColor = .clear
+                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                return View
+            }()
+            
+            lazy var secretGroupImageView: UIImageView = {
+                let result = UIImageView()
+                result.set(.width, to: 16)
+                result.set(.height, to: 16)
+                result.contentMode = .scaleAspectFit
+                result.image = UIImage(named: "ic_secretGroupSmall")
+                return result
+            }()
+            secretGroupImageView.isHidden = true
+            if let thread = thread as? TSGroupThread {
+                if thread.groupModel.groupType == .closedGroup {
+                    secretGroupImageView.isHidden = false
+                }
+            }
+            outerView.addSubViews(button, secretGroupImageView)
+            
+            secretGroupImageView.pin(.trailing, to: .trailing, of: outerView, withInset: -1)
+            secretGroupImageView.pin(.bottom, to: .bottom, of: outerView, withInset: 3)
+            
+            let barButton = UIBarButtonItem(customView: outerView)
             self.navigationItem.leftBarButtonItem = barButton
+            
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleProfileTap(_:)))
+            iconImageView.addGestureRecognizer(tap)
+            iconImageView.isUserInteractionEnabled = true
+            
         }
         
         if isShowingSearchUI {
@@ -1943,6 +1979,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
             navigationItem.rightBarButtonItems = rightBarButtonItems
         }
+    }
+    
+    @objc func handleProfileTap(_ sender: UITapGestureRecognizer) {
+        handleTitleViewTapped()
     }
     
     private func highlightFocusedMessageIfNeeded() {

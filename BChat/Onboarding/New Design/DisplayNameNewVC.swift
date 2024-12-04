@@ -10,7 +10,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.boldOpenSans(ofSize: 22)
+        result.font = Fonts.semiOpenSans(ofSize: 20)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -28,11 +28,11 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private lazy var continueButton: UIButton = {
         let button = UIButton()
         button.setTitle("Continue", for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cellGroundColor3
+        button.backgroundColor = Colors.cellGroundColor2
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -43,7 +43,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         result.font = Fonts.OpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.placeholder = "Enter name"
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(20)
@@ -95,7 +95,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         nameTextField.delegate = self
         nameTextField.returnKeyType = .done
         
-        continueButton.backgroundColor = Colors.cellGroundColor3
+        continueButton.backgroundColor = Colors.cellGroundColor2
         continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
         continueButton.isUserInteractionEnabled = false
         
@@ -183,7 +183,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = textField.text!
         if str.count == 0 {
-            continueButton.backgroundColor = Colors.cellGroundColor3
+            continueButton.backgroundColor = Colors.cellGroundColor2
             continueButton.setTitleColor(Colors.buttonDisableColor, for: .normal)
             continueButton.isUserInteractionEnabled = false
         } else {
@@ -219,10 +219,10 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             SaveUserDefaultsData.israndomUUIDPassword = uuid.uuidString
             WalletService.shared.createWallet(with: .new(data: data)) { (result) in
                 switch result {
-                case .success(let wallet):
-                    wallet.close()
-                case .failure(_):
-                    print("in case failyre")
+                    case .success(let wallet):
+                        wallet.close()
+                    case .failure(_):
+                        print("in case failyre")
                 }
             }
             let WalletpublicAddress = SaveUserDefaultsData.WalletpublicAddress

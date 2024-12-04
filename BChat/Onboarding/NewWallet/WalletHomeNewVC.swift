@@ -37,7 +37,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         progressView.center = view.center
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.trackTintColor = Colors.borderColor
-        progressView.tintColor = Colors.greenColor
+        progressView.tintColor = Colors.bothGreenColor
         return progressView
     }()
     
@@ -66,7 +66,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     private lazy var beldexBalanceLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 26)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -107,7 +107,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     private lazy var receiveButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
         let image = UIImage(named: "ic_receive_wallet")
@@ -143,7 +143,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var transationTitleLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("TRANSACTION_LABEL", comment: "")
-        result.textColor = Colors.aboutContentLabelColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -466,7 +466,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.imageView?.contentMode = .scaleAspectFit
         button.setImage(UIImage(named: "ic_copy_green"), for: .normal)
         button.addTarget(self, action: #selector(transationIDcopyButtonTapped), for: .touchUpInside)
-        button.tintColor = Colors.greenColor
+        button.tintColor = Colors.bothGreenColor
         return button
     }()
     
@@ -690,7 +690,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     lazy var amountDetailsIDLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .right
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -733,7 +733,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         button.imageView?.contentMode = .scaleAspectFit
         button.setImage(UIImage(named: "ic_copy_green"), for: .normal)
         button.addTarget(self, action: #selector(recipientAddresscopyButtonTapped), for: .touchUpInside)
-        button.tintColor = Colors.greenColor
+        button.tintColor = Colors.bothGreenColor
         return button
     }()
     
@@ -818,13 +818,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_green"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
@@ -846,13 +846,13 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     
     private lazy var toDateTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_blue"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
@@ -889,7 +889,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
         result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -2564,7 +2564,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         dateFormatter.timeZone = NSTimeZone(name: "Asia/Kolkata") as TimeZone?
         
         if isFromAllTransationFlag == true {
-            if filteredAllTransactionSortingArray.count > 0{
+            if filteredAllTransactionSortingArray.count > 0 {
                 let responceData = filteredAllTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2607,7 +2607,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 }
             }
         } else if isFromSendTransationFlag == true {
-            if filteredOutgoingTransactionSortingArray.count > 0{
+            if filteredOutgoingTransactionSortingArray.count > 0 {
                 let responceData = filteredOutgoingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2642,7 +2642,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
             }
             cell.balanceAmountLabel.textColor = Colors.bothRedColor
         } else {
-            if filteredIncomingTransactionSortingArray.count > 0{
+            if filteredIncomingTransactionSortingArray.count > 0 {
                 let responceData = filteredIncomingTransactionSortingArray[indexPath.section].value
                 let valueResponce = responceData[indexPath.row]
                 let timeInterval  = valueResponce.timestamp
@@ -2667,7 +2667,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 cell.dateLabel.text = dateString
                 cell.balanceAmountLabel.text = Double(transaction.amount)!.removeZerosFromEnd()
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
-                if transaction.direction != BChat_Messenger.TransactionDirection.received{
+                if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     cell.sendandReceiveLabel.text = "Received"
                     cell.directionLogoImage.image = UIImage(named: logoImage)
                 } else {
@@ -2735,7 +2735,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
@@ -2784,7 +2784,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                     amountDetailsIDLabel.textColor = Colors.bothRedColor
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                     balanceAmountForDetailsPageLabel.textColor = Colors.bothGreenColor
@@ -2913,11 +2913,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             } else {
@@ -2954,11 +2954,11 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
                 let logoImage = isLightMode ? "ic_receiver_whitethem" : "ic_receive"
                 if transaction.direction != BChat_Messenger.TransactionDirection.received {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 } else {
                     isFromSendDetailsTitleLabel.text = "Received"
-                    isFromSendDetailsTitleLabel.textColor = Colors.greenColor
+                    isFromSendDetailsTitleLabel.textColor = Colors.bothGreenColor
                     directionLogoForDetailsPageImage.image = UIImage(named: logoImage)
                 }
             }

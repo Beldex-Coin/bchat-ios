@@ -4,6 +4,8 @@ import UIKit
 import ContactsUI
 import PromiseKit
 import Foundation
+import BChatUtilitiesKit
+import BChatMessagingKit
 
 
 enum DocumentContentType : String {
@@ -27,6 +29,15 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     
     private lazy var profilePictureImageView = ProfilePictureView()
+    
+    lazy var secretGroupImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 25)
+        result.set(.height, to: 25)
+        result.contentMode = .scaleAspectFill
+        result.image = UIImage(named: "ic_secretGroupSmall")
+        return result
+    }()
     
     private lazy var bnsApprovalIconImage: UIImageView = {
         let imageView = UIImageView()
@@ -159,7 +170,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         nameTextField.attributedPlaceholder = attributedPlaceholder
         nameTextField.font = Fonts.boldOpenSans(ofSize: 18)
         setUpTopCornerRadius()
-        view.addSubViews(profilePictureImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage, bnsApprovalIconImage)
+        view.addSubViews(profilePictureImageView, secretGroupImageView, displayNameLabel, tableView, doneButton, nameTextField, editIconImage, bnsApprovalIconImage)
         
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: displayNameLabel.bottomAnchor, constant: 25.0).isActive = true
@@ -197,6 +208,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             profilePictureImageView.heightAnchor.constraint(equalToConstant: 86),
             profilePictureImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 16),
             profilePictureImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            secretGroupImageView.trailingAnchor.constraint(equalTo: profilePictureImageView.trailingAnchor, constant: 2),
+            secretGroupImageView.bottomAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 2),
             
             bnsApprovalIconImage.trailingAnchor.constraint(equalTo: profilePictureImageView.trailingAnchor, constant: -1),
             bnsApprovalIconImage.bottomAnchor.constraint(equalTo: profilePictureImageView.bottomAnchor, constant: 9),
@@ -254,11 +268,18 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             let publicKey = contactThread.contactBChatID()
             let contact: Contact? = Storage.shared.getContact(with: publicKey)
             if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profilePictureImageView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 bnsApprovalIconImage.isHidden = isBnsUser ? false : true
             }
         }
+        
+        secretGroupImageView.isHidden = true
+        if self.isClosedGroup() {
+            secretGroupImageView.isHidden = false
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(leaveGroupTapped), name: .LeaveGroupNotification, object: nil)
         
     }
     
@@ -416,6 +437,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 let message = VisibleMessage()
                 message.sentTimestamp = NSDate.millisecondTimestamp()
                 //                message.openGroupInvitation = OpenGroupInvitation(name: openGroup.name, url: url)
+                let invitation = VisibleMessage.OpenGroupInvitation(name: openGroup.name, url: url)
+                message.openGroupInvitation = invitation
                 
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: user)
                 let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
@@ -507,23 +530,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             message = NSLocalizedString("CONFIRM_LEAVE_GROUP_DESCRIPTION", comment: "Alert body")
         }
         
-        let alert = UIAlertController(title: NSLocalizedString("CONFIRM_LEAVE_GROUP_TITLE", comment: "Alert title"),
-                                      message: message,
-                                      preferredStyle: .alert)
+        let vc = LeaveGroupPopUp()
+        vc.message = message
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
         
-        let leaveAction = UIAlertAction(title: NSLocalizedString("LEAVE_BUTTON_TITLE", comment: "Confirmation button within contextual alert"),
-                                        style: .destructive) { _ in
-            self.leaveGroup()
-        }
-        //        leaveAction.accessibilityIdentifier = ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, "leave_group_confirm")
-        alert.addAction(leaveAction)
-        alert.addAction(OWSAlerts.cancelAction)
-        
-        if let leaveButton = alert.actions.first {
-            leaveButton.setValue(UIColor(red: 0.41, green: 2.53, blue: 0.46, alpha: 1), forKey: "titleTextColor")
-        }
-        
-        presentAlert(alert)
     }
     
     
@@ -674,6 +686,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.nameTextField.text = text.isEmpty ? contact?.name : text
         self.doneButton.isHidden = true
         self.editIconImage.isHidden = false
+    }
+    
+    @objc func leaveGroupTapped() {
+        leaveGroup()
     }
     
     
@@ -1310,6 +1326,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if indexPath.row == 6 {
+                let groupThread = self.thread as? TSGroupThread
+                if !groupThread!.isCurrentUserMemberInGroup() {
+                    cell.rightSwitch.isEnabled = false
+                }
                 if let mutedUntilDate = self.thread?.mutedUntilDate {
                     let now = Date()
                     cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0

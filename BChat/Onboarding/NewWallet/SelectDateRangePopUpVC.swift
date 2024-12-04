@@ -41,7 +41,7 @@ class SelectDateRangePopUpVC: BaseVC {
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_green"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
@@ -69,7 +69,7 @@ class SelectDateRangePopUpVC: BaseVC {
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.layer.cornerRadius = 12
+        result.layer.cornerRadius = Values.buttonRadius
         // Left Image
         let leftImageView = UIImageView(image: UIImage(named: "ic_Calendar_blue"))
         leftImageView.frame = CGRect(x: 15, y: 0, width: 20, height: 20)
@@ -104,8 +104,8 @@ class SelectDateRangePopUpVC: BaseVC {
         result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

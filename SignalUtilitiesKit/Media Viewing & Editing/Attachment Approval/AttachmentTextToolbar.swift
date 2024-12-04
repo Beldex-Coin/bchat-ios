@@ -65,7 +65,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
 
         sendButton.titleLabel?.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         sendButton.titleLabel?.textAlignment = .center
-        sendButton.tintColor = Colors.accent
+        sendButton.tintColor = Colors.bothGreenColor
 
         // Increase hit area of send button
         sendButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 8, bottom: 6, right: 8)

@@ -266,7 +266,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
             self.membersAndZombies = members.sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
             let hasContactsToAdd = !Set(ContactUtilities.getAllContacts()).subtracting(self.membersAndZombies).isEmpty
             self.addMembersButton.isUserInteractionEnabled = hasContactsToAdd
-            let color = hasContactsToAdd ? Colors.accent : Colors.text.withAlphaComponent(Values.mediumOpacity)
+            let color = hasContactsToAdd ? Colors.bothGreenColor : Colors.text.withAlphaComponent(Values.mediumOpacity)
             self.addMembersButton.layer.borderColor = color.cgColor
             self.addMembersButton.setTitleColor(color, for: UIControl.State.normal)
         }

@@ -37,6 +37,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         result.tintColor = Colors.text
         result.delegate = self
         result.showsCancelButton = true
+        result.placeholder = "Search people and groups"
         return result
     }()
     
@@ -61,17 +62,10 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
     // MARK: View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setUpGradientBackground()
-        
-        tableView.dataSource = self
-        tableView.delegate = self
-        view.addSubview(tableView)
-        tableView.pin(.leading, to: .leading, of: view)
-        tableView.pin(.top, to: .top, of: view, withInset: Values.smallSpacing)
-        tableView.pin(.trailing, to: .trailing, of: view)
-        tableView.pin(.bottom, to: .bottom, of: view)
+        view.backgroundColor = Colors.mainBackGroundColor2
 
-        navigationItem.hidesBackButton = true
+        self.title = "Search"
+        navigationItem.hidesBackButton = false
         setupNavigationBar()
     }
     
@@ -96,7 +90,22 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         searchBarContainer.set(.height, to: 44)
         searchBarContainer.set(.width, to: UIScreen.main.bounds.width - 32)
         searchBarContainer.addSubview(searchBar)
-        navigationItem.titleView = searchBarContainer
+//        navigationItem.titleView = searchBarContainer
+        
+        view.addSubview(searchBarContainer)
+        
+        searchBarContainer.pin(.leading, to: .leading, of: view)
+        searchBarContainer.pin(.top, to: .top, of: view, withInset: 8)
+        searchBarContainer.pin(.trailing, to: .trailing, of: view)
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        view.addSubview(tableView)
+        tableView.pin(.leading, to: .leading, of: view)
+        tableView.pin(.top, to: .bottom, of: searchBarContainer, withInset: Values.smallSpacing)
+        tableView.pin(.trailing, to: .trailing, of: view)
+        tableView.pin(.bottom, to: .bottom, of: view)
+        tableView.backgroundColor = Colors.mainBackGroundColor2
         
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
@@ -287,7 +296,7 @@ extension GlobalSearchViewController {
         titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         
         let container = UIView()
-        container.backgroundColor = Colors.cellBackground
+        container.backgroundColor = Colors.mainBackGroundColor2
         container.layoutMargins = UIEdgeInsets(top: Values.smallSpacing, left: Values.mediumSpacing, bottom: Values.smallSpacing, right: Values.mediumSpacing)
         container.addSubview(titleLabel)
         titleLabel.autoPinEdgesToSuperviewMargins()
@@ -369,6 +378,8 @@ extension GlobalSearchViewController {
                 let searchResult = sectionResults[safe: indexPath.row]
                 cell.threadViewModel = searchResult?.thread
                 cell.configure(snippet: searchResult?.snippet, searchText: searchResultSet.searchText)
+            
+            
                 return cell
             case .messages:
                 let sectionResults = searchResultSet.messages

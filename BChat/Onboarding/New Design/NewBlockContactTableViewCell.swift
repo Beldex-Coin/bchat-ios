@@ -59,7 +59,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor
-       result.font = Fonts.boldOpenSans(ofSize: 14)
+       result.font = Fonts.semiOpenSans(ofSize: 14)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result

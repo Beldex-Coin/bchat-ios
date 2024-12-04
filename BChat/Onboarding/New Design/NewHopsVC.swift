@@ -172,7 +172,7 @@ class NewHopsVC: BaseVC {
     lazy var filledDotView3: UIView = {
         let View = UIView()
         View.translatesAutoresizingMaskIntoConstraints = false
-        View.backgroundColor = Colors.greenColor
+        View.backgroundColor = Colors.bothGreenColor
         View.layer.cornerRadius = 8
         return View
     }()
@@ -370,7 +370,7 @@ private final class LineView2 : UIView {
         let glowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
         let glowConfiguration = UIView.CircularGlowConfiguration(size: PathVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
         result.setCircularGlow(with: glowConfiguration)
-        result.backgroundColor = Colors.accent
+        result.backgroundColor = Colors.bothGreenColor
         return result
     }()
     
@@ -433,7 +433,7 @@ private final class LineView2 : UIView {
     private func expandDot() {
         let newSize = PathVC.expandedDotSize
         let newGlowRadius: CGFloat = isLightMode ? 4 : 6
-        let newGlowColor = Colors.accent.withAlphaComponent(0.6)
+        let newGlowColor = Colors.bothGreenColor.withAlphaComponent(0.6)
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
     }
 
@@ -454,7 +454,7 @@ private final class LineView2 : UIView {
             self.dotView.layer.cornerRadius = size / 2
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
             self.dotView.setCircularGlow(with: glowConfiguration)
-            self.dotView.backgroundColor = Colors.accent
+            self.dotView.backgroundColor = Colors.bothGreenColor
         }
     }
 }

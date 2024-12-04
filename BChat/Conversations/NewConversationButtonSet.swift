@@ -218,7 +218,7 @@ final class NewConversationButtonSet : UIView {
             let glowColor = Colors.expandedButtonGlowColor
             let glowConfiguration = UIView.CircularGlowConfiguration(size: size, color: glowColor, isAnimated: true, radius: isLightMode ? 4 : 6)
             button.setCircularGlow(with: glowConfiguration)
-            button.backgroundColor = Colors.accent
+            button.backgroundColor = Colors.bothGreenColor
         }
     }
     
@@ -296,7 +296,7 @@ private final class NewConversationButton : UIImageView {
     
     private func setUpViewHierarchy(isUpdate: Bool = false) {
         let newConversationButtonCollapsedBackground = isLightMode ? UIColor(hex: 0xF5F5F5) : UIColor(hex: 0x1F1F1F)
-        backgroundColor = isMainButton ? Colors.accent : newConversationButtonCollapsedBackground
+        backgroundColor = isMainButton ? Colors.bothGreenColor : newConversationButtonCollapsedBackground
         let size = NewConversationButtonSet.collapsedButtonSize
         layer.cornerRadius = size / 2
         let glowColor = isMainButton ? Colors.expandedButtonGlowColor : (isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black)

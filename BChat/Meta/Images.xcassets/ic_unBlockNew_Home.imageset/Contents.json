@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Unavailable 1.png",
+      "filename" : "unblock.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Unavailable 1@2x.png",
+      "filename" : "unblock@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Unavailable 1@3x.png",
+      "filename" : "unblock@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

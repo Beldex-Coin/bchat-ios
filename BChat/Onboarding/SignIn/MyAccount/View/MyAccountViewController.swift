@@ -15,7 +15,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(.white, for: .normal)
         button.titleLabel!.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 18) : Fonts.boldOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
@@ -104,7 +104,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var copyForBeldexAddressButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_Newcopy"), for: .normal)
         button.addTarget(self, action: #selector(copyForBeldexAddressButtonTapped), for: .touchUpInside)
@@ -142,7 +142,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var copyForBChatIdButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "ic_Newcopy"), for: .normal)
         button.addTarget(self, action: #selector(copyForBChatIdButtonTapped), for: .touchUpInside)
@@ -170,7 +170,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var bchatLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("BCHAT_ID_NEW", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.semiOpenSans(ofSize: 14) : Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -275,7 +275,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var profilePictureLabel: UILabel = {
         let result = UILabel()
         result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 20) : Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -305,10 +305,12 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: UIControl.Event.touchUpInside)
-        result.backgroundColor = Colors.profileImageViewButtonColor
-        result.setTitleColor(Colors.profileImageViewButtonTextColor, for: .normal)
+        result.layer.borderWidth = 0.5
+        result.layer.borderColor = Colors.bothGreenColor.cgColor
+        result.backgroundColor = Colors.bothGreenWithAlpha10
+        result.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -316,10 +318,10 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var saveButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
-        result.layer.cornerRadius = 16
-        result.backgroundColor = Colors.greenColor
+        result.layer.cornerRadius = Values.buttonRadius
+        result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -328,7 +330,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var buttonStackView1: UIStackView = {
         let result = UIStackView(arrangedSubviews: [ removePictureButton, saveButton ])
         result.axis = .horizontal
-        result.spacing = 15
+        result.spacing = 8
         result.distribution = .fillEqually
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -506,7 +508,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         verifiedImageView.pin(.bottom, to: .bottom, of: profilePictureImage, withInset: 6)
         let isBnsUser = UserDefaults.standard.bool(forKey: Constants.isBnsVerifiedUser)
         profilePictureImage.layer.borderColor = Colors.bothGreenColor.cgColor
-        profilePictureImage.layer.borderWidth = isBnsUser ? 3 : 0
+        profilePictureImage.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
         verifiedImageView.isHidden = isBnsUser ? false : true
         
         if isBnsUser {
@@ -535,7 +537,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             shareButton.topAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: 36).isActive = true
 //        }
         
-        shareButton.backgroundColor = Colors.greenColor
+        shareButton.backgroundColor = Colors.bothGreenColor
         shareButton.setTitleColor(.white, for: .normal)
         // Display image
         let publicKey = getUserHexEncodedPublicKey()
@@ -610,8 +612,8 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         closeButton.layer.cornerRadius = closeButton.frame.height / 2
         copyForBeldexAddressButton.layer.cornerRadius = copyForBeldexAddressButton.frame.height / 2
         copyForBChatIdButton.layer.cornerRadius = copyForBChatIdButton.frame.height / 2
-        removePictureButton.layer.cornerRadius = removePictureButton.frame.height / 2
-        saveButton.layer.cornerRadius = saveButton.frame.height / 2
+        removePictureButton.layer.cornerRadius = Values.buttonRadius
+        saveButton.layer.cornerRadius = Values.buttonRadius
         doneButton.layer.cornerRadius = doneButton.frame.height / 2
         cameraView.layer.cornerRadius = cameraView.frame.height / 2
         cameraView2.layer.cornerRadius = cameraView2.frame.height / 2
@@ -697,7 +699,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         }
         nameTextField.becomeFirstResponder()
         nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
-        doneButton.backgroundColor = Colors.greenColor
+        doneButton.backgroundColor = Colors.bothGreenColor
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = Fonts.semiOpenSans(ofSize: 14)
         isEditingDisplayName = true

@@ -11,8 +11,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .clear
-        stackView.layer.cornerRadius = 16
-        stackView.layer.borderColor = Colors.greenColor.cgColor
+        stackView.layer.cornerRadius = Values.buttonRadius
+        stackView.layer.borderColor = Colors.bothGreenColor.cgColor
         stackView.layer.borderWidth = 1
         return stackView
     }()
@@ -51,7 +51,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     /// Payment ID Title Label
     private lazy var paymentIDTitleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.text = "Payment ID integrated"
@@ -93,7 +93,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     private lazy var maxButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("MAX_BUTTON", comment: ""), for: .normal)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothBlueColor
         button.setTitleColor(UIColor.white, for: .normal)
@@ -107,7 +107,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         let result = UITextField()
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.font = Fonts.OpenSans(ofSize: 16)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.backgroundColor = Colors.cellGroundColor2
@@ -132,7 +132,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     /// Address Book Button
     private lazy var addressBookButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Colors.greenColor
+        button.backgroundColor = Colors.bothGreenColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         button.setImage(UIImage(named: "ic_addressBook_New"), for: .normal)
@@ -175,7 +175,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     private lazy var beldexAddressBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         stackView.backgroundColor = Colors.cellGroundColor2
         return stackView
     }()
@@ -185,7 +185,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         let result = UITextView()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textAlignment = .left
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.bothGreenColor
         result.font = Fonts.OpenSans(ofSize: 13)
         result.delegate = self
         result.backgroundColor = .clear
@@ -211,7 +211,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
         button.backgroundColor = Colors.cellGroundColor2
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(flashButtonTapped), for: .touchUpInside)
         let image = UIImage(named: "ic_dropdown_sendScreen")?.scaled(to: CGSize(width: 7.53, height: 4.5))
         button.setImage(image, for: .normal)
@@ -231,7 +231,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.isLayoutMarginsRelativeArrangement = true
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
-        result.layer.cornerRadius = 6
+        result.layer.cornerRadius = Values.buttonRadius
         return result
     }()
     
@@ -242,7 +242,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
         button.backgroundColor = Colors.cellGroundColor2
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(flashButtonInsideStackViewTapped), for: .touchUpInside)
         return button
     }()
@@ -254,7 +254,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 12)
         button.backgroundColor = Colors.cellGroundColor2
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
+        button.layer.cornerRadius = Values.buttonRadius
         button.addTarget(self, action: #selector(slowButtonInsideStackViewTapped), for: .touchUpInside)
         return button
     }()
@@ -263,7 +263,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     private lazy var estimatedFeeBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.layer.cornerRadius = 8
+        stackView.layer.cornerRadius = Values.buttonRadius
         stackView.backgroundColor = .clear
         stackView.layer.borderColor = Colors.borderColor.cgColor
         stackView.layer.borderWidth = 1
@@ -285,11 +285,11 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     private lazy var sendButton: UIButton = {
         let button = UIButton()
         button.setTitle(NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: ""), for: .normal)
-        button.layer.cornerRadius = 16
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(Colors.buttonTextColor, for: .normal)
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -487,8 +487,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         
         beldexAmountTextField.keyboardType = .decimalPad
         beldexAddressTextview.returnKeyType = .done
-        beldexAmountTextField.tintColor = Colors.bchatButtonColor
-        beldexAddressTextview.tintColor = Colors.bchatButtonColor
+        beldexAmountTextField.tintColor = Colors.bothGreenColor
+        beldexAddressTextview.tintColor = Colors.bothGreenColor
         beldexAddressTextview.delegate = self
         //Keyboard Done Option
         beldexAmountTextField.addDoneButtonKeybord()
@@ -607,7 +607,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         beldexAddressTextview.resignFirstResponder()
     }
     
-    func placeHolderSeedLabel(){
+    func placeHolderSeedLabel() {
         placeholderLabel = UILabel()
         placeholderLabel.text = "Enter Address or BNS name"
         placeholderLabel.font = Fonts.OpenSans(ofSize: 13)
@@ -633,7 +633,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         let isAddressValid = isValidAddress(beldexAddressTextview.text)
         let isAmountValid = isValidAmount(beldexAmountTextField.text)
         sendButton.isEnabled = isAddressValid && isAmountValid
-        sendButton.backgroundColor = sendButton.isEnabled ? Colors.greenColor : Colors.backgroundViewColor
+        sendButton.backgroundColor = sendButton.isEnabled ? Colors.bothGreenColor : Colors.backgroundViewColor
         sendButton.setTitleColor(sendButton.isEnabled ? UIColor.white : UIColor(hex: 0x6E6E7C), for: .normal)
         sendButton.isUserInteractionEnabled = sendButton.isEnabled
     }

@@ -28,7 +28,7 @@ class BNSLinkSuccessVC: BaseVC {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.extraBoldOpenSans(ofSize: 16)
+        result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "BNS Linked Successfully!"
         return result
@@ -37,14 +37,16 @@ class BNSLinkSuccessVC: BaseVC {
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 26
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
+    
+    var bnsName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +76,7 @@ class BNSLinkSuccessVC: BaseVC {
     
     @objc private func okButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true)
+        UserDefaults.standard.set(bnsName, forKey: Constants.bnsUserName)
         UserDefaults.standard.set(true, forKey: Constants.isBnsVerifiedUser)
         NotificationCenter.default.post(name: .dismissLinkBNSPopUpNotification, object: nil)
         NotificationCenter.default.post(name: .navigateToMyAccountNotification, object: nil)

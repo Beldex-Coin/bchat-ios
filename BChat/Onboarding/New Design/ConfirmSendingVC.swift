@@ -16,7 +16,7 @@ class ConfirmSendingVC: BaseVC {
     }()
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
-        result.textColor = Colors.greenColor
+        result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Confirm Sending"
@@ -26,13 +26,13 @@ class ConfirmSendingVC: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.confirmSendingViewBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     private lazy var amountLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 14)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Amount"
         return result
@@ -46,7 +46,7 @@ class ConfirmSendingVC: BaseVC {
     private lazy var finalAmountLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 21)
+        result.font = Fonts.boldOpenSans(ofSize: 22)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.adjustsFontSizeToFitWidth = true
         return result
@@ -64,7 +64,7 @@ class ConfirmSendingVC: BaseVC {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = Colors.confirmSendingViewBackgroundColor
-        stackView.layer.cornerRadius = 12
+        stackView.layer.cornerRadius = Values.buttonRadius
         return stackView
     }()
     private lazy var addressLabel: UILabel = {
@@ -78,7 +78,7 @@ class ConfirmSendingVC: BaseVC {
     private lazy var beldexAddressLabel: UILabel = {
         let result = PaddingLabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 11)
+        result.font = Fonts.semiOpenSans(ofSize: 11)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor3
         result.paddingTop = 15
@@ -93,29 +93,31 @@ class ConfirmSendingVC: BaseVC {
     private lazy var feeLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.font = Fonts.OpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
     private lazy var okButton: UIButton = {
         let button = UIButton()
         button.setTitle("OK", for: .normal)
-        button.layer.cornerRadius = 23
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.greenColor
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 15)
-        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = Colors.bothGreenColor
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("Cancel", for: .normal)
-        button.layer.cornerRadius = 23
+        button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.boldOpenSans(ofSize: 15)
-        button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
+        button.layer.borderWidth = 0.5
+        button.layer.borderColor = Colors.bothGreenColor.cgColor
+        button.backgroundColor = Colors.bothGreenWithAlpha10
+        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -125,7 +127,7 @@ class ConfirmSendingVC: BaseVC {
         result.axis = .horizontal
         result.alignment = .center
         result.distribution = .fillEqually
-        result.spacing = 11
+        result.spacing = 8
         result.isLayoutMarginsRelativeArrangement = true
         return result
     }()

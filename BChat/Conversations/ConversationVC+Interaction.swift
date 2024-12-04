@@ -108,10 +108,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     func showBlockedModalIfNeeded() -> Bool {
         guard let thread = thread as? TSContactThread, thread.isBlocked() else { return false }
-        let blockedModal = BlockedModal(publicKey: thread.contactBChatID())
-        blockedModal.modalPresentationStyle = .overFullScreen
-        blockedModal.modalTransitionStyle = .crossDissolve
-        present(blockedModal, animated: true, completion: nil)
+        let vc = BlockContactPopUpVC()
+        vc.isBlocked = true
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
         return true
     }
 
@@ -479,7 +480,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                         if SSKPreferences.arePayAsYouChatEnabled {
                                             if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
                                                 customizeSlideToOpen.isHidden = false
-                                                inputTextView.textColor = Colors.accent
+                                                inputTextView.textColor = Colors.bothGreenColor
                                                 CustomSlideView.isFromExpandAttachment = true
                                                 NotificationCenter.default.post(name: .attachmentHiddenNotification, object: nil)
                                             } else {
@@ -567,7 +568,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let Attribute = [ NSAttributedString.Key.foregroundColor: Colors.text]
         let attributedString = NSMutableAttributedString(string: text, attributes: Attribute)
         let words = text.split(separator: " ")
-        let mentionColor = Colors.accent
+        let mentionColor = Colors.bothGreenColor
         for word in words {
             if word.hasPrefix("@") {
                 if let range = text.range(of: String(word)) {
@@ -1454,7 +1455,7 @@ extension ConversationVC {
             
         })
         Cancel.setValue(UIColor.lightGray, forKey: "titleTextColor")
-        Accept.setValue(Colors.bchatButtonColor, forKey: "titleTextColor")
+        Accept.setValue(Colors.bothGreenColor, forKey: "titleTextColor")
         alert.addAction(Accept)
         DispatchQueue.main.async(execute: {
             self.present(alert, animated: true)

@@ -365,7 +365,7 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Set up call to action button
         let callToActionButton = UIButton()
         callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        callToActionButton.setTitleColor(Colors.accent, for: UIControl.State.normal)
+        callToActionButton.setTitleColor(Colors.bothGreenColor, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
         callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)
         // Set up stack view

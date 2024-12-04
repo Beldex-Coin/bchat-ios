@@ -21,7 +21,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var displayNameLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
+        result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         return result
@@ -30,7 +30,7 @@ final class ConversationCell : UITableViewCell {
     private lazy var unreadCountView: UIView = {
         let result = UIView()
       //  result.backgroundColor = Colors.text.withAlphaComponent(Values.veryLowOpacity)
-        result.backgroundColor = Colors.bchatButtonColor
+        result.backgroundColor = Colors.bothGreenColor
         let size = ConversationCell.unreadCountViewSize
         result.set(.width, greaterThanOrEqualTo: size)
         result.set(.height, to: size)
@@ -149,7 +149,7 @@ final class ConversationCell : UITableViewCell {
     private func setUpViewHierarchy() {
         let cellHeight: CGFloat = 68
         // Background color
-        backgroundColor = Colors.cellBackgroundColor
+        backgroundColor = Colors.cellGroundColor3
         // Highlight color
         let selectedBackgroundView = UIView()
         selectedBackgroundView.backgroundColor = Colors.cellSelected
@@ -286,11 +286,14 @@ final class ConversationCell : UITableViewCell {
             }
             timestampLabel.isHidden = true
         }
-        
+        self.layer.cornerRadius = 0
+        self.layer.masksToBounds = false
         if let contactThread: TSContactThread = threadViewModel.threadRecord as? TSContactThread {
             if contactThread.isNoteToSelf() {
                 profilePictureView.isNoteToSelfImage = true
                 profilePictureView.update()
+                self.layer.cornerRadius = 34
+                self.layer.masksToBounds = true
             }
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
             // BeldexAddress view in Conversation Page (Get from DB)
@@ -300,7 +303,7 @@ final class ConversationCell : UITableViewCell {
                 profilePictureView.layer.borderColor = UIColor.clear.cgColor
                 verifiedImageView.isHidden = true
             } else {
-                profilePictureView.layer.borderWidth = isBnsUser ? 3 : 0
+                profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
                 profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
                 verifiedImageView.isHidden = isBnsUser ? false : true
             }
@@ -323,6 +326,7 @@ final class ConversationCell : UITableViewCell {
         
         let range = normalizedSnippet.range(of: searchText)
         result.addAttribute(.foregroundColor, value: Colors.text, range: range)
+        result.addAttribute(.backgroundColor, value: Colors.bothGreenColor, range: range)
         result.addAttribute(.font, value: Fonts.boldOpenSans(ofSize: fontSize), range: range)
         return result
     }

@@ -31,7 +31,7 @@ final class IncomingCallBanner: UIView, UIGestureRecognizerDelegate {
         result.setImage(image, for: UIControl.State.normal)
         result.set(.width, to: 48)
         result.set(.height, to: 48)
-        result.backgroundColor = Colors.accent
+        result.backgroundColor = Colors.bothGreenColor
         result.layer.cornerRadius = 24
         result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
         return result
