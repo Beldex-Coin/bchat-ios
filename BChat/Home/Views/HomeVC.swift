@@ -26,6 +26,12 @@ final class HomeVC : BaseVC {
     internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
     }
+    
+    private var threadsForArchivedChats: YapDatabaseViewMappings!
+    internal var threadCountForArchivedChats: UInt {
+        threadsForArchivedChats.numberOfItems(inGroup: TSArchiveGroup)
+    }
+    
     private lazy var dbConnection: YapDatabaseConnection = {
         let result = OWSPrimaryStorage.shared().newDatabaseConnection()
         result.objectCacheLimit = 500
@@ -339,6 +345,59 @@ final class HomeVC : BaseVC {
     }()
     
     
+    lazy var archivedBackGroundView: UIView = {
+        let View = UIView()
+        View.translatesAutoresizingMaskIntoConstraints = false
+        View.backgroundColor = Colors.cellGroundColor3
+        View.layer.cornerRadius = 36
+        return View
+    }()
+    
+    lazy var archivedImageView: UIImageView = {
+        let result = UIImageView()
+        result.set(.width, to: 42)
+        result.set(.height, to: 42)
+        result.contentMode = .center
+        result.image = UIImage(named: "ic_archiveBackground")
+        return result
+    }()
+    
+    lazy var archivedLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.semiOpenSans(ofSize: 14)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Archived Chats"
+        return result
+    }()
+    
+    lazy var archivedMessageCountLabel: UILabel = {
+        let result = PaddingLabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .center
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.paddingTop = 5
+        result.paddingBottom = 5
+        result.paddingLeft = 8
+        result.paddingRight = 8
+        result.layer.masksToBounds = true
+        result.layer.cornerRadius = 14
+        result.backgroundColor = Colors.noBorderColor3
+        result.text = "1"
+        return result
+    }()
+    
+    private lazy var archivedButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(archivedButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
@@ -443,6 +502,36 @@ final class HomeVC : BaseVC {
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.layer.cornerRadius = 22
         tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
+        //Archive View
+        view.addSubview(archivedBackGroundView)
+        archivedBackGroundView.addSubview(archivedImageView)
+        archivedBackGroundView.addSubview(archivedLabel)
+        archivedBackGroundView.addSubview(archivedMessageCountLabel)
+        archivedBackGroundView.addSubview(archivedButton)
+        
+        
+        NSLayoutConstraint.activate([
+            archivedBackGroundView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 25),
+            archivedBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
+            archivedBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
+            archivedBackGroundView.heightAnchor.constraint(equalToConstant: 72),
+            
+            archivedImageView.centerYAnchor.constraint(equalTo: archivedBackGroundView.centerYAnchor),
+            archivedImageView.leadingAnchor.constraint(equalTo: archivedBackGroundView.leadingAnchor, constant: 20),
+            
+            archivedLabel.centerYAnchor.constraint(equalTo: archivedBackGroundView.centerYAnchor),
+            archivedLabel.leadingAnchor.constraint(equalTo: archivedImageView.trailingAnchor, constant: 17),
+            
+            archivedMessageCountLabel.centerYAnchor.constraint(equalTo: archivedBackGroundView.centerYAnchor),
+            archivedMessageCountLabel.trailingAnchor.constraint(equalTo: archivedBackGroundView.trailingAnchor, constant: -12),
+            archivedMessageCountLabel.heightAnchor.constraint(equalToConstant: 28),
+            archivedMessageCountLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 28),
+        ])
+        
+        archivedButton.pin(to: archivedBackGroundView)
+        
+        
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -499,6 +588,13 @@ final class HomeVC : BaseVC {
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
+        
+        threadsForArchivedChats = YapDatabaseViewMappings(groups: [ TSArchiveGroup ], view: TSThreadDatabaseViewExtensionName) // The extension should be registered at this point
+        threadsForArchivedChats.setIsReversed(true, forGroup: TSArchiveGroup)
+        dbConnection.read { transaction in
+            self.threadsForArchivedChats.update(with: transaction) // Perform the initial update
+        }
+        
         // Start polling if needed (i.e. if the user just created or restored their BChat ID)
         if OWSIdentityManager.shared().identityKeyPair() != nil {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -858,7 +954,20 @@ final class HomeVC : BaseVC {
             self.threads.update(with: transaction)
         }
         threadViewModelCache.removeAll()
-        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
+        
+        dbConnection.beginLongLivedReadTransaction() // Jump to the latest commit
+        dbConnection.read { transaction in
+            self.threadsForArchivedChats.update(with: transaction)
+        }
+        
+        archivedMessageCountLabel.text = "\(threadCountForArchivedChats)"
+        if threadCountForArchivedChats > 0 {
+            archivedBackGroundView.isHidden = false
+            tableView.contentInset = UIEdgeInsets(top: 25 + 72 + 4, left: 0, bottom: 0, right: 0)
+        } else {
+            archivedBackGroundView.isHidden = true
+            tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
+        }
         tableView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
         isReloading = false
@@ -1049,6 +1158,14 @@ final class HomeVC : BaseVC {
             }
         }
     }
+    
+    // Archived Chat
+    @objc private func archivedButtonTapped(_ sender: UIButton) {
+        let vc = ArchiveChatsVC()
+        vc.syncedflag = syncedflag
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
     
     // New Chat
     @objc private func newChatButtonTapped(_ sender: UIButton) {
