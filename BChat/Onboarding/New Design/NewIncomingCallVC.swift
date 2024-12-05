@@ -932,12 +932,10 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         if peripheral.state == .poweredOn {
             bluetoothButton.isHidden = false
             isBluetoothConnectedWithDevice = true
-            enableBluetooth()
         } else {
             bluetoothButton.isHidden = true
             bluetoothButton.isSelected = false
             isBluetoothConnectedWithDevice = false
-            disableBluetooth()
         }
     }
     

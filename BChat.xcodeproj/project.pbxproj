@@ -369,6 +369,7 @@
 		81DBDA082B5FBA950006C404 /* CurrencyPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DBDA072B5FBA950006C404 /* CurrencyPopUpVC.swift */; };
 		81FBC2422B4D3E6300B2CA3D /* NewDesignSettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */; };
 		81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */; };
+		8435F04C2D00554A00458D70 /* ArchiveViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435F04B2D00554A00458D70 /* ArchiveViewCell.swift */; };
 		845355C22CEF558E00B19978 /* LeaveGroupPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
@@ -1531,6 +1532,7 @@
 		81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDesignSettingsVC.swift; sourceTree = "<group>"; };
 		81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		826CF3AB370207485081AD78 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SignalUtilitiesKit.debug.xcconfig"; sourceTree = "<group>"; };
+		8435F04B2D00554A00458D70 /* ArchiveViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewCell.swift; sourceTree = "<group>"; };
 		845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupPopUp.swift; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
@@ -2779,6 +2781,7 @@
 				8A406DDB2C101A1600E3ED4C /* HomeVCTableViewExtension.swift */,
 				8A406DDD2C101BF800E3ED4C /* HomeVCCollectionViewExtension.swift */,
 				8164424F2CC6628900D4ABA7 /* ArchiveChatsVC.swift */,
+				8435F04B2D00554A00458D70 /* ArchiveViewCell.swift */,
 				815779B72CD0861D0044248D /* NewPlusButtonChatVC.swift */,
 				815779B92CD09A6C0044248D /* NewChatTableViewCell.swift */,
 			);
@@ -5814,6 +5817,7 @@
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
 				812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
+				8435F04C2D00554A00458D70 /* ArchiveViewCell.swift in Sources */,
 				B8F5F71A25F1B35C003BF8D4 /* MediaPlaceholderView.swift in Sources */,
 				810EA2D42BF3228C00642ED6 /* LinkBNSVC.swift in Sources */,
 				341341EF2187467A00192D59 /* ConversationViewModel.m in Sources */,
@@ -7283,7 +7287,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7369,7 +7373,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (

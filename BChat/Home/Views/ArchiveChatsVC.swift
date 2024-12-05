@@ -11,7 +11,7 @@ class ArchiveChatsVC: BaseVC {
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
-        result.lineBreakMode = .byCharWrapping
+        result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -160,18 +160,18 @@ extension ArchiveChatsVC: UITableViewDataSource, UITableViewDelegate {
         
         // UnArchive
         let isArchived = thread.isArchived
-        let archive = UIContextualAction(style: .destructive, title: "UnArchive", handler: { (action, view, success) in
+        let unarchive = UIContextualAction(style: .destructive, title: "UnArchive", handler: { (action, view, success) in
             thread.isArchived = false
             thread.save()
             self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
             tableView.reloadRows(at: [indexPath], with: .fade)
             self.reload()
         })
-        archive.backgroundColor = Colors.mainBackGroundColor2
-        archive.image = UIImage(named: "ic_unarchive")
+        unarchive.backgroundColor = Colors.mainBackGroundColor2
+        unarchive.image = UIImage(named: "ic_unarchive")
         
         
-        return UISwipeActionsConfiguration(actions: [(isArchived ? archive : archive)])
+        return UISwipeActionsConfiguration(actions: [(isArchived ? unarchive : unarchive)])
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
