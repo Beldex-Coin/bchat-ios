@@ -243,17 +243,6 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
 
         hasEverAppeared = true
         
-        // Beldex: Set navigation bar background color
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = false
-        navigationBar.barTintColor = .white
-        (navigationBar as! OWSNavigationBar).respectsTheme = false
-        navigationBar.backgroundColor = .white
-        let backgroundImage = UIImage(color: .white)
-        navigationBar.setBackgroundImage(backgroundImage, for: .default)
-        
         // Since we're presenting *over* the ConversationVC, we need to `becomeFirstResponder`.
         //
         // Otherwise, the `ConversationVC.inputAccessoryView` will appear over top of us whenever
@@ -536,16 +525,6 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
             owsFailDebug("delegate was unexpectedly nil")
             return
         }
-        // Beldex: Set navigation bar background color
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = false
-        navigationBar.barTintColor = .white
-        (navigationBar as! OWSNavigationBar).respectsTheme = false
-        navigationBar.backgroundColor = .white
-        let backgroundImage = UIImage(color: .white)
-        navigationBar.setBackgroundImage(backgroundImage, for: .default)
         
         let asset: PHAsset = photoCollectionContents.asset(at: indexPath.item)
         let attachmentPromise: Promise<SignalAttachment> = photoCollectionContents.outgoingAttachment(for: asset)

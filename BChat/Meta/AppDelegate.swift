@@ -61,6 +61,9 @@ extension AppDelegate {
         var receivedCalls = Storage.shared.getReceivedCalls(for: sender, using: transaction)
         guard !receivedCalls.contains(uuid) else { return nil }
         let thread = TSContactThread.getOrCreateThread(withContactBChatID: message.sender!, transaction: transaction)
+        if thread.isArchived {
+            thread.isArchived = false
+        }
         let infoMessage = TSInfoMessage.from(message, associatedWith: thread)
         infoMessage.save(with: transaction)
         receivedCalls.insert(uuid)

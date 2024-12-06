@@ -392,6 +392,13 @@ BOOL IsNoteToSelfEnabled(void)
         self.shouldBeVisible = YES;
         [self saveWithTransaction:transaction];
     } else {
+        if ([lastMessage isKindOfClass:[TSIncomingMessage class]]) {
+            if (self.isArchived) {
+                self.isArchived = NO;
+                [self saveWithTransaction:transaction];
+                return;
+            }
+        }
         [self touchWithTransaction:transaction];
     }
 }

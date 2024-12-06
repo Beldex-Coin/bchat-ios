@@ -358,8 +358,9 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
     }
     
     @objc func inviteFriendButtonTapped(_ sender: UIButton) {
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+        
+        let appStoreURL = "https://apps.apple.com/app/id1626066143"
+        let shareVC = UIActivityViewController(activityItems: [ appStoreURL ], applicationActivities: nil)
         self.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
