@@ -97,7 +97,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     })
                 })
                 hide.backgroundColor = Colors.destructive
-                return UISwipeActionsConfiguration(actions: [hide])
+                return UISwipeActionsConfiguration(actions: [])
             default:
                 guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
                 let delete = UIContextualAction(style: .destructive, title: "Delete", handler: { (action, view, success) in
