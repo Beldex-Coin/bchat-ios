@@ -779,6 +779,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             }
         } else {
             bluetoothButton.isHidden = false
+            bluetoothButton.isSelected = true
+            disableSpeaker()
         }
         
     }

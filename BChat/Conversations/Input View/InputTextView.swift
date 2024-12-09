@@ -74,7 +74,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
 
     // MARK: Updating
     public func textViewDidChange(_ textView: UITextView) {
+        let cursorPosition = textView.selectedRange
         handleTextChanged()
+        textView.selectedRange = cursorPosition
     }
     
     private func handleTextChanged() {

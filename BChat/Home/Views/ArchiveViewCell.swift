@@ -82,7 +82,6 @@ class ArchiveViewCell: UITableViewCell {
     }()
     
     
-    
     func setUPLayout() {
         contentView.addSubview(separatorLineView)        
         contentView.addSubview(archivedBackGroundView)
