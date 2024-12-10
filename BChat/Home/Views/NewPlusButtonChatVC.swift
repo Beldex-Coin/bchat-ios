@@ -2,7 +2,7 @@
 
 import UIKit
 
-class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
+class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
@@ -217,7 +217,7 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
         return FullTextSearcher.shared
     }
     var isLoading = false
-
+    
     enum SearchSection: Int {
         case contacts
     }
@@ -305,8 +305,6 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
-        
-        
     }
     
     
@@ -318,8 +316,6 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
     override func viewWillAppear(_ animated: Bool) {
         reload()
     }
-    
-    
     
     @objc func newChatButtonTapped(_ sender: UIButton) {
         let vc = NewChatPopUpVC()
@@ -358,48 +354,9 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
     }
     
     @objc func inviteFriendButtonTapped(_ sender: UIButton) {
-        let qrCode = QRCode.generate(for: getUserHexEncodedPublicKey(), hasBackground: true)
-        let shareVC = UIActivityViewController(activityItems: [ qrCode ], applicationActivities: nil)
+        let appStoreURL = "https://apps.apple.com/app/id1626066143"
+        let shareVC = UIActivityViewController(activityItems: [ appStoreURL ], applicationActivities: nil)
         self.navigationController!.present(shareVC, animated: true, completion: nil)
-    }
-    
-    
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchResultSet.conversations.count == 0 {
-            return Int(threadCount)
-        }
-        return searchResultSet.conversations.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCell") as! NewChatTableViewCell
-        
-        if searchResultSet.conversations.count == 0 {
-            cell.threadViewModel = threadViewModel(at: indexPath.row)
-        } else {
-            let sectionResults = searchResultSet.conversations
-            let searchResult = sectionResults[safe: indexPath.row]
-            cell.threadViewModel = searchResult?.thread
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if searchResultSet.conversations.count == 0 {
-            guard let thread = self.thread(at: indexPath.row) else { return }
-            show(thread, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
-        } else {
-            let sectionResults = searchResultSet.conversations
-            guard let searchResult = sectionResults[safe: indexPath.row] else { return }
-            show(searchResult.thread.threadRecord, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
     }
     
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
@@ -417,7 +374,6 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
         self.navigationController?.view.layer.add(transition, forKey: kCATransition)
         navigationController!.pushViewController(conversationVC, animated: true)
     }
-    
     
     private var threads: YapDatabaseViewMappings!
     internal var threadViewModelCache: [String:ThreadViewModel] = [:]
@@ -465,7 +421,6 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
         }
     }
     
-    
     @objc func closeIconTapped() {
         searchTextField.text = ""
         tableView.reloadData()
@@ -507,13 +462,10 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
             }
         }
     }
- 
-    
-    
     
     
     // MARK: Update Search Results
-
+    
     var refreshTimer: Timer?
     
     private func refreshSearchResults() {
@@ -525,7 +477,7 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
     }
     
     private func updateSearchResults(searchText rawSearchText: String) {
-
+        
         let searchText = rawSearchText.stripped
         guard searchText.count > 0 else {
             searchResultSet = HomeScreenSearchResultSet.empty//defaultSearchResults
@@ -534,9 +486,9 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
             return
         }
         guard lastSearchText != searchText else { return }
-
+        
         lastSearchText = searchText
-
+        
         var searchResults: HomeScreenSearchResultSet?
         self.dbReadConnection.asyncRead({[weak self] transaction in
             guard let self = self else { return }
@@ -572,7 +524,43 @@ class NewPlusButtonChatVC: BaseVC, UITableViewDataSource, UITableViewDelegate, U
         return true
     }
     
+}
+
+
+extension NewPlusButtonChatVC: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.searchText.count == 0 {
+            return Int(threadCount)
+        }
+        return searchResultSet.conversations.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCell") as! NewChatTableViewCell
+        
+        if self.searchText.count == 0 {
+            cell.threadViewModel = threadViewModel(at: indexPath.row)
+        } else {
+            let sectionResults = searchResultSet.conversations
+            let searchResult = sectionResults[safe: indexPath.row]
+            cell.threadViewModel = searchResult?.thread
+        }
+        
+        return cell
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.searchText.count == 0 {
+            guard let thread = self.thread(at: indexPath.row) else { return }
+            show(thread, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+        } else {
+            let sectionResults = searchResultSet.conversations
+            guard let searchResult = sectionResults[safe: indexPath.row] else { return }
+            show(searchResult.thread.threadRecord, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+        }
+    }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 52
+    }
 }

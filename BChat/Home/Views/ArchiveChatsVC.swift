@@ -4,14 +4,13 @@ import UIKit
 
 class ArchiveChatsVC: BaseVC {
     
-    
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
         result.font = Fonts.OpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
-        result.lineBreakMode = .byCharWrapping
+        result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -26,7 +25,6 @@ class ArchiveChatsVC: BaseVC {
     }()
     
     var syncedflag = false
-    
     private var threads: YapDatabaseViewMappings!
     internal var threadViewModelCache: [String:ThreadViewModel] = [:]
     internal var threadCount: UInt {
@@ -47,7 +45,6 @@ class ArchiveChatsVC: BaseVC {
         self.title = "Archived Chats"
         setUpTopCornerRadius()
         view.addSubview(infoLabel)
-        
         infoLabel.text = "Chats will automatically Unarchived when new messages are received."
         NSLayoutConstraint.activate([
             infoLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
@@ -65,6 +62,9 @@ class ArchiveChatsVC: BaseVC {
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(handleYapDatabaseModifiedNotification(_:)), name: .YapDatabaseModified, object: OWSPrimaryStorage.shared().dbNotificationObject)
+        
         dbConnection.beginLongLivedReadTransaction()
         
         threads = YapDatabaseViewMappings(groups: [ TSArchiveGroup ], view: TSThreadDatabaseViewExtensionName) // The extension should be registered at this point
@@ -72,14 +72,11 @@ class ArchiveChatsVC: BaseVC {
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         reload()
     }
-    
     
     func thread(at index: Int) -> TSThread? {
         var thread: TSThread? = nil
@@ -136,6 +133,11 @@ class ArchiveChatsVC: BaseVC {
         self.navigationController?.pushViewController(conversationVC, animated: true)
     }
     
+    @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
+        AssertIsOnMainThread()
+        reload()
+    }
+    
 }
 
 
@@ -160,18 +162,18 @@ extension ArchiveChatsVC: UITableViewDataSource, UITableViewDelegate {
         
         // UnArchive
         let isArchived = thread.isArchived
-        let archive = UIContextualAction(style: .destructive, title: "UnArchive", handler: { (action, view, success) in
+        let unarchive = UIContextualAction(style: .destructive, title: "UnArchive", handler: { (action, view, success) in
             thread.isArchived = false
             thread.save()
             self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
             tableView.reloadRows(at: [indexPath], with: .fade)
             self.reload()
         })
-        archive.backgroundColor = Colors.mainBackGroundColor2
-        archive.image = UIImage(named: "ic_unarchive")
+        unarchive.backgroundColor = Colors.mainBackGroundColor2
+        unarchive.image = UIImage(named: "ic_unarchive")
         
         
-        return UISwipeActionsConfiguration(actions: [(isArchived ? archive : archive)])
+        return UISwipeActionsConfiguration(actions: [(isArchived ? unarchive : unarchive)])
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
