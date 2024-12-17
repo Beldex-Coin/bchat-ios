@@ -76,7 +76,17 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         let cursorPosition = textView.selectedRange
         handleTextChanged()
-        textView.selectedRange = cursorPosition
+        
+        let selectedRange = textView.selectedRange
+        if let startPosition = textView.position(from: textView.beginningOfDocument, offset: selectedRange.location),
+           let endPosition = textView.position(from: startPosition, offset: selectedRange.length) {
+            let textRange = textView.textRange(from: startPosition, to: endPosition)
+            let caretRect = textView.firstRect(for: textRange!)
+            UIView.performWithoutAnimation {
+                textView.setContentOffset(CGPoint(x: 0, y: caretRect.origin.y), animated: false)
+                textView.selectedRange = cursorPosition
+            }
+        }
     }
     
     private func handleTextChanged() {
