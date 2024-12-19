@@ -866,20 +866,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         bluetoothButton.isSelected = false
     }
     
-    func enableSpeakerNew() {
-        do {
-            try AVAudioSession.sharedInstance().setPreferredInput(nil)  // nil defaults to speaker
-            print("Audio routed to speaker")
-            internalSpeakerButton.isSelected = true
-            let image = UIImage(named: "speaker_enable")
-            speakerButton.setImage(image, for: .normal)
-            bluetoothButton.isHidden = true
-            isBluetoothConnectedWithDevice = false
-        } catch {
-            print("Error routing audio to speaker: \(error)")
-        }
-    }
-    
     @objc private func audioRouteDidChange(_ notification: Notification) {
         let currentSession = AVAudioSession.sharedInstance()
         let currentRoute = currentSession.currentRoute
