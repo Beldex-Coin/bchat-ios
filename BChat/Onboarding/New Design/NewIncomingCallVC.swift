@@ -889,31 +889,31 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             
             switch currentOutput.portType {
                 case .builtInSpeaker:
-                let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: .normal)
-                internalSpeakerButton.isSelected = true
+                    let image = UIImage(named: "speaker_enable")
+                    speakerButton.setImage(image, for: .normal)
+                    internalSpeakerButton.isSelected = true
                 case .headphones:
-                let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: .normal)
-                internalSpeakerButton.isSelected = true
+                    let image = UIImage(named: "speaker_enable")
+                    speakerButton.setImage(image, for: .normal)
+                    internalSpeakerButton.isSelected = true
                 case .bluetoothLE: fallthrough
                 case .bluetoothA2DP:
-                bluetoothButton.isHidden = false
-                internalSpeakerButton.isSelected = false
-                bluetoothButton.isSelected = true
-                let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    internalSpeakerButton.isSelected = false
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
                 case .bluetoothHFP:
-                bluetoothButton.isHidden = false
-                internalSpeakerButton.isSelected = false
-                bluetoothButton.isSelected = true
-                let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    internalSpeakerButton.isSelected = false
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
                 case .builtInReceiver: fallthrough
                 default:
-                let image = UIImage(named: "speaker_disable")
-                speakerButton.setImage(image, for: .normal)
-            }
+                    let image = UIImage(named: "speaker_disable")
+                    speakerButton.setImage(image, for: .normal)
+                }
         }
     }
     
