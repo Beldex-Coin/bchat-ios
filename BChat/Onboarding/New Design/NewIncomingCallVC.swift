@@ -464,28 +464,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         }
         audioSession = AVAudioSession.sharedInstance()
     }
-    
-    func toggleAudioOutput() {
-        enableBluetoothNew()
-        // Check the current audio route
-        let currentRoute = audioSession.currentRoute
-        
-        // If Bluetooth is connected, it should appear in the outputs
-        if let bluetoothOutput = currentRoute.outputs.first(where: { $0.portType == .bluetoothHFP || $0.portType == .bluetoothA2DP || $0.portType == .bluetoothLE }) {
-            // Bluetooth is connected, so we don't need to manually switch; just ensure it's active
-            enableBluetoothNew()
-            print("Bluetooth is already connected.")
-            bluetoothButton.isSelected = true
-            let image = UIImage(named: "speaker_bluetooth")
-            speakerButton.setImage(image, for: .normal)
-            bluetoothButton.isHidden = false
-            isBluetoothConnectedWithDevice = true
-            
-        } else {
-            // No Bluetooth connected, switch to speaker
-            setAudioOutputToSpeaker()
-        }
-    }
        
     func setAudioOutputToSpeaker() {
         do {
@@ -523,7 +501,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                     bluetoothButton.isHidden = false
                     isBluetoothConnectedWithDevice = true
                 } else {
-                    disableSpeakerNew()
+                    disableSpeaker()
                     print("Audio routed to Loudspeaker.")
                 }
             }
@@ -842,7 +820,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             if isSpeakerEnabled {
                 setAudioOutputToSpeaker()
             } else {
-                disableSpeakerNew()
+                disableSpeaker()
             }
         } else {
             bluetoothButton.isHidden = false
@@ -851,12 +829,12 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     @objc private func bluetoothButtonTapped(sender : UIButton) {
         speakerOptionStackView.isHidden = true
-        enableBluetoothNew()
+        enableBluetooth()
         sender.isSelected = true
         internalSpeakerButton.isSelected = false
     }
     
-    func enableBluetoothNew() {
+    func enableBluetooth() {
         do {
             try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: .allowBluetooth)
             try audioSession.setActive(true)
@@ -868,20 +846,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         }
     }
     
-    private func enableBluetooth() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
-            try AVAudioSession.sharedInstance().setActive(true)
-            bluetoothButton.isSelected = true
-            let image = UIImage(named: "speaker_bluetooth")
-            speakerButton.setImage(image, for: .normal)
-            print("Bluetooth audio enabled")
-        } catch {
-            print("Failed to enable Bluetooth audio: \(error)")
-        }
-    }
-    
-    func disableSpeakerNew() {
+    func disableSpeaker() {
         do {
             // Set the audio session to route audio to the speaker
             try audioSession.overrideOutputAudioPort(.none)
