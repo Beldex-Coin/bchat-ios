@@ -473,8 +473,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             internalSpeakerButton.isSelected = true
             let image = UIImage(named: "speaker_enable")
             speakerButton.setImage(image, for: .normal)
-            bluetoothButton.isHidden = true
-            isBluetoothConnectedWithDevice = false
         } catch {
             print("Failed to set audio output to speaker: \(error.localizedDescription)")
         }
@@ -787,12 +785,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         cameraButton.isSelected = true
         videoButton.tintColor = UIColor(hex: 0x1F1F1F)
         videoButton.backgroundColor = .white
-        let currentSession = AVAudioSession.sharedInstance()
-        do {
-            try currentSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        } catch let error as NSError {
-            print("audioSession error: \(error.localizedDescription)")
-        }
+        setAudioOutputForVideoCall()
     }
     
     
@@ -866,6 +859,29 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         bluetoothButton.isSelected = false
     }
     
+    func setAudioOutputForVideoCall() {
+        do {
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .allowBluetoothA2DP])
+            try audioSession.setActive(true)
+            if let availableInputs = audioSession.availableInputs {
+                if let bluetoothInput = availableInputs.first(where: { $0.portType == .bluetoothHFP || $0.portType == .bluetoothA2DP || $0.portType == .bluetoothLE}) {
+                    try audioSession.setPreferredInput(bluetoothInput)
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    isBluetoothConnectedWithDevice = true
+                } else {
+                    setAudioOutputToSpeaker()
+                    bluetoothButton.isHidden = true
+                    isBluetoothConnectedWithDevice = false
+                }
+            }
+        } catch {
+            print("Failed to set audio session: \(error)")
+        }
+    }
+    
     @objc private func audioRouteDidChange(_ notification: Notification) {
         let currentSession = AVAudioSession.sharedInstance()
         let currentRoute = currentSession.currentRoute
@@ -900,6 +916,30 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 let image = UIImage(named: "speaker_disable")
                 speakerButton.setImage(image, for: .normal)
             }
+        }
+        
+        guard let info = notification.userInfo,
+              let reasonValue = info[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+            return
+        }
+        
+        switch reason {
+        case .newDeviceAvailable:
+            print("New audio device connected.")
+        case .oldDeviceUnavailable:
+            print("Audio device disconnected (e.g., Bluetooth).")
+            disableSpeaker()
+            bluetoothButton.isHidden = true
+            isBluetoothConnectedWithDevice = false
+        case .categoryChange:
+            print("Audio session category changed.")
+        case .override:
+            print("Audio session override.")
+        case .wakeFromSleep:
+            print("Audio session woke from sleep.")
+        @unknown default:
+            print("Unknown audio route change.")
         }
     }
     
