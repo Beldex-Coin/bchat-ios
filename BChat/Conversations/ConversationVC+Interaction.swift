@@ -653,10 +653,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let callVC = NewIncomingCallVC(for: call)
             callVC.conversationVC = self
             snInputView.isHidden = true
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
-            callVC.conversationVC?.inputAccessoryView?.isHidden = true
-            callVC.conversationVC?.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView(self.inputAccessoryView)
+            hideInputAccessoryView(callVC.conversationVC?.inputAccessoryView)
             present(callVC, animated: true, completion: nil)
             
         } else {

@@ -181,8 +181,7 @@ extension BaseVC {
             let callVC = NewIncomingCallVC(for: call)
             if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
                 callVC.conversationVC = conversationVC
-                conversationVC.inputAccessoryView?.isHidden = true
-                conversationVC.inputAccessoryView?.alpha = 0
+                hideInputAccessoryView(conversationVC.inputAccessoryView)
             }
             presentingVC.present(callVC, animated: true, completion: nil)
         } else {
@@ -193,5 +192,9 @@ extension BaseVC {
         }
     }
     
+    func hideInputAccessoryView(_ view: UIView?) {
+        view?.isHidden = true
+        view?.alpha = 0
+    }
     
 }
