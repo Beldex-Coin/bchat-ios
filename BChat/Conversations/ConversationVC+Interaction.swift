@@ -654,7 +654,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             callVC.conversationVC = self
             snInputView.isHidden = true
             hideInputAccessoryView(self.inputAccessoryView)
-            hideInputAccessoryView(callVC.conversationVC?.inputAccessoryView)
+            if let viewController = callVC.conversationVC {
+                hideInputAccessoryView(viewController.inputAccessoryView)
+            }
             present(callVC, animated: true, completion: nil)
             
         } else {
