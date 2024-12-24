@@ -179,6 +179,10 @@ extension BaseVC {
             if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
             let callVC = NewIncomingCallVC(for: call)
+            if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
+                callVC.conversationVC = conversationVC
+                hideInputAccessoryView(conversationVC.inputAccessoryView)
+            }
             presentingVC.present(callVC, animated: true, completion: nil)
         } else {
             let vc = CallPermissionRequestModalNewVC()
@@ -188,5 +192,9 @@ extension BaseVC {
         }
     }
     
+    func hideInputAccessoryView(_ view: UIView?) {
+        view?.isHidden = true
+        view?.alpha = 0
+    }
     
 }
