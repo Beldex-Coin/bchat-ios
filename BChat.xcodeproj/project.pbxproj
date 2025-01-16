@@ -371,6 +371,9 @@
 		81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */; };
 		8435F04C2D00554A00458D70 /* ArchiveViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8435F04B2D00554A00458D70 /* ArchiveViewCell.swift */; };
 		845355C22CEF558E00B19978 /* LeaveGroupPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */; };
+		84A0E9F92D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */; };
+		84A4A4572D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */; };
+		84A4A4592D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
 		8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */; };
@@ -1535,6 +1538,9 @@
 		8435F04B2D00554A00458D70 /* ArchiveViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewCell.swift; sourceTree = "<group>"; };
 		845355C12CEF558E00B19978 /* LeaveGroupPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaveGroupPopUp.swift; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
+		84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupMemberVC.swift; sourceTree = "<group>"; };
+		84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
+		84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsSearchTableViewCell.swift; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
 		8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -2891,7 +2897,10 @@
 				812C9A302BF2007B00175FA3 /* BNSLinkSuccessVC.swift */,
 				8114932D2BF483000087B74B /* NewIncomingCallVC.swift */,
 				813B392C2BF896EC0037FD0F /* ChatSettingsVC.swift */,
+				84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */,
+				84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */,
 				811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */,
+				84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */,
 				810F96242BFDFCEC000C5DC2 /* AllMediaViewController.swift */,
 				810F96282BFE189C000C5DC2 /* SegmentedControl.swift */,
 				810F96262BFE124F000C5DC2 /* AllMediaCollectionViewCell.swift */,
@@ -5720,6 +5729,7 @@
 				8A406DDE2C101BF800E3ED4C /* HomeVCCollectionViewExtension.swift in Sources */,
 				6007B5EC28ABC9DF0004BD61 /* UIViewController+Alert.swift in Sources */,
 				3496744F2076ACD000080B5F /* LongTextViewController.swift in Sources */,
+				84A4A4592D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift in Sources */,
 				34F308A21ECB469700BB7697 /* OWSBezierPathView.m in Sources */,
 				811237172C36649900F0224C /* AddMembersViewController.swift in Sources */,
 				6098CA822A1DCD44005A5502 /* LocalRecipientDB.swift in Sources */,
@@ -5769,6 +5779,7 @@
 				6098CA672A1DCC42005A5502 /* BeldexSubAddress.m in Sources */,
 				810E3E262C11B398000FB1A1 /* ClearChatPopUp.swift in Sources */,
 				8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */,
+				84A4A4572D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift in Sources */,
 				6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */,
 				8A5A0B4A2C05913300288474 /* HostType.swift in Sources */,
 				81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */,
@@ -5970,6 +5981,7 @@
 				6049BEF32B58E854003DD410 /* WalletSendNewVC.swift in Sources */,
 				6049BEFD2B5F8BEA003DD410 /* WalletSettingsNewVC.swift in Sources */,
 				C328254025CA55880062D0A7 /* ContextMenuVC.swift in Sources */,
+				84A0E9F92D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift in Sources */,
 				3427C64320F500E000EEC730 /* OWSMessageTimerView.m in Sources */,
 				B90418E6183E9DD40038554A /* DateUtil.m in Sources */,
 				608D65A42B3C02C200EB88AB /* RestoreNameVC.swift in Sources */,
@@ -7287,7 +7299,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7373,7 +7385,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
