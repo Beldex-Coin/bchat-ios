@@ -193,6 +193,11 @@ extension MessageSender {
         let updateInfo = group.getInfoStringAboutUpdate(to: newGroupModel)
         let infoMessage = TSInfoMessage(timestamp: NSDate.ows_millisecondTimeStamp(), in: thread, messageType: .groupUpdated, customMessage: updateInfo)
         infoMessage.save(with: transaction)
+        
+        Storage.shared.addClosedGroupPublicKey(groupPublicKey, using: transaction)
+        Storage.shared.addClosedGroupEncryptionKeyPair(encryptionKeyPair, for: groupPublicKey, using: transaction)
+        ClosedGroupPoller.shared.startPolling(for: groupPublicKey)
+        
         // Return
         return Promise.value(())
     }

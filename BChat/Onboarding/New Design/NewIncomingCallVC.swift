@@ -23,6 +23,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.delegate = self
         return result
     }()
+    var isVideoSwapped = false
     
     var audioSession: AVAudioSession!
     
@@ -50,6 +51,8 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         result.set(.width, to: LocalVideoView.width)
         result.set(.height, to: LocalVideoView.height)
         result.makeViewDraggable()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(smallVideoViewTapped))
+        result.addGestureRecognizer(tapGestureRecognizer)
         return result
     }()
     
@@ -231,7 +234,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         
     private lazy var cameraButton: UIButton = { //switchCameraButton
         let result = UIButton(type: .custom)
-        let image = UIImage(named: "cameraRotate_disable")
+        let image = UIImage(named: "cameraRotate_enable")
         result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "cameraRotate_enable")
         result.setImage(imageSelected, for: .selected)
@@ -565,7 +568,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
-        localVideoView.removeFromSuperview()
+//        localVideoView.removeFromSuperview()
     }
     
     @objc private func pop() {
@@ -636,6 +639,19 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
                 self.callDurationLabel.isHidden = false
                 NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             }
+        }
+    }
+    
+    @objc private func smallVideoViewTapped() {
+        isVideoSwapped.toggle()
+        if isVideoSwapped {
+            call.removeRemoteVideoRenderer(remoteVideoView)
+            call.attachRemoteVideoRenderer(localVideoView)
+            call.attachLocalVideoRenderer(remoteVideoView)
+        } else {
+            call.removeRemoteVideoRenderer(localVideoView)
+            call.attachRemoteVideoRenderer(remoteVideoView)
+            call.attachLocalVideoRenderer(localVideoView)
         }
     }
     
@@ -890,32 +906,33 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             latestKnownAudioOutputDeviceName = currentOutput.portName
             
             switch currentOutput.portType {
-                case .builtInSpeaker:
-                    let image = UIImage(named: "speaker_enable")
-                    speakerButton.setImage(image, for: .normal)
-                    internalSpeakerButton.isSelected = true
-                case .headphones:
-                    let image = UIImage(named: "speaker_enable")
-                    speakerButton.setImage(image, for: .normal)
-                    internalSpeakerButton.isSelected = true
-                case .bluetoothLE: fallthrough
-                case .bluetoothA2DP:
-                    bluetoothButton.isHidden = false
-                    internalSpeakerButton.isSelected = false
-                    bluetoothButton.isSelected = true
-                    let image = UIImage(named: "speaker_bluetooth")
-                    speakerButton.setImage(image, for: .normal)
-                case .bluetoothHFP:
-                    bluetoothButton.isHidden = false
-                    internalSpeakerButton.isSelected = false
-                    bluetoothButton.isSelected = true
-                    let image = UIImage(named: "speaker_bluetooth")
-                    speakerButton.setImage(image, for: .normal)
-                case .builtInReceiver: fallthrough
-                default:
-                    let image = UIImage(named: "speaker_disable")
-                    speakerButton.setImage(image, for: .normal)
-                }
+            case .builtInSpeaker:
+                let image = UIImage(named: "speaker_enable")
+                speakerButton.setImage(image, for: .normal)
+                internalSpeakerButton.isSelected = true
+            case .headphones:
+                let image = UIImage(named: "speaker_enable")
+                speakerButton.setImage(image, for: .normal)
+                internalSpeakerButton.isSelected = true
+            case .bluetoothLE: fallthrough
+            case .bluetoothA2DP:
+                bluetoothButton.isHidden = false
+                internalSpeakerButton.isSelected = false
+                bluetoothButton.isSelected = true
+                let image = UIImage(named: "speaker_bluetooth")
+                speakerButton.setImage(image, for: .normal)
+            case .bluetoothHFP:
+                bluetoothButton.isHidden = false
+                internalSpeakerButton.isSelected = false
+                bluetoothButton.isSelected = true
+                let image = UIImage(named: "speaker_bluetooth")
+                speakerButton.setImage(image, for: .normal)
+            case .builtInReceiver: fallthrough
+            default:
+                let image = UIImage(named: "speaker_disable")
+                speakerButton.setImage(image, for: .normal)
+            }
+
         }
         
         guard let info = notification.userInfo,
