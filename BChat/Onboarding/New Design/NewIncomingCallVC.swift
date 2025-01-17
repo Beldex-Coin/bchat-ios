@@ -45,7 +45,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     
     private lazy var localVideoView: LocalVideoView = {
         let result = LocalVideoView()
-        result.isHidden = !call.isVideoEnabled
+//        result.isHidden = !call.isVideoEnabled
         result.layer.cornerRadius = 10
         result.layer.masksToBounds = true
         result.set(.width, to: LocalVideoView.width)
@@ -338,6 +338,16 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         return result
     }()
     
+    private lazy var muteCallLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.OpenSans(ofSize: 16)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Mute"
+        result.isHidden = true
+        return result
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -353,7 +363,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         // Local video view
         call.attachLocalVideoRenderer(localVideoView)
         
-        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView)
+        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
         callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
         buttonStackView.addArrangedSubview(answerButton)
@@ -419,6 +429,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             hangUpButtonSecond.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: -33),
             callDurationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             callDurationLabel.bottomAnchor.constraint(equalTo: hangUpButtonSecond.topAnchor, constant: -36),
+            
+            muteCallLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            muteCallLabel.bottomAnchor.constraint(equalTo: callDurationLabel.topAnchor, constant: -16),
 
             speakerOptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             speakerOptionStackView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -9),
@@ -646,10 +659,12 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
         isVideoSwapped.toggle()
         if isVideoSwapped {
             call.removeRemoteVideoRenderer(remoteVideoView)
+            call.removeLocalVideoRenderer(localVideoView)
             call.attachRemoteVideoRenderer(localVideoView)
             call.attachLocalVideoRenderer(remoteVideoView)
         } else {
             call.removeRemoteVideoRenderer(localVideoView)
+            call.removeLocalVideoRenderer(remoteVideoView)
             call.attachRemoteVideoRenderer(remoteVideoView)
             call.attachLocalVideoRenderer(localVideoView)
         }
@@ -668,6 +683,15 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
             self.remoteVideoView.alpha = self.call.isRemoteVideoEnabled ? 1 : 0
             self.voiceCallLabel.text = self.call.isVideoEnabled ? "Video Call" : "Voice Call"
             self.callerImageBackgroundView.isHidden = self.call.isVideoEnabled || self.call.isRemoteVideoEnabled
+            
+            if !self.isCallOutgoing() {
+                if self.call.isMuted {
+                    self.muteCallLabel.isHidden = true
+                } else {
+                    self.muteCallLabel.isHidden = false
+                }
+            }
+            
         }
     }
     
@@ -777,7 +801,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate {
     @objc private func videoButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         if (call.isVideoEnabled) {
-            localVideoView.isHidden = true
+//            localVideoView.isHidden = true
             cameraManager.stop()
             call.isVideoEnabled = false
             cameraButton.isEnabled = false

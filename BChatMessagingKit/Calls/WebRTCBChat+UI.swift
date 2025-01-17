@@ -6,6 +6,10 @@ extension WebRTCBChat {
         localVideoTrack.add(renderer)
     }
     
+    public func removeLocalRenderer(_ renderer: RTCVideoRenderer) {
+        localVideoTrack.remove(renderer)
+    }
+    
     public func attachRemoteRenderer(_ renderer: RTCVideoRenderer) {
         remoteVideoTrack?.add(renderer)
     }
