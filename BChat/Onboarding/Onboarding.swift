@@ -14,6 +14,7 @@ enum Onboarding {
                 let user = Contact(bchatID: x25519PublicKey)
                 user.isApproved = true
                 user.didApproveMe = true
+                user.isTrusted = true
                 Storage.shared.setContact(user, using: transaction)
             }
             switch self {

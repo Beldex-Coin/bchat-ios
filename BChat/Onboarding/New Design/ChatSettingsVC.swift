@@ -1504,6 +1504,14 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 self.didTapLeaveGroup()
             }
         }
+        
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                let vc = SearchGroupMemberVC()
+                vc.thread = self.thread
+                self.present(vc, animated: true, completion: nil)
+            }
+        }
     }
     
 }
