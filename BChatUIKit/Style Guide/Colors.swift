@@ -206,4 +206,5 @@ public final class Colors : NSObject {
     @objc public static var replyMessageColor: UIColor { UIColor(named: "078720-333333")! }
     @objc public static var bothWhiteWithAlpha60: UIColor { UIColor(named: "FFFFFF-Alpha")! }
     @objc public static var WhiteBlackWithAlpha60: UIColor { UIColor(named: "FFFFFF-333333-Alpha")! }
+    @objc public static var chatSettingsSeperatorColor: UIColor { UIColor(named: "353544-8A8A9D")! }
 }
