@@ -2195,6 +2195,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc private func handleGroupUpdatedNotification() {
         thread.reload() // Needed so that thread.isCurrentUserMemberInGroup() is up to date
         reloadInputViews()
+        navigationItem.titleView = titleView
     }
     @objc private func handleMessageSentStatusChanged() {
         DispatchQueue.main.async {

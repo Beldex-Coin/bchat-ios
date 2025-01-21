@@ -78,7 +78,7 @@ class RemoteVideoView: TargetView {
 
 class LocalVideoView: TargetView {
     
-    static let width: CGFloat = 80
+    static let width: CGFloat = 116
     static let height: CGFloat = 173
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
@@ -90,7 +90,7 @@ class LocalVideoView: TargetView {
             self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
 #if targetEnvironment(simulator)
 #else
-            self.videoContentMode = .scaleAspectFill
+            self.videoContentMode = .scaleAspectFit
 #endif
         }
     }
