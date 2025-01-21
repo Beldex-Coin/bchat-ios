@@ -285,6 +285,10 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         webRTCBChat.attachLocalRenderer(renderer)
     }
     
+    func removeLocalVideoRenderer(_ renderer: RTCVideoRenderer) {
+        webRTCBChat.removeLocalRenderer(renderer)
+    }
+    
     // MARK: Delegate
     public func webRTCIsConnected() {
         self.invalidateTimeoutTimer()
