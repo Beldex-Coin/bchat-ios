@@ -33,7 +33,6 @@ public class MessageRequestsMigration : OWSDatabaseMigration {
                     if let contact: Contact = Storage.shared.getContact(with: bchatid) {
                         contact.isApproved = true
                         contact.didApproveMe = true
-                        contact.isTrusted = true
                         contacts.insert(contact)
                     }
                 }

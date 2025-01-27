@@ -111,7 +111,7 @@ class ChatSettingsSearchTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         contentView.addSubview(backGroundView)
         backGroundView.addSubViews(searchTextField)
-                
+        searchTextField.isUserInteractionEnabled = false
         NSLayoutConstraint.activate([
             backGroundView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             backGroundView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),

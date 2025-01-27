@@ -301,7 +301,6 @@ extension MessageSender {
             thread.removeAllThreadInteractions(with: transaction)
             thread.remove(with: transaction)
         }
-        ClosedGroupPoller.shared.startPolling(for: groupPublicKey)
         // Return
         return promise
     }
