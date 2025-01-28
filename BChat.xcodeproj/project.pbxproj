@@ -374,6 +374,7 @@
 		84A0E9F92D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */; };
 		84A4A4572D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */; };
 		84A4A4592D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */; };
+		84ABEDED2D48DC6B005E25B0 /* UserInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
 		8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */; };
@@ -1541,6 +1542,7 @@
 		84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupMemberVC.swift; sourceTree = "<group>"; };
 		84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsSearchTableViewCell.swift; sourceTree = "<group>"; };
+		84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoPopUp.swift; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
 		8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -2901,6 +2903,7 @@
 				84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */,
 				811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */,
 				84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */,
+				84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */,
 				810F96242BFDFCEC000C5DC2 /* AllMediaViewController.swift */,
 				810F96282BFE189C000C5DC2 /* SegmentedControl.swift */,
 				810F96262BFE124F000C5DC2 /* AllMediaCollectionViewCell.swift */,
@@ -5659,6 +5662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8041AA725C90927003C2166 /* TypingIndicatorCell.swift in Sources */,
+				84ABEDED2D48DC6B005E25B0 /* UserInfoPopUp.swift in Sources */,
 				6098CA692A1DCC42005A5502 /* BeldexTrxHistory.m in Sources */,
 				B8CCF63723961D6D0091D419 /* NewDMVC.swift in Sources */,
 				452EC6DF205E9E30000E787C /* MediaGalleryViewController.swift in Sources */,

@@ -1062,7 +1062,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 return 5
             }
         } else {
-            return filterDict.count + 1
+            return filteredUsers.count + 1
         }
     }
     
@@ -1846,6 +1846,16 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 let vc = SearchGroupMemberVC()
                 vc.thread = self.thread
                 self.present(vc, animated: true, completion: nil)
+            } else {
+                let publicKey = filteredUsers[indexPath.row - 1]
+                let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
+                let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+                let vc = UserInfoPopUp()
+                vc.thread = thread
+                vc.name = name
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                present(vc, animated: true, completion: nil)
             }
         }
     }
