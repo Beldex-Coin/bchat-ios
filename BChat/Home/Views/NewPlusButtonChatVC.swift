@@ -68,6 +68,9 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
         result.set(.height, to: 36)
         result.layer.masksToBounds = true
         result.contentMode = .center
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newChatButtonTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGestureRecognizer)
         return result
     }()
     
@@ -102,6 +105,9 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
         result.set(.height, to: 36)
         result.layer.masksToBounds = true
         result.contentMode = .center
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(secretGroupButtonTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGestureRecognizer)
         return result
     }()
     
@@ -123,6 +129,9 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
         result.set(.height, to: 36)
         result.layer.masksToBounds = true
         result.contentMode = .center
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(socialGroupButtonTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGestureRecognizer)
         return result
     }()
     
@@ -144,6 +153,9 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
         result.set(.height, to: 36)
         result.layer.masksToBounds = true
         result.contentMode = .center
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(noteToSelfButtonTapped))
+        result.isUserInteractionEnabled = true
+        result.addGestureRecognizer(tapGestureRecognizer)
         return result
     }()
     
@@ -199,7 +211,6 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
     internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
     }
-    
     
     @objc public var searchText = "" {
         didSet {

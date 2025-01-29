@@ -164,6 +164,7 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
     
     
     @objc private func closeButtonTapped(_ sender: UIButton) {
+        self.searchTextField.resignFirstResponder()
         self.dismiss(animated: true)
     }
     

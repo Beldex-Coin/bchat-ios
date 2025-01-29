@@ -297,12 +297,10 @@ extension MessageSender {
         let updateInfo = group.getInfoStringAboutUpdate(to: newGroupModel)
         let infoMessage = TSInfoMessage(timestamp: NSDate.ows_millisecondTimeStamp(), in: thread, messageType: .groupCurrentUserLeft, customMessage: updateInfo)
         infoMessage.save(with: transaction)
-        
         if isCurrentUserAdmin {
             thread.removeAllThreadInteractions(with: transaction)
             thread.remove(with: transaction)
         }
-        
         // Return
         return promise
     }
