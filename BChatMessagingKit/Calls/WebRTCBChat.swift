@@ -9,6 +9,7 @@ public protocol WebRTCBChatDelegate : AnyObject {
     func dataChannelDidOpen()
     func didReceiveHangUpSignal()
     func reconnectIfNeeded()
+    func isAudioMuted(isAudioMuted: Bool)
 }
 
 /// See https://webrtc.org/getting-started/overview for more information.
@@ -314,10 +315,12 @@ extension WebRTCBChat {
     
     public func mute() {
         audioTrack.isEnabled = false
+        sendJSON(["audio": false])
     }
     
     public func unmute() {
         audioTrack.isEnabled = true
+        sendJSON(["audio": true])
     }
     
     public func turnOffVideo() {

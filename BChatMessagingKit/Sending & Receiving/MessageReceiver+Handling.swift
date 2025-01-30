@@ -340,6 +340,7 @@ extension MessageReceiver {
             }
             currentWebRTCBChat.handleICECandidates(candidates)
         case .endCall:
+            //?????????????? END CALL NOTIFICATION
             SNLog("[Calls] Received end call message.")
             guard WebRTCBChat.current?.uuid == message.uuid! else { return }
             handleEndCallMessage?(message)

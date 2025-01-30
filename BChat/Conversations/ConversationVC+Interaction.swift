@@ -961,11 +961,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func report(_ viewItem: ConversationViewItem) {
-        let uiAlert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
-        self.present(uiAlert, animated: true, completion: nil)
-        uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        let alert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
+        self.present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
         }))
-        uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
         }))
     }
     
@@ -1038,6 +1038,31 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let publicKey = message.authorId
             guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
             OpenGroupAPIV2.banAndDeleteAllMessages(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        presentAlert(alert)
+    }
+    
+    func messageBanAction(_ viewItem: ConversationViewItem, isOnlyBan: Bool) {
+        guard let conversationMessage = viewItem.interaction as? TSIncomingMessage, conversationMessage.isOpenGroupMessage else { return }
+        let message = isOnlyBan ? "This will ban the selected user from this room. It won't ban them from other rooms." :
+        "This will ban the selected user from this room and delete all messages sent by them. It won't ban them from other rooms or delete the messages they sent there."
+        showBanAlertController(message: message) { _ in
+            let publicKey = conversationMessage.authorId
+            guard let threadID = self.thread.uniqueId else { return }
+            guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
+            if isOnlyBan {
+                OpenGroupAPIV2.ban(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+            } else {
+                OpenGroupAPIV2.banAndDeleteAllMessages(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+            }
+        }
+    }
+    
+    func showBanAlertController(message: String, completion: @escaping (Bool) -> ()) {
+        let alert = UIAlertController(title: "BChat", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            completion(true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         presentAlert(alert)

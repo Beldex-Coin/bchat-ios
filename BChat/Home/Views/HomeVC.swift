@@ -108,7 +108,7 @@ final class HomeVC : BaseVC {
         return theImageView
     }()
     
-    var type = HostManager.shared.hostType.hostValue
+    var hostType = HostManager.shared.hostType.hostValue
     var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()

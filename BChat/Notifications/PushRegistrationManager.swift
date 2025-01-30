@@ -147,19 +147,19 @@ public enum PushRegistrationError: Error {
 
         return promiseWithTimeout.recover { error -> Promise<Data> in
             switch error {
-            case PushRegistrationError.timeout:
-                if self.isSusceptibleToFailedPushRegistration {
-                    // If we've timed out on a device known to be susceptible to failures, quit trying
-                    // so the user doesn't remain indefinitely hung for no good reason.
-                    throw PushRegistrationError.pushNotSupported(description: "Device configuration disallows push notifications")
-                } else {
-                    // Sometimes registration can just take a while.
-                    // If we're not on a device known to be susceptible to push registration failure,
-                    // just return the original promise.
-                    return promise
-                }
-            default:
-                throw error
+                case PushRegistrationError.timeout:
+                    if self.isSusceptibleToFailedPushRegistration {
+                        // If we've timed out on a device known to be susceptible to failures, quit trying
+                        // so the user doesn't remain indefinitely hung for no good reason.
+                        throw PushRegistrationError.pushNotSupported(description: "Device configuration disallows push notifications")
+                    } else {
+                        // Sometimes registration can just take a while.
+                        // If we're not on a device known to be susceptible to push registration failure,
+                        // just return the original promise.
+                        return promise
+                    }
+                default:
+                    throw error
             }
         }.map { (pushTokenData: Data) -> String in
             if self.isSusceptibleToFailedPushRegistration {

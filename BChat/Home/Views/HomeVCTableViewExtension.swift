@@ -34,12 +34,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         self.messageCollectionView.isHidden = true
         
         switch section {
-            case 0:
-            if threadCountForArchivedChats > 0 {
-                return 1
-            } else {
-                return 0
-            }
+            case 0: return threadCountForArchivedChats > 0 ? 1 : 0
             case 1: return Int(threadCount)
             default: return 0
         }
@@ -48,9 +43,9 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
             case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ArchiveViewCell") as! ArchiveViewCell
-            cell.archivedMessageCountLabel.text = "\(threadCountForArchivedChats)"
-            return cell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ArchiveViewCell") as! ArchiveViewCell
+                cell.archivedMessageCountLabel.text = "\(threadCountForArchivedChats)"
+                return cell
                 
             default:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeTableViewCell") as! HomeTableViewCell
@@ -65,7 +60,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.section {
             case 0:
-            archivedButtonTapped()
+                archivedButtonTapped()
                 return
             default:
                 guard let thread = self.thread(at: indexPath.row) else { return }

@@ -274,8 +274,7 @@ class HomeTableViewCell: UITableViewCell {
                         }
                     }
                 }
-                if rawSnippet.isEmpty {
-                } else {
+                if !rawSnippet.isEmpty {
                     lastMessageLabel.attributedText = getHighlightedSnippet(snippet: rawSnippet, searchText: normalizedSearchText, fontSize: 12)
                 }
             } else {
@@ -388,16 +387,14 @@ class HomeTableViewCell: UITableViewCell {
         if threadViewModel.isGroupThread {
             if threadViewModel.name.isEmpty {
                 return "Unknown Group"
-            }
-            else {
+            } else {
                 return threadViewModel.name
             }
         }
         else {
             if threadViewModel.threadRecord.isNoteToSelf() {
                 return NSLocalizedString("NOTE_TO_SELF", comment: "")
-            }
-            else {
+            } else {
                 let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
                 let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
                 let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"

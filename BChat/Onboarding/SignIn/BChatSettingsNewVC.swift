@@ -317,82 +317,71 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40)
+        let rect = CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50)
         let footerView = UIView(frame:rect)
         footerView.backgroundColor = Colors.viewBackgroundColorNew
         let label = UILabel()
         label.text = sectionNames[section]
         label.textColor = Colors.bothGreenColor
-        label.frame = CGRect(x: 30, y: 5, width: tableView.frame.width - 30, height: 30)
+        label.frame = CGRect(x: 30, y: 10, width: tableView.frame.width - 30, height: 40)
         label.font = Fonts.semiOpenSans(ofSize: 16)
         footerView.addSubview(label)
         return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40 // Set the height of the header view as needed
+        return 50 // Set the height of the header view as needed
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return UITableView.automaticDimension
-        } else if indexPath.section == 1 {
-            return UITableView.automaticDimension
-        } else {
-            return UITableView.automaticDimension
-        }
+//        if indexPath.section == 0 {
+//            return UITableView.automaticDimension
+//        } else if indexPath.section == 1 {
+//            return UITableView.automaticDimension
+//        } else {
+//            return UITableView.automaticDimension
+//        }
+        
+        UITableView.automaticDimension
     }
     
     // Screen Lock
     @objc func screenLockSwitchValueChanged(_ sender: UISwitch) {
-        let shouldBeEnabled = sender.isOn
-        if (sender.isOn) {
-            sender.thumbTintColor = Colors.bothGreenColor
-        } else {
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        if shouldBeEnabled == OWSScreenLock.shared.isScreenLockEnabled() {
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        if isSwitchOn == OWSScreenLock.shared.isScreenLockEnabled() {
             print("ignoring redundant screen lock.")
             return
         }
-        print("trying to set is screen lock enabled:\(shouldBeEnabled)")
-        OWSScreenLock.shared.setIsScreenLockEnabled(shouldBeEnabled)
+        print("trying to set is screen lock enabled:\(isSwitchOn)")
+        OWSScreenLock.shared.setIsScreenLockEnabled(isSwitchOn)
         tableView.reloadData()
     }
+    
     // Disable Preview in App Switcher
     @objc func disablePreviewInAppSwitcherSwitchValueChanged(_ sender: UISwitch) {
-        let isEnabled = sender.isOn
-        if (sender.isOn) {
-            sender.thumbTintColor = Colors.bothGreenColor
-        } else {
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        print("toggled screen security: \(isEnabled ? "true" : "false")")
-        Environment.shared.preferences.setScreenSecurity(isEnabled)
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        print("toggled screen security: \(isSwitchOn ? "true" : "false")")
+        Environment.shared.preferences.setScreenSecurity(isSwitchOn)
     }
+    
     // Start Wallet
     @objc func startWalletSwitchValueChanged(_ sender: UISwitch) {
-        let isEnabled = sender.isOn
-        if (sender.isOn) {
-            sender.thumbTintColor = Colors.bothGreenColor
-        } else {
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        print("toggled to: \(isEnabled ? "true" : "false")")
-        SSKPreferences.areWalletEnabled = isEnabled
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        print("toggled to: \(isSwitchOn ? "true" : "false")")
+        SSKPreferences.areWalletEnabled = isSwitchOn
         tableView.reloadData()
     }
+    
     // Pay As You Chat
     @objc func payAsYouChatSwitchValueChanged(_ sender: UISwitch) {
-        if (sender.isOn) {
-            sender.thumbTintColor = Colors.bothGreenColor
-        } else {
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
+        sender.thumbTintColor = sender.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
         let prefs = UserDefaults.standard
         if let myString = prefs.string(forKey: "WalletPassword"), !myString.isEmpty {
             let isEnabled = sender.isOn
@@ -439,51 +428,35 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     // Read Receipts
     @objc func readReceiptsSwitchValueChanged(_ sender: UISwitch) {
-        let isEnabled = sender.isOn
-        if (sender.isOn){
-            sender.thumbTintColor = Colors.bothGreenColor
-        }else{
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        print("toggled areReadReceiptsEnabled: \(isEnabled ? "true" : "false")")
-        OWSReadReceiptManager.shared().setAreReadReceiptsEnabled(isEnabled)
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        print("toggled areReadReceiptsEnabled: \(isSwitchOn ? "true" : "false")")
+        OWSReadReceiptManager.shared().setAreReadReceiptsEnabled(isSwitchOn)
     }
     // Type Indicators
     @objc func typeIndicatorsSwitchValueChanged(_ sender: UISwitch) {
-        let isEnabled = sender.isOn
-        if (sender.isOn){
-            sender.thumbTintColor = Colors.bothGreenColor
-        }else{
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        print("toggled areTypingIndicatorsEnabled: \(isEnabled ? "true" : "false")")
-        SSKEnvironment.shared.typingIndicators.setTypingIndicatorsEnabled(value: isEnabled)
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        print("toggled areTypingIndicatorsEnabled: \(isSwitchOn ? "true" : "false")")
+        SSKEnvironment.shared.typingIndicators.setTypingIndicatorsEnabled(value: isSwitchOn)
     }
     // Send Link Previews
     @objc func sendLinkPreviewsSwitchValueChanged(_ sender: UISwitch) {
-        let isEnabled = sender.isOn
-        if (sender.isOn){
-            sender.thumbTintColor = Colors.bothGreenColor
-        }else{
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        print("toggled to: \(isEnabled ? "true" : "false")")
-        SSKPreferences.areLinkPreviewsEnabled = isEnabled
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        print("toggled to: \(isSwitchOn ? "true" : "false")")
+        SSKPreferences.areLinkPreviewsEnabled = isSwitchOn
     }
     // Voice And Video Calls
     @objc func voiceAndVideoCallsSwitchValueChanged(_ sender: UISwitch) {
         let userDefaults = UserDefaults.standard
-        let isEnabled = sender.isOn
-        if (sender.isOn){
-            sender.thumbTintColor = Colors.bothGreenColor
-        }else{
-            sender.thumbTintColor = Colors.switchOffBackgroundColor
-        }
-        if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        if isSwitchOn && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
             userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
             let modal = CallPermissionPopUp { [weak self] in
                 guard let self = self else { return }
-                print("toggled to: \(isEnabled ? "true" : "OFF")")
+                print("toggled to: \(isSwitchOn ? "true" : "OFF")")
                 let audioSession = AVAudioSession.sharedInstance()
                 if audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:))) {
                     audioSession.requestRecordPermission({ granted in
@@ -509,8 +482,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }
             present(modal, animated: true, completion: nil)
         } else {
-            print("toggled to: \(isEnabled ? "true" : "false")")
-            SSKPreferences.areCallsEnabled = isEnabled
+            print("toggled to: \(isSwitchOn ? "true" : "false")")
+            SSKPreferences.areCallsEnabled = isSwitchOn
         }
     }
     

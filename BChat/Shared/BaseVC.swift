@@ -38,12 +38,7 @@ class BaseVC : UIViewController {
     
     internal func ensureWindowBackground() {
         let appMode = AppModeManager.shared.currentAppMode
-        switch appMode {
-            case .light:
-                UIApplication.shared.delegate?.window??.backgroundColor = .white
-            case .dark:
-                UIApplication.shared.delegate?.window??.backgroundColor = .black
-        }
+        UIApplication.shared.delegate?.window??.backgroundColor = appMode == .light ? .white : .black
     }
 
     internal func setUpGradientBackground() {
@@ -176,7 +171,7 @@ extension BaseVC {
             requestMicrophonePermissionIfNeeded { }
             guard let call = AppEnvironment.shared.callManager.currentCall else { return }
             guard MiniCallView.current == nil else { return }
-            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
             let callVC = NewIncomingCallVC(for: call)
             if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {

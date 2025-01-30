@@ -19,7 +19,7 @@ extension NewIncomingCallVC : CameraManagerDelegate {
         }()
         let frame = RTCVideoFrame(buffer: rtcPixelBuffer, rotation: rotation, timeStampNs: timestampNs)
         frame.timeStamp = Int32(timestamp)
-        call.webRTCBChat.handleLocalFrameCaptured(frame)
+        bChatCall.webRTCBChat.handleLocalFrameCaptured(frame)
     }
 }
 

@@ -42,6 +42,12 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         }
     }
     
+    var isRemoteAudioMuted = false {
+        didSet {
+            remoteAudioMuted?(isRemoteAudioMuted)
+        }
+    }
+    
     var isMuted = false {
         willSet {
             if newValue {
@@ -120,6 +126,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     var remoteVideoStateDidChange: ((Bool) -> Void)?
     var hasStartedReconnecting: (() -> Void)?
     var hasReconnected: (() -> Void)?
+    var remoteAudioMuted: ((Bool) -> Void)?
     
     // MARK: Derived Properties
     var hasStartedConnecting: Bool {
@@ -303,6 +310,10 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     
     public func isRemoteVideoDidChange(isEnabled: Bool) {
         isRemoteVideoEnabled = isEnabled
+    }
+    
+    public func isAudioMuted(isAudioMuted: Bool) {
+        isRemoteAudioMuted = isAudioMuted
     }
     
     public func didReceiveHangUpSignal() {
