@@ -2,7 +2,7 @@
 
 import UIKit
 
-class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
+class NewChatVC: BaseVC, UITextFieldDelegate {
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
@@ -538,7 +538,7 @@ class NewPlusButtonChatVC: BaseVC, UITextFieldDelegate {
 }
 
 
-extension NewPlusButtonChatVC: UITableViewDataSource, UITableViewDelegate {
+extension NewChatVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.searchText.count == 0 {
             return Int(threadCount)
@@ -574,4 +574,9 @@ extension NewPlusButtonChatVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 52
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
 }
