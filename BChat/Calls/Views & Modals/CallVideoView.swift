@@ -14,7 +14,6 @@ typealias TargetView = RTCMTLVideoView
 class RemoteVideoView: TargetView {
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
-        debugPrint("Remote View frame == \(frame?.width) --- \(frame?.height)")
         super.renderFrame(frame)
         guard let frame = frame else { return }
         

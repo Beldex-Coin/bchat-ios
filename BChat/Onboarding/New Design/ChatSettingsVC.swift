@@ -806,7 +806,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 deletedDocuments = documentsDecoded
             }
             deletedDocuments.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+                debugPrint("document contentType - \(document.contentType) timestamp - \(document.createdTimeStamp)")
             }
         }
         

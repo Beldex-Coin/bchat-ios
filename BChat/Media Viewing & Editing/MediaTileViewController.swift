@@ -295,7 +295,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             self.collectionView.reloadData()
             documents.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+                debugPrint("document contentType - \(document.contentType) timestamp - \(document.createdTimeStamp)")
             }
         }
     }
@@ -310,7 +310,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 deletedDocuments = documentsDecoded
             }
             deletedDocuments.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
+                debugPrint("document contentType - \(document.contentType) timestamp - \(document.createdTimeStamp)")
             }
         }
         
