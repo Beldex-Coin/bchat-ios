@@ -23,9 +23,11 @@ class RemoteVideoView: TargetView {
             let frameRotation = frame.rotation
             let deviceRotation = UIDevice.current.orientation
             var rotationOverride: RTCVideoRotation? = nil
+            self.videoContentMode = .scaleAspectFit
             switch deviceRotation {
                 case .portrait, .portraitUpsideDown:
                     // We don't have to do anything, the renderer will automatically make sure it's right-side-up.
+                    self.videoContentMode = .scaleAspectFit
                     break
                 case .landscapeLeft:
                     switch frameRotation {
@@ -80,15 +82,19 @@ class RemoteVideoView: TargetView {
 class LocalVideoView: TargetView {
     
     static let width: CGFloat = 116
-    static let height: CGFloat = 173
+    static let height: CGFloat = 135
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
+        DispatchQueue.main.async {
+            self.backgroundColor = .red
+        }
         super.renderFrame(frame)
         DispatchMainThreadSafe {
             // This is a workaround for a weird issue that
             // sometimes the rotationOverride is not working
             // if it is only set once on initialization
             self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
+            self.videoContentMode = .scaleAspectFit
 #if targetEnvironment(simulator)
 #else
             self.videoContentMode = .scaleAspectFit

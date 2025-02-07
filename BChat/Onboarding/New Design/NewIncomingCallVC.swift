@@ -8,8 +8,7 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
-    
+final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     let bChatCall: BChatCall
     var latestKnownAudioOutputDeviceName: String?
     var durationTimer: Timer?
@@ -42,23 +41,28 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
     required init(coder: NSCoder) { preconditionFailure("Use init(for:) instead.") }
     
     
-    private lazy var localVideoView: LocalVideoView = {
-        let result = LocalVideoView()
+    private lazy var floatingLocalVideoView: LocalVideoView = {
+        let result = LocalVideoView(frame: .zero)
+        result.videoContentMode = .scaleAspectFit
         result.layer.cornerRadius = 10
+        //result.clipsToBounds = true
         result.layer.masksToBounds = true
         result.set(.width, to: LocalVideoView.width)
         result.set(.height, to: LocalVideoView.height)
         result.makeViewDraggable()
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(smallVideoViewTapped))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(swapVideo))
         result.addGestureRecognizer(tapGestureRecognizer)
+        
+        
+        result.delegate = self
+        
+        
         return result
     }()
     
     private lazy var remoteVideoView: RemoteVideoView = {
         let result = RemoteVideoView()
         result.alpha = 0
-//        result.set(.width, to: UIScreen.main.bounds.width)
-//        result.set(.height, to: UIScreen.main.bounds.height)
         result.backgroundColor = .black
         result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoteVieioViewTapped)))
         return result
@@ -353,6 +357,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if shouldRestartCamera { cameraManager.prepare() }
+        
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         view.addSubview(backgroundImageView)
         backgroundImageView.pin(to: view)
@@ -362,9 +368,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
         view.addSubview(remoteVideoView)
         remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
         remoteVideoView.pin(to: view)
-//        remoteVideoView.backgroundColor = .red
+
         // Local video view
-        bChatCall.attachLocalVideoRenderer(localVideoView)
+        bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
         
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
@@ -453,8 +459,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
             verifiedImageView.isHidden = true
         }
         
-        
-        if shouldRestartCamera { cameraManager.prepare() }
         touch(bChatCall.videoCapturer)
         callerNameLabel.text = self.bChatCall.contactName
         AppEnvironment.shared.callManager.startCall(bChatCall) { error in
@@ -537,16 +541,27 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
     }
     
     private func addLocalVideoView() {
-        let safeAreaInsets = UIApplication.shared.keyWindow!.safeAreaInsets
-        let window = CurrentAppContext().mainWindow!
-        window.addSubview(localVideoView)
-        localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: Values.smallSpacing)
-        let topMargin = safeAreaInsets.top + Values.veryLargeSpacing
-        localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
+        guard let window: UIWindow = CurrentAppContext().mainWindow else { return }
+        window.addSubview(floatingLocalVideoView)
+        floatingLocalVideoView.pin(.top, to: .top, of: window, withInset: (window.safeAreaInsets.top + Values.veryLargeSpacing))
+        floatingLocalVideoView.pin(.right, to: .right, of: window, withInset: -Values.smallSpacing)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Don't delete below lines, needs to be check
+//        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
+//        shouldRestartCamera = true
+//        addLocalVideoView()
+//        remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+//        self.conversationVC?.inputAccessoryView?.isHidden = true
+//        self.conversationVC?.inputAccessoryView?.alpha = 0
+//        setupStateChangeCallbacks()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
         shouldRestartCamera = true
         addLocalVideoView()
@@ -554,12 +569,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
         setupStateChangeCallbacks()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.conversationVC?.inputAccessoryView?.isHidden = true
-        self.conversationVC?.inputAccessoryView?.alpha = 0
         
         if bChatCall.hasConnected {
             self.incomingCallLabel.isHidden = true
@@ -583,9 +592,14 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
-        //localVideoView.removeFromSuperview()
-        localVideoView.isHidden = true
+        
+        floatingLocalVideoView.isHidden = true
+        
+        let currentCallDuration = AppEnvironment.shared.callManager.currentCall?.duration
+        if currentCallDuration == nil {
+            durationTimer?.invalidate()
+            durationTimer = nil
+        }
     }
     
     @objc private func pop() {
@@ -644,7 +658,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
         }
         self.bChatCall.hasEndedDidChange = {
             DispatchQueue.main.async {
-                debugPrint("Call Loaded with Remote Video ---- End call")
+                if (self.bChatCall.isVideoEnabled && self.shouldRestartCamera) { self.cameraManager.stop() }
                 self.durationTimer?.invalidate()
                 self.durationTimer = nil
                 self.handleEndCallMessage()
@@ -667,27 +681,24 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
         }
     }
     
-    @objc private func smallVideoViewTapped() {
+    @objc private func swapVideo() {
         isVideoSwapped.toggle()
         if isVideoSwapped {
             bChatCall.removeRemoteVideoRenderer(remoteVideoView)
-            bChatCall.removeLocalVideoRenderer(localVideoView)
-            bChatCall.attachRemoteVideoRenderer(localVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.attachLocalVideoRenderer(remoteVideoView)
         } else {
-            bChatCall.removeRemoteVideoRenderer(localVideoView)
+            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.removeLocalVideoRenderer(remoteVideoView)
             bChatCall.attachRemoteVideoRenderer(remoteVideoView)
-            bChatCall.attachLocalVideoRenderer(localVideoView)
+            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
         }
     }
     
     func updateTimer() {
-        debugPrint("Call Loaded with Remote Video ---- update timer 1")
         self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            debugPrint("Call Loaded with Remote Video ---- update timer 2")
             self.callDurationLabel.text = self.bChatCall.duration.stringFromTimeInterval()
-            NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
             self.buttonStackView.isHidden = true
             self.hangUpButtonSecond.isHidden = false
             self.bottomView.isHidden = false
@@ -697,7 +708,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
             self.remoteVideoView.alpha = self.bChatCall.isRemoteVideoEnabled ? 1 : 0
             self.voiceCallLabel.text = self.bChatCall.isVideoEnabled ? "Video Call" : "Voice Call"
             self.callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
-            //self.call.isVideoEnabled || self.call.isRemoteVideoEnabled
+            NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
     }
     
@@ -735,17 +746,20 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
     }
     
     func handleEndCallMessage() {
-        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
         //?????????????? END CALL NOTIFICATION
         SNLog("[Calls] Ending call.")
         self.incomingCallLabel.isHidden = true
         self.callDurationLabel.isHidden = true
         callDurationLabel.text = "Call Ended"
         self.alertOnCallEnding()
+        durationTimer?.invalidate()
+        durationTimer = nil
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
         Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
             self.conversationVC?.showInputAccessoryView()
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
     }
     
     @objc private func answerCall() {
@@ -814,20 +828,18 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
             cameraButton.isSelected = false
             videoButton.tintColor = .white
             videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
-            localVideoView.isHidden = true
+            floatingLocalVideoView.isHidden = true
             //localVideoView.removeFromSuperview()
         } else {
             guard requestCameraPermissionIfNeeded() else { return }
             let previewVC = VideoPreviewVC()
             previewVC.delegate = self
             present(previewVC, animated: true, completion: nil)
-            
-//            cameraDidConfirmTurningOn()
         }
     }
     
     func cameraDidConfirmTurningOn() {
-        localVideoView.isHidden = false
+        floatingLocalVideoView.isHidden = false
         cameraManager.prepare()
         cameraManager.start()
         bChatCall.isVideoEnabled = true
@@ -1013,4 +1025,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate {
         }
     }
     
+    
+    // MARK: RTCVideoViewDelegate
+    func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        videoView.setSize(floatingLocalVideoView.size)
+    }
 }

@@ -14,11 +14,11 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - Alamofire (5.9.1)
+  - Alamofire (5.10.2)
   - CocoaLumberjack (3.8.5):
     - CocoaLumberjack/Core (= 3.8.5)
   - CocoaLumberjack/Core (3.8.5)
-  - CryptoSwift (1.8.2)
+  - CryptoSwift (1.8.4)
   - Curve25519Kit (2.1.0):
     - CocoaLumberjack
     - SignalCoreKit
@@ -29,15 +29,16 @@ PODS:
   - NVActivityIndicatorView (5.2.0):
     - NVActivityIndicatorView/Base (= 5.2.0)
   - NVActivityIndicatorView/Base (5.2.0)
-  - OpenSSL-Universal (3.2.2000)
-  - PromiseKit (8.1.1):
-    - PromiseKit/CorePromise (= 8.1.1)
     - PromiseKit/Foundation (= 8.1.1)
-    - PromiseKit/UIKit (= 8.1.1)
-  - PromiseKit/CorePromise (8.1.1)
-  - PromiseKit/Foundation (8.1.1):
+  - OpenSSL-Universal (3.3.2000)
+  - PromiseKit (8.2.0):
+    - PromiseKit/CorePromise (= 8.2.0)
+    - PromiseKit/Foundation (= 8.2.0)
+    - PromiseKit/UIKit (= 8.2.0)
+  - PromiseKit/CorePromise (8.2.0)
+  - PromiseKit/Foundation (8.2.0):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (8.1.1):
+  - PromiseKit/UIKit (8.2.0):
     - PromiseKit/CorePromise
   - PureLayout (3.1.9)
   - Reachability (3.7.6)
@@ -48,10 +49,10 @@ PODS:
     - OpenSSL-Universal
   - SocketRocket (0.5.1)
   - Sodium (0.9.1)
-  - SQLCipher (4.6.0):
-    - SQLCipher/standard (= 4.6.0)
-  - SQLCipher/common (4.6.0)
-  - SQLCipher/standard (4.6.0):
+  - SQLCipher (4.6.1):
+    - SQLCipher/standard (= 4.6.1)
+  - SQLCipher/common (4.6.1)
+  - SQLCipher/standard (4.6.1):
     - SQLCipher/common
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
@@ -59,7 +60,7 @@ PODS:
   - SwiftyRSA (1.7.0):
     - SwiftyRSA/ObjC (= 1.7.0)
   - SwiftyRSA/ObjC (1.7.0)
-  - WebRTC-lib (127.0.0)
+  - WebRTC-lib (130.0.0)
   - YapDatabase/SQLCipher (3.1.1):
     - YapDatabase/SQLCipher/Core (= 3.1.1)
     - YapDatabase/SQLCipher/Extensions (= 3.1.1)
@@ -210,15 +211,15 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
-  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
-  CryptoSwift: c63a805d8bb5e5538e88af4e44bb537776af11ea
+  CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
   Curve25519Kit: e63f9859ede02438ae3defc5e1a87e09d1ec7ee6
   FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53
-  OpenSSL-Universal: f8a9c4fdab7e21cb70bda471c269e86e9212439c
-  PromiseKit: d1be44b474e5acfa16adf007a1f49f104e10fead
+  OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
+  PromiseKit: 74e6ab5894856b4762fef547055c809bca91d440
   PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
   Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
@@ -226,11 +227,11 @@ SPEC CHECKSUMS:
   SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
-  SQLCipher: 30a8e81afa6128e600b17ffa77d0f92fa05ed208
+  SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
-  WebRTC-lib: 3e56b5c5fe21b0d6b682e543c39f68c81ccc8f26
+  WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5

@@ -88,8 +88,8 @@ public extension UIView {
         translatesAutoresizingMaskIntoConstraints = false
         let constraint: NSLayoutConstraint = {
             switch dimension {
-            case .width: return widthAnchor.constraint(equalToConstant: size)
-            case .height: return heightAnchor.constraint(equalToConstant: size)
+                case .width: return widthAnchor.constraint(equalToConstant: size)
+                case .height: return heightAnchor.constraint(equalToConstant: size)
             }
         }()
         constraint.isActive = true

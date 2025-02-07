@@ -11,10 +11,10 @@ extension NewIncomingCallVC : CameraManagerDelegate {
         let timestampNs = Int64(timestamp * 1000000000)
         let rotation: RTCVideoRotation = {
             switch UIDevice.current.orientation {
-            case .landscapeRight: return RTCVideoRotation._90
-            case .portraitUpsideDown: return RTCVideoRotation._180
-            case .landscapeLeft: return RTCVideoRotation._270
-            default: return RTCVideoRotation._0
+                case .landscapeRight: return RTCVideoRotation._90
+                case .portraitUpsideDown: return RTCVideoRotation._180
+                case .landscapeLeft: return RTCVideoRotation._270
+                default: return RTCVideoRotation._0
             }
         }()
         let frame = RTCVideoFrame(buffer: rtcPixelBuffer, rotation: rotation, timeStampNs: timestampNs)
