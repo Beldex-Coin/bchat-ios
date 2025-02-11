@@ -814,6 +814,11 @@ extension MessageReceiver {
             }
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: .groupUpdated, customMessage: updateInfo)
             infoMessage.save(with: transaction)
+            if didAdminLeave {
+                MessageSender.leave(groupPublicKey, using: transaction).retainUntilComplete()
+                thread.removeAllThreadInteractions(with: transaction)
+                thread.remove(with: transaction)
+            }
         }
     }
     
