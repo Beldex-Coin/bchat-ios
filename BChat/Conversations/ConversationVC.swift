@@ -2072,7 +2072,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // and https://stackoverflow.com/a/25260930 to better understand what we are
         // doing with the UIViewAnimationOptions
         let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
+        let duration = ((userInfo[UIResponder. ] as? TimeInterval) ?? 0)
         let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         
@@ -2098,8 +2098,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             },
-            completion: nil
-        )
+            completion: nil         )
     }
     
     func conversationViewModelWillUpdate() {
@@ -2241,18 +2240,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func getMediaCache() -> NSCache<NSString, AnyObject> {
         return mediaCache
     }
-    
-    func updateUnreadCountView() {
-        let visibleViewItems = (messagesTableView.indexPathsForVisibleRows ?? []).map { viewItems[ifValid: $0.row] }
-        for visibleItem in visibleViewItems {
-            guard let index = unreadViewItems.firstIndex(where: { $0 === visibleItem }) else { continue }
-            unreadViewItems.remove(at: index)
-        }
-        let unreadCount = unreadViewItems.count
-        unreadCountLabel.text = unreadCount < 10000 ? "\(unreadCount)" : "9999+"
-        let fontSize = (unreadCount < 10000) ? Values.verySmallFontSize : 8
-        unreadCountLabel.font = Fonts.boldOpenSans(ofSize: fontSize)
-        unreadCountView.isHidden = (unreadCount == 0)
+ nt == 0)
     }
     
     func autoLoadMoreIfNeeded() {

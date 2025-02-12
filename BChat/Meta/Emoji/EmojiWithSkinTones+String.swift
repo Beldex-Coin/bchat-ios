@@ -1,0 +1,4729 @@
+// Copyright © 2025 Beldex International Limited OU. All rights reserved.
+
+import Foundation
+
+extension EmojiWithSkinTones {
+    init?(rawValue: String) {
+        guard rawValue.isSingleEmoji else { return nil }
+        switch (rawValue.unicodeScalars.map({ $0.value }).reduce(0, +) / 100) {
+            case 89: self = EmojiWithSkinTones.emojiFrom89(rawValue)
+            case 91: self = EmojiWithSkinTones.emojiFrom91(rawValue)
+            case 92: self = EmojiWithSkinTones.emojiFrom92(rawValue)
+            case 97: self = EmojiWithSkinTones.emojiFrom97(rawValue)
+            case 98: self = EmojiWithSkinTones.emojiFrom98(rawValue)
+            case 99: self = EmojiWithSkinTones.emojiFrom99(rawValue)
+            case 100: self = EmojiWithSkinTones.emojiFrom100(rawValue)
+            case 101: self = EmojiWithSkinTones.emojiFrom101(rawValue)
+            case 110: self = EmojiWithSkinTones.emojiFrom110(rawValue)
+            case 652: self = EmojiWithSkinTones.emojiFrom652(rawValue)
+            case 732: self = EmojiWithSkinTones.emojiFrom732(rawValue)
+            case 733: self = EmojiWithSkinTones.emojiFrom733(rawValue)
+            case 734: self = EmojiWithSkinTones.emojiFrom734(rawValue)
+            case 735: self = EmojiWithSkinTones.emojiFrom735(rawValue)
+            case 736: self = EmojiWithSkinTones.emojiFrom736(rawValue)
+            case 740: self = EmojiWithSkinTones.emojiFrom740(rawValue)
+            case 742: self = EmojiWithSkinTones.emojiFrom742(rawValue)
+            case 744: self = EmojiWithSkinTones.emojiFrom744(rawValue)
+            case 746: self = EmojiWithSkinTones.emojiFrom746(rawValue)
+            case 747: self = EmojiWithSkinTones.emojiFrom747(rawValue)
+            case 748: self = EmojiWithSkinTones.emojiFrom748(rawValue)
+            case 749: self = EmojiWithSkinTones.emojiFrom749(rawValue)
+            case 750: self = EmojiWithSkinTones.emojiFrom750(rawValue)
+            case 751: self = EmojiWithSkinTones.emojiFrom751(rawValue)
+            case 755: self = EmojiWithSkinTones.emojiFrom755(rawValue)
+            case 760: self = EmojiWithSkinTones.emojiFrom760(rawValue)
+            case 773: self = EmojiWithSkinTones.emojiFrom773(rawValue)
+            case 779: self = EmojiWithSkinTones.emojiFrom779(rawValue)
+            case 1269: self = EmojiWithSkinTones.emojiFrom1269(rawValue)
+            case 1271: self = EmojiWithSkinTones.emojiFrom1271(rawValue)
+            case 1273: self = EmojiWithSkinTones.emojiFrom1273(rawValue)
+            case 1274: self = EmojiWithSkinTones.emojiFrom1274(rawValue)
+            case 1275: self = EmojiWithSkinTones.emojiFrom1275(rawValue)
+            case 1277: self = EmojiWithSkinTones.emojiFrom1277(rawValue)
+            case 1278: self = EmojiWithSkinTones.emojiFrom1278(rawValue)
+            case 1279: self = EmojiWithSkinTones.emojiFrom1279(rawValue)
+            case 1280: self = EmojiWithSkinTones.emojiFrom1280(rawValue)
+            case 1281: self = EmojiWithSkinTones.emojiFrom1281(rawValue)
+            case 1282: self = EmojiWithSkinTones.emojiFrom1282(rawValue)
+            case 1283: self = EmojiWithSkinTones.emojiFrom1283(rawValue)
+            case 1284: self = EmojiWithSkinTones.emojiFrom1284(rawValue)
+            case 1285: self = EmojiWithSkinTones.emojiFrom1285(rawValue)
+            case 1286: self = EmojiWithSkinTones.emojiFrom1286(rawValue)
+            case 1287: self = EmojiWithSkinTones.emojiFrom1287(rawValue)
+            case 1289: self = EmojiWithSkinTones.emojiFrom1289(rawValue)
+            case 1290: self = EmojiWithSkinTones.emojiFrom1290(rawValue)
+            case 1292: self = EmojiWithSkinTones.emojiFrom1292(rawValue)
+            case 1293: self = EmojiWithSkinTones.emojiFrom1293(rawValue)
+            case 1294: self = EmojiWithSkinTones.emojiFrom1294(rawValue)
+            case 1295: self = EmojiWithSkinTones.emojiFrom1295(rawValue)
+            case 1296: self = EmojiWithSkinTones.emojiFrom1296(rawValue)
+            case 1297: self = EmojiWithSkinTones.emojiFrom1297(rawValue)
+            case 1377: self = EmojiWithSkinTones.emojiFrom1377(rawValue)
+            case 1379: self = EmojiWithSkinTones.emojiFrom1379(rawValue)
+            case 1472: self = EmojiWithSkinTones.emojiFrom1472(rawValue)
+            case 1580: self = EmojiWithSkinTones.emojiFrom1580(rawValue)
+            case 1923: self = EmojiWithSkinTones.emojiFrom1923(rawValue)
+            case 1925: self = EmojiWithSkinTones.emojiFrom1925(rawValue)
+            case 1928: self = EmojiWithSkinTones.emojiFrom1928(rawValue)
+            case 1929: self = EmojiWithSkinTones.emojiFrom1929(rawValue)
+            case 1930: self = EmojiWithSkinTones.emojiFrom1930(rawValue)
+            case 1931: self = EmojiWithSkinTones.emojiFrom1931(rawValue)
+            case 1932: self = EmojiWithSkinTones.emojiFrom1932(rawValue)
+            case 1933: self = EmojiWithSkinTones.emojiFrom1933(rawValue)
+            case 1934: self = EmojiWithSkinTones.emojiFrom1934(rawValue)
+            case 1935: self = EmojiWithSkinTones.emojiFrom1935(rawValue)
+            case 1937: self = EmojiWithSkinTones.emojiFrom1937(rawValue)
+            case 2109: self = EmojiWithSkinTones.emojiFrom2109(rawValue)
+            case 2111: self = EmojiWithSkinTones.emojiFrom2111(rawValue)
+            case 2112: self = EmojiWithSkinTones.emojiFrom2112(rawValue)
+            case 2113: self = EmojiWithSkinTones.emojiFrom2113(rawValue)
+            case 2116: self = EmojiWithSkinTones.emojiFrom2116(rawValue)
+            case 2117: self = EmojiWithSkinTones.emojiFrom2117(rawValue)
+            case 2123: self = EmojiWithSkinTones.emojiFrom2123(rawValue)
+            case 2125: self = EmojiWithSkinTones.emojiFrom2125(rawValue)
+            case 2126: self = EmojiWithSkinTones.emojiFrom2126(rawValue)
+            case 2127: self = EmojiWithSkinTones.emojiFrom2127(rawValue)
+            case 2129: self = EmojiWithSkinTones.emojiFrom2129(rawValue)
+            case 2210: self = EmojiWithSkinTones.emojiFrom2210(rawValue)
+            case 2549: self = EmojiWithSkinTones.emojiFrom2549(rawValue)
+            case 2558: self = EmojiWithSkinTones.emojiFrom2558(rawValue)
+            case 2559: self = EmojiWithSkinTones.emojiFrom2559(rawValue)
+            case 2560: self = EmojiWithSkinTones.emojiFrom2560(rawValue)
+            case 2561: self = EmojiWithSkinTones.emojiFrom2561(rawValue)
+            case 2563: self = EmojiWithSkinTones.emojiFrom2563(rawValue)
+            case 2564: self = EmojiWithSkinTones.emojiFrom2564(rawValue)
+            case 2565: self = EmojiWithSkinTones.emojiFrom2565(rawValue)
+            case 2566: self = EmojiWithSkinTones.emojiFrom2566(rawValue)
+            case 2567: self = EmojiWithSkinTones.emojiFrom2567(rawValue)
+            case 2572: self = EmojiWithSkinTones.emojiFrom2572(rawValue)
+            case 2573: self = EmojiWithSkinTones.emojiFrom2573(rawValue)
+            case 2574: self = EmojiWithSkinTones.emojiFrom2574(rawValue)
+            case 2575: self = EmojiWithSkinTones.emojiFrom2575(rawValue)
+            case 2577: self = EmojiWithSkinTones.emojiFrom2577(rawValue)
+            case 2641: self = EmojiWithSkinTones.emojiFrom2641(rawValue)
+            case 2642: self = EmojiWithSkinTones.emojiFrom2642(rawValue)
+            case 2644: self = EmojiWithSkinTones.emojiFrom2644(rawValue)
+            case 2646: self = EmojiWithSkinTones.emojiFrom2646(rawValue)
+            case 2649: self = EmojiWithSkinTones.emojiFrom2649(rawValue)
+            case 2655: self = EmojiWithSkinTones.emojiFrom2655(rawValue)
+            case 2656: self = EmojiWithSkinTones.emojiFrom2656(rawValue)
+            case 2657: self = EmojiWithSkinTones.emojiFrom2657(rawValue)
+            case 2658: self = EmojiWithSkinTones.emojiFrom2658(rawValue)
+            case 2659: self = EmojiWithSkinTones.emojiFrom2659(rawValue)
+            case 2663: self = EmojiWithSkinTones.emojiFrom2663(rawValue)
+            case 2671: self = EmojiWithSkinTones.emojiFrom2671(rawValue)
+            case 2760: self = EmojiWithSkinTones.emojiFrom2760(rawValue)
+            case 2761: self = EmojiWithSkinTones.emojiFrom2761(rawValue)
+            case 2764: self = EmojiWithSkinTones.emojiFrom2764(rawValue)
+            case 3289: self = EmojiWithSkinTones.emojiFrom3289(rawValue)
+            case 3295: self = EmojiWithSkinTones.emojiFrom3295(rawValue)
+            case 3389: self = EmojiWithSkinTones.emojiFrom3389(rawValue)
+            case 3391: self = EmojiWithSkinTones.emojiFrom3391(rawValue)
+            case 3392: self = EmojiWithSkinTones.emojiFrom3392(rawValue)
+            case 3393: self = EmojiWithSkinTones.emojiFrom3393(rawValue)
+            case 3394: self = EmojiWithSkinTones.emojiFrom3394(rawValue)
+            case 3396: self = EmojiWithSkinTones.emojiFrom3396(rawValue)
+            case 3397: self = EmojiWithSkinTones.emojiFrom3397(rawValue)
+            case 3403: self = EmojiWithSkinTones.emojiFrom3403(rawValue)
+            case 3404: self = EmojiWithSkinTones.emojiFrom3404(rawValue)
+            case 3405: self = EmojiWithSkinTones.emojiFrom3405(rawValue)
+            case 3406: self = EmojiWithSkinTones.emojiFrom3406(rawValue)
+            case 3407: self = EmojiWithSkinTones.emojiFrom3407(rawValue)
+            case 3477: self = EmojiWithSkinTones.emojiFrom3477(rawValue)
+            case 3921: self = EmojiWithSkinTones.emojiFrom3921(rawValue)
+            case 3922: self = EmojiWithSkinTones.emojiFrom3922(rawValue)
+            case 3924: self = EmojiWithSkinTones.emojiFrom3924(rawValue)
+            case 3925: self = EmojiWithSkinTones.emojiFrom3925(rawValue)
+            case 3926: self = EmojiWithSkinTones.emojiFrom3926(rawValue)
+            case 3929: self = EmojiWithSkinTones.emojiFrom3929(rawValue)
+            case 3934: self = EmojiWithSkinTones.emojiFrom3934(rawValue)
+            case 3935: self = EmojiWithSkinTones.emojiFrom3935(rawValue)
+            case 3936: self = EmojiWithSkinTones.emojiFrom3936(rawValue)
+            case 3937: self = EmojiWithSkinTones.emojiFrom3937(rawValue)
+            case 3938: self = EmojiWithSkinTones.emojiFrom3938(rawValue)
+            case 3939: self = EmojiWithSkinTones.emojiFrom3939(rawValue)
+            case 3943: self = EmojiWithSkinTones.emojiFrom3943(rawValue)
+            case 3948: self = EmojiWithSkinTones.emojiFrom3948(rawValue)
+            case 3951: self = EmojiWithSkinTones.emojiFrom3951(rawValue)
+            case 4007: self = EmojiWithSkinTones.emojiFrom4007(rawValue)
+            case 4046: self = EmojiWithSkinTones.emojiFrom4046(rawValue)
+            case 4840: self = EmojiWithSkinTones.emojiFrom4840(rawValue)
+            case 5237: self = EmojiWithSkinTones.emojiFrom5237(rawValue)
+            case 5370: self = EmojiWithSkinTones.emojiFrom5370(rawValue)
+            case 6037: self = EmojiWithSkinTones.emojiFrom6037(rawValue)
+            case 6065: self = EmojiWithSkinTones.emojiFrom6065(rawValue)
+            case 6579: self = EmojiWithSkinTones.emojiFrom6579(rawValue)
+            case 6606: self = EmojiWithSkinTones.emojiFrom6606(rawValue)
+            case 7400: self = EmojiWithSkinTones.emojiFrom7400(rawValue)
+            case 7428: self = EmojiWithSkinTones.emojiFrom7428(rawValue)
+            case 56336: self = EmojiWithSkinTones.emojiFrom56336(rawValue)
+            default: self = EmojiWithSkinTones(unsupportedValue: rawValue)
+        }
+    }
+    
+    private static func emojiFrom89(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⌛": EmojiWithSkinTones(baseEmoji: .hourglass, skinTones: nil),
+            "⌚": EmojiWithSkinTones(baseEmoji: .watch, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom91(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⏩": EmojiWithSkinTones(baseEmoji: .fastForward, skinTones: nil),
+            "⏪": EmojiWithSkinTones(baseEmoji: .rewind, skinTones: nil),
+            "⏫": EmojiWithSkinTones(baseEmoji: .arrowDoubleUp, skinTones: nil),
+            "⏬": EmojiWithSkinTones(baseEmoji: .arrowDoubleDown, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom92(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⏳": EmojiWithSkinTones(baseEmoji: .hourglassFlowingSand, skinTones: nil),
+            "⏰": EmojiWithSkinTones(baseEmoji: .alarmClock, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom97(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "☕": EmojiWithSkinTones(baseEmoji: .coffee, skinTones: nil),
+            "☔": EmojiWithSkinTones(baseEmoji: .umbrellaWithRainDrops, skinTones: nil),
+            "◾": EmojiWithSkinTones(baseEmoji: .blackMediumSmallSquare, skinTones: nil),
+            "◽": EmojiWithSkinTones(baseEmoji: .whiteMediumSmallSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom98(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⚓": EmojiWithSkinTones(baseEmoji: .anchor, skinTones: nil),
+            "⚡": EmojiWithSkinTones(baseEmoji: .zap, skinTones: nil),
+            "♿": EmojiWithSkinTones(baseEmoji: .wheelchair, skinTones: nil),
+            "♈": EmojiWithSkinTones(baseEmoji: .aries, skinTones: nil),
+            "♉": EmojiWithSkinTones(baseEmoji: .taurus, skinTones: nil),
+            "♊": EmojiWithSkinTones(baseEmoji: .gemini, skinTones: nil),
+            "♋": EmojiWithSkinTones(baseEmoji: .cancer, skinTones: nil),
+            "♌": EmojiWithSkinTones(baseEmoji: .leo, skinTones: nil),
+            "♍": EmojiWithSkinTones(baseEmoji: .virgo, skinTones: nil),
+            "♎": EmojiWithSkinTones(baseEmoji: .libra, skinTones: nil),
+            "♏": EmojiWithSkinTones(baseEmoji: .scorpius, skinTones: nil),
+            "♐": EmojiWithSkinTones(baseEmoji: .sagittarius, skinTones: nil),
+            "♑": EmojiWithSkinTones(baseEmoji: .capricorn, skinTones: nil),
+            "♒": EmojiWithSkinTones(baseEmoji: .aquarius, skinTones: nil),
+            "♓": EmojiWithSkinTones(baseEmoji: .pisces, skinTones: nil),
+            "⚫": EmojiWithSkinTones(baseEmoji: .blackCircle, skinTones: nil),
+            "⚪": EmojiWithSkinTones(baseEmoji: .whiteCircle, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom99(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "✋": EmojiWithSkinTones(baseEmoji: .hand, skinTones: nil),
+            "✊": EmojiWithSkinTones(baseEmoji: .fist, skinTones: nil),
+            "⛪": EmojiWithSkinTones(baseEmoji: .church, skinTones: nil),
+            "⛲": EmojiWithSkinTones(baseEmoji: .fountain, skinTones: nil),
+            "⛺": EmojiWithSkinTones(baseEmoji: .tent, skinTones: nil),
+            "⛽": EmojiWithSkinTones(baseEmoji: .fuelpump, skinTones: nil),
+            "⛵": EmojiWithSkinTones(baseEmoji: .boat, skinTones: nil),
+            "⛅": EmojiWithSkinTones(baseEmoji: .partlySunny, skinTones: nil),
+            "⛄": EmojiWithSkinTones(baseEmoji: .snowmanWithoutSnow, skinTones: nil),
+            "⚽": EmojiWithSkinTones(baseEmoji: .soccer, skinTones: nil),
+            "⚾": EmojiWithSkinTones(baseEmoji: .baseball, skinTones: nil),
+            "⛳": EmojiWithSkinTones(baseEmoji: .golf, skinTones: nil),
+            "⛔": EmojiWithSkinTones(baseEmoji: .noEntry, skinTones: nil),
+            "⛎": EmojiWithSkinTones(baseEmoji: .ophiuchus, skinTones: nil),
+            "✅": EmojiWithSkinTones(baseEmoji: .whiteCheckMark, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom100(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "✨": EmojiWithSkinTones(baseEmoji: .sparkles, skinTones: nil),
+            "❓": EmojiWithSkinTones(baseEmoji: .question, skinTones: nil),
+            "❔": EmojiWithSkinTones(baseEmoji: .greyQuestion, skinTones: nil),
+            "❕": EmojiWithSkinTones(baseEmoji: .greyExclamation, skinTones: nil),
+            "❗": EmojiWithSkinTones(baseEmoji: .exclamation, skinTones: nil),
+            "❌": EmojiWithSkinTones(baseEmoji: .x, skinTones: nil),
+            "❎": EmojiWithSkinTones(baseEmoji: .negativeSquaredCrossMark, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom101(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "➕": EmojiWithSkinTones(baseEmoji: .heavyPlusSign, skinTones: nil),
+            "➖": EmojiWithSkinTones(baseEmoji: .heavyMinusSign, skinTones: nil),
+            "➗": EmojiWithSkinTones(baseEmoji: .heavyDivisionSign, skinTones: nil),
+            "➰": EmojiWithSkinTones(baseEmoji: .curlyLoop, skinTones: nil),
+            "➿": EmojiWithSkinTones(baseEmoji: .loop, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom110(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⭐": EmojiWithSkinTones(baseEmoji: .star, skinTones: nil),
+            "⭕": EmojiWithSkinTones(baseEmoji: .o, skinTones: nil),
+            "⬛": EmojiWithSkinTones(baseEmoji: .blackLargeSquare, skinTones: nil),
+            "⬜": EmojiWithSkinTones(baseEmoji: .whiteLargeSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom652(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "©️": EmojiWithSkinTones(baseEmoji: .copyright, skinTones: nil),
+            "®️": EmojiWithSkinTones(baseEmoji: .registered, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom732(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "‼️": EmojiWithSkinTones(baseEmoji: .bangbang, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom733(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⁉️": EmojiWithSkinTones(baseEmoji: .interrobang, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom734(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "#️⃣": EmojiWithSkinTones(baseEmoji: .hash, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom735(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "™️": EmojiWithSkinTones(baseEmoji: .tm, skinTones: nil),
+            "*️⃣": EmojiWithSkinTones(baseEmoji: .keycapStar, skinTones: nil),
+            "0️⃣": EmojiWithSkinTones(baseEmoji: .zero, skinTones: nil),
+            "1️⃣": EmojiWithSkinTones(baseEmoji: .one, skinTones: nil),
+            "2️⃣": EmojiWithSkinTones(baseEmoji: .two, skinTones: nil),
+            "3️⃣": EmojiWithSkinTones(baseEmoji: .three, skinTones: nil),
+            "4️⃣": EmojiWithSkinTones(baseEmoji: .four, skinTones: nil),
+            "5️⃣": EmojiWithSkinTones(baseEmoji: .five, skinTones: nil),
+            "6️⃣": EmojiWithSkinTones(baseEmoji: .six, skinTones: nil),
+            "7️⃣": EmojiWithSkinTones(baseEmoji: .seven, skinTones: nil),
+            "8️⃣": EmojiWithSkinTones(baseEmoji: .eight, skinTones: nil),
+            "9️⃣": EmojiWithSkinTones(baseEmoji: .nine, skinTones: nil),
+            "ℹ️": EmojiWithSkinTones(baseEmoji: .informationSource, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom736(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "↗️": EmojiWithSkinTones(baseEmoji: .arrowUpperRight, skinTones: nil),
+            "↘️": EmojiWithSkinTones(baseEmoji: .arrowLowerRight, skinTones: nil),
+            "↙️": EmojiWithSkinTones(baseEmoji: .arrowLowerLeft, skinTones: nil),
+            "↖️": EmojiWithSkinTones(baseEmoji: .arrowUpperLeft, skinTones: nil),
+            "↕️": EmojiWithSkinTones(baseEmoji: .arrowUpDown, skinTones: nil),
+            "↔️": EmojiWithSkinTones(baseEmoji: .leftRightArrow, skinTones: nil),
+            "↩️": EmojiWithSkinTones(baseEmoji: .leftwardsArrowWithHook, skinTones: nil),
+            "↪️": EmojiWithSkinTones(baseEmoji: .arrowRightHook, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom740(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⌨️": EmojiWithSkinTones(baseEmoji: .keyboard, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom742(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⏱️": EmojiWithSkinTones(baseEmoji: .stopwatch, skinTones: nil),
+            "⏲️": EmojiWithSkinTones(baseEmoji: .timerClock, skinTones: nil),
+            "⏭️": EmojiWithSkinTones(baseEmoji: .blackRightPointingDoubleTriangleWithVerticalBar, skinTones: nil),
+            "⏯️": EmojiWithSkinTones(baseEmoji: .blackRightPointingTriangleWithDoubleVerticalBar, skinTones: nil),
+            "⏮️": EmojiWithSkinTones(baseEmoji: .blackLeftPointingDoubleTriangleWithVerticalBar, skinTones: nil),
+            "⏸️": EmojiWithSkinTones(baseEmoji: .doubleVerticalBar, skinTones: nil),
+            "⏹️": EmojiWithSkinTones(baseEmoji: .blackSquareForStop, skinTones: nil),
+            "⏺️": EmojiWithSkinTones(baseEmoji: .blackCircleForRecord, skinTones: nil),
+            "⏏️": EmojiWithSkinTones(baseEmoji: .eject, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom744(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "Ⓜ️": EmojiWithSkinTones(baseEmoji: .m, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom746(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "▶️": EmojiWithSkinTones(baseEmoji: .arrowForward, skinTones: nil),
+            "▪️": EmojiWithSkinTones(baseEmoji: .blackSmallSquare, skinTones: nil),
+            "▫️": EmojiWithSkinTones(baseEmoji: .whiteSmallSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom747(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "☠️": EmojiWithSkinTones(baseEmoji: .skullAndCrossbones, skinTones: nil),
+            "☝️": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: nil),
+            "☘️": EmojiWithSkinTones(baseEmoji: .shamrock, skinTones: nil),
+            "☀️": EmojiWithSkinTones(baseEmoji: .sunny, skinTones: nil),
+            "☁️": EmojiWithSkinTones(baseEmoji: .cloud, skinTones: nil),
+            "☂️": EmojiWithSkinTones(baseEmoji: .umbrella, skinTones: nil),
+            "☃️": EmojiWithSkinTones(baseEmoji: .snowman, skinTones: nil),
+            "☄️": EmojiWithSkinTones(baseEmoji: .comet, skinTones: nil),
+            "☎️": EmojiWithSkinTones(baseEmoji: .phone, skinTones: nil),
+            "◀️": EmojiWithSkinTones(baseEmoji: .arrowBackward, skinTones: nil),
+            "☑️": EmojiWithSkinTones(baseEmoji: .ballotBoxWithCheck, skinTones: nil),
+            "◼️": EmojiWithSkinTones(baseEmoji: .blackMediumSquare, skinTones: nil),
+            "◻️": EmojiWithSkinTones(baseEmoji: .whiteMediumSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom748(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "☺️": EmojiWithSkinTones(baseEmoji: .relaxed, skinTones: nil),
+            "☹️": EmojiWithSkinTones(baseEmoji: .whiteFrowningFace, skinTones: nil),
+            "♨️": EmojiWithSkinTones(baseEmoji: .hotsprings, skinTones: nil),
+            "♠️": EmojiWithSkinTones(baseEmoji: .spades, skinTones: nil),
+            "♥️": EmojiWithSkinTones(baseEmoji: .hearts, skinTones: nil),
+            "♦️": EmojiWithSkinTones(baseEmoji: .diamonds, skinTones: nil),
+            "♣️": EmojiWithSkinTones(baseEmoji: .clubs, skinTones: nil),
+            "♟️": EmojiWithSkinTones(baseEmoji: .chessPawn, skinTones: nil),
+            "☢️": EmojiWithSkinTones(baseEmoji: .radioactiveSign, skinTones: nil),
+            "☣️": EmojiWithSkinTones(baseEmoji: .biohazardSign, skinTones: nil),
+            "☸️": EmojiWithSkinTones(baseEmoji: .wheelOfDharma, skinTones: nil),
+            "☯️": EmojiWithSkinTones(baseEmoji: .yinYang, skinTones: nil),
+            "☦️": EmojiWithSkinTones(baseEmoji: .orthodoxCross, skinTones: nil),
+            "☪️": EmojiWithSkinTones(baseEmoji: .starAndCrescent, skinTones: nil),
+            "☮️": EmojiWithSkinTones(baseEmoji: .peaceSymbol, skinTones: nil),
+            "♀️": EmojiWithSkinTones(baseEmoji: .femaleSign, skinTones: nil),
+            "♂️": EmojiWithSkinTones(baseEmoji: .maleSign, skinTones: nil),
+            "♾️": EmojiWithSkinTones(baseEmoji: .infinity, skinTones: nil),
+            "♻️": EmojiWithSkinTones(baseEmoji: .recycle, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom749(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⛈️": EmojiWithSkinTones(baseEmoji: .thunderCloudAndRain, skinTones: nil),
+            "⛑️": EmojiWithSkinTones(baseEmoji: .helmetWithWhiteCross, skinTones: nil),
+            "⛏️": EmojiWithSkinTones(baseEmoji: .pick, skinTones: nil),
+            "⚒️": EmojiWithSkinTones(baseEmoji: .hammerAndPick, skinTones: nil),
+            "⚔️": EmojiWithSkinTones(baseEmoji: .crossedSwords, skinTones: nil),
+            "⚙️": EmojiWithSkinTones(baseEmoji: .gear, skinTones: nil),
+            "⚖️": EmojiWithSkinTones(baseEmoji: .scales, skinTones: nil),
+            "⛓️": EmojiWithSkinTones(baseEmoji: .chains, skinTones: nil),
+            "⚗️": EmojiWithSkinTones(baseEmoji: .alembic, skinTones: nil),
+            "⚰️": EmojiWithSkinTones(baseEmoji: .coffin, skinTones: nil),
+            "⚱️": EmojiWithSkinTones(baseEmoji: .funeralUrn, skinTones: nil),
+            "⚠️": EmojiWithSkinTones(baseEmoji: .warning, skinTones: nil),
+            "⚛️": EmojiWithSkinTones(baseEmoji: .atomSymbol, skinTones: nil),
+            "⚧️": EmojiWithSkinTones(baseEmoji: .transgenderSymbol, skinTones: nil),
+            "⚕️": EmojiWithSkinTones(baseEmoji: .medicalSymbol, skinTones: nil),
+            "⚜️": EmojiWithSkinTones(baseEmoji: .fleurDeLis, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom750(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "✌️": EmojiWithSkinTones(baseEmoji: .v, skinTones: nil),
+            "✍️": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: nil),
+            "⛷️": EmojiWithSkinTones(baseEmoji: .skier, skinTones: nil),
+            "⛹️": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: nil),
+            "⛰️": EmojiWithSkinTones(baseEmoji: .mountain, skinTones: nil),
+            "⛩️": EmojiWithSkinTones(baseEmoji: .shintoShrine, skinTones: nil),
+            "⛴️": EmojiWithSkinTones(baseEmoji: .ferry, skinTones: nil),
+            "✈️": EmojiWithSkinTones(baseEmoji: .airplane, skinTones: nil),
+            "⛱️": EmojiWithSkinTones(baseEmoji: .umbrellaOnGround, skinTones: nil),
+            "❄️": EmojiWithSkinTones(baseEmoji: .snowflake, skinTones: nil),
+            "⛸️": EmojiWithSkinTones(baseEmoji: .iceSkate, skinTones: nil),
+            "✉️": EmojiWithSkinTones(baseEmoji: .email, skinTones: nil),
+            "✏️": EmojiWithSkinTones(baseEmoji: .pencil2, skinTones: nil),
+            "✒️": EmojiWithSkinTones(baseEmoji: .blackNib, skinTones: nil),
+            "✂️": EmojiWithSkinTones(baseEmoji: .scissors, skinTones: nil),
+            "✡️": EmojiWithSkinTones(baseEmoji: .starOfDavid, skinTones: nil),
+            "✝️": EmojiWithSkinTones(baseEmoji: .latinCross, skinTones: nil),
+            "✖️": EmojiWithSkinTones(baseEmoji: .heavyMultiplicationX, skinTones: nil),
+            "✔️": EmojiWithSkinTones(baseEmoji: .heavyCheckMark, skinTones: nil),
+            "✳️": EmojiWithSkinTones(baseEmoji: .eightSpokedAsterisk, skinTones: nil),
+            "✴️": EmojiWithSkinTones(baseEmoji: .eightPointedBlackStar, skinTones: nil),
+            "❇️": EmojiWithSkinTones(baseEmoji: .sparkle, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom751(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "❣️": EmojiWithSkinTones(baseEmoji: .heavyHeartExclamationMarkOrnament, skinTones: nil),
+            "❤️": EmojiWithSkinTones(baseEmoji: .heart, skinTones: nil),
+            "➡️": EmojiWithSkinTones(baseEmoji: .arrowRight, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom755(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⤴️": EmojiWithSkinTones(baseEmoji: .arrowHeadingUp, skinTones: nil),
+            "⤵️": EmojiWithSkinTones(baseEmoji: .arrowHeadingDown, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom760(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⬆️": EmojiWithSkinTones(baseEmoji: .arrowUp, skinTones: nil),
+            "⬇️": EmojiWithSkinTones(baseEmoji: .arrowDown, skinTones: nil),
+            "⬅️": EmojiWithSkinTones(baseEmoji: .arrowLeft, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom773(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "〰️": EmojiWithSkinTones(baseEmoji: .wavyDash, skinTones: nil),
+            "〽️": EmojiWithSkinTones(baseEmoji: .partAlternationMark, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom779(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "㊗️": EmojiWithSkinTones(baseEmoji: .congratulations, skinTones: nil),
+            "㊙️": EmojiWithSkinTones(baseEmoji: .secret, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1269(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🀄": EmojiWithSkinTones(baseEmoji: .mahjong, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1271(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🃏": EmojiWithSkinTones(baseEmoji: .blackJoker, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1273(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🆎": EmojiWithSkinTones(baseEmoji: .ab, skinTones: nil),
+            "🆑": EmojiWithSkinTones(baseEmoji: .cl, skinTones: nil),
+            "🆒": EmojiWithSkinTones(baseEmoji: .cool, skinTones: nil),
+            "🆓": EmojiWithSkinTones(baseEmoji: .free, skinTones: nil),
+            "🆔": EmojiWithSkinTones(baseEmoji: .id, skinTones: nil),
+            "🆕": EmojiWithSkinTones(baseEmoji: .new, skinTones: nil),
+            "🆖": EmojiWithSkinTones(baseEmoji: .ng, skinTones: nil),
+            "🆗": EmojiWithSkinTones(baseEmoji: .ok, skinTones: nil),
+            "🆘": EmojiWithSkinTones(baseEmoji: .sos, skinTones: nil),
+            "🆙": EmojiWithSkinTones(baseEmoji: .up, skinTones: nil),
+            "🆚": EmojiWithSkinTones(baseEmoji: .vs, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1274(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🈁": EmojiWithSkinTones(baseEmoji: .koko, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1275(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🈶": EmojiWithSkinTones(baseEmoji: .u6709, skinTones: nil),
+            "🈯": EmojiWithSkinTones(baseEmoji: .u6307, skinTones: nil),
+            "🉐": EmojiWithSkinTones(baseEmoji: .ideographAdvantage, skinTones: nil),
+            "🈹": EmojiWithSkinTones(baseEmoji: .u5272, skinTones: nil),
+            "🈚": EmojiWithSkinTones(baseEmoji: .u7121, skinTones: nil),
+            "🈲": EmojiWithSkinTones(baseEmoji: .u7981, skinTones: nil),
+            "🉑": EmojiWithSkinTones(baseEmoji: .accept, skinTones: nil),
+            "🈸": EmojiWithSkinTones(baseEmoji: .u7533, skinTones: nil),
+            "🈴": EmojiWithSkinTones(baseEmoji: .u5408, skinTones: nil),
+            "🈳": EmojiWithSkinTones(baseEmoji: .u7a7a, skinTones: nil),
+            "🈺": EmojiWithSkinTones(baseEmoji: .u55b6, skinTones: nil),
+            "🈵": EmojiWithSkinTones(baseEmoji: .u6e80, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1277(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🌷": EmojiWithSkinTones(baseEmoji: .tulip, skinTones: nil),
+            "🌱": EmojiWithSkinTones(baseEmoji: .seedling, skinTones: nil),
+            "🌲": EmojiWithSkinTones(baseEmoji: .evergreenTree, skinTones: nil),
+            "🌳": EmojiWithSkinTones(baseEmoji: .deciduousTree, skinTones: nil),
+            "🌴": EmojiWithSkinTones(baseEmoji: .palmTree, skinTones: nil),
+            "🌵": EmojiWithSkinTones(baseEmoji: .cactus, skinTones: nil),
+            "🌰": EmojiWithSkinTones(baseEmoji: .chestnut, skinTones: nil),
+            "🌭": EmojiWithSkinTones(baseEmoji: .hotdog, skinTones: nil),
+            "🌮": EmojiWithSkinTones(baseEmoji: .taco, skinTones: nil),
+            "🌯": EmojiWithSkinTones(baseEmoji: .burrito, skinTones: nil),
+            "🌍": EmojiWithSkinTones(baseEmoji: .earthAfrica, skinTones: nil),
+            "🌎": EmojiWithSkinTones(baseEmoji: .earthAmericas, skinTones: nil),
+            "🌏": EmojiWithSkinTones(baseEmoji: .earthAsia, skinTones: nil),
+            "🌐": EmojiWithSkinTones(baseEmoji: .globeWithMeridians, skinTones: nil),
+            "🌋": EmojiWithSkinTones(baseEmoji: .volcano, skinTones: nil),
+            "🌁": EmojiWithSkinTones(baseEmoji: .foggy, skinTones: nil),
+            "🌃": EmojiWithSkinTones(baseEmoji: .nightWithStars, skinTones: nil),
+            "🌄": EmojiWithSkinTones(baseEmoji: .sunriseOverMountains, skinTones: nil),
+            "🌅": EmojiWithSkinTones(baseEmoji: .sunrise, skinTones: nil),
+            "🌆": EmojiWithSkinTones(baseEmoji: .citySunset, skinTones: nil),
+            "🌇": EmojiWithSkinTones(baseEmoji: .citySunrise, skinTones: nil),
+            "🌉": EmojiWithSkinTones(baseEmoji: .bridgeAtNight, skinTones: nil),
+            "🌑": EmojiWithSkinTones(baseEmoji: .newMoon, skinTones: nil),
+            "🌒": EmojiWithSkinTones(baseEmoji: .waxingCrescentMoon, skinTones: nil),
+            "🌓": EmojiWithSkinTones(baseEmoji: .firstQuarterMoon, skinTones: nil),
+            "🌔": EmojiWithSkinTones(baseEmoji: .moon, skinTones: nil),
+            "🌕": EmojiWithSkinTones(baseEmoji: .fullMoon, skinTones: nil),
+            "🌖": EmojiWithSkinTones(baseEmoji: .waningGibbousMoon, skinTones: nil),
+            "🌗": EmojiWithSkinTones(baseEmoji: .lastQuarterMoon, skinTones: nil),
+            "🌘": EmojiWithSkinTones(baseEmoji: .waningCrescentMoon, skinTones: nil),
+            "🌙": EmojiWithSkinTones(baseEmoji: .crescentMoon, skinTones: nil),
+            "🌚": EmojiWithSkinTones(baseEmoji: .newMoonWithFace, skinTones: nil),
+            "🌛": EmojiWithSkinTones(baseEmoji: .firstQuarterMoonWithFace, skinTones: nil),
+            "🌜": EmojiWithSkinTones(baseEmoji: .lastQuarterMoonWithFace, skinTones: nil),
+            "🌝": EmojiWithSkinTones(baseEmoji: .fullMoonWithFace, skinTones: nil),
+            "🌞": EmojiWithSkinTones(baseEmoji: .sunWithFace, skinTones: nil),
+            "🌟": EmojiWithSkinTones(baseEmoji: .star2, skinTones: nil),
+            "🌠": EmojiWithSkinTones(baseEmoji: .stars, skinTones: nil),
+            "🌌": EmojiWithSkinTones(baseEmoji: .milkyWay, skinTones: nil),
+            "🌀": EmojiWithSkinTones(baseEmoji: .cyclone, skinTones: nil),
+            "🌈": EmojiWithSkinTones(baseEmoji: .rainbow, skinTones: nil),
+            "🌂": EmojiWithSkinTones(baseEmoji: .closedUmbrella, skinTones: nil),
+            "🌊": EmojiWithSkinTones(baseEmoji: .ocean, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1278(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🎅": EmojiWithSkinTones(baseEmoji: .santa, skinTones: nil),
+            "🌸": EmojiWithSkinTones(baseEmoji: .cherryBlossom, skinTones: nil),
+            "🌹": EmojiWithSkinTones(baseEmoji: .rose, skinTones: nil),
+            "🌺": EmojiWithSkinTones(baseEmoji: .hibiscus, skinTones: nil),
+            "🌻": EmojiWithSkinTones(baseEmoji: .sunflower, skinTones: nil),
+            "🌼": EmojiWithSkinTones(baseEmoji: .blossom, skinTones: nil),
+            "🌾": EmojiWithSkinTones(baseEmoji: .earOfRice, skinTones: nil),
+            "🌿": EmojiWithSkinTones(baseEmoji: .herb, skinTones: nil),
+            "🍀": EmojiWithSkinTones(baseEmoji: .fourLeafClover, skinTones: nil),
+            "🍁": EmojiWithSkinTones(baseEmoji: .mapleLeaf, skinTones: nil),
+            "🍂": EmojiWithSkinTones(baseEmoji: .fallenLeaf, skinTones: nil),
+            "🍃": EmojiWithSkinTones(baseEmoji: .leaves, skinTones: nil),
+            "🍄": EmojiWithSkinTones(baseEmoji: .mushroom, skinTones: nil),
+            "🍇": EmojiWithSkinTones(baseEmoji: .grapes, skinTones: nil),
+            "🍈": EmojiWithSkinTones(baseEmoji: .melon, skinTones: nil),
+            "🍉": EmojiWithSkinTones(baseEmoji: .watermelon, skinTones: nil),
+            "🍊": EmojiWithSkinTones(baseEmoji: .tangerine, skinTones: nil),
+            "🍋": EmojiWithSkinTones(baseEmoji: .lemon, skinTones: nil),
+            "🍌": EmojiWithSkinTones(baseEmoji: .banana, skinTones: nil),
+            "🍍": EmojiWithSkinTones(baseEmoji: .pineapple, skinTones: nil),
+            "🍎": EmojiWithSkinTones(baseEmoji: .apple, skinTones: nil),
+            "🍏": EmojiWithSkinTones(baseEmoji: .greenApple, skinTones: nil),
+            "🍐": EmojiWithSkinTones(baseEmoji: .pear, skinTones: nil),
+            "🍑": EmojiWithSkinTones(baseEmoji: .peach, skinTones: nil),
+            "🍒": EmojiWithSkinTones(baseEmoji: .cherries, skinTones: nil),
+            "🍓": EmojiWithSkinTones(baseEmoji: .strawberry, skinTones: nil),
+            "🍅": EmojiWithSkinTones(baseEmoji: .tomato, skinTones: nil),
+            "🍆": EmojiWithSkinTones(baseEmoji: .eggplant, skinTones: nil),
+            "🌽": EmojiWithSkinTones(baseEmoji: .corn, skinTones: nil),
+            "🍞": EmojiWithSkinTones(baseEmoji: .bread, skinTones: nil),
+            "🍖": EmojiWithSkinTones(baseEmoji: .meatOnBone, skinTones: nil),
+            "🍗": EmojiWithSkinTones(baseEmoji: .poultryLeg, skinTones: nil),
+            "🍔": EmojiWithSkinTones(baseEmoji: .hamburger, skinTones: nil),
+            "🍟": EmojiWithSkinTones(baseEmoji: .fries, skinTones: nil),
+            "🍕": EmojiWithSkinTones(baseEmoji: .pizza, skinTones: nil),
+            "🍳": EmojiWithSkinTones(baseEmoji: .friedEgg, skinTones: nil),
+            "🍲": EmojiWithSkinTones(baseEmoji: .stew, skinTones: nil),
+            "🍿": EmojiWithSkinTones(baseEmoji: .popcorn, skinTones: nil),
+            "🍱": EmojiWithSkinTones(baseEmoji: .bento, skinTones: nil),
+            "🍘": EmojiWithSkinTones(baseEmoji: .riceCracker, skinTones: nil),
+            "🍙": EmojiWithSkinTones(baseEmoji: .riceBall, skinTones: nil),
+            "🍚": EmojiWithSkinTones(baseEmoji: .rice, skinTones: nil),
+            "🍛": EmojiWithSkinTones(baseEmoji: .curry, skinTones: nil),
+            "🍜": EmojiWithSkinTones(baseEmoji: .ramen, skinTones: nil),
+            "🍝": EmojiWithSkinTones(baseEmoji: .spaghetti, skinTones: nil),
+            "🍠": EmojiWithSkinTones(baseEmoji: .sweetPotato, skinTones: nil),
+            "🍢": EmojiWithSkinTones(baseEmoji: .oden, skinTones: nil),
+            "🍣": EmojiWithSkinTones(baseEmoji: .sushi, skinTones: nil),
+            "🍤": EmojiWithSkinTones(baseEmoji: .friedShrimp, skinTones: nil),
+            "🍥": EmojiWithSkinTones(baseEmoji: .fishCake, skinTones: nil),
+            "🍡": EmojiWithSkinTones(baseEmoji: .dango, skinTones: nil),
+            "🍦": EmojiWithSkinTones(baseEmoji: .icecream, skinTones: nil),
+            "🍧": EmojiWithSkinTones(baseEmoji: .shavedIce, skinTones: nil),
+            "🍨": EmojiWithSkinTones(baseEmoji: .iceCream, skinTones: nil),
+            "🍩": EmojiWithSkinTones(baseEmoji: .doughnut, skinTones: nil),
+            "🍪": EmojiWithSkinTones(baseEmoji: .cookie, skinTones: nil),
+            "🎂": EmojiWithSkinTones(baseEmoji: .birthday, skinTones: nil),
+            "🍰": EmojiWithSkinTones(baseEmoji: .cake, skinTones: nil),
+            "🍫": EmojiWithSkinTones(baseEmoji: .chocolateBar, skinTones: nil),
+            "🍬": EmojiWithSkinTones(baseEmoji: .candy, skinTones: nil),
+            "🍭": EmojiWithSkinTones(baseEmoji: .lollipop, skinTones: nil),
+            "🍮": EmojiWithSkinTones(baseEmoji: .custard, skinTones: nil),
+            "🍯": EmojiWithSkinTones(baseEmoji: .honeyPot, skinTones: nil),
+            "🍼": EmojiWithSkinTones(baseEmoji: .babyBottle, skinTones: nil),
+            "🍵": EmojiWithSkinTones(baseEmoji: .tea, skinTones: nil),
+            "🍶": EmojiWithSkinTones(baseEmoji: .sake, skinTones: nil),
+            "🍾": EmojiWithSkinTones(baseEmoji: .champagne, skinTones: nil),
+            "🍷": EmojiWithSkinTones(baseEmoji: .wineGlass, skinTones: nil),
+            "🍸": EmojiWithSkinTones(baseEmoji: .cocktail, skinTones: nil),
+            "🍹": EmojiWithSkinTones(baseEmoji: .tropicalDrink, skinTones: nil),
+            "🍺": EmojiWithSkinTones(baseEmoji: .beer, skinTones: nil),
+            "🍻": EmojiWithSkinTones(baseEmoji: .beers, skinTones: nil),
+            "🍴": EmojiWithSkinTones(baseEmoji: .forkAndKnife, skinTones: nil),
+            "🎃": EmojiWithSkinTones(baseEmoji: .jackOLantern, skinTones: nil),
+            "🎄": EmojiWithSkinTones(baseEmoji: .christmasTree, skinTones: nil),
+            "🎆": EmojiWithSkinTones(baseEmoji: .fireworks, skinTones: nil),
+            "🎇": EmojiWithSkinTones(baseEmoji: .sparkler, skinTones: nil),
+            "🎈": EmojiWithSkinTones(baseEmoji: .balloon, skinTones: nil),
+            "🎉": EmojiWithSkinTones(baseEmoji: .tada, skinTones: nil),
+            "🎊": EmojiWithSkinTones(baseEmoji: .confettiBall, skinTones: nil),
+            "🎋": EmojiWithSkinTones(baseEmoji: .tanabataTree, skinTones: nil),
+            "🎍": EmojiWithSkinTones(baseEmoji: .bamboo, skinTones: nil),
+            "🎎": EmojiWithSkinTones(baseEmoji: .dolls, skinTones: nil),
+            "🎏": EmojiWithSkinTones(baseEmoji: .flags, skinTones: nil),
+            "🎐": EmojiWithSkinTones(baseEmoji: .windChime, skinTones: nil),
+            "🎑": EmojiWithSkinTones(baseEmoji: .riceScene, skinTones: nil),
+            "🎀": EmojiWithSkinTones(baseEmoji: .ribbon, skinTones: nil),
+            "🎁": EmojiWithSkinTones(baseEmoji: .gift, skinTones: nil),
+            "🎒": EmojiWithSkinTones(baseEmoji: .schoolSatchel, skinTones: nil),
+            "🎓": EmojiWithSkinTones(baseEmoji: .mortarBoard, skinTones: nil),
+            "🎌": EmojiWithSkinTones(baseEmoji: .crossedFlags, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1279(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏃": EmojiWithSkinTones(baseEmoji: .runner, skinTones: nil),
+            "🏇": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: nil),
+            "🏂": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: nil),
+            "🏄": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: nil),
+            "🏊": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: nil),
+            "🏻": EmojiWithSkinTones(baseEmoji: .skinTone2, skinTones: nil),
+            "🏼": EmojiWithSkinTones(baseEmoji: .skinTone3, skinTones: nil),
+            "🏽": EmojiWithSkinTones(baseEmoji: .skinTone4, skinTones: nil),
+            "🏾": EmojiWithSkinTones(baseEmoji: .skinTone5, skinTones: nil),
+            "🏿": EmojiWithSkinTones(baseEmoji: .skinTone6, skinTones: nil),
+            "🏺": EmojiWithSkinTones(baseEmoji: .amphora, skinTones: nil),
+            "🏠": EmojiWithSkinTones(baseEmoji: .house, skinTones: nil),
+            "🏡": EmojiWithSkinTones(baseEmoji: .houseWithGarden, skinTones: nil),
+            "🏢": EmojiWithSkinTones(baseEmoji: .office, skinTones: nil),
+            "🏣": EmojiWithSkinTones(baseEmoji: .postOffice, skinTones: nil),
+            "🏤": EmojiWithSkinTones(baseEmoji: .europeanPostOffice, skinTones: nil),
+            "🏥": EmojiWithSkinTones(baseEmoji: .hospital, skinTones: nil),
+            "🏦": EmojiWithSkinTones(baseEmoji: .bank, skinTones: nil),
+            "🏨": EmojiWithSkinTones(baseEmoji: .hotel, skinTones: nil),
+            "🏩": EmojiWithSkinTones(baseEmoji: .loveHotel, skinTones: nil),
+            "🏪": EmojiWithSkinTones(baseEmoji: .convenienceStore, skinTones: nil),
+            "🏫": EmojiWithSkinTones(baseEmoji: .school, skinTones: nil),
+            "🏬": EmojiWithSkinTones(baseEmoji: .departmentStore, skinTones: nil),
+            "🏭": EmojiWithSkinTones(baseEmoji: .factory, skinTones: nil),
+            "🏯": EmojiWithSkinTones(baseEmoji: .japaneseCastle, skinTones: nil),
+            "🏰": EmojiWithSkinTones(baseEmoji: .europeanCastle, skinTones: nil),
+            "🎠": EmojiWithSkinTones(baseEmoji: .carouselHorse, skinTones: nil),
+            "🎡": EmojiWithSkinTones(baseEmoji: .ferrisWheel, skinTones: nil),
+            "🎢": EmojiWithSkinTones(baseEmoji: .rollerCoaster, skinTones: nil),
+            "🎪": EmojiWithSkinTones(baseEmoji: .circusTent, skinTones: nil),
+            "🎫": EmojiWithSkinTones(baseEmoji: .ticket, skinTones: nil),
+            "🏆": EmojiWithSkinTones(baseEmoji: .trophy, skinTones: nil),
+            "🏅": EmojiWithSkinTones(baseEmoji: .sportsMedal, skinTones: nil),
+            "🏀": EmojiWithSkinTones(baseEmoji: .basketball, skinTones: nil),
+            "🏐": EmojiWithSkinTones(baseEmoji: .volleyball, skinTones: nil),
+            "🏈": EmojiWithSkinTones(baseEmoji: .football, skinTones: nil),
+            "🏉": EmojiWithSkinTones(baseEmoji: .rugbyFootball, skinTones: nil),
+            "🎾": EmojiWithSkinTones(baseEmoji: .tennis, skinTones: nil),
+            "🎳": EmojiWithSkinTones(baseEmoji: .bowling, skinTones: nil),
+            "🏏": EmojiWithSkinTones(baseEmoji: .cricketBatAndBall, skinTones: nil),
+            "🏑": EmojiWithSkinTones(baseEmoji: .fieldHockeyStickAndBall, skinTones: nil),
+            "🏒": EmojiWithSkinTones(baseEmoji: .iceHockeyStickAndPuck, skinTones: nil),
+            "🏓": EmojiWithSkinTones(baseEmoji: .tableTennisPaddleAndBall, skinTones: nil),
+            "🏸": EmojiWithSkinTones(baseEmoji: .badmintonRacquetAndShuttlecock, skinTones: nil),
+            "🎣": EmojiWithSkinTones(baseEmoji: .fishingPoleAndFish, skinTones: nil),
+            "🎽": EmojiWithSkinTones(baseEmoji: .runningShirtWithSash, skinTones: nil),
+            "🎿": EmojiWithSkinTones(baseEmoji: .ski, skinTones: nil),
+            "🎯": EmojiWithSkinTones(baseEmoji: .dart, skinTones: nil),
+            "🎱": EmojiWithSkinTones(baseEmoji: .eightBall, skinTones: nil),
+            "🎮": EmojiWithSkinTones(baseEmoji: .videoGame, skinTones: nil),
+            "🎰": EmojiWithSkinTones(baseEmoji: .slotMachine, skinTones: nil),
+            "🎲": EmojiWithSkinTones(baseEmoji: .gameDie, skinTones: nil),
+            "🎴": EmojiWithSkinTones(baseEmoji: .flowerPlayingCards, skinTones: nil),
+            "🎭": EmojiWithSkinTones(baseEmoji: .performingArts, skinTones: nil),
+            "🎨": EmojiWithSkinTones(baseEmoji: .art, skinTones: nil),
+            "🎩": EmojiWithSkinTones(baseEmoji: .tophat, skinTones: nil),
+            "🎼": EmojiWithSkinTones(baseEmoji: .musicalScore, skinTones: nil),
+            "🎵": EmojiWithSkinTones(baseEmoji: .musicalNote, skinTones: nil),
+            "🎶": EmojiWithSkinTones(baseEmoji: .notes, skinTones: nil),
+            "🎤": EmojiWithSkinTones(baseEmoji: .microphone, skinTones: nil),
+            "🎧": EmojiWithSkinTones(baseEmoji: .headphones, skinTones: nil),
+            "🎷": EmojiWithSkinTones(baseEmoji: .saxophone, skinTones: nil),
+            "🎸": EmojiWithSkinTones(baseEmoji: .guitar, skinTones: nil),
+            "🎹": EmojiWithSkinTones(baseEmoji: .musicalKeyboard, skinTones: nil),
+            "🎺": EmojiWithSkinTones(baseEmoji: .trumpet, skinTones: nil),
+            "🎻": EmojiWithSkinTones(baseEmoji: .violin, skinTones: nil),
+            "🎥": EmojiWithSkinTones(baseEmoji: .movieCamera, skinTones: nil),
+            "🎬": EmojiWithSkinTones(baseEmoji: .clapper, skinTones: nil),
+            "🏮": EmojiWithSkinTones(baseEmoji: .izakayaLantern, skinTones: nil),
+            "🏹": EmojiWithSkinTones(baseEmoji: .bowAndArrow, skinTones: nil),
+            "🏧": EmojiWithSkinTones(baseEmoji: .atm, skinTones: nil),
+            "🎦": EmojiWithSkinTones(baseEmoji: .cinema, skinTones: nil),
+            "🏁": EmojiWithSkinTones(baseEmoji: .checkeredFlag, skinTones: nil),
+            "🏴": EmojiWithSkinTones(baseEmoji: .wavingBlackFlag, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1280(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👋": EmojiWithSkinTones(baseEmoji: .wave, skinTones: nil),
+            "👌": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: nil),
+            "👈": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: nil),
+            "👉": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: nil),
+            "👆": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: nil),
+            "👇": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: nil),
+            "👍": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: nil),
+            "👎": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: nil),
+            "👊": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: nil),
+            "👏": EmojiWithSkinTones(baseEmoji: .clap, skinTones: nil),
+            "👐": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: nil),
+            "👂": EmojiWithSkinTones(baseEmoji: .ear, skinTones: nil),
+            "👃": EmojiWithSkinTones(baseEmoji: .nose, skinTones: nil),
+            "👀": EmojiWithSkinTones(baseEmoji: .eyes, skinTones: nil),
+            "👅": EmojiWithSkinTones(baseEmoji: .tongue, skinTones: nil),
+            "👄": EmojiWithSkinTones(baseEmoji: .lips, skinTones: nil),
+            "👣": EmojiWithSkinTones(baseEmoji: .footprints, skinTones: nil),
+            "🐵": EmojiWithSkinTones(baseEmoji: .monkeyFace, skinTones: nil),
+            "🐒": EmojiWithSkinTones(baseEmoji: .monkey, skinTones: nil),
+            "🐶": EmojiWithSkinTones(baseEmoji: .dog, skinTones: nil),
+            "🐕": EmojiWithSkinTones(baseEmoji: .dog2, skinTones: nil),
+            "🐩": EmojiWithSkinTones(baseEmoji: .poodle, skinTones: nil),
+            "🐺": EmojiWithSkinTones(baseEmoji: .wolf, skinTones: nil),
+            "🐱": EmojiWithSkinTones(baseEmoji: .cat, skinTones: nil),
+            "🐈": EmojiWithSkinTones(baseEmoji: .cat2, skinTones: nil),
+            "🐯": EmojiWithSkinTones(baseEmoji: .tiger, skinTones: nil),
+            "🐅": EmojiWithSkinTones(baseEmoji: .tiger2, skinTones: nil),
+            "🐆": EmojiWithSkinTones(baseEmoji: .leopard, skinTones: nil),
+            "🐴": EmojiWithSkinTones(baseEmoji: .horse, skinTones: nil),
+            "🐎": EmojiWithSkinTones(baseEmoji: .racehorse, skinTones: nil),
+            "🐮": EmojiWithSkinTones(baseEmoji: .cow, skinTones: nil),
+            "🐂": EmojiWithSkinTones(baseEmoji: .ox, skinTones: nil),
+            "🐃": EmojiWithSkinTones(baseEmoji: .waterBuffalo, skinTones: nil),
+            "🐄": EmojiWithSkinTones(baseEmoji: .cow2, skinTones: nil),
+            "🐷": EmojiWithSkinTones(baseEmoji: .pig, skinTones: nil),
+            "🐖": EmojiWithSkinTones(baseEmoji: .pig2, skinTones: nil),
+            "🐗": EmojiWithSkinTones(baseEmoji: .boar, skinTones: nil),
+            "🐽": EmojiWithSkinTones(baseEmoji: .pigNose, skinTones: nil),
+            "🐏": EmojiWithSkinTones(baseEmoji: .ram, skinTones: nil),
+            "🐑": EmojiWithSkinTones(baseEmoji: .sheep, skinTones: nil),
+            "🐐": EmojiWithSkinTones(baseEmoji: .goat, skinTones: nil),
+            "🐪": EmojiWithSkinTones(baseEmoji: .dromedaryCamel, skinTones: nil),
+            "🐫": EmojiWithSkinTones(baseEmoji: .camel, skinTones: nil),
+            "🐘": EmojiWithSkinTones(baseEmoji: .elephant, skinTones: nil),
+            "🐭": EmojiWithSkinTones(baseEmoji: .mouse, skinTones: nil),
+            "🐁": EmojiWithSkinTones(baseEmoji: .mouse2, skinTones: nil),
+            "🐀": EmojiWithSkinTones(baseEmoji: .rat, skinTones: nil),
+            "🐹": EmojiWithSkinTones(baseEmoji: .hamster, skinTones: nil),
+            "🐰": EmojiWithSkinTones(baseEmoji: .rabbit, skinTones: nil),
+            "🐇": EmojiWithSkinTones(baseEmoji: .rabbit2, skinTones: nil),
+            "🐻": EmojiWithSkinTones(baseEmoji: .bear, skinTones: nil),
+            "🐨": EmojiWithSkinTones(baseEmoji: .koala, skinTones: nil),
+            "🐼": EmojiWithSkinTones(baseEmoji: .pandaFace, skinTones: nil),
+            "🐾": EmojiWithSkinTones(baseEmoji: .feet, skinTones: nil),
+            "🐔": EmojiWithSkinTones(baseEmoji: .chicken, skinTones: nil),
+            "🐓": EmojiWithSkinTones(baseEmoji: .rooster, skinTones: nil),
+            "🐣": EmojiWithSkinTones(baseEmoji: .hatchingChick, skinTones: nil),
+            "🐤": EmojiWithSkinTones(baseEmoji: .babyChick, skinTones: nil),
+            "🐥": EmojiWithSkinTones(baseEmoji: .hatchedChick, skinTones: nil),
+            "🐦": EmojiWithSkinTones(baseEmoji: .bird, skinTones: nil),
+            "🐧": EmojiWithSkinTones(baseEmoji: .penguin, skinTones: nil),
+            "🐸": EmojiWithSkinTones(baseEmoji: .frog, skinTones: nil),
+            "🐊": EmojiWithSkinTones(baseEmoji: .crocodile, skinTones: nil),
+            "🐢": EmojiWithSkinTones(baseEmoji: .turtle, skinTones: nil),
+            "🐍": EmojiWithSkinTones(baseEmoji: .snake, skinTones: nil),
+            "🐲": EmojiWithSkinTones(baseEmoji: .dragonFace, skinTones: nil),
+            "🐉": EmojiWithSkinTones(baseEmoji: .dragon, skinTones: nil),
+            "🐳": EmojiWithSkinTones(baseEmoji: .whale, skinTones: nil),
+            "🐋": EmojiWithSkinTones(baseEmoji: .whale2, skinTones: nil),
+            "🐬": EmojiWithSkinTones(baseEmoji: .dolphin, skinTones: nil),
+            "🐟": EmojiWithSkinTones(baseEmoji: .fish, skinTones: nil),
+            "🐠": EmojiWithSkinTones(baseEmoji: .tropicalFish, skinTones: nil),
+            "🐡": EmojiWithSkinTones(baseEmoji: .blowfish, skinTones: nil),
+            "🐙": EmojiWithSkinTones(baseEmoji: .octopus, skinTones: nil),
+            "🐚": EmojiWithSkinTones(baseEmoji: .shell, skinTones: nil),
+            "🐌": EmojiWithSkinTones(baseEmoji: .snail, skinTones: nil),
+            "🐛": EmojiWithSkinTones(baseEmoji: .bug, skinTones: nil),
+            "🐜": EmojiWithSkinTones(baseEmoji: .ant, skinTones: nil),
+            "🐝": EmojiWithSkinTones(baseEmoji: .bee, skinTones: nil),
+            "🐞": EmojiWithSkinTones(baseEmoji: .ladybug, skinTones: nil),
+            "👓": EmojiWithSkinTones(baseEmoji: .eyeglasses, skinTones: nil),
+            "👔": EmojiWithSkinTones(baseEmoji: .necktie, skinTones: nil),
+            "👕": EmojiWithSkinTones(baseEmoji: .shirt, skinTones: nil),
+            "👖": EmojiWithSkinTones(baseEmoji: .jeans, skinTones: nil),
+            "👗": EmojiWithSkinTones(baseEmoji: .dress, skinTones: nil),
+            "👘": EmojiWithSkinTones(baseEmoji: .kimono, skinTones: nil),
+            "👙": EmojiWithSkinTones(baseEmoji: .bikini, skinTones: nil),
+            "👚": EmojiWithSkinTones(baseEmoji: .womansClothes, skinTones: nil),
+            "👛": EmojiWithSkinTones(baseEmoji: .purse, skinTones: nil),
+            "👜": EmojiWithSkinTones(baseEmoji: .handbag, skinTones: nil),
+            "👝": EmojiWithSkinTones(baseEmoji: .pouch, skinTones: nil),
+            "👞": EmojiWithSkinTones(baseEmoji: .mansShoe, skinTones: nil),
+            "👟": EmojiWithSkinTones(baseEmoji: .athleticShoe, skinTones: nil),
+            "👠": EmojiWithSkinTones(baseEmoji: .highHeel, skinTones: nil),
+            "👡": EmojiWithSkinTones(baseEmoji: .sandal, skinTones: nil),
+            "👢": EmojiWithSkinTones(baseEmoji: .boot, skinTones: nil),
+            "👑": EmojiWithSkinTones(baseEmoji: .crown, skinTones: nil),
+            "👒": EmojiWithSkinTones(baseEmoji: .womansHat, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1281(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👿": EmojiWithSkinTones(baseEmoji: .imp, skinTones: nil),
+            "💀": EmojiWithSkinTones(baseEmoji: .skull, skinTones: nil),
+            "💩": EmojiWithSkinTones(baseEmoji: .hankey, skinTones: nil),
+            "👹": EmojiWithSkinTones(baseEmoji: .japaneseOgre, skinTones: nil),
+            "👺": EmojiWithSkinTones(baseEmoji: .japaneseGoblin, skinTones: nil),
+            "👻": EmojiWithSkinTones(baseEmoji: .ghost, skinTones: nil),
+            "👽": EmojiWithSkinTones(baseEmoji: .alien, skinTones: nil),
+            "👾": EmojiWithSkinTones(baseEmoji: .spaceInvader, skinTones: nil),
+            "💌": EmojiWithSkinTones(baseEmoji: .loveLetter, skinTones: nil),
+            "💘": EmojiWithSkinTones(baseEmoji: .cupid, skinTones: nil),
+            "💝": EmojiWithSkinTones(baseEmoji: .giftHeart, skinTones: nil),
+            "💖": EmojiWithSkinTones(baseEmoji: .sparklingHeart, skinTones: nil),
+            "💗": EmojiWithSkinTones(baseEmoji: .heartpulse, skinTones: nil),
+            "💓": EmojiWithSkinTones(baseEmoji: .heartbeat, skinTones: nil),
+            "💞": EmojiWithSkinTones(baseEmoji: .revolvingHearts, skinTones: nil),
+            "💕": EmojiWithSkinTones(baseEmoji: .twoHearts, skinTones: nil),
+            "💟": EmojiWithSkinTones(baseEmoji: .heartDecoration, skinTones: nil),
+            "💔": EmojiWithSkinTones(baseEmoji: .brokenHeart, skinTones: nil),
+            "💛": EmojiWithSkinTones(baseEmoji: .yellowHeart, skinTones: nil),
+            "💚": EmojiWithSkinTones(baseEmoji: .greenHeart, skinTones: nil),
+            "💙": EmojiWithSkinTones(baseEmoji: .blueHeart, skinTones: nil),
+            "💜": EmojiWithSkinTones(baseEmoji: .purpleHeart, skinTones: nil),
+            "💋": EmojiWithSkinTones(baseEmoji: .kiss, skinTones: nil),
+            "💯": EmojiWithSkinTones(baseEmoji: .oneHundred, skinTones: nil),
+            "💢": EmojiWithSkinTones(baseEmoji: .anger, skinTones: nil),
+            "💥": EmojiWithSkinTones(baseEmoji: .boom, skinTones: nil),
+            "💫": EmojiWithSkinTones(baseEmoji: .dizzy, skinTones: nil),
+            "💦": EmojiWithSkinTones(baseEmoji: .sweatDrops, skinTones: nil),
+            "💨": EmojiWithSkinTones(baseEmoji: .dash, skinTones: nil),
+            "💬": EmojiWithSkinTones(baseEmoji: .speechBalloon, skinTones: nil),
+            "💭": EmojiWithSkinTones(baseEmoji: .thoughtBalloon, skinTones: nil),
+            "💤": EmojiWithSkinTones(baseEmoji: .zzz, skinTones: nil),
+            "💅": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: nil),
+            "💪": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: nil),
+            "👶": EmojiWithSkinTones(baseEmoji: .baby, skinTones: nil),
+            "👦": EmojiWithSkinTones(baseEmoji: .boy, skinTones: nil),
+            "👧": EmojiWithSkinTones(baseEmoji: .girl, skinTones: nil),
+            "👱": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: nil),
+            "👨": EmojiWithSkinTones(baseEmoji: .man, skinTones: nil),
+            "👩": EmojiWithSkinTones(baseEmoji: .woman, skinTones: nil),
+            "👴": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: nil),
+            "👵": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: nil),
+            "💁": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: nil),
+            "👮": EmojiWithSkinTones(baseEmoji: .cop, skinTones: nil),
+            "💂": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: nil),
+            "👷": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: nil),
+            "👸": EmojiWithSkinTones(baseEmoji: .princess, skinTones: nil),
+            "👳": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: nil),
+            "👲": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: nil),
+            "👰": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: nil),
+            "👼": EmojiWithSkinTones(baseEmoji: .angel, skinTones: nil),
+            "💆": EmojiWithSkinTones(baseEmoji: .massage, skinTones: nil),
+            "💇": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: nil),
+            "💃": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: nil),
+            "👯": EmojiWithSkinTones(baseEmoji: .dancers, skinTones: nil),
+            "👭": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: nil),
+            "👫": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: nil),
+            "👬": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: nil),
+            "💏": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: nil),
+            "💑": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: nil),
+            "👪": EmojiWithSkinTones(baseEmoji: .family, skinTones: nil),
+            "👤": EmojiWithSkinTones(baseEmoji: .bustInSilhouette, skinTones: nil),
+            "👥": EmojiWithSkinTones(baseEmoji: .bustsInSilhouette, skinTones: nil),
+            "💐": EmojiWithSkinTones(baseEmoji: .bouquet, skinTones: nil),
+            "💮": EmojiWithSkinTones(baseEmoji: .whiteFlower, skinTones: nil),
+            "💒": EmojiWithSkinTones(baseEmoji: .wedding, skinTones: nil),
+            "💈": EmojiWithSkinTones(baseEmoji: .barber, skinTones: nil),
+            "💺": EmojiWithSkinTones(baseEmoji: .seat, skinTones: nil),
+            "💧": EmojiWithSkinTones(baseEmoji: .droplet, skinTones: nil),
+            "💄": EmojiWithSkinTones(baseEmoji: .lipstick, skinTones: nil),
+            "💍": EmojiWithSkinTones(baseEmoji: .ring, skinTones: nil),
+            "💎": EmojiWithSkinTones(baseEmoji: .gem, skinTones: nil),
+            "💻": EmojiWithSkinTones(baseEmoji: .computer, skinTones: nil),
+            "💽": EmojiWithSkinTones(baseEmoji: .minidisc, skinTones: nil),
+            "💾": EmojiWithSkinTones(baseEmoji: .floppyDisk, skinTones: nil),
+            "💿": EmojiWithSkinTones(baseEmoji: .cd, skinTones: nil),
+            "📀": EmojiWithSkinTones(baseEmoji: .dvd, skinTones: nil),
+            "💡": EmojiWithSkinTones(baseEmoji: .bulb, skinTones: nil),
+            "📃": EmojiWithSkinTones(baseEmoji: .pageWithCurl, skinTones: nil),
+            "📄": EmojiWithSkinTones(baseEmoji: .pageFacingUp, skinTones: nil),
+            "💰": EmojiWithSkinTones(baseEmoji: .moneybag, skinTones: nil),
+            "💴": EmojiWithSkinTones(baseEmoji: .yen, skinTones: nil),
+            "💵": EmojiWithSkinTones(baseEmoji: .dollar, skinTones: nil),
+            "💶": EmojiWithSkinTones(baseEmoji: .euro, skinTones: nil),
+            "💷": EmojiWithSkinTones(baseEmoji: .pound, skinTones: nil),
+            "💸": EmojiWithSkinTones(baseEmoji: .moneyWithWings, skinTones: nil),
+            "💳": EmojiWithSkinTones(baseEmoji: .creditCard, skinTones: nil),
+            "💹": EmojiWithSkinTones(baseEmoji: .chart, skinTones: nil),
+            "💼": EmojiWithSkinTones(baseEmoji: .briefcase, skinTones: nil),
+            "📁": EmojiWithSkinTones(baseEmoji: .fileFolder, skinTones: nil),
+            "📂": EmojiWithSkinTones(baseEmoji: .openFileFolder, skinTones: nil),
+            "📅": EmojiWithSkinTones(baseEmoji: .date, skinTones: nil),
+            "📆": EmojiWithSkinTones(baseEmoji: .calendar, skinTones: nil),
+            "📇": EmojiWithSkinTones(baseEmoji: .cardIndex, skinTones: nil),
+            "💣": EmojiWithSkinTones(baseEmoji: .bomb, skinTones: nil),
+            "💉": EmojiWithSkinTones(baseEmoji: .syringe, skinTones: nil),
+            "💊": EmojiWithSkinTones(baseEmoji: .pill, skinTones: nil),
+            "💱": EmojiWithSkinTones(baseEmoji: .currencyExchange, skinTones: nil),
+            "💲": EmojiWithSkinTones(baseEmoji: .heavyDollarSign, skinTones: nil),
+            "💠": EmojiWithSkinTones(baseEmoji: .diamondShapeWithADotInside, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1282(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🔪": EmojiWithSkinTones(baseEmoji: .hocho, skinTones: nil),
+            "🔥": EmojiWithSkinTones(baseEmoji: .fire, skinTones: nil),
+            "🔫": EmojiWithSkinTones(baseEmoji: .gun, skinTones: nil),
+            "📿": EmojiWithSkinTones(baseEmoji: .prayerBeads, skinTones: nil),
+            "🔇": EmojiWithSkinTones(baseEmoji: .mute, skinTones: nil),
+            "🔈": EmojiWithSkinTones(baseEmoji: .speaker, skinTones: nil),
+            "🔉": EmojiWithSkinTones(baseEmoji: .sound, skinTones: nil),
+            "🔊": EmojiWithSkinTones(baseEmoji: .loudSound, skinTones: nil),
+            "📢": EmojiWithSkinTones(baseEmoji: .loudspeaker, skinTones: nil),
+            "📣": EmojiWithSkinTones(baseEmoji: .mega, skinTones: nil),
+            "📯": EmojiWithSkinTones(baseEmoji: .postalHorn, skinTones: nil),
+            "🔔": EmojiWithSkinTones(baseEmoji: .bell, skinTones: nil),
+            "🔕": EmojiWithSkinTones(baseEmoji: .noBell, skinTones: nil),
+            "📻": EmojiWithSkinTones(baseEmoji: .radio, skinTones: nil),
+            "📱": EmojiWithSkinTones(baseEmoji: .iphone, skinTones: nil),
+            "📲": EmojiWithSkinTones(baseEmoji: .calling, skinTones: nil),
+            "📞": EmojiWithSkinTones(baseEmoji: .telephoneReceiver, skinTones: nil),
+            "📟": EmojiWithSkinTones(baseEmoji: .pager, skinTones: nil),
+            "📠": EmojiWithSkinTones(baseEmoji: .fax, skinTones: nil),
+            "🔋": EmojiWithSkinTones(baseEmoji: .battery, skinTones: nil),
+            "🔌": EmojiWithSkinTones(baseEmoji: .electricPlug, skinTones: nil),
+            "📺": EmojiWithSkinTones(baseEmoji: .tv, skinTones: nil),
+            "📷": EmojiWithSkinTones(baseEmoji: .camera, skinTones: nil),
+            "📸": EmojiWithSkinTones(baseEmoji: .cameraWithFlash, skinTones: nil),
+            "📹": EmojiWithSkinTones(baseEmoji: .videoCamera, skinTones: nil),
+            "📼": EmojiWithSkinTones(baseEmoji: .vhs, skinTones: nil),
+            "🔍": EmojiWithSkinTones(baseEmoji: .mag, skinTones: nil),
+            "🔎": EmojiWithSkinTones(baseEmoji: .magRight, skinTones: nil),
+            "🔦": EmojiWithSkinTones(baseEmoji: .flashlight, skinTones: nil),
+            "📔": EmojiWithSkinTones(baseEmoji: .notebookWithDecorativeCover, skinTones: nil),
+            "📕": EmojiWithSkinTones(baseEmoji: .closedBook, skinTones: nil),
+            "📖": EmojiWithSkinTones(baseEmoji: .book, skinTones: nil),
+            "📗": EmojiWithSkinTones(baseEmoji: .greenBook, skinTones: nil),
+            "📘": EmojiWithSkinTones(baseEmoji: .blueBook, skinTones: nil),
+            "📙": EmojiWithSkinTones(baseEmoji: .orangeBook, skinTones: nil),
+            "📚": EmojiWithSkinTones(baseEmoji: .books, skinTones: nil),
+            "📓": EmojiWithSkinTones(baseEmoji: .notebook, skinTones: nil),
+            "📒": EmojiWithSkinTones(baseEmoji: .ledger, skinTones: nil),
+            "📜": EmojiWithSkinTones(baseEmoji: .scroll, skinTones: nil),
+            "📰": EmojiWithSkinTones(baseEmoji: .newspaper, skinTones: nil),
+            "📑": EmojiWithSkinTones(baseEmoji: .bookmarkTabs, skinTones: nil),
+            "🔖": EmojiWithSkinTones(baseEmoji: .bookmark, skinTones: nil),
+            "📧": EmojiWithSkinTones(baseEmoji: .eMail, skinTones: nil),
+            "📨": EmojiWithSkinTones(baseEmoji: .incomingEnvelope, skinTones: nil),
+            "📩": EmojiWithSkinTones(baseEmoji: .envelopeWithArrow, skinTones: nil),
+            "📤": EmojiWithSkinTones(baseEmoji: .outboxTray, skinTones: nil),
+            "📥": EmojiWithSkinTones(baseEmoji: .inboxTray, skinTones: nil),
+            "📦": EmojiWithSkinTones(baseEmoji: .package, skinTones: nil),
+            "📫": EmojiWithSkinTones(baseEmoji: .mailbox, skinTones: nil),
+            "📪": EmojiWithSkinTones(baseEmoji: .mailboxClosed, skinTones: nil),
+            "📬": EmojiWithSkinTones(baseEmoji: .mailboxWithMail, skinTones: nil),
+            "📭": EmojiWithSkinTones(baseEmoji: .mailboxWithNoMail, skinTones: nil),
+            "📮": EmojiWithSkinTones(baseEmoji: .postbox, skinTones: nil),
+            "📝": EmojiWithSkinTones(baseEmoji: .memo, skinTones: nil),
+            "📈": EmojiWithSkinTones(baseEmoji: .chartWithUpwardsTrend, skinTones: nil),
+            "📉": EmojiWithSkinTones(baseEmoji: .chartWithDownwardsTrend, skinTones: nil),
+            "📊": EmojiWithSkinTones(baseEmoji: .barChart, skinTones: nil),
+            "📋": EmojiWithSkinTones(baseEmoji: .clipboard, skinTones: nil),
+            "📌": EmojiWithSkinTones(baseEmoji: .pushpin, skinTones: nil),
+            "📍": EmojiWithSkinTones(baseEmoji: .roundPushpin, skinTones: nil),
+            "📎": EmojiWithSkinTones(baseEmoji: .paperclip, skinTones: nil),
+            "📏": EmojiWithSkinTones(baseEmoji: .straightRuler, skinTones: nil),
+            "📐": EmojiWithSkinTones(baseEmoji: .triangularRuler, skinTones: nil),
+            "🔒": EmojiWithSkinTones(baseEmoji: .lock, skinTones: nil),
+            "🔓": EmojiWithSkinTones(baseEmoji: .unlock, skinTones: nil),
+            "🔏": EmojiWithSkinTones(baseEmoji: .lockWithInkPen, skinTones: nil),
+            "🔐": EmojiWithSkinTones(baseEmoji: .closedLockWithKey, skinTones: nil),
+            "🔑": EmojiWithSkinTones(baseEmoji: .key, skinTones: nil),
+            "🔨": EmojiWithSkinTones(baseEmoji: .hammer, skinTones: nil),
+            "🔧": EmojiWithSkinTones(baseEmoji: .wrench, skinTones: nil),
+            "🔩": EmojiWithSkinTones(baseEmoji: .nutAndBolt, skinTones: nil),
+            "🔗": EmojiWithSkinTones(baseEmoji: .link, skinTones: nil),
+            "📡": EmojiWithSkinTones(baseEmoji: .satelliteAntenna, skinTones: nil),
+            "📵": EmojiWithSkinTones(baseEmoji: .noMobilePhones, skinTones: nil),
+            "🔞": EmojiWithSkinTones(baseEmoji: .underage, skinTones: nil),
+            "🔃": EmojiWithSkinTones(baseEmoji: .arrowsClockwise, skinTones: nil),
+            "🔄": EmojiWithSkinTones(baseEmoji: .arrowsCounterclockwise, skinTones: nil),
+            "🔙": EmojiWithSkinTones(baseEmoji: .back, skinTones: nil),
+            "🔚": EmojiWithSkinTones(baseEmoji: .end, skinTones: nil),
+            "🔛": EmojiWithSkinTones(baseEmoji: .on, skinTones: nil),
+            "🔜": EmojiWithSkinTones(baseEmoji: .soon, skinTones: nil),
+            "🔝": EmojiWithSkinTones(baseEmoji: .top, skinTones: nil),
+            "🔀": EmojiWithSkinTones(baseEmoji: .twistedRightwardsArrows, skinTones: nil),
+            "🔁": EmojiWithSkinTones(baseEmoji: .`repeat`, skinTones: nil),
+            "🔂": EmojiWithSkinTones(baseEmoji: .repeatOne, skinTones: nil),
+            "🔅": EmojiWithSkinTones(baseEmoji: .lowBrightness, skinTones: nil),
+            "🔆": EmojiWithSkinTones(baseEmoji: .highBrightness, skinTones: nil),
+            "📶": EmojiWithSkinTones(baseEmoji: .signalStrength, skinTones: nil),
+            "📳": EmojiWithSkinTones(baseEmoji: .vibrationMode, skinTones: nil),
+            "📴": EmojiWithSkinTones(baseEmoji: .mobilePhoneOff, skinTones: nil),
+            "📛": EmojiWithSkinTones(baseEmoji: .nameBadge, skinTones: nil),
+            "🔟": EmojiWithSkinTones(baseEmoji: .keycapTen, skinTones: nil),
+            "🔠": EmojiWithSkinTones(baseEmoji: .capitalAbcd, skinTones: nil),
+            "🔡": EmojiWithSkinTones(baseEmoji: .abcd, skinTones: nil),
+            "🔢": EmojiWithSkinTones(baseEmoji: .oneTwoThreeFour, skinTones: nil),
+            "🔣": EmojiWithSkinTones(baseEmoji: .symbols, skinTones: nil),
+            "🔤": EmojiWithSkinTones(baseEmoji: .abc, skinTones: nil),
+            "🔘": EmojiWithSkinTones(baseEmoji: .radioButton, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1283(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🕺": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: nil),
+            "🕌": EmojiWithSkinTones(baseEmoji: .mosque, skinTones: nil),
+            "🕍": EmojiWithSkinTones(baseEmoji: .synagogue, skinTones: nil),
+            "🕋": EmojiWithSkinTones(baseEmoji: .kaaba, skinTones: nil),
+            "🕛": EmojiWithSkinTones(baseEmoji: .clock12, skinTones: nil),
+            "🕧": EmojiWithSkinTones(baseEmoji: .clock1230, skinTones: nil),
+            "🕐": EmojiWithSkinTones(baseEmoji: .clock1, skinTones: nil),
+            "🕜": EmojiWithSkinTones(baseEmoji: .clock130, skinTones: nil),
+            "🕑": EmojiWithSkinTones(baseEmoji: .clock2, skinTones: nil),
+            "🕝": EmojiWithSkinTones(baseEmoji: .clock230, skinTones: nil),
+            "🕒": EmojiWithSkinTones(baseEmoji: .clock3, skinTones: nil),
+            "🕞": EmojiWithSkinTones(baseEmoji: .clock330, skinTones: nil),
+            "🕓": EmojiWithSkinTones(baseEmoji: .clock4, skinTones: nil),
+            "🕟": EmojiWithSkinTones(baseEmoji: .clock430, skinTones: nil),
+            "🕔": EmojiWithSkinTones(baseEmoji: .clock5, skinTones: nil),
+            "🕠": EmojiWithSkinTones(baseEmoji: .clock530, skinTones: nil),
+            "🕕": EmojiWithSkinTones(baseEmoji: .clock6, skinTones: nil),
+            "🕡": EmojiWithSkinTones(baseEmoji: .clock630, skinTones: nil),
+            "🕖": EmojiWithSkinTones(baseEmoji: .clock7, skinTones: nil),
+            "🕢": EmojiWithSkinTones(baseEmoji: .clock730, skinTones: nil),
+            "🕗": EmojiWithSkinTones(baseEmoji: .clock8, skinTones: nil),
+            "🕣": EmojiWithSkinTones(baseEmoji: .clock830, skinTones: nil),
+            "🕘": EmojiWithSkinTones(baseEmoji: .clock9, skinTones: nil),
+            "🕤": EmojiWithSkinTones(baseEmoji: .clock930, skinTones: nil),
+            "🕙": EmojiWithSkinTones(baseEmoji: .clock10, skinTones: nil),
+            "🕥": EmojiWithSkinTones(baseEmoji: .clock1030, skinTones: nil),
+            "🕚": EmojiWithSkinTones(baseEmoji: .clock11, skinTones: nil),
+            "🕦": EmojiWithSkinTones(baseEmoji: .clock1130, skinTones: nil),
+            "🔮": EmojiWithSkinTones(baseEmoji: .crystalBall, skinTones: nil),
+            "🔬": EmojiWithSkinTones(baseEmoji: .microscope, skinTones: nil),
+            "🔭": EmojiWithSkinTones(baseEmoji: .telescope, skinTones: nil),
+            "🕎": EmojiWithSkinTones(baseEmoji: .menorahWithNineBranches, skinTones: nil),
+            "🔯": EmojiWithSkinTones(baseEmoji: .sixPointedStar, skinTones: nil),
+            "🔼": EmojiWithSkinTones(baseEmoji: .arrowUpSmall, skinTones: nil),
+            "🔽": EmojiWithSkinTones(baseEmoji: .arrowDownSmall, skinTones: nil),
+            "🔱": EmojiWithSkinTones(baseEmoji: .trident, skinTones: nil),
+            "🔰": EmojiWithSkinTones(baseEmoji: .beginner, skinTones: nil),
+            "🔴": EmojiWithSkinTones(baseEmoji: .redCircle, skinTones: nil),
+            "🔵": EmojiWithSkinTones(baseEmoji: .largeBlueCircle, skinTones: nil),
+            "🔶": EmojiWithSkinTones(baseEmoji: .largeOrangeDiamond, skinTones: nil),
+            "🔷": EmojiWithSkinTones(baseEmoji: .largeBlueDiamond, skinTones: nil),
+            "🔸": EmojiWithSkinTones(baseEmoji: .smallOrangeDiamond, skinTones: nil),
+            "🔹": EmojiWithSkinTones(baseEmoji: .smallBlueDiamond, skinTones: nil),
+            "🔺": EmojiWithSkinTones(baseEmoji: .smallRedTriangle, skinTones: nil),
+            "🔻": EmojiWithSkinTones(baseEmoji: .smallRedTriangleDown, skinTones: nil),
+            "🔳": EmojiWithSkinTones(baseEmoji: .whiteSquareButton, skinTones: nil),
+            "🔲": EmojiWithSkinTones(baseEmoji: .blackSquareButton, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1284(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🖤": EmojiWithSkinTones(baseEmoji: .blackHeart, skinTones: nil),
+            "🖖": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: nil),
+            "🖕": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1285(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "😀": EmojiWithSkinTones(baseEmoji: .grinning, skinTones: nil),
+            "😃": EmojiWithSkinTones(baseEmoji: .smiley, skinTones: nil),
+            "😄": EmojiWithSkinTones(baseEmoji: .smile, skinTones: nil),
+            "😁": EmojiWithSkinTones(baseEmoji: .grin, skinTones: nil),
+            "😆": EmojiWithSkinTones(baseEmoji: .laughing, skinTones: nil),
+            "😅": EmojiWithSkinTones(baseEmoji: .sweatSmile, skinTones: nil),
+            "😂": EmojiWithSkinTones(baseEmoji: .joy, skinTones: nil),
+            "🙂": EmojiWithSkinTones(baseEmoji: .slightlySmilingFace, skinTones: nil),
+            "🙃": EmojiWithSkinTones(baseEmoji: .upsideDownFace, skinTones: nil),
+            "😉": EmojiWithSkinTones(baseEmoji: .wink, skinTones: nil),
+            "😊": EmojiWithSkinTones(baseEmoji: .blush, skinTones: nil),
+            "😇": EmojiWithSkinTones(baseEmoji: .innocent, skinTones: nil),
+            "😍": EmojiWithSkinTones(baseEmoji: .heartEyes, skinTones: nil),
+            "😘": EmojiWithSkinTones(baseEmoji: .kissingHeart, skinTones: nil),
+            "😗": EmojiWithSkinTones(baseEmoji: .kissing, skinTones: nil),
+            "😚": EmojiWithSkinTones(baseEmoji: .kissingClosedEyes, skinTones: nil),
+            "😙": EmojiWithSkinTones(baseEmoji: .kissingSmilingEyes, skinTones: nil),
+            "😋": EmojiWithSkinTones(baseEmoji: .yum, skinTones: nil),
+            "😛": EmojiWithSkinTones(baseEmoji: .stuckOutTongue, skinTones: nil),
+            "😜": EmojiWithSkinTones(baseEmoji: .stuckOutTongueWinkingEye, skinTones: nil),
+            "😝": EmojiWithSkinTones(baseEmoji: .stuckOutTongueClosedEyes, skinTones: nil),
+            "😐": EmojiWithSkinTones(baseEmoji: .neutralFace, skinTones: nil),
+            "😑": EmojiWithSkinTones(baseEmoji: .expressionless, skinTones: nil),
+            "😶": EmojiWithSkinTones(baseEmoji: .noMouth, skinTones: nil),
+            "😏": EmojiWithSkinTones(baseEmoji: .smirk, skinTones: nil),
+            "😒": EmojiWithSkinTones(baseEmoji: .unamused, skinTones: nil),
+            "🙄": EmojiWithSkinTones(baseEmoji: .faceWithRollingEyes, skinTones: nil),
+            "😬": EmojiWithSkinTones(baseEmoji: .grimacing, skinTones: nil),
+            "😌": EmojiWithSkinTones(baseEmoji: .relieved, skinTones: nil),
+            "😔": EmojiWithSkinTones(baseEmoji: .pensive, skinTones: nil),
+            "😪": EmojiWithSkinTones(baseEmoji: .sleepy, skinTones: nil),
+            "😴": EmojiWithSkinTones(baseEmoji: .sleeping, skinTones: nil),
+            "😷": EmojiWithSkinTones(baseEmoji: .mask, skinTones: nil),
+            "😵": EmojiWithSkinTones(baseEmoji: .dizzyFace, skinTones: nil),
+            "😎": EmojiWithSkinTones(baseEmoji: .sunglasses, skinTones: nil),
+            "😕": EmojiWithSkinTones(baseEmoji: .confused, skinTones: nil),
+            "😟": EmojiWithSkinTones(baseEmoji: .worried, skinTones: nil),
+            "🙁": EmojiWithSkinTones(baseEmoji: .slightlyFrowningFace, skinTones: nil),
+            "😮": EmojiWithSkinTones(baseEmoji: .openMouth, skinTones: nil),
+            "😯": EmojiWithSkinTones(baseEmoji: .hushed, skinTones: nil),
+            "😲": EmojiWithSkinTones(baseEmoji: .astonished, skinTones: nil),
+            "😳": EmojiWithSkinTones(baseEmoji: .flushed, skinTones: nil),
+            "😦": EmojiWithSkinTones(baseEmoji: .frowning, skinTones: nil),
+            "😧": EmojiWithSkinTones(baseEmoji: .anguished, skinTones: nil),
+            "😨": EmojiWithSkinTones(baseEmoji: .fearful, skinTones: nil),
+            "😰": EmojiWithSkinTones(baseEmoji: .coldSweat, skinTones: nil),
+            "😥": EmojiWithSkinTones(baseEmoji: .disappointedRelieved, skinTones: nil),
+            "😢": EmojiWithSkinTones(baseEmoji: .cry, skinTones: nil),
+            "😭": EmojiWithSkinTones(baseEmoji: .sob, skinTones: nil),
+            "😱": EmojiWithSkinTones(baseEmoji: .scream, skinTones: nil),
+            "😖": EmojiWithSkinTones(baseEmoji: .confounded, skinTones: nil),
+            "😣": EmojiWithSkinTones(baseEmoji: .persevere, skinTones: nil),
+            "😞": EmojiWithSkinTones(baseEmoji: .disappointed, skinTones: nil),
+            "😓": EmojiWithSkinTones(baseEmoji: .sweat, skinTones: nil),
+            "😩": EmojiWithSkinTones(baseEmoji: .weary, skinTones: nil),
+            "😫": EmojiWithSkinTones(baseEmoji: .tiredFace, skinTones: nil),
+            "😤": EmojiWithSkinTones(baseEmoji: .triumph, skinTones: nil),
+            "😡": EmojiWithSkinTones(baseEmoji: .rage, skinTones: nil),
+            "😠": EmojiWithSkinTones(baseEmoji: .angry, skinTones: nil),
+            "😈": EmojiWithSkinTones(baseEmoji: .smilingImp, skinTones: nil),
+            "😺": EmojiWithSkinTones(baseEmoji: .smileyCat, skinTones: nil),
+            "😸": EmojiWithSkinTones(baseEmoji: .smileCat, skinTones: nil),
+            "😹": EmojiWithSkinTones(baseEmoji: .joyCat, skinTones: nil),
+            "😻": EmojiWithSkinTones(baseEmoji: .heartEyesCat, skinTones: nil),
+            "😼": EmojiWithSkinTones(baseEmoji: .smirkCat, skinTones: nil),
+            "😽": EmojiWithSkinTones(baseEmoji: .kissingCat, skinTones: nil),
+            "🙀": EmojiWithSkinTones(baseEmoji: .screamCat, skinTones: nil),
+            "😿": EmojiWithSkinTones(baseEmoji: .cryingCatFace, skinTones: nil),
+            "😾": EmojiWithSkinTones(baseEmoji: .poutingCat, skinTones: nil),
+            "🙈": EmojiWithSkinTones(baseEmoji: .seeNoEvil, skinTones: nil),
+            "🙉": EmojiWithSkinTones(baseEmoji: .hearNoEvil, skinTones: nil),
+            "🙊": EmojiWithSkinTones(baseEmoji: .speakNoEvil, skinTones: nil),
+            "🙌": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: nil),
+            "🙏": EmojiWithSkinTones(baseEmoji: .pray, skinTones: nil),
+            "🙍": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: nil),
+            "🙎": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: nil),
+            "🙅": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: nil),
+            "🙆": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: nil),
+            "🙋": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: nil),
+            "🙇": EmojiWithSkinTones(baseEmoji: .bow, skinTones: nil),
+            "🗾": EmojiWithSkinTones(baseEmoji: .japan, skinTones: nil),
+            "🗻": EmojiWithSkinTones(baseEmoji: .mountFuji, skinTones: nil),
+            "🗼": EmojiWithSkinTones(baseEmoji: .tokyoTower, skinTones: nil),
+            "🗽": EmojiWithSkinTones(baseEmoji: .statueOfLiberty, skinTones: nil),
+            "🗿": EmojiWithSkinTones(baseEmoji: .moyai, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1286(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🚶": EmojiWithSkinTones(baseEmoji: .walking, skinTones: nil),
+            "🚣": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: nil),
+            "🚴": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: nil),
+            "🚵": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: nil),
+            "🚂": EmojiWithSkinTones(baseEmoji: .steamLocomotive, skinTones: nil),
+            "🚃": EmojiWithSkinTones(baseEmoji: .railwayCar, skinTones: nil),
+            "🚄": EmojiWithSkinTones(baseEmoji: .bullettrainSide, skinTones: nil),
+            "🚅": EmojiWithSkinTones(baseEmoji: .bullettrainFront, skinTones: nil),
+            "🚆": EmojiWithSkinTones(baseEmoji: .train2, skinTones: nil),
+            "🚇": EmojiWithSkinTones(baseEmoji: .metro, skinTones: nil),
+            "🚈": EmojiWithSkinTones(baseEmoji: .lightRail, skinTones: nil),
+            "🚉": EmojiWithSkinTones(baseEmoji: .station, skinTones: nil),
+            "🚊": EmojiWithSkinTones(baseEmoji: .tram, skinTones: nil),
+            "🚝": EmojiWithSkinTones(baseEmoji: .monorail, skinTones: nil),
+            "🚞": EmojiWithSkinTones(baseEmoji: .mountainRailway, skinTones: nil),
+            "🚋": EmojiWithSkinTones(baseEmoji: .train, skinTones: nil),
+            "🚌": EmojiWithSkinTones(baseEmoji: .bus, skinTones: nil),
+            "🚍": EmojiWithSkinTones(baseEmoji: .oncomingBus, skinTones: nil),
+            "🚎": EmojiWithSkinTones(baseEmoji: .trolleybus, skinTones: nil),
+            "🚐": EmojiWithSkinTones(baseEmoji: .minibus, skinTones: nil),
+            "🚑": EmojiWithSkinTones(baseEmoji: .ambulance, skinTones: nil),
+            "🚒": EmojiWithSkinTones(baseEmoji: .fireEngine, skinTones: nil),
+            "🚓": EmojiWithSkinTones(baseEmoji: .policeCar, skinTones: nil),
+            "🚔": EmojiWithSkinTones(baseEmoji: .oncomingPoliceCar, skinTones: nil),
+            "🚕": EmojiWithSkinTones(baseEmoji: .taxi, skinTones: nil),
+            "🚖": EmojiWithSkinTones(baseEmoji: .oncomingTaxi, skinTones: nil),
+            "🚗": EmojiWithSkinTones(baseEmoji: .car, skinTones: nil),
+            "🚘": EmojiWithSkinTones(baseEmoji: .oncomingAutomobile, skinTones: nil),
+            "🚙": EmojiWithSkinTones(baseEmoji: .blueCar, skinTones: nil),
+            "🚚": EmojiWithSkinTones(baseEmoji: .truck, skinTones: nil),
+            "🚛": EmojiWithSkinTones(baseEmoji: .articulatedLorry, skinTones: nil),
+            "🚜": EmojiWithSkinTones(baseEmoji: .tractor, skinTones: nil),
+            "🚲": EmojiWithSkinTones(baseEmoji: .bike, skinTones: nil),
+            "🚏": EmojiWithSkinTones(baseEmoji: .busstop, skinTones: nil),
+            "🚨": EmojiWithSkinTones(baseEmoji: .rotatingLight, skinTones: nil),
+            "🚥": EmojiWithSkinTones(baseEmoji: .trafficLight, skinTones: nil),
+            "🚦": EmojiWithSkinTones(baseEmoji: .verticalTrafficLight, skinTones: nil),
+            "🚧": EmojiWithSkinTones(baseEmoji: .construction, skinTones: nil),
+            "🚤": EmojiWithSkinTones(baseEmoji: .speedboat, skinTones: nil),
+            "🚢": EmojiWithSkinTones(baseEmoji: .ship, skinTones: nil),
+            "🚁": EmojiWithSkinTones(baseEmoji: .helicopter, skinTones: nil),
+            "🚟": EmojiWithSkinTones(baseEmoji: .suspensionRailway, skinTones: nil),
+            "🚠": EmojiWithSkinTones(baseEmoji: .mountainCableway, skinTones: nil),
+            "🚡": EmojiWithSkinTones(baseEmoji: .aerialTramway, skinTones: nil),
+            "🚀": EmojiWithSkinTones(baseEmoji: .rocket, skinTones: nil),
+            "🚪": EmojiWithSkinTones(baseEmoji: .door, skinTones: nil),
+            "🚬": EmojiWithSkinTones(baseEmoji: .smoking, skinTones: nil),
+            "🚮": EmojiWithSkinTones(baseEmoji: .putLitterInItsPlace, skinTones: nil),
+            "🚰": EmojiWithSkinTones(baseEmoji: .potableWater, skinTones: nil),
+            "🚹": EmojiWithSkinTones(baseEmoji: .mens, skinTones: nil),
+            "🚺": EmojiWithSkinTones(baseEmoji: .womens, skinTones: nil),
+            "🚻": EmojiWithSkinTones(baseEmoji: .restroom, skinTones: nil),
+            "🚸": EmojiWithSkinTones(baseEmoji: .childrenCrossing, skinTones: nil),
+            "🚫": EmojiWithSkinTones(baseEmoji: .noEntrySign, skinTones: nil),
+            "🚳": EmojiWithSkinTones(baseEmoji: .noBicycles, skinTones: nil),
+            "🚭": EmojiWithSkinTones(baseEmoji: .noSmoking, skinTones: nil),
+            "🚯": EmojiWithSkinTones(baseEmoji: .doNotLitter, skinTones: nil),
+            "🚱": EmojiWithSkinTones(baseEmoji: .nonPotableWater, skinTones: nil),
+            "🚷": EmojiWithSkinTones(baseEmoji: .noPedestrians, skinTones: nil),
+            "🚩": EmojiWithSkinTones(baseEmoji: .triangularFlagOnPost, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1287(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🛀": EmojiWithSkinTones(baseEmoji: .bath, skinTones: nil),
+            "🛌": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: nil),
+            "🛖": EmojiWithSkinTones(baseEmoji: .hut, skinTones: nil),
+            "🛕": EmojiWithSkinTones(baseEmoji: .hinduTemple, skinTones: nil),
+            "🛝": EmojiWithSkinTones(baseEmoji: .playgroundSlide, skinTones: nil),
+            "🛻": EmojiWithSkinTones(baseEmoji: .pickupTruck, skinTones: nil),
+            "🛵": EmojiWithSkinTones(baseEmoji: .motorScooter, skinTones: nil),
+            "🛺": EmojiWithSkinTones(baseEmoji: .autoRickshaw, skinTones: nil),
+            "🛴": EmojiWithSkinTones(baseEmoji: .scooter, skinTones: nil),
+            "🛹": EmojiWithSkinTones(baseEmoji: .skateboard, skinTones: nil),
+            "🛼": EmojiWithSkinTones(baseEmoji: .rollerSkate, skinTones: nil),
+            "🛞": EmojiWithSkinTones(baseEmoji: .wheel, skinTones: nil),
+            "🛑": EmojiWithSkinTones(baseEmoji: .octagonalSign, skinTones: nil),
+            "🛟": EmojiWithSkinTones(baseEmoji: .ringBuoy, skinTones: nil),
+            "🛶": EmojiWithSkinTones(baseEmoji: .canoe, skinTones: nil),
+            "🛫": EmojiWithSkinTones(baseEmoji: .airplaneDeparture, skinTones: nil),
+            "🛬": EmojiWithSkinTones(baseEmoji: .airplaneArriving, skinTones: nil),
+            "🛸": EmojiWithSkinTones(baseEmoji: .flyingSaucer, skinTones: nil),
+            "🛷": EmojiWithSkinTones(baseEmoji: .sled, skinTones: nil),
+            "🛗": EmojiWithSkinTones(baseEmoji: .elevator, skinTones: nil),
+            "🚽": EmojiWithSkinTones(baseEmoji: .toilet, skinTones: nil),
+            "🚿": EmojiWithSkinTones(baseEmoji: .shower, skinTones: nil),
+            "🛁": EmojiWithSkinTones(baseEmoji: .bathtub, skinTones: nil),
+            "🛒": EmojiWithSkinTones(baseEmoji: .shoppingTrolley, skinTones: nil),
+            "🚼": EmojiWithSkinTones(baseEmoji: .babySymbol, skinTones: nil),
+            "🚾": EmojiWithSkinTones(baseEmoji: .wc, skinTones: nil),
+            "🛂": EmojiWithSkinTones(baseEmoji: .passportControl, skinTones: nil),
+            "🛃": EmojiWithSkinTones(baseEmoji: .customs, skinTones: nil),
+            "🛄": EmojiWithSkinTones(baseEmoji: .baggageClaim, skinTones: nil),
+            "🛅": EmojiWithSkinTones(baseEmoji: .leftLuggage, skinTones: nil),
+            "🛐": EmojiWithSkinTones(baseEmoji: .placeOfWorship, skinTones: nil),
+            "🛜": EmojiWithSkinTones(baseEmoji: .wireless, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1289(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🟠": EmojiWithSkinTones(baseEmoji: .largeOrangeCircle, skinTones: nil),
+            "🟡": EmojiWithSkinTones(baseEmoji: .largeYellowCircle, skinTones: nil),
+            "🟢": EmojiWithSkinTones(baseEmoji: .largeGreenCircle, skinTones: nil),
+            "🟣": EmojiWithSkinTones(baseEmoji: .largePurpleCircle, skinTones: nil),
+            "🟤": EmojiWithSkinTones(baseEmoji: .largeBrownCircle, skinTones: nil),
+            "🟥": EmojiWithSkinTones(baseEmoji: .largeRedSquare, skinTones: nil),
+            "🟧": EmojiWithSkinTones(baseEmoji: .largeOrangeSquare, skinTones: nil),
+            "🟦": EmojiWithSkinTones(baseEmoji: .largeBlueSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1290(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🟰": EmojiWithSkinTones(baseEmoji: .heavyEqualsSign, skinTones: nil),
+            "🟨": EmojiWithSkinTones(baseEmoji: .largeYellowSquare, skinTones: nil),
+            "🟩": EmojiWithSkinTones(baseEmoji: .largeGreenSquare, skinTones: nil),
+            "🟪": EmojiWithSkinTones(baseEmoji: .largePurpleSquare, skinTones: nil),
+            "🟫": EmojiWithSkinTones(baseEmoji: .largeBrownSquare, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1292(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤑": EmojiWithSkinTones(baseEmoji: .moneyMouthFace, skinTones: nil),
+            "🤐": EmojiWithSkinTones(baseEmoji: .zipperMouthFace, skinTones: nil),
+            "🤒": EmojiWithSkinTones(baseEmoji: .faceWithThermometer, skinTones: nil),
+            "🤓": EmojiWithSkinTones(baseEmoji: .nerdFace, skinTones: nil),
+            "🤎": EmojiWithSkinTones(baseEmoji: .brownHeart, skinTones: nil),
+            "🤍": EmojiWithSkinTones(baseEmoji: .whiteHeart, skinTones: nil),
+            "🤌": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: nil),
+            "🤏": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1293(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤣": EmojiWithSkinTones(baseEmoji: .rollingOnTheFloorLaughing, skinTones: nil),
+            "🥰": EmojiWithSkinTones(baseEmoji: .smilingFaceWith3Hearts, skinTones: nil),
+            "🤩": EmojiWithSkinTones(baseEmoji: .starStruck, skinTones: nil),
+            "🥲": EmojiWithSkinTones(baseEmoji: .smilingFaceWithTear, skinTones: nil),
+            "🤪": EmojiWithSkinTones(baseEmoji: .zanyFace, skinTones: nil),
+            "🤗": EmojiWithSkinTones(baseEmoji: .huggingFace, skinTones: nil),
+            "🤭": EmojiWithSkinTones(baseEmoji: .faceWithHandOverMouth, skinTones: nil),
+            "🤫": EmojiWithSkinTones(baseEmoji: .shushingFace, skinTones: nil),
+            "🤔": EmojiWithSkinTones(baseEmoji: .thinkingFace, skinTones: nil),
+            "🤨": EmojiWithSkinTones(baseEmoji: .faceWithRaisedEyebrow, skinTones: nil),
+            "🤥": EmojiWithSkinTones(baseEmoji: .lyingFace, skinTones: nil),
+            "🤤": EmojiWithSkinTones(baseEmoji: .droolingFace, skinTones: nil),
+            "🤕": EmojiWithSkinTones(baseEmoji: .faceWithHeadBandage, skinTones: nil),
+            "🤢": EmojiWithSkinTones(baseEmoji: .nauseatedFace, skinTones: nil),
+            "🤮": EmojiWithSkinTones(baseEmoji: .faceVomiting, skinTones: nil),
+            "🤧": EmojiWithSkinTones(baseEmoji: .sneezingFace, skinTones: nil),
+            "🥵": EmojiWithSkinTones(baseEmoji: .hotFace, skinTones: nil),
+            "🥶": EmojiWithSkinTones(baseEmoji: .coldFace, skinTones: nil),
+            "🥴": EmojiWithSkinTones(baseEmoji: .woozyFace, skinTones: nil),
+            "🤯": EmojiWithSkinTones(baseEmoji: .explodingHead, skinTones: nil),
+            "🤠": EmojiWithSkinTones(baseEmoji: .faceWithCowboyHat, skinTones: nil),
+            "🥳": EmojiWithSkinTones(baseEmoji: .partyingFace, skinTones: nil),
+            "🥱": EmojiWithSkinTones(baseEmoji: .yawningFace, skinTones: nil),
+            "🤬": EmojiWithSkinTones(baseEmoji: .faceWithSymbolsOnMouth, skinTones: nil),
+            "🤡": EmojiWithSkinTones(baseEmoji: .clownFace, skinTones: nil),
+            "🤖": EmojiWithSkinTones(baseEmoji: .robotFace, skinTones: nil),
+            "🤚": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: nil),
+            "🤞": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: nil),
+            "🤟": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: nil),
+            "🤘": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: nil),
+            "🤙": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: nil),
+            "🤛": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: nil),
+            "🤜": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: nil),
+            "🤲": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: nil),
+            "🤝": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: nil),
+            "🤳": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: nil),
+            "🤦": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: nil),
+            "🤷": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: nil),
+            "🥷": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: nil),
+            "🤴": EmojiWithSkinTones(baseEmoji: .prince, skinTones: nil),
+            "🤵": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: nil),
+            "🤰": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: nil),
+            "🤱": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: nil),
+            "🤶": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: nil),
+            "🤺": EmojiWithSkinTones(baseEmoji: .fencer, skinTones: nil),
+            "🤸": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: nil),
+            "🤼": EmojiWithSkinTones(baseEmoji: .wrestlers, skinTones: nil),
+            "🤽": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: nil),
+            "🤾": EmojiWithSkinTones(baseEmoji: .handball, skinTones: nil),
+            "🤹": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: nil),
+            "🥀": EmojiWithSkinTones(baseEmoji: .wiltedFlower, skinTones: nil),
+            "🥭": EmojiWithSkinTones(baseEmoji: .mango, skinTones: nil),
+            "🥝": EmojiWithSkinTones(baseEmoji: .kiwifruit, skinTones: nil),
+            "🥥": EmojiWithSkinTones(baseEmoji: .coconut, skinTones: nil),
+            "🥑": EmojiWithSkinTones(baseEmoji: .avocado, skinTones: nil),
+            "🥔": EmojiWithSkinTones(baseEmoji: .potato, skinTones: nil),
+            "🥕": EmojiWithSkinTones(baseEmoji: .carrot, skinTones: nil),
+            "🥒": EmojiWithSkinTones(baseEmoji: .cucumber, skinTones: nil),
+            "🥬": EmojiWithSkinTones(baseEmoji: .leafyGreen, skinTones: nil),
+            "🥦": EmojiWithSkinTones(baseEmoji: .broccoli, skinTones: nil),
+            "🥜": EmojiWithSkinTones(baseEmoji: .peanuts, skinTones: nil),
+            "🥐": EmojiWithSkinTones(baseEmoji: .croissant, skinTones: nil),
+            "🥖": EmojiWithSkinTones(baseEmoji: .baguetteBread, skinTones: nil),
+            "🥨": EmojiWithSkinTones(baseEmoji: .pretzel, skinTones: nil),
+            "🥯": EmojiWithSkinTones(baseEmoji: .bagel, skinTones: nil),
+            "🥞": EmojiWithSkinTones(baseEmoji: .pancakes, skinTones: nil),
+            "🥩": EmojiWithSkinTones(baseEmoji: .cutOfMeat, skinTones: nil),
+            "🥓": EmojiWithSkinTones(baseEmoji: .bacon, skinTones: nil),
+            "🥪": EmojiWithSkinTones(baseEmoji: .sandwich, skinTones: nil),
+            "🥙": EmojiWithSkinTones(baseEmoji: .stuffedFlatbread, skinTones: nil),
+            "🥚": EmojiWithSkinTones(baseEmoji: .egg, skinTones: nil),
+            "🥘": EmojiWithSkinTones(baseEmoji: .shallowPanOfFood, skinTones: nil),
+            "🥣": EmojiWithSkinTones(baseEmoji: .bowlWithSpoon, skinTones: nil),
+            "🥗": EmojiWithSkinTones(baseEmoji: .greenSalad, skinTones: nil),
+            "🥫": EmojiWithSkinTones(baseEmoji: .cannedFood, skinTones: nil),
+            "🥮": EmojiWithSkinTones(baseEmoji: .moonCake, skinTones: nil),
+            "🥟": EmojiWithSkinTones(baseEmoji: .dumpling, skinTones: nil),
+            "🥠": EmojiWithSkinTones(baseEmoji: .fortuneCookie, skinTones: nil),
+            "🥡": EmojiWithSkinTones(baseEmoji: .takeoutBox, skinTones: nil),
+            "🥧": EmojiWithSkinTones(baseEmoji: .pie, skinTones: nil),
+            "🥛": EmojiWithSkinTones(baseEmoji: .glassOfMilk, skinTones: nil),
+            "🥂": EmojiWithSkinTones(baseEmoji: .clinkingGlasses, skinTones: nil),
+            "🥃": EmojiWithSkinTones(baseEmoji: .tumblerGlass, skinTones: nil),
+            "🥤": EmojiWithSkinTones(baseEmoji: .cupWithStraw, skinTones: nil),
+            "🥢": EmojiWithSkinTones(baseEmoji: .chopsticks, skinTones: nil),
+            "🥄": EmojiWithSkinTones(baseEmoji: .spoon, skinTones: nil),
+            "🥇": EmojiWithSkinTones(baseEmoji: .firstPlaceMedal, skinTones: nil),
+            "🥈": EmojiWithSkinTones(baseEmoji: .secondPlaceMedal, skinTones: nil),
+            "🥉": EmojiWithSkinTones(baseEmoji: .thirdPlaceMedal, skinTones: nil),
+            "🥎": EmojiWithSkinTones(baseEmoji: .softball, skinTones: nil),
+            "🥏": EmojiWithSkinTones(baseEmoji: .flyingDisc, skinTones: nil),
+            "🥍": EmojiWithSkinTones(baseEmoji: .lacrosse, skinTones: nil),
+            "🥊": EmojiWithSkinTones(baseEmoji: .boxingGlove, skinTones: nil),
+            "🥋": EmojiWithSkinTones(baseEmoji: .martialArtsUniform, skinTones: nil),
+            "🥅": EmojiWithSkinTones(baseEmoji: .goalNet, skinTones: nil),
+            "🤿": EmojiWithSkinTones(baseEmoji: .divingMask, skinTones: nil),
+            "🥌": EmojiWithSkinTones(baseEmoji: .curlingStone, skinTones: nil),
+            "🥁": EmojiWithSkinTones(baseEmoji: .drumWithDrumsticks, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1294(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🥸": EmojiWithSkinTones(baseEmoji: .disguisedFace, skinTones: nil),
+            "🧐": EmojiWithSkinTones(baseEmoji: .faceWithMonocle, skinTones: nil),
+            "🥺": EmojiWithSkinTones(baseEmoji: .pleadingFace, skinTones: nil),
+            "🥹": EmojiWithSkinTones(baseEmoji: .faceHoldingBackTears, skinTones: nil),
+            "🦾": EmojiWithSkinTones(baseEmoji: .mechanicalArm, skinTones: nil),
+            "🦿": EmojiWithSkinTones(baseEmoji: .mechanicalLeg, skinTones: nil),
+            "🦵": EmojiWithSkinTones(baseEmoji: .leg, skinTones: nil),
+            "🦶": EmojiWithSkinTones(baseEmoji: .foot, skinTones: nil),
+            "🦻": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: nil),
+            "🦷": EmojiWithSkinTones(baseEmoji: .tooth, skinTones: nil),
+            "🦴": EmojiWithSkinTones(baseEmoji: .bone, skinTones: nil),
+            "🧒": EmojiWithSkinTones(baseEmoji: .child, skinTones: nil),
+            "🧑": EmojiWithSkinTones(baseEmoji: .adult, skinTones: nil),
+            "🧔": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: nil),
+            "🧓": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: nil),
+            "🧏": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: nil),
+            "🧕": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: nil),
+            "🦸": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: nil),
+            "🦹": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: nil),
+            "🧙": EmojiWithSkinTones(baseEmoji: .mage, skinTones: nil),
+            "🧚": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: nil),
+            "🧛": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: nil),
+            "🧌": EmojiWithSkinTones(baseEmoji: .troll, skinTones: nil),
+            "🧍": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: nil),
+            "🧎": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: nil),
+            "🧖": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: nil),
+            "🧗": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: nil),
+            "🧘": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: nil),
+            "🦍": EmojiWithSkinTones(baseEmoji: .gorilla, skinTones: nil),
+            "🦧": EmojiWithSkinTones(baseEmoji: .orangutan, skinTones: nil),
+            "🦮": EmojiWithSkinTones(baseEmoji: .guideDog, skinTones: nil),
+            "🦊": EmojiWithSkinTones(baseEmoji: .foxFace, skinTones: nil),
+            "🦝": EmojiWithSkinTones(baseEmoji: .raccoon, skinTones: nil),
+            "🦁": EmojiWithSkinTones(baseEmoji: .lionFace, skinTones: nil),
+            "🦄": EmojiWithSkinTones(baseEmoji: .unicornFace, skinTones: nil),
+            "🦓": EmojiWithSkinTones(baseEmoji: .zebraFace, skinTones: nil),
+            "🦌": EmojiWithSkinTones(baseEmoji: .deer, skinTones: nil),
+            "🦬": EmojiWithSkinTones(baseEmoji: .bison, skinTones: nil),
+            "🦙": EmojiWithSkinTones(baseEmoji: .llama, skinTones: nil),
+            "🦒": EmojiWithSkinTones(baseEmoji: .giraffeFace, skinTones: nil),
+            "🦣": EmojiWithSkinTones(baseEmoji: .mammoth, skinTones: nil),
+            "🦏": EmojiWithSkinTones(baseEmoji: .rhinoceros, skinTones: nil),
+            "🦛": EmojiWithSkinTones(baseEmoji: .hippopotamus, skinTones: nil),
+            "🦫": EmojiWithSkinTones(baseEmoji: .beaver, skinTones: nil),
+            "🦔": EmojiWithSkinTones(baseEmoji: .hedgehog, skinTones: nil),
+            "🦇": EmojiWithSkinTones(baseEmoji: .bat, skinTones: nil),
+            "🦥": EmojiWithSkinTones(baseEmoji: .sloth, skinTones: nil),
+            "🦦": EmojiWithSkinTones(baseEmoji: .otter, skinTones: nil),
+            "🦨": EmojiWithSkinTones(baseEmoji: .skunk, skinTones: nil),
+            "🦘": EmojiWithSkinTones(baseEmoji: .kangaroo, skinTones: nil),
+            "🦡": EmojiWithSkinTones(baseEmoji: .badger, skinTones: nil),
+            "🦃": EmojiWithSkinTones(baseEmoji: .turkey, skinTones: nil),
+            "🦅": EmojiWithSkinTones(baseEmoji: .eagle, skinTones: nil),
+            "🦆": EmojiWithSkinTones(baseEmoji: .duck, skinTones: nil),
+            "🦢": EmojiWithSkinTones(baseEmoji: .swan, skinTones: nil),
+            "🦉": EmojiWithSkinTones(baseEmoji: .owl, skinTones: nil),
+            "🦤": EmojiWithSkinTones(baseEmoji: .dodo, skinTones: nil),
+            "🦩": EmojiWithSkinTones(baseEmoji: .flamingo, skinTones: nil),
+            "🦚": EmojiWithSkinTones(baseEmoji: .peacock, skinTones: nil),
+            "🦜": EmojiWithSkinTones(baseEmoji: .parrot, skinTones: nil),
+            "🦎": EmojiWithSkinTones(baseEmoji: .lizard, skinTones: nil),
+            "🦕": EmojiWithSkinTones(baseEmoji: .sauropod, skinTones: nil),
+            "🦖": EmojiWithSkinTones(baseEmoji: .tRex, skinTones: nil),
+            "🦭": EmojiWithSkinTones(baseEmoji: .seal, skinTones: nil),
+            "🦈": EmojiWithSkinTones(baseEmoji: .shark, skinTones: nil),
+            "🦋": EmojiWithSkinTones(baseEmoji: .butterfly, skinTones: nil),
+            "🦗": EmojiWithSkinTones(baseEmoji: .cricket, skinTones: nil),
+            "🦂": EmojiWithSkinTones(baseEmoji: .scorpion, skinTones: nil),
+            "🦟": EmojiWithSkinTones(baseEmoji: .mosquito, skinTones: nil),
+            "🦠": EmojiWithSkinTones(baseEmoji: .microbe, skinTones: nil),
+            "🧄": EmojiWithSkinTones(baseEmoji: .garlic, skinTones: nil),
+            "🧅": EmojiWithSkinTones(baseEmoji: .onion, skinTones: nil),
+            "🧇": EmojiWithSkinTones(baseEmoji: .waffle, skinTones: nil),
+            "🧀": EmojiWithSkinTones(baseEmoji: .cheeseWedge, skinTones: nil),
+            "🧆": EmojiWithSkinTones(baseEmoji: .falafel, skinTones: nil),
+            "🧈": EmojiWithSkinTones(baseEmoji: .butter, skinTones: nil),
+            "🧂": EmojiWithSkinTones(baseEmoji: .salt, skinTones: nil),
+            "🦀": EmojiWithSkinTones(baseEmoji: .crab, skinTones: nil),
+            "🦞": EmojiWithSkinTones(baseEmoji: .lobster, skinTones: nil),
+            "🦐": EmojiWithSkinTones(baseEmoji: .shrimp, skinTones: nil),
+            "🦑": EmojiWithSkinTones(baseEmoji: .squid, skinTones: nil),
+            "🦪": EmojiWithSkinTones(baseEmoji: .oyster, skinTones: nil),
+            "🧁": EmojiWithSkinTones(baseEmoji: .cupcake, skinTones: nil),
+            "🧋": EmojiWithSkinTones(baseEmoji: .bubbleTea, skinTones: nil),
+            "🧃": EmojiWithSkinTones(baseEmoji: .beverageBox, skinTones: nil),
+            "🧉": EmojiWithSkinTones(baseEmoji: .mateDrink, skinTones: nil),
+            "🧊": EmojiWithSkinTones(baseEmoji: .iceCube, skinTones: nil),
+            "🦽": EmojiWithSkinTones(baseEmoji: .manualWheelchair, skinTones: nil),
+            "🦼": EmojiWithSkinTones(baseEmoji: .motorizedWheelchair, skinTones: nil),
+            "🥽": EmojiWithSkinTones(baseEmoji: .goggles, skinTones: nil),
+            "🥼": EmojiWithSkinTones(baseEmoji: .labCoat, skinTones: nil),
+            "🦺": EmojiWithSkinTones(baseEmoji: .safetyVest, skinTones: nil),
+            "🥻": EmojiWithSkinTones(baseEmoji: .sari, skinTones: nil),
+            "🥾": EmojiWithSkinTones(baseEmoji: .hikingBoot, skinTones: nil),
+            "🥿": EmojiWithSkinTones(baseEmoji: .womansFlatShoe, skinTones: nil),
+            "🦯": EmojiWithSkinTones(baseEmoji: .probingCane, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1295(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧡": EmojiWithSkinTones(baseEmoji: .orangeHeart, skinTones: nil),
+            "🧠": EmojiWithSkinTones(baseEmoji: .brain, skinTones: nil),
+            "🧜": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: nil),
+            "🧝": EmojiWithSkinTones(baseEmoji: .elf, skinTones: nil),
+            "🧞": EmojiWithSkinTones(baseEmoji: .genie, skinTones: nil),
+            "🧟": EmojiWithSkinTones(baseEmoji: .zombie, skinTones: nil),
+            "🧭": EmojiWithSkinTones(baseEmoji: .compass, skinTones: nil),
+            "🧱": EmojiWithSkinTones(baseEmoji: .bricks, skinTones: nil),
+            "🧳": EmojiWithSkinTones(baseEmoji: .luggage, skinTones: nil),
+            "🧨": EmojiWithSkinTones(baseEmoji: .firecracker, skinTones: nil),
+            "🧧": EmojiWithSkinTones(baseEmoji: .redEnvelope, skinTones: nil),
+            "🧩": EmojiWithSkinTones(baseEmoji: .jigsaw, skinTones: nil),
+            "🧸": EmojiWithSkinTones(baseEmoji: .teddyBear, skinTones: nil),
+            "🧵": EmojiWithSkinTones(baseEmoji: .thread, skinTones: nil),
+            "🧶": EmojiWithSkinTones(baseEmoji: .yarn, skinTones: nil),
+            "🧣": EmojiWithSkinTones(baseEmoji: .scarf, skinTones: nil),
+            "🧤": EmojiWithSkinTones(baseEmoji: .gloves, skinTones: nil),
+            "🧥": EmojiWithSkinTones(baseEmoji: .coat, skinTones: nil),
+            "🧦": EmojiWithSkinTones(baseEmoji: .socks, skinTones: nil),
+            "🧢": EmojiWithSkinTones(baseEmoji: .billedCap, skinTones: nil),
+            "🧮": EmojiWithSkinTones(baseEmoji: .abacus, skinTones: nil),
+            "🧾": EmojiWithSkinTones(baseEmoji: .receipt, skinTones: nil),
+            "🧰": EmojiWithSkinTones(baseEmoji: .toolbox, skinTones: nil),
+            "🧲": EmojiWithSkinTones(baseEmoji: .magnet, skinTones: nil),
+            "🧪": EmojiWithSkinTones(baseEmoji: .testTube, skinTones: nil),
+            "🧫": EmojiWithSkinTones(baseEmoji: .petriDish, skinTones: nil),
+            "🧬": EmojiWithSkinTones(baseEmoji: .dna, skinTones: nil),
+            "🧴": EmojiWithSkinTones(baseEmoji: .lotionBottle, skinTones: nil),
+            "🧷": EmojiWithSkinTones(baseEmoji: .safetyPin, skinTones: nil),
+            "🧹": EmojiWithSkinTones(baseEmoji: .broom, skinTones: nil),
+            "🧺": EmojiWithSkinTones(baseEmoji: .basket, skinTones: nil),
+            "🧻": EmojiWithSkinTones(baseEmoji: .rollOfPaper, skinTones: nil),
+            "🧼": EmojiWithSkinTones(baseEmoji: .soap, skinTones: nil),
+            "🧽": EmojiWithSkinTones(baseEmoji: .sponge, skinTones: nil),
+            "🧯": EmojiWithSkinTones(baseEmoji: .fireExtinguisher, skinTones: nil),
+            "🧿": EmojiWithSkinTones(baseEmoji: .nazarAmulet, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1296(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🩷": EmojiWithSkinTones(baseEmoji: .pinkHeart, skinTones: nil),
+            "🩵": EmojiWithSkinTones(baseEmoji: .lightBlueHeart, skinTones: nil),
+            "🩶": EmojiWithSkinTones(baseEmoji: .greyHeart, skinTones: nil),
+            "🪂": EmojiWithSkinTones(baseEmoji: .parachute, skinTones: nil),
+            "🪐": EmojiWithSkinTones(baseEmoji: .ringedPlanet, skinTones: nil),
+            "🪀": EmojiWithSkinTones(baseEmoji: .yoYo, skinTones: nil),
+            "🪁": EmojiWithSkinTones(baseEmoji: .kite, skinTones: nil),
+            "🪄": EmojiWithSkinTones(baseEmoji: .magicWand, skinTones: nil),
+            "🪅": EmojiWithSkinTones(baseEmoji: .pinata, skinTones: nil),
+            "🪆": EmojiWithSkinTones(baseEmoji: .nestingDolls, skinTones: nil),
+            "🪡": EmojiWithSkinTones(baseEmoji: .sewingNeedle, skinTones: nil),
+            "🪢": EmojiWithSkinTones(baseEmoji: .knot, skinTones: nil),
+            "🩱": EmojiWithSkinTones(baseEmoji: .onePieceSwimsuit, skinTones: nil),
+            "🩲": EmojiWithSkinTones(baseEmoji: .briefs, skinTones: nil),
+            "🩳": EmojiWithSkinTones(baseEmoji: .shorts, skinTones: nil),
+            "🩴": EmojiWithSkinTones(baseEmoji: .thongSandal, skinTones: nil),
+            "🩰": EmojiWithSkinTones(baseEmoji: .balletShoes, skinTones: nil),
+            "🪖": EmojiWithSkinTones(baseEmoji: .militaryHelmet, skinTones: nil),
+            "🪗": EmojiWithSkinTones(baseEmoji: .accordion, skinTones: nil),
+            "🪕": EmojiWithSkinTones(baseEmoji: .banjo, skinTones: nil),
+            "🪘": EmojiWithSkinTones(baseEmoji: .longDrum, skinTones: nil),
+            "🪇": EmojiWithSkinTones(baseEmoji: .maracas, skinTones: nil),
+            "🪈": EmojiWithSkinTones(baseEmoji: .flute, skinTones: nil),
+            "🪔": EmojiWithSkinTones(baseEmoji: .diyaLamp, skinTones: nil),
+            "🪙": EmojiWithSkinTones(baseEmoji: .coin, skinTones: nil),
+            "🪓": EmojiWithSkinTones(baseEmoji: .axe, skinTones: nil),
+            "🪃": EmojiWithSkinTones(baseEmoji: .boomerang, skinTones: nil),
+            "🪚": EmojiWithSkinTones(baseEmoji: .carpentrySaw, skinTones: nil),
+            "🪛": EmojiWithSkinTones(baseEmoji: .screwdriver, skinTones: nil),
+            "🪝": EmojiWithSkinTones(baseEmoji: .hook, skinTones: nil),
+            "🪜": EmojiWithSkinTones(baseEmoji: .ladder, skinTones: nil),
+            "🩸": EmojiWithSkinTones(baseEmoji: .dropOfBlood, skinTones: nil),
+            "🩹": EmojiWithSkinTones(baseEmoji: .adhesiveBandage, skinTones: nil),
+            "🩼": EmojiWithSkinTones(baseEmoji: .crutch, skinTones: nil),
+            "🩺": EmojiWithSkinTones(baseEmoji: .stethoscope, skinTones: nil),
+            "🩻": EmojiWithSkinTones(baseEmoji: .xRay, skinTones: nil),
+            "🪞": EmojiWithSkinTones(baseEmoji: .mirror, skinTones: nil),
+            "🪟": EmojiWithSkinTones(baseEmoji: .window, skinTones: nil),
+            "🪑": EmojiWithSkinTones(baseEmoji: .chair, skinTones: nil),
+            "🪠": EmojiWithSkinTones(baseEmoji: .plunger, skinTones: nil),
+            "🪒": EmojiWithSkinTones(baseEmoji: .razor, skinTones: nil),
+            "🪣": EmojiWithSkinTones(baseEmoji: .bucket, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1297(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🫠": EmojiWithSkinTones(baseEmoji: .meltingFace, skinTones: nil),
+            "🫢": EmojiWithSkinTones(baseEmoji: .faceWithOpenEyesAndHandOverMouth, skinTones: nil),
+            "🫣": EmojiWithSkinTones(baseEmoji: .faceWithPeekingEye, skinTones: nil),
+            "🫡": EmojiWithSkinTones(baseEmoji: .salutingFace, skinTones: nil),
+            "🫥": EmojiWithSkinTones(baseEmoji: .dottedLineFace, skinTones: nil),
+            "🫨": EmojiWithSkinTones(baseEmoji: .shakingFace, skinTones: nil),
+            "🫤": EmojiWithSkinTones(baseEmoji: .faceWithDiagonalMouth, skinTones: nil),
+            "🫱": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: nil),
+            "🫲": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: nil),
+            "🫳": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: nil),
+            "🫴": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: nil),
+            "🫷": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: nil),
+            "🫸": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: nil),
+            "🫰": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: nil),
+            "🫵": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: nil),
+            "🫶": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: nil),
+            "🫀": EmojiWithSkinTones(baseEmoji: .anatomicalHeart, skinTones: nil),
+            "🫁": EmojiWithSkinTones(baseEmoji: .lungs, skinTones: nil),
+            "🫦": EmojiWithSkinTones(baseEmoji: .bitingLip, skinTones: nil),
+            "🫅": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: nil),
+            "🫃": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: nil),
+            "🫄": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: nil),
+            "🫂": EmojiWithSkinTones(baseEmoji: .peopleHugging, skinTones: nil),
+            "🫎": EmojiWithSkinTones(baseEmoji: .moose, skinTones: nil),
+            "🫏": EmojiWithSkinTones(baseEmoji: .donkey, skinTones: nil),
+            "🪶": EmojiWithSkinTones(baseEmoji: .feather, skinTones: nil),
+            "🪽": EmojiWithSkinTones(baseEmoji: .wing, skinTones: nil),
+            "🪿": EmojiWithSkinTones(baseEmoji: .goose, skinTones: nil),
+            "🪸": EmojiWithSkinTones(baseEmoji: .coral, skinTones: nil),
+            "🪼": EmojiWithSkinTones(baseEmoji: .jellyfish, skinTones: nil),
+            "🪲": EmojiWithSkinTones(baseEmoji: .beetle, skinTones: nil),
+            "🪳": EmojiWithSkinTones(baseEmoji: .cockroach, skinTones: nil),
+            "🪰": EmojiWithSkinTones(baseEmoji: .fly, skinTones: nil),
+            "🪱": EmojiWithSkinTones(baseEmoji: .worm, skinTones: nil),
+            "🪷": EmojiWithSkinTones(baseEmoji: .lotus, skinTones: nil),
+            "🪻": EmojiWithSkinTones(baseEmoji: .hyacinth, skinTones: nil),
+            "🪴": EmojiWithSkinTones(baseEmoji: .pottedPlant, skinTones: nil),
+            "🪹": EmojiWithSkinTones(baseEmoji: .emptyNest, skinTones: nil),
+            "🪺": EmojiWithSkinTones(baseEmoji: .nestWithEggs, skinTones: nil),
+            "🫐": EmojiWithSkinTones(baseEmoji: .blueberries, skinTones: nil),
+            "🫒": EmojiWithSkinTones(baseEmoji: .olive, skinTones: nil),
+            "🫑": EmojiWithSkinTones(baseEmoji: .bellPepper, skinTones: nil),
+            "🫘": EmojiWithSkinTones(baseEmoji: .beans, skinTones: nil),
+            "🫚": EmojiWithSkinTones(baseEmoji: .gingerRoot, skinTones: nil),
+            "🫛": EmojiWithSkinTones(baseEmoji: .peaPod, skinTones: nil),
+            "🫓": EmojiWithSkinTones(baseEmoji: .flatbread, skinTones: nil),
+            "🫔": EmojiWithSkinTones(baseEmoji: .tamale, skinTones: nil),
+            "🫕": EmojiWithSkinTones(baseEmoji: .fondue, skinTones: nil),
+            "🫖": EmojiWithSkinTones(baseEmoji: .teapot, skinTones: nil),
+            "🫗": EmojiWithSkinTones(baseEmoji: .pouringLiquid, skinTones: nil),
+            "🫙": EmojiWithSkinTones(baseEmoji: .jar, skinTones: nil),
+            "🪨": EmojiWithSkinTones(baseEmoji: .rock, skinTones: nil),
+            "🪵": EmojiWithSkinTones(baseEmoji: .wood, skinTones: nil),
+            "🪩": EmojiWithSkinTones(baseEmoji: .mirrorBall, skinTones: nil),
+            "🪭": EmojiWithSkinTones(baseEmoji: .foldingHandFan, skinTones: nil),
+            "🪮": EmojiWithSkinTones(baseEmoji: .hairPick, skinTones: nil),
+            "🪫": EmojiWithSkinTones(baseEmoji: .lowBattery, skinTones: nil),
+            "🪤": EmojiWithSkinTones(baseEmoji: .mouseTrap, skinTones: nil),
+            "🫧": EmojiWithSkinTones(baseEmoji: .bubbles, skinTones: nil),
+            "🪥": EmojiWithSkinTones(baseEmoji: .toothbrush, skinTones: nil),
+            "🪦": EmojiWithSkinTones(baseEmoji: .headstone, skinTones: nil),
+            "🪬": EmojiWithSkinTones(baseEmoji: .hamsa, skinTones: nil),
+            "🪧": EmojiWithSkinTones(baseEmoji: .placard, skinTones: nil),
+            "🪪": EmojiWithSkinTones(baseEmoji: .identificationCard, skinTones: nil),
+            "🪯": EmojiWithSkinTones(baseEmoji: .khanda, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1377(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "☝🏻": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: [.light]),
+            "☝🏼": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: [.mediumLight]),
+            "☝🏽": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: [.medium]),
+            "☝🏾": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: [.mediumDark]),
+            "☝🏿": EmojiWithSkinTones(baseEmoji: .pointUp, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1379(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "✋🏻": EmojiWithSkinTones(baseEmoji: .hand, skinTones: [.light]),
+            "✌🏻": EmojiWithSkinTones(baseEmoji: .v, skinTones: [.light]),
+            "✊🏻": EmojiWithSkinTones(baseEmoji: .fist, skinTones: [.light]),
+            "✍🏻": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: [.light]),
+            "⛹🏻": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: [.light]),
+            "✋🏼": EmojiWithSkinTones(baseEmoji: .hand, skinTones: [.mediumLight]),
+            "✌🏼": EmojiWithSkinTones(baseEmoji: .v, skinTones: [.mediumLight]),
+            "✊🏼": EmojiWithSkinTones(baseEmoji: .fist, skinTones: [.mediumLight]),
+            "✍🏼": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: [.mediumLight]),
+            "⛹🏼": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: [.mediumLight]),
+            "✋🏽": EmojiWithSkinTones(baseEmoji: .hand, skinTones: [.medium]),
+            "✌🏽": EmojiWithSkinTones(baseEmoji: .v, skinTones: [.medium]),
+            "✊🏽": EmojiWithSkinTones(baseEmoji: .fist, skinTones: [.medium]),
+            "✍🏽": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: [.medium]),
+            "⛹🏽": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: [.medium]),
+            "✋🏾": EmojiWithSkinTones(baseEmoji: .hand, skinTones: [.mediumDark]),
+            "✌🏾": EmojiWithSkinTones(baseEmoji: .v, skinTones: [.mediumDark]),
+            "✊🏾": EmojiWithSkinTones(baseEmoji: .fist, skinTones: [.mediumDark]),
+            "✍🏾": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: [.mediumDark]),
+            "⛹🏾": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: [.mediumDark]),
+            "✋🏿": EmojiWithSkinTones(baseEmoji: .hand, skinTones: [.dark]),
+            "✌🏿": EmojiWithSkinTones(baseEmoji: .v, skinTones: [.dark]),
+            "✊🏿": EmojiWithSkinTones(baseEmoji: .fist, skinTones: [.dark]),
+            "✍🏿": EmojiWithSkinTones(baseEmoji: .writingHand, skinTones: [.dark]),
+            "⛹🏿": EmojiWithSkinTones(baseEmoji: .personWithBall, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1472(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🐈‍⬛": EmojiWithSkinTones(baseEmoji: .blackCat, skinTones: nil),
+            "🐦‍⬛": EmojiWithSkinTones(baseEmoji: .blackBird, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1580(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⛹️‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: nil),
+            "⛹️‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1923(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🅰️": EmojiWithSkinTones(baseEmoji: .a, skinTones: nil),
+            "🅱️": EmojiWithSkinTones(baseEmoji: .b, skinTones: nil),
+            "🅾️": EmojiWithSkinTones(baseEmoji: .o2, skinTones: nil),
+            "🅿️": EmojiWithSkinTones(baseEmoji: .parking, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1925(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🈂️": EmojiWithSkinTones(baseEmoji: .sa, skinTones: nil),
+            "🈷️": EmojiWithSkinTones(baseEmoji: .u6708, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1928(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🌶️": EmojiWithSkinTones(baseEmoji: .hotPepper, skinTones: nil),
+            "🌡️": EmojiWithSkinTones(baseEmoji: .thermometer, skinTones: nil),
+            "🌤️": EmojiWithSkinTones(baseEmoji: .mostlySunny, skinTones: nil),
+            "🌥️": EmojiWithSkinTones(baseEmoji: .barelySunny, skinTones: nil),
+            "🌦️": EmojiWithSkinTones(baseEmoji: .partlySunnyRain, skinTones: nil),
+            "🌧️": EmojiWithSkinTones(baseEmoji: .rainCloud, skinTones: nil),
+            "🌨️": EmojiWithSkinTones(baseEmoji: .snowCloud, skinTones: nil),
+            "🌩️": EmojiWithSkinTones(baseEmoji: .lightning, skinTones: nil),
+            "🌪️": EmojiWithSkinTones(baseEmoji: .tornado, skinTones: nil),
+            "🌫️": EmojiWithSkinTones(baseEmoji: .fog, skinTones: nil),
+            "🌬️": EmojiWithSkinTones(baseEmoji: .windBlowingFace, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1929(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏌️": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: nil),
+            "🏋️": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: nil),
+            "🍽️": EmojiWithSkinTones(baseEmoji: .knifeForkPlate, skinTones: nil),
+            "🏔️": EmojiWithSkinTones(baseEmoji: .snowCappedMountain, skinTones: nil),
+            "🏕️": EmojiWithSkinTones(baseEmoji: .camping, skinTones: nil),
+            "🏖️": EmojiWithSkinTones(baseEmoji: .beachWithUmbrella, skinTones: nil),
+            "🏗️": EmojiWithSkinTones(baseEmoji: .buildingConstruction, skinTones: nil),
+            "🏘️": EmojiWithSkinTones(baseEmoji: .houseBuildings, skinTones: nil),
+            "🏎️": EmojiWithSkinTones(baseEmoji: .racingCar, skinTones: nil),
+            "🏍️": EmojiWithSkinTones(baseEmoji: .racingMotorcycle, skinTones: nil),
+            "🎗️": EmojiWithSkinTones(baseEmoji: .reminderRibbon, skinTones: nil),
+            "🎟️": EmojiWithSkinTones(baseEmoji: .admissionTickets, skinTones: nil),
+            "🎖️": EmojiWithSkinTones(baseEmoji: .medal, skinTones: nil),
+            "🎙️": EmojiWithSkinTones(baseEmoji: .studioMicrophone, skinTones: nil),
+            "🎚️": EmojiWithSkinTones(baseEmoji: .levelSlider, skinTones: nil),
+            "🎛️": EmojiWithSkinTones(baseEmoji: .controlKnobs, skinTones: nil),
+            "🎞️": EmojiWithSkinTones(baseEmoji: .filmFrames, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1930(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏵️": EmojiWithSkinTones(baseEmoji: .rosette, skinTones: nil),
+            "🏜️": EmojiWithSkinTones(baseEmoji: .desert, skinTones: nil),
+            "🏝️": EmojiWithSkinTones(baseEmoji: .desertIsland, skinTones: nil),
+            "🏞️": EmojiWithSkinTones(baseEmoji: .nationalPark, skinTones: nil),
+            "🏟️": EmojiWithSkinTones(baseEmoji: .stadium, skinTones: nil),
+            "🏛️": EmojiWithSkinTones(baseEmoji: .classicalBuilding, skinTones: nil),
+            "🏚️": EmojiWithSkinTones(baseEmoji: .derelictHouseBuilding, skinTones: nil),
+            "🏙️": EmojiWithSkinTones(baseEmoji: .cityscape, skinTones: nil),
+            "🏷️": EmojiWithSkinTones(baseEmoji: .label, skinTones: nil),
+            "🏳️": EmojiWithSkinTones(baseEmoji: .wavingWhiteFlag, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1931(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👁️": EmojiWithSkinTones(baseEmoji: .eye, skinTones: nil),
+            "🐿️": EmojiWithSkinTones(baseEmoji: .chipmunk, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1932(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "📽️": EmojiWithSkinTones(baseEmoji: .filmProjector, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1933(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🕊️": EmojiWithSkinTones(baseEmoji: .doveOfPeace, skinTones: nil),
+            "🕉️": EmojiWithSkinTones(baseEmoji: .omSymbol, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1934(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🕳️": EmojiWithSkinTones(baseEmoji: .hole, skinTones: nil),
+            "🖐️": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: nil),
+            "🕵️": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: nil),
+            "🕴️": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: nil),
+            "🕷️": EmojiWithSkinTones(baseEmoji: .spider, skinTones: nil),
+            "🕸️": EmojiWithSkinTones(baseEmoji: .spiderWeb, skinTones: nil),
+            "🕰️": EmojiWithSkinTones(baseEmoji: .mantelpieceClock, skinTones: nil),
+            "🕹️": EmojiWithSkinTones(baseEmoji: .joystick, skinTones: nil),
+            "🖼️": EmojiWithSkinTones(baseEmoji: .frameWithPicture, skinTones: nil),
+            "🕶️": EmojiWithSkinTones(baseEmoji: .darkSunglasses, skinTones: nil),
+            "🖥️": EmojiWithSkinTones(baseEmoji: .desktopComputer, skinTones: nil),
+            "🖨️": EmojiWithSkinTones(baseEmoji: .printer, skinTones: nil),
+            "🖱️": EmojiWithSkinTones(baseEmoji: .threeButtonMouse, skinTones: nil),
+            "🖲️": EmojiWithSkinTones(baseEmoji: .trackball, skinTones: nil),
+            "🕯️": EmojiWithSkinTones(baseEmoji: .candle, skinTones: nil),
+            "🖋️": EmojiWithSkinTones(baseEmoji: .lowerLeftFountainPen, skinTones: nil),
+            "🖊️": EmojiWithSkinTones(baseEmoji: .lowerLeftBallpointPen, skinTones: nil),
+            "🖌️": EmojiWithSkinTones(baseEmoji: .lowerLeftPaintbrush, skinTones: nil),
+            "🖍️": EmojiWithSkinTones(baseEmoji: .lowerLeftCrayon, skinTones: nil),
+            "🗂️": EmojiWithSkinTones(baseEmoji: .cardIndexDividers, skinTones: nil),
+            "🖇️": EmojiWithSkinTones(baseEmoji: .linkedPaperclips, skinTones: nil),
+            "🗃️": EmojiWithSkinTones(baseEmoji: .cardFileBox, skinTones: nil),
+            "🗄️": EmojiWithSkinTones(baseEmoji: .fileCabinet, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1935(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🗨️": EmojiWithSkinTones(baseEmoji: .leftSpeechBubble, skinTones: nil),
+            "🗯️": EmojiWithSkinTones(baseEmoji: .rightAngerBubble, skinTones: nil),
+            "🗣️": EmojiWithSkinTones(baseEmoji: .speakingHeadInSilhouette, skinTones: nil),
+            "🗺️": EmojiWithSkinTones(baseEmoji: .worldMap, skinTones: nil),
+            "🗞️": EmojiWithSkinTones(baseEmoji: .rolledUpNewspaper, skinTones: nil),
+            "🗳️": EmojiWithSkinTones(baseEmoji: .ballotBoxWithBallot, skinTones: nil),
+            "🗒️": EmojiWithSkinTones(baseEmoji: .spiralNotePad, skinTones: nil),
+            "🗓️": EmojiWithSkinTones(baseEmoji: .spiralCalendarPad, skinTones: nil),
+            "🗑️": EmojiWithSkinTones(baseEmoji: .wastebasket, skinTones: nil),
+            "🗝️": EmojiWithSkinTones(baseEmoji: .oldKey, skinTones: nil),
+            "🗡️": EmojiWithSkinTones(baseEmoji: .daggerKnife, skinTones: nil),
+            "🗜️": EmojiWithSkinTones(baseEmoji: .compression, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom1937(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🛣️": EmojiWithSkinTones(baseEmoji: .motorway, skinTones: nil),
+            "🛤️": EmojiWithSkinTones(baseEmoji: .railwayTrack, skinTones: nil),
+            "🛢️": EmojiWithSkinTones(baseEmoji: .oilDrum, skinTones: nil),
+            "🛳️": EmojiWithSkinTones(baseEmoji: .passengerShip, skinTones: nil),
+            "🛥️": EmojiWithSkinTones(baseEmoji: .motorBoat, skinTones: nil),
+            "🛩️": EmojiWithSkinTones(baseEmoji: .smallAirplane, skinTones: nil),
+            "🛰️": EmojiWithSkinTones(baseEmoji: .satellite, skinTones: nil),
+            "🛎️": EmojiWithSkinTones(baseEmoji: .bellhopBell, skinTones: nil),
+            "🛍️": EmojiWithSkinTones(baseEmoji: .shoppingBags, skinTones: nil),
+            "🛠️": EmojiWithSkinTones(baseEmoji: .hammerAndWrench, skinTones: nil),
+            "🛡️": EmojiWithSkinTones(baseEmoji: .shield, skinTones: nil),
+            "🛏️": EmojiWithSkinTones(baseEmoji: .bed, skinTones: nil),
+            "🛋️": EmojiWithSkinTones(baseEmoji: .couchAndLamp, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2109(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏃‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: nil),
+            "🏃‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: nil),
+            "🏄‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: nil),
+            "🏄‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: nil),
+            "🏊‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: nil),
+            "🏊‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: nil),
+            "🏴‍☠️": EmojiWithSkinTones(baseEmoji: .pirateFlag, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2111(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👱‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: nil),
+            "👱‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: nil),
+            "💁‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: nil),
+            "💁‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: nil),
+            "👮‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: nil),
+            "👮‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: nil),
+            "💂‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: nil),
+            "💂‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: nil),
+            "👷‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: nil),
+            "👷‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: nil),
+            "👳‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: nil),
+            "👳‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: nil),
+            "👰‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: nil),
+            "👰‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: nil),
+            "💆‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: nil),
+            "💆‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: nil),
+            "💇‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: nil),
+            "💇‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: nil),
+            "👯‍♂️": EmojiWithSkinTones(baseEmoji: .menWithBunnyEarsPartying, skinTones: nil),
+            "👯‍♀️": EmojiWithSkinTones(baseEmoji: .womenWithBunnyEarsPartying, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2112(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: nil),
+            "👩‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: nil),
+            "👨‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: nil),
+            "👩‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2113(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: nil),
+            "👩‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: nil),
+            "🐻‍❄️": EmojiWithSkinTones(baseEmoji: .polarBear, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2116(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "❤️‍🔥": EmojiWithSkinTones(baseEmoji: .heartOnFire, skinTones: nil),
+            "🙍‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: nil),
+            "🙍‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: nil),
+            "🙎‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: nil),
+            "🙎‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: nil),
+            "🙅‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: nil),
+            "🙅‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: nil),
+            "🙆‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: nil),
+            "🙆‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: nil),
+            "🙋‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: nil),
+            "🙋‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: nil),
+            "🙇‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: nil),
+            "🙇‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2117(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🚶‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: nil),
+            "🚶‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: nil),
+            "🚣‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: nil),
+            "🚣‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: nil),
+            "🚴‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: nil),
+            "🚴‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: nil),
+            "🚵‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: nil),
+            "🚵‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2123(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤦‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: nil),
+            "🤦‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: nil),
+            "🤷‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: nil),
+            "🤷‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: nil),
+            "🤵‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: nil),
+            "🤵‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: nil),
+            "🤸‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: nil),
+            "🤸‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: nil),
+            "🤼‍♂️": EmojiWithSkinTones(baseEmoji: .manWrestling, skinTones: nil),
+            "🤼‍♀️": EmojiWithSkinTones(baseEmoji: .womanWrestling, skinTones: nil),
+            "🤽‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: nil),
+            "🤽‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: nil),
+            "🤾‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: nil),
+            "🤾‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: nil),
+            "🤹‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: nil),
+            "🤹‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2125(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧔‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: nil),
+            "🧔‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: nil),
+            "🧏‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: nil),
+            "🧏‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: nil),
+            "🦸‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: nil),
+            "🦸‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: nil),
+            "🦹‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: nil),
+            "🦹‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: nil),
+            "🧙‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: nil),
+            "🧙‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: nil),
+            "🧚‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: nil),
+            "🧚‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: nil),
+            "🧛‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: nil),
+            "🧛‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: nil),
+            "🧜‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: nil),
+            "🧜‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: nil),
+            "🧝‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: nil),
+            "🧝‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: nil),
+            "🧞‍♂️": EmojiWithSkinTones(baseEmoji: .maleGenie, skinTones: nil),
+            "🧞‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGenie, skinTones: nil),
+            "🧟‍♂️": EmojiWithSkinTones(baseEmoji: .maleZombie, skinTones: nil),
+            "🧟‍♀️": EmojiWithSkinTones(baseEmoji: .femaleZombie, skinTones: nil),
+            "🧍‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: nil),
+            "🧍‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: nil),
+            "🧎‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: nil),
+            "🧎‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: nil),
+            "🧖‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: nil),
+            "🧖‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: nil),
+            "🧗‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: nil),
+            "🧗‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: nil),
+            "🧘‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: nil),
+            "🧘‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2126(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: nil),
+            "🧑‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2127(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2129(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "❤️‍🩹": EmojiWithSkinTones(baseEmoji: .mendingHeart, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2210(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "⛹🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: [.light]),
+            "⛹🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: [.light]),
+            "⛹🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: [.mediumLight]),
+            "⛹🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: [.mediumLight]),
+            "⛹🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: [.medium]),
+            "⛹🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: [.medium]),
+            "⛹🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: [.mediumDark]),
+            "⛹🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: [.mediumDark]),
+            "⛹🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manBouncingBall, skinTones: [.dark]),
+            "⛹🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanBouncingBall, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2549(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🇦🇨": EmojiWithSkinTones(baseEmoji: .flagAc, skinTones: nil),
+            "🇦🇩": EmojiWithSkinTones(baseEmoji: .flagAd, skinTones: nil),
+            "🇦🇪": EmojiWithSkinTones(baseEmoji: .flagAe, skinTones: nil),
+            "🇦🇫": EmojiWithSkinTones(baseEmoji: .flagAf, skinTones: nil),
+            "🇦🇬": EmojiWithSkinTones(baseEmoji: .flagAg, skinTones: nil),
+            "🇦🇮": EmojiWithSkinTones(baseEmoji: .flagAi, skinTones: nil),
+            "🇦🇱": EmojiWithSkinTones(baseEmoji: .flagAl, skinTones: nil),
+            "🇦🇲": EmojiWithSkinTones(baseEmoji: .flagAm, skinTones: nil),
+            "🇦🇴": EmojiWithSkinTones(baseEmoji: .flagAo, skinTones: nil),
+            "🇦🇶": EmojiWithSkinTones(baseEmoji: .flagAq, skinTones: nil),
+            "🇦🇷": EmojiWithSkinTones(baseEmoji: .flagAr, skinTones: nil),
+            "🇦🇸": EmojiWithSkinTones(baseEmoji: .flagAs, skinTones: nil),
+            "🇦🇹": EmojiWithSkinTones(baseEmoji: .flagAt, skinTones: nil),
+            "🇦🇺": EmojiWithSkinTones(baseEmoji: .flagAu, skinTones: nil),
+            "🇦🇼": EmojiWithSkinTones(baseEmoji: .flagAw, skinTones: nil),
+            "🇦🇽": EmojiWithSkinTones(baseEmoji: .flagAx, skinTones: nil),
+            "🇦🇿": EmojiWithSkinTones(baseEmoji: .flagAz, skinTones: nil),
+            "🇧🇦": EmojiWithSkinTones(baseEmoji: .flagBa, skinTones: nil),
+            "🇧🇧": EmojiWithSkinTones(baseEmoji: .flagBb, skinTones: nil),
+            "🇧🇩": EmojiWithSkinTones(baseEmoji: .flagBd, skinTones: nil),
+            "🇧🇪": EmojiWithSkinTones(baseEmoji: .flagBe, skinTones: nil),
+            "🇧🇫": EmojiWithSkinTones(baseEmoji: .flagBf, skinTones: nil),
+            "🇧🇬": EmojiWithSkinTones(baseEmoji: .flagBg, skinTones: nil),
+            "🇧🇭": EmojiWithSkinTones(baseEmoji: .flagBh, skinTones: nil),
+            "🇧🇮": EmojiWithSkinTones(baseEmoji: .flagBi, skinTones: nil),
+            "🇧🇯": EmojiWithSkinTones(baseEmoji: .flagBj, skinTones: nil),
+            "🇧🇱": EmojiWithSkinTones(baseEmoji: .flagBl, skinTones: nil),
+            "🇧🇲": EmojiWithSkinTones(baseEmoji: .flagBm, skinTones: nil),
+            "🇧🇳": EmojiWithSkinTones(baseEmoji: .flagBn, skinTones: nil),
+            "🇧🇴": EmojiWithSkinTones(baseEmoji: .flagBo, skinTones: nil),
+            "🇧🇶": EmojiWithSkinTones(baseEmoji: .flagBq, skinTones: nil),
+            "🇧🇷": EmojiWithSkinTones(baseEmoji: .flagBr, skinTones: nil),
+            "🇧🇸": EmojiWithSkinTones(baseEmoji: .flagBs, skinTones: nil),
+            "🇧🇹": EmojiWithSkinTones(baseEmoji: .flagBt, skinTones: nil),
+            "🇧🇻": EmojiWithSkinTones(baseEmoji: .flagBv, skinTones: nil),
+            "🇧🇼": EmojiWithSkinTones(baseEmoji: .flagBw, skinTones: nil),
+            "🇧🇾": EmojiWithSkinTones(baseEmoji: .flagBy, skinTones: nil),
+            "🇧🇿": EmojiWithSkinTones(baseEmoji: .flagBz, skinTones: nil),
+            "🇨🇦": EmojiWithSkinTones(baseEmoji: .flagCa, skinTones: nil),
+            "🇨🇨": EmojiWithSkinTones(baseEmoji: .flagCc, skinTones: nil),
+            "🇨🇩": EmojiWithSkinTones(baseEmoji: .flagCd, skinTones: nil),
+            "🇨🇫": EmojiWithSkinTones(baseEmoji: .flagCf, skinTones: nil),
+            "🇨🇬": EmojiWithSkinTones(baseEmoji: .flagCg, skinTones: nil),
+            "🇨🇭": EmojiWithSkinTones(baseEmoji: .flagCh, skinTones: nil),
+            "🇨🇮": EmojiWithSkinTones(baseEmoji: .flagCi, skinTones: nil),
+            "🇨🇰": EmojiWithSkinTones(baseEmoji: .flagCk, skinTones: nil),
+            "🇨🇱": EmojiWithSkinTones(baseEmoji: .flagCl, skinTones: nil),
+            "🇨🇲": EmojiWithSkinTones(baseEmoji: .flagCm, skinTones: nil),
+            "🇨🇳": EmojiWithSkinTones(baseEmoji: .cn, skinTones: nil),
+            "🇨🇴": EmojiWithSkinTones(baseEmoji: .flagCo, skinTones: nil),
+            "🇨🇵": EmojiWithSkinTones(baseEmoji: .flagCp, skinTones: nil),
+            "🇨🇷": EmojiWithSkinTones(baseEmoji: .flagCr, skinTones: nil),
+            "🇨🇺": EmojiWithSkinTones(baseEmoji: .flagCu, skinTones: nil),
+            "🇨🇻": EmojiWithSkinTones(baseEmoji: .flagCv, skinTones: nil),
+            "🇨🇼": EmojiWithSkinTones(baseEmoji: .flagCw, skinTones: nil),
+            "🇨🇽": EmojiWithSkinTones(baseEmoji: .flagCx, skinTones: nil),
+            "🇨🇾": EmojiWithSkinTones(baseEmoji: .flagCy, skinTones: nil),
+            "🇨🇿": EmojiWithSkinTones(baseEmoji: .flagCz, skinTones: nil),
+            "🇩🇪": EmojiWithSkinTones(baseEmoji: .de, skinTones: nil),
+            "🇩🇬": EmojiWithSkinTones(baseEmoji: .flagDg, skinTones: nil),
+            "🇩🇯": EmojiWithSkinTones(baseEmoji: .flagDj, skinTones: nil),
+            "🇩🇰": EmojiWithSkinTones(baseEmoji: .flagDk, skinTones: nil),
+            "🇩🇲": EmojiWithSkinTones(baseEmoji: .flagDm, skinTones: nil),
+            "🇩🇴": EmojiWithSkinTones(baseEmoji: .flagDo, skinTones: nil),
+            "🇩🇿": EmojiWithSkinTones(baseEmoji: .flagDz, skinTones: nil),
+            "🇪🇦": EmojiWithSkinTones(baseEmoji: .flagEa, skinTones: nil),
+            "🇪🇨": EmojiWithSkinTones(baseEmoji: .flagEc, skinTones: nil),
+            "🇪🇪": EmojiWithSkinTones(baseEmoji: .flagEe, skinTones: nil),
+            "🇪🇬": EmojiWithSkinTones(baseEmoji: .flagEg, skinTones: nil),
+            "🇪🇭": EmojiWithSkinTones(baseEmoji: .flagEh, skinTones: nil),
+            "🇪🇷": EmojiWithSkinTones(baseEmoji: .flagEr, skinTones: nil),
+            "🇪🇸": EmojiWithSkinTones(baseEmoji: .es, skinTones: nil),
+            "🇪🇹": EmojiWithSkinTones(baseEmoji: .flagEt, skinTones: nil),
+            "🇪🇺": EmojiWithSkinTones(baseEmoji: .flagEu, skinTones: nil),
+            "🇫🇮": EmojiWithSkinTones(baseEmoji: .flagFi, skinTones: nil),
+            "🇫🇯": EmojiWithSkinTones(baseEmoji: .flagFj, skinTones: nil),
+            "🇫🇰": EmojiWithSkinTones(baseEmoji: .flagFk, skinTones: nil),
+            "🇫🇲": EmojiWithSkinTones(baseEmoji: .flagFm, skinTones: nil),
+            "🇫🇴": EmojiWithSkinTones(baseEmoji: .flagFo, skinTones: nil),
+            "🇫🇷": EmojiWithSkinTones(baseEmoji: .fr, skinTones: nil),
+            "🇬🇦": EmojiWithSkinTones(baseEmoji: .flagGa, skinTones: nil),
+            "🇬🇧": EmojiWithSkinTones(baseEmoji: .gb, skinTones: nil),
+            "🇬🇩": EmojiWithSkinTones(baseEmoji: .flagGd, skinTones: nil),
+            "🇬🇪": EmojiWithSkinTones(baseEmoji: .flagGe, skinTones: nil),
+            "🇬🇫": EmojiWithSkinTones(baseEmoji: .flagGf, skinTones: nil),
+            "🇬🇬": EmojiWithSkinTones(baseEmoji: .flagGg, skinTones: nil),
+            "🇬🇭": EmojiWithSkinTones(baseEmoji: .flagGh, skinTones: nil),
+            "🇬🇮": EmojiWithSkinTones(baseEmoji: .flagGi, skinTones: nil),
+            "🇬🇱": EmojiWithSkinTones(baseEmoji: .flagGl, skinTones: nil),
+            "🇬🇲": EmojiWithSkinTones(baseEmoji: .flagGm, skinTones: nil),
+            "🇬🇳": EmojiWithSkinTones(baseEmoji: .flagGn, skinTones: nil),
+            "🇬🇵": EmojiWithSkinTones(baseEmoji: .flagGp, skinTones: nil),
+            "🇬🇶": EmojiWithSkinTones(baseEmoji: .flagGq, skinTones: nil),
+            "🇬🇷": EmojiWithSkinTones(baseEmoji: .flagGr, skinTones: nil),
+            "🇬🇸": EmojiWithSkinTones(baseEmoji: .flagGs, skinTones: nil),
+            "🇬🇹": EmojiWithSkinTones(baseEmoji: .flagGt, skinTones: nil),
+            "🇬🇺": EmojiWithSkinTones(baseEmoji: .flagGu, skinTones: nil),
+            "🇬🇼": EmojiWithSkinTones(baseEmoji: .flagGw, skinTones: nil),
+            "🇬🇾": EmojiWithSkinTones(baseEmoji: .flagGy, skinTones: nil),
+            "🇭🇰": EmojiWithSkinTones(baseEmoji: .flagHk, skinTones: nil),
+            "🇭🇲": EmojiWithSkinTones(baseEmoji: .flagHm, skinTones: nil),
+            "🇭🇳": EmojiWithSkinTones(baseEmoji: .flagHn, skinTones: nil),
+            "🇭🇷": EmojiWithSkinTones(baseEmoji: .flagHr, skinTones: nil),
+            "🇭🇹": EmojiWithSkinTones(baseEmoji: .flagHt, skinTones: nil),
+            "🇭🇺": EmojiWithSkinTones(baseEmoji: .flagHu, skinTones: nil),
+            "🇮🇨": EmojiWithSkinTones(baseEmoji: .flagIc, skinTones: nil),
+            "🇮🇩": EmojiWithSkinTones(baseEmoji: .flagId, skinTones: nil),
+            "🇮🇪": EmojiWithSkinTones(baseEmoji: .flagIe, skinTones: nil),
+            "🇮🇱": EmojiWithSkinTones(baseEmoji: .flagIl, skinTones: nil),
+            "🇮🇲": EmojiWithSkinTones(baseEmoji: .flagIm, skinTones: nil),
+            "🇮🇳": EmojiWithSkinTones(baseEmoji: .flagIn, skinTones: nil),
+            "🇮🇴": EmojiWithSkinTones(baseEmoji: .flagIo, skinTones: nil),
+            "🇮🇶": EmojiWithSkinTones(baseEmoji: .flagIq, skinTones: nil),
+            "🇮🇷": EmojiWithSkinTones(baseEmoji: .flagIr, skinTones: nil),
+            "🇮🇸": EmojiWithSkinTones(baseEmoji: .flagIs, skinTones: nil),
+            "🇮🇹": EmojiWithSkinTones(baseEmoji: .it, skinTones: nil),
+            "🇯🇪": EmojiWithSkinTones(baseEmoji: .flagJe, skinTones: nil),
+            "🇯🇲": EmojiWithSkinTones(baseEmoji: .flagJm, skinTones: nil),
+            "🇯🇴": EmojiWithSkinTones(baseEmoji: .flagJo, skinTones: nil),
+            "🇯🇵": EmojiWithSkinTones(baseEmoji: .jp, skinTones: nil),
+            "🇰🇪": EmojiWithSkinTones(baseEmoji: .flagKe, skinTones: nil),
+            "🇰🇬": EmojiWithSkinTones(baseEmoji: .flagKg, skinTones: nil),
+            "🇰🇭": EmojiWithSkinTones(baseEmoji: .flagKh, skinTones: nil),
+            "🇰🇮": EmojiWithSkinTones(baseEmoji: .flagKi, skinTones: nil),
+            "🇰🇲": EmojiWithSkinTones(baseEmoji: .flagKm, skinTones: nil),
+            "🇰🇳": EmojiWithSkinTones(baseEmoji: .flagKn, skinTones: nil),
+            "🇰🇵": EmojiWithSkinTones(baseEmoji: .flagKp, skinTones: nil),
+            "🇰🇷": EmojiWithSkinTones(baseEmoji: .kr, skinTones: nil),
+            "🇰🇼": EmojiWithSkinTones(baseEmoji: .flagKw, skinTones: nil),
+            "🇰🇾": EmojiWithSkinTones(baseEmoji: .flagKy, skinTones: nil),
+            "🇰🇿": EmojiWithSkinTones(baseEmoji: .flagKz, skinTones: nil),
+            "🇱🇦": EmojiWithSkinTones(baseEmoji: .flagLa, skinTones: nil),
+            "🇱🇧": EmojiWithSkinTones(baseEmoji: .flagLb, skinTones: nil),
+            "🇱🇨": EmojiWithSkinTones(baseEmoji: .flagLc, skinTones: nil),
+            "🇱🇮": EmojiWithSkinTones(baseEmoji: .flagLi, skinTones: nil),
+            "🇱🇰": EmojiWithSkinTones(baseEmoji: .flagLk, skinTones: nil),
+            "🇱🇷": EmojiWithSkinTones(baseEmoji: .flagLr, skinTones: nil),
+            "🇱🇸": EmojiWithSkinTones(baseEmoji: .flagLs, skinTones: nil),
+            "🇱🇹": EmojiWithSkinTones(baseEmoji: .flagLt, skinTones: nil),
+            "🇱🇺": EmojiWithSkinTones(baseEmoji: .flagLu, skinTones: nil),
+            "🇱🇻": EmojiWithSkinTones(baseEmoji: .flagLv, skinTones: nil),
+            "🇱🇾": EmojiWithSkinTones(baseEmoji: .flagLy, skinTones: nil),
+            "🇲🇦": EmojiWithSkinTones(baseEmoji: .flagMa, skinTones: nil),
+            "🇲🇨": EmojiWithSkinTones(baseEmoji: .flagMc, skinTones: nil),
+            "🇲🇩": EmojiWithSkinTones(baseEmoji: .flagMd, skinTones: nil),
+            "🇲🇪": EmojiWithSkinTones(baseEmoji: .flagMe, skinTones: nil),
+            "🇲🇫": EmojiWithSkinTones(baseEmoji: .flagMf, skinTones: nil),
+            "🇲🇬": EmojiWithSkinTones(baseEmoji: .flagMg, skinTones: nil),
+            "🇲🇭": EmojiWithSkinTones(baseEmoji: .flagMh, skinTones: nil),
+            "🇲🇰": EmojiWithSkinTones(baseEmoji: .flagMk, skinTones: nil),
+            "🇲🇱": EmojiWithSkinTones(baseEmoji: .flagMl, skinTones: nil),
+            "🇲🇲": EmojiWithSkinTones(baseEmoji: .flagMm, skinTones: nil),
+            "🇲🇳": EmojiWithSkinTones(baseEmoji: .flagMn, skinTones: nil),
+            "🇲🇴": EmojiWithSkinTones(baseEmoji: .flagMo, skinTones: nil),
+            "🇲🇵": EmojiWithSkinTones(baseEmoji: .flagMp, skinTones: nil),
+            "🇲🇶": EmojiWithSkinTones(baseEmoji: .flagMq, skinTones: nil),
+            "🇲🇷": EmojiWithSkinTones(baseEmoji: .flagMr, skinTones: nil),
+            "🇲🇸": EmojiWithSkinTones(baseEmoji: .flagMs, skinTones: nil),
+            "🇲🇹": EmojiWithSkinTones(baseEmoji: .flagMt, skinTones: nil),
+            "🇲🇺": EmojiWithSkinTones(baseEmoji: .flagMu, skinTones: nil),
+            "🇲🇻": EmojiWithSkinTones(baseEmoji: .flagMv, skinTones: nil),
+            "🇲🇼": EmojiWithSkinTones(baseEmoji: .flagMw, skinTones: nil),
+            "🇲🇽": EmojiWithSkinTones(baseEmoji: .flagMx, skinTones: nil),
+            "🇲🇾": EmojiWithSkinTones(baseEmoji: .flagMy, skinTones: nil),
+            "🇲🇿": EmojiWithSkinTones(baseEmoji: .flagMz, skinTones: nil),
+            "🇳🇦": EmojiWithSkinTones(baseEmoji: .flagNa, skinTones: nil),
+            "🇳🇨": EmojiWithSkinTones(baseEmoji: .flagNc, skinTones: nil),
+            "🇳🇪": EmojiWithSkinTones(baseEmoji: .flagNe, skinTones: nil),
+            "🇳🇫": EmojiWithSkinTones(baseEmoji: .flagNf, skinTones: nil),
+            "🇳🇬": EmojiWithSkinTones(baseEmoji: .flagNg, skinTones: nil),
+            "🇳🇮": EmojiWithSkinTones(baseEmoji: .flagNi, skinTones: nil),
+            "🇳🇱": EmojiWithSkinTones(baseEmoji: .flagNl, skinTones: nil),
+            "🇳🇴": EmojiWithSkinTones(baseEmoji: .flagNo, skinTones: nil),
+            "🇳🇵": EmojiWithSkinTones(baseEmoji: .flagNp, skinTones: nil),
+            "🇳🇷": EmojiWithSkinTones(baseEmoji: .flagNr, skinTones: nil),
+            "🇳🇺": EmojiWithSkinTones(baseEmoji: .flagNu, skinTones: nil),
+            "🇳🇿": EmojiWithSkinTones(baseEmoji: .flagNz, skinTones: nil),
+            "🇴🇲": EmojiWithSkinTones(baseEmoji: .flagOm, skinTones: nil),
+            "🇵🇦": EmojiWithSkinTones(baseEmoji: .flagPa, skinTones: nil),
+            "🇵🇪": EmojiWithSkinTones(baseEmoji: .flagPe, skinTones: nil),
+            "🇵🇫": EmojiWithSkinTones(baseEmoji: .flagPf, skinTones: nil),
+            "🇵🇬": EmojiWithSkinTones(baseEmoji: .flagPg, skinTones: nil),
+            "🇵🇭": EmojiWithSkinTones(baseEmoji: .flagPh, skinTones: nil),
+            "🇵🇰": EmojiWithSkinTones(baseEmoji: .flagPk, skinTones: nil),
+            "🇵🇱": EmojiWithSkinTones(baseEmoji: .flagPl, skinTones: nil),
+            "🇵🇲": EmojiWithSkinTones(baseEmoji: .flagPm, skinTones: nil),
+            "🇵🇳": EmojiWithSkinTones(baseEmoji: .flagPn, skinTones: nil),
+            "🇵🇷": EmojiWithSkinTones(baseEmoji: .flagPr, skinTones: nil),
+            "🇵🇸": EmojiWithSkinTones(baseEmoji: .flagPs, skinTones: nil),
+            "🇵🇹": EmojiWithSkinTones(baseEmoji: .flagPt, skinTones: nil),
+            "🇵🇼": EmojiWithSkinTones(baseEmoji: .flagPw, skinTones: nil),
+            "🇵🇾": EmojiWithSkinTones(baseEmoji: .flagPy, skinTones: nil),
+            "🇶🇦": EmojiWithSkinTones(baseEmoji: .flagQa, skinTones: nil),
+            "🇷🇪": EmojiWithSkinTones(baseEmoji: .flagRe, skinTones: nil),
+            "🇷🇴": EmojiWithSkinTones(baseEmoji: .flagRo, skinTones: nil),
+            "🇷🇸": EmojiWithSkinTones(baseEmoji: .flagRs, skinTones: nil),
+            "🇷🇺": EmojiWithSkinTones(baseEmoji: .ru, skinTones: nil),
+            "🇷🇼": EmojiWithSkinTones(baseEmoji: .flagRw, skinTones: nil),
+            "🇸🇦": EmojiWithSkinTones(baseEmoji: .flagSa, skinTones: nil),
+            "🇸🇧": EmojiWithSkinTones(baseEmoji: .flagSb, skinTones: nil),
+            "🇸🇨": EmojiWithSkinTones(baseEmoji: .flagSc, skinTones: nil),
+            "🇸🇩": EmojiWithSkinTones(baseEmoji: .flagSd, skinTones: nil),
+            "🇸🇪": EmojiWithSkinTones(baseEmoji: .flagSe, skinTones: nil),
+            "🇸🇬": EmojiWithSkinTones(baseEmoji: .flagSg, skinTones: nil),
+            "🇸🇭": EmojiWithSkinTones(baseEmoji: .flagSh, skinTones: nil),
+            "🇸🇮": EmojiWithSkinTones(baseEmoji: .flagSi, skinTones: nil),
+            "🇸🇯": EmojiWithSkinTones(baseEmoji: .flagSj, skinTones: nil),
+            "🇸🇰": EmojiWithSkinTones(baseEmoji: .flagSk, skinTones: nil),
+            "🇸🇱": EmojiWithSkinTones(baseEmoji: .flagSl, skinTones: nil),
+            "🇸🇲": EmojiWithSkinTones(baseEmoji: .flagSm, skinTones: nil),
+            "🇸🇳": EmojiWithSkinTones(baseEmoji: .flagSn, skinTones: nil),
+            "🇸🇴": EmojiWithSkinTones(baseEmoji: .flagSo, skinTones: nil),
+            "🇸🇷": EmojiWithSkinTones(baseEmoji: .flagSr, skinTones: nil),
+            "🇸🇸": EmojiWithSkinTones(baseEmoji: .flagSs, skinTones: nil),
+            "🇸🇹": EmojiWithSkinTones(baseEmoji: .flagSt, skinTones: nil),
+            "🇸🇻": EmojiWithSkinTones(baseEmoji: .flagSv, skinTones: nil),
+            "🇸🇽": EmojiWithSkinTones(baseEmoji: .flagSx, skinTones: nil),
+            "🇸🇾": EmojiWithSkinTones(baseEmoji: .flagSy, skinTones: nil),
+            "🇸🇿": EmojiWithSkinTones(baseEmoji: .flagSz, skinTones: nil),
+            "🇹🇦": EmojiWithSkinTones(baseEmoji: .flagTa, skinTones: nil),
+            "🇹🇨": EmojiWithSkinTones(baseEmoji: .flagTc, skinTones: nil),
+            "🇹🇩": EmojiWithSkinTones(baseEmoji: .flagTd, skinTones: nil),
+            "🇹🇫": EmojiWithSkinTones(baseEmoji: .flagTf, skinTones: nil),
+            "🇹🇬": EmojiWithSkinTones(baseEmoji: .flagTg, skinTones: nil),
+            "🇹🇭": EmojiWithSkinTones(baseEmoji: .flagTh, skinTones: nil),
+            "🇹🇯": EmojiWithSkinTones(baseEmoji: .flagTj, skinTones: nil),
+            "🇹🇰": EmojiWithSkinTones(baseEmoji: .flagTk, skinTones: nil),
+            "🇹🇱": EmojiWithSkinTones(baseEmoji: .flagTl, skinTones: nil),
+            "🇹🇲": EmojiWithSkinTones(baseEmoji: .flagTm, skinTones: nil),
+            "🇹🇳": EmojiWithSkinTones(baseEmoji: .flagTn, skinTones: nil),
+            "🇹🇴": EmojiWithSkinTones(baseEmoji: .flagTo, skinTones: nil),
+            "🇹🇷": EmojiWithSkinTones(baseEmoji: .flagTr, skinTones: nil),
+            "🇹🇹": EmojiWithSkinTones(baseEmoji: .flagTt, skinTones: nil),
+            "🇹🇻": EmojiWithSkinTones(baseEmoji: .flagTv, skinTones: nil),
+            "🇹🇼": EmojiWithSkinTones(baseEmoji: .flagTw, skinTones: nil),
+            "🇹🇿": EmojiWithSkinTones(baseEmoji: .flagTz, skinTones: nil),
+            "🇺🇦": EmojiWithSkinTones(baseEmoji: .flagUa, skinTones: nil),
+            "🇺🇬": EmojiWithSkinTones(baseEmoji: .flagUg, skinTones: nil),
+            "🇺🇲": EmojiWithSkinTones(baseEmoji: .flagUm, skinTones: nil),
+            "🇺🇳": EmojiWithSkinTones(baseEmoji: .flagUn, skinTones: nil),
+            "🇺🇸": EmojiWithSkinTones(baseEmoji: .us, skinTones: nil),
+            "🇺🇾": EmojiWithSkinTones(baseEmoji: .flagUy, skinTones: nil),
+            "🇺🇿": EmojiWithSkinTones(baseEmoji: .flagUz, skinTones: nil),
+            "🇻🇦": EmojiWithSkinTones(baseEmoji: .flagVa, skinTones: nil),
+            "🇻🇨": EmojiWithSkinTones(baseEmoji: .flagVc, skinTones: nil),
+            "🇻🇪": EmojiWithSkinTones(baseEmoji: .flagVe, skinTones: nil),
+            "🇻🇬": EmojiWithSkinTones(baseEmoji: .flagVg, skinTones: nil),
+            "🇻🇮": EmojiWithSkinTones(baseEmoji: .flagVi, skinTones: nil),
+            "🇻🇳": EmojiWithSkinTones(baseEmoji: .flagVn, skinTones: nil),
+            "🇻🇺": EmojiWithSkinTones(baseEmoji: .flagVu, skinTones: nil),
+            "🇼🇫": EmojiWithSkinTones(baseEmoji: .flagWf, skinTones: nil),
+            "🇼🇸": EmojiWithSkinTones(baseEmoji: .flagWs, skinTones: nil),
+            "🇽🇰": EmojiWithSkinTones(baseEmoji: .flagXk, skinTones: nil),
+            "🇾🇪": EmojiWithSkinTones(baseEmoji: .flagYe, skinTones: nil),
+            "🇾🇹": EmojiWithSkinTones(baseEmoji: .flagYt, skinTones: nil),
+            "🇿🇦": EmojiWithSkinTones(baseEmoji: .flagZa, skinTones: nil),
+            "🇿🇲": EmojiWithSkinTones(baseEmoji: .flagZm, skinTones: nil),
+            "🇿🇼": EmojiWithSkinTones(baseEmoji: .flagZw, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2558(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🎅🏻": EmojiWithSkinTones(baseEmoji: .santa, skinTones: [.light]),
+            "🎅🏼": EmojiWithSkinTones(baseEmoji: .santa, skinTones: [.mediumLight]),
+            "🎅🏽": EmojiWithSkinTones(baseEmoji: .santa, skinTones: [.medium]),
+            "🎅🏾": EmojiWithSkinTones(baseEmoji: .santa, skinTones: [.mediumDark]),
+            "🎅🏿": EmojiWithSkinTones(baseEmoji: .santa, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2559(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏃🏻": EmojiWithSkinTones(baseEmoji: .runner, skinTones: [.light]),
+            "🏇🏻": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: [.light]),
+            "🏂🏻": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: [.light]),
+            "🏌🏻": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: [.light]),
+            "🏄🏻": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: [.light]),
+            "🏊🏻": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: [.light]),
+            "🏋🏻": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: [.light]),
+            "🏃🏼": EmojiWithSkinTones(baseEmoji: .runner, skinTones: [.mediumLight]),
+            "🏇🏼": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: [.mediumLight]),
+            "🏂🏼": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: [.mediumLight]),
+            "🏌🏼": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: [.mediumLight]),
+            "🏄🏼": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: [.mediumLight]),
+            "🏊🏼": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: [.mediumLight]),
+            "🏋🏼": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: [.mediumLight]),
+            "🏃🏽": EmojiWithSkinTones(baseEmoji: .runner, skinTones: [.medium]),
+            "🏇🏽": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: [.medium]),
+            "🏂🏽": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: [.medium]),
+            "🏌🏽": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: [.medium]),
+            "🏄🏽": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: [.medium]),
+            "🏊🏽": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: [.medium]),
+            "🏋🏽": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: [.medium]),
+            "🏃🏾": EmojiWithSkinTones(baseEmoji: .runner, skinTones: [.mediumDark]),
+            "🏇🏾": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: [.mediumDark]),
+            "🏂🏾": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: [.mediumDark]),
+            "🏌🏾": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: [.mediumDark]),
+            "🏄🏾": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: [.mediumDark]),
+            "🏊🏾": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: [.mediumDark]),
+            "🏋🏾": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: [.mediumDark]),
+            "🏃🏿": EmojiWithSkinTones(baseEmoji: .runner, skinTones: [.dark]),
+            "🏇🏿": EmojiWithSkinTones(baseEmoji: .horseRacing, skinTones: [.dark]),
+            "🏂🏿": EmojiWithSkinTones(baseEmoji: .snowboarder, skinTones: [.dark]),
+            "🏌🏿": EmojiWithSkinTones(baseEmoji: .golfer, skinTones: [.dark]),
+            "🏄🏿": EmojiWithSkinTones(baseEmoji: .surfer, skinTones: [.dark]),
+            "🏊🏿": EmojiWithSkinTones(baseEmoji: .swimmer, skinTones: [.dark]),
+            "🏋🏿": EmojiWithSkinTones(baseEmoji: .weightLifter, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2560(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👋🏻": EmojiWithSkinTones(baseEmoji: .wave, skinTones: [.light]),
+            "👌🏻": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: [.light]),
+            "👈🏻": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: [.light]),
+            "👉🏻": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: [.light]),
+            "👆🏻": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: [.light]),
+            "👇🏻": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: [.light]),
+            "👍🏻": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: [.light]),
+            "👎🏻": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: [.light]),
+            "👊🏻": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: [.light]),
+            "👏🏻": EmojiWithSkinTones(baseEmoji: .clap, skinTones: [.light]),
+            "👐🏻": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: [.light]),
+            "👂🏻": EmojiWithSkinTones(baseEmoji: .ear, skinTones: [.light]),
+            "👃🏻": EmojiWithSkinTones(baseEmoji: .nose, skinTones: [.light]),
+            "👦🏻": EmojiWithSkinTones(baseEmoji: .boy, skinTones: [.light]),
+            "👧🏻": EmojiWithSkinTones(baseEmoji: .girl, skinTones: [.light]),
+            "👨🏻": EmojiWithSkinTones(baseEmoji: .man, skinTones: [.light]),
+            "👋🏼": EmojiWithSkinTones(baseEmoji: .wave, skinTones: [.mediumLight]),
+            "👌🏼": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: [.mediumLight]),
+            "👈🏼": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: [.mediumLight]),
+            "👉🏼": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: [.mediumLight]),
+            "👆🏼": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: [.mediumLight]),
+            "👇🏼": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: [.mediumLight]),
+            "👍🏼": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: [.mediumLight]),
+            "👎🏼": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: [.mediumLight]),
+            "👊🏼": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: [.mediumLight]),
+            "👏🏼": EmojiWithSkinTones(baseEmoji: .clap, skinTones: [.mediumLight]),
+            "👐🏼": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: [.mediumLight]),
+            "👂🏼": EmojiWithSkinTones(baseEmoji: .ear, skinTones: [.mediumLight]),
+            "👃🏼": EmojiWithSkinTones(baseEmoji: .nose, skinTones: [.mediumLight]),
+            "👦🏼": EmojiWithSkinTones(baseEmoji: .boy, skinTones: [.mediumLight]),
+            "👧🏼": EmojiWithSkinTones(baseEmoji: .girl, skinTones: [.mediumLight]),
+            "👋🏽": EmojiWithSkinTones(baseEmoji: .wave, skinTones: [.medium]),
+            "👌🏽": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: [.medium]),
+            "👈🏽": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: [.medium]),
+            "👉🏽": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: [.medium]),
+            "👆🏽": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: [.medium]),
+            "👇🏽": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: [.medium]),
+            "👍🏽": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: [.medium]),
+            "👎🏽": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: [.medium]),
+            "👊🏽": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: [.medium]),
+            "👏🏽": EmojiWithSkinTones(baseEmoji: .clap, skinTones: [.medium]),
+            "👐🏽": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: [.medium]),
+            "👂🏽": EmojiWithSkinTones(baseEmoji: .ear, skinTones: [.medium]),
+            "👃🏽": EmojiWithSkinTones(baseEmoji: .nose, skinTones: [.medium]),
+            "👦🏽": EmojiWithSkinTones(baseEmoji: .boy, skinTones: [.medium]),
+            "👋🏾": EmojiWithSkinTones(baseEmoji: .wave, skinTones: [.mediumDark]),
+            "👌🏾": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: [.mediumDark]),
+            "👈🏾": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: [.mediumDark]),
+            "👉🏾": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: [.mediumDark]),
+            "👆🏾": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: [.mediumDark]),
+            "👇🏾": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: [.mediumDark]),
+            "👍🏾": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: [.mediumDark]),
+            "👎🏾": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: [.mediumDark]),
+            "👊🏾": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: [.mediumDark]),
+            "👏🏾": EmojiWithSkinTones(baseEmoji: .clap, skinTones: [.mediumDark]),
+            "👐🏾": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: [.mediumDark]),
+            "👂🏾": EmojiWithSkinTones(baseEmoji: .ear, skinTones: [.mediumDark]),
+            "👃🏾": EmojiWithSkinTones(baseEmoji: .nose, skinTones: [.mediumDark]),
+            "👋🏿": EmojiWithSkinTones(baseEmoji: .wave, skinTones: [.dark]),
+            "👌🏿": EmojiWithSkinTones(baseEmoji: .okHand, skinTones: [.dark]),
+            "👈🏿": EmojiWithSkinTones(baseEmoji: .pointLeft, skinTones: [.dark]),
+            "👉🏿": EmojiWithSkinTones(baseEmoji: .pointRight, skinTones: [.dark]),
+            "👆🏿": EmojiWithSkinTones(baseEmoji: .pointUp2, skinTones: [.dark]),
+            "👇🏿": EmojiWithSkinTones(baseEmoji: .pointDown, skinTones: [.dark]),
+            "👍🏿": EmojiWithSkinTones(baseEmoji: .plusOne, skinTones: [.dark]),
+            "👎🏿": EmojiWithSkinTones(baseEmoji: .negativeOne, skinTones: [.dark]),
+            "👊🏿": EmojiWithSkinTones(baseEmoji: .facepunch, skinTones: [.dark]),
+            "👏🏿": EmojiWithSkinTones(baseEmoji: .clap, skinTones: [.dark]),
+            "👐🏿": EmojiWithSkinTones(baseEmoji: .openHands, skinTones: [.dark]),
+            "👂🏿": EmojiWithSkinTones(baseEmoji: .ear, skinTones: [.dark]),
+            "👃🏿": EmojiWithSkinTones(baseEmoji: .nose, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2561(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "💅🏻": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: [.light]),
+            "💪🏻": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: [.light]),
+            "👶🏻": EmojiWithSkinTones(baseEmoji: .baby, skinTones: [.light]),
+            "👱🏻": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: [.light]),
+            "👩🏻": EmojiWithSkinTones(baseEmoji: .woman, skinTones: [.light]),
+            "👴🏻": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: [.light]),
+            "👵🏻": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: [.light]),
+            "💁🏻": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: [.light]),
+            "👮🏻": EmojiWithSkinTones(baseEmoji: .cop, skinTones: [.light]),
+            "💂🏻": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: [.light]),
+            "👷🏻": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: [.light]),
+            "👸🏻": EmojiWithSkinTones(baseEmoji: .princess, skinTones: [.light]),
+            "👳🏻": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: [.light]),
+            "👲🏻": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: [.light]),
+            "👰🏻": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: [.light]),
+            "👼🏻": EmojiWithSkinTones(baseEmoji: .angel, skinTones: [.light]),
+            "💆🏻": EmojiWithSkinTones(baseEmoji: .massage, skinTones: [.light]),
+            "💇🏻": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: [.light]),
+            "💃🏻": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: [.light]),
+            "👭🏻": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.light]),
+            "👫🏻": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.light]),
+            "👬🏻": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.light]),
+            "💏🏻": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.light]),
+            "💑🏻": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.light]),
+            "💅🏼": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: [.mediumLight]),
+            "💪🏼": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: [.mediumLight]),
+            "👶🏼": EmojiWithSkinTones(baseEmoji: .baby, skinTones: [.mediumLight]),
+            "👱🏼": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: [.mediumLight]),
+            "👨🏼": EmojiWithSkinTones(baseEmoji: .man, skinTones: [.mediumLight]),
+            "👩🏼": EmojiWithSkinTones(baseEmoji: .woman, skinTones: [.mediumLight]),
+            "👴🏼": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: [.mediumLight]),
+            "👵🏼": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: [.mediumLight]),
+            "💁🏼": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: [.mediumLight]),
+            "👮🏼": EmojiWithSkinTones(baseEmoji: .cop, skinTones: [.mediumLight]),
+            "💂🏼": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: [.mediumLight]),
+            "👷🏼": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: [.mediumLight]),
+            "👸🏼": EmojiWithSkinTones(baseEmoji: .princess, skinTones: [.mediumLight]),
+            "👳🏼": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: [.mediumLight]),
+            "👲🏼": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: [.mediumLight]),
+            "👰🏼": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: [.mediumLight]),
+            "👼🏼": EmojiWithSkinTones(baseEmoji: .angel, skinTones: [.mediumLight]),
+            "💆🏼": EmojiWithSkinTones(baseEmoji: .massage, skinTones: [.mediumLight]),
+            "💇🏼": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: [.mediumLight]),
+            "💃🏼": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: [.mediumLight]),
+            "👭🏼": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumLight]),
+            "👫🏼": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumLight]),
+            "👬🏼": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumLight]),
+            "💏🏼": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumLight]),
+            "💑🏼": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumLight]),
+            "💅🏽": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: [.medium]),
+            "💪🏽": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: [.medium]),
+            "👶🏽": EmojiWithSkinTones(baseEmoji: .baby, skinTones: [.medium]),
+            "👧🏽": EmojiWithSkinTones(baseEmoji: .girl, skinTones: [.medium]),
+            "👱🏽": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: [.medium]),
+            "👨🏽": EmojiWithSkinTones(baseEmoji: .man, skinTones: [.medium]),
+            "👩🏽": EmojiWithSkinTones(baseEmoji: .woman, skinTones: [.medium]),
+            "👴🏽": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: [.medium]),
+            "👵🏽": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: [.medium]),
+            "💁🏽": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: [.medium]),
+            "👮🏽": EmojiWithSkinTones(baseEmoji: .cop, skinTones: [.medium]),
+            "💂🏽": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: [.medium]),
+            "👷🏽": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: [.medium]),
+            "👸🏽": EmojiWithSkinTones(baseEmoji: .princess, skinTones: [.medium]),
+            "👳🏽": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: [.medium]),
+            "👲🏽": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: [.medium]),
+            "👰🏽": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: [.medium]),
+            "👼🏽": EmojiWithSkinTones(baseEmoji: .angel, skinTones: [.medium]),
+            "💆🏽": EmojiWithSkinTones(baseEmoji: .massage, skinTones: [.medium]),
+            "💇🏽": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: [.medium]),
+            "💃🏽": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: [.medium]),
+            "👭🏽": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.medium]),
+            "👫🏽": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.medium]),
+            "👬🏽": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.medium]),
+            "💏🏽": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.medium]),
+            "💑🏽": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.medium]),
+            "💅🏾": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: [.mediumDark]),
+            "💪🏾": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: [.mediumDark]),
+            "👶🏾": EmojiWithSkinTones(baseEmoji: .baby, skinTones: [.mediumDark]),
+            "👦🏾": EmojiWithSkinTones(baseEmoji: .boy, skinTones: [.mediumDark]),
+            "👧🏾": EmojiWithSkinTones(baseEmoji: .girl, skinTones: [.mediumDark]),
+            "👱🏾": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: [.mediumDark]),
+            "👨🏾": EmojiWithSkinTones(baseEmoji: .man, skinTones: [.mediumDark]),
+            "👩🏾": EmojiWithSkinTones(baseEmoji: .woman, skinTones: [.mediumDark]),
+            "👴🏾": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: [.mediumDark]),
+            "👵🏾": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: [.mediumDark]),
+            "💁🏾": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: [.mediumDark]),
+            "👮🏾": EmojiWithSkinTones(baseEmoji: .cop, skinTones: [.mediumDark]),
+            "💂🏾": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: [.mediumDark]),
+            "👷🏾": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: [.mediumDark]),
+            "👸🏾": EmojiWithSkinTones(baseEmoji: .princess, skinTones: [.mediumDark]),
+            "👳🏾": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: [.mediumDark]),
+            "👲🏾": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: [.mediumDark]),
+            "👰🏾": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: [.mediumDark]),
+            "👼🏾": EmojiWithSkinTones(baseEmoji: .angel, skinTones: [.mediumDark]),
+            "💆🏾": EmojiWithSkinTones(baseEmoji: .massage, skinTones: [.mediumDark]),
+            "💇🏾": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: [.mediumDark]),
+            "💃🏾": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: [.mediumDark]),
+            "👭🏾": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumDark]),
+            "👫🏾": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumDark]),
+            "👬🏾": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumDark]),
+            "💏🏾": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumDark]),
+            "💑🏾": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumDark]),
+            "💅🏿": EmojiWithSkinTones(baseEmoji: .nailCare, skinTones: [.dark]),
+            "💪🏿": EmojiWithSkinTones(baseEmoji: .muscle, skinTones: [.dark]),
+            "👶🏿": EmojiWithSkinTones(baseEmoji: .baby, skinTones: [.dark]),
+            "👦🏿": EmojiWithSkinTones(baseEmoji: .boy, skinTones: [.dark]),
+            "👧🏿": EmojiWithSkinTones(baseEmoji: .girl, skinTones: [.dark]),
+            "👱🏿": EmojiWithSkinTones(baseEmoji: .personWithBlondHair, skinTones: [.dark]),
+            "👨🏿": EmojiWithSkinTones(baseEmoji: .man, skinTones: [.dark]),
+            "👩🏿": EmojiWithSkinTones(baseEmoji: .woman, skinTones: [.dark]),
+            "👴🏿": EmojiWithSkinTones(baseEmoji: .olderMan, skinTones: [.dark]),
+            "👵🏿": EmojiWithSkinTones(baseEmoji: .olderWoman, skinTones: [.dark]),
+            "💁🏿": EmojiWithSkinTones(baseEmoji: .informationDeskPerson, skinTones: [.dark]),
+            "👮🏿": EmojiWithSkinTones(baseEmoji: .cop, skinTones: [.dark]),
+            "💂🏿": EmojiWithSkinTones(baseEmoji: .guardsman, skinTones: [.dark]),
+            "👷🏿": EmojiWithSkinTones(baseEmoji: .constructionWorker, skinTones: [.dark]),
+            "👸🏿": EmojiWithSkinTones(baseEmoji: .princess, skinTones: [.dark]),
+            "👳🏿": EmojiWithSkinTones(baseEmoji: .manWithTurban, skinTones: [.dark]),
+            "👲🏿": EmojiWithSkinTones(baseEmoji: .manWithGuaPiMao, skinTones: [.dark]),
+            "👰🏿": EmojiWithSkinTones(baseEmoji: .brideWithVeil, skinTones: [.dark]),
+            "👼🏿": EmojiWithSkinTones(baseEmoji: .angel, skinTones: [.dark]),
+            "💆🏿": EmojiWithSkinTones(baseEmoji: .massage, skinTones: [.dark]),
+            "💇🏿": EmojiWithSkinTones(baseEmoji: .haircut, skinTones: [.dark]),
+            "💃🏿": EmojiWithSkinTones(baseEmoji: .dancer, skinTones: [.dark]),
+            "👭🏿": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.dark]),
+            "👫🏿": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.dark]),
+            "👬🏿": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.dark]),
+            "💏🏿": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.dark]),
+            "💑🏿": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2563(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🖐🏻": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: [.light]),
+            "🕵🏻": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: [.light]),
+            "🕺🏻": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: [.light]),
+            "🕴🏻": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: [.light]),
+            "🖐🏼": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: [.mediumLight]),
+            "🕵🏼": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: [.mediumLight]),
+            "🕺🏼": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: [.mediumLight]),
+            "🕴🏼": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: [.mediumLight]),
+            "🖐🏽": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: [.medium]),
+            "🕵🏽": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: [.medium]),
+            "🕺🏽": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: [.medium]),
+            "🕴🏽": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: [.medium]),
+            "🖐🏾": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: [.mediumDark]),
+            "🕵🏾": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: [.mediumDark]),
+            "🕺🏾": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: [.mediumDark]),
+            "🕴🏾": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: [.mediumDark]),
+            "🖐🏿": EmojiWithSkinTones(baseEmoji: .raisedHandWithFingersSplayed, skinTones: [.dark]),
+            "🕵🏿": EmojiWithSkinTones(baseEmoji: .sleuthOrSpy, skinTones: [.dark]),
+            "🕺🏿": EmojiWithSkinTones(baseEmoji: .manDancing, skinTones: [.dark]),
+            "🕴🏿": EmojiWithSkinTones(baseEmoji: .manInBusinessSuitLevitating, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2564(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🖖🏻": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: [.light]),
+            "🖕🏻": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: [.light]),
+            "🖖🏼": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: [.mediumLight]),
+            "🖕🏼": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: [.mediumLight]),
+            "🖖🏽": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: [.medium]),
+            "🖕🏽": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: [.medium]),
+            "🖖🏾": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: [.mediumDark]),
+            "🖕🏾": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: [.mediumDark]),
+            "🖖🏿": EmojiWithSkinTones(baseEmoji: .spockHand, skinTones: [.dark]),
+            "🖕🏿": EmojiWithSkinTones(baseEmoji: .middleFinger, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2565(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🙌🏻": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: [.light]),
+            "🙏🏻": EmojiWithSkinTones(baseEmoji: .pray, skinTones: [.light]),
+            "🙍🏻": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: [.light]),
+            "🙎🏻": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: [.light]),
+            "🙅🏻": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: [.light]),
+            "🙆🏻": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: [.light]),
+            "🙋🏻": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: [.light]),
+            "🙇🏻": EmojiWithSkinTones(baseEmoji: .bow, skinTones: [.light]),
+            "🙌🏼": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: [.mediumLight]),
+            "🙏🏼": EmojiWithSkinTones(baseEmoji: .pray, skinTones: [.mediumLight]),
+            "🙍🏼": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: [.mediumLight]),
+            "🙎🏼": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: [.mediumLight]),
+            "🙅🏼": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: [.mediumLight]),
+            "🙆🏼": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: [.mediumLight]),
+            "🙋🏼": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: [.mediumLight]),
+            "🙇🏼": EmojiWithSkinTones(baseEmoji: .bow, skinTones: [.mediumLight]),
+            "🙌🏽": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: [.medium]),
+            "🙏🏽": EmojiWithSkinTones(baseEmoji: .pray, skinTones: [.medium]),
+            "🙍🏽": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: [.medium]),
+            "🙎🏽": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: [.medium]),
+            "🙅🏽": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: [.medium]),
+            "🙆🏽": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: [.medium]),
+            "🙋🏽": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: [.medium]),
+            "🙇🏽": EmojiWithSkinTones(baseEmoji: .bow, skinTones: [.medium]),
+            "🙌🏾": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: [.mediumDark]),
+            "🙏🏾": EmojiWithSkinTones(baseEmoji: .pray, skinTones: [.mediumDark]),
+            "🙍🏾": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: [.mediumDark]),
+            "🙎🏾": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: [.mediumDark]),
+            "🙅🏾": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: [.mediumDark]),
+            "🙆🏾": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: [.mediumDark]),
+            "🙋🏾": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: [.mediumDark]),
+            "🙇🏾": EmojiWithSkinTones(baseEmoji: .bow, skinTones: [.mediumDark]),
+            "🙌🏿": EmojiWithSkinTones(baseEmoji: .raisedHands, skinTones: [.dark]),
+            "🙏🏿": EmojiWithSkinTones(baseEmoji: .pray, skinTones: [.dark]),
+            "🙍🏿": EmojiWithSkinTones(baseEmoji: .personFrowning, skinTones: [.dark]),
+            "🙎🏿": EmojiWithSkinTones(baseEmoji: .personWithPoutingFace, skinTones: [.dark]),
+            "🙅🏿": EmojiWithSkinTones(baseEmoji: .noGood, skinTones: [.dark]),
+            "🙆🏿": EmojiWithSkinTones(baseEmoji: .okWoman, skinTones: [.dark]),
+            "🙋🏿": EmojiWithSkinTones(baseEmoji: .raisingHand, skinTones: [.dark]),
+            "🙇🏿": EmojiWithSkinTones(baseEmoji: .bow, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2566(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🚶🏻": EmojiWithSkinTones(baseEmoji: .walking, skinTones: [.light]),
+            "🚣🏻": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: [.light]),
+            "🚴🏻": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: [.light]),
+            "🚵🏻": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: [.light]),
+            "🛀🏻": EmojiWithSkinTones(baseEmoji: .bath, skinTones: [.light]),
+            "🚶🏼": EmojiWithSkinTones(baseEmoji: .walking, skinTones: [.mediumLight]),
+            "🚣🏼": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: [.mediumLight]),
+            "🚴🏼": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: [.mediumLight]),
+            "🚵🏼": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: [.mediumLight]),
+            "🚶🏽": EmojiWithSkinTones(baseEmoji: .walking, skinTones: [.medium]),
+            "🚣🏽": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: [.medium]),
+            "🚴🏽": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: [.medium]),
+            "🚵🏽": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: [.medium]),
+            "🚶🏾": EmojiWithSkinTones(baseEmoji: .walking, skinTones: [.mediumDark]),
+            "🚣🏾": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: [.mediumDark]),
+            "🚴🏾": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: [.mediumDark]),
+            "🚵🏾": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: [.mediumDark]),
+            "🚶🏿": EmojiWithSkinTones(baseEmoji: .walking, skinTones: [.dark]),
+            "🚣🏿": EmojiWithSkinTones(baseEmoji: .rowboat, skinTones: [.dark]),
+            "🚴🏿": EmojiWithSkinTones(baseEmoji: .bicyclist, skinTones: [.dark]),
+            "🚵🏿": EmojiWithSkinTones(baseEmoji: .mountainBicyclist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2567(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🛌🏻": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: [.light]),
+            "🛀🏼": EmojiWithSkinTones(baseEmoji: .bath, skinTones: [.mediumLight]),
+            "🛌🏼": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: [.mediumLight]),
+            "🛀🏽": EmojiWithSkinTones(baseEmoji: .bath, skinTones: [.medium]),
+            "🛌🏽": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: [.medium]),
+            "🛀🏾": EmojiWithSkinTones(baseEmoji: .bath, skinTones: [.mediumDark]),
+            "🛌🏾": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: [.mediumDark]),
+            "🛀🏿": EmojiWithSkinTones(baseEmoji: .bath, skinTones: [.dark]),
+            "🛌🏿": EmojiWithSkinTones(baseEmoji: .sleepingAccommodation, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2572(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤌🏻": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: [.light]),
+            "🤏🏻": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: [.light]),
+            "🤘🏻": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: [.light]),
+            "🤌🏼": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: [.mediumLight]),
+            "🤏🏼": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: [.mediumLight]),
+            "🤌🏽": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: [.medium]),
+            "🤏🏽": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: [.medium]),
+            "🤌🏾": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: [.mediumDark]),
+            "🤏🏾": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: [.mediumDark]),
+            "🤌🏿": EmojiWithSkinTones(baseEmoji: .pinchedFingers, skinTones: [.dark]),
+            "🤏🏿": EmojiWithSkinTones(baseEmoji: .pinchingHand, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2573(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤚🏻": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: [.light]),
+            "🤞🏻": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: [.light]),
+            "🤟🏻": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: [.light]),
+            "🤙🏻": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: [.light]),
+            "🤛🏻": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: [.light]),
+            "🤜🏻": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: [.light]),
+            "🤲🏻": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: [.light]),
+            "🤝🏻": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.light]),
+            "🤳🏻": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: [.light]),
+            "🤦🏻": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: [.light]),
+            "🤷🏻": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: [.light]),
+            "🥷🏻": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: [.light]),
+            "🤴🏻": EmojiWithSkinTones(baseEmoji: .prince, skinTones: [.light]),
+            "🤵🏻": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: [.light]),
+            "🤰🏻": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: [.light]),
+            "🤱🏻": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: [.light]),
+            "🤶🏻": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: [.light]),
+            "🤸🏻": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: [.light]),
+            "🤽🏻": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: [.light]),
+            "🤾🏻": EmojiWithSkinTones(baseEmoji: .handball, skinTones: [.light]),
+            "🤹🏻": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: [.light]),
+            "🤚🏼": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: [.mediumLight]),
+            "🤞🏼": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: [.mediumLight]),
+            "🤟🏼": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: [.mediumLight]),
+            "🤘🏼": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: [.mediumLight]),
+            "🤙🏼": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: [.mediumLight]),
+            "🤛🏼": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: [.mediumLight]),
+            "🤜🏼": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: [.mediumLight]),
+            "🤲🏼": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: [.mediumLight]),
+            "🤝🏼": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumLight]),
+            "🤳🏼": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: [.mediumLight]),
+            "🤦🏼": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: [.mediumLight]),
+            "🤷🏼": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: [.mediumLight]),
+            "🥷🏼": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: [.mediumLight]),
+            "🤴🏼": EmojiWithSkinTones(baseEmoji: .prince, skinTones: [.mediumLight]),
+            "🤵🏼": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: [.mediumLight]),
+            "🤰🏼": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: [.mediumLight]),
+            "🤱🏼": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: [.mediumLight]),
+            "🤶🏼": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: [.mediumLight]),
+            "🤸🏼": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: [.mediumLight]),
+            "🤽🏼": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: [.mediumLight]),
+            "🤾🏼": EmojiWithSkinTones(baseEmoji: .handball, skinTones: [.mediumLight]),
+            "🤹🏼": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: [.mediumLight]),
+            "🤚🏽": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: [.medium]),
+            "🤞🏽": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: [.medium]),
+            "🤟🏽": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: [.medium]),
+            "🤘🏽": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: [.medium]),
+            "🤙🏽": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: [.medium]),
+            "🤛🏽": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: [.medium]),
+            "🤜🏽": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: [.medium]),
+            "🤲🏽": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: [.medium]),
+            "🤝🏽": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.medium]),
+            "🤳🏽": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: [.medium]),
+            "🤦🏽": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: [.medium]),
+            "🤷🏽": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: [.medium]),
+            "🥷🏽": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: [.medium]),
+            "🤴🏽": EmojiWithSkinTones(baseEmoji: .prince, skinTones: [.medium]),
+            "🤵🏽": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: [.medium]),
+            "🤰🏽": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: [.medium]),
+            "🤱🏽": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: [.medium]),
+            "🤶🏽": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: [.medium]),
+            "🤸🏽": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: [.medium]),
+            "🤽🏽": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: [.medium]),
+            "🤾🏽": EmojiWithSkinTones(baseEmoji: .handball, skinTones: [.medium]),
+            "🤹🏽": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: [.medium]),
+            "🤚🏾": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: [.mediumDark]),
+            "🤞🏾": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: [.mediumDark]),
+            "🤟🏾": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: [.mediumDark]),
+            "🤘🏾": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: [.mediumDark]),
+            "🤙🏾": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: [.mediumDark]),
+            "🤛🏾": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: [.mediumDark]),
+            "🤜🏾": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: [.mediumDark]),
+            "🤲🏾": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: [.mediumDark]),
+            "🤝🏾": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumDark]),
+            "🤳🏾": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: [.mediumDark]),
+            "🤦🏾": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: [.mediumDark]),
+            "🤷🏾": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: [.mediumDark]),
+            "🥷🏾": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: [.mediumDark]),
+            "🤴🏾": EmojiWithSkinTones(baseEmoji: .prince, skinTones: [.mediumDark]),
+            "🤵🏾": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: [.mediumDark]),
+            "🤰🏾": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: [.mediumDark]),
+            "🤱🏾": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: [.mediumDark]),
+            "🤶🏾": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: [.mediumDark]),
+            "🤸🏾": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: [.mediumDark]),
+            "🤽🏾": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: [.mediumDark]),
+            "🤾🏾": EmojiWithSkinTones(baseEmoji: .handball, skinTones: [.mediumDark]),
+            "🤹🏾": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: [.mediumDark]),
+            "🤚🏿": EmojiWithSkinTones(baseEmoji: .raisedBackOfHand, skinTones: [.dark]),
+            "🤞🏿": EmojiWithSkinTones(baseEmoji: .crossedFingers, skinTones: [.dark]),
+            "🤟🏿": EmojiWithSkinTones(baseEmoji: .iLoveYouHandSign, skinTones: [.dark]),
+            "🤘🏿": EmojiWithSkinTones(baseEmoji: .theHorns, skinTones: [.dark]),
+            "🤙🏿": EmojiWithSkinTones(baseEmoji: .callMeHand, skinTones: [.dark]),
+            "🤛🏿": EmojiWithSkinTones(baseEmoji: .leftFacingFist, skinTones: [.dark]),
+            "🤜🏿": EmojiWithSkinTones(baseEmoji: .rightFacingFist, skinTones: [.dark]),
+            "🤲🏿": EmojiWithSkinTones(baseEmoji: .palmsUpTogether, skinTones: [.dark]),
+            "🤝🏿": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.dark]),
+            "🤳🏿": EmojiWithSkinTones(baseEmoji: .selfie, skinTones: [.dark]),
+            "🤦🏿": EmojiWithSkinTones(baseEmoji: .facePalm, skinTones: [.dark]),
+            "🤷🏿": EmojiWithSkinTones(baseEmoji: .shrug, skinTones: [.dark]),
+            "🥷🏿": EmojiWithSkinTones(baseEmoji: .ninja, skinTones: [.dark]),
+            "🤴🏿": EmojiWithSkinTones(baseEmoji: .prince, skinTones: [.dark]),
+            "🤵🏿": EmojiWithSkinTones(baseEmoji: .personInTuxedo, skinTones: [.dark]),
+            "🤰🏿": EmojiWithSkinTones(baseEmoji: .pregnantWoman, skinTones: [.dark]),
+            "🤱🏿": EmojiWithSkinTones(baseEmoji: .breastFeeding, skinTones: [.dark]),
+            "🤶🏿": EmojiWithSkinTones(baseEmoji: .mrsClaus, skinTones: [.dark]),
+            "🤸🏿": EmojiWithSkinTones(baseEmoji: .personDoingCartwheel, skinTones: [.dark]),
+            "🤽🏿": EmojiWithSkinTones(baseEmoji: .waterPolo, skinTones: [.dark]),
+            "🤾🏿": EmojiWithSkinTones(baseEmoji: .handball, skinTones: [.dark]),
+            "🤹🏿": EmojiWithSkinTones(baseEmoji: .juggling, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2574(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🦵🏻": EmojiWithSkinTones(baseEmoji: .leg, skinTones: [.light]),
+            "🦶🏻": EmojiWithSkinTones(baseEmoji: .foot, skinTones: [.light]),
+            "🦻🏻": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: [.light]),
+            "🧒🏻": EmojiWithSkinTones(baseEmoji: .child, skinTones: [.light]),
+            "🧑🏻": EmojiWithSkinTones(baseEmoji: .adult, skinTones: [.light]),
+            "🧔🏻": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: [.light]),
+            "🧓🏻": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: [.light]),
+            "🧏🏻": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: [.light]),
+            "🧕🏻": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: [.light]),
+            "🦸🏻": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: [.light]),
+            "🦹🏻": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: [.light]),
+            "🧙🏻": EmojiWithSkinTones(baseEmoji: .mage, skinTones: [.light]),
+            "🧚🏻": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: [.light]),
+            "🧛🏻": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: [.light]),
+            "🧜🏻": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: [.light]),
+            "🧝🏻": EmojiWithSkinTones(baseEmoji: .elf, skinTones: [.light]),
+            "🧍🏻": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: [.light]),
+            "🧎🏻": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: [.light]),
+            "🧖🏻": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: [.light]),
+            "🧗🏻": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: [.light]),
+            "🧘🏻": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: [.light]),
+            "🦵🏼": EmojiWithSkinTones(baseEmoji: .leg, skinTones: [.mediumLight]),
+            "🦶🏼": EmojiWithSkinTones(baseEmoji: .foot, skinTones: [.mediumLight]),
+            "🦻🏼": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: [.mediumLight]),
+            "🧒🏼": EmojiWithSkinTones(baseEmoji: .child, skinTones: [.mediumLight]),
+            "🧑🏼": EmojiWithSkinTones(baseEmoji: .adult, skinTones: [.mediumLight]),
+            "🧔🏼": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: [.mediumLight]),
+            "🧓🏼": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: [.mediumLight]),
+            "🧏🏼": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: [.mediumLight]),
+            "🧕🏼": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: [.mediumLight]),
+            "🦸🏼": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: [.mediumLight]),
+            "🦹🏼": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: [.mediumLight]),
+            "🧙🏼": EmojiWithSkinTones(baseEmoji: .mage, skinTones: [.mediumLight]),
+            "🧚🏼": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: [.mediumLight]),
+            "🧛🏼": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: [.mediumLight]),
+            "🧜🏼": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: [.mediumLight]),
+            "🧝🏼": EmojiWithSkinTones(baseEmoji: .elf, skinTones: [.mediumLight]),
+            "🧍🏼": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: [.mediumLight]),
+            "🧎🏼": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: [.mediumLight]),
+            "🧖🏼": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: [.mediumLight]),
+            "🧗🏼": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: [.mediumLight]),
+            "🧘🏼": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: [.mediumLight]),
+            "🦵🏽": EmojiWithSkinTones(baseEmoji: .leg, skinTones: [.medium]),
+            "🦶🏽": EmojiWithSkinTones(baseEmoji: .foot, skinTones: [.medium]),
+            "🦻🏽": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: [.medium]),
+            "🧒🏽": EmojiWithSkinTones(baseEmoji: .child, skinTones: [.medium]),
+            "🧑🏽": EmojiWithSkinTones(baseEmoji: .adult, skinTones: [.medium]),
+            "🧔🏽": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: [.medium]),
+            "🧓🏽": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: [.medium]),
+            "🧏🏽": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: [.medium]),
+            "🧕🏽": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: [.medium]),
+            "🦸🏽": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: [.medium]),
+            "🦹🏽": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: [.medium]),
+            "🧙🏽": EmojiWithSkinTones(baseEmoji: .mage, skinTones: [.medium]),
+            "🧚🏽": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: [.medium]),
+            "🧛🏽": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: [.medium]),
+            "🧜🏽": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: [.medium]),
+            "🧝🏽": EmojiWithSkinTones(baseEmoji: .elf, skinTones: [.medium]),
+            "🧍🏽": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: [.medium]),
+            "🧎🏽": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: [.medium]),
+            "🧖🏽": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: [.medium]),
+            "🧗🏽": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: [.medium]),
+            "🧘🏽": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: [.medium]),
+            "🦵🏾": EmojiWithSkinTones(baseEmoji: .leg, skinTones: [.mediumDark]),
+            "🦶🏾": EmojiWithSkinTones(baseEmoji: .foot, skinTones: [.mediumDark]),
+            "🦻🏾": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: [.mediumDark]),
+            "🧒🏾": EmojiWithSkinTones(baseEmoji: .child, skinTones: [.mediumDark]),
+            "🧑🏾": EmojiWithSkinTones(baseEmoji: .adult, skinTones: [.mediumDark]),
+            "🧔🏾": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: [.mediumDark]),
+            "🧓🏾": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: [.mediumDark]),
+            "🧏🏾": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: [.mediumDark]),
+            "🧕🏾": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: [.mediumDark]),
+            "🦸🏾": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: [.mediumDark]),
+            "🦹🏾": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: [.mediumDark]),
+            "🧙🏾": EmojiWithSkinTones(baseEmoji: .mage, skinTones: [.mediumDark]),
+            "🧚🏾": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: [.mediumDark]),
+            "🧛🏾": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: [.mediumDark]),
+            "🧜🏾": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: [.mediumDark]),
+            "🧝🏾": EmojiWithSkinTones(baseEmoji: .elf, skinTones: [.mediumDark]),
+            "🧍🏾": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: [.mediumDark]),
+            "🧎🏾": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: [.mediumDark]),
+            "🧖🏾": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: [.mediumDark]),
+            "🧗🏾": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: [.mediumDark]),
+            "🧘🏾": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: [.mediumDark]),
+            "🦵🏿": EmojiWithSkinTones(baseEmoji: .leg, skinTones: [.dark]),
+            "🦶🏿": EmojiWithSkinTones(baseEmoji: .foot, skinTones: [.dark]),
+            "🦻🏿": EmojiWithSkinTones(baseEmoji: .earWithHearingAid, skinTones: [.dark]),
+            "🧒🏿": EmojiWithSkinTones(baseEmoji: .child, skinTones: [.dark]),
+            "🧑🏿": EmojiWithSkinTones(baseEmoji: .adult, skinTones: [.dark]),
+            "🧔🏿": EmojiWithSkinTones(baseEmoji: .beardedPerson, skinTones: [.dark]),
+            "🧓🏿": EmojiWithSkinTones(baseEmoji: .olderAdult, skinTones: [.dark]),
+            "🧏🏿": EmojiWithSkinTones(baseEmoji: .deafPerson, skinTones: [.dark]),
+            "🧕🏿": EmojiWithSkinTones(baseEmoji: .personWithHeadscarf, skinTones: [.dark]),
+            "🦸🏿": EmojiWithSkinTones(baseEmoji: .superhero, skinTones: [.dark]),
+            "🦹🏿": EmojiWithSkinTones(baseEmoji: .supervillain, skinTones: [.dark]),
+            "🧙🏿": EmojiWithSkinTones(baseEmoji: .mage, skinTones: [.dark]),
+            "🧚🏿": EmojiWithSkinTones(baseEmoji: .fairy, skinTones: [.dark]),
+            "🧛🏿": EmojiWithSkinTones(baseEmoji: .vampire, skinTones: [.dark]),
+            "🧜🏿": EmojiWithSkinTones(baseEmoji: .merperson, skinTones: [.dark]),
+            "🧍🏿": EmojiWithSkinTones(baseEmoji: .standingPerson, skinTones: [.dark]),
+            "🧎🏿": EmojiWithSkinTones(baseEmoji: .kneelingPerson, skinTones: [.dark]),
+            "🧖🏿": EmojiWithSkinTones(baseEmoji: .personInSteamyRoom, skinTones: [.dark]),
+            "🧗🏿": EmojiWithSkinTones(baseEmoji: .personClimbing, skinTones: [.dark]),
+            "🧘🏿": EmojiWithSkinTones(baseEmoji: .personInLotusPosition, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2575(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧝🏿": EmojiWithSkinTones(baseEmoji: .elf, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2577(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🫱🏻": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: [.light]),
+            "🫲🏻": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: [.light]),
+            "🫳🏻": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: [.light]),
+            "🫴🏻": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: [.light]),
+            "🫷🏻": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: [.light]),
+            "🫸🏻": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: [.light]),
+            "🫰🏻": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: [.light]),
+            "🫵🏻": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: [.light]),
+            "🫶🏻": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: [.light]),
+            "🫅🏻": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: [.light]),
+            "🫃🏻": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: [.light]),
+            "🫄🏻": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: [.light]),
+            "🫱🏼": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: [.mediumLight]),
+            "🫲🏼": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: [.mediumLight]),
+            "🫳🏼": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: [.mediumLight]),
+            "🫴🏼": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: [.mediumLight]),
+            "🫷🏼": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: [.mediumLight]),
+            "🫸🏼": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: [.mediumLight]),
+            "🫰🏼": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: [.mediumLight]),
+            "🫵🏼": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: [.mediumLight]),
+            "🫶🏼": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: [.mediumLight]),
+            "🫅🏼": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: [.mediumLight]),
+            "🫃🏼": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: [.mediumLight]),
+            "🫄🏼": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: [.mediumLight]),
+            "🫱🏽": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: [.medium]),
+            "🫲🏽": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: [.medium]),
+            "🫳🏽": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: [.medium]),
+            "🫴🏽": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: [.medium]),
+            "🫷🏽": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: [.medium]),
+            "🫸🏽": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: [.medium]),
+            "🫰🏽": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: [.medium]),
+            "🫵🏽": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: [.medium]),
+            "🫶🏽": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: [.medium]),
+            "🫅🏽": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: [.medium]),
+            "🫃🏽": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: [.medium]),
+            "🫄🏽": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: [.medium]),
+            "🫱🏾": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: [.mediumDark]),
+            "🫲🏾": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: [.mediumDark]),
+            "🫳🏾": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: [.mediumDark]),
+            "🫴🏾": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: [.mediumDark]),
+            "🫷🏾": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: [.mediumDark]),
+            "🫸🏾": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: [.mediumDark]),
+            "🫰🏾": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: [.mediumDark]),
+            "🫵🏾": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: [.mediumDark]),
+            "🫶🏾": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: [.mediumDark]),
+            "🫅🏾": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: [.mediumDark]),
+            "🫃🏾": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: [.mediumDark]),
+            "🫄🏾": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: [.mediumDark]),
+            "🫱🏿": EmojiWithSkinTones(baseEmoji: .rightwardsHand, skinTones: [.dark]),
+            "🫲🏿": EmojiWithSkinTones(baseEmoji: .leftwardsHand, skinTones: [.dark]),
+            "🫳🏿": EmojiWithSkinTones(baseEmoji: .palmDownHand, skinTones: [.dark]),
+            "🫴🏿": EmojiWithSkinTones(baseEmoji: .palmUpHand, skinTones: [.dark]),
+            "🫷🏿": EmojiWithSkinTones(baseEmoji: .leftwardsPushingHand, skinTones: [.dark]),
+            "🫸🏿": EmojiWithSkinTones(baseEmoji: .rightwardsPushingHand, skinTones: [.dark]),
+            "🫰🏿": EmojiWithSkinTones(baseEmoji: .handWithIndexFingerAndThumbCrossed, skinTones: [.dark]),
+            "🫵🏿": EmojiWithSkinTones(baseEmoji: .indexPointingAtTheViewer, skinTones: [.dark]),
+            "🫶🏿": EmojiWithSkinTones(baseEmoji: .heartHands, skinTones: [.dark]),
+            "🫅🏿": EmojiWithSkinTones(baseEmoji: .personWithCrown, skinTones: [.dark]),
+            "🫃🏿": EmojiWithSkinTones(baseEmoji: .pregnantMan, skinTones: [.dark]),
+            "🫄🏿": EmojiWithSkinTones(baseEmoji: .pregnantPerson, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2641(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: nil),
+            "👩‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: nil),
+            "👨‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: nil),
+            "👩‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: nil),
+            "👩‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: nil),
+            "👨‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2642(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: nil),
+            "👩‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: nil),
+            "👨‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: nil),
+            "👩‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: nil),
+            "👨‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: nil),
+            "👩‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: nil),
+            "👨‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: nil),
+            "👩‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: nil),
+            "👨‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: nil),
+            "👩‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2644(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: nil),
+            "👩‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: nil),
+            "👨‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: nil),
+            "👩‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: nil),
+            "👨‍👦": EmojiWithSkinTones(baseEmoji: .manBoy, skinTones: nil),
+            "👨‍👧": EmojiWithSkinTones(baseEmoji: .manGirl, skinTones: nil),
+            "👩‍👦": EmojiWithSkinTones(baseEmoji: .womanBoy, skinTones: nil),
+            "👩‍👧": EmojiWithSkinTones(baseEmoji: .womanGirl, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2646(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: nil),
+            "👩‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: nil),
+            "👨‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: nil),
+            "👩‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2649(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "😮‍💨": EmojiWithSkinTones(baseEmoji: .faceExhaling, skinTones: nil),
+            "😵‍💫": EmojiWithSkinTones(baseEmoji: .faceWithSpiralEyes, skinTones: nil),
+            "👨‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: nil),
+            "👩‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: nil),
+            "👨‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: nil),
+            "👩‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2655(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: nil),
+            "🧑‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: nil),
+            "🧑‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: nil),
+            "🧑‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: nil),
+            "🧑‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2656(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: nil),
+            "🧑‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: nil),
+            "🧑‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: nil),
+            "🧑‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: nil),
+            "🐕‍🦺": EmojiWithSkinTones(baseEmoji: .serviceDog, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2657(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: nil),
+            "👨‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: nil),
+            "👨‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: nil),
+            "👨‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: nil),
+            "👩‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: nil),
+            "👩‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: nil),
+            "👩‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: nil),
+            "👩‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: nil),
+            "👨‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: nil),
+            "👩‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: nil),
+            "👨‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: nil),
+            "👩‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: nil),
+            "👨‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: nil),
+            "👩‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2658(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: nil),
+            "🧑‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2659(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: nil),
+            "🧑‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2663(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: nil),
+            "🧑‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2671(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: nil),
+            "🧑‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: nil),
+            "🧑‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: nil),
+            "🧑‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: nil),
+            "🧑‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: nil),
+            "🧑‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: nil),
+            "🧑‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2760(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏌️‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: nil),
+            "🏌️‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: nil),
+            "🏋️‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: nil),
+            "🏋️‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2761(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏳️‍⚧️": EmojiWithSkinTones(baseEmoji: .transgenderFlag, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom2764(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🕵️‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: nil),
+            "🕵️‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3289(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏳️‍🌈": EmojiWithSkinTones(baseEmoji: .rainbowFlag, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3295(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "😶‍🌫️": EmojiWithSkinTones(baseEmoji: .faceInClouds, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3389(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏃🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: [.light]),
+            "🏃🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: [.light]),
+            "🏌🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: [.light]),
+            "🏌🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: [.light]),
+            "🏄🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: [.light]),
+            "🏄🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: [.light]),
+            "🏊🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: [.light]),
+            "🏊🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: [.light]),
+            "🏋🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: [.light]),
+            "🏋🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: [.light]),
+            "🏃🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: [.mediumLight]),
+            "🏃🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: [.mediumLight]),
+            "🏌🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: [.mediumLight]),
+            "🏌🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: [.mediumLight]),
+            "🏄🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: [.mediumLight]),
+            "🏄🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: [.mediumLight]),
+            "🏊🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: [.mediumLight]),
+            "🏊🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: [.mediumLight]),
+            "🏋🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: [.mediumLight]),
+            "🏋🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: [.mediumLight]),
+            "🏃🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: [.medium]),
+            "🏃🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: [.medium]),
+            "🏌🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: [.medium]),
+            "🏌🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: [.medium]),
+            "🏄🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: [.medium]),
+            "🏄🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: [.medium]),
+            "🏊🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: [.medium]),
+            "🏊🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: [.medium]),
+            "🏋🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: [.medium]),
+            "🏋🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: [.medium]),
+            "🏃🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: [.mediumDark]),
+            "🏃🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: [.mediumDark]),
+            "🏌🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: [.mediumDark]),
+            "🏌🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: [.mediumDark]),
+            "🏄🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: [.mediumDark]),
+            "🏄🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: [.mediumDark]),
+            "🏊🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: [.mediumDark]),
+            "🏊🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: [.mediumDark]),
+            "🏋🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: [.mediumDark]),
+            "🏋🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: [.mediumDark]),
+            "🏃🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manRunning, skinTones: [.dark]),
+            "🏃🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanRunning, skinTones: [.dark]),
+            "🏌🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manGolfing, skinTones: [.dark]),
+            "🏌🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanGolfing, skinTones: [.dark]),
+            "🏄🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manSurfing, skinTones: [.dark]),
+            "🏄🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanSurfing, skinTones: [.dark]),
+            "🏊🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manSwimming, skinTones: [.dark]),
+            "🏊🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanSwimming, skinTones: [.dark]),
+            "🏋🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manLiftingWeights, skinTones: [.dark]),
+            "🏋🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanLiftingWeights, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3391(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👱🏻‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: [.light]),
+            "👱🏻‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: [.light]),
+            "💁🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: [.light]),
+            "💁🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: [.light]),
+            "👮🏻‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: [.light]),
+            "👮🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: [.light]),
+            "💂🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: [.light]),
+            "💂🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: [.light]),
+            "👷🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: [.light]),
+            "👷🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: [.light]),
+            "👳🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: [.light]),
+            "👳🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: [.light]),
+            "👰🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: [.light]),
+            "👰🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: [.light]),
+            "💆🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: [.light]),
+            "💆🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: [.light]),
+            "💇🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: [.light]),
+            "💇🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: [.light]),
+            "👱🏼‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: [.mediumLight]),
+            "👱🏼‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: [.mediumLight]),
+            "💁🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: [.mediumLight]),
+            "💁🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: [.mediumLight]),
+            "👮🏼‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: [.mediumLight]),
+            "👮🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: [.mediumLight]),
+            "💂🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: [.mediumLight]),
+            "💂🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: [.mediumLight]),
+            "👷🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: [.mediumLight]),
+            "👷🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: [.mediumLight]),
+            "👳🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: [.mediumLight]),
+            "👳🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: [.mediumLight]),
+            "👰🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: [.mediumLight]),
+            "👰🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: [.mediumLight]),
+            "💆🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: [.mediumLight]),
+            "💆🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: [.mediumLight]),
+            "💇🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: [.mediumLight]),
+            "💇🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: [.mediumLight]),
+            "👱🏽‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: [.medium]),
+            "👱🏽‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: [.medium]),
+            "💁🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: [.medium]),
+            "💁🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: [.medium]),
+            "👮🏽‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: [.medium]),
+            "👮🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: [.medium]),
+            "💂🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: [.medium]),
+            "💂🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: [.medium]),
+            "👷🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: [.medium]),
+            "👷🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: [.medium]),
+            "👳🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: [.medium]),
+            "👳🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: [.medium]),
+            "👰🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: [.medium]),
+            "👰🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: [.medium]),
+            "💆🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: [.medium]),
+            "💆🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: [.medium]),
+            "💇🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: [.medium]),
+            "💇🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: [.medium]),
+            "👱🏾‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: [.mediumDark]),
+            "👱🏾‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: [.mediumDark]),
+            "💁🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: [.mediumDark]),
+            "💁🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: [.mediumDark]),
+            "👮🏾‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: [.mediumDark]),
+            "👮🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: [.mediumDark]),
+            "💂🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: [.mediumDark]),
+            "💂🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: [.mediumDark]),
+            "👷🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: [.mediumDark]),
+            "👷🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: [.mediumDark]),
+            "👳🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: [.mediumDark]),
+            "👳🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: [.mediumDark]),
+            "👰🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: [.mediumDark]),
+            "👰🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: [.mediumDark]),
+            "💆🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: [.mediumDark]),
+            "💆🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: [.mediumDark]),
+            "💇🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: [.mediumDark]),
+            "💇🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: [.mediumDark]),
+            "👱🏿‍♀️": EmojiWithSkinTones(baseEmoji: .blondHairedWoman, skinTones: [.dark]),
+            "👱🏿‍♂️": EmojiWithSkinTones(baseEmoji: .blondHairedMan, skinTones: [.dark]),
+            "💁🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manTippingHand, skinTones: [.dark]),
+            "💁🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanTippingHand, skinTones: [.dark]),
+            "👮🏿‍♂️": EmojiWithSkinTones(baseEmoji: .malePoliceOfficer, skinTones: [.dark]),
+            "👮🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femalePoliceOfficer, skinTones: [.dark]),
+            "💂🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleGuard, skinTones: [.dark]),
+            "💂🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleGuard, skinTones: [.dark]),
+            "👷🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleConstructionWorker, skinTones: [.dark]),
+            "👷🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleConstructionWorker, skinTones: [.dark]),
+            "👳🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manWearingTurban, skinTones: [.dark]),
+            "👳🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanWearingTurban, skinTones: [.dark]),
+            "👰🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manWithVeil, skinTones: [.dark]),
+            "👰🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithVeil, skinTones: [.dark]),
+            "💆🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingMassage, skinTones: [.dark]),
+            "💆🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingMassage, skinTones: [.dark]),
+            "💇🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manGettingHaircut, skinTones: [.dark]),
+            "💇🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanGettingHaircut, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3392(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: [.light]),
+            "👩🏻‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: [.light]),
+            "👨🏻‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: [.light]),
+            "👩🏻‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: [.light]),
+            "👨🏼‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: [.mediumLight]),
+            "👩🏼‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: [.mediumLight]),
+            "👨🏼‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: [.mediumLight]),
+            "👩🏼‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: [.mediumLight]),
+            "👨🏽‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: [.medium]),
+            "👩🏽‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: [.medium]),
+            "👨🏽‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: [.medium]),
+            "👩🏽‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: [.medium]),
+            "👨🏾‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: [.mediumDark]),
+            "👩🏾‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: [.mediumDark]),
+            "👨🏾‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: [.mediumDark]),
+            "👩🏾‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: [.mediumDark]),
+            "👨🏿‍⚕️": EmojiWithSkinTones(baseEmoji: .maleDoctor, skinTones: [.dark]),
+            "👩🏿‍⚕️": EmojiWithSkinTones(baseEmoji: .femaleDoctor, skinTones: [.dark]),
+            "👨🏿‍⚖️": EmojiWithSkinTones(baseEmoji: .maleJudge, skinTones: [.dark]),
+            "👩🏿‍⚖️": EmojiWithSkinTones(baseEmoji: .femaleJudge, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3393(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: [.light]),
+            "👩🏻‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: [.light]),
+            "👨🏼‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: [.mediumLight]),
+            "👩🏼‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: [.mediumLight]),
+            "👨🏽‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: [.medium]),
+            "👩🏽‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: [.medium]),
+            "👨🏾‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: [.mediumDark]),
+            "👩🏾‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: [.mediumDark]),
+            "👨🏿‍✈️": EmojiWithSkinTones(baseEmoji: .malePilot, skinTones: [.dark]),
+            "👩🏿‍✈️": EmojiWithSkinTones(baseEmoji: .femalePilot, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3394(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🕵🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: [.light]),
+            "🕵🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: [.light]),
+            "🕵🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: [.mediumLight]),
+            "🕵🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: [.mediumLight]),
+            "🕵🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: [.medium]),
+            "🕵🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: [.medium]),
+            "🕵🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: [.mediumDark]),
+            "🕵🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: [.mediumDark]),
+            "🕵🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleDetective, skinTones: [.dark]),
+            "🕵🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleDetective, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3396(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🙍🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: [.light]),
+            "🙍🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: [.light]),
+            "🙎🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: [.light]),
+            "🙎🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: [.light]),
+            "🙅🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: [.light]),
+            "🙅🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: [.light]),
+            "🙆🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: [.light]),
+            "🙆🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: [.light]),
+            "🙋🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: [.light]),
+            "🙋🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: [.light]),
+            "🙇🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: [.light]),
+            "🙇🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: [.light]),
+            "🙍🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: [.mediumLight]),
+            "🙍🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: [.mediumLight]),
+            "🙎🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: [.mediumLight]),
+            "🙎🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: [.mediumLight]),
+            "🙅🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: [.mediumLight]),
+            "🙅🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: [.mediumLight]),
+            "🙆🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: [.mediumLight]),
+            "🙆🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: [.mediumLight]),
+            "🙋🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: [.mediumLight]),
+            "🙋🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: [.mediumLight]),
+            "🙇🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: [.mediumLight]),
+            "🙇🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: [.mediumLight]),
+            "🙍🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: [.medium]),
+            "🙍🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: [.medium]),
+            "🙎🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: [.medium]),
+            "🙎🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: [.medium]),
+            "🙅🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: [.medium]),
+            "🙅🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: [.medium]),
+            "🙆🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: [.medium]),
+            "🙆🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: [.medium]),
+            "🙋🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: [.medium]),
+            "🙋🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: [.medium]),
+            "🙇🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: [.medium]),
+            "🙇🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: [.medium]),
+            "🙍🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: [.mediumDark]),
+            "🙍🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: [.mediumDark]),
+            "🙎🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: [.mediumDark]),
+            "🙎🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: [.mediumDark]),
+            "🙅🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: [.mediumDark]),
+            "🙅🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: [.mediumDark]),
+            "🙆🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: [.mediumDark]),
+            "🙆🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: [.mediumDark]),
+            "🙋🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: [.mediumDark]),
+            "🙋🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: [.mediumDark]),
+            "🙇🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: [.mediumDark]),
+            "🙇🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: [.mediumDark]),
+            "🙍🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manFrowning, skinTones: [.dark]),
+            "🙍🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanFrowning, skinTones: [.dark]),
+            "🙎🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manPouting, skinTones: [.dark]),
+            "🙎🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanPouting, skinTones: [.dark]),
+            "🙅🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingNo, skinTones: [.dark]),
+            "🙅🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingNo, skinTones: [.dark]),
+            "🙆🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manGesturingOk, skinTones: [.dark]),
+            "🙆🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanGesturingOk, skinTones: [.dark]),
+            "🙋🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manRaisingHand, skinTones: [.dark]),
+            "🙋🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanRaisingHand, skinTones: [.dark]),
+            "🙇🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manBowing, skinTones: [.dark]),
+            "🙇🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanBowing, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3397(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🚶🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: [.light]),
+            "🚶🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: [.light]),
+            "🚣🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: [.light]),
+            "🚣🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: [.light]),
+            "🚴🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: [.light]),
+            "🚴🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: [.light]),
+            "🚵🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: [.light]),
+            "🚵🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: [.light]),
+            "🚶🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: [.mediumLight]),
+            "🚶🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: [.mediumLight]),
+            "🚣🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: [.mediumLight]),
+            "🚣🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: [.mediumLight]),
+            "🚴🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: [.mediumLight]),
+            "🚴🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: [.mediumLight]),
+            "🚵🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: [.mediumLight]),
+            "🚵🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: [.mediumLight]),
+            "🚶🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: [.medium]),
+            "🚶🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: [.medium]),
+            "🚣🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: [.medium]),
+            "🚣🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: [.medium]),
+            "🚴🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: [.medium]),
+            "🚴🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: [.medium]),
+            "🚵🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: [.medium]),
+            "🚵🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: [.medium]),
+            "🚶🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: [.mediumDark]),
+            "🚶🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: [.mediumDark]),
+            "🚣🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: [.mediumDark]),
+            "🚣🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: [.mediumDark]),
+            "🚴🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: [.mediumDark]),
+            "🚴🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: [.mediumDark]),
+            "🚵🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: [.mediumDark]),
+            "🚵🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: [.mediumDark]),
+            "🚶🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manWalking, skinTones: [.dark]),
+            "🚶🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanWalking, skinTones: [.dark]),
+            "🚣🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manRowingBoat, skinTones: [.dark]),
+            "🚣🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanRowingBoat, skinTones: [.dark]),
+            "🚴🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manBiking, skinTones: [.dark]),
+            "🚴🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanBiking, skinTones: [.dark]),
+            "🚵🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manMountainBiking, skinTones: [.dark]),
+            "🚵🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanMountainBiking, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3403(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🤦🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: [.light]),
+            "🤦🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: [.light]),
+            "🤷🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: [.light]),
+            "🤷🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: [.light]),
+            "🤵🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: [.light]),
+            "🤵🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: [.light]),
+            "🤸🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: [.light]),
+            "🤸🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: [.light]),
+            "🤽🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: [.light]),
+            "🤽🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: [.light]),
+            "🤾🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: [.light]),
+            "🤾🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: [.light]),
+            "🤹🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: [.light]),
+            "🤹🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: [.light]),
+            "🤦🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: [.mediumLight]),
+            "🤦🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: [.mediumLight]),
+            "🤷🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: [.mediumLight]),
+            "🤷🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: [.mediumLight]),
+            "🤵🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: [.mediumLight]),
+            "🤵🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: [.mediumLight]),
+            "🤸🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: [.mediumLight]),
+            "🤸🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: [.mediumLight]),
+            "🤽🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: [.mediumLight]),
+            "🤽🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: [.mediumLight]),
+            "🤾🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: [.mediumLight]),
+            "🤾🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: [.mediumLight]),
+            "🤹🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: [.mediumLight]),
+            "🤹🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: [.mediumLight]),
+            "🤦🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: [.medium]),
+            "🤦🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: [.medium]),
+            "🤷🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: [.medium]),
+            "🤷🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: [.medium]),
+            "🤵🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: [.medium]),
+            "🤵🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: [.medium]),
+            "🤸🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: [.medium]),
+            "🤸🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: [.medium]),
+            "🤽🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: [.medium]),
+            "🤽🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: [.medium]),
+            "🤾🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: [.medium]),
+            "🤾🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: [.medium]),
+            "🤹🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: [.medium]),
+            "🤹🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: [.medium]),
+            "🤦🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: [.mediumDark]),
+            "🤦🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: [.mediumDark]),
+            "🤷🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: [.mediumDark]),
+            "🤷🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: [.mediumDark]),
+            "🤵🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: [.mediumDark]),
+            "🤵🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: [.mediumDark]),
+            "🤸🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: [.mediumDark]),
+            "🤸🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: [.mediumDark]),
+            "🤽🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: [.mediumDark]),
+            "🤽🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: [.mediumDark]),
+            "🤾🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: [.mediumDark]),
+            "🤾🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: [.mediumDark]),
+            "🤹🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: [.mediumDark]),
+            "🤹🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: [.mediumDark]),
+            "🤦🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manFacepalming, skinTones: [.dark]),
+            "🤦🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanFacepalming, skinTones: [.dark]),
+            "🤷🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manShrugging, skinTones: [.dark]),
+            "🤷🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanShrugging, skinTones: [.dark]),
+            "🤵🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manInTuxedo, skinTones: [.dark]),
+            "🤵🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanInTuxedo, skinTones: [.dark]),
+            "🤸🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manCartwheeling, skinTones: [.dark]),
+            "🤸🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanCartwheeling, skinTones: [.dark]),
+            "🤽🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingWaterPolo, skinTones: [.dark]),
+            "🤽🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingWaterPolo, skinTones: [.dark]),
+            "🤾🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manPlayingHandball, skinTones: [.dark]),
+            "🤾🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanPlayingHandball, skinTones: [.dark]),
+            "🤹🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manJuggling, skinTones: [.dark]),
+            "🤹🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanJuggling, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3404(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🦸🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: [.light]),
+            "🦸🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: [.light]),
+            "🦹🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: [.light]),
+            "🦹🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: [.light]),
+            "🦸🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: [.mediumLight]),
+            "🦸🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: [.mediumLight]),
+            "🦹🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: [.mediumLight]),
+            "🦹🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: [.mediumLight]),
+            "🦸🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: [.medium]),
+            "🦸🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: [.medium]),
+            "🦹🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: [.medium]),
+            "🦸🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: [.mediumDark]),
+            "🦹🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: [.mediumDark]),
+            "🦸🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSuperhero, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3405(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧔🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: [.light]),
+            "🧔🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: [.light]),
+            "🧏🏻‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: [.light]),
+            "🧏🏻‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: [.light]),
+            "🧙🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: [.light]),
+            "🧙🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: [.light]),
+            "🧚🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: [.light]),
+            "🧚🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: [.light]),
+            "🧛🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: [.light]),
+            "🧛🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: [.light]),
+            "🧜🏻‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: [.light]),
+            "🧜🏻‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: [.light]),
+            "🧝🏻‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: [.light]),
+            "🧝🏻‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: [.light]),
+            "🧍🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: [.light]),
+            "🧍🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: [.light]),
+            "🧎🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: [.light]),
+            "🧎🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: [.light]),
+            "🧖🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: [.light]),
+            "🧖🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: [.light]),
+            "🧗🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: [.light]),
+            "🧗🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: [.light]),
+            "🧘🏻‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: [.light]),
+            "🧘🏻‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: [.light]),
+            "🧔🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: [.mediumLight]),
+            "🧔🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: [.mediumLight]),
+            "🧏🏼‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: [.mediumLight]),
+            "🧏🏼‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: [.mediumLight]),
+            "🧙🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: [.mediumLight]),
+            "🧙🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: [.mediumLight]),
+            "🧚🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: [.mediumLight]),
+            "🧚🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: [.mediumLight]),
+            "🧛🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: [.mediumLight]),
+            "🧛🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: [.mediumLight]),
+            "🧜🏼‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: [.mediumLight]),
+            "🧜🏼‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: [.mediumLight]),
+            "🧝🏼‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: [.mediumLight]),
+            "🧝🏼‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: [.mediumLight]),
+            "🧍🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: [.mediumLight]),
+            "🧍🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: [.mediumLight]),
+            "🧎🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: [.mediumLight]),
+            "🧎🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: [.mediumLight]),
+            "🧖🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: [.mediumLight]),
+            "🧖🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: [.mediumLight]),
+            "🧗🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: [.mediumLight]),
+            "🧗🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: [.mediumLight]),
+            "🧘🏼‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: [.mediumLight]),
+            "🧘🏼‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: [.mediumLight]),
+            "🧔🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: [.medium]),
+            "🧔🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: [.medium]),
+            "🧏🏽‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: [.medium]),
+            "🧏🏽‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: [.medium]),
+            "🦹🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: [.medium]),
+            "🧙🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: [.medium]),
+            "🧙🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: [.medium]),
+            "🧚🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: [.medium]),
+            "🧚🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: [.medium]),
+            "🧛🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: [.medium]),
+            "🧛🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: [.medium]),
+            "🧜🏽‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: [.medium]),
+            "🧜🏽‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: [.medium]),
+            "🧝🏽‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: [.medium]),
+            "🧝🏽‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: [.medium]),
+            "🧍🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: [.medium]),
+            "🧍🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: [.medium]),
+            "🧎🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: [.medium]),
+            "🧎🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: [.medium]),
+            "🧖🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: [.medium]),
+            "🧖🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: [.medium]),
+            "🧗🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: [.medium]),
+            "🧗🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: [.medium]),
+            "🧘🏽‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: [.medium]),
+            "🧘🏽‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: [.medium]),
+            "🧔🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: [.mediumDark]),
+            "🧔🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: [.mediumDark]),
+            "🧏🏾‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: [.mediumDark]),
+            "🧏🏾‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: [.mediumDark]),
+            "🦸🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: [.mediumDark]),
+            "🦹🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: [.mediumDark]),
+            "🧙🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: [.mediumDark]),
+            "🧙🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: [.mediumDark]),
+            "🧚🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: [.mediumDark]),
+            "🧚🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: [.mediumDark]),
+            "🧛🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: [.mediumDark]),
+            "🧛🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: [.mediumDark]),
+            "🧜🏾‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: [.mediumDark]),
+            "🧜🏾‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: [.mediumDark]),
+            "🧝🏾‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: [.mediumDark]),
+            "🧝🏾‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: [.mediumDark]),
+            "🧍🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: [.mediumDark]),
+            "🧍🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: [.mediumDark]),
+            "🧎🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: [.mediumDark]),
+            "🧎🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: [.mediumDark]),
+            "🧖🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: [.mediumDark]),
+            "🧖🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: [.mediumDark]),
+            "🧗🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: [.mediumDark]),
+            "🧗🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: [.mediumDark]),
+            "🧘🏾‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: [.mediumDark]),
+            "🧘🏾‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: [.mediumDark]),
+            "🧔🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manWithBeard, skinTones: [.dark]),
+            "🧔🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanWithBeard, skinTones: [.dark]),
+            "🧏🏿‍♂️": EmojiWithSkinTones(baseEmoji: .deafMan, skinTones: [.dark]),
+            "🧏🏿‍♀️": EmojiWithSkinTones(baseEmoji: .deafWoman, skinTones: [.dark]),
+            "🦸🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleSuperhero, skinTones: [.dark]),
+            "🦹🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleSupervillain, skinTones: [.dark]),
+            "🦹🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleSupervillain, skinTones: [.dark]),
+            "🧙🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleMage, skinTones: [.dark]),
+            "🧙🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleMage, skinTones: [.dark]),
+            "🧚🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleFairy, skinTones: [.dark]),
+            "🧚🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleFairy, skinTones: [.dark]),
+            "🧛🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleVampire, skinTones: [.dark]),
+            "🧛🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleVampire, skinTones: [.dark]),
+            "🧜🏿‍♂️": EmojiWithSkinTones(baseEmoji: .merman, skinTones: [.dark]),
+            "🧜🏿‍♀️": EmojiWithSkinTones(baseEmoji: .mermaid, skinTones: [.dark]),
+            "🧝🏿‍♂️": EmojiWithSkinTones(baseEmoji: .maleElf, skinTones: [.dark]),
+            "🧝🏿‍♀️": EmojiWithSkinTones(baseEmoji: .femaleElf, skinTones: [.dark]),
+            "🧍🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manStanding, skinTones: [.dark]),
+            "🧍🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanStanding, skinTones: [.dark]),
+            "🧎🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manKneeling, skinTones: [.dark]),
+            "🧎🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanKneeling, skinTones: [.dark]),
+            "🧖🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manInSteamyRoom, skinTones: [.dark]),
+            "🧖🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanInSteamyRoom, skinTones: [.dark]),
+            "🧗🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manClimbing, skinTones: [.dark]),
+            "🧗🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanClimbing, skinTones: [.dark]),
+            "🧘🏿‍♂️": EmojiWithSkinTones(baseEmoji: .manInLotusPosition, skinTones: [.dark]),
+            "🧘🏿‍♀️": EmojiWithSkinTones(baseEmoji: .womanInLotusPosition, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3406(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: [.light]),
+            "🧑🏻‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: [.light]),
+            "🧑🏼‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: [.mediumLight]),
+            "🧑🏼‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: [.mediumLight]),
+            "🧑🏽‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: [.medium]),
+            "🧑🏽‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: [.medium]),
+            "🧑🏾‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: [.mediumDark]),
+            "🧑🏾‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: [.mediumDark]),
+            "🧑🏿‍⚕️": EmojiWithSkinTones(baseEmoji: .healthWorker, skinTones: [.dark]),
+            "🧑🏿‍⚖️": EmojiWithSkinTones(baseEmoji: .judge, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3407(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: [.light]),
+            "🧑🏼‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: [.mediumLight]),
+            "🧑🏽‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: [.medium]),
+            "🧑🏾‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: [.mediumDark]),
+            "🧑🏿‍✈️": EmojiWithSkinTones(baseEmoji: .pilot, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3477(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩‍❤️‍👨": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: nil),
+            "👨‍❤️‍👨": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: nil),
+            "👩‍❤️‍👩": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3921(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: [.light]),
+            "👩🏻‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: [.light]),
+            "👨🏻‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: [.light]),
+            "👩🏻‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: [.light]),
+            "👨🏻‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: [.light]),
+            "👩🏻‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: [.light]),
+            "👩🏻‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: [.light]),
+            "👨🏻‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: [.light]),
+            "👨🏼‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: [.mediumLight]),
+            "👩🏼‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: [.mediumLight]),
+            "👨🏼‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: [.mediumLight]),
+            "👩🏼‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: [.mediumLight]),
+            "👨🏼‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: [.mediumLight]),
+            "👩🏼‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: [.mediumLight]),
+            "👩🏼‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: [.mediumLight]),
+            "👨🏼‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: [.mediumLight]),
+            "👨🏽‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: [.medium]),
+            "👩🏽‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: [.medium]),
+            "👨🏽‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: [.medium]),
+            "👩🏽‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: [.medium]),
+            "👨🏽‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: [.medium]),
+            "👩🏽‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: [.medium]),
+            "👩🏽‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: [.medium]),
+            "👨🏽‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: [.medium]),
+            "👨🏾‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: [.mediumDark]),
+            "👩🏾‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: [.mediumDark]),
+            "👨🏾‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: [.mediumDark]),
+            "👩🏾‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: [.mediumDark]),
+            "👨🏾‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: [.mediumDark]),
+            "👩🏾‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: [.mediumDark]),
+            "👩🏾‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: [.mediumDark]),
+            "👨🏾‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: [.mediumDark]),
+            "👨🏿‍🎓": EmojiWithSkinTones(baseEmoji: .maleStudent, skinTones: [.dark]),
+            "👨🏿‍🌾": EmojiWithSkinTones(baseEmoji: .maleFarmer, skinTones: [.dark]),
+            "👩🏿‍🌾": EmojiWithSkinTones(baseEmoji: .femaleFarmer, skinTones: [.dark]),
+            "👨🏿‍🍳": EmojiWithSkinTones(baseEmoji: .maleCook, skinTones: [.dark]),
+            "👩🏿‍🍳": EmojiWithSkinTones(baseEmoji: .femaleCook, skinTones: [.dark]),
+            "👩🏿‍🍼": EmojiWithSkinTones(baseEmoji: .womanFeedingBaby, skinTones: [.dark]),
+            "👨🏿‍🍼": EmojiWithSkinTones(baseEmoji: .manFeedingBaby, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3922(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: [.light]),
+            "👩🏻‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: [.light]),
+            "👨🏻‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: [.light]),
+            "👩🏻‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: [.light]),
+            "👨🏻‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: [.light]),
+            "👩🏻‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: [.light]),
+            "👨🏻‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: [.light]),
+            "👩🏻‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: [.light]),
+            "👨🏼‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: [.mediumLight]),
+            "👩🏼‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: [.mediumLight]),
+            "👨🏼‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: [.mediumLight]),
+            "👩🏼‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: [.mediumLight]),
+            "👨🏼‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: [.mediumLight]),
+            "👩🏼‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: [.mediumLight]),
+            "👨🏼‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: [.mediumLight]),
+            "👩🏼‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: [.mediumLight]),
+            "👨🏽‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: [.medium]),
+            "👩🏽‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: [.medium]),
+            "👨🏽‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: [.medium]),
+            "👩🏽‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: [.medium]),
+            "👨🏽‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: [.medium]),
+            "👩🏽‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: [.medium]),
+            "👨🏽‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: [.medium]),
+            "👩🏽‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: [.medium]),
+            "👨🏾‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: [.mediumDark]),
+            "👩🏾‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: [.mediumDark]),
+            "👨🏾‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: [.mediumDark]),
+            "👩🏾‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: [.mediumDark]),
+            "👨🏾‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: [.mediumDark]),
+            "👩🏾‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: [.mediumDark]),
+            "👨🏾‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: [.mediumDark]),
+            "👩🏾‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: [.mediumDark]),
+            "👩🏿‍🎓": EmojiWithSkinTones(baseEmoji: .femaleStudent, skinTones: [.dark]),
+            "👨🏿‍🏫": EmojiWithSkinTones(baseEmoji: .maleTeacher, skinTones: [.dark]),
+            "👩🏿‍🏫": EmojiWithSkinTones(baseEmoji: .femaleTeacher, skinTones: [.dark]),
+            "👨🏿‍🏭": EmojiWithSkinTones(baseEmoji: .maleFactoryWorker, skinTones: [.dark]),
+            "👩🏿‍🏭": EmojiWithSkinTones(baseEmoji: .femaleFactoryWorker, skinTones: [.dark]),
+            "👨🏿‍🎤": EmojiWithSkinTones(baseEmoji: .maleSinger, skinTones: [.dark]),
+            "👩🏿‍🎤": EmojiWithSkinTones(baseEmoji: .femaleSinger, skinTones: [.dark]),
+            "👨🏿‍🎨": EmojiWithSkinTones(baseEmoji: .maleArtist, skinTones: [.dark]),
+            "👩🏿‍🎨": EmojiWithSkinTones(baseEmoji: .femaleArtist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3924(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: [.light]),
+            "👩🏻‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: [.light]),
+            "👨🏻‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: [.light]),
+            "👩🏻‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: [.light]),
+            "👨🏼‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: [.mediumLight]),
+            "👩🏼‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: [.mediumLight]),
+            "👨🏼‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: [.mediumLight]),
+            "👩🏼‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: [.mediumLight]),
+            "👨🏽‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: [.medium]),
+            "👩🏽‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: [.medium]),
+            "👨🏽‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: [.medium]),
+            "👩🏽‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: [.medium]),
+            "👨🏾‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: [.mediumDark]),
+            "👩🏾‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: [.mediumDark]),
+            "👨🏾‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: [.mediumDark]),
+            "👩🏾‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: [.mediumDark]),
+            "👨🏿‍💼": EmojiWithSkinTones(baseEmoji: .maleOfficeWorker, skinTones: [.dark]),
+            "👩🏿‍💼": EmojiWithSkinTones(baseEmoji: .femaleOfficeWorker, skinTones: [.dark]),
+            "👨🏿‍💻": EmojiWithSkinTones(baseEmoji: .maleTechnologist, skinTones: [.dark]),
+            "👩🏿‍💻": EmojiWithSkinTones(baseEmoji: .femaleTechnologist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3925(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: [.light])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3926(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩🏻‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: [.light]),
+            "👨🏻‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: [.light]),
+            "👩🏻‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: [.light]),
+            "👨🏼‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: [.mediumLight]),
+            "👩🏼‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: [.mediumLight]),
+            "👨🏼‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: [.mediumLight]),
+            "👩🏼‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: [.mediumLight]),
+            "👨🏽‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: [.medium]),
+            "👩🏽‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: [.medium]),
+            "👨🏽‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: [.medium]),
+            "👩🏽‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: [.medium]),
+            "👨🏾‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: [.mediumDark]),
+            "👩🏾‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: [.mediumDark]),
+            "👨🏾‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: [.mediumDark]),
+            "👩🏾‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: [.mediumDark]),
+            "👨🏿‍🔧": EmojiWithSkinTones(baseEmoji: .maleMechanic, skinTones: [.dark]),
+            "👩🏿‍🔧": EmojiWithSkinTones(baseEmoji: .femaleMechanic, skinTones: [.dark]),
+            "👨🏿‍🔬": EmojiWithSkinTones(baseEmoji: .maleScientist, skinTones: [.dark]),
+            "👩🏿‍🔬": EmojiWithSkinTones(baseEmoji: .femaleScientist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3929(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: [.light]),
+            "👩🏻‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: [.light]),
+            "👨🏻‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: [.light]),
+            "👩🏻‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: [.light]),
+            "👨🏼‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: [.mediumLight]),
+            "👩🏼‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: [.mediumLight]),
+            "👨🏼‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: [.mediumLight]),
+            "👩🏼‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: [.mediumLight]),
+            "👨🏽‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: [.medium]),
+            "👩🏽‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: [.medium]),
+            "👨🏽‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: [.medium]),
+            "👩🏽‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: [.medium]),
+            "👨🏾‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: [.mediumDark]),
+            "👩🏾‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: [.mediumDark]),
+            "👨🏾‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: [.mediumDark]),
+            "👩🏾‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: [.mediumDark]),
+            "👨🏿‍🚀": EmojiWithSkinTones(baseEmoji: .maleAstronaut, skinTones: [.dark]),
+            "👩🏿‍🚀": EmojiWithSkinTones(baseEmoji: .femaleAstronaut, skinTones: [.dark]),
+            "👨🏿‍🚒": EmojiWithSkinTones(baseEmoji: .maleFirefighter, skinTones: [.dark]),
+            "👩🏿‍🚒": EmojiWithSkinTones(baseEmoji: .femaleFirefighter, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3934(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: [.light]),
+            "🧑🏼‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: [.mediumLight]),
+            "🧑🏽‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: [.medium]),
+            "🧑🏾‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: [.mediumDark]),
+            "🧑🏿‍🌾": EmojiWithSkinTones(baseEmoji: .farmer, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3935(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: [.light]),
+            "🧑🏻‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: [.light]),
+            "🧑🏻‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: [.light]),
+            "🧑🏻‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: [.light]),
+            "🧑🏻‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: [.light]),
+            "🧑🏼‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: [.mediumLight]),
+            "🧑🏼‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: [.mediumLight]),
+            "🧑🏼‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: [.mediumLight]),
+            "🧑🏼‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: [.mediumLight]),
+            "🧑🏼‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: [.mediumLight]),
+            "🧑🏽‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: [.medium]),
+            "🧑🏽‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: [.medium]),
+            "🧑🏽‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: [.medium]),
+            "🧑🏽‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: [.medium]),
+            "🧑🏽‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: [.medium]),
+            "🧑🏾‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: [.mediumDark]),
+            "🧑🏾‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: [.mediumDark]),
+            "🧑🏾‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: [.mediumDark]),
+            "🧑🏾‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: [.mediumDark]),
+            "🧑🏿‍🎓": EmojiWithSkinTones(baseEmoji: .student, skinTones: [.dark]),
+            "🧑🏿‍🍳": EmojiWithSkinTones(baseEmoji: .cook, skinTones: [.dark]),
+            "🧑🏿‍🍼": EmojiWithSkinTones(baseEmoji: .personFeedingBaby, skinTones: [.dark]),
+            "🧑🏿‍🎄": EmojiWithSkinTones(baseEmoji: .mxClaus, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3936(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: [.light]),
+            "🧑🏻‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: [.light]),
+            "🧑🏻‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: [.light]),
+            "🧑🏼‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: [.mediumLight]),
+            "🧑🏼‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: [.mediumLight]),
+            "🧑🏼‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: [.mediumLight]),
+            "🧑🏽‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: [.medium]),
+            "🧑🏽‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: [.medium]),
+            "🧑🏽‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: [.medium]),
+            "🧑🏾‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: [.mediumDark]),
+            "🧑🏾‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: [.mediumDark]),
+            "🧑🏾‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: [.mediumDark]),
+            "🧑🏾‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: [.mediumDark]),
+            "🧑🏿‍🏫": EmojiWithSkinTones(baseEmoji: .teacher, skinTones: [.dark]),
+            "🧑🏿‍🏭": EmojiWithSkinTones(baseEmoji: .factoryWorker, skinTones: [.dark]),
+            "🧑🏿‍🎤": EmojiWithSkinTones(baseEmoji: .singer, skinTones: [.dark]),
+            "🧑🏿‍🎨": EmojiWithSkinTones(baseEmoji: .artist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3937(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨🏻‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: [.light]),
+            "👨🏻‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: [.light]),
+            "👨🏻‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: [.light]),
+            "👨🏻‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: [.light]),
+            "👩🏻‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: [.light]),
+            "👩🏻‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: [.light]),
+            "👩🏻‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: [.light]),
+            "👩🏻‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: [.light]),
+            "👨🏻‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: [.light]),
+            "👩🏻‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: [.light]),
+            "👨🏻‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: [.light]),
+            "👩🏻‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: [.light]),
+            "👨🏻‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: [.light]),
+            "👩🏻‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: [.light]),
+            "👨🏼‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: [.mediumLight]),
+            "👨🏼‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: [.mediumLight]),
+            "👨🏼‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: [.mediumLight]),
+            "👨🏼‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: [.mediumLight]),
+            "👩🏼‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: [.mediumLight]),
+            "👩🏼‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: [.mediumLight]),
+            "👩🏼‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: [.mediumLight]),
+            "👩🏼‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: [.mediumLight]),
+            "👨🏼‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: [.mediumLight]),
+            "👩🏼‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: [.mediumLight]),
+            "👨🏼‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: [.mediumLight]),
+            "👩🏼‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: [.mediumLight]),
+            "👨🏼‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: [.mediumLight]),
+            "👩🏼‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: [.mediumLight]),
+            "👨🏽‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: [.medium]),
+            "👨🏽‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: [.medium]),
+            "👨🏽‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: [.medium]),
+            "👨🏽‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: [.medium]),
+            "👩🏽‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: [.medium]),
+            "👩🏽‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: [.medium]),
+            "👩🏽‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: [.medium]),
+            "👩🏽‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: [.medium]),
+            "👨🏽‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: [.medium]),
+            "👩🏽‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: [.medium]),
+            "👨🏽‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: [.medium]),
+            "👩🏽‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: [.medium]),
+            "👨🏽‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: [.medium]),
+            "👩🏽‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: [.medium]),
+            "👨🏾‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: [.mediumDark]),
+            "👨🏾‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: [.mediumDark]),
+            "👨🏾‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: [.mediumDark]),
+            "👨🏾‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: [.mediumDark]),
+            "👩🏾‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: [.mediumDark]),
+            "👩🏾‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: [.mediumDark]),
+            "👩🏾‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: [.mediumDark]),
+            "👩🏾‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: [.mediumDark]),
+            "👨🏾‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: [.mediumDark]),
+            "👩🏾‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: [.mediumDark]),
+            "👨🏾‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: [.mediumDark]),
+            "👩🏾‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: [.mediumDark]),
+            "👨🏾‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: [.mediumDark]),
+            "👩🏾‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: [.mediumDark]),
+            "👨🏿‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedMan, skinTones: [.dark]),
+            "👨🏿‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedMan, skinTones: [.dark]),
+            "👨🏿‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedMan, skinTones: [.dark]),
+            "👨🏿‍🦲": EmojiWithSkinTones(baseEmoji: .baldMan, skinTones: [.dark]),
+            "👩🏿‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedWoman, skinTones: [.dark]),
+            "👩🏿‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedWoman, skinTones: [.dark]),
+            "👩🏿‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedWoman, skinTones: [.dark]),
+            "👩🏿‍🦲": EmojiWithSkinTones(baseEmoji: .baldWoman, skinTones: [.dark]),
+            "👨🏿‍🦯": EmojiWithSkinTones(baseEmoji: .manWithProbingCane, skinTones: [.dark]),
+            "👩🏿‍🦯": EmojiWithSkinTones(baseEmoji: .womanWithProbingCane, skinTones: [.dark]),
+            "👨🏿‍🦼": EmojiWithSkinTones(baseEmoji: .manInMotorizedWheelchair, skinTones: [.dark]),
+            "👩🏿‍🦼": EmojiWithSkinTones(baseEmoji: .womanInMotorizedWheelchair, skinTones: [.dark]),
+            "👨🏿‍🦽": EmojiWithSkinTones(baseEmoji: .manInManualWheelchair, skinTones: [.dark]),
+            "👩🏿‍🦽": EmojiWithSkinTones(baseEmoji: .womanInManualWheelchair, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3938(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: [.light]),
+            "🧑🏻‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: [.light]),
+            "🧑🏼‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: [.mediumLight]),
+            "🧑🏼‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: [.mediumLight]),
+            "🧑🏽‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: [.medium]),
+            "🧑🏽‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: [.medium]),
+            "🧑🏾‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: [.mediumDark]),
+            "🧑🏾‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: [.mediumDark]),
+            "🧑🏿‍💼": EmojiWithSkinTones(baseEmoji: .officeWorker, skinTones: [.dark]),
+            "🧑🏿‍💻": EmojiWithSkinTones(baseEmoji: .technologist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3939(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: [.light]),
+            "🧑🏻‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: [.light]),
+            "🧑🏼‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: [.mediumLight]),
+            "🧑🏼‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: [.mediumLight]),
+            "🧑🏽‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: [.medium]),
+            "🧑🏽‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: [.medium]),
+            "🧑🏾‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: [.mediumDark]),
+            "🧑🏾‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: [.mediumDark]),
+            "🧑🏿‍🔧": EmojiWithSkinTones(baseEmoji: .mechanic, skinTones: [.dark]),
+            "🧑🏿‍🔬": EmojiWithSkinTones(baseEmoji: .scientist, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3943(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: [.light]),
+            "🧑🏻‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: [.light]),
+            "🧑🏼‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: [.mediumLight]),
+            "🧑🏼‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: [.mediumLight]),
+            "🧑🏽‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: [.medium]),
+            "🧑🏽‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: [.medium]),
+            "🧑🏾‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: [.mediumDark]),
+            "🧑🏾‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: [.mediumDark]),
+            "🧑🏿‍🚀": EmojiWithSkinTones(baseEmoji: .astronaut, skinTones: [.dark]),
+            "🧑🏿‍🚒": EmojiWithSkinTones(baseEmoji: .firefighter, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3948(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👁️‍🗨️": EmojiWithSkinTones(baseEmoji: .eyeInSpeechBubble, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom3951(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: [.light]),
+            "🧑🏻‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: [.light]),
+            "🧑🏻‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: [.light]),
+            "🧑🏻‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: [.light]),
+            "🧑🏻‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: [.light]),
+            "🧑🏻‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: [.light]),
+            "🧑🏻‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: [.light]),
+            "🧑🏼‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: [.mediumLight]),
+            "🧑🏼‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: [.mediumLight]),
+            "🧑🏼‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: [.mediumLight]),
+            "🧑🏼‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: [.mediumLight]),
+            "🧑🏼‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: [.mediumLight]),
+            "🧑🏼‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: [.mediumLight]),
+            "🧑🏼‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: [.mediumLight]),
+            "🧑🏽‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: [.medium]),
+            "🧑🏽‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: [.medium]),
+            "🧑🏽‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: [.medium]),
+            "🧑🏽‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: [.medium]),
+            "🧑🏽‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: [.medium]),
+            "🧑🏽‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: [.medium]),
+            "🧑🏽‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: [.medium]),
+            "🧑🏾‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: [.mediumDark]),
+            "🧑🏾‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: [.mediumDark]),
+            "🧑🏾‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: [.mediumDark]),
+            "🧑🏾‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: [.mediumDark]),
+            "🧑🏾‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: [.mediumDark]),
+            "🧑🏾‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: [.mediumDark]),
+            "🧑🏾‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: [.mediumDark]),
+            "🧑🏿‍🦰": EmojiWithSkinTones(baseEmoji: .redHairedPerson, skinTones: [.dark]),
+            "🧑🏿‍🦱": EmojiWithSkinTones(baseEmoji: .curlyHairedPerson, skinTones: [.dark]),
+            "🧑🏿‍🦳": EmojiWithSkinTones(baseEmoji: .whiteHairedPerson, skinTones: [.dark]),
+            "🧑🏿‍🦲": EmojiWithSkinTones(baseEmoji: .baldPerson, skinTones: [.dark]),
+            "🧑🏿‍🦯": EmojiWithSkinTones(baseEmoji: .personWithProbingCane, skinTones: [.dark]),
+            "🧑🏿‍🦼": EmojiWithSkinTones(baseEmoji: .personInMotorizedWheelchair, skinTones: [.dark]),
+            "🧑🏿‍🦽": EmojiWithSkinTones(baseEmoji: .personInManualWheelchair, skinTones: [.dark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom4007(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍👩‍👦": EmojiWithSkinTones(baseEmoji: .manWomanBoy, skinTones: nil),
+            "👨‍👩‍👧": EmojiWithSkinTones(baseEmoji: .manWomanGirl, skinTones: nil),
+            "👨‍👨‍👦": EmojiWithSkinTones(baseEmoji: .manManBoy, skinTones: nil),
+            "👨‍👨‍👧": EmojiWithSkinTones(baseEmoji: .manManGirl, skinTones: nil),
+            "👩‍👩‍👦": EmojiWithSkinTones(baseEmoji: .womanWomanBoy, skinTones: nil),
+            "👩‍👩‍👧": EmojiWithSkinTones(baseEmoji: .womanWomanGirl, skinTones: nil),
+            "👨‍👦‍👦": EmojiWithSkinTones(baseEmoji: .manBoyBoy, skinTones: nil),
+            "👨‍👧‍👦": EmojiWithSkinTones(baseEmoji: .manGirlBoy, skinTones: nil),
+            "👨‍👧‍👧": EmojiWithSkinTones(baseEmoji: .manGirlGirl, skinTones: nil),
+            "👩‍👦‍👦": EmojiWithSkinTones(baseEmoji: .womanBoyBoy, skinTones: nil),
+            "👩‍👧‍👦": EmojiWithSkinTones(baseEmoji: .womanGirlBoy, skinTones: nil),
+            "👩‍👧‍👧": EmojiWithSkinTones(baseEmoji: .womanGirlGirl, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom4046(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑‍🤝‍🧑": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom4840(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩‍❤️‍💋‍👨": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: nil),
+            "👨‍❤️‍💋‍👨": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: nil),
+            "👩‍❤️‍💋‍👩": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom5237(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🫱🏻‍🫲🏼": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.light, .mediumLight]),
+            "🫱🏻‍🫲🏽": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.light, .medium]),
+            "🫱🏻‍🫲🏾": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.light, .mediumDark]),
+            "🫱🏻‍🫲🏿": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.light, .dark]),
+            "🫱🏼‍🫲🏻": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumLight, .light]),
+            "🫱🏼‍🫲🏽": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumLight, .medium]),
+            "🫱🏼‍🫲🏾": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumLight, .mediumDark]),
+            "🫱🏼‍🫲🏿": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumLight, .dark]),
+            "🫱🏽‍🫲🏻": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.medium, .light]),
+            "🫱🏽‍🫲🏼": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.medium, .mediumLight]),
+            "🫱🏽‍🫲🏾": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.medium, .mediumDark]),
+            "🫱🏽‍🫲🏿": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.medium, .dark]),
+            "🫱🏾‍🫲🏻": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumDark, .light]),
+            "🫱🏾‍🫲🏼": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumDark, .mediumLight]),
+            "🫱🏾‍🫲🏽": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumDark, .medium]),
+            "🫱🏾‍🫲🏿": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.mediumDark, .dark]),
+            "🫱🏿‍🫲🏻": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.dark, .light]),
+            "🫱🏿‍🫲🏼": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.dark, .mediumLight]),
+            "🫱🏿‍🫲🏽": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.dark, .medium]),
+            "🫱🏿‍🫲🏾": EmojiWithSkinTones(baseEmoji: .handshake, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom5370(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👨‍👩‍👧‍👦": EmojiWithSkinTones(baseEmoji: .manWomanGirlBoy, skinTones: nil),
+            "👨‍👩‍👦‍👦": EmojiWithSkinTones(baseEmoji: .manWomanBoyBoy, skinTones: nil),
+            "👨‍👩‍👧‍👧": EmojiWithSkinTones(baseEmoji: .manWomanGirlGirl, skinTones: nil),
+            "👨‍👨‍👧‍👦": EmojiWithSkinTones(baseEmoji: .manManGirlBoy, skinTones: nil),
+            "👨‍👨‍👦‍👦": EmojiWithSkinTones(baseEmoji: .manManBoyBoy, skinTones: nil),
+            "👨‍👨‍👧‍👧": EmojiWithSkinTones(baseEmoji: .manManGirlGirl, skinTones: nil),
+            "👩‍👩‍👧‍👦": EmojiWithSkinTones(baseEmoji: .womanWomanGirlBoy, skinTones: nil),
+            "👩‍👩‍👦‍👦": EmojiWithSkinTones(baseEmoji: .womanWomanBoyBoy, skinTones: nil),
+            "👩‍👩‍👧‍👧": EmojiWithSkinTones(baseEmoji: .womanWomanGirlGirl, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom6037(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩🏻‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.light]),
+            "👨🏻‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.light]),
+            "👩🏻‍❤️‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.light]),
+            "👩🏻‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.light, .mediumLight]),
+            "👨🏻‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.light, .mediumLight]),
+            "👩🏻‍❤️‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.light, .mediumLight]),
+            "👩🏻‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.light, .medium]),
+            "👨🏻‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.light, .medium]),
+            "👩🏻‍❤️‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.light, .medium]),
+            "👩🏻‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.light, .mediumDark]),
+            "👨🏻‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.light, .mediumDark]),
+            "👩🏻‍❤️‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.light, .mediumDark]),
+            "👩🏻‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.light, .dark]),
+            "👨🏻‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.light, .dark]),
+            "👩🏻‍❤️‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.light, .dark]),
+            "👩🏼‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumLight]),
+            "👨🏼‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumLight]),
+            "👩🏼‍❤️‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumLight]),
+            "👩🏼‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumLight, .light]),
+            "👨🏼‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumLight, .light]),
+            "👩🏼‍❤️‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumLight, .light]),
+            "👩🏼‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumLight, .medium]),
+            "👨🏼‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍❤️‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumLight, .mediumDark]),
+            "👨🏼‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍❤️‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumLight, .dark]),
+            "👨🏼‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumLight, .dark]),
+            "👩🏼‍❤️‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumLight, .dark]),
+            "👩🏽‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.medium]),
+            "👨🏽‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.medium]),
+            "👩🏽‍❤️‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.medium]),
+            "👩🏽‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.medium, .light]),
+            "👨🏽‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.medium, .light]),
+            "👩🏽‍❤️‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.medium, .light]),
+            "👩🏽‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.medium, .mediumLight]),
+            "👨🏽‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍❤️‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.medium, .mediumDark]),
+            "👨🏽‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍❤️‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.medium, .dark]),
+            "👨🏽‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.medium, .dark]),
+            "👩🏽‍❤️‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.medium, .dark]),
+            "👩🏾‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumDark]),
+            "👨🏾‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumDark]),
+            "👩🏾‍❤️‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumDark]),
+            "👩🏾‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumDark, .light]),
+            "👨🏾‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumDark, .light]),
+            "👩🏾‍❤️‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumDark, .light]),
+            "👩🏾‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumDark, .mediumLight]),
+            "👨🏾‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍❤️‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumDark, .medium]),
+            "👨🏾‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍❤️‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.mediumDark, .dark]),
+            "👨🏾‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.mediumDark, .dark]),
+            "👩🏾‍❤️‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.mediumDark, .dark]),
+            "👩🏿‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.dark]),
+            "👨🏿‍❤️‍👨🏿": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.dark]),
+            "👩🏿‍❤️‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.dark]),
+            "👩🏿‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.dark, .light]),
+            "👨🏿‍❤️‍👨🏻": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.dark, .light]),
+            "👩🏿‍❤️‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.dark, .light]),
+            "👩🏿‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.dark, .mediumLight]),
+            "👨🏿‍❤️‍👨🏼": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍❤️‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.dark, .medium]),
+            "👨🏿‍❤️‍👨🏽": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.dark, .medium]),
+            "👩🏿‍❤️‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.dark, .medium]),
+            "👩🏿‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanHeartMan, skinTones: [.dark, .mediumDark]),
+            "👨🏿‍❤️‍👨🏾": EmojiWithSkinTones(baseEmoji: .manHeartMan, skinTones: [.dark, .mediumDark]),
+            "👩🏿‍❤️‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanHeartWoman, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom6065(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍❤️‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.light, .mediumLight]),
+            "🧑🏻‍❤️‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.light, .medium]),
+            "🧑🏻‍❤️‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.light, .mediumDark]),
+            "🧑🏻‍❤️‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.light, .dark]),
+            "🧑🏼‍❤️‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumLight, .light]),
+            "🧑🏼‍❤️‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumLight, .medium]),
+            "🧑🏼‍❤️‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumLight, .mediumDark]),
+            "🧑🏼‍❤️‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumLight, .dark]),
+            "🧑🏽‍❤️‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.medium, .light]),
+            "🧑🏽‍❤️‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.medium, .mediumLight]),
+            "🧑🏽‍❤️‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.medium, .mediumDark]),
+            "🧑🏽‍❤️‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.medium, .dark]),
+            "🧑🏾‍❤️‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumDark, .light]),
+            "🧑🏾‍❤️‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumDark, .mediumLight]),
+            "🧑🏾‍❤️‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumDark, .medium]),
+            "🧑🏾‍❤️‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.mediumDark, .dark]),
+            "🧑🏿‍❤️‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.dark, .light]),
+            "🧑🏿‍❤️‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.dark, .mediumLight]),
+            "🧑🏿‍❤️‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.dark, .medium]),
+            "🧑🏿‍❤️‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personHeartPerson, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom6579(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩🏻‍🤝‍👩🏼": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.light, .mediumLight]),
+            "👩🏻‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.light, .mediumLight]),
+            "👨🏻‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.light, .mediumLight]),
+            "👩🏻‍🤝‍👩🏽": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.light, .medium]),
+            "👩🏻‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.light, .medium]),
+            "👨🏻‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.light, .medium]),
+            "👩🏻‍🤝‍👩🏾": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.light, .mediumDark]),
+            "👩🏻‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.light, .mediumDark]),
+            "👨🏻‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.light, .mediumDark]),
+            "👩🏻‍🤝‍👩🏿": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.light, .dark]),
+            "👩🏻‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.light, .dark]),
+            "👨🏻‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.light, .dark]),
+            "👩🏼‍🤝‍👩🏻": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumLight, .light]),
+            "👩🏼‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumLight, .light]),
+            "👨🏼‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumLight, .light]),
+            "👩🏼‍🤝‍👩🏽": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumLight, .medium]),
+            "👨🏼‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍🤝‍👩🏾": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumLight, .mediumDark]),
+            "👨🏼‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍🤝‍👩🏿": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumLight, .dark]),
+            "👩🏼‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumLight, .dark]),
+            "👨🏼‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumLight, .dark]),
+            "👩🏽‍🤝‍👩🏻": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.medium, .light]),
+            "👩🏽‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.medium, .light]),
+            "👨🏽‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.medium, .light]),
+            "👩🏽‍🤝‍👩🏼": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.medium, .mediumLight]),
+            "👨🏽‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍🤝‍👩🏾": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.medium, .mediumDark]),
+            "👨🏽‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍🤝‍👩🏿": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.medium, .dark]),
+            "👩🏽‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.medium, .dark]),
+            "👨🏽‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.medium, .dark]),
+            "👩🏾‍🤝‍👩🏻": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumDark, .light]),
+            "👩🏾‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumDark, .light]),
+            "👨🏾‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumDark, .light]),
+            "👩🏾‍🤝‍👩🏼": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumDark, .mediumLight]),
+            "👨🏾‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍🤝‍👩🏽": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumDark, .medium]),
+            "👨🏾‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍🤝‍👩🏿": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.mediumDark, .dark]),
+            "👩🏾‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.mediumDark, .dark]),
+            "👨🏾‍🤝‍👨🏿": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.mediumDark, .dark]),
+            "👩🏿‍🤝‍👩🏻": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.dark, .light]),
+            "👩🏿‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.dark, .light]),
+            "👨🏿‍🤝‍👨🏻": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.dark, .light]),
+            "👩🏿‍🤝‍👩🏼": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.dark, .mediumLight]),
+            "👨🏿‍🤝‍👨🏼": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍🤝‍👩🏽": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.dark, .medium]),
+            "👩🏿‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.dark, .medium]),
+            "👨🏿‍🤝‍👨🏽": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.dark, .medium]),
+            "👩🏿‍🤝‍👩🏾": EmojiWithSkinTones(baseEmoji: .twoWomenHoldingHands, skinTones: [.dark, .mediumDark]),
+            "👩🏿‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .manAndWomanHoldingHands, skinTones: [.dark, .mediumDark]),
+            "👨🏿‍🤝‍👨🏾": EmojiWithSkinTones(baseEmoji: .twoMenHoldingHands, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom6606(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍🤝‍🧑🏻": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.light]),
+            "🧑🏻‍🤝‍🧑🏼": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.light, .mediumLight]),
+            "🧑🏻‍🤝‍🧑🏽": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.light, .medium]),
+            "🧑🏻‍🤝‍🧑🏾": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.light, .mediumDark]),
+            "🧑🏻‍🤝‍🧑🏿": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.light, .dark]),
+            "🧑🏼‍🤝‍🧑🏼": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumLight]),
+            "🧑🏼‍🤝‍🧑🏻": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumLight, .light]),
+            "🧑🏼‍🤝‍🧑🏽": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumLight, .medium]),
+            "🧑🏼‍🤝‍🧑🏾": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumLight, .mediumDark]),
+            "🧑🏼‍🤝‍🧑🏿": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumLight, .dark]),
+            "🧑🏽‍🤝‍🧑🏽": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.medium]),
+            "🧑🏽‍🤝‍🧑🏻": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.medium, .light]),
+            "🧑🏽‍🤝‍🧑🏼": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.medium, .mediumLight]),
+            "🧑🏽‍🤝‍🧑🏾": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.medium, .mediumDark]),
+            "🧑🏽‍🤝‍🧑🏿": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.medium, .dark]),
+            "🧑🏾‍🤝‍🧑🏾": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumDark]),
+            "🧑🏾‍🤝‍🧑🏻": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumDark, .light]),
+            "🧑🏾‍🤝‍🧑🏼": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumDark, .mediumLight]),
+            "🧑🏾‍🤝‍🧑🏽": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumDark, .medium]),
+            "🧑🏾‍🤝‍🧑🏿": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.mediumDark, .dark]),
+            "🧑🏿‍🤝‍🧑🏿": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.dark]),
+            "🧑🏿‍🤝‍🧑🏻": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.dark, .light]),
+            "🧑🏿‍🤝‍🧑🏼": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.dark, .mediumLight]),
+            "🧑🏿‍🤝‍🧑🏽": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.dark, .medium]),
+            "🧑🏿‍🤝‍🧑🏾": EmojiWithSkinTones(baseEmoji: .peopleHoldingHands, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom7400(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "👩🏻‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.light]),
+            "👨🏻‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.light]),
+            "👩🏻‍❤️‍💋‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.light]),
+            "👩🏻‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.light, .mediumLight]),
+            "👨🏻‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.light, .mediumLight]),
+            "👩🏻‍❤️‍💋‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.light, .mediumLight]),
+            "👩🏻‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.light, .medium]),
+            "👨🏻‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.light, .medium]),
+            "👩🏻‍❤️‍💋‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.light, .medium]),
+            "👩🏻‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.light, .mediumDark]),
+            "👨🏻‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.light, .mediumDark]),
+            "👩🏻‍❤️‍💋‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.light, .mediumDark]),
+            "👩🏻‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.light, .dark]),
+            "👨🏻‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.light, .dark]),
+            "👩🏻‍❤️‍💋‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.light, .dark]),
+            "👩🏼‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumLight]),
+            "👨🏼‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumLight]),
+            "👩🏼‍❤️‍💋‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumLight]),
+            "👩🏼‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumLight, .light]),
+            "👨🏼‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumLight, .light]),
+            "👩🏼‍❤️‍💋‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumLight, .light]),
+            "👩🏼‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumLight, .medium]),
+            "👨🏼‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍❤️‍💋‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumLight, .medium]),
+            "👩🏼‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumLight, .mediumDark]),
+            "👨🏼‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍❤️‍💋‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumLight, .mediumDark]),
+            "👩🏼‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumLight, .dark]),
+            "👨🏼‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumLight, .dark]),
+            "👩🏼‍❤️‍💋‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumLight, .dark]),
+            "👩🏽‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.medium]),
+            "👨🏽‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.medium]),
+            "👩🏽‍❤️‍💋‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.medium]),
+            "👩🏽‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.medium, .light]),
+            "👨🏽‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.medium, .light]),
+            "👩🏽‍❤️‍💋‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.medium, .light]),
+            "👩🏽‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.medium, .mediumLight]),
+            "👨🏽‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍❤️‍💋‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.medium, .mediumLight]),
+            "👩🏽‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.medium, .mediumDark]),
+            "👨🏽‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍❤️‍💋‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.medium, .mediumDark]),
+            "👩🏽‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.medium, .dark]),
+            "👨🏽‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.medium, .dark]),
+            "👩🏽‍❤️‍💋‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.medium, .dark]),
+            "👩🏾‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumDark]),
+            "👨🏾‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumDark]),
+            "👩🏾‍❤️‍💋‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumDark]),
+            "👩🏾‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumDark, .light]),
+            "👨🏾‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumDark, .light]),
+            "👩🏾‍❤️‍💋‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumDark, .light]),
+            "👩🏾‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumDark, .mediumLight]),
+            "👨🏾‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍❤️‍💋‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumDark, .mediumLight]),
+            "👩🏾‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumDark, .medium]),
+            "👨🏾‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍❤️‍💋‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumDark, .medium]),
+            "👩🏾‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.mediumDark, .dark]),
+            "👨🏾‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.mediumDark, .dark]),
+            "👩🏾‍❤️‍💋‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.mediumDark, .dark]),
+            "👩🏿‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.dark]),
+            "👨🏿‍❤️‍💋‍👨🏿": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.dark]),
+            "👩🏿‍❤️‍💋‍👩🏿": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.dark]),
+            "👩🏿‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.dark, .light]),
+            "👨🏿‍❤️‍💋‍👨🏻": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.dark, .light]),
+            "👩🏿‍❤️‍💋‍👩🏻": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.dark, .light]),
+            "👩🏿‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.dark, .mediumLight]),
+            "👨🏿‍❤️‍💋‍👨🏼": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍❤️‍💋‍👩🏼": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.dark, .mediumLight]),
+            "👩🏿‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.dark, .medium]),
+            "👨🏿‍❤️‍💋‍👨🏽": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.dark, .medium]),
+            "👩🏿‍❤️‍💋‍👩🏽": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.dark, .medium]),
+            "👩🏿‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .womanKissMan, skinTones: [.dark, .mediumDark]),
+            "👨🏿‍❤️‍💋‍👨🏾": EmojiWithSkinTones(baseEmoji: .manKissMan, skinTones: [.dark, .mediumDark]),
+            "👩🏿‍❤️‍💋‍👩🏾": EmojiWithSkinTones(baseEmoji: .womanKissWoman, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom7428(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🧑🏻‍❤️‍💋‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.light, .mediumLight]),
+            "🧑🏻‍❤️‍💋‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.light, .medium]),
+            "🧑🏻‍❤️‍💋‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.light, .mediumDark]),
+            "🧑🏻‍❤️‍💋‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.light, .dark]),
+            "🧑🏼‍❤️‍💋‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumLight, .light]),
+            "🧑🏼‍❤️‍💋‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumLight, .medium]),
+            "🧑🏼‍❤️‍💋‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumLight, .mediumDark]),
+            "🧑🏼‍❤️‍💋‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumLight, .dark]),
+            "🧑🏽‍❤️‍💋‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.medium, .light]),
+            "🧑🏽‍❤️‍💋‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.medium, .mediumLight]),
+            "🧑🏽‍❤️‍💋‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.medium, .mediumDark]),
+            "🧑🏽‍❤️‍💋‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.medium, .dark]),
+            "🧑🏾‍❤️‍💋‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumDark, .light]),
+            "🧑🏾‍❤️‍💋‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumDark, .mediumLight]),
+            "🧑🏾‍❤️‍💋‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumDark, .medium]),
+            "🧑🏾‍❤️‍💋‍🧑🏿": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.mediumDark, .dark]),
+            "🧑🏿‍❤️‍💋‍🧑🏻": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.dark, .light]),
+            "🧑🏿‍❤️‍💋‍🧑🏼": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.dark, .mediumLight]),
+            "🧑🏿‍❤️‍💋‍🧑🏽": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.dark, .medium]),
+            "🧑🏿‍❤️‍💋‍🧑🏾": EmojiWithSkinTones(baseEmoji: .personKissPerson, skinTones: [.dark, .mediumDark])
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+    
+    private static func emojiFrom56336(_ rawValue: String) -> EmojiWithSkinTones {
+        let lookup: [String: EmojiWithSkinTones] = [
+            "🏴󠁧󠁢󠁥󠁮󠁧󠁿": EmojiWithSkinTones(baseEmoji: .flagEngland, skinTones: nil),
+            "🏴󠁧󠁢󠁳󠁣󠁴󠁿": EmojiWithSkinTones(baseEmoji: .flagScotland, skinTones: nil),
+            "🏴󠁧󠁢󠁷󠁬󠁳󠁿": EmojiWithSkinTones(baseEmoji: .flagWales, skinTones: nil)
+        ]
+        return (lookup[rawValue] ?? EmojiWithSkinTones(unsupportedValue: rawValue))
+    }
+}

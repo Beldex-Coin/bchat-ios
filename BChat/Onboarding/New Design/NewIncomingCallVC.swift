@@ -64,6 +64,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         let result = RemoteVideoView()
         result.alpha = 0
         result.backgroundColor = .black
+        result.layoutMargins = .zero
         result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoteVieioViewTapped)))
         return result
     }()

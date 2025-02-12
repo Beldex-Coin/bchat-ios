@@ -1552,6 +1552,18 @@ extension ConversationVC {
         })
     }
     
+    func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { [weak self] emoji in
+                guard let emoji: EmojiWithSkinTones = emoji else { return }
+                //                self?.react(cellViewModel, with: emoji, using: dependencies)
+            },
+            dismissHandler: { [weak self] in
+                //                self?.showInputAccessoryView()
+            }
+        )
+        present(emojiPicker, animated: true, completion: nil)
+    }
 }
 
 struct CustomSlideView {

@@ -40,6 +40,7 @@ final class CameraManager : NSObject {
             connection.videoOrientation = .portrait
             connection.automaticallyAdjustsVideoMirroring = false
             connection.isVideoMirrored = (position == .front)
+            connection.videoPreviewLayer?.videoGravity = .resizeAspectFill
         } else {
             SNLog("Couldn't add video data output to capture bchat.")
         }
