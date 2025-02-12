@@ -900,13 +900,13 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         tableView.reloadData()
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? ChatSettingsSearchTableViewCell {
             DispatchQueue.main.async {
-                cell.searchTextField.becomeFirstResponder()
+//                cell.searchTextField.becomeFirstResponder()
             }
         }
         if isSearchEnable {
             if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? ChatSettingsSearchTableViewCell {
                 DispatchQueue.main.async {
-                    cell.searchTextField.becomeFirstResponder()
+//                    cell.searchTextField.becomeFirstResponder()
                 }
             }
         }
@@ -1127,31 +1127,8 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
         if isSearchEnable {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsSearchTableViewCell") as! ChatSettingsSearchTableViewCell
-                cell.searchTextField.placeholder = "\(membersAndZombies.count) members"
-                cell.closeCallback = {
-                    self.closeIconTapped(textField: cell.searchTextField)
-                    self.isSearchEnable = false
-                    self.tableView.reloadData()
-                }
-                cell.searchCallback = {
-//                    cell.searchTextField.becomeFirstResponder()
-//                    self.isSearchEnable = true
-                }
+                cell.memberCountLabel.text = membersAndZombies.count > 1 ? "\(membersAndZombies.count) members" : "\(membersAndZombies.count) member"
                 
-//                cell.textChanged = { newText in
-//                    if let rightView = cell.searchTextField.rightView {
-//                        if let searchIconImageView = rightView.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
-//                            searchIconImageView.isHidden = !cell.searchTextField.text!.isEmpty
-//                            self.isFilterSearchContact(text:cell.searchTextField.text!)
-//                        }
-//                        if let closeIconImageView = rightView.subviews.first(where: { $0 is UIImageView && $0.tag == 1 }) as? UIImageView {
-//                            closeIconImageView.isHidden = cell.searchTextField.text!.isEmpty
-//                            self.isFilterSearchContact(text:cell.searchTextField.text!)
-//                        }
-//                        self.view.endEditing(false)
-//                        self.tableView.endEditing(false)
-//                    }
-//                }
                 return cell
         
             } else {
@@ -1653,35 +1630,14 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsSearchTableViewCell") as! ChatSettingsSearchTableViewCell
-                cell.searchTextField.placeholder = "\(membersAndZombies.count) members"
-                cell.closeCallback = {
-                    self.closeIconTapped(textField: cell.searchTextField)
-                    self.isSearchEnable = false
-                    self.tableView.reloadData()
-                }
+                cell.memberCountLabel.text = membersAndZombies.count > 1 ? "\(membersAndZombies.count) members" : "\(membersAndZombies.count) member"
+                
                 cell.searchCallback = {
-//                    cell.searchTextField.becomeFirstResponder()
-//                    self.isSearchEnable = true
-//                    self.tableView.reloadData()
                     let vc = SearchGroupMemberVC()
                     vc.thread = self.thread
                     self.present(vc, animated: true, completion: nil)
                 }
                 
-//                cell.textChanged = { newText in
-//                    if let rightView = cell.searchTextField.rightView {
-//                        if let searchIconImageView = rightView.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
-//                            searchIconImageView.isHidden = !cell.searchTextField.text!.isEmpty
-//                            self.isFilterSearchContact(text:cell.searchTextField.text!)
-//                        }
-//                        if let closeIconImageView = rightView.subviews.first(where: { $0 is UIImageView && $0.tag == 1 }) as? UIImageView {
-//                            closeIconImageView.isHidden = cell.searchTextField.text!.isEmpty
-//                            self.isFilterSearchContact(text:cell.searchTextField.text!)
-//                        }
-//                        self.view.endEditing(false)
-//                        self.tableView.endEditing(false)
-//                    }
-//                }
                 return cell
         
             } else {
@@ -1842,11 +1798,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                let vc = SearchGroupMemberVC()
-                vc.thread = self.thread
-                self.present(vc, animated: true, completion: nil)
-            } else {
+            if indexPath.row != 0 {
                 let publicKey = filteredUsers[indexPath.row - 1]
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
                 let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
