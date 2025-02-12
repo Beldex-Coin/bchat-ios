@@ -570,16 +570,18 @@ extension MessageReceiver {
         // With new closed groups we only want to create them if the admin creating the closed group is an
         // approved contact (to prevent spam via closed groups getting around message requests if users are
         // on old or modified clients)
-        var hasApprovedAdmin: Bool = false
         
-        for adminId in admins {
-            if let contact: Contact = Storage.shared.getContact(with: adminId), contact.isApproved {
-                hasApprovedAdmin = true
-                break
-            }
-        }
-        
-        guard hasApprovedAdmin else { return }
+        // MARK: - Don't remove below comented lines, will remove later.
+//        var hasApprovedAdmin: Bool = false
+//        
+//        for adminId in admins {
+//            if let contact: Contact = Storage.shared.getContact(with: adminId), contact.isApproved {
+//                hasApprovedAdmin = true
+//                break
+//            }
+//        }
+//        
+//        guard hasApprovedAdmin else { return }
         
         // Create the group
         let groupID = LKGroupUtilities.getEncodedClosedGroupIDAsData(groupPublicKey)
@@ -795,7 +797,8 @@ extension MessageReceiver {
                 let _ = PushNotificationAPI.performOperation(.unsubscribe, for: groupPublicKey, publicKey: getUserHexEncodedPublicKey())
             } else {
                 let storage = SNMessagingKitConfiguration.shared.storage
-                let zombies = storage.getZombieMembers(for: groupPublicKey).union([ message.sender! ])
+                // MARK: - Don't remove below comented lines, will remove later.
+                let zombies = storage.getZombieMembers(for: groupPublicKey)//.union([ message.sender! ])
                 storage.setZombieMembers(for: groupPublicKey, to: zombies, using: transaction)
             }
             // Update the group
@@ -812,6 +815,11 @@ extension MessageReceiver {
             }
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: .groupUpdated, customMessage: updateInfo)
             infoMessage.save(with: transaction)
+            if didAdminLeave {
+                MessageSender.leave(groupPublicKey, using: transaction).retainUntilComplete()
+                thread.removeAllThreadInteractions(with: transaction)
+                thread.remove(with: transaction)
+            }
         }
     }
     

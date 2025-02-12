@@ -1150,7 +1150,7 @@ final class HomeVC : BaseVC {
 //            self.showToast(message: "Please check your internet connection", seconds: 1.0)
 //        }
 
-        let vc = NewPlusButtonChatVC()
+        let vc = NewChatVC()
         navigationController!.pushViewController(vc, animated: true)
     }
     
