@@ -295,8 +295,10 @@ extension MessageSender {
         thread.setGroupModel(newGroupModel, with: transaction)
         // Notify the user
         let updateInfo = group.getInfoStringAboutUpdate(to: newGroupModel)
-        let infoMessage = TSInfoMessage(timestamp: NSDate.ows_millisecondTimeStamp(), in: thread, messageType: .groupCurrentUserLeft, customMessage: updateInfo)
-        infoMessage.save(with: transaction)
+        if updateInfo != "Group updated." {
+            let infoMessage = TSInfoMessage(timestamp: NSDate.ows_millisecondTimeStamp(), in: thread, messageType: .groupCurrentUserLeft, customMessage: updateInfo)
+            infoMessage.save(with: transaction)
+        }
         if isCurrentUserAdmin {
             thread.removeAllThreadInteractions(with: transaction)
             thread.remove(with: transaction)
