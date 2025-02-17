@@ -371,6 +371,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
 
         // Local video view
         bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+        addLocalVideoView()
         
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
@@ -558,14 +559,17 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
 //        self.conversationVC?.inputAccessoryView?.isHidden = true
 //        self.conversationVC?.inputAccessoryView?.alpha = 0
 //        setupStateChangeCallbacks()
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
-        shouldRestartCamera = true
-        addLocalVideoView()
-        remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+//        shouldRestartCamera = true
+//        addLocalVideoView()
+//        remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
         setupStateChangeCallbacks()
@@ -600,6 +604,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             durationTimer?.invalidate()
             durationTimer = nil
         }
+        isVideoSwapped = false
     }
     
     @objc private func pop() {
@@ -684,15 +689,15 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     @objc private func swapVideo() {
         isVideoSwapped.toggle()
         if isVideoSwapped {
-            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
-            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
             bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.attachLocalVideoRenderer(remoteVideoView)
+            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
         } else {
-            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeLocalVideoRenderer(remoteVideoView)
             bChatCall.attachRemoteVideoRenderer(remoteVideoView)
             bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeLocalVideoRenderer(remoteVideoView)
         }
     }
     
