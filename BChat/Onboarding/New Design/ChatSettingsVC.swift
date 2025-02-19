@@ -600,7 +600,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 MessageSender.objc_leave(groupPublicKey, using: transaction).retainUntilComplete()
             }
         }
-        navigationController?.popViewController(animated: true)
+        if gThread!.groupModel.groupAdminIds.contains(getUserHexEncodedPublicKey()) {
+            backToHomeScreen()
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     @objc func durationSliderDidChange(_ slider: UISlider) {
