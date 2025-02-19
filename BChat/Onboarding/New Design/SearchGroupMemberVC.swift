@@ -49,7 +49,7 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
         result.leftViewMode = .always
         
         // Add right padding
-        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 12))
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         result.rightView = paddingViewRight
         result.rightViewMode = .always
         
@@ -60,9 +60,9 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
         paddingViewLeft.addSubview(searchIconImageView)
         
         // Create an UIImageView for close icon initially hidden
-        let closeIconImageView = UIImageView(image: UIImage(named: "ic_closeNew"))
-        closeIconImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 14)
-        closeIconImageView.contentMode = .scaleAspectFit
+        let closeIconImageView = UIImageView(image: UIImage(named: "ic_close_searchMember"))
+        closeIconImageView.frame = CGRect(x: 2, y: 5, width: 20, height: 20)
+        closeIconImageView.contentMode = .center
         closeIconImageView.tag = 1 // Set a tag to distinguish it from the search icon
         closeIconImageView.isHidden = true
         paddingViewRight.addSubview(closeIconImageView)

@@ -318,20 +318,20 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             filterDict = mainDict
         }
         
-        let adminId = groupThread.groupModel.groupAdminIds[0]
-        if let value = filterDict[adminId] {
-            filterDict.removeValue(forKey: adminId)
-            var orderedDictionary: [String: String] = [adminId: value]
-            for (key, value) in filterDict {
-                orderedDictionary[key] = value
+        if let adminId = groupThread.groupModel.groupAdminIds.first {
+            if let value = filterDict[adminId] {
+                filterDict.removeValue(forKey: adminId)
+                var orderedDictionary: [String: String] = [adminId: value]
+                for (key, value) in filterDict {
+                    orderedDictionary[key] = value
+                }
+                filterDict = orderedDictionary
             }
-            filterDict = orderedDictionary
+            if let index = filteredUsers.firstIndex(of: adminId) {
+                filteredUsers.remove(at: index)
+                filteredUsers.insert(adminId, at: 0)
+            }
         }
-        if let index = filteredUsers.firstIndex(of: adminId) {
-            filteredUsers.remove(at: index)
-            filteredUsers.insert(adminId, at: 0)
-        }
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1800,6 +1800,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 1 {
             if indexPath.row != 0 {
                 let publicKey = filteredUsers[indexPath.row - 1]
+                if publicKey == getUserHexEncodedPublicKey() { return }
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
                 let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
                 let vc = UserInfoPopUp()
