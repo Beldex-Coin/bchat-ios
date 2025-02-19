@@ -34,7 +34,7 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         result.leftViewMode = .always
         
         // Add right padding
-        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 12))
+        let paddingViewRight = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 14))
         result.rightView = paddingViewRight
         result.rightViewMode = .always
         
@@ -60,153 +60,17 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         return result
     }()
     
-    
-    lazy var newChatImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "new_chat")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-        result.layer.masksToBounds = true
-        result.contentMode = .center
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(newChatButtonTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
-    private lazy var newChatButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("New Chat", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(UIColor(hex: 0x00BD40), for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(newChatButtonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var scanerImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "ic_qrNewChat")
-        result.set(.width, to: 28)
-        result.set(.height, to: 28)
-        result.layer.masksToBounds = true
-        result.contentMode = .center
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scannerImageViewTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
-    lazy var secretGroupImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "scrt_grp")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-        result.layer.masksToBounds = true
-        result.contentMode = .center
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(secretGroupButtonTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
-    private lazy var secretGroupButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Secret Group", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(Colors.titleColor3, for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(secretGroupButtonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var socialGroupImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "social_grp")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-        result.layer.masksToBounds = true
-        result.contentMode = .center
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(socialGroupButtonTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
-    private lazy var socialGroupButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Social Group", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(Colors.titleColor3, for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(socialGroupButtonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    lazy var noteToSelfImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "ic_newNote")
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-        result.layer.masksToBounds = true
-        result.contentMode = .center
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(noteToSelfButtonTapped))
-        result.isUserInteractionEnabled = true
-        result.addGestureRecognizer(tapGestureRecognizer)
-        return result
-    }()
-    
-    private lazy var noteToSelfButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Note to Self", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(Colors.titleColor3, for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(noteToSelfButtonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var contactListLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.noDataLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Contact list"
-        return result
-    }()
-    
     private lazy var tableView: UITableView = {
         let result = UITableView()
         result.backgroundColor = Colors.mainBackGroundColor2
         result.separatorStyle = .none
         result.register(NewChatTableViewCell.self, forCellReuseIdentifier: "NewChatTableViewCell")
+        result.register(CustomNewChatTableViewCell.self, forCellReuseIdentifier: "CustomNewChatTableViewCell")
+        result.register(NewChatTableViewCellForTitle.self, forCellReuseIdentifier: "NewChatTableViewCellForTitle")
         result.showsVerticalScrollIndicator = false
         return result
     }()
     
-    lazy var inviteFriendImageView: UIImageView = {
-        let result = UIImageView()
-        result.set(.width, to: 36)
-        result.set(.height, to: 36)
-        result.contentMode = .center
-        result.image = UIImage(named: "ic_inviteFriend")
-        return result
-    }()
-    
-    private lazy var inviteFriendButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Invite a friend", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.setTitleColor(Colors.titleColor3, for: .normal)
-        button.titleLabel!.font = Fonts.semiOpenSans(ofSize: 14)
-        button.addTarget(self, action: #selector(inviteFriendButtonTapped(_:)), for: .touchUpInside)
-        return button
-    }()
     
     internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
@@ -241,6 +105,9 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         tableView.reloadData()
     }
     
+    var titleArray = ["New Chat", "Secret Group", "Social Group", "Note to Self", "Contact list", "Invite a friend"]
+    var imageArray = ["new_chat", "scrt_grp", "social_grp", "ic_newNote", "", "ic_inviteFriend"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -250,10 +117,7 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         self.title = "New"
         
-        view.addSubviews([ searchTextField, newChatImageView, newChatButton, scanerImageView, secretGroupImageView, secretGroupButton, socialGroupImageView, socialGroupButton, noteToSelfImageView, noteToSelfButton])
-        view.addSubview(contactListLabel)
-        view.addSubview(inviteFriendImageView)
-        view.addSubview(inviteFriendButton)
+        view.addSubviews([ searchTextField])
         
         searchTextField.delegate = self
         
@@ -262,38 +126,6 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             searchTextField.heightAnchor.constraint(equalToConstant: 48),
-            
-            newChatImageView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15),
-            newChatImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            newChatButton.leadingAnchor.constraint(equalTo: newChatImageView.trailingAnchor, constant: 13),
-            newChatButton.centerYAnchor.constraint(equalTo: newChatImageView.centerYAnchor),
-            scanerImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            scanerImageView.centerYAnchor.constraint(equalTo: newChatImageView.centerYAnchor),
-            
-            
-            secretGroupImageView.topAnchor.constraint(equalTo: newChatImageView.bottomAnchor, constant: 15),
-            secretGroupImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            secretGroupButton.leadingAnchor.constraint(equalTo: secretGroupImageView.trailingAnchor, constant: 13),
-            secretGroupButton.centerYAnchor.constraint(equalTo: secretGroupImageView.centerYAnchor),
-            
-            socialGroupImageView.topAnchor.constraint(equalTo: secretGroupImageView.bottomAnchor, constant: 15),
-            socialGroupImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            socialGroupButton.leadingAnchor.constraint(equalTo: socialGroupImageView.trailingAnchor, constant: 13),
-            socialGroupButton.centerYAnchor.constraint(equalTo: socialGroupImageView.centerYAnchor),
-            
-            noteToSelfImageView.topAnchor.constraint(equalTo: socialGroupImageView.bottomAnchor, constant: 15),
-            noteToSelfImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            noteToSelfButton.leadingAnchor.constraint(equalTo: noteToSelfImageView.trailingAnchor, constant: 13),
-            noteToSelfButton.centerYAnchor.constraint(equalTo: noteToSelfImageView.centerYAnchor),
-            
-            contactListLabel.topAnchor.constraint(equalTo: noteToSelfImageView.bottomAnchor, constant: 16),
-            contactListLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            
-            inviteFriendImageView.topAnchor.constraint(equalTo: contactListLabel.bottomAnchor, constant: 16),
-            inviteFriendImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            
-            inviteFriendButton.centerYAnchor.constraint(equalTo: inviteFriendImageView.centerYAnchor),
-            inviteFriendButton.leadingAnchor.constraint(equalTo: inviteFriendImageView.trailingAnchor, constant: 14),
         ])
         
         // Table view
@@ -302,7 +134,7 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         view.addSubview(tableView)
         
         tableView.pin(.leading, to: .leading, of: view)
-        tableView.pin(.top, to: .bottom, of: contactListLabel, withInset: 16 + 36 + 8)
+        tableView.pin(.top, to: .bottom, of: searchTextField, withInset: 8)
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         
@@ -326,48 +158,6 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         reload()
-    }
-    
-    @objc func newChatButtonTapped(_ sender: UIButton) {
-        let vc = NewChatPopUpVC()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
-    }
-    
-    @objc func secretGroupButtonTapped(_ sender: UIButton) {
-        let vc = CreateSecretGroupScreenVC()
-        self.navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func socialGroupButtonTapped(_ sender: UIButton) {
-        let vc = SocialGroupNewVC()
-        navigationController!.pushViewController(vc, animated: true)
-    }
-    
-    @objc func noteToSelfButtonTapped(_ sender: UIButton) {
-        
-        DispatchMainThreadSafe {
-            if let presentedVC = self.presentedViewController {
-                presentedVC.dismiss(animated: false, completion: nil)
-            }
-            let conversationVC = ConversationVC(thread: HomeScreenSearchResultSet.noteToSelfOnly.conversations[0].thread.threadRecord, focusedMessageID: nil)
-            var viewControllers = self.navigationController?.viewControllers
-            viewControllers?.append(conversationVC)
-            self.navigationController?.setViewControllers(viewControllers!, animated: true)
-        }
-    }
-    
-    @objc func scannerImageViewTapped() {
-        let vc = ScanNewVC()
-        vc.newChatScanflag = false
-        navigationController!.pushViewController(vc, animated: true)
-    }
-    
-    @objc func inviteFriendButtonTapped(_ sender: UIButton) {
-        let appStoreURL = "https://apps.apple.com/app/id1626066143"
-        let shareVC = UIActivityViewController(activityItems: [ appStoreURL ], applicationActivities: nil)
-        self.navigationController!.present(shareVC, animated: true, completion: nil)
     }
     
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
@@ -539,40 +329,107 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
 
 
 extension NewChatVC: UITableViewDataSource, UITableViewDelegate {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.searchText.count == 0 {
-            return Int(threadCount)
+        if section == 0 {
+            return titleArray.count
+        } else {
+            if self.searchText.count == 0 {
+                return Int(threadCount)
+            }
+            return searchResultSet.conversations.count
         }
-        return searchResultSet.conversations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCell") as! NewChatTableViewCell
         
-        if self.searchText.count == 0 {
-            cell.threadViewModel = threadViewModel(at: indexPath.row)
+        if indexPath.section == 0 {
+            if indexPath.row == 4 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCellForTitle") as! NewChatTableViewCellForTitle
+                cell.titleButton.setTitle(titleArray[indexPath.row], for: .normal)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CustomNewChatTableViewCell") as! CustomNewChatTableViewCell
+                cell.leftImageView.image = UIImage(named: imageArray[indexPath.row])
+                cell.titleButton.setTitle(titleArray[indexPath.row], for: .normal)
+                cell.rightImageView.isHidden = indexPath.row == 0 ? false : true
+                cell.titleButton.setTitleColor(indexPath.row == 0 ? UIColor(hex: 0x00BD40) : Colors.titleColor3, for: .normal)
+                cell.scannerCallback = {
+                    let vc = ScanNewVC()
+                    vc.newChatScanflag = false
+                    self.navigationController!.pushViewController(vc, animated: true)
+                }
+                return cell
+            }
         } else {
-            let sectionResults = searchResultSet.conversations
-            let searchResult = sectionResults[safe: indexPath.row]
-            cell.threadViewModel = searchResult?.thread
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewChatTableViewCell") as! NewChatTableViewCell
+            
+            if self.searchText.count == 0 {
+                cell.threadViewModel = threadViewModel(at: indexPath.row)
+            } else {
+                let sectionResults = searchResultSet.conversations
+                let searchResult = sectionResults[safe: indexPath.row]
+                cell.threadViewModel = searchResult?.thread
+            }
+            return cell
         }
-        
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.searchText.count == 0 {
-            guard let thread = self.thread(at: indexPath.row) else { return }
-            show(thread, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+        
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                let vc = NewChatPopUpVC()
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                self.present(vc, animated: true, completion: nil)
+            }
+            if indexPath.row == 1 {
+                let vc = CreateSecretGroupScreenVC()
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            if indexPath.row == 2 {
+                let vc = SocialGroupNewVC()
+                navigationController!.pushViewController(vc, animated: true)
+            }
+            if indexPath.row == 3 {
+                DispatchMainThreadSafe {
+                    if let presentedVC = self.presentedViewController {
+                        presentedVC.dismiss(animated: false, completion: nil)
+                    }
+                    let conversationVC = ConversationVC(thread: HomeScreenSearchResultSet.noteToSelfOnly.conversations[0].thread.threadRecord, focusedMessageID: nil)
+                    var viewControllers = self.navigationController?.viewControllers
+                    viewControllers?.append(conversationVC)
+                    self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                }
+            }
+            if indexPath.row == 5 {
+                let appStoreURL = "https://apps.apple.com/app/id1626066143"
+                let shareVC = UIActivityViewController(activityItems: [ appStoreURL ], applicationActivities: nil)
+                self.navigationController!.present(shareVC, animated: true, completion: nil)
+            }
         } else {
-            let sectionResults = searchResultSet.conversations
-            guard let searchResult = sectionResults[safe: indexPath.row] else { return }
-            show(searchResult.thread.threadRecord, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+            if self.searchText.count == 0 {
+                guard let thread = self.thread(at: indexPath.row) else { return }
+                show(thread, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+            } else {
+                let sectionResults = searchResultSet.conversations
+                guard let searchResult = sectionResults[safe: indexPath.row] else { return }
+                show(searchResult.thread.threadRecord, with: ConversationViewAction.none, highlightedMessageID: nil, animated: true)
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 52
+        return indexPath.section == 0 ? 50 : 52
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
