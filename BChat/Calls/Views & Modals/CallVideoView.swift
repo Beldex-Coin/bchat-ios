@@ -85,9 +85,6 @@ class LocalVideoView: TargetView {
     static let height: CGFloat = 135
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
-        DispatchQueue.main.async {
-            self.backgroundColor = .red
-        }
         super.renderFrame(frame)
         DispatchMainThreadSafe {
             // This is a workaround for a weird issue that
@@ -97,7 +94,7 @@ class LocalVideoView: TargetView {
             self.videoContentMode = .scaleAspectFit
 #if targetEnvironment(simulator)
 #else
-            self.videoContentMode = .scaleAspectFit
+            self.videoContentMode = .scaleAspectFill
 #endif
         }
     }
