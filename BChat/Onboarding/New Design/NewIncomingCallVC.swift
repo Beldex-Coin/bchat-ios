@@ -562,7 +562,11 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         callerImageView.isHidden = self.bChatCall.isRemoteVideoEnabled
         callerNameLabel.isHidden = self.bChatCall.isRemoteVideoEnabled
         callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
-        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) {
+            cameraButton.isEnabled = true
+            cameraButton.isSelected = true
+            cameraManager.start()
+        }
         shouldRestartCamera = true
         addLocalVideoView()
         remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
@@ -589,9 +593,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-//        floatingLocalVideoView.isHidden = true
-        
+        floatingLocalVideoView.removeFromSuperview()
+        remoteVideoView.alpha = 0
         let currentCallDuration = AppEnvironment.shared.callManager.currentCall?.duration
         if currentCallDuration == nil {
             durationTimer?.invalidate()

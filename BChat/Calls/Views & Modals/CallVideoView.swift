@@ -71,6 +71,7 @@ class RemoteVideoView: TargetView {
             if frameRatio < 1.5 {
                 self.videoContentMode = .scaleAspectFit
             }
+            self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
             self.videoContentMode = .scaleAspectFill
 #endif
         }
