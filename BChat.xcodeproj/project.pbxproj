@@ -407,6 +407,11 @@
 		8A60F48B2C184D6D009AB837 /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D33B6229F7D9E7003CAE13 /* StringConstants.swift */; };
 		8A60F48E2C19529F009AB837 /* SessionProtos.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48C2C19529F009AB837 /* SessionProtos.proto */; };
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
+		8A72CC282D635B23004D2018 /* ReactionContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC272D635B23004D2018 /* ReactionContainerView.swift */; };
+		8A72CC2A2D635B2B004D2018 /* ReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC292D635B2B004D2018 /* ReactionView.swift */; };
+		8A72CC2C2D635B33004D2018 /* EmojiPickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2B2D635B33004D2018 /* EmojiPickerCollectionView.swift */; };
+		8A72CC2E2D635B40004D2018 /* EmojiSkinTonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2D2D635B40004D2018 /* EmojiSkinTonePicker.swift */; };
+		8A72CC302D635B48004D2018 /* EmojiPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE04A762CF0329D002A8B11 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE04A752CF0329D002A8B11 /* libwallet_api.a */; };
@@ -1585,6 +1590,11 @@
 		8A60F4892C1815F5009AB837 /* SessionProtos.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProtos.pb.swift; sourceTree = "<group>"; };
 		8A60F48C2C19529F009AB837 /* SessionProtos.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = SessionProtos.proto; sourceTree = "<group>"; };
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
+		8A72CC272D635B23004D2018 /* ReactionContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionContainerView.swift; sourceTree = "<group>"; };
+		8A72CC292D635B2B004D2018 /* ReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionView.swift; sourceTree = "<group>"; };
+		8A72CC2B2D635B33004D2018 /* EmojiPickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerCollectionView.swift; sourceTree = "<group>"; };
+		8A72CC2D2D635B40004D2018 /* EmojiSkinTonePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSkinTonePicker.swift; sourceTree = "<group>"; };
+		8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerSheet.swift; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AE04A752CF0329D002A8B11 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
@@ -2876,6 +2886,7 @@
 		813609CA2B3AFDA5004D3FAC /* New Design */ = {
 			isa = PBXGroup;
 			children = (
+				8A72CC262D635B07004D2018 /* Emoji */,
 				8A406DCF2C0F05B000E3ED4C /* SideMenu */,
 				813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */,
 				8164F10B2B3C280500590775 /* RegisterVC.swift */,
@@ -3053,6 +3064,18 @@
 				8A5A0B492C05913300288474 /* HostType.swift */,
 			);
 			path = "Host Helper";
+			sourceTree = "<group>";
+		};
+		8A72CC262D635B07004D2018 /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				8A72CC272D635B23004D2018 /* ReactionContainerView.swift */,
+				8A72CC292D635B2B004D2018 /* ReactionView.swift */,
+				8A72CC2B2D635B33004D2018 /* EmojiPickerCollectionView.swift */,
+				8A72CC2D2D635B40004D2018 /* EmojiSkinTonePicker.swift */,
+				8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */,
+			);
+			path = Emoji;
 			sourceTree = "<group>";
 		};
 		8AE89F9A2D5B1119009EDF54 /* Emoji Picker */ = {
@@ -5712,6 +5735,7 @@
 				6098CA692A1DCC42005A5502 /* BeldexTrxHistory.m in Sources */,
 				B8CCF63723961D6D0091D419 /* NewDMVC.swift in Sources */,
 				452EC6DF205E9E30000E787C /* MediaGalleryViewController.swift in Sources */,
+				8A72CC282D635B23004D2018 /* ReactionContainerView.swift in Sources */,
 				4C1885D2218F8E1C00B67051 /* PhotoGridViewCell.swift in Sources */,
 				815427BC2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift in Sources */,
 				34D1F0501F7D45A60066283D /* GifPickerCell.swift in Sources */,
@@ -5729,6 +5753,7 @@
 				B879D449247E1BE300DB3608 /* PathVC.swift in Sources */,
 				B877E24626CA13BA0007970A /* CallVC+Camera.swift in Sources */,
 				8AE89F9E2D5B117D009EDF54 /* EmojiSkinTonePicker.swift in Sources */,
+				8A72CC2E2D635B40004D2018 /* EmojiSkinTonePicker.swift in Sources */,
 				454A84042059C787008B8C75 /* MediaTileViewController.swift in Sources */,
 				34D1F0871F8678AA0066283D /* ConversationViewItem.m in Sources */,
 				451A13B11E13DED2000A50FD /* AppNotifications.swift in Sources */,
@@ -5797,6 +5822,7 @@
 				4C4AEC4520EC343B0020E72B /* DismissableTextField.swift in Sources */,
 				3496955E219B605E00DCFE74 /* PhotoLibrary.swift in Sources */,
 				60C51BB02BC8F7540051C05F /* CallPermissionRequestModalNewVC.swift in Sources */,
+				8A72CC302D635B48004D2018 /* EmojiPickerSheet.swift in Sources */,
 				60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift in Sources */,
 				6007B5B228A4D7400004BD61 /* Seed.swift in Sources */,
 				C3A76A8D25DB83F90074CB90 /* PermissionMissingModal.swift in Sources */,
@@ -5845,6 +5871,7 @@
 				34BECE301F7ABCF800D7438D /* GifPickerLayout.swift in Sources */,
 				C331FFFE2558FF3B00070591 /* ConversationCell.swift in Sources */,
 				6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */,
+				8A72CC2C2D635B33004D2018 /* EmojiPickerCollectionView.swift in Sources */,
 				6098CA812A1DCD44005A5502 /* String + Ext.swift in Sources */,
 				6049BEF92B5A37B4003DD410 /* RescanNewVC.swift in Sources */,
 				817DC5E12B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift in Sources */,
@@ -6006,6 +6033,7 @@
 				6010E9F428C86A0F00600D1A /* Section.swift in Sources */,
 				4521C3C01F59F3BA00B4C582 /* TextFieldHelper.swift in Sources */,
 				340FC8AC204DAC8D007AEB0F /* PrivacySettingsTableViewController.m in Sources */,
+				8A72CC2A2D635B2B004D2018 /* ReactionView.swift in Sources */,
 				8129ABED2B57CF0800417EE2 /* EnableWalletVC.swift in Sources */,
 				7B7CB18E270D066F0079FF93 /* IncomingCallBanner.swift in Sources */,
 				6007B5EE28ABC9DF0004BD61 /* UIColor+Ext.swift in Sources */,
