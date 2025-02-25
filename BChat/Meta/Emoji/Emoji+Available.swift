@@ -1,19 +1,22 @@
 // Copyright © 2025 Beldex International Limited OU. All rights reserved.
 
 import Foundation
+import SignalCoreKit
+import BChatUtilitiesKit
+import SignalUtilitiesKit
 
 extension Emoji {
     private static let availableCache: Atomic<[Emoji:Bool]> = Atomic([:])
     private static let iosVersionKey = "iosVersion"
-    private static let cacheUrl = URL(fileURLWithPath: FileManager.default.appSharedDataDirectoryPath)
+    private static let cacheUrl = URL(fileURLWithPath: OWSFileSystem.appSharedDataDirectoryPath())
         .appendingPathComponent("Library")
         .appendingPathComponent("Caches")
         .appendingPathComponent("emoji.plist")
 
     static func warmAvailableCache() {
-        Log.assertOnMainThread()
+        owsAssertDebug(!Thread.isMainThread)
 
-        guard Singleton.hasAppContext && Singleton.appContext.isMainAppAndActive else { return }
+//        guard Singleton.hasAppContext && Singleton.appContext.isMainAppAndActive else { return }
 
         var availableCache = [Emoji: Bool]()
         var uncachedEmoji = [Emoji]()
@@ -25,28 +28,28 @@ extension Emoji {
         do {
             availableMap = try NSMutableDictionary(contentsOf: Self.cacheUrl, error: ())
         } catch {
-            Log.info("[Emoji] Re-building emoji availability cache. Cache could not be loaded. \(error)")
+            Logger.info("[Emoji] Re-building emoji availability cache. Cache could not be loaded. \(error)")
             uncachedEmoji = Emoji.allCases
         }
 
         let lastIosVersion = availableMap[iosVersionKey] as? String
         if lastIosVersion == iosVersion {
-            Log.debug("[Emoji] Loading emoji availability cache (expect \(Emoji.allCases.count) items, found \(availableMap.count - 1)).")
+            Logger.debug("[Emoji] Loading emoji availability cache (expect \(Emoji.allCases.count) items, found \(availableMap.count - 1)).")
             for emoji in Emoji.allCases {
                 if let available = availableMap[emoji.rawValue] as? Bool {
                     availableCache[emoji] = available
                 } else {
-                    Log.warn("[Emoji] Emoji unexpectedly missing from cache: \(emoji).")
+                    Logger.warn("[Emoji] Emoji unexpectedly missing from cache: \(emoji).")
                     uncachedEmoji.append(emoji)
                 }
             }
         } else if uncachedEmoji.isEmpty {
-            Log.info("[Emoji] Re-building emoji availability cache. iOS version upgraded from \(lastIosVersion ?? "(none)") -> \(iosVersion)")
+            Logger.info("[Emoji] Re-building emoji availability cache. iOS version upgraded from \(lastIosVersion ?? "(none)") -> \(iosVersion)")
             uncachedEmoji = Emoji.allCases
         }
 
         if !uncachedEmoji.isEmpty {
-            Log.info("[Emoji] Checking emoji availability for \(uncachedEmoji.count) uncached emoji")
+            Logger.info("[Emoji] Checking emoji availability for \(uncachedEmoji.count) uncached emoji")
             uncachedEmoji.forEach {
                 let available = isEmojiAvailable($0)
                 availableMap[$0.rawValue] = available
@@ -61,11 +64,11 @@ extension Emoji {
                                                         withIntermediateDirectories: true)
                 try availableMap.write(to: Self.cacheUrl)
             } catch {
-                Log.warn("[Emoji] Failed to save emoji availability cache; it will be recomputed next time! \(error)")
+                Logger.warn("[Emoji] Failed to save emoji availability cache; it will be recomputed next time! \(error)")
             }
         }
 
-        Log.info("[Emoji] Warmed emoji availability cache with \(availableCache.lazy.filter { $0.value }.count) available emoji for iOS \(iosVersion)")
+        Logger.info("[Emoji] Warmed emoji availability cache with \(availableCache.lazy.filter { $0.value }.count) available emoji for iOS \(iosVersion)")
 
         Self.availableCache.mutate{ $0 = availableCache }
     }
@@ -95,7 +98,8 @@ private extension String {
     // by verifying its image is different than the "unknown"
     // reference image
     var isUnicodeStringAvailable: Bool {
-        guard self.isSingleEmoji else { return false }
+//        guard self.isSingleEmoji else { return false }
+        // Emoji context =======
         return String.unknownUnicodeStringPng != unicodeStringPngRepresentation
     }
 

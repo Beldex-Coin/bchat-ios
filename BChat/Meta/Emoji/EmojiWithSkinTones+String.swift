@@ -4,7 +4,7 @@ import Foundation
 
 extension EmojiWithSkinTones {
     init?(rawValue: String) {
-        guard rawValue.isSingleEmoji else { return nil }
+//        guard rawValue.isSingleEmoji else { return nil }
         switch (rawValue.unicodeScalars.map({ $0.value }).reduce(0, +) / 100) {
             case 89: self = EmojiWithSkinTones.emojiFrom89(rawValue)
             case 91: self = EmojiWithSkinTones.emojiFrom91(rawValue)

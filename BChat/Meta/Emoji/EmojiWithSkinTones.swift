@@ -54,6 +54,7 @@ public struct EmojiWithSkinTones: Hashable, Equatable, ContentEquatable, Content
     var isNormalized: Bool { self == normalized }
 }
 
+@available(iOS 13, *)
 extension Emoji {
     static func getRecent(_ db: Database, withDefaultEmoji: Bool) throws -> [String] {
         let recentReactionEmoji: [String] = (db[.recentReactionEmoji]?

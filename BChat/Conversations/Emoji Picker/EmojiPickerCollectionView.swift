@@ -75,7 +75,7 @@ class EmojiPickerCollectionView: UICollectionView {
         addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.delegate = self
         
-        /*
+        
         let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"]
         let recentEmoji: [EmojiWithSkinTones] = defaultEmoji//try Emoji.getRecent(db, withDefaultEmoji: false)
             .compactMap { EmojiWithSkinTones(rawValue: $0) }
@@ -97,7 +97,6 @@ class EmojiPickerCollectionView: UICollectionView {
 //        }
         self.recentEmoji = recentEmoji
         self.allSendableEmojiByCategory = [:]
-         */
         
         /*
         

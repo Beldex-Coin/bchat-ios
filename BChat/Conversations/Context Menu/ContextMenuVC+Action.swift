@@ -105,66 +105,66 @@ extension ContextMenuVC {
             }
         }
         switch viewItem.messageCellType {
-        case .textOnlyMessage:
-            var result: [Action] = []
-          //  if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
-            if isReplyingAllowed() {
-                // Payment Card View and openGroupInvitation Both "Replay" Option is disabled
-                if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid {
-                    if txnid.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
-                    if txnid.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                    if openGroupInvitationURL.isEmpty { }
-                }else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                    if openGroupInvitationURL.isEmpty { }
-                }else {
-                    result.append(Action.reply(viewItem, delegate))
+            case .textOnlyMessage:
+                var result: [Action] = []
+              //  if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
+                if isReplyingAllowed() {
+                    // Payment Card View and openGroupInvitation Both "Replay" Option is disabled
+                    if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid {
+                        if txnid.isEmpty { }
+                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
+                        if txnid.isEmpty { }
+                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
+                        if openGroupInvitationURL.isEmpty { }
+                    } else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
+                        if openGroupInvitationURL.isEmpty { }
+                    } else {
+                        result.append(Action.reply(viewItem, delegate))
+                    }
                 }
-            }
-            // Copy Code
-            result.append(Action.copy(viewItem, delegate))
-            
-            // Message Detail For OutgoingMessage
-            if viewItem.interaction is TSOutgoingMessage {
-                result.append(Action.messageDetail(viewItem, delegate))
-            }
-            
-            let isGroup = viewItem.isGroupThread
-            if let message = viewItem.interaction as? TSIncomingMessage, isGroup, message.isOpenGroupMessage {
-                result.append(Action.report(viewItem, delegate))
-            }
-            if let message = viewItem.interaction as? TSIncomingMessage, isGroup, !message.isOpenGroupMessage {
-                result.append(Action.copyBChatID(viewItem, delegate))
-            }
-            if !isGroup || viewItem.userCanDeleteGroupMessage { result.append(Action.delete(viewItem, delegate)) }
-            if isGroup && viewItem.interaction is TSIncomingMessage && viewItem.userHasModerationPermission {
-                result.append(Action.ban(viewItem, delegate))
-                result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
-            }
-            return result
-        case .mediaMessage, .audio, .genericAttachment:
-            var result: [Action] = []
-            if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
-            if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
-            if viewItem.canSaveMedia() { result.append(Action.save(viewItem, delegate)) }
-            
-            // Message Detail For OutgoingMessage
-            if viewItem.interaction is TSOutgoingMessage {
-                result.append(Action.messageDetail(viewItem, delegate))
-            }
-            
-            let isGroup = viewItem.isGroupThread
-            if let message = viewItem.interaction as? TSIncomingMessage, isGroup, !message.isOpenGroupMessage {
-                result.append(Action.copyBChatID(viewItem, delegate))
-            }
-            if !isGroup || viewItem.userCanDeleteGroupMessage { result.append(Action.delete(viewItem, delegate)) }
-            if isGroup && viewItem.interaction is TSIncomingMessage && viewItem.userHasModerationPermission {
-                result.append(Action.ban(viewItem, delegate))
-                result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
-            }
-            return result
-        default: return []
+                // Copy Code
+                result.append(Action.copy(viewItem, delegate))
+                
+                // Message Detail For OutgoingMessage
+                if viewItem.interaction is TSOutgoingMessage {
+                    result.append(Action.messageDetail(viewItem, delegate))
+                }
+                
+                let isGroup = viewItem.isGroupThread
+                if let message = viewItem.interaction as? TSIncomingMessage, isGroup, message.isOpenGroupMessage {
+                    result.append(Action.report(viewItem, delegate))
+                }
+                if let message = viewItem.interaction as? TSIncomingMessage, isGroup, !message.isOpenGroupMessage {
+                    result.append(Action.copyBChatID(viewItem, delegate))
+                }
+                if !isGroup || viewItem.userCanDeleteGroupMessage { result.append(Action.delete(viewItem, delegate)) }
+                if isGroup && viewItem.interaction is TSIncomingMessage && viewItem.userHasModerationPermission {
+                    result.append(Action.ban(viewItem, delegate))
+                    result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
+                }
+                return result
+            case .mediaMessage, .audio, .genericAttachment:
+                var result: [Action] = []
+                if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
+                if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
+                if viewItem.canSaveMedia() { result.append(Action.save(viewItem, delegate)) }
+                
+                // Message Detail For OutgoingMessage
+                if viewItem.interaction is TSOutgoingMessage {
+                    result.append(Action.messageDetail(viewItem, delegate))
+                }
+                
+                let isGroup = viewItem.isGroupThread
+                if let message = viewItem.interaction as? TSIncomingMessage, isGroup, !message.isOpenGroupMessage {
+                    result.append(Action.copyBChatID(viewItem, delegate))
+                }
+                if !isGroup || viewItem.userCanDeleteGroupMessage { result.append(Action.delete(viewItem, delegate)) }
+                if isGroup && viewItem.interaction is TSIncomingMessage && viewItem.userHasModerationPermission {
+                    result.append(Action.ban(viewItem, delegate))
+                    result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
+                }
+                return result
+            default: return []
         }
     }
 }
