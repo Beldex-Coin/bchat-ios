@@ -415,9 +415,6 @@
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE04A762CF0329D002A8B11 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE04A752CF0329D002A8B11 /* libwallet_api.a */; };
-		8AE89F9C2D5B1154009EDF54 /* EmojiPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE89F9B2D5B1154009EDF54 /* EmojiPickerSheet.swift */; };
-		8AE89F9E2D5B117D009EDF54 /* EmojiSkinTonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE89F9D2D5B117D009EDF54 /* EmojiSkinTonePicker.swift */; };
-		8AE89FA02D5B11B0009EDF54 /* EmojiPickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE89F9F2D5B11B0009EDF54 /* EmojiPickerCollectionView.swift */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
@@ -1598,9 +1595,6 @@
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AE04A752CF0329D002A8B11 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
-		8AE89F9B2D5B1154009EDF54 /* EmojiPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerSheet.swift; sourceTree = "<group>"; };
-		8AE89F9D2D5B117D009EDF54 /* EmojiSkinTonePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSkinTonePicker.swift; sourceTree = "<group>"; };
-		8AE89F9F2D5B11B0009EDF54 /* EmojiPickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerCollectionView.swift; sourceTree = "<group>"; };
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
 		8EEE74B0753448C085B48721 /* Pods-SignalMessaging.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.app store release.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.app store release.xcconfig"; sourceTree = "<group>"; };
 		948239851C08032C842937CC /* Pods-SignalMessaging.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalMessaging.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalMessaging/Pods-SignalMessaging.test.xcconfig"; sourceTree = "<group>"; };
@@ -3078,16 +3072,6 @@
 			path = Emoji;
 			sourceTree = "<group>";
 		};
-		8AE89F9A2D5B1119009EDF54 /* Emoji Picker */ = {
-			isa = PBXGroup;
-			children = (
-				8AE89F9F2D5B11B0009EDF54 /* EmojiPickerCollectionView.swift */,
-				8AE89F9D2D5B117D009EDF54 /* EmojiSkinTonePicker.swift */,
-				8AE89F9B2D5B1154009EDF54 /* EmojiPickerSheet.swift */,
-			);
-			path = "Emoji Picker";
-			sourceTree = "<group>";
-		};
 		9404664EC513585B05DF1350 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -3244,7 +3228,6 @@
 				C328252E25CA54F70062D0A7 /* Context Menu */,
 				B821493625D4D6A7009C0F2A /* Views & Modals */,
 				C302094625DCDFD3001F572D /* Settings */,
-				8AE89F9A2D5B1119009EDF54 /* Emoji Picker */,
 			);
 			path = Conversations;
 			sourceTree = "<group>";
@@ -5752,7 +5735,6 @@
 				B893063F2383961A005EAA8E /* ScanQRCodeWrapperVC.swift in Sources */,
 				B879D449247E1BE300DB3608 /* PathVC.swift in Sources */,
 				B877E24626CA13BA0007970A /* CallVC+Camera.swift in Sources */,
-				8AE89F9E2D5B117D009EDF54 /* EmojiSkinTonePicker.swift in Sources */,
 				8A72CC2E2D635B40004D2018 /* EmojiSkinTonePicker.swift in Sources */,
 				454A84042059C787008B8C75 /* MediaTileViewController.swift in Sources */,
 				34D1F0871F8678AA0066283D /* ConversationViewItem.m in Sources */,
@@ -5849,7 +5831,6 @@
 				810E87862B58FAED001133F9 /* InitiatingTransactionVC.swift in Sources */,
 				34E3E5681EC4B19400495BAC /* AudioProgressView.swift in Sources */,
 				81179E592BDA0A8E00B5C820 /* SideMenuViewController.swift in Sources */,
-				8AE89FA02D5B11B0009EDF54 /* EmojiPickerCollectionView.swift in Sources */,
 				B8D0A26925E4A2C200C1835E /* Onboarding.swift in Sources */,
 				34D1F0521F7E8EA30066283D /* GiphyDownloader.swift in Sources */,
 				810F96292BFE189C000C5DC2 /* SegmentedControl.swift in Sources */,
@@ -5907,7 +5888,6 @@
 				8A4B95DE2C2E76A40061C7D4 /* DocumentCollectionViewCell.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
 				8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */,
-				8AE89F9C2D5B1154009EDF54 /* EmojiPickerSheet.swift in Sources */,
 				34D5CCA91EAE3D30005515DB /* AvatarViewHelper.m in Sources */,
 				812D682B2B47F5B3008B3595 /* SecretGroupTableViewCell.swift in Sources */,
 				B8B558F126C4BB0600693325 /* CameraManager.swift in Sources */,
