@@ -686,13 +686,13 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         isVideoSwapped.toggle()
         if isVideoSwapped {
             bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
             bChatCall.attachLocalVideoRenderer(remoteVideoView)
+            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
             bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
         } else {
             bChatCall.attachRemoteVideoRenderer(remoteVideoView)
-            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.removeLocalVideoRenderer(remoteVideoView)
         }
     }
@@ -790,6 +790,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
             }
             DispatchQueue.main.async {
+                self.floatingLocalVideoView.isHidden = true
                 self.conversationVC?.showInputAccessoryView()
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
