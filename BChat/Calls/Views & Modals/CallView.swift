@@ -77,6 +77,7 @@ class CallView : UIView {
             callIconImageView.contentMode = .scaleAspectFit
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleCallDeclineTapped(_:)))
             tap.cancelsTouchesInView = false
+            callIconImageView.isUserInteractionEnabled = true
             callIconImageView.addGestureRecognizer(tap)
         } else {
             if let recognizers = callIconImageView.gestureRecognizers {

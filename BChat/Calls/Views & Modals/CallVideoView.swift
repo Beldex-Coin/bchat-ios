@@ -71,7 +71,6 @@ class RemoteVideoView: TargetView {
             if frameRatio < 1.5 {
                 self.videoContentMode = .scaleAspectFit
             }
-            self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
             self.videoContentMode = .scaleAspectFill
 #endif
         }
@@ -87,14 +86,73 @@ class LocalVideoView: TargetView {
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
         super.renderFrame(frame)
+        // Don't delete below lines, needs to be check
+//        DispatchMainThreadSafe {
+//            // This is a workaround for a weird issue that
+//            // sometimes the rotationOverride is not working
+//            // if it is only set once on initialization
+//            self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
+//            self.videoContentMode = .scaleAspectFit
+//#if targetEnvironment(simulator)
+//#else
+//            self.videoContentMode = .scaleAspectFill
+//#endif
+//        }
+        guard let frame = frame else { return }
         DispatchMainThreadSafe {
-            // This is a workaround for a weird issue that
-            // sometimes the rotationOverride is not working
-            // if it is only set once on initialization
-            self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
+            let frameRatio = Double(frame.height) / Double(frame.width)
+            let frameRotation = frame.rotation
+            let deviceRotation = UIDevice.current.orientation
+            var rotationOverride: RTCVideoRotation? = nil
             self.videoContentMode = .scaleAspectFit
+            switch deviceRotation {
+                case .portrait, .portraitUpsideDown:
+                    // We don't have to do anything, the renderer will automatically make sure it's right-side-up.
+                    self.videoContentMode = .scaleAspectFit
+                    break
+                case .landscapeLeft:
+                    switch frameRotation {
+                        case RTCVideoRotation._0: rotationOverride = RTCVideoRotation._90 // Landscape left
+                        case RTCVideoRotation._90: rotationOverride = RTCVideoRotation._180 // Portrait
+                        case RTCVideoRotation._180: rotationOverride = RTCVideoRotation._270 // Landscape right
+                        case RTCVideoRotation._270: rotationOverride = RTCVideoRotation._0 // Portrait upside-down
+                        default: break
+                    }
+                case .landscapeRight:
+                    switch frameRotation {
+                        case RTCVideoRotation._0: rotationOverride = RTCVideoRotation._270 // Landscape left
+                        case RTCVideoRotation._90: rotationOverride = RTCVideoRotation._0 // Portrait
+                        case RTCVideoRotation._180: rotationOverride = RTCVideoRotation._90 // Landscape right
+                        case RTCVideoRotation._270: rotationOverride = RTCVideoRotation._180 // Portrait upside-down
+                        default: break
+                    }
+                default:
+                    // Do nothing if we're face down, up, etc.
+                    // Assume we're already setup for the correct orientation.
+                    break
+            }
+            
 #if targetEnvironment(simulator)
 #else
+            if let rotationOverride = rotationOverride {
+                self.rotationOverride = NSNumber(value: rotationOverride.rawValue)
+                if [ RTCVideoRotation._0, RTCVideoRotation._180 ].contains(rotationOverride) {
+                    self.videoContentMode = .scaleAspectFill
+                } else {
+                    self.videoContentMode = .scaleAspectFit
+                }
+            } else {
+                self.rotationOverride = nil
+                if [ RTCVideoRotation._0, RTCVideoRotation._180 ].contains(frameRotation) {
+                    self.videoContentMode = .scaleAspectFill
+                } else {
+                    self.videoContentMode = .scaleAspectFit
+                }
+            }
+            // if not a mobile ratio, always use .scaleAspectFit
+            if frameRatio < 1.5 {
+                self.videoContentMode = .scaleAspectFit
+            }
             self.videoContentMode = .scaleAspectFill
 #endif
         }
