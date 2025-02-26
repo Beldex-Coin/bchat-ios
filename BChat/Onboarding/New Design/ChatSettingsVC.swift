@@ -1625,6 +1625,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                         cell.titleLabel.alpha = 0.6
                         cell.rightIconImageView.alpha = 0.6
                         cell.leftIconImageView.alpha = 0.6
+                    } else {
+                        cell.titleLabel.alpha = 1
+                        cell.rightIconImageView.alpha = 1
+                        cell.leftIconImageView.alpha = 1
                     }
                 }
                 

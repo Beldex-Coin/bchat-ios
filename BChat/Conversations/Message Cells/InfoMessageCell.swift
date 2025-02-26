@@ -67,6 +67,8 @@ final class InfoMessageCell : MessageCell {
         iconImageViewHeightConstraint.constant = (icon != nil) ? InfoMessageCell.iconSize : 0
         if message.messageType == TSInfoMessageType.groupCurrentUserLeft || message.messageType == TSInfoMessageType.groupCurrentUserRemoved {
             self.label.textColor = Colors.bothRedColor
+        } else {
+            self.label.textColor = Colors.messageTimeLabelColor
         }
         Storage.read { transaction in
             self.label.text = message.previewText(with: transaction)

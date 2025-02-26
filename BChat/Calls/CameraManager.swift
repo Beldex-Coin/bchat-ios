@@ -46,6 +46,17 @@ final class CameraManager : NSObject {
     }
     
     func start() {
+        guard let videoCaptureDevice = videoCaptureDevice, let videoInput = videoInput else { return }
+        stop()
+        if videoCaptureDevice.position == .front {
+            captureSession.removeInput(videoInput)
+            captureSession.removeOutput(videoDataOutput)
+            addNewVideoIO(position: .front)
+        } else {
+            captureSession.removeInput(videoInput)
+            captureSession.removeOutput(videoDataOutput)
+            addNewVideoIO(position: .back)
+        }
         guard !isCapturing else { return }
         print("[Calls] Starting camera.")
         isCapturing = true
