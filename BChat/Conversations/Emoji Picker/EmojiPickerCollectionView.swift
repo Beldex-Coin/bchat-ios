@@ -66,7 +66,6 @@ class EmojiPickerCollectionView: UICollectionView {
         )
 
         backgroundColor = isLightMode ? .white : .black
-        backgroundColor = isLightMode ? .white : .black
 
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         panGestureRecognizer.require(toFail: longPressGesture)
@@ -205,34 +204,34 @@ class EmojiPickerCollectionView: UICollectionView {
     func handleLongPress(sender: UILongPressGestureRecognizer) {
 
         switch sender.state {
-        case .began:
-            let point = sender.location(in: self)
-            guard let indexPath = indexPathForItem(at: point) else { return }
-            guard let emoji = emojiForIndexPath(indexPath) else { return }
-            guard let cell = cellForItem(at: indexPath) else { return }
+            case .began:
+                let point = sender.location(in: self)
+                guard let indexPath = indexPathForItem(at: point) else { return }
+                guard let emoji = emojiForIndexPath(indexPath) else { return }
+                guard let cell = cellForItem(at: indexPath) else { return }
 
-            currentSkinTonePicker?.dismiss()
-            currentSkinTonePicker = EmojiSkinTonePicker.present(referenceView: cell, emoji: emoji) { [weak self] emoji in
-//                if let emoji: EmojiWithSkinTones = emoji {
-//                    Storage.shared.writeAsync { db in
-//                        emoji.baseEmoji?.setPreferredSkinTones(
-//                            db,
-//                            preferredSkinTonePermutation: emoji.skinTones
-//                        )
-//                    }
-//
-//                    self?.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
-//                }
+                currentSkinTonePicker?.dismiss()
+                currentSkinTonePicker = EmojiSkinTonePicker.present(referenceView: cell, emoji: emoji) { [weak self] emoji in
+    //                if let emoji: EmojiWithSkinTones = emoji {
+    //                    Storage.shared.writeAsync { db in
+    //                        emoji.baseEmoji?.setPreferredSkinTones(
+    //                            db,
+    //                            preferredSkinTonePermutation: emoji.skinTones
+    //                        )
+    //                    }
+    //
+    //                    self?.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
+    //                }
 
-                self?.currentSkinTonePicker?.dismiss()
-                self?.currentSkinTonePicker = nil
-            }
-        case .changed:
-            currentSkinTonePicker?.didChangeLongPress(sender)
-        case .ended:
-            currentSkinTonePicker?.didEndLongPress(sender)
-        default:
-            break
+                    self?.currentSkinTonePicker?.dismiss()
+                    self?.currentSkinTonePicker = nil
+                }
+            case .changed:
+                currentSkinTonePicker?.didChangeLongPress(sender)
+            case .ended:
+                currentSkinTonePicker?.didEndLongPress(sender)
+            default:
+                break
         }
     }
 
