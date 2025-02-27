@@ -1,3 +1,5 @@
+import UIKit
+import Foundation
 
 final class ContextMenuVC : UIViewController {
     private let snapshot: UIView
@@ -27,7 +29,7 @@ final class ContextMenuVC : UIViewController {
 //        return result
 //    }()
     
-    private lazy var emojiView: UIView = {
+    private lazy var emojiBarView: UIView = {
             let result = UIView()
             result.layer.shadowColor = UIColor.black.cgColor
             result.layer.shadowOffset = CGSize.zero
@@ -39,13 +41,12 @@ final class ContextMenuVC : UIViewController {
         }()
         
         private let addEmojiButton: UIButton = {
-            let result: UIButton = UIButton()
+            let result = UIButton(type: .custom)
             result.translatesAutoresizingMaskIntoConstraints = false
             result.clipsToBounds = true
-            result.setTitle("+", for: .normal)
             result.layer.cornerRadius = 20
-            result.setTitleColor(Colors.bothWhiteColor, for: .normal)
-            result.layer.backgroundColor = Colors.bothGreenColor.cgColor
+            let image = UIImage(named: "more_reactions")?.withRenderingMode(.alwaysTemplate)
+            result.setImage(image, for: .normal)
             result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
             return result
         }()
@@ -81,7 +82,7 @@ final class ContextMenuVC : UIViewController {
         blurView.pin(to: view)
         
         // Emoji view
-        view.addSubview(emojiView)
+        view.addSubview(emojiBarView)
         
         // Snapshot
         snapshot.layer.shadowColor = UIColor.black.cgColor
@@ -120,18 +121,18 @@ final class ContextMenuVC : UIViewController {
         let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
-            emojiView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+            emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
         } else {
             menuView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
-            emojiView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
+            emojiBarView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
         }
         switch viewItem.interaction.interactionType() {
             case .outgoingMessage:
                 menuView.pin(.right, to: .right, of: snapshot)
-                emojiView.pin(.right, to: .right, of: snapshot)
+                emojiBarView.pin(.right, to: .right, of: snapshot)
             case .incomingMessage:
                 menuView.pin(.left, to: .left, of: snapshot)
-                emojiView.pin(.left, to: .left, of: snapshot)
+                emojiBarView.pin(.left, to: .left, of: snapshot)
             default: break // Should never occur
         }
         
@@ -139,13 +140,13 @@ final class ContextMenuVC : UIViewController {
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
         
-        emojiView.set(.width, to: 220)
-        emojiView.set(.height, to: 40)
+        emojiBarView.set(.width, to: 220)
+        emojiBarView.set(.height, to: 40)
         
         addEmojiButton.set(.width, to: 40)
         addEmojiButton.set(.height, to: 40)
-        emojiView.addSubview(addEmojiButton)
-        addEmojiButton.pin(.right, to: .right, of: emojiView)
+        emojiBarView.addSubview(addEmojiButton)
+        addEmojiButton.pin(.right, to: .right, of: emojiBarView)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -160,6 +161,7 @@ final class ContextMenuVC : UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         menuView.layer.shadowPath = UIBezierPath(roundedRect: menuView.bounds, cornerRadius: ContextMenuVC.menuCornerRadius).cgPath
+        emojiBarView.layer.shadowPath = UIBezierPath(roundedRect: emojiBarView.bounds, cornerRadius: (ContextMenuVC.actionViewHeight / 2)).cgPath
     }
 
     // MARK: Interaction
@@ -178,7 +180,8 @@ final class ContextMenuVC : UIViewController {
         })
     }
     
-    @objc func addEmojiButtonTapped() {
+    @objc
+    private func addEmojiButtonTapped() {
         snDismiss()
         delegate?.showFullEmojiKeyboard(viewItem)
     }
