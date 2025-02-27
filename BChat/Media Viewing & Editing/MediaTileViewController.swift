@@ -910,21 +910,19 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             owsFailDebug("collectionView was unexpectedly nil")
             return
         }
-        
-        // hide toolbar
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut, animations: {
+
+        collectionView.performBatchUpdates({
+//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+//                collectionView.deselectItem(at: indexPath, animated: false)
+//            }
+
             NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
             self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
             self.footerBar.superview?.layoutIfNeeded()
-            
-            // undo "ensure toolbar doesn't cover bottom row."
             collectionView.contentInset.bottom -= self.kFooterBarHeight
         }, completion: nil)
         
         self.navigationItem.hidesBackButton = false
-        
-        // deselect any selected
-        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: false)}
     }
     
     @objc
