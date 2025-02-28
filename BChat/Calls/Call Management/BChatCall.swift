@@ -159,6 +159,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     }
     
     var reconnectTimer: Timer? = nil
+    var isVideoSwapped = false
     
     // MARK: Initialization
     init(for bchatID: String, uuid: String, mode: Mode, outgoing: Bool = false) {

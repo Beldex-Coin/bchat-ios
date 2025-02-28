@@ -21,7 +21,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.delegate = self
         return result
     }()
-    var isVideoSwapped = false
     
     var audioSession: AVAudioSession!
     
@@ -562,6 +561,17 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         callerImageView.isHidden = self.bChatCall.isRemoteVideoEnabled
         callerNameLabel.isHidden = self.bChatCall.isRemoteVideoEnabled
         callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
+        if bChatCall.isVideoSwapped {
+            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
+            bChatCall.attachLocalVideoRenderer(remoteVideoView)
+            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+        } else {
+            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+        }
         if (bChatCall.isVideoEnabled && shouldRestartCamera) {
             cameraButton.isEnabled = true
             cameraButton.isSelected = true
@@ -600,7 +610,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             durationTimer?.invalidate()
             durationTimer = nil
         }
-        isVideoSwapped = false
     }
     
     @objc private func pop() {
@@ -683,8 +692,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     @objc private func swapVideo() {
-        isVideoSwapped.toggle()
-        if isVideoSwapped {
+        bChatCall.isVideoSwapped.toggle()
+        if bChatCall.isVideoSwapped {
             bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.attachLocalVideoRenderer(remoteVideoView)
             bChatCall.removeRemoteVideoRenderer(remoteVideoView)
