@@ -62,6 +62,13 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         return result
     }()
     
+    private lazy var localVideoView: LocalVideoView = {
+        let result = LocalVideoView()
+        result.alpha = 0
+        result.backgroundColor = .black
+        return result
+    }()
+    
     var backgroundImageView: UIImageView = {
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true
@@ -365,6 +372,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
 
         // Local video view
         bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+        view.addSubview(localVideoView)
+        localVideoView.translatesAutoresizingMaskIntoConstraints = false
+        localVideoView.pin(to: view)
         
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
@@ -692,6 +702,20 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     @objc private func swapVideo() {
+        if bChatCall.isVideoEnabled && !bChatCall.isRemoteVideoEnabled {
+            localVideoView.alpha = 1
+            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+            bChatCall.attachLocalVideoRenderer(localVideoView)
+            bChatCall.removeRemoteVideoRenderer(localVideoView)
+            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+            return
+        } else {
+            localVideoView.alpha = 0
+            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+        }
         bChatCall.isVideoSwapped.toggle()
         if bChatCall.isVideoSwapped {
             bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
