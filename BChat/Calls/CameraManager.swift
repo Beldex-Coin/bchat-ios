@@ -20,9 +20,11 @@ final class CameraManager : NSObject {
     private var videoCaptureDevice: AVCaptureDevice?
     private var videoInput: AVCaptureDeviceInput?
     
+    private var currentCameraPosition: AVCaptureDevice.Position = .front
+    
     func prepare() {
         print("[Calls] Preparing camera.")
-        addNewVideoIO(position: .front)
+        addNewVideoIO(position: currentCameraPosition)
     }
     
     private func addNewVideoIO(position: AVCaptureDevice.Position) {
@@ -46,17 +48,6 @@ final class CameraManager : NSObject {
     }
     
     func start() {
-        guard let videoCaptureDevice = videoCaptureDevice, let videoInput = videoInput else { return }
-        stop()
-        if videoCaptureDevice.position == .front {
-            captureSession.removeInput(videoInput)
-            captureSession.removeOutput(videoDataOutput)
-            addNewVideoIO(position: .front)
-        } else {
-            captureSession.removeInput(videoInput)
-            captureSession.removeOutput(videoDataOutput)
-            addNewVideoIO(position: .back)
-        }
         guard !isCapturing else { return }
         print("[Calls] Starting camera.")
         isCapturing = true
@@ -77,10 +68,12 @@ final class CameraManager : NSObject {
             captureSession.removeInput(videoInput)
             captureSession.removeOutput(videoDataOutput)
             addNewVideoIO(position: .back)
+            currentCameraPosition = .back
         } else {
             captureSession.removeInput(videoInput)
             captureSession.removeOutput(videoDataOutput)
             addNewVideoIO(position: .front)
+            currentCameraPosition = .front
         }
         start()
     }

@@ -585,6 +585,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         if (bChatCall.isVideoEnabled && shouldRestartCamera) {
             cameraButton.isEnabled = true
             cameraButton.isSelected = true
+            cameraManager.prepare()
             cameraManager.start()
         }
         shouldRestartCamera = true
@@ -703,6 +704,20 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     
     @objc private func swapVideo() {
         if bChatCall.isVideoEnabled && !bChatCall.isRemoteVideoEnabled {
+            if localVideoView.alpha == 1 {
+                callerImageView.isHidden = false
+                callerNameLabel.isHidden = false
+                callerImageBackgroundView.isHidden = false
+                localVideoView.alpha = 0
+                bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+                bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+                bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+                bChatCall.removeLocalVideoRenderer(remoteVideoView)
+                return
+            }
+            callerImageView.isHidden = true
+            callerNameLabel.isHidden = true
+            callerImageBackgroundView.isHidden = true
             localVideoView.alpha = 1
             bChatCall.attachRemoteVideoRenderer(remoteVideoView)
             bChatCall.attachLocalVideoRenderer(localVideoView)
@@ -710,6 +725,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             bChatCall.removeLocalVideoRenderer(remoteVideoView)
             return
         } else {
+            callerImageView.isHidden = false
+            callerNameLabel.isHidden = false
+            callerImageBackgroundView.isHidden = false
             localVideoView.alpha = 0
             bChatCall.attachRemoteVideoRenderer(remoteVideoView)
             bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
