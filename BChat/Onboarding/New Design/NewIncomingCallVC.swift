@@ -236,7 +236,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.addTarget(self, action: #selector(videoButtonTapped), for: UIControl.Event.touchUpInside)
         return result
     }()
-        
+    
     private lazy var cameraButton: UIButton = { //switchCameraButton
         let result = UIButton(type: .custom)
         let image = UIImage(named: "cameraRotate_enable")
@@ -320,7 +320,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.spacing = 0
         return result
     }()
-        
+    
     private lazy var bluetoothButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "callScreen_bluetooth_white")
@@ -709,30 +709,21 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 callerNameLabel.isHidden = false
                 callerImageBackgroundView.isHidden = false
                 localVideoView.alpha = 0
-                bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+                bChatCall.attachRemoteVideoRenderer(localVideoView)
                 bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
                 bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
-                bChatCall.removeLocalVideoRenderer(remoteVideoView)
+                bChatCall.removeLocalVideoRenderer(localVideoView)
                 return
             }
             callerImageView.isHidden = true
             callerNameLabel.isHidden = true
             callerImageBackgroundView.isHidden = true
             localVideoView.alpha = 1
-            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
             bChatCall.attachLocalVideoRenderer(localVideoView)
             bChatCall.removeRemoteVideoRenderer(localVideoView)
-            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
             return
-        } else {
-            callerImageView.isHidden = false
-            callerNameLabel.isHidden = false
-            callerImageBackgroundView.isHidden = false
-            localVideoView.alpha = 0
-            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
-            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeLocalVideoRenderer(remoteVideoView)
         }
         bChatCall.isVideoSwapped.toggle()
         if bChatCall.isVideoSwapped {
@@ -865,7 +856,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             print(error.localizedDescription);
         }
     }
-    
     
     func isCallOutgoing() -> Bool {
         guard let call = AppEnvironment.shared.callManager.currentCall else { return true }

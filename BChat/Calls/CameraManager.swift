@@ -8,6 +8,8 @@ protocol CameraManagerDelegate : AnyObject {
     func handleVideoOutputCaptured(sampleBuffer: CMSampleBuffer)
 }
 
+var currentCameraPosition: AVCaptureDevice.Position = .front
+
 final class CameraManager : NSObject {
     private let captureSession = AVCaptureSession()
     private let videoDataOutput = AVCaptureVideoDataOutput()
@@ -20,7 +22,6 @@ final class CameraManager : NSObject {
     private var videoCaptureDevice: AVCaptureDevice?
     private var videoInput: AVCaptureDeviceInput?
     
-    private var currentCameraPosition: AVCaptureDevice.Position = .front
     
     func prepare() {
         print("[Calls] Preparing camera.")
@@ -59,6 +60,7 @@ final class CameraManager : NSObject {
         print("[Calls] Stopping camera.")
         isCapturing = false
         captureSession.stopRunning()
+        currentCameraPosition = .front
     }
     
     func switchCamera() {
