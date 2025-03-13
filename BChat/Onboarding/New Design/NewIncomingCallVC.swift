@@ -384,6 +384,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         view.backgroundColor = Colors.cellGroundColor
         view.set(.width, to: LocalVideoView.width)
         view.set(.height, to: LocalVideoView.height)
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(swapVideo))
+        view.addGestureRecognizer(tapGestureRecognizer)
         return view
     }()
     
@@ -654,6 +656,19 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             self.callDurationLabel.isHidden = false
             self.bottomView.isHidden = false
         }
+        if bChatCall.isLocalVideoSwapped {
+            callerImageView.isHidden = true
+            callerNameLabel.isHidden = true
+            callerImageBackgroundView.isHidden = true
+            localVideoView.alpha = 1
+            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
+            bChatCall.attachLocalVideoRenderer(localVideoView)
+            bChatCall.removeRemoteVideoRenderer(localVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+            backgroundViewForFloatingView.isHidden = false
+            smallCallerImageBackgroundViewForFloatingView.isHidden = false
+            smallCallerImageViewForFloatingView.isHidden = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -760,6 +775,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 backgroundViewForFloatingView.isHidden = true
                 smallCallerImageBackgroundViewForFloatingView.isHidden = true
                 smallCallerImageViewForFloatingView.isHidden = true
+                bChatCall.isLocalVideoSwapped = false
             } else {
                 callerImageView.isHidden = true
                 callerNameLabel.isHidden = true
@@ -772,6 +788,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 backgroundViewForFloatingView.isHidden = false
                 smallCallerImageBackgroundViewForFloatingView.isHidden = false
                 smallCallerImageViewForFloatingView.isHidden = false
+                bChatCall.isLocalVideoSwapped = true
             }
             return
         }
