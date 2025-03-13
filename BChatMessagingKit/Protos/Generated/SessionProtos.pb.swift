@@ -105,8 +105,8 @@ struct SessionProtos_Envelope {
 
     init?(rawValue: Int) {
       switch rawValue {
-      case 6: self = .sessionMessage
-      case 7: self = .closedGroupMessage
+          case 6: self = .sessionMessage
+          case 7: self = .closedGroupMessage
       default: return nil
       }
     }

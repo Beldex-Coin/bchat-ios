@@ -99,7 +99,6 @@ private extension String {
     // reference image
     var isUnicodeStringAvailable: Bool {
 //        guard self.isSingleEmoji else { return false }
-        // Emoji context =======
         return String.unknownUnicodeStringPng != unicodeStringPngRepresentation
     }
 

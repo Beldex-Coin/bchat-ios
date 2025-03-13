@@ -416,6 +416,9 @@
 		8A72CC342D6E17F7004D2018 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC332D6E17F7004D2018 /* Setting.swift */; };
 		8A72CC362D6E18F5004D2018 /* Optional+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC352D6E18F5004D2018 /* Optional+Utilities.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
+		8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */; };
+		8AD510B72D805F7D00D02C83 /* ReactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B62D805F7D00D02C83 /* ReactMessage.swift */; };
+		8AD510B92D805F8F00D02C83 /* ReactMessage+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */; };
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE04A762CF0329D002A8B11 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE04A752CF0329D002A8B11 /* libwallet_api.a */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
@@ -1599,6 +1602,9 @@
 		8A72CC332D6E17F7004D2018 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		8A72CC352D6E18F5004D2018 /* Optional+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Utilities.swift"; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
+		8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Emoji.swift"; sourceTree = "<group>"; };
+		8AD510B62D805F7D00D02C83 /* ReactMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactMessage.swift; sourceTree = "<group>"; };
+		8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReactMessage+Conversion.swift"; sourceTree = "<group>"; };
 		8AE01A992C47A580000EDB1D /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		8AE04A752CF0329D002A8B11 /* libwallet_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libwallet_api.a; sourceTree = "<group>"; };
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -3037,6 +3043,7 @@
 				8A4767632D5633CC00BF491F /* EmojiWithSkinTones.swift */,
 				8A4767612D5633A800BF491F /* EmojiWithSkinTones+String.swift */,
 				8A72CC332D6E17F7004D2018 /* Setting.swift */,
+				8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */,
 			);
 			path = Emoji;
 			sourceTree = "<group>";
@@ -3076,6 +3083,15 @@
 				8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */,
 			);
 			path = "Emoji Picker";
+			sourceTree = "<group>";
+		};
+		8AD510B52D805F6700D02C83 /* Emoji Reacts */ = {
+			isa = PBXGroup;
+			children = (
+				8AD510B62D805F7D00D02C83 /* ReactMessage.swift */,
+				8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */,
+			);
+			path = "Emoji Reacts";
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
@@ -3520,6 +3536,7 @@
 		C300A5F02554B08500555489 /* Sending & Receiving */ = {
 			isa = PBXGroup;
 			children = (
+				8AD510B52D805F6700D02C83 /* Emoji Reacts */,
 				C3D9E3B52567685D0040E4F3 /* Attachments */,
 				B8F5F61925EDE4B0003BF8D4 /* Data Extraction */,
 				C32C5B01256DC054003C73A2 /* Expiration */,
@@ -5670,6 +5687,7 @@
 				C3A3A0EC256E1949004D228D /* OWSRecipientIdentity.m in Sources */,
 				B8F5F56525EC8453003BF8D4 /* Notification+Contacts.swift in Sources */,
 				C32C5AB2256DBE8F003C73A2 /* TSMessage.m in Sources */,
+				8AD510B92D805F8F00D02C83 /* ReactMessage+Conversion.swift in Sources */,
 				C3A3A0FE256E1A3C004D228D /* TSDatabaseSecondaryIndexes.m in Sources */,
 				C38D5E8D2575011E00B6A65C /* MessageSender+ClosedGroups.swift in Sources */,
 				C32C5B1C256DC19D003C73A2 /* TSQuotedMessage.m in Sources */,
@@ -5684,6 +5702,7 @@
 				B8856D11256F112A001CE70E /* OWSAudioSession.swift in Sources */,
 				C3DB66C3260ACCE6001EFC55 /* OpenGroupPollerV2.swift in Sources */,
 				C3C2A75F2553A3C500C340D1 /* VisibleMessage+LinkPreview.swift in Sources */,
+				8AD510B72D805F7D00D02C83 /* ReactMessage.swift in Sources */,
 				C32C5FBB256E0206003C73A2 /* OWSBackgroundTask.m in Sources */,
 				B8856CA8256F0F42001CE70E /* OWSBackupFragment.m in Sources */,
 				C32C5C3D256DCBAF003C73A2 /* AppReadiness.m in Sources */,
@@ -5766,6 +5785,7 @@
 				450DF2091E0DD2C6003D14BE /* UserNotificationsAdaptee.swift in Sources */,
 				C3548F0824456AB6009433A8 /* UIView+Wrapping.swift in Sources */,
 				8A406DE22C10268700E3ED4C /* MyAccountBnsViewControllerExtension.swift in Sources */,
+				8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */,
 				EF764C351DB67CC5000D9A87 /* UIViewController+Permissions.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* SyncPushTokensJob.swift in Sources */,
 				813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */,
