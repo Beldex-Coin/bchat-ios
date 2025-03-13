@@ -378,6 +378,15 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         return stackView
     }()
     
+    private lazy var backgroundViewForFloatingView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Colors.cellGroundColor
+        view.set(.width, to: LocalVideoView.width)
+        view.set(.height, to: LocalVideoView.height)
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -573,11 +582,15 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         window.addSubview(floatingLocalVideoView)
         floatingLocalVideoView.pin(.top, to: .top, of: window, withInset: (window.safeAreaInsets.top + Values.veryLargeSpacing))
         floatingLocalVideoView.pin(.right, to: .right, of: window, withInset: -Values.smallSpacing)
-        floatingLocalVideoView.addSubview(smallCallerImageBackgroundViewForFloatingView)
+        floatingLocalVideoView.addSubview(backgroundViewForFloatingView)
+        backgroundViewForFloatingView.pin(to: floatingLocalVideoView)
+        backgroundViewForFloatingView.addSubview(smallCallerImageBackgroundViewForFloatingView)
         smallCallerImageBackgroundViewForFloatingView.addSubview(smallCallerImageViewForFloatingView)
         smallCallerImageBackgroundViewForFloatingView.center(in: floatingLocalVideoView)
         smallCallerImageViewForFloatingView.center(in: smallCallerImageBackgroundViewForFloatingView)
         smallCallerImageViewForFloatingView.image = getProfilePicture(of: 65, for: self.bChatCall.bchatID)
+        floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
+        backgroundViewForFloatingView.isHidden = true
         smallCallerImageBackgroundViewForFloatingView.isHidden = true
         smallCallerImageViewForFloatingView.isHidden = true
     }
@@ -744,6 +757,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
                 bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
                 bChatCall.removeLocalVideoRenderer(localVideoView)
+                backgroundViewForFloatingView.isHidden = true
                 smallCallerImageBackgroundViewForFloatingView.isHidden = true
                 smallCallerImageViewForFloatingView.isHidden = true
             } else {
@@ -755,6 +769,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 bChatCall.attachLocalVideoRenderer(localVideoView)
                 bChatCall.removeRemoteVideoRenderer(localVideoView)
                 bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+                backgroundViewForFloatingView.isHidden = false
                 smallCallerImageBackgroundViewForFloatingView.isHidden = false
                 smallCallerImageViewForFloatingView.isHidden = false
             }
@@ -792,6 +807,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 self.callerNameLabel.isHidden = self.bChatCall.isRemoteVideoEnabled
                 self.callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
             }
+            self.floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
     }
