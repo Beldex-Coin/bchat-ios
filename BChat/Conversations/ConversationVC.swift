@@ -61,6 +61,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var baselineKeyboardHeight: CGFloat = 0
     var isSyncingStatus = false
     
+    // Reaction
+    var showingReactionListForMessageId: String?
+    
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
     var viewItems: [ConversationViewItem] { viewModel.viewState.viewItems }
@@ -2133,6 +2136,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         }
                     case .update:
                         self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                        if update.viewItem?.interaction.uniqueId == self.showingReactionListForMessageId {
+                            NotificationCenter.default.post(name: .emojiReactsUpdated, object: nil)
+                        }
                     default: preconditionFailure()
                 }
                 

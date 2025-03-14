@@ -74,26 +74,6 @@ extension ContextMenuVC {
             let title = NSLocalizedString("context_menu_message_detail", comment: "")
             return Action(icon: UIImage(named: "ic_message_detail"), title: title) { delegate?.messageDetail(viewItem) }
         }
-        
-//        static func react(_ cellViewModel: MessageViewModel, _ emoji: EmojiWithSkinTones, _ delegate: ContextMenuActionDelegate?, using dependencies: Dependencies) -> Action {
-//            return Action(
-//                title: emoji.rawValue,
-//                actionType: .emoji
-//            ) { delegate?.react(cellViewModel, with: emoji, using: dependencies) }
-//        }
-//        
-//        static func emojiPlusButton(_ cellViewModel: MessageViewModel, _ delegate: ContextMenuActionDelegate?, using dependencies: Dependencies) -> Action {
-//            return Action(
-//                actionType: .emojiPlus,
-//                accessibilityLabel: "Add emoji"
-//            ) { delegate?.showFullEmojiKeyboard(cellViewModel, using: dependencies) }
-//        }
-//        
-//        static func dismiss(_ delegate: ContextMenuActionDelegate?) -> Action {
-//            return Action(
-//                actionType: .dismiss
-//            ) { delegate?.contextMenuDismissed() }
-//        }
     }
 
     static func actions(for viewItem: ConversationViewItem, delegate: ContextMenuActionDelegate?) -> [Action] {
@@ -183,4 +163,5 @@ protocol ContextMenuActionDelegate : AnyObject {
     func contextMenuDismissed()
     func messageDetail(_ viewItem: ConversationViewItem)
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem)
+    func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones)
 }

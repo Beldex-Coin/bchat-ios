@@ -3,51 +3,26 @@
 import Foundation
 import BChatUIKit
 
-public struct ReactionViewModel: Hashable {
+final class ReactionButton : UIView {
     let emoji: EmojiWithSkinTones
     let number: Int
     let showBorder: Bool
-}
-
-final class ReactionButton: UIView {
-    let viewModel: ReactionViewModel
     let showNumber: Bool
     
-    // MARK: - Settings
-    
-    public static var height: CGFloat = 22
+    // MARK: Settings
+    private var reactionViewHeight: CGFloat = 22
     private var fontSize: CGFloat = Values.verySmallFontSize
+    
     private var spacing: CGFloat = Values.verySmallSpacing
     
-    // MARK: - UI
-    
-    private lazy var emojiLabel: UILabel = {
-        let result: UILabel = UILabel()
-        result.setContentHuggingPriority(.required, for: .horizontal)
-        result.setContentCompressionResistancePriority(.required, for: .horizontal)
-        result.font = .systemFont(ofSize: fontSize)
-        
-        return result
-    }()
-    
-    private lazy var numberLabel: UILabel = {
-        let result: UILabel = UILabel()
-        result.font = .systemFont(ofSize: fontSize)
-        result.textColor = .gray
-        
-        return result
-    }()
-    
-    // MARK: - Lifecycle
-    
-    init(viewModel: ReactionViewModel, showNumber: Bool = true) {
-        self.viewModel = viewModel
+    // MARK: Lifecycle
+    init(emoji: EmojiWithSkinTones, value: Int, showBorder: Bool = false, showNumber: Bool = true) {
+        self.emoji = emoji
+        self.number = value
+        self.showBorder = showBorder
         self.showNumber = showNumber
-        
         super.init(frame: CGRect.zero)
-        
         setUpViewHierarchy()
-        update(with: viewModel, showNumber: showNumber)
     }
     
     override init(frame: CGRect) {
@@ -59,63 +34,48 @@ final class ReactionButton: UIView {
     }
     
     private func setUpViewHierarchy() {
-        emojiLabel.text = viewModel.emoji.rawValue
+        let emojiLabel = UILabel()
+        emojiLabel.text = emoji.rawValue
+        emojiLabel.font = .systemFont(ofSize: fontSize)
         
-        let stackView: UIStackView = UIStackView(arrangedSubviews: [ emojiLabel, numberLabel ])
+        let stackView = UIStackView(arrangedSubviews: [ emojiLabel ])
         stackView.axis = .horizontal
         stackView.spacing = spacing
         stackView.alignment = .center
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: Values.smallSpacing, bottom: 0, right: Values.smallSpacing)
+        stackView.isLayoutMarginsRelativeArrangement = true
         addSubview(stackView)
-        stackView.pin(.top, to: .top, of: self)
-        stackView.pin(.leading, to: .leading, of: self, withInset: Values.smallSpacing)
-        stackView.pin(.trailing, to: .trailing, of: self, withInset: -Values.smallSpacing)
-        stackView.pin(.bottom, to: .bottom, of: self)
+        stackView.pin(to: self)
         
-//        themeBorderColor = (viewModel.showBorder ? .primary : .clear)
-//        themeBackgroundColor = .messageBubble_incomingBackground
-        layer.cornerRadius = (ReactionButton.height / 2)
-        layer.borderWidth = 1   // Intentionally 1pt (instead of 'Values.separatorThickness')
-        set(.height, to: ReactionButton.height)
+        set(.height, to: self.reactionViewHeight)
+        backgroundColor = Colors.receivedMessageBackground
+        layer.cornerRadius = self.reactionViewHeight / 2
         
-        numberLabel.isHidden = (!showNumber && viewModel.number <= 1)
-    }
-    
-    func update(with viewModel: ReactionViewModel, showNumber: Bool) {
-        _ = updating(with: viewModel, showNumber: showNumber)
-    }
-    
-    func updating(with viewModel: ReactionViewModel, showNumber: Bool) -> ReactionButton {
-        emojiLabel.text = viewModel.emoji.rawValue
-        numberLabel.text = (viewModel.number < 1000 ?
-            "\(viewModel.number)" :
-            String(format: "%.1f", Float(viewModel.number) / 1000) + "k"
-        )
-        numberLabel.isHidden = (!showNumber && viewModel.number <= 1)
-        
-        UIView.performWithoutAnimation {
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
+        if showBorder {
+            self.addBorder(with: Colors.accent)
         }
         
-        return self
+        if showNumber || self.number > 1 {
+            let numberLabel = UILabel()
+            numberLabel.text = self.number < 1000 ? "\(number)" : String(format: "%.1f", Float(number) / 1000) + "k"
+            numberLabel.font = .systemFont(ofSize: fontSize)
+            numberLabel.textColor = Colors.text
+            stackView.addArrangedSubview(numberLabel)
+        }
     }
 }
 
 final class ExpandingReactionButton: UIView {
     private let emojis: [EmojiWithSkinTones]
     
-    // MARK: - Settings
-    
-//    private let size: CGFloat = 22
+    // MARK: Settings
+    private let reactionButtonSize: CGFloat = 22
     private let margin: CGFloat = 15
     
-    // MARK: - Lifecycle
-    
+    // MARK: Lifecycle
     init(emojis: [EmojiWithSkinTones]) {
         self.emojis = emojis
-        
         super.init(frame: CGRect.zero)
-        
         setUpViewHierarchy()
     }
     
@@ -129,19 +89,18 @@ final class ExpandingReactionButton: UIView {
     
     private func setUpViewHierarchy() {
         var rightMargin: CGFloat = 0
-        
         for emoji in self.emojis.reversed() {
-            let container: UIView = UIView()
-            container.set(.width, to: 22)
-            container.set(.height, to: 22)
-            container.layer.borderColor = UIColor.green.cgColor
-            container.backgroundColor = .green
-            container.layer.cornerRadius = 22 / 2
-            container.layer.borderWidth = 1 // Intentionally 1pt (instead of 'Values.separatorThickness')
+            let container = UIView()
+            container.set(.width, to: reactionButtonSize)
+            container.set(.height, to: reactionButtonSize)
+            container.backgroundColor = Colors.receivedMessageBackground
+            container.layer.cornerRadius = reactionButtonSize / 2
+            container.layer.borderWidth = 1
+            container.layer.borderColor = isDarkMode ? UIColor.black.cgColor : UIColor.white.cgColor
             
-            let emojiLabel: UILabel = UILabel()
-            emojiLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
+            let emojiLabel = UILabel()
             emojiLabel.text = emoji.rawValue
+            emojiLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
             
             container.addSubview(emojiLabel)
             emojiLabel.center(in: container)
@@ -152,6 +111,6 @@ final class ExpandingReactionButton: UIView {
             rightMargin += margin
         }
         
-        set(.width, to: rightMargin - margin + 22)
+        set(.width, to: rightMargin - margin + reactionButtonSize)
     }
 }

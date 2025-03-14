@@ -75,57 +75,25 @@ class EmojiPickerCollectionView: UICollectionView {
         tapGestureRecognizer.delegate = self
         
         
-        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"]
-        let recentEmoji: [EmojiWithSkinTones] = defaultEmoji//try Emoji.getRecent(db, withDefaultEmoji: false)
-            .compactMap { EmojiWithSkinTones(rawValue: $0) }
-            .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
-                guard !emoji.isNormalized else {
-                    result.append(emoji)
-                    return
-                }
-                guard !result.contains(emoji.normalized) else { return }
+        Storage.read { transaction in
+            self.recentEmoji = Storage.shared.getRecentEmoji(withDefaultEmoji: false, transaction: transaction)
 
-                result.append(emoji.normalized)
-            }
-//        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = (recentEmoji, [])
-        
-        
-//        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
-//            self.recentEmoji = emojiData.recent
-//            self.allSendableEmojiByCategory = emojiData.allGrouped
-//        }
-        self.recentEmoji = recentEmoji
-        self.allSendableEmojiByCategory = [:]
-        
-        /*
-        
-//         Fetch the emoji data from the database
-        let maybeEmojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]])? = Storage.shared.read { db in
             // Some emoji have two different code points but identical appearances. Let's remove them!
             // If we normalize to a different emoji than the one currently in our array, we want to drop
             // the non-normalized variant if the normalized variant already exists. Otherwise, map to the
             // normalized variant.
-            let recentEmoji: [EmojiWithSkinTones] = try Emoji.getRecent(db, withDefaultEmoji: false)
-                .compactMap { EmojiWithSkinTones(rawValue: $0) }
-                .reduce(into: [EmojiWithSkinTones]()) { result, emoji in
-                    guard !emoji.isNormalized else {
-                        result.append(emoji)
-                        return
+            for (idx, emoji) in self.recentEmoji.enumerated().reversed() {
+                if !emoji.isNormalized {
+                    if self.recentEmoji.contains(emoji.normalized) {
+                        self.recentEmoji.remove(at: idx)
+                    } else {
+                        self.recentEmoji[idx] = emoji.normalized
                     }
-                    guard !result.contains(emoji.normalized) else { return }
-                    
-                    result.append(emoji.normalized)
                 }
-            let allSendableEmojiByCategory: [Emoji.Category: [EmojiWithSkinTones]] = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(db)
-            
-            return (recentEmoji, allSendableEmojiByCategory)
+            }
+
+            self.allSendableEmojiByCategory = Emoji.allSendableEmojiByCategoryWithPreferredSkinTones(transaction: transaction)
         }
-        
-        if let emojiData: (recent: [EmojiWithSkinTones], allGrouped: [Emoji.Category: [EmojiWithSkinTones]]) = maybeEmojiData {
-            self.recentEmoji = emojiData.recent
-            self.allSendableEmojiByCategory = emojiData.allGrouped
-        }
-         */
     }
 
     required init?(coder: NSCoder) {
@@ -179,7 +147,7 @@ class EmojiPickerCollectionView: UICollectionView {
     func searchWithText(_ searchText: String?) {
         if let searchText = searchText {
             emojiSearchResults = allSendableEmoji.filter { emoji in
-                return emoji.baseEmoji?.name.range(of: searchText, options: [.caseInsensitive]) != nil
+                return emoji.baseEmoji.name.range(of: searchText, options: [.caseInsensitive]) != nil
             }
         } else {
             emojiSearchResults = []
@@ -212,19 +180,20 @@ class EmojiPickerCollectionView: UICollectionView {
 
                 currentSkinTonePicker?.dismiss()
                 currentSkinTonePicker = EmojiSkinTonePicker.present(referenceView: cell, emoji: emoji) { [weak self] emoji in
-    //                if let emoji: EmojiWithSkinTones = emoji {
-    //                    Storage.shared.writeAsync { db in
-    //                        emoji.baseEmoji?.setPreferredSkinTones(
-    //                            db,
-    //                            preferredSkinTonePermutation: emoji.skinTones
-    //                        )
-    //                    }
-    //
-    //                    self?.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
-    //                }
+                    
+                    guard let self = self else { return }
 
-                    self?.currentSkinTonePicker?.dismiss()
-                    self?.currentSkinTonePicker = nil
+                    if let emoji = emoji {
+                        Storage.write { transaction in
+                            Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
+                            emoji.baseEmoji.setPreferredSkinTones(emoji.skinTones, transaction: transaction)
+                        }
+
+                        self.pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
+                    }
+
+                    self.currentSkinTonePicker?.dismiss()
+                    self.currentSkinTonePicker = nil
                 }
             case .changed:
                 currentSkinTonePicker?.didChangeLongPress(sender)
@@ -257,7 +226,11 @@ extension EmojiPickerCollectionView: UICollectionViewDelegate {
         guard let emoji = emojiForIndexPath(indexPath) else {
             return owsFailDebug("Missing emoji for indexPath \(indexPath)")
         }
-        
+
+        Storage.write { transaction in
+            Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
+        }
+
         pickerDelegate?.emojiPicker(self, didSelectEmoji: emoji)
     }
 }

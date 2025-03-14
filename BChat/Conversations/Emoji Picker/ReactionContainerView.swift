@@ -5,91 +5,47 @@ import BChatUIKit
 import BChatUtilitiesKit
 import SignalUtilitiesKit
 
-final class ReactionContainerView: UIView {
-    private static let arrowSize: CGSize = CGSize(width: 15, height: 13)
-    private static let arrowSpacing: CGFloat = Values.verySmallSpacing
-    
-    // We have explicit limits on the number of emoji which should be displayed before they
-    // automatically get collapsed, these values are consistent across platforms so are set
-    // here (even though the logic will automatically calculate and limit to a single line
-    // of reactions dynamically for the size of the view)
-    private static let numCollapsedEmoji: Int = 4
-    private static let maxEmojiBeforeCollapse: Int = 6
-    
-    private var maxWidth: CGFloat = 0
-    private var showingAllReactions: Bool = false
-    private var showNumbers: Bool = true
-    private var oldSize: CGSize = .zero
-    
-    var reactions: [ReactionViewModel] = []
-    var reactionViews: [ReactionButton] = []
-    
-    // MARK: - UI
-    
-    private let dummyReactionButton: ReactionButton = ReactionButton(
-        viewModel: ReactionViewModel(
-            emoji: EmojiWithSkinTones(baseEmoji: .a, skinTones: nil),
-            number: 0,
-            showBorder: false
-        )
-    )
-    
+final class ReactionContainerView : UIView {
     private lazy var mainStackView: UIStackView = {
-        let result: UIStackView = UIStackView(arrangedSubviews: [ reactionContainerView, collapseButton ])
+        let result = UIStackView(arrangedSubviews: [ reactionContainerView ])
         result.axis = .vertical
         result.spacing = Values.smallSpacing
         result.alignment = .center
-        
         return result
     }()
     
-    var expandButton: ExpandingReactionButton?
-    
     private lazy var reactionContainerView: UIStackView = {
-        let result: UIStackView = UIStackView()
+        let result = UIStackView()
         result.axis = .vertical
         result.spacing = Values.smallSpacing
         result.alignment = .leading
-        
         return result
     }()
     
-    lazy var collapseButton: UIView = {
-        let arrow: UIImageView = UIImageView(
-            image: UIImage(named: "ic_chevron_up")?
-                .resizedImage(to: ReactionContainerView.arrowSize)?
-                .withRenderingMode(.alwaysTemplate)
-        )
-        arrow.tintColor = UIColor.gray
-        arrow.setContentHuggingPriority(.required, for: .horizontal)
+    private var showingAllReactions = false
+    private var isOutgoingMessage = false
+    private var showNumbers = true
+    private var maxEmojisPerLine = isIPhone6OrSmaller ? 5 : 6
+    
+    var reactions: [(EmojiWithSkinTones, (Int, Bool))] = []
+    var reactionViews: [ReactionButton] = []
+    var expandButton: ExpandingReactionButton?
+    var collapseButton: UIStackView = {
+        let arrow = UIImageView(image: UIImage(named: "ic_chevron_up")?.resizedImage(to: CGSize(width: 15, height: 13))?.withRenderingMode(.alwaysTemplate))
+        arrow.tintColor = Colors.text
         
-        let textLabel: UILabel = UILabel()
-        textLabel.setContentHuggingPriority(.required, for: .vertical)
-        textLabel.setContentHuggingPriority(.required, for: .horizontal)
-        textLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        textLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        let textLabel = UILabel()
+        textLabel.text = "Show less"
         textLabel.font = .systemFont(ofSize: Values.verySmallFontSize)
-        textLabel.text = "EMOJI_REACTS_SHOW_LESS".localized()
-        textLabel.textColor = .gray
+        textLabel.textColor = Colors.text
         
-        let result: UIView = UIView()
-        result.isHidden = true
-        result.addSubview(arrow)
-        result.addSubview(textLabel)
-        
-        arrow.pin(.top, to: .top, of: result)
-        arrow.pin(.bottom, to: .bottom, of: result)
-        
-//        textLabel.center(Direction.horizontal, in: result, withInset: (ReactionContainerView.arrowSize.width / 2))
-        textLabel.pin(.top, to: .top, of: result)
-        textLabel.pin(.leading, to: .trailing, of: arrow, withInset: ReactionContainerView.arrowSpacing)
-        textLabel.pin(.bottom, to: .bottom, of: result)
-        
+        let result = UIStackView(arrangedSubviews: [ UIView.hStretchingSpacer(), arrow, textLabel, UIView.hStretchingSpacer() ])
+        result.spacing = Values.verySmallSpacing
+        result.alignment = .center
         return result
     }()
     
-    // MARK: - Lifecycle
-    
+    // MARK: Lifecycle
     init() {
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
@@ -105,164 +61,96 @@ final class ReactionContainerView: UIView {
     
     private func setUpViewHierarchy() {
         addSubview(mainStackView)
-        
-        mainStackView.pin(.top, to: .top, of: self)
-        mainStackView.pin(.leading, to: .leading, of: self)
-        mainStackView.pin(.trailing, to: .trailing, of: self)
-        mainStackView.pin(.bottom, to: .bottom, of: self, withInset: -Values.verySmallSpacing)
-        reactionContainerView.set(.width, to: .width, of: mainStackView)
-        collapseButton.set(.width, to: .width, of: mainStackView)
+        mainStackView.pin(to: self)
     }
     
-    public func update(
-        _ reactions: [ReactionViewModel],
-        maxWidth: CGFloat,
-        showingAllReactions: Bool,
-        showNumbers: Bool
-    ) {
+    public func update(_ reactions: [(EmojiWithSkinTones, (Int, Bool))], isOutgoingMessage: Bool, showNumbers: Bool) {
         self.reactions = reactions
-        self.maxWidth = maxWidth
+        self.isOutgoingMessage = isOutgoingMessage
         self.showNumbers = showNumbers
-        self.reactionViews = []
-        self.reactionContainerView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        let collapsedCount: Int = {
-            // If there are already more than 'maxEmojiBeforeCollapse' then no need to calculate, just
-            // always collapse
-            guard reactions.count <= ReactionContainerView.maxEmojiBeforeCollapse else {
-                return ReactionContainerView.numCollapsedEmoji
-            }
-            
-            var numReactions: Int = 0
-            var runningWidth: CGFloat = 0
-            let estimatedExpandingButtonWidth: CGFloat = 52
-            let itemSpacing: CGFloat = self.reactionContainerView.spacing
-            
-            for reaction in reactions {
-                let reactionViewWidth: CGFloat = dummyReactionButton
-                    .updating(with: reaction, showNumber: showNumbers)
-                    .systemLayoutSizeFitting(CGSize(width: maxWidth, height: 9999))
-                    .width
-                let estimatedFullWidth: CGFloat = (
-                    runningWidth +
-                    (reactionViewWidth + itemSpacing) +
-                    estimatedExpandingButtonWidth
-                )
-                
-                if estimatedFullWidth >= maxWidth {
-                    break
-                }
-
-                runningWidth += (reactionViewWidth + itemSpacing)
-                numReactions += 1
-            }
-            
-            return numReactions
-        }()
-        
-        // Generate the lines of reactions (if the 'collapsedCount' matches the total number of
-        // reactions then just show them app)
-        if showingAllReactions || collapsedCount >= reactions.count {
-            self.updateAllReactions(reactions, maxWidth: maxWidth, showNumbers: showNumbers)
+        prepareForUpdate()
+        if showingAllReactions {
+            updateAllReactions()
+        } else {
+            updateCollapsedReactions(reactions)
         }
-        else {
-            self.updateCollapsedReactions(reactions, maxWidth: maxWidth, showNumbers: showNumbers, collapsedCount: collapsedCount)
-        }
-        
-        // Just in case we couldn't show everything for some reason update this based on the
-        // internal logic
-        self.collapseButton.isHidden = !showingAllReactions
-        self.showingAllReactions = !self.collapseButton.isHidden
-        self.layoutIfNeeded()
     }
     
-    private func createLineStackView() -> UIStackView {
-        let result: UIStackView = UIStackView()
-        result.axis = .horizontal
-        result.spacing = Values.smallSpacing
-        result.alignment = .center
-        result.set(.height, to: ReactionButton.height)
+    private func updateCollapsedReactions(_ reactions: [(EmojiWithSkinTones, (Int, Bool))]) {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = Values.smallSpacing
+        stackView.alignment = .center
+        if isOutgoingMessage {
+            stackView.semanticContentAttribute = .forceRightToLeft
+            reactionContainerView.semanticContentAttribute = .forceRightToLeft
+        } else {
+            stackView.semanticContentAttribute = .unspecified
+            reactionContainerView.semanticContentAttribute = .unspecified
+        }
         
-        return result
-    }
-    
-    private func updateCollapsedReactions(
-        _ reactions: [ReactionViewModel],
-        maxWidth: CGFloat,
-        showNumbers: Bool,
-        collapsedCount: Int
-    ) {
-        guard !reactions.isEmpty else { return }
+        var displayedReactions: [(EmojiWithSkinTones, (Int, Bool))]
+        var expandButtonReactions: [EmojiWithSkinTones]
         
-        let maxSize: CGSize = CGSize(width: maxWidth, height: 9999)
-        let stackView: UIStackView = createLineStackView()
-        let displayedReactions: [ReactionViewModel] = Array(reactions.prefix(upTo: collapsedCount))
-        let expandButtonReactions: [EmojiWithSkinTones] = reactions
-            .suffix(from: collapsedCount)
-            .prefix(3)
-            .map { $0.emoji }
+        if reactions.count > maxEmojisPerLine {
+            displayedReactions = Array(reactions[0...(maxEmojisPerLine - 3)])
+            expandButtonReactions = Array(reactions[(maxEmojisPerLine - 2)...maxEmojisPerLine]).map{ $0.0 }
+        } else {
+            displayedReactions = reactions
+            expandButtonReactions = []
+        }
         
         for reaction in displayedReactions {
-            let reactionView = ReactionButton(viewModel: reaction, showNumber: showNumbers)
-            let reactionViewWidth: CGFloat = reactionView.systemLayoutSizeFitting(maxSize).width
+            let reactionView = ReactionButton(emoji: reaction.0, value: reaction.1.0, showBorder: reaction.1.1, showNumber: showNumbers)
             stackView.addArrangedSubview(reactionView)
             reactionViews.append(reactionView)
-            reactionView.set(.width, to: reactionViewWidth)
         }
-        
-        self.expandButton = {
-            guard !expandButtonReactions.isEmpty else { return nil }
-                 
-            let result: ExpandingReactionButton = ExpandingReactionButton(emojis: expandButtonReactions)
-            stackView.addArrangedSubview(result)
-            
-            return result
-        }()
-        
+        if expandButtonReactions.count > 0 {
+            expandButton = ExpandingReactionButton(emojis: expandButtonReactions)
+            stackView.addArrangedSubview(expandButton!)
+        } else {
+            expandButton = nil
+        }
         reactionContainerView.addArrangedSubview(stackView)
     }
     
-    private func updateAllReactions(
-        _ reactions: [ReactionViewModel],
-        maxWidth: CGFloat,
-        showNumbers: Bool
-    ) {
-        guard !reactions.isEmpty else { return }
-        
-        let maxSize: CGSize = CGSize(width: maxWidth, height: 9999)
-        var lineStackView: UIStackView = createLineStackView()
-        reactionContainerView.addArrangedSubview(lineStackView)
-        
-        for reaction in self.reactions {
-            let reactionView: ReactionButton = ReactionButton(viewModel: reaction, showNumber: showNumbers)
-            let reactionViewWidth: CGFloat = reactionView.systemLayoutSizeFitting(maxSize).width
-            reactionViews.append(reactionView)
-            
-            // Check if we need to create a new line
-            let stackViewWidth: CGFloat = (lineStackView.arrangedSubviews.isEmpty ?
-                0 :
-                lineStackView.systemLayoutSizeFitting(maxSize).width
-            )
-            
-            if stackViewWidth + reactionViewWidth > maxWidth {
-                lineStackView = createLineStackView()
-                reactionContainerView.addArrangedSubview(lineStackView)
+    private func updateAllReactions() {
+        var reactions = self.reactions
+        var numberOfLines = 0
+        while reactions.count > 0 {
+            var line: [(EmojiWithSkinTones, (Int, Bool))] = []
+            while reactions.count > 0 && line.count < maxEmojisPerLine {
+                line.append(reactions.removeFirst())
             }
-            
-            lineStackView.addArrangedSubview(reactionView)
-            reactionView.set(.width, to: reactionViewWidth)
+            updateCollapsedReactions(line)
+            numberOfLines += 1
         }
+        if numberOfLines > 1 {
+            mainStackView.addArrangedSubview(collapseButton)
+        } else {
+            showingAllReactions = false
+        }
+    }
+    
+    private func prepareForUpdate() {
+        for subview in reactionContainerView.arrangedSubviews {
+            reactionContainerView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        mainStackView.removeArrangedSubview(collapseButton)
+        collapseButton.removeFromSuperview()
+        reactionViews = []
     }
     
     public func showAllEmojis() {
         guard !showingAllReactions else { return }
-        
-        update(reactions, maxWidth: maxWidth, showingAllReactions: true, showNumbers: showNumbers)
+        showingAllReactions = true
+        update(reactions, isOutgoingMessage: isOutgoingMessage, showNumbers: showNumbers)
     }
     
     public func showLessEmojis() {
         guard showingAllReactions else { return }
-        
-        update(reactions, maxWidth: maxWidth, showingAllReactions: false, showNumbers: showNumbers)
+        showingAllReactions = false
+        update(reactions, isOutgoingMessage: isOutgoingMessage, showNumbers: showNumbers)
     }
 }

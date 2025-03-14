@@ -98,7 +98,7 @@ private extension String {
     // by verifying its image is different than the "unknown"
     // reference image
     var isUnicodeStringAvailable: Bool {
-//        guard self.isSingleEmoji else { return false }
+        guard self.isSingleEmoji else { return false }
         return String.unknownUnicodeStringPng != unicodeStringPngRepresentation
     }
 

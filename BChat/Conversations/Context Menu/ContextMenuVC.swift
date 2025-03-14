@@ -7,6 +7,8 @@ final class ContextMenuVC : UIViewController {
     private let frame: CGRect
     private let dismiss: () -> Void
     private weak var delegate: ContextMenuActionDelegate?
+    
+    private var recentEmoji: [EmojiWithSkinTones] = []
 
     // MARK: UI Components
     private lazy var blurView = UIVisualEffectView(effect: nil)
@@ -20,14 +22,14 @@ final class ContextMenuVC : UIViewController {
         return result
     }()
     
-//    private lazy var timestampLabel: UILabel = {
-//        let result = UILabel()
-//        let date = viewItem.interaction.dateForUI()
-//        result.text = DateUtil.formatDate(forDisplay: date)
-//        result.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
-//        result.textColor = isLightMode ? .black : .white
-//        return result
-//    }()
+    private lazy var timestampLabel: UILabel = {
+        let result = UILabel()
+        let date = viewItem.interaction.dateForUI()
+        result.text = DateUtil.formatDate(forDisplay: date)
+        result.font = .systemFont(ofSize: Values.verySmallFontSize)
+        result.textColor = isLightMode ? .black : .white
+        return result
+    }()
     
     private lazy var emojiBarView: UIView = {
             let result = UIView()
@@ -40,10 +42,10 @@ final class ContextMenuVC : UIViewController {
             return result
         }()
         
-        private let addEmojiButton: UIButton = {
-            let result = UIButton(type: .custom)
+    private let emojiPlusButton: UIButton = {
+        let result = UIButton()
             result.translatesAutoresizingMaskIntoConstraints = false
-            result.clipsToBounds = true
+            result.layer.masksToBounds = true
             result.layer.cornerRadius = 20
             let image = UIImage(named: "more_reactions")?.withRenderingMode(.alwaysTemplate)
             result.setImage(image, for: .normal)
@@ -63,6 +65,12 @@ final class ContextMenuVC : UIViewController {
         self.delegate = delegate
         self.dismiss = dismiss
         super.init(nibName: nil, bundle: nil)
+        
+        Storage.read { transaction in
+            self.recentEmoji = Array(Storage.shared.getRecentEmoji(withDefaultEmoji: true, transaction: transaction))
+            //Array(Storage.shared.getRecentEmoji(withDefaultEmoji: true, transaction: transaction)[...5])
+            //??????????
+        }
     }
 
     override init(nibName: String?, bundle: Bundle?) {
@@ -95,14 +103,14 @@ final class ContextMenuVC : UIViewController {
         snapshot.set(.width, to: frame.width)
         snapshot.set(.height, to: frame.height)
         // Timestamp
-//        view.addSubview(timestampLabel)
-//        timestampLabel.center(.vertical, in: snapshot)
-//        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-//        if isOutgoing {
-//            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
-//        } else {
-//            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
-//        }
+        view.addSubview(timestampLabel)
+        timestampLabel.center(.vertical, in: snapshot)
+        let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
+        if isOutgoing {
+            timestampLabel.pin(.right, to: .left, of: snapshot, withInset: -Values.smallSpacing)
+        } else {
+            timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
+        }
         // Menu
         let menuBackgroundView = UIView()
         menuBackgroundView.backgroundColor = UIColor(hex: 0x2C2C3B)//Colors.receivedMessageBackground
@@ -140,13 +148,28 @@ final class ContextMenuVC : UIViewController {
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
         
-        emojiBarView.set(.width, to: 220)
+        //emojiBarView.set(.width, to: 220)
         emojiBarView.set(.height, to: 40)
         
-        addEmojiButton.set(.width, to: 40)
-        addEmojiButton.set(.height, to: 40)
-        emojiBarView.addSubview(addEmojiButton)
-        addEmojiButton.pin(.right, to: .right, of: emojiBarView)
+        emojiPlusButton.set(.width, to: 40)
+        emojiPlusButton.set(.height, to: 40)
+        emojiBarView.addSubview(emojiPlusButton)
+        emojiPlusButton.pin(.right, to: .right, of: emojiBarView)
+        
+        let emojiLabels = recentEmoji.map { emoji -> EmojiReactsView in
+            EmojiReactsView(for: emoji, dismiss: snDismiss) {
+                self.delegate?.react(self.viewItem, with: emoji)
+            }
+        }
+        
+        let emojiBarStackView = UIStackView(arrangedSubviews: emojiLabels)
+        emojiBarStackView.axis = .horizontal
+        emojiBarStackView.spacing = Values.smallSpacing
+        emojiBarStackView.layoutMargins = UIEdgeInsets(top: 0, left: Values.smallSpacing, bottom: 0, right: Values.smallSpacing)
+        emojiBarStackView.isLayoutMarginsRelativeArrangement = true
+        emojiBarView.addSubview(emojiBarStackView)
+        emojiBarStackView.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.VerticalEdge.bottom ], to: emojiBarView)
+        emojiBarStackView.pin(.right, to: .left, of: emojiPlusButton)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -173,7 +196,7 @@ final class ContextMenuVC : UIViewController {
         UIView.animate(withDuration: 0.25, animations: {
             self.blurView.effect = nil
             self.menuView.alpha = 0
-//            self.timestampLabel.alpha = 0
+            self.timestampLabel.alpha = 0
         }, completion: { _ in
             self.dismiss()
             self.delegate?.contextMenuDismissed()
