@@ -2463,8 +2463,8 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
         try visitor.visitRepeatedMessageField(value: _storage._preview, fieldNumber: 10)
       }
         try { if let v = _storage._reaction {
-                try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
-              } }()
+            try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
+        } }()
       try { if let v = _storage._profile {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 101)
       } }()

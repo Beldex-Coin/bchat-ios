@@ -1,9 +1,12 @@
 
 final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
+    private var isHandlingLongPress: Bool = false
     private var unloadContent: (() -> Void)?
     private var previousX: CGFloat = 0
     var albumView: MediaAlbumView?
     var bodyTextView: UITextView?
+    private lazy var reactionContainerView = ReactionContainerView()
+    
     // Constraints
     private lazy var headerViewTopConstraint = headerView.pin(.top, to: .top, of: self, withInset: 1)
     private lazy var authorLabelHeightConstraint = authorLabel.set(.height, to: 0)
@@ -31,8 +34,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }()
 
     var lastSearchedText: String? { delegate?.lastSearchedText }
-    
-    private lazy var reactionContainerView = ReactionContainerView()
     
     private var positionInCluster: Position? {
         guard let viewItem = viewItem else { return nil }
@@ -295,6 +296,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
         messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
         messageTailLeftView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
+        
+        reactionContainerView.backgroundColor = .red
     }
     
     override func setUpGestureRecognizers() {
@@ -734,7 +737,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, reactionContainerView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -776,9 +779,26 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
-    @objc func handleLongPress() {
+    @objc func handleLongPress(_ gestureRecognizer: UITapGestureRecognizer) {
+        if [ .ended, .cancelled, .failed ].contains(gestureRecognizer.state) {
+            isHandlingLongPress = false
+            return
+        }
+        guard !isHandlingLongPress else { return }
         guard let viewItem = viewItem else { return }
-        delegate?.handleViewItemLongPressed(viewItem)
+        let location = gestureRecognizer.location(in: self)
+        if reactionContainerView.frame.contains(location) {
+            let convertedLocation = reactionContainerView.convert(location, from: self)
+            for reactionView in reactionContainerView.reactionViews {
+                if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                    delegate?.showReactionList(viewItem, selectedReaction: reactionView.emoji)
+                    break
+                }
+            }
+        } else {
+            delegate?.handleViewItemLongPressed(viewItem)
+        }
+        isHandlingLongPress = true
     }
 
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {

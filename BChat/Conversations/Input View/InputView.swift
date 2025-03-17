@@ -459,7 +459,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         inputTextView.resignFirstResponder()
     }
     
-    func handleLongPress() {
+    func handleLongPress(_ gestureRecognizer: UITapGestureRecognizer) {
         // Not relevant in this case
     }
     

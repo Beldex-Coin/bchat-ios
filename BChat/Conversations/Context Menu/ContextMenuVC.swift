@@ -148,7 +148,7 @@ final class ContextMenuVC : UIViewController {
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
         
-        //emojiBarView.set(.width, to: 220)
+        emojiBarView.set(.width, to: 220)
         emojiBarView.set(.height, to: 40)
         
         emojiPlusButton.set(.width, to: 40)
