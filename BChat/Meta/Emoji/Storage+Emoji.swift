@@ -10,9 +10,9 @@ extension Storage {
         let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"].filter{ !rawRecentEmoji.contains($0) }
         
         //let defaultEmoji = ["🙈", "🙉", "🙊", "😈", "🥸", "🐀"].filter{ !rawRecentEmoji.contains($0) }
-//        if rawRecentEmoji.count < 6 && withDefaultEmoji {
-//            rawRecentEmoji.append(contentsOf: defaultEmoji[..<(defaultEmoji.count - rawRecentEmoji.count)])
-//        }
+        if rawRecentEmoji.count < 6 && withDefaultEmoji {
+            rawRecentEmoji.append(contentsOf: defaultEmoji[..<(defaultEmoji.count - rawRecentEmoji.count)])
+        }
         //??????????
         
         return rawRecentEmoji.compactMap { EmojiWithSkinTones(rawValue: $0) }
