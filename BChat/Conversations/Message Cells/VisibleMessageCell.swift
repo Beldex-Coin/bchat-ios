@@ -6,6 +6,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     var albumView: MediaAlbumView?
     var bodyTextView: UITextView?
     private lazy var reactionContainerView = ReactionContainerView()
+    private lazy var reactionContainerViewHeightConstraint = reactionContainerView.set(.height, to: 22)
     
     // Constraints
     private lazy var headerViewTopConstraint = headerView.pin(.top, to: .top, of: self, withInset: 1)
@@ -290,7 +291,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         // Reaction view
         addSubview(reactionContainerView)
         reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: Values.verySmallSpacing)
+        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -Values.verySmallSpacing)
         reactionContainerViewLeftConstraint.isActive = true
+        reactionContainerViewHeightConstraint.isActive = true
         
         messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
         messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
@@ -367,6 +370,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         reactionContainerView.isHidden = (message.reactions.count == 0)
         reactionContainerViewLeftConstraint.isActive = (direction == .incoming)
         reactionContainerViewRightConstraint.isActive = (direction == .outgoing)
+        reactionContainerViewHeightConstraint.constant = message.reactions.count == 0 ? 0 : 22
         populateReaction(for: viewItem, message: message)
         // Date break
         headerViewTopConstraint.constant = shouldInsetHeader ? Values.mediumSpacing : 1
