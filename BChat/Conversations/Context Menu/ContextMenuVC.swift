@@ -68,8 +68,7 @@ final class ContextMenuVC : UIViewController {
         
         Storage.read { transaction in
             self.recentEmoji = Array(Storage.shared.getRecentEmoji(withDefaultEmoji: true, transaction: transaction))
-            //Array(Storage.shared.getRecentEmoji(withDefaultEmoji: true, transaction: transaction)[...5])
-            //??????????
+//            Array(Storage.shared.getRecentEmoji(withDefaultEmoji: true, transaction: transaction)[...5])
         }
     }
 
@@ -90,7 +89,9 @@ final class ContextMenuVC : UIViewController {
         blurView.pin(to: view)
         
         // Emoji view
-        view.addSubview(emojiBarView)
+        //if !viewItem.isGroupThread {
+            view.addSubview(emojiBarView)
+        //}
         
         // Snapshot
         snapshot.layer.shadowColor = UIColor.black.cgColor
@@ -161,7 +162,7 @@ final class ContextMenuVC : UIViewController {
             }
         }
         
-        let emojiBarStackView = UIStackView(arrangedSubviews: Array(emojiLabels.prefix(5)))
+        let emojiBarStackView = UIStackView(arrangedSubviews: Array(emojiLabels.prefix(6)))
         emojiBarStackView.axis = .horizontal
         emojiBarStackView.spacing = Values.smallSpacing
         emojiBarStackView.layoutMargins = UIEdgeInsets(top: 0, left: Values.smallSpacing, bottom: 0, right: 0)

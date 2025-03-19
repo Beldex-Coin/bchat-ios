@@ -88,7 +88,9 @@ public final class VisibleMessage : Message {
             let payment = Payment.fromProto(paymentProto) { result.payment = payment }
         
         if let reactionProto = dataMessage.reaction,
-           let reaction = Reaction.fromProto(reactionProto) { result.reaction = reaction }
+           let reaction = Reaction.fromProto(reactionProto) {
+            result.reaction = reaction
+        }
         
         result.syncTarget = dataMessage.syncTarget
         return result

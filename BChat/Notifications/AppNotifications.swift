@@ -316,7 +316,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         let context = Contact.context(for: thread)
         let senderName = Storage.shared.getContact(with: sender, using: transaction)?.displayName(for: context) ?? sender
         
-        let notificationTitle = "Session"
+        let notificationTitle = "BChat"
         var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), senderName, emoji)
         switch previewType {
             case .namePreview: break
@@ -346,12 +346,12 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     public func notifyForFailedSend(inThread thread: TSThread) {
         let notificationTitle: String?
         switch previewType {
-        case .noNameNoPreview:
-            notificationTitle = nil
-        case .nameNoPreview, .namePreview:
-            notificationTitle = thread.name()
-        default:
-            notificationTitle = nil
+            case .noNameNoPreview:
+                notificationTitle = nil
+            case .nameNoPreview, .namePreview:
+                notificationTitle = thread.name()
+            default:
+                notificationTitle = nil
         }
 
         let notificationBody = NotificationStrings.failedToSendBody

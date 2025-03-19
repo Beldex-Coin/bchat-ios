@@ -121,6 +121,8 @@ class EmojiPickerSheet: BaseVC {
         collectionView.set(.width, to: .width, of: contentView)
         collectionView.pickerDelegate = self
         collectionView.alwaysBounceVertical = true
+        
+        searchBar.resignFirstResponder()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -234,5 +236,6 @@ extension EmojiPickerSheet: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
+        close()
     }
 }
