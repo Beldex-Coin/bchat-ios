@@ -2065,7 +2065,7 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
         }
 
         @objc public func setTxnid(_ valueParam: String) {
-            proto.txnId = valueParam
+            proto.txnID = valueParam
         }
 
         @objc public func build() throws -> SNProtoDataMessagePayment {
@@ -2107,10 +2107,10 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
         }
         let amount = proto.amount
 
-        guard proto.hastxnId else {
+        guard proto.hasTxnID else {
             throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: txnId")
         }
-        let txnId = proto.txnId
+        let txnId = proto.txnID
 
         // MARK: - Begin Validation Logic for SNProtoDataMessagePayment -
 

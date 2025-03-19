@@ -78,7 +78,7 @@ struct SessionProtos_Envelope {
     get {return _isBnsHolder ?? false}
     set {_isBnsHolder = newValue}
   }
-//  /// Returns true if `isBnsHolder` has been explicitly set.
+  /// Returns true if `isBnsHolder` has been explicitly set.
   var hasIsBnsHolder: Bool {return self._isBnsHolder != nil}
   /// Clears the value of `isBnsHolder`. Subsequent reads from it will return its default value.
   mutating func clearIsBnsHolder() {self._isBnsHolder = nil}
@@ -105,8 +105,8 @@ struct SessionProtos_Envelope {
 
     init?(rawValue: Int) {
       switch rawValue {
-          case 6: self = .sessionMessage
-          case 7: self = .closedGroupMessage
+      case 6: self = .sessionMessage
+      case 7: self = .closedGroupMessage
       default: return nil
       }
     }
@@ -608,15 +608,15 @@ struct SessionProtos_DataMessage {
     get {return _storage._preview}
     set {_uniqueStorage()._preview = newValue}
   }
-    
-    var reaction: SessionProtos_DataMessage.Reaction {
-        get {return _storage._reaction ?? SessionProtos_DataMessage.Reaction()}
-        set {_uniqueStorage()._reaction = newValue}
-      }
-      /// Returns true if `reaction` has been explicitly set.
-      var hasReaction: Bool {return _storage._reaction != nil}
-      /// Clears the value of `reaction`. Subsequent reads from it will return its default value.
-      mutating func clearReaction() {_uniqueStorage()._reaction = nil}
+
+  var reaction: SessionProtos_DataMessage.Reaction {
+    get {return _storage._reaction ?? SessionProtos_DataMessage.Reaction()}
+    set {_uniqueStorage()._reaction = newValue}
+  }
+  /// Returns true if `reaction` has been explicitly set.
+  var hasReaction: Bool {return _storage._reaction != nil}
+  /// Clears the value of `reaction`. Subsequent reads from it will return its default value.
+  mutating func clearReaction() {_uniqueStorage()._reaction = nil}
 
   var profile: SessionProtos_DataMessage.BeldexProfile {
     get {return _storage._profile ?? SessionProtos_DataMessage.BeldexProfile()}
@@ -848,86 +848,86 @@ struct SessionProtos_DataMessage {
     fileprivate var _title: String? = nil
     fileprivate var _image: SessionProtos_AttachmentPointer? = nil
   }
-    
-    struct Reaction {
-        // SwiftProtobuf.Message conformance is added in an extension below. See the
-        // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-        // methods supported on all messages.
 
-        /// @required
-        var id: UInt64 {
-          get {return _id ?? 0}
-          set {_id = newValue}
-        }
-        /// Returns true if `id` has been explicitly set.
-        var hasID: Bool {return self._id != nil}
-        /// Clears the value of `id`. Subsequent reads from it will return its default value.
-        mutating func clearID() {self._id = nil}
+  struct Reaction {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
 
-        /// @required
-        var author: String {
-          get {return _author ?? String()}
-          set {_author = newValue}
-        }
-        /// Returns true if `author` has been explicitly set.
-        var hasAuthor: Bool {return self._author != nil}
-        /// Clears the value of `author`. Subsequent reads from it will return its default value.
-        mutating func clearAuthor() {self._author = nil}
+    /// @required
+    var id: UInt64 {
+      get {return _id ?? 0}
+      set {_id = newValue}
+    }
+    /// Returns true if `id` has been explicitly set.
+    var hasID: Bool {return self._id != nil}
+    /// Clears the value of `id`. Subsequent reads from it will return its default value.
+    mutating func clearID() {self._id = nil}
 
-        var emoji: String {
-          get {return _emoji ?? String()}
-          set {_emoji = newValue}
-        }
-        /// Returns true if `emoji` has been explicitly set.
-        var hasEmoji: Bool {return self._emoji != nil}
-        /// Clears the value of `emoji`. Subsequent reads from it will return its default value.
-        mutating func clearEmoji() {self._emoji = nil}
+    /// @required
+    var author: String {
+      get {return _author ?? String()}
+      set {_author = newValue}
+    }
+    /// Returns true if `author` has been explicitly set.
+    var hasAuthor: Bool {return self._author != nil}
+    /// Clears the value of `author`. Subsequent reads from it will return its default value.
+    mutating func clearAuthor() {self._author = nil}
 
-        /// @required
-        var action: SessionProtos_DataMessage.Reaction.Action {
-          get {return _action ?? .react}
-          set {_action = newValue}
-        }
-        /// Returns true if `action` has been explicitly set.
-        var hasAction: Bool {return self._action != nil}
-        /// Clears the value of `action`. Subsequent reads from it will return its default value.
-        mutating func clearAction() {self._action = nil}
+    var emoji: String {
+      get {return _emoji ?? String()}
+      set {_emoji = newValue}
+    }
+    /// Returns true if `emoji` has been explicitly set.
+    var hasEmoji: Bool {return self._emoji != nil}
+    /// Clears the value of `emoji`. Subsequent reads from it will return its default value.
+    mutating func clearEmoji() {self._emoji = nil}
 
-        var unknownFields = SwiftProtobuf.UnknownStorage()
+    /// @required
+    var action: SessionProtos_DataMessage.Reaction.Action {
+      get {return _action ?? .react}
+      set {_action = newValue}
+    }
+    /// Returns true if `action` has been explicitly set.
+    var hasAction: Bool {return self._action != nil}
+    /// Clears the value of `action`. Subsequent reads from it will return its default value.
+    mutating func clearAction() {self._action = nil}
 
-        enum Action: SwiftProtobuf.Enum {
-          typealias RawValue = Int
-          case react // = 0
-          case remove // = 1
+    var unknownFields = SwiftProtobuf.UnknownStorage()
 
-          init() {
-            self = .react
-          }
+    enum Action: SwiftProtobuf.Enum {
+      typealias RawValue = Int
+      case react // = 0
+      case remove // = 1
 
-          init?(rawValue: Int) {
-            switch rawValue {
-            case 0: self = .react
-            case 1: self = .remove
-            default: return nil
-            }
-          }
-
-          var rawValue: Int {
-            switch self {
-            case .react: return 0
-            case .remove: return 1
-            }
-          }
-
-        }
-
-        init() {}
-
-        fileprivate var _id: UInt64? = nil
-        fileprivate var _author: String? = nil
-        fileprivate var _emoji: String? = nil
-        fileprivate var _action: SessionProtos_DataMessage.Reaction.Action? = nil
+      init() {
+        self = .react
       }
+
+      init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .react
+        case 1: self = .remove
+        default: return nil
+        }
+      }
+
+      var rawValue: Int {
+        switch self {
+        case .react: return 0
+        case .remove: return 1
+        }
+      }
+
+    }
+
+    init() {}
+
+    fileprivate var _id: UInt64? = nil
+    fileprivate var _author: String? = nil
+    fileprivate var _emoji: String? = nil
+    fileprivate var _action: SessionProtos_DataMessage.Reaction.Action? = nil
+  }
 
   struct BeldexProfile {
     // SwiftProtobuf.Message conformance is added in an extension below. See the
@@ -1009,21 +1009,21 @@ struct SessionProtos_DataMessage {
     mutating func clearAmount() {self._amount = nil}
 
     /// @required
-    var txnId: String {
-      get {return _txnId ?? String()}
-      set {_txnId = newValue}
+    var txnID: String {
+      get {return _txnID ?? String()}
+      set {_txnID = newValue}
     }
-    /// Returns true if `txnId` has been explicitly set.
-    var hastxnId: Bool {return self._txnId != nil}
-    /// Clears the value of `txnId`. Subsequent reads from it will return its default value.
-    mutating func cleartxnId() {self._txnId = nil}
+    /// Returns true if `txnID` has been explicitly set.
+    var hasTxnID: Bool {return self._txnID != nil}
+    /// Clears the value of `txnID`. Subsequent reads from it will return its default value.
+    mutating func clearTxnID() {self._txnID = nil}
 
     var unknownFields = SwiftProtobuf.UnknownStorage()
 
     init() {}
 
     fileprivate var _amount: String? = nil
-    fileprivate var _txnId: String? = nil
+    fileprivate var _txnID: String? = nil
   }
 
   struct ClosedGroupControlMessage {
@@ -2341,7 +2341,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
     var _timestamp: UInt64? = nil
     var _quote: SessionProtos_DataMessage.Quote? = nil
     var _preview: [SessionProtos_DataMessage.Preview] = []
-      var _reaction: SessionProtos_DataMessage.Reaction? = nil
+    var _reaction: SessionProtos_DataMessage.Reaction? = nil
     var _profile: SessionProtos_DataMessage.BeldexProfile? = nil
     var _openGroupInvitation: SessionProtos_DataMessage.OpenGroupInvitation? = nil
     var _closedGroupControlMessage: SessionProtos_DataMessage.ClosedGroupControlMessage? = nil
@@ -2370,7 +2370,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       _timestamp = source._timestamp
       _quote = source._quote
       _preview = source._preview
-        _reaction = source._reaction
+      _reaction = source._reaction
       _profile = source._profile
       _openGroupInvitation = source._openGroupInvitation
       _closedGroupControlMessage = source._closedGroupControlMessage
@@ -2392,7 +2392,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       if let v = _storage._group, !v.isInitialized {return false}
       if let v = _storage._quote, !v.isInitialized {return false}
       if !SwiftProtobuf.Internal.areAllInitialized(_storage._preview) {return false}
-        if let v = _storage._reaction, !v.isInitialized {return false}
+      if let v = _storage._reaction, !v.isInitialized {return false}
       if let v = _storage._openGroupInvitation, !v.isInitialized {return false}
       if let v = _storage._closedGroupControlMessage, !v.isInitialized {return false}
       if let v = _storage._payment, !v.isInitialized {return false}
@@ -2462,9 +2462,9 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       if !_storage._preview.isEmpty {
         try visitor.visitRepeatedMessageField(value: _storage._preview, fieldNumber: 10)
       }
-        try { if let v = _storage._reaction {
-            try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
-        } }()
+      try { if let v = _storage._reaction {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 11)
+      } }()
       try { if let v = _storage._profile {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 101)
       } }()
@@ -2498,7 +2498,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
         if _storage._timestamp != rhs_storage._timestamp {return false}
         if _storage._quote != rhs_storage._quote {return false}
         if _storage._preview != rhs_storage._preview {return false}
-          if _storage._reaction != rhs_storage._reaction {return false}
+        if _storage._reaction != rhs_storage._reaction {return false}
         if _storage._profile != rhs_storage._profile {return false}
         if _storage._openGroupInvitation != rhs_storage._openGroupInvitation {return false}
         if _storage._closedGroupControlMessage != rhs_storage._closedGroupControlMessage {return false}
@@ -2861,12 +2861,12 @@ extension SessionProtos_DataMessage.Payment: SwiftProtobuf.Message, SwiftProtobu
   static let protoMessageName: String = SessionProtos_DataMessage.protoMessageName + ".Payment"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "amount"),
-    3: .same(proto: "txnId"),
+    3: .same(proto: "txnID"),
   ]
 
   public var isInitialized: Bool {
     if self._amount == nil {return false}
-    if self._txnId == nil {return false}
+    if self._txnID == nil {return false}
     return true
   }
 
@@ -2877,7 +2877,7 @@ extension SessionProtos_DataMessage.Payment: SwiftProtobuf.Message, SwiftProtobu
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self._amount) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self._txnId) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self._txnID) }()
       default: break
       }
     }
@@ -2891,7 +2891,7 @@ extension SessionProtos_DataMessage.Payment: SwiftProtobuf.Message, SwiftProtobu
     try { if let v = self._amount {
       try visitor.visitSingularStringField(value: v, fieldNumber: 1)
     } }()
-    try { if let v = self._txnId {
+    try { if let v = self._txnID {
       try visitor.visitSingularStringField(value: v, fieldNumber: 3)
     } }()
     try unknownFields.traverse(visitor: &visitor)
@@ -2899,7 +2899,7 @@ extension SessionProtos_DataMessage.Payment: SwiftProtobuf.Message, SwiftProtobu
 
   static func ==(lhs: SessionProtos_DataMessage.Payment, rhs: SessionProtos_DataMessage.Payment) -> Bool {
     if lhs._amount != rhs._amount {return false}
-    if lhs._txnId != rhs._txnId {return false}
+    if lhs._txnID != rhs._txnID {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

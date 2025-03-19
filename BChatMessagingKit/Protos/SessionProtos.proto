@@ -164,7 +164,7 @@ message DataMessage {
         // @required
         required string amount = 1;
         // @required
-        required string txnId = 3;
+        required string txnID = 3;
     }
 
   message ClosedGroupControlMessage {
