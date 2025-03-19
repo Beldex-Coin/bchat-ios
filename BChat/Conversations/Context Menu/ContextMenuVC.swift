@@ -148,7 +148,6 @@ final class ContextMenuVC : UIViewController {
         let mainTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(mainTapGestureRecognizer)
         
-        emojiBarView.set(.width, to: 220)
         emojiBarView.set(.height, to: 40)
         
         emojiPlusButton.set(.width, to: 40)
@@ -162,10 +161,10 @@ final class ContextMenuVC : UIViewController {
             }
         }
         
-        let emojiBarStackView = UIStackView(arrangedSubviews: emojiLabels)
+        let emojiBarStackView = UIStackView(arrangedSubviews: Array(emojiLabels.prefix(5)))
         emojiBarStackView.axis = .horizontal
         emojiBarStackView.spacing = Values.smallSpacing
-        emojiBarStackView.layoutMargins = UIEdgeInsets(top: 0, left: Values.smallSpacing, bottom: 0, right: Values.smallSpacing)
+        emojiBarStackView.layoutMargins = UIEdgeInsets(top: 0, left: Values.smallSpacing, bottom: 0, right: 0)
         emojiBarStackView.isLayoutMarginsRelativeArrangement = true
         emojiBarView.addSubview(emojiBarStackView)
         emojiBarStackView.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.VerticalEdge.bottom ], to: emojiBarView)

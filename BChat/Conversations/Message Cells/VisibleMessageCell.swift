@@ -300,7 +300,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
         messageTailLeftView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
         
-        reactionContainerView.backgroundColor = .red
     }
     
     override func setUpGestureRecognizers() {
