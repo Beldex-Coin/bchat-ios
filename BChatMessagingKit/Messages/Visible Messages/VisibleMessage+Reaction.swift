@@ -18,22 +18,22 @@ public extension VisibleMessage {
 
             static func fromProto(_ proto: SNProtoDataMessageReaction.SNProtoDataMessageReactionAction) -> Kind {
                 switch proto {
-                case .react: return .react
-                case .remove: return .remove
+                    case .react: return .react
+                    case .remove: return .remove
                 }
             }
 
             func toProto() -> SNProtoDataMessageReaction.SNProtoDataMessageReactionAction {
                 switch self {
-                case .react: return .react
-                case .remove: return .remove
+                    case .react: return .react
+                    case .remove: return .remove
                 }
             }
             
             public var description: String {
                 switch self {
-                case .react: return "react"
-                case .remove: return "remove"
+                    case .react: return "react"
+                    case .remove: return "remove"
                 }
             }
         }
