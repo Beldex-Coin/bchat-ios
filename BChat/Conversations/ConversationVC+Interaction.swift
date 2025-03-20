@@ -1603,11 +1603,15 @@ extension ConversationVC {
         visibleMessage.sentTimestamp = sentTimestamp
         visibleMessage.reaction = .from(reactMessage)
         visibleMessage.reaction?.kind = cancel ? .remove : .react
+        
+        //remove old reaction (allow only one reaction as of now)
+        //TODO::
+        
         Storage.write(
             with: { transaction in
                 if cancel {
-                    message.removeReaction(reactMessage, transaction: transaction) }
-                else {
+                    message.removeReaction(reactMessage, transaction: transaction)
+                } else {
                     message.addReaction(reactMessage, transaction: transaction)
                 }
             },
@@ -1620,23 +1624,29 @@ extension ConversationVC {
     }
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
-        hideInputAccessoryView()
+        hideTextInputAccessoryView()
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { emoji in
                 if let emoji = emoji {
                     self.react(viewItem, with: emoji)
                 }
+                self.showTextInputAccessoryView()
             },
             dismissHandler: {
-                self.showInputAccessoryView()
+                self.showTextInputAccessoryView()
             })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
     
-    func hideInputAccessoryView() {
+    func hideTextInputAccessoryView() {
         self.inputAccessoryView?.isHidden = true
         self.inputAccessoryView?.alpha = 0
+    }
+    
+    func showTextInputAccessoryView() {
+        self.inputAccessoryView?.isHidden = false
+        self.inputAccessoryView?.alpha = 1
     }
 }
 
