@@ -375,6 +375,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         stackView.layer.cornerRadius = 40
         stackView.layer.borderWidth = 1.19
         stackView.layer.borderColor = Colors.callScreenBorderColor.cgColor
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(swapVideo))
+        view.addGestureRecognizer(tapGestureRecognizer)
+        view.isUserInteractionEnabled = true
         return stackView
     }()
     
@@ -386,6 +389,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         view.set(.height, to: LocalVideoView.height)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(swapVideo))
         view.addGestureRecognizer(tapGestureRecognizer)
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -587,8 +591,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         floatingLocalVideoView.addSubview(backgroundViewForFloatingView)
         backgroundViewForFloatingView.pin(to: floatingLocalVideoView)
         backgroundViewForFloatingView.addSubview(smallCallerImageBackgroundViewForFloatingView)
+        smallCallerImageBackgroundViewForFloatingView.center(in: backgroundViewForFloatingView)
         smallCallerImageBackgroundViewForFloatingView.addSubview(smallCallerImageViewForFloatingView)
-        smallCallerImageBackgroundViewForFloatingView.center(in: floatingLocalVideoView)
         smallCallerImageViewForFloatingView.center(in: smallCallerImageBackgroundViewForFloatingView)
         smallCallerImageViewForFloatingView.image = getProfilePicture(of: 65, for: self.bChatCall.bchatID)
         floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
@@ -825,6 +829,16 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                 self.callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
             }
             self.floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
+            if !self.bChatCall.isVideoEnabled && self.localVideoView.alpha == 1 {
+                self.bChatCall.attachRemoteVideoRenderer(self.remoteVideoView)
+                self.bChatCall.attachLocalVideoRenderer(self.floatingLocalVideoView)
+                self.bChatCall.removeRemoteVideoRenderer(self.floatingLocalVideoView)
+                self.bChatCall.removeLocalVideoRenderer(self.remoteVideoView)
+                self.localVideoView.alpha = 0
+                self.callerImageView.isHidden = self.bChatCall.isRemoteVideoEnabled
+                self.callerNameLabel.isHidden = self.bChatCall.isRemoteVideoEnabled
+                self.callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
+            }
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
     }

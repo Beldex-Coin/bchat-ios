@@ -30,7 +30,6 @@ class ArchiveChatsVC: BaseVC {
     internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSArchiveGroup)
     }
-    
     private lazy var dbConnection: YapDatabaseConnection = {
         let result = OWSPrimaryStorage.shared().newDatabaseConnection()
         result.objectCacheLimit = 500
