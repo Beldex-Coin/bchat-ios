@@ -415,7 +415,6 @@
 		8A72CC2E2D635B40004D2018 /* EmojiSkinTonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2D2D635B40004D2018 /* EmojiSkinTonePicker.swift */; };
 		8A72CC302D635B48004D2018 /* EmojiPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */; };
 		8A72CC322D6E1105004D2018 /* VisibleMessage+Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC312D6E1105004D2018 /* VisibleMessage+Reaction.swift */; };
-		8A72CC342D6E17F7004D2018 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC332D6E17F7004D2018 /* Setting.swift */; };
 		8A72CC362D6E18F5004D2018 /* Optional+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC352D6E18F5004D2018 /* Optional+Utilities.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */; };
@@ -1603,7 +1602,6 @@
 		8A72CC2D2D635B40004D2018 /* EmojiSkinTonePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiSkinTonePicker.swift; sourceTree = "<group>"; };
 		8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerSheet.swift; sourceTree = "<group>"; };
 		8A72CC312D6E1105004D2018 /* VisibleMessage+Reaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+Reaction.swift"; sourceTree = "<group>"; };
-		8A72CC332D6E17F7004D2018 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		8A72CC352D6E18F5004D2018 /* Optional+Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Utilities.swift"; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Emoji.swift"; sourceTree = "<group>"; };
@@ -3046,7 +3044,6 @@
 				8A47675F2D56338100BF491F /* Emoji+SkinTones.swift */,
 				8A4767632D5633CC00BF491F /* EmojiWithSkinTones.swift */,
 				8A4767612D5633A800BF491F /* EmojiWithSkinTones+String.swift */,
-				8A72CC332D6E17F7004D2018 /* Setting.swift */,
 				8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */,
 			);
 			path = Emoji;
@@ -5880,7 +5877,6 @@
 				84A4A4572D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift in Sources */,
 				6098CA832A1DCD44005A5502 /* UIButton + Ext.swift in Sources */,
 				8A5A0B4A2C05913300288474 /* HostType.swift in Sources */,
-				8A72CC342D6E17F7004D2018 /* Setting.swift in Sources */,
 				81FBC2442B4D555A00B2CA3D /* NewSettingsTableViewCell.swift in Sources */,
 				6098CA4E2A1DCB68005A5502 /* AppLanguage.swift in Sources */,
 				B82149B825D60393009C0F2A /* BlockedModal.swift in Sources */,

@@ -118,7 +118,7 @@ class EmojiPickerCollectionView: UICollectionView {
         }
 
         guard let categoryEmoji = allSendableEmojiByCategory[category] else {
-//            owsFailDebug("Unexpectedly missing emoji for category \(category)")
+            owsFailDebug("Unexpectedly missing emoji for category \(category)")
             return []
         }
 

@@ -23,13 +23,6 @@ class EmojiPickerSheet: BaseVC {
         let blurView: UIVisualEffectView = UIVisualEffectView()
         result.addSubview(blurView)
         blurView.pin(to: result)
-
-//        ThemeManager.onThemeChange(observer: blurView) { [weak blurView] theme, _ in
-//            switch theme.interfaceStyle {
-//                case .light: blurView?.effect = UIBlurEffect(style: .light)
-//                default: blurView?.effect = UIBlurEffect(style: .dark)
-//            }
-//        }
         
         let line = UIView()
         line.backgroundColor = .darkGray

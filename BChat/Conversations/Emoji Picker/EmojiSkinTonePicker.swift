@@ -19,7 +19,7 @@ class EmojiSkinTonePicker: UIView {
         emoji: EmojiWithSkinTones,
         completion: @escaping (EmojiWithSkinTones?) -> Void
     ) -> EmojiSkinTonePicker? {
-        //guard let baseEmoji = emoji.baseEmoji, baseEmoji.hasSkinTones else { return nil }
+        guard emoji.baseEmoji.hasSkinTones else { return nil }
 
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
 
@@ -134,8 +134,7 @@ class EmojiSkinTonePicker: UIView {
 
         if emoji.baseEmoji.allowsMultipleSkinTones {
             prepareForMultipleSkinTones()
-        }
-        else {
+        } else {
             prepareForSingleSkinTone()
         }
     }
