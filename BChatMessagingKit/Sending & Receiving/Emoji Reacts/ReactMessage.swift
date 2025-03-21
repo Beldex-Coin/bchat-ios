@@ -4,6 +4,8 @@
 public final class ReactMessage : MTLModel {
     
     public var timestamp: UInt64?
+    
+    @objc
     public var authorId: String?
     
     @objc

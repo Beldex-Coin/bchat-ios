@@ -485,6 +485,14 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
         [self applyChangeToSelfAndLatestCopy:transaction
                                  changeBlock:^(TSMessage *message) {
                                     if (![message.reactions containsObject:reaction]) {
+                                        for (SNReactMessage *existingReaction in message.reactions) {
+                                            // Compare the authorId of the existing reaction with the new one
+                                            if ([existingReaction.sender isEqualToString:reaction.sender]) {
+                                                NSUInteger index = [message.reactions indexOfObject:existingReaction];
+                                                [message.reactions replaceObjectAtIndex:index withObject:reaction];
+                                                return;
+                                            }
+                                        }
                                         [message.reactions addObject:reaction];
                                     } else {
                                         NSUInteger index = [message.reactions indexOfObject:reaction];

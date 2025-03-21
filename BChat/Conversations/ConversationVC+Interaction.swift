@@ -1604,9 +1604,6 @@ extension ConversationVC {
         visibleMessage.reaction = .from(reactMessage)
         visibleMessage.reaction?.kind = cancel ? .remove : .react
         
-        //remove old reaction (allow only one reaction as of now)
-        //TODO::
-        
         Storage.write(
             with: { transaction in
                 if cancel {
