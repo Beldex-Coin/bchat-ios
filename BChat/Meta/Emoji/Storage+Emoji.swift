@@ -5,13 +5,26 @@ extension Storage {
     private static let emojiPickerCollection = "EmojiPickerCollection"
     private static let recentEmojiKey = "recentEmoji"
     
+    // Don't Delete need to check
+    
+//    func getRecentEmoji(withDefaultEmoji: Bool, transaction: YapDatabaseReadTransaction) -> [EmojiWithSkinTones] {
+//        var rawRecentEmoji = transaction.object(forKey: Self.recentEmojiKey, inCollection: Self.emojiPickerCollection) as? [String] ?? []
+//        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"].filter{ !rawRecentEmoji.contains($0) }
+//        
+//        if rawRecentEmoji.count < 6 && withDefaultEmoji {
+//            rawRecentEmoji.append(contentsOf: defaultEmoji[..<(defaultEmoji.count - rawRecentEmoji.count)])
+//        }
+//        return rawRecentEmoji.compactMap { EmojiWithSkinTones(rawValue: $0) }
+//    }
+    
     func getRecentEmoji(withDefaultEmoji: Bool, transaction: YapDatabaseReadTransaction) -> [EmojiWithSkinTones] {
         var rawRecentEmoji = transaction.object(forKey: Self.recentEmojiKey, inCollection: Self.emojiPickerCollection) as? [String] ?? []
-        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"].filter{ !rawRecentEmoji.contains($0) }
-        
+        let defaultEmoji = ["😂", "🥰", "😢", "😡", "😮", "😈"].filter { !rawRecentEmoji.contains($0) }
         if rawRecentEmoji.count < 6 && withDefaultEmoji {
-            rawRecentEmoji.append(contentsOf: defaultEmoji[..<(defaultEmoji.count - rawRecentEmoji.count)])
+            let remainingCount = 6 - rawRecentEmoji.count
+            rawRecentEmoji.append(contentsOf: defaultEmoji.prefix(remainingCount))
         }
+        rawRecentEmoji = Array(rawRecentEmoji.prefix(6))
         return rawRecentEmoji.compactMap { EmojiWithSkinTones(rawValue: $0) }
     }
     
