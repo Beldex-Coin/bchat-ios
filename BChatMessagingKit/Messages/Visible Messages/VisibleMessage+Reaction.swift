@@ -30,6 +30,13 @@ public extension VisibleMessage {
                 }
             }
             
+            public var react: Int {
+                switch self {
+                    case .react: return 0
+                    case .remove: return 1
+                }
+            }
+            
             public var description: String {
                 switch self {
                     case .react: return "react"
@@ -101,7 +108,7 @@ public extension VisibleMessage {
                 timestamp: \(timestamp?.description ?? "null"),
                 publicKey: \(publicKey ?? "null"),
                 emoji: \(emoji ?? "null"),
-                kind: \(kind?.description ?? "null")
+                kind: \(kind?.react ?? 1)
             )
             """
         }

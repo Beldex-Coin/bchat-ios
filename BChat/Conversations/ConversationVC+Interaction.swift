@@ -1604,20 +1604,46 @@ extension ConversationVC {
         visibleMessage.reaction = .from(reactMessage)
         visibleMessage.reaction?.kind = cancel ? .remove : .react
         
-        Storage.write(
-            with: { transaction in
-                if cancel {
-                    message.removeReaction(reactMessage, transaction: transaction)
-                } else {
-                    message.addReaction(reactMessage, transaction: transaction)
-                }
-            },
-            completion: {
-                Storage.write { transaction in
-                    MessageSender.send(visibleMessage, in: thread, using: transaction)
+        var isReplace = false
+        if !message.reactions.contains(reactMessage) {
+            for existingReaction in message.reactions {
+                if (existingReaction as! ReactMessage).sender == reactMessage.sender {
+                    isReplace = true
+                    Storage.write(
+                        with: { transaction in
+                            isReplace = true
+                            visibleMessage.reaction = .from(existingReaction as? ReactMessage)
+                            guard let emojiReaction = visibleMessage.reaction?.emoji else {
+                                return
+                            }
+                            self.react(viewItem, with: emojiReaction, cancel: true)
+                        },
+                        completion: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                self.react(viewItem, with: emoji, cancel: false)
+                            })
+                        }
+                    )
                 }
             }
-        )
+        }
+                
+        if !isReplace {
+            Storage.write(
+                with: { transaction in
+                    if cancel {
+                        message.removeReaction(reactMessage, transaction: transaction)
+                    } else {
+                        message.addReaction(reactMessage, transaction: transaction)
+                    }
+                },
+                completion: {
+                    Storage.write { transaction in
+                        MessageSender.send(visibleMessage, in: thread, using: transaction)
+                    }
+                }
+            )
+        }
     }
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {

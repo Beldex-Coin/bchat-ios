@@ -906,16 +906,16 @@ struct SessionProtos_DataMessage {
 
       init?(rawValue: Int) {
         switch rawValue {
-        case 0: self = .react
-        case 1: self = .remove
-        default: return nil
+            case 0: self = .react
+            case 1: self = .remove
+            default: return nil
         }
       }
 
       var rawValue: Int {
         switch self {
-        case .react: return 0
-        case .remove: return 1
+            case .react: return 0
+            case .remove: return 1
         }
       }
 
