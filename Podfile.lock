@@ -1,0 +1,254 @@
+PODS:
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
+    - AFNetworking/NSURLSession
+  - Alamofire (5.10.2)
+  - CocoaLumberjack (3.8.5):
+    - CocoaLumberjack/Core (= 3.8.5)
+  - CocoaLumberjack/Core (3.8.5)
+  - CryptoSwift (1.8.4)
+  - Curve25519Kit (2.1.0):
+    - CocoaLumberjack
+    - SignalCoreKit
+  - DifferenceKit (1.3.0):
+    - DifferenceKit/Core (= 1.3.0)
+    - DifferenceKit/UIKitExtension (= 1.3.0)
+  - DifferenceKit/Core (1.3.0)
+  - DifferenceKit/UIKitExtension (1.3.0):
+    - DifferenceKit/Core
+  - FSCalendar (2.8.4)
+  - GRDB.swift/SQLCipher (6.24.1):
+    - SQLCipher (>= 3.4.2)
+  - Mantle (2.1.0):
+    - Mantle/extobjc (= 2.1.0)
+  - Mantle/extobjc (2.1.0)
+  - NVActivityIndicatorView (5.2.0):
+    - NVActivityIndicatorView/Base (= 5.2.0)
+  - NVActivityIndicatorView/Base (5.2.0)
+  - OpenSSL-Universal (3.3.2000)
+  - PromiseKit (8.2.0):
+    - PromiseKit/CorePromise (= 8.2.0)
+    - PromiseKit/Foundation (= 8.2.0)
+    - PromiseKit/UIKit (= 8.2.0)
+  - PromiseKit/CorePromise (8.2.0)
+  - PromiseKit/Foundation (8.2.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (8.2.0):
+    - PromiseKit/CorePromise
+  - PureLayout (3.1.9)
+  - Reachability (3.7.6)
+  - SAMKeychain (1.5.3)
+  - SideMenu (6.5.0)
+  - SignalCoreKit (1.0.0):
+    - CocoaLumberjack
+    - OpenSSL-Universal
+  - SocketRocket (0.5.1)
+  - Sodium (0.9.1)
+  - SQLCipher (4.6.1):
+    - SQLCipher/standard (= 4.6.1)
+  - SQLCipher/common (4.6.1)
+  - SQLCipher/standard (4.6.1):
+    - SQLCipher/common
+  - SVGKit (3.0.0):
+    - CocoaLumberjack (~> 3.0)
+  - SwiftProtobuf (1.5.0)
+  - SwiftyRSA (1.7.0):
+    - SwiftyRSA/ObjC (= 1.7.0)
+  - SwiftyRSA/ObjC (1.7.0)
+  - WebRTC-lib (130.0.0)
+  - YapDatabase/SQLCipher (3.1.1):
+    - YapDatabase/SQLCipher/Core (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions (= 3.1.1)
+  - YapDatabase/SQLCipher/Core (3.1.1):
+    - CocoaLumberjack
+    - SQLCipher (>= 3.4.0)
+  - YapDatabase/SQLCipher/Extensions (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/ActionManager (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/AutoView (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/CloudCore (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/CloudKit (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/ConnectionPool (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/ConnectionProxy (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/CrossProcessNotification (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/FilteredView (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/FullTextSearch (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/Hooks (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/ManualView (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/Relationships (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/RTreeIndex (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/SearchResultsView (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/SecondaryIndex (= 3.1.1)
+    - YapDatabase/SQLCipher/Extensions/View (= 3.1.1)
+  - YapDatabase/SQLCipher/Extensions/ActionManager (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/AutoView
+  - YapDatabase/SQLCipher/Extensions/AutoView (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/View
+  - YapDatabase/SQLCipher/Extensions/CloudCore (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/CloudKit (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/ConnectionPool (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/ConnectionProxy (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/CrossProcessNotification (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/FilteredView (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/View
+  - YapDatabase/SQLCipher/Extensions/FullTextSearch (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/Hooks (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/ManualView (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/View
+  - YapDatabase/SQLCipher/Extensions/Relationships (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/RTreeIndex (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/SearchResultsView (3.1.1):
+    - YapDatabase/SQLCipher/Core
+    - YapDatabase/SQLCipher/Extensions/AutoView
+    - YapDatabase/SQLCipher/Extensions/FullTextSearch
+  - YapDatabase/SQLCipher/Extensions/SecondaryIndex (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YapDatabase/SQLCipher/Extensions/View (3.1.1):
+    - YapDatabase/SQLCipher/Core
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+  - ZXingObjC (3.6.9):
+    - ZXingObjC/All (= 3.6.9)
+  - ZXingObjC/All (3.6.9)
+
+DEPENDENCIES:
+  - AFNetworking
+  - Alamofire
+  - CryptoSwift
+  - Curve25519Kit (from `https://github.com/signalapp/Curve25519Kit.git`)
+  - DifferenceKit
+  - FSCalendar
+  - GRDB.swift/SQLCipher
+  - Mantle (from `https://github.com/signalapp/Mantle`, branch `signal-master`)
+  - NVActivityIndicatorView
+  - PromiseKit
+  - PureLayout (~> 3.1.8)
+  - Reachability
+  - SAMKeychain
+  - SideMenu
+  - SignalCoreKit (from `https://github.com/oxen-io/session-ios-core-kit`, branch `session-version`)
+  - SocketRocket (~> 0.5.1)
+  - Sodium (~> 0.9.1)
+  - SVGKit
+  - SwiftProtobuf (~> 1.5.0)
+  - SwiftyRSA
+  - WebRTC-lib
+  - YapDatabase/SQLCipher (from `https://github.com/oxen-io/session-ios-yap-database.git`, branch `signal-release`)
+  - YYImage (from `https://github.com/signalapp/YYImage`)
+  - ZXingObjC
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AFNetworking
+    - Alamofire
+    - CocoaLumberjack
+    - CryptoSwift
+    - DifferenceKit
+    - FSCalendar
+    - GRDB.swift
+    - NVActivityIndicatorView
+    - OpenSSL-Universal
+    - PromiseKit
+    - PureLayout
+    - Reachability
+    - SAMKeychain
+    - SideMenu
+    - SocketRocket
+    - Sodium
+    - SQLCipher
+    - SVGKit
+    - SwiftProtobuf
+    - SwiftyRSA
+    - WebRTC-lib
+    - ZXingObjC
+
+EXTERNAL SOURCES:
+  Curve25519Kit:
+    :git: https://github.com/signalapp/Curve25519Kit.git
+  Mantle:
+    :branch: signal-master
+    :git: https://github.com/signalapp/Mantle
+  SignalCoreKit:
+    :branch: session-version
+    :git: https://github.com/oxen-io/session-ios-core-kit
+  YapDatabase:
+    :branch: signal-release
+    :git: https://github.com/oxen-io/session-ios-yap-database.git
+  YYImage:
+    :git: https://github.com/signalapp/YYImage
+
+CHECKOUT OPTIONS:
+  Curve25519Kit:
+    :commit: 4fc1c10e98fff2534b5379a9bb587430fdb8e577
+    :git: https://github.com/signalapp/Curve25519Kit.git
+  Mantle:
+    :commit: e7e46253bb01ce39525d90aa69ed9e85e758bfc4
+    :git: https://github.com/signalapp/Mantle
+  SignalCoreKit:
+    :commit: 3acbfe56d76938a4b260cc406b0f1501b99c4422
+    :git: https://github.com/oxen-io/session-ios-core-kit
+  YapDatabase:
+    :commit: d84069e25e12a16ab4422e5258127a04b70489ad
+    :git: https://github.com/oxen-io/session-ios-yap-database.git
+  YYImage:
+    :commit: 62a4cede20bcf31da73d18163408e46a92f171c6
+    :git: https://github.com/signalapp/YYImage
+
+SPEC CHECKSUMS:
+  AFNetworking: 3bd23d814e976cd148d7d44c3ab78017b744cd58
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
+  CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
+  Curve25519Kit: e63f9859ede02438ae3defc5e1a87e09d1ec7ee6
+  DifferenceKit: ab185c4d7f9cef8af3fcf593e5b387fb81e999ca
+  FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
+  GRDB.swift: 136dcb5d8dddca50aae3ba7d77475f79e7232cd8
+  Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
+  NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53
+  OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
+  PromiseKit: 74e6ab5894856b4762fef547055c809bca91d440
+  PureLayout: 5fb5e5429519627d60d079ccb1eaa7265ce7cf88
+  Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
+  SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
+  SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
+  SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
+  Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
+  SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
+  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
+  SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
+  SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
+  WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
+  YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
+  YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
+  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
+
+PODFILE CHECKSUM: d31a1ac9377d23eaa73716b649da104c0ad7de19
+
+COCOAPODS: 1.15.2
