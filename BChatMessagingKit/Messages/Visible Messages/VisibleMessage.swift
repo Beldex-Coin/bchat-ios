@@ -16,6 +16,8 @@ public final class VisibleMessage : Message {
     @objc public var payment: Payment?
     @objc public var beldexAddress: String?
     @objc public var isBnsHolder: Bool = false
+    
+    @objc public var reaction: Reaction?
 
     public override var isSelfSendValid: Bool { true }
     
@@ -28,6 +30,7 @@ public final class VisibleMessage : Message {
         if !attachmentIDs.isEmpty { return true }
         if openGroupInvitation != nil { return true }
         if payment != nil { return true }
+        if reaction != nil { return true }
         if let text = text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty { return true }
         return false
     }
@@ -46,6 +49,8 @@ public final class VisibleMessage : Message {
         if let payment = coder.decodeObject(forKey: "payment") as! Payment? { self.payment = payment }
         if let beldexAddress = coder.decodeObject(forKey: "beldexAddress") as! String? { self.beldexAddress = beldexAddress }
         if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
+        
+        if let reaction = coder.decodeObject(forKey: "reaction") as! Reaction? { self.reaction = reaction }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -61,6 +66,8 @@ public final class VisibleMessage : Message {
         coder.encode(payment, forKey: "payment")
         coder.encode(beldexAddress,forKey: "beldexAddress")
         coder.encode(isBnsHolder,forKey: "isBnsHolder")
+        
+        coder.encode(reaction, forKey: "reaction")
     }
 
     // MARK: Proto Conversion
@@ -79,6 +86,12 @@ public final class VisibleMessage : Message {
             let openGroupInvitation = OpenGroupInvitation.fromProto(openGroupInvitationProto) { result.openGroupInvitation = openGroupInvitation }
         if let paymentProto = dataMessage.payment,
             let payment = Payment.fromProto(paymentProto) { result.payment = payment }
+        
+        if let reactionProto = dataMessage.reaction,
+           let reaction = Reaction.fromProto(reactionProto) {
+            result.reaction = reaction
+        }
+        
         result.syncTarget = dataMessage.syncTarget
         return result
     }
@@ -120,6 +133,11 @@ public final class VisibleMessage : Message {
         // Payment
         if let payment = payment, let paymentProto = payment.toProto() { dataMessage.setPayment(paymentProto) }
         
+        // Emoji react
+        if let reaction = reaction, let reactionProto = reaction.toProto(using: transaction) {
+            dataMessage.setReaction(reactionProto)
+        }
+        
         // Group context
         do {
             try setGroupContextIfNeeded(on: dataMessage, using: transaction)
@@ -151,6 +169,7 @@ public final class VisibleMessage : Message {
             linkPreview: \(linkPreview?.description ?? "null"),
             contact: \(contact?.description ?? "null"),
             profile: \(profile?.description ?? "null"),
+            reaction: \(reaction?.description ?? "null"),
             "openGroupInvitation": \(openGroupInvitation?.description ?? "null"),
             "payment": \(payment?.description ?? "null")
         )

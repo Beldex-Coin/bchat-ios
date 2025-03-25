@@ -10,6 +10,8 @@ public extension Notification.Name {
     static let seedViewed = Notification.Name("seedViewed")
     // Interaction
     static let dataNukeRequested = Notification.Name("dataNukeRequested")
+    
+    static let emojiReactsUpdated = Notification.Name("emojiReactsUpdated")
 }
 
 @objc public extension NSNotification {

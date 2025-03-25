@@ -61,6 +61,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var baselineKeyboardHeight: CGFloat = 0
     var isSyncingStatus = false
     
+    // Reaction
+    var showingReactionListForMessageId: String?
+    
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
     var viewItems: [ConversationViewItem] { viewModel.viewState.viewItems }
@@ -2098,8 +2101,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             },
-            completion: nil
-        )
+            completion: nil         )
     }
     
     func conversationViewModelWillUpdate() {
@@ -2134,6 +2136,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         }
                     case .update:
                         self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                        if update.viewItem?.interaction.uniqueId == self.showingReactionListForMessageId {
+                            NotificationCenter.default.post(name: .emojiReactsUpdated, object: nil)
+                        }
                     default: preconditionFailure()
                 }
                 
@@ -2241,7 +2246,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func getMediaCache() -> NSCache<NSString, AnyObject> {
         return mediaCache
     }
-    
+
     func updateUnreadCountView() {
         let visibleViewItems = (messagesTableView.indexPathsForVisibleRows ?? []).map { viewItems[ifValid: $0.row] }
         for visibleItem in visibleViewItems {

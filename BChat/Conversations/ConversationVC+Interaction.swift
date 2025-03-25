@@ -8,7 +8,14 @@ import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
     SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate,
-    ConversationTitleViewDelegate {
+                           ConversationTitleViewDelegate {
+
+    func needsLayout() {
+        UIView.setAnimationsEnabled(false)
+        messagesTableView.beginUpdates()
+        messagesTableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
+    }
 
     func handleTitleViewTapped() {
         
@@ -1552,6 +1559,118 @@ extension ConversationVC {
         })
     }
     
+    func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?) {
+        guard let thread = thread as? TSGroupThread else { return }
+        guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
+        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread)
+        showingReactionListForMessageId = viewItem.interaction.uniqueId
+        reactionListSheet.delegate = self
+        reactionListSheet.selectedReaction = selectedReaction
+        reactionListSheet.modalPresentationStyle = .overFullScreen
+        present(reactionListSheet, animated: true, completion: nil)
+    }
+    
+    func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
+        Storage.write { transaction in
+            Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
+        }
+        react(viewItem, with: emoji.rawValue, cancel: false)
+    }
+    
+    func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
+        react(viewItem, with: emoji)
+    }
+    
+    func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones) {
+        react(viewItem, with: emoji.rawValue, cancel: true)
+    }
+    
+    func cancelAllReact(reactMessages: [ReactMessage]) {
+        guard let groupThread = thread as? TSGroupThread, groupThread.isOpenGroup else { return }
+        guard let threadId = groupThread.uniqueId, let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadId) else { return }
+        OpenGroupAPIV2.batchDeleteMessages(for: openGroupV2.room, on: openGroupV2.server, messageIds: reactMessages.compactMap{ $0.messageId })
+    }
+    
+    private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        var authorId = getUserHexEncodedPublicKey()
+        if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        reactMessage.sender = getUserHexEncodedPublicKey()
+        let thread = self.thread
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let visibleMessage = VisibleMessage()
+        visibleMessage.sentTimestamp = sentTimestamp
+        visibleMessage.reaction = .from(reactMessage)
+        visibleMessage.reaction?.kind = cancel ? .remove : .react
+        
+        var isReplace = false
+        if !message.reactions.contains(reactMessage) {
+            for existingReaction in message.reactions {
+                if (existingReaction as! ReactMessage).sender == reactMessage.sender {
+                    isReplace = true
+                    Storage.write(
+                        with: { transaction in
+                            isReplace = true
+                            visibleMessage.reaction = .from(existingReaction as? ReactMessage)
+                            guard let emojiReaction = visibleMessage.reaction?.emoji else {
+                                return
+                            }
+                            self.react(viewItem, with: emojiReaction, cancel: true)
+                        },
+                        completion: {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                self.react(viewItem, with: emoji, cancel: false)
+                            })
+                        }
+                    )
+                }
+            }
+        }
+                
+        if !isReplace {
+            Storage.write(
+                with: { transaction in
+                    if cancel {
+                        message.removeReaction(reactMessage, transaction: transaction)
+                    } else {
+                        message.addReaction(reactMessage, transaction: transaction)
+                    }
+                },
+                completion: {
+                    Storage.write { transaction in
+                        MessageSender.send(visibleMessage, in: thread, using: transaction)
+                    }
+                }
+            )
+        }
+    }
+    
+    func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
+        hideTextInputAccessoryView()
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { emoji in
+                if let emoji = emoji {
+                    self.react(viewItem, with: emoji)
+                }
+                self.showTextInputAccessoryView()
+            },
+            dismissHandler: {
+                self.showTextInputAccessoryView()
+            })
+        emojiPicker.modalPresentationStyle = .overFullScreen
+        present(emojiPicker, animated: true, completion: nil)
+    }
+    
+    func hideTextInputAccessoryView() {
+        self.inputAccessoryView?.isHidden = true
+        self.inputAccessoryView?.alpha = 0
+    }
+    
+    func showTextInputAccessoryView() {
+        self.inputAccessoryView?.isHidden = false
+        self.inputAccessoryView?.alpha = 1
+    }
 }
 
 struct CustomSlideView {

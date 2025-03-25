@@ -11,3 +11,68 @@ public extension Array where Element: Hashable {
         return Set(self)
     }
 }
+
+public extension Array {
+    func appending(_ other: Element?) -> [Element] {
+        guard let other: Element = other else { return self }
+        
+        var updatedArray: [Element] = self
+        updatedArray.append(other)
+        return updatedArray
+    }
+    
+    func appending(contentsOf other: [Element]?) -> [Element] {
+        guard let other: [Element] = other else { return self }
+        
+        var updatedArray: [Element] = self
+        updatedArray.append(contentsOf: other)
+        return updatedArray
+    }
+    
+    func removing(index: Int) -> [Element] {
+        var updatedArray: [Element] = self
+        updatedArray.remove(at: index)
+        return updatedArray
+    }
+    
+    mutating func popFirst() -> Element? {
+        guard !self.isEmpty else { return nil }
+        
+        return self.removeFirst()
+    }
+    
+    func inserting(_ other: Element?, at index: Int) -> [Element] {
+        guard let other: Element = other else { return self }
+        
+        var updatedArray: [Element] = self
+        updatedArray.insert(other, at: index)
+        return updatedArray
+    }
+    
+    func inserting(contentsOf other: [Element]?, at index: Int) -> [Element] {
+        guard let other: [Element] = other else { return self }
+        
+        var updatedArray: [Element] = self
+        updatedArray.insert(contentsOf: other, at: 0)
+        return updatedArray
+    }
+    
+    func grouped<Key: Hashable>(by keyForValue: (Element) throws -> Key) -> [Key: [Element]] {
+        return ((try? Dictionary(grouping: self, by: keyForValue)) ?? [:])
+    }
+    
+    func nullIfEmpty() -> [Element]? {
+        guard !isEmpty else { return nil }
+        
+        return self
+    }
+}
+
+
+public extension Array where Element == String {
+    func reversed(if flag: Bool) -> [Element] {
+        guard flag else { return self }
+        
+        return self.reversed()
+    }
+}

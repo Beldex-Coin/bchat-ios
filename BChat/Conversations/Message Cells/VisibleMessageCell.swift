@@ -1,9 +1,13 @@
 
 final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
+    private var isHandlingLongPress: Bool = false
     private var unloadContent: (() -> Void)?
     private var previousX: CGFloat = 0
     var albumView: MediaAlbumView?
     var bodyTextView: UITextView?
+    private lazy var reactionContainerView = ReactionContainerView()
+    private lazy var reactionContainerViewHeightConstraint = reactionContainerView.set(.height, to: 22)
+    
     // Constraints
     private lazy var headerViewTopConstraint = headerView.pin(.top, to: .top, of: self, withInset: 1)
     private lazy var authorLabelHeightConstraint = authorLabel.set(.height, to: 0)
@@ -14,6 +18,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var bubbleViewTopConstraint = bubbleView.pin(.top, to: .bottom, of: authorLabel, withInset: VisibleMessageCell.authorLabelBottomSpacing)
     private lazy var bubbleViewRightConstraint1 = bubbleView.pin(.right, to: .right, of: self, withInset: -VisibleMessageCell.contactThreadHSpacing)
     private lazy var bubbleViewRightConstraint2 = bubbleView.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -VisibleMessageCell.gutterSize)
+    
+    private lazy var reactionContainerViewLeftConstraint = reactionContainerView.pin(.left, to: .left, of: bubbleView)
+    private lazy var reactionContainerViewRightConstraint = reactionContainerView.pin(.right, to: .right, of: bubbleView)
+    
     private lazy var messageStatusImageViewTopConstraint = messageStatusImageView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
     private lazy var messageStatusImageViewWidthConstraint = messageStatusImageView.set(.width, to: VisibleMessageCell.messageStatusImageViewSize)
     private lazy var messageStatusImageViewHeightConstraint = messageStatusImageView.set(.height, to: VisibleMessageCell.messageStatusImageViewSize)
@@ -280,6 +288,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         profilePictureView.isHidden = true
         verifiedImageView.isHidden = true
         
+        // Reaction view
+        addSubview(reactionContainerView)
+        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: Values.verySmallSpacing)
+        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -Values.verySmallSpacing)
+        reactionContainerViewLeftConstraint.isActive = true
+        reactionContainerViewHeightConstraint.isActive = true
+        
         messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
         messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
         messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
@@ -349,6 +364,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         messageTimeBottomLabel.isHidden = false
         // Content view
         populateContentView(for: viewItem, message: message)
+        // Reaction view
+        reactionContainerView.isHidden = (message.reactions.count == 0)
+        reactionContainerViewLeftConstraint.isActive = (direction == .incoming)
+        reactionContainerViewRightConstraint.isActive = (direction == .outgoing)
+        reactionContainerViewHeightConstraint.constant = message.reactions.count == 0 ? 0 : 22
+        populateReaction(for: viewItem, message: message)
         // Date break
         headerViewTopConstraint.constant = shouldInsetHeader ? Values.mediumSpacing : 1
         headerView.subviews.forEach { $0.removeFromSuperview() }
@@ -690,6 +711,22 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
+    private func populateReaction(for viewItem: ConversationViewItem, message: TSMessage) {
+        let reactions: OrderedDictionary<EmojiWithSkinTones, (Int, Bool)> = OrderedDictionary()
+        for reaction in message.reactions {
+            if let reactMessage = reaction as? ReactMessage, let rawEmoji = reactMessage.emoji, let emoji = EmojiWithSkinTones(rawValue: rawEmoji) {
+                let isSelfSend = (reactMessage.sender! == getUserHexEncodedPublicKey())
+                if let value = reactions.value(forKey: emoji) {
+                    reactions.replace(key: emoji, value: (value.0 + 1, value.1 || isSelfSend))
+                } else {
+                    reactions.append(key: emoji, value: (1, isSelfSend))
+                }
+            }
+        }
+        reactionContainerView.update(reactions.orderedItems, isOutgoingMessage: direction == .outgoing, showNumbers: thread!.isGroupThread())
+    }
+    
+    
     private func updateBubbleViewCorners() {
         let cornersToRound = getCornersToRound()    
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
@@ -702,7 +739,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, reactionContainerView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -744,9 +781,26 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
-    @objc func handleLongPress() {
+    @objc func handleLongPress(_ gestureRecognizer: UITapGestureRecognizer) {
+        if [ .ended, .cancelled, .failed ].contains(gestureRecognizer.state) {
+            isHandlingLongPress = false
+            return
+        }
+        guard !isHandlingLongPress else { return }
         guard let viewItem = viewItem else { return }
-        delegate?.handleViewItemLongPressed(viewItem)
+        let location = gestureRecognizer.location(in: self)
+        if reactionContainerView.frame.contains(location) {
+            let convertedLocation = reactionContainerView.convert(location, from: self)
+            for reactionView in reactionContainerView.reactionViews {
+                if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                    delegate?.showReactionList(viewItem, selectedReaction: reactionView.emoji)
+                    break
+                }
+            }
+        } else {
+            delegate?.handleViewItemLongPressed(viewItem)
+        }
+        isHandlingLongPress = true
     }
 
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -759,8 +813,27 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else if replyButton.frame.contains(location) { // here tick mark option click means replay going i give hide
 //            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 //            reply()
-        }
-        else {
+        } else if reactionContainerView.frame.contains(location) {
+            let convertedLocation = reactionContainerView.convert(location, from: self)
+            for reactionView in reactionContainerView.reactionViews {
+                if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                    if reactionView.showBorder {
+                        delegate?.cancelReact(viewItem, for: reactionView.emoji)
+                    } else {
+                        delegate?.quickReact(viewItem, with: reactionView.emoji)
+                    }
+                    return
+                }
+            }
+            if let expandButton = reactionContainerView.expandButton, expandButton.frame.contains(convertedLocation) {
+                reactionContainerView.showAllEmojis()
+                delegate?.needsLayout()
+            }
+            if reactionContainerView.collapseButton.frame.contains(convertedLocation) {
+                reactionContainerView.showLessEmojis()
+                delegate?.needsLayout()
+            }
+        } else {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
     }

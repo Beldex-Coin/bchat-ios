@@ -75,7 +75,7 @@ class MessageCell: UITableViewCell {
 
 // MARK: - Message cell delegate
 
-protocol MessageCellDelegate : AnyObject {
+protocol MessageCellDelegate : ReactionDelegate {
     var lastSearchedText: String? { get }
     
     func getMediaCache() -> NSCache<NSString, AnyObject>
@@ -88,4 +88,7 @@ protocol MessageCellDelegate : AnyObject {
     func showUserDetails(for bchatID: String)
     func handleTapToCallback()
     func showOpenURLView(_ url: URL)
+    
+    func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?)
+    func needsLayout()
 }
