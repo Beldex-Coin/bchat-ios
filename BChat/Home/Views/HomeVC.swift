@@ -366,8 +366,6 @@ final class HomeVC : BaseVC {
         dbConnection.beginLongLivedReadTransaction() // Freeze the connection for use on the main thread (this gives us a stable data source that doesn't change until we tell it to)
         // Preparation
         SignalApp.shared().homeViewController = self
-        // Gradient & nav bar
-//        setUpGradientBackground()
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         if navigationController?.navigationBar != nil {
             setUpNavBarStyle()
@@ -637,11 +635,11 @@ final class HomeVC : BaseVC {
     override func appDidBecomeActive(_ notification: Notification) {
         reload()
     }
-
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
     }
+    
     @objc func tappedMe() {
         let searchController = GlobalSearchViewController()
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
@@ -723,7 +721,6 @@ final class HomeVC : BaseVC {
             let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
             thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
         }
-        
         return thread
     }
     

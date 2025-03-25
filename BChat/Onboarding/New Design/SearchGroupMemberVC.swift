@@ -146,18 +146,19 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
             filterDict = mainDict
         }
         
-        let adminId = groupThread.groupModel.groupAdminIds[0]
-        if let value = filterDict[adminId] {
-            filterDict.removeValue(forKey: adminId)
-            var orderedDictionary: [String: String] = [adminId: value]
-            for (key, value) in filterDict {
-                orderedDictionary[key] = value
+        if let adminId = groupThread.groupModel.groupAdminIds.first {
+            if let value = filterDict[adminId] {
+                filterDict.removeValue(forKey: adminId)
+                var orderedDictionary: [String: String] = [adminId: value]
+                for (key, value) in filterDict {
+                    orderedDictionary[key] = value
+                }
+                filterDict = orderedDictionary
             }
-            filterDict = orderedDictionary
-        }
-        if let index = filteredUsers.firstIndex(of: adminId) {
-            filteredUsers.remove(at: index)
-            filteredUsers.insert(adminId, at: 0)
+            if let index = filteredUsers.firstIndex(of: adminId) {
+                filteredUsers.remove(at: index)
+                filteredUsers.insert(adminId, at: 0)
+            }
         }
         
     }
@@ -232,18 +233,19 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
             filteredUsers = Array(filterDict.keys)
         }
         guard let groupThread = self.thread as? TSGroupThread else { return }
-        let adminId = groupThread.groupModel.groupAdminIds[0]
-        if let value = filterDict[adminId] {
-            filterDict.removeValue(forKey: adminId)
-            var orderedDictionary: [String: String] = [adminId: value]
-            for (key, value) in filterDict {
-                orderedDictionary[key] = value
+        if let adminId = groupThread.groupModel.groupAdminIds.first {
+            if let value = filterDict[adminId] {
+                filterDict.removeValue(forKey: adminId)
+                var orderedDictionary: [String: String] = [adminId: value]
+                for (key, value) in filterDict {
+                    orderedDictionary[key] = value
+                }
+                filterDict = orderedDictionary
             }
-            filterDict = orderedDictionary
-        }
-        if let index = filteredUsers.firstIndex(of: adminId) {
-            filteredUsers.remove(at: index)
-            filteredUsers.insert(adminId, at: 0)
+            if let index = filteredUsers.firstIndex(of: adminId) {
+                filteredUsers.remove(at: index)
+                filteredUsers.insert(adminId, at: 0)
+            }
         }
         tableView.reloadData()
     }

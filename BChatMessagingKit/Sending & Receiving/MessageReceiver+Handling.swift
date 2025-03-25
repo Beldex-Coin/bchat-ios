@@ -843,7 +843,7 @@ extension MessageReceiver {
             if let displayName = contact?.displayName(for: Contact.Context.regular) {
                 updateInfo = String(format: NSLocalizedString("GROUP_MEMBER_LEFT", comment: ""), displayName)
             } else {
-                updateInfo = String(format: NSLocalizedString("GROUP_MEMBER_LEFT", comment: ""), contact?.bchatID ?? "")
+                updateInfo = String(format: NSLocalizedString("GROUP_MEMBER_LEFT", comment: ""), message.sender ?? "")
             }
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: .groupUpdated, customMessage: updateInfo)
             infoMessage.save(with: transaction)
