@@ -390,7 +390,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Needed so that the user can tap the buttons when the expanding attachments button is expanded
         if attachmentsButton.isExpanded {
             let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
-                                     attachmentsButton.libraryButton, attachmentsButton.documentButton ]
+                                     attachmentsButton.libraryButton, attachmentsButton.documentButton, attachmentsButton.gifButton ]
             let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
             if let buttonContainer = buttonContainer {
                 return buttonContainer
@@ -405,7 +405,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         
         if attachmentsButton.isExpanded || self.mentionsViewContainer.alpha == 1 {
-            let buttonContainers = [ attachmentsButton.documentButtonContainer,
+            let buttonContainers = [ attachmentsButton.gifButtonContainer, attachmentsButton.documentButtonContainer,
                                      attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
             let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
             if isPointInsideAttachmentsButton {
