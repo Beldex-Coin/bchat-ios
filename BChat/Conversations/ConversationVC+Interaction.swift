@@ -56,6 +56,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        // if audio recording is on need to restrict call
+        if audioRecorder != nil {
+            return
+        }
         snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
@@ -876,6 +880,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
             let fullDetails = "Amount:\(amount), txnid:\(id)"
             UIPasteboard.general.string = fullDetails
+        } else if let message = viewItem.interaction as? TSMessage, let openGroupInvitationURL = message.openGroupInvitationURL {
+            if let range = openGroupInvitationURL.range(of: "?public_key=") {
+                UIPasteboard.general.string = String(openGroupInvitationURL[..<range.lowerBound])
+            } else {
+                UIPasteboard.general.string = openGroupInvitationURL
+            }
         } else {
             viewItem.copyTextAction()
         }
@@ -993,6 +1003,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
             SNMessagingKitConfiguration.shared.storage.write { transaction in
@@ -1002,6 +1014,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteForEveryone(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         viewItem.deleteRemotelyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
@@ -1169,6 +1183,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
+        // if call is connected need to restrict audio recording
+        if AppEnvironment.shared.callManager.currentCall != nil {
+            return
+        }
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
@@ -1176,7 +1194,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self?.cancelVoiceMessageRecording()
         }
         // Keep screen on
-        UIApplication.shared.isIdleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = true
         guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
         // Cancel any current audio playback
         audioPlayer?.stop()
@@ -1227,7 +1245,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func endVoiceMessageRecording() {
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = false
         // Hide the UI
         snInputView.hideVoiceMessageUI()
         // Cancel the timer
