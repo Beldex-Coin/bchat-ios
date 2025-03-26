@@ -170,6 +170,11 @@ final class ContextMenuVC : UIViewController {
         emojiBarView.addSubview(emojiBarStackView)
         emojiBarStackView.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.VerticalEdge.bottom ], to: emojiBarView)
         emojiBarStackView.pin(.right, to: .left, of: emojiPlusButton)
+        if let groupThread = viewItem.interaction.thread as? TSGroupThread {
+            if groupThread.isOpenGroup {
+                emojiBarView.isHidden = true
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
