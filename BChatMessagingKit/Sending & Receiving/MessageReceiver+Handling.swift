@@ -564,6 +564,9 @@ extension MessageReceiver {
                 contact.profileEncryptionKey = profileKey
             }
         }
+        if profilePictureURL == nil {
+            contact.profilePictureFileName = nil
+        }
         // Persist changes
         Storage.shared.setContact(contact, using: transaction)
         // Download the profile picture if needed

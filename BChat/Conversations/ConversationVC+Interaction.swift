@@ -1611,6 +1611,13 @@ extension ConversationVC {
     
     private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
         guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        // if message is not sent then user can't react emoji
+        if let messageOutgoing = message as? TSOutgoingMessage {
+            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
+            if status == .sent || status == .delivered || status == .skipped {} else { return }
+        }
+
         var authorId = getUserHexEncodedPublicKey()
         if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
         let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
@@ -1644,6 +1651,19 @@ extension ConversationVC {
                     )
                 }
             }
+        } else {
+            visibleMessage.reaction?.kind = .remove
+            Storage.write(
+                with: { transaction in
+                message.removeReaction(reactMessage, transaction: transaction)
+                    return
+                },
+                completion: {
+                    Storage.write { transaction in
+                        MessageSender.send(visibleMessage, in: thread, using: transaction)
+                    }
+                }
+            )
         }
                 
         if !isReplace {
