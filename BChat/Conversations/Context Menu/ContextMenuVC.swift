@@ -101,7 +101,11 @@ final class ContextMenuVC : UIViewController {
         snapshot.layer.shadowRadius = 4
         view.addSubview(snapshot)
         snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
-        snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+        if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
+            snapshot.center(.vertical, in: view)
+        } else {
+            snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+        }
         snapshot.set(.width, to: frame.width)
         snapshot.set(.height, to: frame.height)
         // Timestamp

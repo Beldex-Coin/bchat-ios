@@ -180,10 +180,24 @@ public final class VoiceMessageView : UIView {
         guard isDownloaded else { return }
         countdownLabel.text = OWSFormat.formatDurationSeconds(duration - progress)
         guard viewItem.audioProgressSeconds > 0 && viewItem.audioDurationSeconds > 0 else {
+            toggleImageView.image = UIImage(named: "ic_playNew")
+            if viewItem.interaction is TSIncomingMessage {
+                if isLightMode {
+                    let tint = UIColor(hex: 0x333333)
+                    toggleImageView.image = UIImage(named: "ic_playNew")?.withTint(tint)
+                }
+            }
             return progressViewRightConstraint.constant = -120
         }
         let fraction = viewItem.audioProgressSeconds / viewItem.audioDurationSeconds
         progressViewRightConstraint.constant = -(120 * (1 - fraction))
+        toggleImageView.image = fraction != 1 ? UIImage(named: "ic_pauseNew") : UIImage(named: "ic_playNew")
+        if viewItem.interaction is TSIncomingMessage {
+            if isLightMode {
+                let tint = UIColor(hex: 0x333333)
+                toggleImageView.image = fraction != 1 ? UIImage(named: "ic_pauseNew")?.withTint(tint) : UIImage(named: "ic_playNew")?.withTint(tint)
+            }
+        }
     }
 
     func showSpeedUpLabel() {
