@@ -8,6 +8,11 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
+enum FloatingViewVideoSource {
+    case local
+    case remote
+}
+
 final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     let bChatCall: BChatCall
     var latestKnownAudioOutputDeviceName: String?
@@ -28,6 +33,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     private var isBluetoothEnabled = false
     private var isBluetoothConnectedWithDevice = false
     
+    var floatingViewVideoSource: FloatingViewVideoSource = .local
+    
     // MARK: Lifecycle
     init(for call: BChatCall) {
         self.bChatCall = call
@@ -38,7 +45,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     required init(coder: NSCoder) { preconditionFailure("Use init(for:) instead.") }
-    
     
     private lazy var floatingLocalVideoView: LocalVideoView = {
         let result = LocalVideoView(frame: .zero)
@@ -63,12 +69,12 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         return result
     }()
     
-    private lazy var localVideoView: LocalVideoView = {
-        let result = LocalVideoView()
-        result.alpha = 0
-        result.backgroundColor = .black
-        return result
-    }()
+//    private lazy var localVideoView: LocalVideoView = {
+//        let result = LocalVideoView()
+//        result.alpha = 0
+//        result.backgroundColor = .black
+//        return result
+//    }()
     
     var backgroundImageView: UIImageView = {
         let theImageView = UIImageView()
@@ -411,10 +417,10 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
 
         // Local video view
         bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
-        view.addSubview(localVideoView)
-        localVideoView.translatesAutoresizingMaskIntoConstraints = false
-        localVideoView.pin(to: view)
-        localVideoView.alpha = 0
+        view.addSubview(floatingLocalVideoView)
+        floatingLocalVideoView.translatesAutoresizingMaskIntoConstraints = false
+        floatingLocalVideoView.pin(to: view)
+        floatingLocalVideoView.alpha = 0
         
         view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
         backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
@@ -767,48 +773,106 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     @objc private func swapVideo() {
-        if bChatCall.isVideoEnabled && !bChatCall.isRemoteVideoEnabled {
-            if localVideoView.alpha == 1 {
-                callerImageView.isHidden = false
-                callerNameLabel.isHidden = false
-                callerImageBackgroundView.isHidden = false
-                localVideoView.alpha = 0
-                bChatCall.attachRemoteVideoRenderer(localVideoView)
-                bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
-                bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
-                bChatCall.removeLocalVideoRenderer(localVideoView)
-                backgroundViewForFloatingView.isHidden = true
-                smallCallerImageBackgroundViewForFloatingView.isHidden = true
-                smallCallerImageViewForFloatingView.isHidden = true
-                bChatCall.isLocalVideoSwapped = false
-            } else {
-                callerImageView.isHidden = true
-                callerNameLabel.isHidden = true
-                callerImageBackgroundView.isHidden = true
-                localVideoView.alpha = 1
-                bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
-                bChatCall.attachLocalVideoRenderer(localVideoView)
-                bChatCall.removeRemoteVideoRenderer(localVideoView)
-                bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
-                backgroundViewForFloatingView.isHidden = false
-                smallCallerImageBackgroundViewForFloatingView.isHidden = false
-                smallCallerImageViewForFloatingView.isHidden = false
-                bChatCall.isLocalVideoSwapped = true
-            }
-            return
-        }
-        bChatCall.isVideoSwapped.toggle()
-        if bChatCall.isVideoSwapped {
-            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
-            bChatCall.attachLocalVideoRenderer(remoteVideoView)
-            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
-            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+        
+        if self.floatingViewVideoSource == .remote {
+            bChatCall.removeRemoteVideoRenderer(self.floatingRemoteVideoView)
+            bChatCall.removeLocalVideoRenderer(self.fullScreenLocalVideoView)
+            
+            self.floatingRemoteVideoView.alpha = 0
+            self.floatingLocalVideoView.alpha = bChatCall.isVideoEnabled ? 1 : 0
+            self.fullScreenRemoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+            self.fullScreenLocalVideoView.alpha = 0
+            
+            self.floatingViewVideoSource = .local
+            bChatCall.attachRemoteVideoRenderer(self.fullScreenRemoteVideoView)
+            bChatCall.attachLocalVideoRenderer(self.floatingLocalVideoView)
         } else {
-            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
-            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
-            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+            bChatCall.removeRemoteVideoRenderer(self.fullScreenRemoteVideoView)
+            bChatCall.removeLocalVideoRenderer(self.floatingLocalVideoView)
+            
+            self.floatingRemoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+            self.floatingLocalVideoView.alpha = 0
+            self.fullScreenRemoteVideoView.alpha = 0
+            self.fullScreenLocalVideoView.alpha = bChatCall.isVideoEnabled ? 1 : 0
+            
+            self.floatingViewVideoSource = .remote
+            bChatCall.attachRemoteVideoRenderer(self.floatingRemoteVideoView)
+            bChatCall.attachLocalVideoRenderer(self.fullScreenLocalVideoView)
         }
+        
+        
+        
+        
+        
+//        if bChatCall.isVideoEnabled { //&& !bChatCall.isRemoteVideoEnabled {
+//            debugPrint("Logged --------- 1")
+//            if localVideoView.alpha == 1 {
+//                debugPrint("Logged --------- 2")
+//                callerImageView.isHidden = false
+//                callerNameLabel.isHidden = false
+//                callerImageBackgroundView.isHidden = false
+//                localVideoView.alpha = 0
+//                if !bChatCall.isRemoteVideoEnabled {
+//                    debugPrint("Logged --------- 3")
+//                    bChatCall.attachRemoteVideoRenderer(localVideoView)
+//                    bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+//                    bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+//                    bChatCall.removeLocalVideoRenderer(localVideoView)
+//                } else {
+//                    debugPrint("Logged --------- 4")
+//                    bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
+//                    bChatCall.attachLocalVideoRenderer(remoteVideoView)
+//                    bChatCall.removeRemoteVideoRenderer(remoteVideoView)
+//                    bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+//                }
+//                
+//                backgroundViewForFloatingView.isHidden = true
+//                smallCallerImageBackgroundViewForFloatingView.isHidden = true
+//                smallCallerImageViewForFloatingView.isHidden = true
+//                bChatCall.isLocalVideoSwapped = false
+//            } else {
+//                debugPrint("Logged --------- 5")
+//                callerImageView.isHidden = true
+//                callerNameLabel.isHidden = true
+//                callerImageBackgroundView.isHidden = true
+//                localVideoView.alpha = 1
+//                if !bChatCall.isRemoteVideoEnabled {
+//                    debugPrint("Logged --------- 6")
+//                    bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
+//                    bChatCall.attachLocalVideoRenderer(localVideoView)
+//                    bChatCall.removeRemoteVideoRenderer(localVideoView)
+//                    bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+//                } else {
+//                    debugPrint("Logged --------- 7")
+//                    bChatCall.attachRemoteVideoRenderer(localVideoView)
+//                    bChatCall.attachLocalVideoRenderer(remoteVideoView)
+//                    bChatCall.removeRemoteVideoRenderer(remoteVideoView)
+//                    bChatCall.removeLocalVideoRenderer(localVideoView)
+//                }
+//                
+//                backgroundViewForFloatingView.isHidden = bChatCall.isRemoteVideoEnabled
+//                smallCallerImageBackgroundViewForFloatingView.isHidden = bChatCall.isRemoteVideoEnabled
+//                smallCallerImageViewForFloatingView.isHidden = bChatCall.isRemoteVideoEnabled
+//                bChatCall.isLocalVideoSwapped = true
+//            }
+//            
+//            
+//            
+//        }
+//        bChatCall.isVideoSwapped.toggle()
+//        if bChatCall.isVideoSwapped {
+//            debugPrint("Logged --------- 4")
+//            bChatCall.attachRemoteVideoRenderer(floatingLocalVideoView)
+//            bChatCall.attachLocalVideoRenderer(remoteVideoView)
+//            bChatCall.removeRemoteVideoRenderer(remoteVideoView)
+//            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+//        } else {
+//            debugPrint("Logged --------- 5")
+//            bChatCall.attachRemoteVideoRenderer(remoteVideoView)
+//            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+//            bChatCall.removeRemoteVideoRenderer(floatingLocalVideoView)
+//            bChatCall.removeLocalVideoRenderer(remoteVideoView)
+//        }
     }
     
     func updateTimer() {
@@ -878,7 +942,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     func handleEndCallMessage() {
-        //?????????????? END CALL NOTIFICATION
+        //END CALL NOTIFICATION
         SNLog("[Calls] Ending call.")
         self.incomingCallLabel.isHidden = true
         self.callDurationLabel.isHidden = true
