@@ -125,7 +125,17 @@ extension ContextMenuVC {
                 return result
             case .mediaMessage, .audio, .genericAttachment:
                 var result: [Action] = []
-                if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
+                if isReplyingAllowed() {
+                    var quoteDraftOrNil: OWSQuotedReplyModel?
+                    Storage.read { transaction in
+                        quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
+                    }
+                    if let quoteDraft = quoteDraftOrNil {
+                        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil { } else {
+                            result.append(Action.reply(viewItem, delegate))
+                        }
+                    }
+                }
                 if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
                 if viewItem.canSaveMedia() { result.append(Action.save(viewItem, delegate)) }
                 

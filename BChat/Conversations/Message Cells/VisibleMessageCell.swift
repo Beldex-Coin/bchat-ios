@@ -425,6 +425,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else {
             addGestureRecognizer(panGestureRecognizer)
         }
+        if message.isDeleted {
+            reactionContainerView.isHidden = true
+            reactionContainerViewHeightConstraint.constant = 0
+        }
     }
     
     func formatDate(_ date: Date) -> String {

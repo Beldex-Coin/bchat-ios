@@ -56,6 +56,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        // if audio recording is on need to restrict call
+        if audioRecorder != nil {
+            return
+        }
         snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
@@ -876,6 +880,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
             let fullDetails = "Amount:\(amount), txnid:\(id)"
             UIPasteboard.general.string = fullDetails
+        } else if let message = viewItem.interaction as? TSMessage, let openGroupInvitationURL = message.openGroupInvitationURL {
+            if let range = openGroupInvitationURL.range(of: "?public_key=") {
+                UIPasteboard.general.string = String(openGroupInvitationURL[..<range.lowerBound])
+            } else {
+                UIPasteboard.general.string = openGroupInvitationURL
+            }
         } else {
             viewItem.copyTextAction()
         }
@@ -993,6 +1003,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
             SNMessagingKitConfiguration.shared.storage.write { transaction in
@@ -1002,6 +1014,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteForEveryone(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         viewItem.deleteRemotelyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
@@ -1169,6 +1183,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
+        // if call is connected need to restrict audio recording
+        if AppEnvironment.shared.callManager.currentCall != nil {
+            return
+        }
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
@@ -1176,7 +1194,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self?.cancelVoiceMessageRecording()
         }
         // Keep screen on
-        UIApplication.shared.isIdleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = true
         guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
         // Cancel any current audio playback
         audioPlayer?.stop()
@@ -1227,7 +1245,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func endVoiceMessageRecording() {
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = false
         // Hide the UI
         snInputView.hideVoiceMessageUI()
         // Cancel the timer
@@ -1593,6 +1611,13 @@ extension ConversationVC {
     
     private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
         guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        // if message is not sent then user can't react emoji
+        if let messageOutgoing = message as? TSOutgoingMessage {
+            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
+            if status == .sent || status == .delivered || status == .skipped {} else { return }
+        }
+
         var authorId = getUserHexEncodedPublicKey()
         if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
         let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
@@ -1626,6 +1651,19 @@ extension ConversationVC {
                     )
                 }
             }
+        } else {
+            visibleMessage.reaction?.kind = .remove
+            Storage.write(
+                with: { transaction in
+                message.removeReaction(reactMessage, transaction: transaction)
+                    return
+                },
+                completion: {
+                    Storage.write { transaction in
+                        MessageSender.send(visibleMessage, in: thread, using: transaction)
+                    }
+                }
+            )
         }
                 
         if !isReplace {
@@ -1648,6 +1686,7 @@ extension ConversationVC {
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideTextInputAccessoryView()
+        isEmojiWithKeyboardPresented = true
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { emoji in
                 if let emoji = emoji {
@@ -1656,6 +1695,7 @@ extension ConversationVC {
                 self.showTextInputAccessoryView()
             },
             dismissHandler: {
+                isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             })
         emojiPicker.modalPresentationStyle = .overFullScreen

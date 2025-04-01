@@ -1183,6 +1183,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         hideAttachmentExpandedButtons()
         hideOpenURLView()
+        isEmojiWithKeyboardPresented = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {
