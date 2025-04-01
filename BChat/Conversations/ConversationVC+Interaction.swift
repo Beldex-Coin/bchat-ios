@@ -1686,6 +1686,7 @@ extension ConversationVC {
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideTextInputAccessoryView()
+        isEmojiWithKeyboardPresented = true
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { emoji in
                 if let emoji = emoji {
@@ -1694,6 +1695,7 @@ extension ConversationVC {
                 self.showTextInputAccessoryView()
             },
             dismissHandler: {
+                isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             })
         emojiPicker.modalPresentationStyle = .overFullScreen
