@@ -64,7 +64,7 @@ final class ReactionListSheet : BaseVC {
         let result = UITableView()
         result.dataSource = self
         result.delegate = self
-        result.register(UserCell.self, forCellReuseIdentifier: "UserCell")
+        result.register(ReactionListCell.self, forCellReuseIdentifier: "ReactionListCell")
         result.separatorStyle = .none
         result.backgroundColor = .clear
         result.showsVerticalScrollIndicator = false
@@ -251,15 +251,15 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell") as! UserCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReactionListCell") as! ReactionListCell
         let publicKey = reactionMap.value(forKey: selectedReaction!)![indexPath.row].sender!
         cell.publicKey = publicKey
         cell.normalFont = true
-        if publicKey == getUserHexEncodedPublicKey() {
-            cell.accessory = .x
-        } else {
-            cell.accessory = .none
-        }
+//        if publicKey == getUserHexEncodedPublicKey() {
+//            cell.accessory = .x
+//        } else {
+//            cell.accessory = .none
+//        }
         cell.update()
         return cell
     }
@@ -271,6 +271,11 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
             delegate?.cancelReact(viewItem, for: selectedReaction!)
         }
     }
+    
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 37
+//    }
+    
 }
 
 // MARK: Cell
@@ -358,3 +363,71 @@ protocol ReactionDelegate : AnyObject {
 }
 
 
+
+
+final class ReactionListCell : UITableViewCell {
+    
+    var publicKey = ""
+    var normalFont = false
+    
+    // MARK: Components
+    private lazy var profilePictureView = ProfilePictureView()
+
+    private lazy var displayNameLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.OpenSans(ofSize: 13)
+        result.lineBreakMode = .byTruncatingTail
+        return result
+    }()
+
+    // MARK: Initialization
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setUpViewHierarchy()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setUpViewHierarchy()
+    }
+
+    private func setUpViewHierarchy() {
+        // Background color
+        backgroundColor = Colors.smallBackGroundViewCellColor
+        // Highlight color
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = .clear // Disabled for now
+        self.selectedBackgroundView = selectedBackgroundView
+        // Profile picture image view
+        let profilePictureViewSize = CGFloat(22)
+        profilePictureView.set(.width, to: profilePictureViewSize)
+        profilePictureView.set(.height, to: profilePictureViewSize)
+        profilePictureView.size = profilePictureViewSize
+//        profilePictureView.layer.masksToBounds = true
+        profilePictureView.layer.cornerRadius = 11
+        
+        contentView.addSubViews(profilePictureView, displayNameLabel)
+        NSLayoutConstraint.activate([
+            profilePictureView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7.5),
+            profilePictureView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7.5),
+            profilePictureView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
+            displayNameLabel.leadingAnchor.constraint(equalTo: profilePictureView.trailingAnchor, constant: 12),
+            displayNameLabel.centerYAnchor.constraint(equalTo: profilePictureView.centerYAnchor),
+        ])
+        
+        profilePictureView.publicKey = publicKey
+        profilePictureView.update()
+        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+
+    }
+
+    // MARK: Updating
+    func update() {
+        profilePictureView.publicKey = publicKey
+        profilePictureView.update()
+        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        if normalFont { displayNameLabel.font = Fonts.OpenSans(ofSize: 13) }
+        
+    }
+}
