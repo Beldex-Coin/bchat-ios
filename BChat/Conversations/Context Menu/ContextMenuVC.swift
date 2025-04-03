@@ -120,7 +120,7 @@ final class ContextMenuVC : UIViewController {
         timestampLabel.alpha = 0
         // Menu
         let menuBackgroundView = UIView()
-        menuBackgroundView.backgroundColor = UIColor(hex: 0x2C2C3B)//Colors.receivedMessageBackground
+        menuBackgroundView.backgroundColor = isLightMode ? UIColor(hex: 0xF8F8F8) : UIColor(hex: 0x2C2C3B)
         menuBackgroundView.layer.cornerRadius = ContextMenuVC.menuCornerRadius
         menuBackgroundView.layer.masksToBounds = true
         menuView.addSubview(menuBackgroundView)

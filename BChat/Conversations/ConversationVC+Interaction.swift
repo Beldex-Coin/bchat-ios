@@ -628,6 +628,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
+        // if message is not sent then no need long press
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if let messageOutgoing = message as? TSOutgoingMessage {
+            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
+            if status == .sent || status == .delivered || status == .skipped {} else { return }
+        }
+        
         // Show the context menu if applicable
         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell,
@@ -1652,11 +1659,11 @@ extension ConversationVC {
                 }
             }
         } else {
+            isReplace = true
             visibleMessage.reaction?.kind = .remove
             Storage.write(
                 with: { transaction in
                 message.removeReaction(reactMessage, transaction: transaction)
-                    return
                 },
                 completion: {
                     Storage.write { transaction in
