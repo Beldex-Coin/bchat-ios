@@ -207,4 +207,5 @@ public final class Colors : NSObject {
     @objc public static var bothWhiteWithAlpha60: UIColor { UIColor(named: "FFFFFF-Alpha")! }
     @objc public static var WhiteBlackWithAlpha60: UIColor { UIColor(named: "FFFFFF-333333-Alpha")! }
     @objc public static var chatSettingsSeperatorColor: UIColor { UIColor(named: "353544-8A8A9D")! }
+    @objc public static var emojiBackgroundColor: UIColor { UIColor(named: "2D2D2D-FFFFFF")! }
 }

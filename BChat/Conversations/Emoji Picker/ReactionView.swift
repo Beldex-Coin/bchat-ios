@@ -48,7 +48,7 @@ final class ReactionButton : UIView {
         stackView.pin(to: self)
         
         set(.height, to: self.reactionViewHeight)
-        backgroundColor = Colors.receivedMessageBackground
+        backgroundColor = Colors.emojiBackgroundColor
         layer.cornerRadius = self.reactionViewHeight / 2
         
         if showBorder {

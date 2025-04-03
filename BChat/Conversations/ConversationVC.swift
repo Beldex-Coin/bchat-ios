@@ -227,7 +227,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.layer.cornerRadius = 26
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.layer.backgroundColor = Colors.bothGreenColor.cgColor
-        result.addTarget(ConversationVC.self, action: #selector(acceptMessageRequest), for: .touchUpInside)
+        result.addTarget(self, action: #selector(acceptMessageRequest), for: .touchUpInside)
         return result
     }()
     
@@ -242,7 +242,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.setTitleColor(Colors.bothRedColor, for: .normal)
         result.layer.backgroundColor = Colors.homeScreenFloatingbackgroundColor.cgColor
         result.backgroundColor = Colors.homeScreenFloatingbackgroundColor
-        result.addTarget(ConversationVC.self, action: #selector(deleteMessageRequest), for: .touchUpInside)
+        result.addTarget(self, action: #selector(deleteMessageRequest), for: .touchUpInside)
         return result
     }()
     
