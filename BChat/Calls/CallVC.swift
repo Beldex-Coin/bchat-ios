@@ -99,7 +99,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
             image: UIImage(systemName: "video.slash")?
                 .withRenderingMode(.alwaysTemplate)
         )
-        //noVideoIcon.themeTintColor = .textPrimary //??????
+        //noVideoIcon.themeTintColor = .textPrimary
         noVideoIcon.set(.width, to: 34)
         noVideoIcon.set(.height, to: 28)
         result.addSubview(noVideoIcon)
@@ -115,7 +115,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
             image: UIImage(systemName: "arrow.2.squarepath")?
                 .withRenderingMode(.alwaysTemplate)
         )
-        //swappingVideoIcon.themeTintColor = .textPrimary //??????
+        //swappingVideoIcon.themeTintColor = .textPrimary
         swappingVideoIcon.set(.width, to: 16)
         swappingVideoIcon.set(.height, to: 12)
         result.addSubview(swappingVideoIcon)
@@ -164,7 +164,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
             for: .normal
         )
         result.tintColor = .white
-        //result.themeBackgroundColor = .callAccept_background ??????
+        //result.themeBackgroundColor = .callAccept_background
         result.layer.cornerRadius = 36
         result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
         
@@ -184,7 +184,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
             for: .normal
         )
         result.tintColor = .white
-        //result.themeBackgroundColor = .callDecline_background ??????
+        //result.themeBackgroundColor = .callDecline_background
         result.layer.cornerRadius = 36
         result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
         result.set(.width, to: 72)
