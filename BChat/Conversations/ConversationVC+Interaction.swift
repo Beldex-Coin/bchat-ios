@@ -8,7 +8,11 @@ import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
     SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate,
-                           ConversationTitleViewDelegate {
+                           ConversationTitleViewDelegate, EmojiPickerSheetDelegate {
+    func emojiPickerDismissed() {
+        recoverInputView()
+    }
+    
 
     func needsLayout() {
         UIView.setAnimationsEnabled(false)
@@ -1695,15 +1699,19 @@ extension ConversationVC {
         hideTextInputAccessoryView()
         isEmojiWithKeyboardPresented = true
         let emojiPicker = EmojiPickerSheet(
-            completionHandler: { emoji in
+            delegate: self, completionHandler: { emoji in
                 if let emoji = emoji {
                     self.react(viewItem, with: emoji)
                 }
+                isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             },
             dismissHandler: {
                 isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
+//                self.snInputView.isHidden = false
+//                self.recoverInputView()
+//                self.showInputAccessoryView()
             })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
