@@ -6,7 +6,6 @@ import BChatUIKit
 class EmojiPickerSheet: BaseVC {
     let completionHandler: (EmojiWithSkinTones?) -> Void
     let dismissHandler: () -> Void
-    private weak var delegate: EmojiPickerSheetDelegate?
     // MARK: Components
     
     private lazy var bottomConstraint: NSLayoutConstraint = contentView.pin(.bottom, to: .bottom, of: view)
@@ -46,8 +45,7 @@ class EmojiPickerSheet: BaseVC {
 
     // MARK: - Initialization
 
-    init(delegate: EmojiPickerSheetDelegate, completionHandler: @escaping (EmojiWithSkinTones?) -> Void, dismissHandler: @escaping () -> Void) {
-        self.delegate = delegate
+    init(completionHandler: @escaping (EmojiWithSkinTones?) -> Void, dismissHandler: @escaping () -> Void) {
         self.completionHandler = completionHandler
         self.dismissHandler = dismissHandler
         
@@ -203,8 +201,7 @@ class EmojiPickerSheet: BaseVC {
 
     @objc func close() {
         dismiss(animated: true, completion: dismissHandler)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
-        self.delegate?.emojiPickerDismissed()
+//        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
 }
 
@@ -234,10 +231,4 @@ extension EmojiPickerSheet: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         close()
     }
-}
-
-
-protocol EmojiPickerSheetDelegate : AnyObject {
-    func emojiPickerDismissed()
-    
 }
