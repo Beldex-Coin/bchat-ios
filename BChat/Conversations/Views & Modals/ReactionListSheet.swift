@@ -12,12 +12,7 @@ final class ReactionListSheet : BaseVC {
     
     private lazy var contentView: UIView = {
         let result = UIView()
-        let line = UIView()
-        line.set(.height, to: 0.5)
-        line.backgroundColor = Colors.border.withAlphaComponent(0.5)
-        result.addSubview(line)
-        line.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing, UIView.VerticalEdge.top ], to: result)
-        result.backgroundColor = Colors.modalBackground
+        result.backgroundColor = Colors.smallBackGroundViewCellColor
         return result
     }()
     
@@ -39,6 +34,7 @@ final class ReactionListSheet : BaseVC {
         result.showsHorizontalScrollIndicator = false
         result.dataSource = self
         result.delegate = self
+        result.isHidden = true
         return result
     }()
     
@@ -66,9 +62,38 @@ final class ReactionListSheet : BaseVC {
         result.delegate = self
         result.register(ReactionListCell.self, forCellReuseIdentifier: "ReactionListCell")
         result.separatorStyle = .none
-        result.backgroundColor = .clear
+        result.backgroundColor = Colors.smallBackGroundViewCellColor
         result.showsVerticalScrollIndicator = false
         return result
+    }()
+    
+    private lazy var reactionsLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor
+        result.font = Fonts.boldOpenSans(ofSize: 16)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Reactions"
+        return result
+    }()
+    
+    private lazy var reactionsCountLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.noDataLabelColor
+        result.font = Fonts.boldOpenSans(ofSize: 12)
+        result.textAlignment = .left
+        result.translatesAutoresizingMaskIntoConstraints = false
+        return result
+    }()
+    
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(close), for: .touchUpInside)
+        button.setImage(UIImage(named: "ic_closeNew"), for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        return button
     }()
     
     // MARK: Lifecycle
@@ -118,6 +143,25 @@ final class ReactionListSheet : BaseVC {
         contentView.addSubview(reactionContainer)
         reactionContainer.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: contentView)
         reactionContainer.pin(.top, to: .top, of: contentView, withInset: Values.verySmallSpacing)
+        // Reactions Label & Reactions Count Label
+        contentView.addSubview(reactionsLabel)
+        reactionsLabel.pin(.leading, to: .leading, of: contentView, withInset: 22)
+        reactionsLabel.pin(.top, to: .top, of: contentView, withInset: 18)
+        contentView.addSubview(reactionsCountLabel)
+        reactionsCountLabel.pin(.leading, to: .trailing, of: reactionsLabel, withInset: 6)
+        NSLayoutConstraint.activate([
+            reactionsCountLabel.centerYAnchor.constraint(equalTo: reactionsLabel.centerYAnchor)
+        ])
+        // Close Button
+        contentView.addSubview(closeButton)
+        NSLayoutConstraint.activate([
+        closeButton.centerYAnchor.constraint(equalTo: reactionsLabel.centerYAnchor),
+        closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+        closeButton.heightAnchor.constraint(equalToConstant: 22),
+        closeButton.widthAnchor.constraint(equalToConstant: 22)
+        ])
+        
+        
         // Seperator
         let seperator = UIView()
         seperator.backgroundColor = Colors.border.withAlphaComponent(0.1)
@@ -127,22 +171,25 @@ final class ReactionListSheet : BaseVC {
         seperator.pin(.trailing, to: .trailing, of: contentView, withInset: -Values.smallSpacing)
         seperator.pin(.top, to: .bottom, of: reactionContainer, withInset: Values.verySmallSpacing)
         // Detail info & clear all
-        let stackView = UIStackView(arrangedSubviews: [ detailInfoLabel, clearAllButton ])
-        contentView.addSubview(stackView)
-        stackView.pin(.top, to: .bottom, of: seperator, withInset: Values.smallSpacing)
-        stackView.pin(.leading, to: .leading, of: contentView, withInset: Values.mediumSpacing)
-        stackView.pin(.trailing, to: .trailing, of: contentView, withInset: -Values.mediumSpacing)
+//        let stackView = UIStackView(arrangedSubviews: [ detailInfoLabel, clearAllButton ])
+//        contentView.addSubview(stackView)
+//        stackView.pin(.top, to: .bottom, of: seperator, withInset: Values.smallSpacing)
+//        stackView.pin(.leading, to: .leading, of: contentView, withInset: Values.mediumSpacing)
+//        stackView.pin(.trailing, to: .trailing, of: contentView, withInset: -Values.mediumSpacing)
         // Line
         let line = UIView()
-        line.set(.height, to: 0.5)
-        line.backgroundColor = Colors.border.withAlphaComponent(0.5)
+        line.set(.height, to: 1)
+        line.backgroundColor = Colors.borderColorNew
         contentView.addSubview(line)
         line.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: contentView)
-        line.pin(.top, to: .bottom, of: stackView, withInset: Values.smallSpacing)
+        line.pin(.top, to: .bottom, of: reactionContainer, withInset: Values.smallSpacing)
         // Reactor list
         contentView.addSubview(userListView)
         userListView.pin([ UIView.HorizontalEdge.trailing, UIView.HorizontalEdge.leading, UIView.VerticalEdge.bottom ], to: contentView)
         userListView.pin(.top, to: .bottom, of: line, withInset: 0)
+        
+        contentView.layer.cornerRadius = 16
+        contentView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
     }
     
     private func populateData() {
@@ -176,6 +223,7 @@ final class ReactionListSheet : BaseVC {
             let isUserModerator = OpenGroupAPIV2.isUserModerator(getUserHexEncodedPublicKey(), for: openGroupV2.room, on: openGroupV2.server)
             clearAllButton.isHidden = !isUserModerator
         }
+        reactionsCountLabel.text = String(reactions.count)
         userListView.reloadData()
     }
     
@@ -247,34 +295,37 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
     // MARK: Table View Data Source
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return reactionMap.value(forKey: selectedReaction!)?.count ?? 0
+        return reactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReactionListCell") as! ReactionListCell
-        let publicKey = reactionMap.value(forKey: selectedReaction!)![indexPath.row].sender!
+        let publicKey = reactions[indexPath.row].sender!
         cell.publicKey = publicKey
-        cell.normalFont = true
-//        if publicKey == getUserHexEncodedPublicKey() {
-//            cell.accessory = .x
-//        } else {
-//            cell.accessory = .none
-//        }
+        cell.emoji = reactions[indexPath.row].emoji!
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            cell.profilePictureView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+            cell.profilePictureView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            cell.verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            cell.verifiedImageView.isHidden = true
+        }
         cell.update()
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let reactMessage = reactionMap.value(forKey: selectedReaction!)?[indexPath.row], let publicKey = reactMessage.sender else { return }
+        guard let publicKey = reactions[indexPath.row].sender else { return }
         if publicKey == getUserHexEncodedPublicKey() {
             delegate?.cancelReact(viewItem, for: selectedReaction!)
         }
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 37
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 38
+    }
     
 }
 
@@ -360,74 +411,4 @@ protocol ReactionDelegate : AnyObject {
     func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones)
     func cancelAllReact(reactMessages: [ReactMessage])
     
-}
-
-
-
-
-final class ReactionListCell : UITableViewCell {
-    
-    var publicKey = ""
-    var normalFont = false
-    
-    // MARK: Components
-    private lazy var profilePictureView = ProfilePictureView()
-
-    private lazy var displayNameLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 13)
-        result.lineBreakMode = .byTruncatingTail
-        return result
-    }()
-
-    // MARK: Initialization
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUpViewHierarchy()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setUpViewHierarchy()
-    }
-
-    private func setUpViewHierarchy() {
-        // Background color
-        backgroundColor = Colors.smallBackGroundViewCellColor
-        // Highlight color
-        let selectedBackgroundView = UIView()
-        selectedBackgroundView.backgroundColor = .clear // Disabled for now
-        self.selectedBackgroundView = selectedBackgroundView
-        // Profile picture image view
-        let profilePictureViewSize = CGFloat(22)
-        profilePictureView.set(.width, to: profilePictureViewSize)
-        profilePictureView.set(.height, to: profilePictureViewSize)
-        profilePictureView.size = profilePictureViewSize
-//        profilePictureView.layer.masksToBounds = true
-        profilePictureView.layer.cornerRadius = 11
-        
-        contentView.addSubViews(profilePictureView, displayNameLabel)
-        NSLayoutConstraint.activate([
-            profilePictureView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 7.5),
-            profilePictureView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -7.5),
-            profilePictureView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
-            displayNameLabel.leadingAnchor.constraint(equalTo: profilePictureView.trailingAnchor, constant: 12),
-            displayNameLabel.centerYAnchor.constraint(equalTo: profilePictureView.centerYAnchor),
-        ])
-        
-        profilePictureView.publicKey = publicKey
-        profilePictureView.update()
-        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-
-    }
-
-    // MARK: Updating
-    func update() {
-        profilePictureView.publicKey = publicKey
-        profilePictureView.update()
-        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-        if normalFont { displayNameLabel.font = Fonts.OpenSans(ofSize: 13) }
-        
-    }
 }
