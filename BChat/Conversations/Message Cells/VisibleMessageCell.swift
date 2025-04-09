@@ -1086,6 +1086,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
+        if viewItem.quotedReply != nil {
+            result.set(.width, to: size.width > 85 ? size.width : 85)
+        }
         return result
     }
     

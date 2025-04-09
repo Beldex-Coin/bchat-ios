@@ -376,6 +376,7 @@
 		84A4A4592D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */; };
 		84ABEDED2D48DC6B005E25B0 /* UserInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */; };
 		84B7A4A02D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B7A49F2D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift */; };
+		84B9C0822DA51F8E007CEFCE /* ReactionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B9C0812DA51F8E007CEFCE /* ReactionListCell.swift */; };
 		84C2ED4B2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */; };
 		8A3CA58C2D9EAE0600525865 /* CallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3CA58B2D9EAE0500525865 /* CallVC.swift */; };
 		8A3CA58E2D9EAE1300525865 /* CallVC+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3CA58D2D9EAE1300525865 /* CallVC+Camera.swift */; };
@@ -1565,6 +1566,7 @@
 		84A4A4582D1EA554003E5735 /* ChatSettingsSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsSearchTableViewCell.swift; sourceTree = "<group>"; };
 		84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoPopUp.swift; sourceTree = "<group>"; };
 		84B7A49F2D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatTableViewCellForTitle.swift; sourceTree = "<group>"; };
+		84B9C0812DA51F8E007CEFCE /* ReactionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionListCell.swift; sourceTree = "<group>"; };
 		84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNewChatTableViewCell.swift; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
 		8A3CA58B2D9EAE0500525865 /* CallVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVC.swift; sourceTree = "<group>"; };
@@ -3234,6 +3236,7 @@
 				7B1581E3271FC59C00848B49 /* CallModal.swift */,
 				7BFFB33B27D02F5800BEA04E /* CallPermissionRequestModal.swift */,
 				8A69082B2D83D814005B63C1 /* ReactionListSheet.swift */,
+				84B9C0812DA51F8E007CEFCE /* ReactionListCell.swift */,
 			);
 			path = "Views & Modals";
 			sourceTree = "<group>";
@@ -5925,6 +5928,7 @@
 				34330AA31E79686200DF2FB9 /* OWSProgressView.m in Sources */,
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
 				8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */,
+				84B9C0822DA51F8E007CEFCE /* ReactionListCell.swift in Sources */,
 				814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */,
 				8A4B95DE2C2E76A40061C7D4 /* DocumentCollectionViewCell.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,

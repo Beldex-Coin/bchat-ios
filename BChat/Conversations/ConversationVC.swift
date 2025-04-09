@@ -1290,6 +1290,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func hideOrShowInputViewAction(_ notification: Notification) {
         snInputView.isHidden = false
+        self.recoverInputView()
+        self.showInputAccessoryView()
     }
     
     @objc func handleInitiatingTransactionTapped(notification: NSNotification) {

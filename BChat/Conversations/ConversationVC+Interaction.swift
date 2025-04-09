@@ -7,8 +7,8 @@ import BChatUtilitiesKit
 import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
-    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate,
-                           ConversationTitleViewDelegate {
+    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate {
+    
 
     func needsLayout() {
         UIView.setAnimationsEnabled(false)
@@ -1700,16 +1700,22 @@ extension ConversationVC {
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideTextInputAccessoryView()
         isEmojiWithKeyboardPresented = true
-        let emojiPicker = EmojiPickerSheet(
-            completionHandler: { emoji in
+        let emojiPicker = EmojiPickerSheet(completionHandler: { emoji in
                 if let emoji = emoji {
                     self.react(viewItem, with: emoji)
                 }
+                isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             },
             dismissHandler: {
                 isEmojiWithKeyboardPresented = false
+            DispatchQueue.main.async {
                 self.showTextInputAccessoryView()
+                self.snInputView.isHidden = false
+                self.recoverInputView()
+                self.showInputAccessoryView()
+                self.snInputView.text = self.snInputView.text
+            }
             })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)

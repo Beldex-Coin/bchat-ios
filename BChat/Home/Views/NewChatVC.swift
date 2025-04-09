@@ -405,10 +405,14 @@ extension NewChatVC: UITableViewDataSource, UITableViewDelegate {
                     if let presentedVC = self.presentedViewController {
                         presentedVC.dismiss(animated: false, completion: nil)
                     }
-                    let conversationVC = ConversationVC(thread: HomeScreenSearchResultSet.noteToSelfOnly.conversations[0].thread.threadRecord, focusedMessageID: nil)
-                    var viewControllers = self.navigationController?.viewControllers
-                    viewControllers?.append(conversationVC)
-                    self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                    Storage.read { transaction in
+                        if let thread = TSContactThread.fetch(for: getUserHexEncodedPublicKey(), using: transaction) {
+                            let conversationVC = ConversationVC(thread: thread, focusedMessageID: nil)
+                            var viewControllers = self.navigationController?.viewControllers
+                            viewControllers?.append(conversationVC)
+                            self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                        }
+                    }
                 }
             }
             if indexPath.row == 5 {

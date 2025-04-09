@@ -6,7 +6,6 @@ import BChatUIKit
 class EmojiPickerSheet: BaseVC {
     let completionHandler: (EmojiWithSkinTones?) -> Void
     let dismissHandler: () -> Void
-    
     // MARK: Components
     
     private lazy var bottomConstraint: NSLayoutConstraint = contentView.pin(.bottom, to: .bottom, of: view)
@@ -202,6 +201,7 @@ class EmojiPickerSheet: BaseVC {
 
     @objc func close() {
         dismiss(animated: true, completion: dismissHandler)
+//        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
     }
 }
 
