@@ -377,6 +377,8 @@
 		84ABEDED2D48DC6B005E25B0 /* UserInfoPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84ABEDEC2D48DC6B005E25B0 /* UserInfoPopUp.swift */; };
 		84B7A4A02D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B7A49F2D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift */; };
 		84C2ED4B2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */; };
+		8A3CA58C2D9EAE0600525865 /* CallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3CA58B2D9EAE0500525865 /* CallVC.swift */; };
+		8A3CA58E2D9EAE1300525865 /* CallVC+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3CA58D2D9EAE1300525865 /* CallVC+Camera.swift */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
 		8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */; };
@@ -1565,6 +1567,8 @@
 		84B7A49F2D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatTableViewCellForTitle.swift; sourceTree = "<group>"; };
 		84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNewChatTableViewCell.swift; sourceTree = "<group>"; };
 		8981C8F64D94D3C52EB67A2C /* Pods-SignalTests.test.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SignalTests.test.xcconfig"; path = "Pods/Target Support Files/Pods-SignalTests/Pods-SignalTests.test.xcconfig"; sourceTree = "<group>"; };
+		8A3CA58B2D9EAE0500525865 /* CallVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVC.swift; sourceTree = "<group>"; };
+		8A3CA58D2D9EAE1300525865 /* CallVC+Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallVC+Camera.swift"; sourceTree = "<group>"; };
 		8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuProfileTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -3424,6 +3428,8 @@
 		B8B558ED26C4B55F00693325 /* Calls */ = {
 			isa = PBXGroup;
 			children = (
+				8A3CA58B2D9EAE0500525865 /* CallVC.swift */,
+				8A3CA58D2D9EAE1300525865 /* CallVC+Camera.swift */,
 				7B1581E5271FD2A100848B49 /* VideoPreviewVC.swift */,
 				604939AC2BF756E0000441EE /* NewIncomingCallVC+Camera.swift */,
 				B8B558F026C4BB0600693325 /* CameraManager.swift */,
@@ -5791,6 +5797,7 @@
 				EF764C351DB67CC5000D9A87 /* UIViewController+Permissions.m in Sources */,
 				45CD81EF1DC030E7004C9430 /* SyncPushTokensJob.swift in Sources */,
 				813609CC2B3AFDDC004D3FAC /* DisplayNameNewVC.swift in Sources */,
+				8A3CA58E2D9EAE1300525865 /* CallVC+Camera.swift in Sources */,
 				B83524A525C3BA4B0089A44F /* InfoMessageCell.swift in Sources */,
 				845355C22CEF558E00B19978 /* LeaveGroupPopUp.swift in Sources */,
 				8A406DE72C10314500E3ED4C /* MyAccountBNSViewModel.swift in Sources */,
@@ -6035,6 +6042,7 @@
 				76EB054018170B33006006FC /* AppDelegate.m in Sources */,
 				340FC8B6204DAC8D007AEB0F /* OWSQRCodeScanningViewController.m in Sources */,
 				8156B3F82BE3832400D96158 /* ChatSettingsNewVC.swift in Sources */,
+				8A3CA58C2D9EAE0600525865 /* CallVC.swift in Sources */,
 				7B0EFDF0275084AA00FFAAE7 /* CallMessageCell.swift in Sources */,
 				7B93D06A27CF173D00811CB6 /* MessageRequestsViewController.swift in Sources */,
 				C33100082558FF6D00070591 /* NewConversationButtonSet.swift in Sources */,

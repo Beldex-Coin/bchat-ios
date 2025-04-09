@@ -183,7 +183,9 @@ extension BaseVC {
                     hideInputAccessoryView(viewController.inputAccessoryView)
                 }
             }
-            presentingVC.present(callVC, animated: true, completion: nil)
+            presentingVC.present(callVC, animated: true) {
+                callVC.setupStateChangeCallbacks()
+            }
         } else {
             let vc = CallPermissionRequestModalNewVC()
             vc.modalPresentationStyle = .overFullScreen

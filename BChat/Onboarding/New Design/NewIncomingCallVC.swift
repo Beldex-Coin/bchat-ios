@@ -8,11 +8,6 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-enum FloatingViewVideoSource {
-    case local
-    case remote
-}
-
 final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     
     private static let floatingVideoViewWidth: CGFloat = (UIDevice.current.isIPad ? 312 : 116)
@@ -36,8 +31,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     private var isSpeakerEnabled = false
     private var isBluetoothEnabled = false
     private var isBluetoothConnectedWithDevice = false
-    
-    var floatingViewVideoSource: FloatingViewVideoSource = .local
     
     // MARK: Lifecycle
     init(for call: BChatCall) {
@@ -131,36 +124,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         return result
     }()
     
-//    private lazy var floatingLocalVideoView: LocalVideoView = {
-//        let result = LocalVideoView(frame: .zero)
-//        result.videoContentMode = .scaleAspectFill
-//        result.layer.cornerRadius = 10
-//        result.layer.masksToBounds = true
-//        result.set(.width, to: LocalVideoView.width)
-//        result.set(.height, to: LocalVideoView.height)
-//        result.makeViewDraggable()
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(swapVideo))
-//        result.addGestureRecognizer(tapGestureRecognizer)
-//        result.delegate = self
-//        return result
-//    }()
-    
-//    private lazy var remoteVideoView: RemoteVideoView = {
-//        let result = RemoteVideoView()
-//        result.alpha = 0
-//        result.backgroundColor = .black
-//        result.layoutMargins = .zero
-//        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoteVieioViewTapped)))
-//        return result
-//    }()
-    
-//    private lazy var localVideoView: LocalVideoView = {
-//        let result = LocalVideoView()
-//        result.alpha = 0
-//        result.backgroundColor = .black
-//        return result
-//    }()
-    
     var backgroundImageView: UIImageView = {
         let theImageView = UIImageView()
         theImageView.layer.masksToBounds = true
@@ -220,7 +183,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(answerCall), for: .touchUpInside)
         return result
     }()
     
@@ -231,7 +194,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         return result
     }()
     
@@ -285,7 +248,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.setImage(image, for: .normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
-        result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(pop), for: .touchUpInside)
         return result
     }()
     
@@ -325,7 +288,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(videoButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(videoButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -338,7 +301,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(cameraButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(cameraButtonTapped), for: .touchUpInside)
         result.isEnabled = false
         result.isSelected = false
         return result
@@ -362,7 +325,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(audioButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -375,7 +338,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(speakerButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(speakerButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -386,7 +349,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         return result
     }()
     
@@ -421,7 +384,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
-        result.addTarget(self, action: #selector(bluetoothButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(bluetoothButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -433,7 +396,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
-        result.addTarget(self, action: #selector(internalSpeakerButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(internalSpeakerButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -647,29 +610,11 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         }
     }
     
-    private func addLocalVideoView() {
-//        guard let window: UIWindow = CurrentAppContext().mainWindow else { return }
-//        window.addSubview(floatingLocalVideoView)
-//        floatingLocalVideoView.pin(.top, to: .top, of: window, withInset: (window.safeAreaInsets.top + Values.veryLargeSpacing))
-//        floatingLocalVideoView.pin(.right, to: .right, of: window, withInset: -Values.smallSpacing)
-//        floatingLocalVideoView.addSubview(backgroundViewForFloatingView)
-//        backgroundViewForFloatingView.pin(to: floatingLocalVideoView)
-//        backgroundViewForFloatingView.addSubview(smallCallerImageBackgroundViewForFloatingView)
-//        smallCallerImageBackgroundViewForFloatingView.center(in: backgroundViewForFloatingView)
-//        smallCallerImageBackgroundViewForFloatingView.addSubview(smallCallerImageViewForFloatingView)
-//        smallCallerImageViewForFloatingView.center(in: smallCallerImageBackgroundViewForFloatingView)
-//        smallCallerImageViewForFloatingView.image = getProfilePicture(of: 65, for: self.bChatCall.bchatID)
-//        floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
-//        backgroundViewForFloatingView.isHidden = true
-//        smallCallerImageBackgroundViewForFloatingView.isHidden = true
-//        smallCallerImageViewForFloatingView.isHidden = true
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        callerNameLabel.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
-        callerImageBackgroundView.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
+        callerNameLabel.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
+        callerImageBackgroundView.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
         
         if (bChatCall.isVideoEnabled && shouldRestartCamera) {
             cameraButton.isEnabled = true
@@ -709,7 +654,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
         
         addFloatingVideoView()
-        let remoteVideoView: RemoteVideoView = self.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
+        let remoteVideoView: RemoteVideoView = bChatCall.floatingViewVideoSource == .remote ? floatingRemoteVideoView : fullScreenRemoteVideoView
         remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
     }
     
@@ -725,9 +670,19 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     @objc private func pop() {
-        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
+        //Don't delete the below lines
+//        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
+//        self.conversationVC?.showInputAccessoryView()
+//        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        
+        self.shouldRestartCamera = false
         self.conversationVC?.showInputAccessoryView()
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        let miniCallView = MiniCallView(from: self)
+        miniCallView.show()
+        
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     private func addFloatingVideoView() {
@@ -757,7 +712,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25) {
-                    let remoteVideoView: RemoteVideoView = self.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
+                    let remoteVideoView: RemoteVideoView = self.bChatCall.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
                     remoteVideoView.alpha = isEnabled ? 1 : 0
                 }
                     
@@ -817,7 +772,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     }
     
     @objc private func switchVideo() {
-        if self.floatingViewVideoSource == .remote {
+        if self.bChatCall.floatingViewVideoSource == .remote {
             bChatCall.removeRemoteVideoRenderer(floatingRemoteVideoView)
             bChatCall.removeLocalVideoRenderer(fullScreenLocalVideoView)
             
@@ -826,7 +781,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             fullScreenRemoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
             fullScreenLocalVideoView.alpha = 0
             
-            floatingViewVideoSource = .local
+            bChatCall.floatingViewVideoSource = .local
+            bChatCall.isVideoSwapped = false
             bChatCall.attachRemoteVideoRenderer(fullScreenRemoteVideoView)
             bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
         } else {
@@ -838,13 +794,14 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             fullScreenRemoteVideoView.alpha = 0
             fullScreenLocalVideoView.alpha = bChatCall.isVideoEnabled ? 1 : 0
             
-            floatingViewVideoSource = .remote
+            bChatCall.floatingViewVideoSource = .remote
+            bChatCall.isVideoSwapped = true
             bChatCall.attachRemoteVideoRenderer(floatingRemoteVideoView)
             bChatCall.attachLocalVideoRenderer(fullScreenLocalVideoView)
         }
         
-        callerNameLabel.isHidden = floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
-        callerImageBackgroundView.isHidden = floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
+        callerNameLabel.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
+        callerImageBackgroundView.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
     }
     
     func updateTimer() {
@@ -856,24 +813,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             self.backButton.isHidden = false
             self.voiceCallLabel.text = self.bChatCall.isVideoEnabled ? "Video Call" : "Voice Call"
             
-            self.callerNameLabel.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
-            self.callerImageBackgroundView.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
+            self.callerNameLabel.isHidden = self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
+            self.callerImageBackgroundView.isHidden = self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
                 
-            
-            //self.floatingLocalVideoView.isHidden = self.bChatCall.isVideoEnabled ? false : true
-//            if self.bChatCall.isVideoEnabled && self.floatingViewVideoSource  == .local {
-//                self.bChatCall.attachLocalVideoRenderer(self.floatingLocalVideoView)
-                
-//                self.bChatCall.attachRemoteVideoRenderer(self.remoteVideoView)
-//                self.bChatCall.attachLocalVideoRenderer(self.floatingLocalVideoView)
-//                self.bChatCall.removeRemoteVideoRenderer(self.floatingLocalVideoView)
-//                self.bChatCall.removeLocalVideoRenderer(self.remoteVideoView)
-                
-//                self.localVideoView.alpha = 0
-//                self.callerImageView.isHidden = self.bChatCall.isRemoteVideoEnabled
-//                self.callerNameLabel.isHidden = self.bChatCall.isRemoteVideoEnabled
-//                self.callerImageBackgroundView.isHidden = self.bChatCall.isRemoteVideoEnabled
-//            }
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
     }
@@ -927,7 +869,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         }
         
         UIView.animate(withDuration: 0.25) {
-            let remoteVideoView: RemoteVideoView = self.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
+            let remoteVideoView: RemoteVideoView = self.bChatCall.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
             remoteVideoView.alpha = 0
         }
         
@@ -994,6 +936,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     @objc private func videoButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         if (bChatCall.isVideoEnabled) {
+            floatingViewContainer.isHidden = true
             cameraManager.stop()
             bChatCall.isVideoEnabled = false
             cameraButton.isEnabled = false
@@ -1011,15 +954,15 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             let previewVC = VideoPreviewVC()
             previewVC.delegate = self
             present(previewVC, animated: true) {
-                self.callerNameLabel.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
-                self.callerImageBackgroundView.isHidden = self.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
+                self.callerNameLabel.isHidden = self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
+                self.callerImageBackgroundView.isHidden = self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
             }
         }
     }
     
     func cameraDidConfirmTurningOn() {
         floatingViewContainer.isHidden = false
-        let localVideoView: LocalVideoView = floatingViewVideoSource == .local ? floatingLocalVideoView : fullScreenLocalVideoView
+        let localVideoView: LocalVideoView = bChatCall.floatingViewVideoSource == .local ? floatingLocalVideoView : fullScreenLocalVideoView
         localVideoView.alpha = 1
         
         cameraManager.prepare()
@@ -1215,10 +1158,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             self.voiceCallLabel.alpha  = isHidden ? 1 : 0
             self.endToEndLabel.alpha  = isHidden ? 1 : 0
             self.iconView.alpha = isHidden ? 1 : 0
-            
-            if isHidden {
-                
-            }
         }
     }
     

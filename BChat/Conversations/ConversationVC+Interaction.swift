@@ -199,11 +199,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        let gifVC = GifPickerViewController(thread: thread)
-        gifVC.delegate = self
-        let navController = OWSNavigationController(rootViewController: gifVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true) { }
+        //Don't delete below lines
+//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+//            let gifVC = GifPickerViewController(thread: thread)
+//            gifVC.delegate = self
+//            let navController = OWSNavigationController(rootViewController: gifVC)
+//            navController.modalPresentationStyle = .fullScreen
+//            present(navController, animated: true) { }
+//        } else {
+//            //check your internet connection
+//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+//        }
     }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {

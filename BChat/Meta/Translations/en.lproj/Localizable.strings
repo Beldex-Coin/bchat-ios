@@ -200,6 +200,8 @@
 "GIF_PICKER_VIEW_MISSING_QUERY" = "Please enter your search.";
 /* Indicates that an error occurred while searching. */
 "GIF_VIEW_SEARCH_ERROR" = "Error. Tap to Retry.";
+/* No results found */
+"NO_RESULTS_FOUND" = "No Results Found";
 /* Indicates that the user's search had no results. */
 "GIF_VIEW_SEARCH_NO_RESULTS" = "No Results.";
 /* No comment provided by engineer. */

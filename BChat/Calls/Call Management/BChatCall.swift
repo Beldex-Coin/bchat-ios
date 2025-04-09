@@ -4,6 +4,11 @@ import BChatMessagingKit
 import PromiseKit
 import CallKit
 
+enum FloatingViewVideoSource {
+    case local
+    case remote
+}
+
 public final class BChatCall: NSObject, WebRTCBChatDelegate {
     
     @objc static let isEnabled = true
@@ -160,7 +165,8 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     
     var reconnectTimer: Timer? = nil
     var isVideoSwapped = false
-    var isLocalVideoSwapped = false
+    
+    var floatingViewVideoSource: FloatingViewVideoSource = .local
     
     // MARK: Initialization
     init(for bchatID: String, uuid: String, mode: Mode, outgoing: Bool = false) {
