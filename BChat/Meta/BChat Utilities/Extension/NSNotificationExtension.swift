@@ -28,4 +28,5 @@ extension Notification.Name {
     static var dismissLinkBNSPopUpNotification = Notification.Name(rawValue: Constants.dismissLinkBNSPopUp)
     static var navigateToMyAccountNotification = Notification.Name(rawValue: Constants.navigateToMyAccount)
     static var LeaveGroupNotification = Notification.Name(rawValue: Constants.leaveGroup)
+    static var dismissMiniView = Notification.Name(rawValue: Constants.dismissMiniView)
 }

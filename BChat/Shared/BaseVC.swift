@@ -1,5 +1,4 @@
 
-var isEmojiWithKeyboardPresented = false
 class BaseVC : UIViewController {
     private var hasGradient = false
 
@@ -27,16 +26,6 @@ class BaseVC : UIViewController {
         setNeedsStatusBarAppearanceUpdate()
         NotificationCenter.default.addObserver(self, selector: #selector(handleAppModeChangedNotification(_:)), name: .appModeChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive(_:)), name: .OWSApplicationDidBecomeActive, object: nil)
-        
-        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
-        tapGesture.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc func resignKeyboard() {
-        if !isEmojiWithKeyboardPresented {
-            view.endEditing(true)
-        }
     }
     
     internal func ensureWindowBackground() {
@@ -199,5 +188,11 @@ extension BaseVC {
         aView.isHidden = true
         aView.alpha = 0
     }
+    
+//    func showInputAccessoryView(_ view: UIView?) {
+//        guard let aView = view else { return }
+//        aView.isHidden = true
+//        aView.alpha = 0
+//    }
     
 }

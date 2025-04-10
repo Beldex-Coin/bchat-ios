@@ -229,6 +229,6 @@ extension EmojiPickerSheet: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
-        //close()
+        close()
     }
 }

@@ -81,6 +81,8 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         self.addSubview(remoteVideoView)
         remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
         remoteVideoView.pin(to: self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideMiniView(_:)), name: .dismissMiniView, object: nil)
     }
     
     private func getBackgroudView() -> UIView {
@@ -124,6 +126,11 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.alpha = 1.0
         }, completion: nil)
+    }
+    
+    @objc
+    public func hideMiniView(_ notification: Notification) {
+        dismiss()
     }
     
     public func dismiss() {
