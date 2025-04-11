@@ -1599,7 +1599,22 @@ extension ConversationVC {
         Storage.write { transaction in
             Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
         }
-        react(viewItem, with: emoji.rawValue, cancel: false)
+//        react(viewItem, with: emoji.rawValue, cancel: false)
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if message.reactions.count == 0 {
+            addReaction(viewItem, with: emoji.rawValue)
+        } else {
+            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
+            var isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
+                removeReaction(viewItem, with: emoji.rawValue)
+            } else {
+                if isAlreadyReacted {
+                    removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
+                }
+                addReaction(viewItem, with: emoji.rawValue)
+            }
+        }
     }
     
     func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1615,6 +1630,64 @@ extension ConversationVC {
         guard let threadId = groupThread.uniqueId, let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadId) else { return }
         OpenGroupAPIV2.batchDeleteMessages(for: openGroupV2.room, on: openGroupV2.server, messageIds: reactMessages.compactMap{ $0.messageId })
     }
+    
+    func addReaction(_ viewItem: ConversationViewItem, with emoji: String) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        let visibleMessage = VisibleMessage()
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        visibleMessage.sentTimestamp = sentTimestamp
+        visibleMessage.reaction?.kind = .react
+        var authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        
+        
+        Storage.write(
+            with: { transaction in
+                message.addReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+                
+                
+                visibleMessage.reaction = .from(reactMessage)
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
+                }
+            }
+        )
+    }
+    
+    
+    func removeReaction(_ viewItem: ConversationViewItem, with emoji: String) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        
+    
+        var authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        
+        
+        Storage.write(
+            with: { transaction in
+                message.removeReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                
+                let visibleMessage = VisibleMessage()
+                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+                visibleMessage.sentTimestamp = sentTimestamp
+                visibleMessage.reaction = .from(reactMessage)
+                
+                
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
+                }
+            }
+        )
+    }
+    
+    
     
     private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
         guard let message = viewItem.interaction as? TSMessage else { return }
