@@ -1599,22 +1599,22 @@ extension ConversationVC {
         Storage.write { transaction in
             Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
         }
-//        react(viewItem, with: emoji.rawValue, cancel: false)
-        guard let message = viewItem.interaction as? TSMessage else { return }
-        if message.reactions.count == 0 {
-            addReaction(viewItem, with: emoji.rawValue)
-        } else {
-            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
-            var isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
-            if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
-                removeReaction(viewItem, with: emoji.rawValue)
-            } else {
-                if isAlreadyReacted {
-                    removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
-                }
-                addReaction(viewItem, with: emoji.rawValue)
-            }
-        }
+        react(viewItem, with: emoji.rawValue, cancel: false)
+//        guard let message = viewItem.interaction as? TSMessage else { return }
+//        if message.reactions.count == 0 {
+//            addReaction(viewItem, with: emoji.rawValue)
+//        } else {
+//            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
+//            var isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+//            if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
+//                removeReaction(viewItem, with: emoji.rawValue)
+//            } else {
+//                if isAlreadyReacted {
+//                    removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
+//                }
+//                addReaction(viewItem, with: emoji.rawValue)
+//            }
+//        }
     }
     
     func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1647,7 +1647,7 @@ extension ConversationVC {
                 message.addReaction(reactMessage, transaction: transaction)
             },
             completion: {
-                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+//                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 
                 
@@ -1698,10 +1698,12 @@ extension ConversationVC {
             if status == .sent || status == .delivered || status == .skipped {} else { return }
         }
 
-        var authorId = getUserHexEncodedPublicKey()
-        if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+        let authorId = getUserHexEncodedPublicKey()
+//        if !cancel {
+//            if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+//        }
         let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
-        reactMessage.sender = getUserHexEncodedPublicKey()
+//        reactMessage.sender = getUserHexEncodedPublicKey()
         let thread = self.thread
         let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
         let visibleMessage = VisibleMessage()
@@ -1712,7 +1714,7 @@ extension ConversationVC {
         var isReplace = false
         if !message.reactions.contains(reactMessage) {
             for existingReaction in message.reactions {
-                if (existingReaction as! ReactMessage).sender == reactMessage.sender {
+                if (existingReaction as! ReactMessage).authorId == reactMessage.authorId {
                     isReplace = true
                     Storage.write(
                         with: { transaction in
@@ -1747,6 +1749,7 @@ extension ConversationVC {
         }
                 
         if !isReplace {
+            visibleMessage.reaction?.publicKey = authorId
             Storage.write(
                 with: { transaction in
                     if cancel {

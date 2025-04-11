@@ -387,7 +387,7 @@ extension MessageReceiver {
                 tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
-            reactMessage.sender = message.sender
+//            reactMessage.sender = message.sender
             if let serverID = message.openGroupServerMessageID {
                 reactMessage.messageId = "\(serverID)"
                 // Create a lookup between the openGroupServerMessageId and the tsMessage id for easy lookup
