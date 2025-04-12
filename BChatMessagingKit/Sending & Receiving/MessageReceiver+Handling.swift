@@ -383,8 +383,14 @@ extension MessageReceiver {
             var tsMessage: TSMessage?
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                }
             } else {
                 tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                if tsMessage == nil {
+                    tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                }
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
 //            reactMessage.sender = message.sender
