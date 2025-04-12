@@ -340,7 +340,7 @@ extension MessageReceiver {
             }
             currentWebRTCBChat.handleICECandidates(candidates)
         case .endCall:
-            //?????????????? END CALL NOTIFICATION
+            // END CALL NOTIFICATION
             SNLog("[Calls] Received end call message.")
             guard WebRTCBChat.current?.uuid == message.uuid! else { return }
             handleEndCallMessage?(message)
@@ -393,7 +393,6 @@ extension MessageReceiver {
                 }
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
-//            reactMessage.sender = message.sender
             if let serverID = message.openGroupServerMessageID {
                 reactMessage.messageId = "\(serverID)"
                 // Create a lookup between the openGroupServerMessageId and the tsMessage id for easy lookup
