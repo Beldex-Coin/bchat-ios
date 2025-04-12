@@ -223,6 +223,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(attachmentHiddenTapped), name: .attachmentHiddenNotification, object: nil)
         
+        gifButton.isHidden = true
         gifButtonContainer.isHidden = true
     }
     

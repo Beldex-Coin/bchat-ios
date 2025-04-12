@@ -198,7 +198,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        //Don't delete below lines
 //        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
 //            let gifVC = GifPickerViewController(thread: thread)
 //            gifVC.delegate = self
