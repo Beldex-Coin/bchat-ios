@@ -425,6 +425,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else {
             addGestureRecognizer(panGestureRecognizer)
         }
+        if message.isDeleted {
+            reactionContainerView.isHidden = true
+            reactionContainerViewHeightConstraint.constant = 0
+        }
     }
     
     func formatDate(_ date: Date) -> String {
@@ -715,7 +719,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let reactions: OrderedDictionary<EmojiWithSkinTones, (Int, Bool)> = OrderedDictionary()
         for reaction in message.reactions {
             if let reactMessage = reaction as? ReactMessage, let rawEmoji = reactMessage.emoji, let emoji = EmojiWithSkinTones(rawValue: rawEmoji) {
-                let isSelfSend = (reactMessage.sender! == getUserHexEncodedPublicKey())
+                let isSelfSend = (reactMessage.authorId! == getUserHexEncodedPublicKey())
                 if let value = reactions.value(forKey: emoji) {
                     reactions.replace(key: emoji, value: (value.0 + 1, value.1 || isSelfSend))
                 } else {
@@ -1082,6 +1086,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
+        if viewItem.quotedReply != nil {
+            result.set(.width, to: size.width > 85 ? size.width : 85)
+        }
         return result
     }
     

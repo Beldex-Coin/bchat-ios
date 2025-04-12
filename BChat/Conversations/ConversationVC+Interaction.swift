@@ -7,8 +7,8 @@ import BChatUtilitiesKit
 import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
-    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate,
-                           ConversationTitleViewDelegate {
+    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate {
+    
 
     func needsLayout() {
         UIView.setAnimationsEnabled(false)
@@ -56,6 +56,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        // if audio recording is on need to restrict call
+        if audioRecorder != nil {
+            return
+        }
         snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
@@ -624,6 +628,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
+        // if message is not sent then no need long press
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if let messageOutgoing = message as? TSOutgoingMessage {
+            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
+            if status == .sent || status == .delivered || status == .skipped {} else { return }
+        }
+        
         // Show the context menu if applicable
         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell,
@@ -876,6 +887,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
             let fullDetails = "Amount:\(amount), txnid:\(id)"
             UIPasteboard.general.string = fullDetails
+        } else if let message = viewItem.interaction as? TSMessage, let openGroupInvitationURL = message.openGroupInvitationURL {
+            if let range = openGroupInvitationURL.range(of: "?public_key=") {
+                UIPasteboard.general.string = String(openGroupInvitationURL[..<range.lowerBound])
+            } else {
+                UIPasteboard.general.string = openGroupInvitationURL
+            }
         } else {
             viewItem.copyTextAction()
         }
@@ -993,6 +1010,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
             SNMessagingKitConfiguration.shared.storage.write { transaction in
@@ -1002,6 +1021,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteForEveryone(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         viewItem.deleteRemotelyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
@@ -1169,6 +1190,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
+        // if call is connected need to restrict audio recording
+        if AppEnvironment.shared.callManager.currentCall != nil {
+            return
+        }
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
@@ -1176,7 +1201,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self?.cancelVoiceMessageRecording()
         }
         // Keep screen on
-        UIApplication.shared.isIdleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = true
         guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
         // Cancel any current audio playback
         audioPlayer?.stop()
@@ -1227,7 +1252,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func endVoiceMessageRecording() {
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = false
         // Hide the UI
         snInputView.hideVoiceMessageUI()
         // Cancel the timer
@@ -1574,7 +1599,22 @@ extension ConversationVC {
         Storage.write { transaction in
             Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
         }
-        react(viewItem, with: emoji.rawValue, cancel: false)
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if message.reactions.count == 0 {
+            addReaction(viewItem, with: emoji.rawValue)
+        } else {
+            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
+            let isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
+                removeReaction(viewItem, with: emoji.rawValue)
+            } else {
+                if isAlreadyReacted {
+                    removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
+                }
+                addReaction(viewItem, with: emoji.rawValue)
+            }
+        }
+        
     }
     
     func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1582,7 +1622,7 @@ extension ConversationVC {
     }
     
     func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones) {
-        react(viewItem, with: emoji.rawValue, cancel: true)
+        removeReaction(viewItem, with: emoji.rawValue)
     }
     
     func cancelAllReact(reactMessages: [ReactMessage]) {
@@ -1591,72 +1631,73 @@ extension ConversationVC {
         OpenGroupAPIV2.batchDeleteMessages(for: openGroupV2.room, on: openGroupV2.server, messageIds: reactMessages.compactMap{ $0.messageId })
     }
     
-    private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
+    func addReaction(_ viewItem: ConversationViewItem, with emoji: String) {
         guard let message = viewItem.interaction as? TSMessage else { return }
-        var authorId = getUserHexEncodedPublicKey()
-        if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
-        reactMessage.sender = getUserHexEncodedPublicKey()
-        let thread = self.thread
-        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-        let visibleMessage = VisibleMessage()
-        visibleMessage.sentTimestamp = sentTimestamp
-        visibleMessage.reaction = .from(reactMessage)
-        visibleMessage.reaction?.kind = cancel ? .remove : .react
         
-        var isReplace = false
-        if !message.reactions.contains(reactMessage) {
-            for existingReaction in message.reactions {
-                if (existingReaction as! ReactMessage).sender == reactMessage.sender {
-                    isReplace = true
-                    Storage.write(
-                        with: { transaction in
-                            isReplace = true
-                            visibleMessage.reaction = .from(existingReaction as? ReactMessage)
-                            guard let emojiReaction = visibleMessage.reaction?.emoji else {
-                                return
-                            }
-                            self.react(viewItem, with: emojiReaction, cancel: true)
-                        },
-                        completion: {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                self.react(viewItem, with: emoji, cancel: false)
-                            })
-                        }
-                    )
+        let visibleMessage = VisibleMessage()
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        visibleMessage.sentTimestamp = sentTimestamp
+        visibleMessage.reaction?.kind = .react
+        let authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        
+        Storage.write(
+            with: { transaction in
+                message.addReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+                visibleMessage.reaction = .from(reactMessage)
+                visibleMessage.reaction?.kind = .react
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
                 }
             }
-        }
-                
-        if !isReplace {
-            Storage.write(
-                with: { transaction in
-                    if cancel {
-                        message.removeReaction(reactMessage, transaction: transaction)
-                    } else {
-                        message.addReaction(reactMessage, transaction: transaction)
-                    }
-                },
-                completion: {
-                    Storage.write { transaction in
-                        MessageSender.send(visibleMessage, in: thread, using: transaction)
-                    }
+        )
+    }
+    
+    func removeReaction(_ viewItem: ConversationViewItem, with emoji: String) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        let authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+            
+        Storage.write(
+            with: { transaction in
+                message.removeReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                let visibleMessage = VisibleMessage()
+                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+                visibleMessage.sentTimestamp = sentTimestamp
+                visibleMessage.reaction = .from(reactMessage)
+                visibleMessage.reaction?.kind = .remove
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
                 }
-            )
-        }
+            }
+        )
     }
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideTextInputAccessoryView()
-        let emojiPicker = EmojiPickerSheet(
-            completionHandler: { emoji in
+        isEmojiWithKeyboardPresented = true
+        let emojiPicker = EmojiPickerSheet(completionHandler: { emoji in
                 if let emoji = emoji {
                     self.react(viewItem, with: emoji)
                 }
+                isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             },
             dismissHandler: {
+                isEmojiWithKeyboardPresented = false
+            DispatchQueue.main.async {
                 self.showTextInputAccessoryView()
+                self.snInputView.isHidden = false
+                self.recoverInputView()
+                self.showInputAccessoryView()
+                self.snInputView.text = self.snInputView.text
+            }
             })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)

@@ -32,26 +32,27 @@ final class ContextMenuVC : UIViewController {
     }()
     
     private lazy var emojiBarView: UIView = {
-            let result = UIView()
-            result.layer.shadowColor = UIColor.black.cgColor
-            result.layer.shadowOffset = CGSize.zero
-            result.layer.shadowOpacity = 0.4
-            result.layer.shadowRadius = 4
-            result.backgroundColor = isLightMode ? UIColor(hex: 0xF8F8F8) : UIColor(hex: 0x2C2C3B)
-            result.layer.cornerRadius = 20
-            return result
-        }()
+        let result = UIView()
+        result.layer.shadowColor = UIColor.black.cgColor
+        result.layer.shadowOffset = CGSize.zero
+        result.layer.shadowOpacity = 0.4
+        result.layer.shadowRadius = 4
+        result.backgroundColor = isLightMode ? UIColor(hex: 0xF8F8F8) : UIColor(hex: 0x2C2C3B)
+        result.layer.cornerRadius = 20
+        return result
+    }()
         
     private let emojiPlusButton: UIButton = {
         let result = UIButton()
-            result.translatesAutoresizingMaskIntoConstraints = false
-            result.layer.masksToBounds = true
-            result.layer.cornerRadius = 20
-            let image = UIImage(named: "more_reactions")?.withRenderingMode(.alwaysTemplate)
-            result.setImage(image, for: .normal)
-            result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
-            return result
-        }()
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.layer.masksToBounds = true
+        result.layer.cornerRadius = 20
+        let image = UIImage(named: "more_reactions")?.withRenderingMode(.alwaysTemplate)
+        result.setImage(image, for: .normal)
+        result.addTarget(self, action: #selector(addEmojiButtonTapped), for: .touchUpInside)
+        result.tintColor = Colors.textFieldPlaceHolderColor
+        return result
+    }()
     
     // MARK: Settings
     private static let actionViewHeight: CGFloat = 40
@@ -99,10 +100,27 @@ final class ContextMenuVC : UIViewController {
         snapshot.layer.shadowOpacity = 0.4
         snapshot.layer.shadowRadius = 4
         view.addSubview(snapshot)
-        snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
-        snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
-        snapshot.set(.width, to: frame.width)
-        snapshot.set(.height, to: frame.height)
+//        snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
+        if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
+            snapshot.center(.vertical, in: view)
+        } else {
+            snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+        }
+//        snapshot.set(.width, to: frame.width)
+//        snapshot.set(.height, to: frame.height)
+        if snapshot.height > 500 {
+            if frame.origin.x < 30 {
+                snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
+            } else {
+                snapshot.pin(.left, to: .left, of: view, withInset: (UIScreen.main.bounds.width/2) - 16)
+            }
+            snapshot.set(.width, to: UIScreen.main.bounds.width/2)
+            snapshot.set(.height, to: 500)
+        } else {
+            snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
+            snapshot.set(.width, to: frame.width)
+            snapshot.set(.height, to: frame.height)
+        }
         // Timestamp
         view.addSubview(timestampLabel)
         timestampLabel.center(.vertical, in: snapshot)
@@ -112,9 +130,10 @@ final class ContextMenuVC : UIViewController {
         } else {
             timestampLabel.pin(.left, to: .right, of: snapshot, withInset: Values.smallSpacing)
         }
+        timestampLabel.alpha = 0
         // Menu
         let menuBackgroundView = UIView()
-        menuBackgroundView.backgroundColor = UIColor(hex: 0x2C2C3B)//Colors.receivedMessageBackground
+        menuBackgroundView.backgroundColor = isLightMode ? UIColor(hex: 0xF8F8F8) : UIColor(hex: 0x2C2C3B)
         menuBackgroundView.layer.cornerRadius = ContextMenuVC.menuCornerRadius
         menuBackgroundView.layer.masksToBounds = true
         menuView.addSubview(menuBackgroundView)
@@ -170,6 +189,19 @@ final class ContextMenuVC : UIViewController {
         emojiBarView.addSubview(emojiBarStackView)
         emojiBarStackView.pin([ UIView.HorizontalEdge.left, UIView.VerticalEdge.top, UIView.VerticalEdge.bottom ], to: emojiBarView)
         emojiBarStackView.pin(.right, to: .left, of: emojiPlusButton)
+        if let groupThread = viewItem.interaction.thread as? TSGroupThread {
+            if groupThread.isOpenGroup {
+                emojiBarView.isHidden = true
+            }
+            if groupThread.isClosedGroup && !groupThread.isCurrentUserMemberInGroup() {
+                emojiBarView.isHidden = true
+            }
+        }
+        if let thread = viewItem.interaction.thread as? TSContactThread {
+            if thread.isBlocked() {
+                emojiBarView.isHidden = true
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

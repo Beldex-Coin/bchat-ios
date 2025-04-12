@@ -1,4 +1,5 @@
 
+var isEmojiWithKeyboardPresented = false
 class BaseVC : UIViewController {
     private var hasGradient = false
 
@@ -33,7 +34,9 @@ class BaseVC : UIViewController {
     }
     
     @objc func resignKeyboard() {
-        view.endEditing(true)
+        if !isEmojiWithKeyboardPresented {
+            view.endEditing(true)
+        }
     }
     
     internal func ensureWindowBackground() {

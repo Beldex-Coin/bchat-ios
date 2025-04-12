@@ -84,7 +84,7 @@ final class UserCell : UITableViewCell {
     func update() {
         profilePictureView.publicKey = publicKey
         profilePictureView.update()
-        displayNameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
         if normalFont { displayNameLabel.font = .systemFont(ofSize: Values.mediumFontSize) }
         
         switch accessory {
