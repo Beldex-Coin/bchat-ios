@@ -149,6 +149,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         // Add attachment background view to each button container
         let documentAttachmentBackgroundView = UIView()
         documentAttachmentBackgroundView.backgroundColor = attachmentBackgroundView.backgroundColor // Copy background color if needed
+        documentAttachmentBackgroundView.layer.cornerRadius = 22
         documentAttachmentBackgroundView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         documentAttachmentBackgroundView.translatesAutoresizingMaskIntoConstraints = false
         documentButtonContainer.addSubview(documentAttachmentBackgroundView)
@@ -222,6 +223,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(attachmentHiddenTapped), name: .attachmentHiddenNotification, object: nil)
         
+        gifButtonContainer.isHidden = true
     }
     
     // hide the Attachment
