@@ -202,7 +202,7 @@ final class ReactionListSheet : BaseVC {
             if let rawEmoji = reaction.emoji, let emoji = EmojiWithSkinTones(rawValue: rawEmoji) {
                 if !reactionMap.hasValue(forKey: emoji) { reactionMap.append(key: emoji, value: []) }
                 var value = reactionMap.value(forKey: emoji)!
-                if reaction.sender == getUserHexEncodedPublicKey() {
+                if reaction.authorId == getUserHexEncodedPublicKey() {
                     value.insert(reaction, at: 0)
                 } else {
                     value.append(reaction)
@@ -300,7 +300,7 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReactionListCell") as! ReactionListCell
-        let publicKey = reactions[indexPath.row].sender!
+        let publicKey = reactions[indexPath.row].authorId!
         cell.publicKey = publicKey
         cell.emoji = reactions[indexPath.row].emoji!
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
@@ -317,7 +317,7 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let publicKey = reactions[indexPath.row].sender else { return }
+        guard let publicKey = reactions[indexPath.row].authorId else { return }
         if publicKey == getUserHexEncodedPublicKey() {
             delegate?.cancelReact(viewItem, for: selectedReaction!)
         }

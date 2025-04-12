@@ -172,7 +172,7 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         guard !thread.isMuted else { return }
         guard !thread.isGroupThread() else { return } // We do NOT notify emoji reacts in groups
         guard !thread.isMessageRequest(using: transaction) else { return }
-        guard let sender = reactMessage.sender, let emoji = reactMessage.emoji else { return }
+        guard let sender = reactMessage.authorId, let emoji = reactMessage.emoji else { return }
         guard let threadID = thread.uniqueId else { return }
         
         let context = Contact.context(for: thread)
