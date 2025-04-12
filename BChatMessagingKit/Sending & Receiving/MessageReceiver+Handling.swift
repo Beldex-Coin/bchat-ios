@@ -340,7 +340,7 @@ extension MessageReceiver {
             }
             currentWebRTCBChat.handleICECandidates(candidates)
         case .endCall:
-            //?????????????? END CALL NOTIFICATION
+            // END CALL NOTIFICATION
             SNLog("[Calls] Received end call message.")
             guard WebRTCBChat.current?.uuid == message.uuid! else { return }
             handleEndCallMessage?(message)
@@ -383,11 +383,16 @@ extension MessageReceiver {
             var tsMessage: TSMessage?
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                }
             } else {
                 tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                if tsMessage == nil {
+                    tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                }
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
-//            reactMessage.sender = message.sender
             if let serverID = message.openGroupServerMessageID {
                 reactMessage.messageId = "\(serverID)"
                 // Create a lookup between the openGroupServerMessageId and the tsMessage id for easy lookup

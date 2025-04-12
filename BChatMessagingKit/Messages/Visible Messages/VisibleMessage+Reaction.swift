@@ -108,7 +108,7 @@ public extension VisibleMessage {
                 timestamp: \(timestamp?.description ?? "null"),
                 publicKey: \(publicKey ?? "null"),
                 emoji: \(emoji ?? "null"),
-                kind: \(kind?.react ?? 1)
+                kind: \(kind?.description ?? "null")
             )
             """
         }
