@@ -379,7 +379,7 @@ extension MessageReceiver {
         guard let threadID = storage.getOrCreateThread(for: message.syncTarget ?? message.sender!, groupPublicKey: message.groupPublicKey, openGroupID: openGroupID, using: transaction) else { throw Error.noThread }
         
         // Handle emoji reacts first
-        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, let author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
+        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
             var tsMessage: TSMessage?
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
@@ -391,6 +391,9 @@ extension MessageReceiver {
                 if tsMessage == nil {
                     tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 }
+            }
+            if reaction.kind == .react {
+                author = message.sender!
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
             if let serverID = message.openGroupServerMessageID {

@@ -1603,8 +1603,12 @@ extension ConversationVC {
         if message.reactions.count == 0 {
             addReaction(viewItem, with: emoji.rawValue)
         } else {
-            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
-            let isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            let oldRecord = message.reactions.first { reaction in
+                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
+            }
+            let isAlreadyReacted = message.reactions.contains { reaction in
+                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
+            }
             if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
                 removeReaction(viewItem, with: emoji.rawValue)
             } else {
@@ -1637,8 +1641,7 @@ extension ConversationVC {
         let visibleMessage = VisibleMessage()
         let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
         visibleMessage.sentTimestamp = sentTimestamp
-        visibleMessage.reaction?.kind = .react
-        let authorId = getUserHexEncodedPublicKey()
+        var authorId = getUserHexEncodedPublicKey()
         let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
         
         Storage.write(
@@ -1646,6 +1649,7 @@ extension ConversationVC {
                 message.addReaction(reactMessage, transaction: transaction)
             },
             completion: {
+                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .react
