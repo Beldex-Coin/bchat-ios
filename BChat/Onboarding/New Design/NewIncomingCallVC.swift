@@ -426,6 +426,14 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         
         if shouldRestartCamera { cameraManager.prepare() }
         
+        callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
+        backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
+        
+        view.addSubview(voiceCallLabel)
+        view.addSubview(callerNameLabel)
+        view.addSubview(callerImageBackgroundView)
+        view.addSubview(backGroundViewForIconAndLabel)
+        
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         view.addSubview(backgroundImageView)
         backgroundImageView.pin(to: view)
@@ -442,9 +450,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         fullScreenLocalVideoView.translatesAutoresizingMaskIntoConstraints = false
         fullScreenLocalVideoView.pin(to: view)
         
-        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
-        backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
-        callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
+        view.addSubViews(incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
+        
         buttonStackView.addArrangedSubview(answerButton)
         buttonStackView.addArrangedSubview(hangUpButton)
         bottomView.addSubViews(stackViewForBottomView)
@@ -612,9 +619,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        callerNameLabel.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
-        callerImageBackgroundView.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
         
         if (bChatCall.isVideoEnabled && shouldRestartCamera) {
             cameraButton.isEnabled = true
@@ -797,9 +801,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             bChatCall.attachRemoteVideoRenderer(floatingRemoteVideoView)
             bChatCall.attachLocalVideoRenderer(fullScreenLocalVideoView)
         }
-        
-        callerNameLabel.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
-        callerImageBackgroundView.isHidden = bChatCall.floatingViewVideoSource == .remote || bChatCall.isRemoteVideoEnabled
     }
     
     func updateTimer() {
@@ -810,14 +811,6 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             self.bottomView.isHidden = false
             self.backButton.isHidden = false
             self.voiceCallLabel.text = self.bChatCall.isVideoEnabled ? "Video Call" : "Voice Call"
-            
-            if self.bChatCall.floatingViewVideoSource == .remote && !self.bChatCall.isVideoEnabled {
-                self.callerNameLabel.isHidden = false
-                self.callerImageBackgroundView.isHidden = false
-            } else if self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled {
-                self.callerNameLabel.isHidden = true
-                self.callerImageBackgroundView.isHidden = true
-            }
                 
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
@@ -939,7 +932,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
     @objc private func videoButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
         if (bChatCall.isVideoEnabled) {
-            floatingViewContainer.isHidden = bChatCall.floatingViewVideoSource == .local
+            floatingViewContainer.isHidden = bChatCall.floatingViewVideoSource == .local || !bChatCall.isRemoteVideoEnabled
             cameraManager.stop()
             bChatCall.isVideoEnabled = false
             cameraButton.isEnabled = false
@@ -949,20 +942,11 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
             
             //bChatCall.removeLocalVideoRenderer(fullScreenLocalVideoView)
             fullScreenLocalVideoView.alpha = 0
-            
-            if bChatCall.floatingViewVideoSource == .remote && !bChatCall.isVideoEnabled {
-                callerNameLabel.isHidden = false
-                callerImageBackgroundView.isHidden = false
-            }
         } else {
             guard requestCameraPermissionIfNeeded() else { return }
             let previewVC = VideoPreviewVC()
             previewVC.delegate = self
-            present(previewVC, animated: true) {
-                let hide = self.bChatCall.floatingViewVideoSource == .remote || self.bChatCall.isRemoteVideoEnabled
-                self.callerNameLabel.isHidden = hide
-                self.callerImageBackgroundView.isHidden = hide
-            }
+            present(previewVC, animated: true)
         }
     }
     
