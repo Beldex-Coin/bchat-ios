@@ -1606,7 +1606,7 @@ extension ConversationVC {
             let oldRecord = message.reactions.first { reaction in
                 (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
             }
-            let isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            let isAlreadyReacted = message.reactions.contains(oldRecord as? ReactMessage ?? false)
             if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
                 removeReaction(viewItem, with: emoji.rawValue)
             } else {
