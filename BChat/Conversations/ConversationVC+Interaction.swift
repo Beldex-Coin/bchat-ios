@@ -623,7 +623,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         UIView.animate(withDuration: 0.25, animations: {
             self.inputAccessoryView?.isHidden = false
             self.inputAccessoryView?.alpha = 1
-            //self.snInputView.isHidden = false
         })
     }
     
@@ -1707,10 +1706,9 @@ extension ConversationVC {
                     withDuration: 0.2,
                     animations: {
                         self?.showInputAccessoryView()
-                        self?.view.setNeedsLayout()
-                        self?.view.layoutIfNeeded()
                         
-                        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+                        self?.needsLayout()
+                        self?.handleScrollToBottomButtonTapped()
                     },
                     completion: nil
                 )
