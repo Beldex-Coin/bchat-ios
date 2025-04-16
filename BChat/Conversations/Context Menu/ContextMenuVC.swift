@@ -104,7 +104,15 @@ final class ContextMenuVC : UIViewController {
         if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
             snapshot.center(.vertical, in: view)
         } else {
-            snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+            if UIScreen.main.bounds.height - frame.origin.y < 120 {
+                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
+            } else {
+                if (snapshot.height() - 40) < (UIScreen.main.bounds.height - frame.origin.y) {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - snapshot.height())
+                } else {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+                }
+            }
         }
 //        snapshot.set(.width, to: frame.width)
 //        snapshot.set(.height, to: frame.height)
