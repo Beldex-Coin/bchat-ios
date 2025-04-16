@@ -379,8 +379,11 @@ extension MessageReceiver {
         guard let threadID = storage.getOrCreateThread(for: message.syncTarget ?? message.sender!, groupPublicKey: message.groupPublicKey, openGroupID: openGroupID, using: transaction) else { throw Error.noThread }
         
         // Handle emoji reacts first
-        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, let author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
+        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
             var tsMessage: TSMessage?
+            if reaction.kind == .react {
+                author = message.sender!
+            }
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 if tsMessage == nil {
@@ -405,12 +408,12 @@ extension MessageReceiver {
             switch reaction.kind {
                 case .react:
                     tsMessage?.addReaction(reactMessage, transaction: transaction)
+                    SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
                 case .remove:
                     tsMessage?.removeReaction(reactMessage, transaction: transaction)
                 case .none:
                     break
             }
-            SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
             return ""
         }
         

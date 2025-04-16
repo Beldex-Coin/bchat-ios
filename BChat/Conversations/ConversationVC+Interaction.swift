@@ -1612,8 +1612,10 @@ extension ConversationVC {
         if message.reactions.count == 0 {
             addReaction(viewItem, with: emoji.rawValue)
         } else {
-            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
-            let isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            let oldRecord = message.reactions.first { reaction in
+                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
+            }
+            let isAlreadyReacted = message.reactions.contains(oldRecord as? ReactMessage ?? false)
             if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
                 removeReaction(viewItem, with: emoji.rawValue)
             } else {
@@ -1646,15 +1648,15 @@ extension ConversationVC {
         let visibleMessage = VisibleMessage()
         let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
         visibleMessage.sentTimestamp = sentTimestamp
-        visibleMessage.reaction?.kind = .react
-        let authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        var authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
         
         Storage.write(
             with: { transaction in
                 message.addReaction(reactMessage, transaction: transaction)
             },
             completion: {
+                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .react
@@ -1669,7 +1671,8 @@ extension ConversationVC {
         guard let message = viewItem.interaction as? TSMessage else { return }
         
         let authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
             
         Storage.write(
             with: { transaction in
@@ -1679,6 +1682,7 @@ extension ConversationVC {
                 let visibleMessage = VisibleMessage()
                 let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
                 visibleMessage.sentTimestamp = sentTimestamp
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .remove
                 Storage.write { transaction in
@@ -1696,18 +1700,13 @@ extension ConversationVC {
                 self?.react(viewItem, with: emoji)
             },
             dismissHandler: { [weak self] in
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                    debugPrint("Check ======")
-//                    self?.showInputAccessoryView()
-//                    
-//                    //self?.showInputAccessoryView(self?.inputAccessoryView)
-//                }
                 UIView.animate(
                     withDuration: 0.2,
                     animations: {
                         self?.showInputAccessoryView()
-                        self?.view.setNeedsLayout()
-                        self?.view.layoutIfNeeded()
+                        self?.needsLayout()
+                        self?.handleScrollToBottomButtonTapped()
+
                     },
                     completion: nil
                 )
