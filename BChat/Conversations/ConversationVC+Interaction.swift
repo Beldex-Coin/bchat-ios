@@ -1693,16 +1693,18 @@ extension ConversationVC {
                 isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             },
-            dismissHandler: {
-                isEmojiWithKeyboardPresented = false
-            DispatchQueue.main.async {
-                self.showTextInputAccessoryView()
-                self.snInputView.isHidden = false
-                self.recoverInputView()
-                self.showInputAccessoryView()
-                self.snInputView.text = self.snInputView.text
+            dismissHandler: { [weak self] in
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        self?.showInputAccessoryView()
+                        
+                        self?.needsLayout()
+                        self?.handleScrollToBottomButtonTapped()
+                    },
+                    completion: nil
+                )
             }
-            })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }

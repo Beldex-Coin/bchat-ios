@@ -408,12 +408,12 @@ extension MessageReceiver {
             switch reaction.kind {
                 case .react:
                     tsMessage?.addReaction(reactMessage, transaction: transaction)
+                    SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
                 case .remove:
                     tsMessage?.removeReaction(reactMessage, transaction: transaction)
                 case .none:
                     break
             }
-            SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
             return ""
         }
         
