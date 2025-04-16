@@ -1606,9 +1606,7 @@ extension ConversationVC {
             let oldRecord = message.reactions.first { reaction in
                 (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
             }
-            let isAlreadyReacted = message.reactions.contains { reaction in
-                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
-            }
+            let isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
             if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
                 removeReaction(viewItem, with: emoji.rawValue)
             } else {
@@ -1642,7 +1640,7 @@ extension ConversationVC {
         let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
         visibleMessage.sentTimestamp = sentTimestamp
         var authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
         
         Storage.write(
             with: { transaction in
@@ -1664,7 +1662,8 @@ extension ConversationVC {
         guard let message = viewItem.interaction as? TSMessage else { return }
         
         let authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
             
         Storage.write(
             with: { transaction in
@@ -1674,6 +1673,7 @@ extension ConversationVC {
                 let visibleMessage = VisibleMessage()
                 let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
                 visibleMessage.sentTimestamp = sentTimestamp
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .remove
                 Storage.write { transaction in

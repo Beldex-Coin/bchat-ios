@@ -381,6 +381,9 @@ extension MessageReceiver {
         // Handle emoji reacts first
         if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
             var tsMessage: TSMessage?
+            if reaction.kind == .react {
+                author = message.sender!
+            }
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 if tsMessage == nil {
@@ -391,9 +394,6 @@ extension MessageReceiver {
                 if tsMessage == nil {
                     tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 }
-            }
-            if reaction.kind == .react {
-                author = message.sender!
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
             if let serverID = message.openGroupServerMessageID {
