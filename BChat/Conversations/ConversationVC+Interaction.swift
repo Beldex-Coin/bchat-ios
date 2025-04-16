@@ -626,8 +626,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             //self.snInputView.isHidden = false
         })
     }
-<<<<<<< Updated upstream
-=======
     
     func hideInputAccessoryView() {
         UIView.animate(withDuration: 0.25, animations: {
@@ -636,7 +634,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             //self.snInputView.isHidden = true
         })
     }
->>>>>>> Stashed changes
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
