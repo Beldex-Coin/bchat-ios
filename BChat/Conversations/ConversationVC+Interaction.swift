@@ -76,8 +76,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
                 let callVC = NewIncomingCallVC(for: call)
                 callVC.conversationVC = self
-                self.inputAccessoryView?.isHidden = true
-                self.inputAccessoryView?.alpha = 0
+                hideInputAccessoryView()
                 present(callVC, animated: true, completion: nil)
                 //CallVC
                 //NewIncomingCallVC
@@ -199,11 +198,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        let gifVC = GifPickerViewController(thread: thread)
-        gifVC.delegate = self
-        let navController = OWSNavigationController(rootViewController: gifVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true) { }
+//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+//            let gifVC = GifPickerViewController(thread: thread)
+//            gifVC.delegate = self
+//            let navController = OWSNavigationController(rootViewController: gifVC)
+//            navController.modalPresentationStyle = .fullScreen
+//            present(navController, animated: true) { }
+//        } else {
+//            //check your internet connection
+//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+//        }
     }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {
@@ -299,8 +303,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
-            inputAccessoryView?.isHidden = true
-            inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             let modal = OwnSeedWarningPopUp()
             modal.modalPresentationStyle = .overFullScreen
             modal.modalTransitionStyle = .crossDissolve
@@ -535,6 +538,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if newText.count < oldText.count {
             if !newText.hasPrefix("@") {
                 currentMentionStartIndex = nil
+                
                 snInputView.hideMentionsUI()
                 mentions = mentions.filter { $0.isContained(in: newText) }
             }
@@ -630,7 +634,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         UIView.animate(withDuration: 0.25, animations: {
             self.inputAccessoryView?.isHidden = true
             self.inputAccessoryView?.alpha = 0
-            //self.snInputView.isHidden = true
         })
     }
 
@@ -951,8 +954,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
             alertVC.addAction(cancelAction)
             
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         } else {
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -986,8 +988,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
             }
             alertVC.addAction(cancelAction)
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         }
     }
@@ -1692,39 +1693,27 @@ extension ConversationVC {
     }
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
-        hideTextInputAccessoryView()
-        isEmojiWithKeyboardPresented = true
-        let emojiPicker = EmojiPickerSheet(completionHandler: { emoji in
-                if let emoji = emoji {
-                    self.react(viewItem, with: emoji)
-                }
-                isEmojiWithKeyboardPresented = false
-                self.showTextInputAccessoryView()
+        hideInputAccessoryView()
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { [weak self] emoji in
+                guard let emoji: EmojiWithSkinTones = emoji else { return }
+                self?.react(viewItem, with: emoji)
             },
             dismissHandler: { [weak self] in
                 UIView.animate(
                     withDuration: 0.2,
                     animations: {
                         self?.showInputAccessoryView()
-                        
                         self?.needsLayout()
                         self?.handleScrollToBottomButtonTapped()
+
                     },
                     completion: nil
                 )
             }
+        )
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
-    }
-    
-    func hideTextInputAccessoryView() {
-        self.inputAccessoryView?.isHidden = true
-        self.inputAccessoryView?.alpha = 0
-    }
-    
-    func showTextInputAccessoryView() {
-        self.inputAccessoryView?.isHidden = false
-        self.inputAccessoryView?.alpha = 1
     }
 }
 

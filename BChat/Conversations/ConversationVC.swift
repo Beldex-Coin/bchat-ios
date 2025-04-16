@@ -1170,7 +1170,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1183,7 +1182,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         hideAttachmentExpandedButtons()
         hideOpenURLView()
-        isEmojiWithKeyboardPresented = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1225,7 +1223,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     override func appDidBecomeActive(_ notification: Notification) {
-        recoverInputView()
+        
+        if AppEnvironment.shared.callManager.currentCall == nil {
+            recoverInputView()
+            snInputView.isHidden = false
+        } else {
+            snInputView.isHidden = true
+        }
     }
     
     deinit {
