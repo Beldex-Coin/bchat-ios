@@ -623,8 +623,20 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         UIView.animate(withDuration: 0.25, animations: {
             self.inputAccessoryView?.isHidden = false
             self.inputAccessoryView?.alpha = 1
+            //self.snInputView.isHidden = false
         })
     }
+<<<<<<< Updated upstream
+=======
+    
+    func hideInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+            //self.snInputView.isHidden = true
+        })
+    }
+>>>>>>> Stashed changes
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
@@ -1693,16 +1705,19 @@ extension ConversationVC {
                 isEmojiWithKeyboardPresented = false
                 self.showTextInputAccessoryView()
             },
-            dismissHandler: {
-                isEmojiWithKeyboardPresented = false
-            DispatchQueue.main.async {
-                self.showTextInputAccessoryView()
-                self.snInputView.isHidden = false
-                self.recoverInputView()
-                self.showInputAccessoryView()
-                self.snInputView.text = self.snInputView.text
+            dismissHandler: { [weak self] in
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        self?.showInputAccessoryView()
+                        self?.view.setNeedsLayout()
+                        self?.view.layoutIfNeeded()
+                        
+                        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+                    },
+                    completion: nil
+                )
             }
-            })
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
