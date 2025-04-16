@@ -686,7 +686,9 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         let miniCallView = MiniCallView(from: self)
         miniCallView.show()
         
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true) {
+            NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        }
     }
     
     private func addFloatingVideoView() {
