@@ -93,6 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setNotificationIdentifier:(NSString * _Nullable)notificationIdentifier
                       transaction:(YapDatabaseReadWriteTransaction *)transaction;
 
++ (nullable instancetype)findMessageWithtimestamp:(uint64_t)timestamp
+                                      transaction:(YapDatabaseReadWriteTransaction *)transaction;
+
 @end
 
 NS_ASSUME_NONNULL_END

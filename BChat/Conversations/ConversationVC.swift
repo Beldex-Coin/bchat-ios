@@ -63,6 +63,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // Reaction
     var showingReactionListForMessageId: String?
+    var reactionListOpened: Bool = false
     
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
@@ -1224,7 +1225,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func appDidBecomeActive(_ notification: Notification) {
         
-        if AppEnvironment.shared.callManager.currentCall == nil {
+        if AppEnvironment.shared.callManager.currentCall == nil && !reactionListOpened {
             recoverInputView()
             snInputView.isHidden = false
         } else {

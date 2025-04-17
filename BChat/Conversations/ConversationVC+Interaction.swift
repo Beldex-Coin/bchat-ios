@@ -622,20 +622,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         snInputView.hideMentionsUI()
         self.oldText = newText
     }
-    
-    func showInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = false
-            self.inputAccessoryView?.alpha = 1
-        })
-    }
-    
-    func hideInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
-        })
-    }
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
@@ -1596,12 +1582,17 @@ extension ConversationVC {
     func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?) {
         guard let thread = thread as? TSGroupThread else { return }
         guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
-        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread)
+        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
+            self.reactionListOpened = false
+            self.snInputView.isHidden = false
+        }
         showingReactionListForMessageId = viewItem.interaction.uniqueId
         reactionListSheet.delegate = self
         reactionListSheet.selectedReaction = selectedReaction
         reactionListSheet.modalPresentationStyle = .overFullScreen
-        present(reactionListSheet, animated: true, completion: nil)
+        present(reactionListSheet, animated: true) {
+            self.reactionListOpened = true
+        }
     }
     
     func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1696,24 +1687,42 @@ extension ConversationVC {
         hideInputAccessoryView()
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { [weak self] emoji in
+                guard let strongSelf = self else { return }
                 guard let emoji: EmojiWithSkinTones = emoji else { return }
-                self?.react(viewItem, with: emoji)
+                strongSelf.react(viewItem, with: emoji)
             },
             dismissHandler: { [weak self] in
+                guard let strongSelf = self else { return }
                 UIView.animate(
                     withDuration: 0.2,
                     animations: {
-                        self?.showInputAccessoryView()
-                        self?.needsLayout()
-                        self?.handleScrollToBottomButtonTapped()
-
+                        strongSelf.showInputAccessoryView()
+                        strongSelf.needsLayout()
+                        strongSelf.handleScrollToBottomButtonTapped()
+                        strongSelf.recoverInputView()
                     },
                     completion: nil
                 )
             }
         )
-        emojiPicker.modalPresentationStyle = .overFullScreen
+        //view.bringSubviewToFront(emojiPicker.view)
+        emojiPicker.view.superview?.bringSubviewToFront(emojiPicker.view)
+        //emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
+    }
+    
+    func showInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = false
+            self.inputAccessoryView?.alpha = 1
+        })
+    }
+
+    func hideInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+        })
     }
 }
 

@@ -394,6 +394,9 @@ extension MessageReceiver {
                 if tsMessage == nil {
                     tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 }
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.findWithtimestamp(timestamp, transaction: transaction)
+                }
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
             if let serverID = message.openGroupServerMessageID {

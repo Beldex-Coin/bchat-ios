@@ -8,6 +8,8 @@ final class ReactionListSheet : BaseVC {
     var selectedReaction: EmojiWithSkinTones?
     var delegate: ReactionDelegate?
     
+    let dismissHandler: () -> Void
+    
     // MARK: Components
     
     private lazy var contentView: UIView = {
@@ -98,9 +100,10 @@ final class ReactionListSheet : BaseVC {
     
     // MARK: Lifecycle
     
-    init(for viewItem: ConversationViewItem, thread: TSGroupThread) {
+    init(for viewItem: ConversationViewItem, thread: TSGroupThread, dismissHandler: @escaping () -> Void) {
         self.viewItem = viewItem
         self.thread = thread
+        self.dismissHandler = dismissHandler
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -249,7 +252,7 @@ final class ReactionListSheet : BaseVC {
     }
 
     @objc func close() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: dismissHandler)
     }
     
     @objc private func clearAllTapped() {
