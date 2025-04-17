@@ -1687,23 +1687,29 @@ extension ConversationVC {
         hideInputAccessoryView()
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { [weak self] emoji in
+                guard let strongSelf = self else { return }
                 guard let emoji: EmojiWithSkinTones = emoji else { return }
-                self?.react(viewItem, with: emoji)
+                strongSelf.react(viewItem, with: emoji)
             },
             dismissHandler: { [weak self] in
+                guard let strongSelf = self else { return }
                 UIView.animate(
                     withDuration: 0.2,
                     animations: {
-                        self?.showInputAccessoryView()
-                        self?.needsLayout()
-                        self?.handleScrollToBottomButtonTapped()
-
+                        debugPrint("Check ===== \(strongSelf.inputAccessoryView?.isHidden)")
+                        strongSelf.showInputAccessoryView()
+                        strongSelf.needsLayout()
+                        strongSelf.handleScrollToBottomButtonTapped()
+                        strongSelf.recoverInputView()
+                        debugPrint("Check ===== 12 \(strongSelf.snInputView.isHidden)")
                     },
                     completion: nil
                 )
             }
         )
-        emojiPicker.modalPresentationStyle = .overFullScreen
+        //view.bringSubviewToFront(emojiPicker.view)
+        emojiPicker.view.superview?.bringSubviewToFront(emojiPicker.view)
+        //emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
     

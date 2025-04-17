@@ -794,12 +794,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         guard let viewItem = viewItem else { return }
         let location = gestureRecognizer.location(in: self)
         if reactionContainerView.frame.contains(location) {
-            let convertedLocation = reactionContainerView.convert(location, from: self)
+//            let convertedLocation = reactionContainerView.convert(location, from: self)
             for reactionView in reactionContainerView.reactionViews {
-                if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                //if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
                     delegate?.showReactionList(viewItem, selectedReaction: reactionView.emoji)
                     break
-                }
+                //}
             }
         } else {
             delegate?.handleViewItemLongPressed(viewItem)
@@ -829,14 +829,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     return
                 }
             }
-            if let expandButton = reactionContainerView.expandButton, expandButton.frame.contains(convertedLocation) {
-                reactionContainerView.showAllEmojis()
-                delegate?.needsLayout()
-            }
-            if reactionContainerView.collapseButton.frame.contains(convertedLocation) {
-                reactionContainerView.showLessEmojis()
-                delegate?.needsLayout()
-            }
+//            if let expandButton = reactionContainerView.expandButton, expandButton.frame.contains(convertedLocation) {
+//                reactionContainerView.showAllEmojis()
+//                delegate?.needsLayout()
+//            }
+//            if reactionContainerView.collapseButton.frame.contains(convertedLocation) {
+//                reactionContainerView.showLessEmojis()
+//                delegate?.needsLayout()
+//            }
         } else {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
