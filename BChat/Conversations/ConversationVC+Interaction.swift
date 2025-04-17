@@ -622,20 +622,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         snInputView.hideMentionsUI()
         self.oldText = newText
     }
-    
-    func showInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = false
-            self.inputAccessoryView?.alpha = 1
-        })
-    }
-    
-    func hideInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
-        })
-    }
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
@@ -1596,12 +1582,17 @@ extension ConversationVC {
     func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?) {
         guard let thread = thread as? TSGroupThread else { return }
         guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
-        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread)
+        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
+            self.reactionListOpened = false
+            self.snInputView.isHidden = false
+        }
         showingReactionListForMessageId = viewItem.interaction.uniqueId
         reactionListSheet.delegate = self
         reactionListSheet.selectedReaction = selectedReaction
         reactionListSheet.modalPresentationStyle = .overFullScreen
-        present(reactionListSheet, animated: true, completion: nil)
+        present(reactionListSheet, animated: true) {
+            self.reactionListOpened = true
+        }
     }
     
     func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1714,6 +1705,20 @@ extension ConversationVC {
         )
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
+    }
+    
+    func showInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = false
+            self.inputAccessoryView?.alpha = 1
+        })
+    }
+
+    func hideInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+        })
     }
 }
 
