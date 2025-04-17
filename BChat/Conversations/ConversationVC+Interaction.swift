@@ -1696,12 +1696,10 @@ extension ConversationVC {
                 UIView.animate(
                     withDuration: 0.2,
                     animations: {
-                        debugPrint("Check ===== \(strongSelf.inputAccessoryView?.isHidden)")
                         strongSelf.showInputAccessoryView()
                         strongSelf.needsLayout()
                         strongSelf.handleScrollToBottomButtonTapped()
                         strongSelf.recoverInputView()
-                        debugPrint("Check ===== 12 \(strongSelf.snInputView.isHidden)")
                     },
                     completion: nil
                 )

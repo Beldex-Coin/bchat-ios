@@ -107,11 +107,13 @@ final class ContextMenuVC : UIViewController {
             if UIScreen.main.bounds.height - frame.origin.y < 120 {
                 snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
             } else {
-                if (snapshot.height() - 40) < (UIScreen.main.bounds.height - frame.origin.y) {
-                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - snapshot.height())
-                } else {
-                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
-                }
+//                if (snapshot.height() - 40) < (UIScreen.main.bounds.height - frame.origin.y) {
+//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - snapshot.height() + 20)
+//                } else {
+//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+//                }
+                
+                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
             }
         }
 //        snapshot.set(.width, to: frame.width)
@@ -154,7 +156,10 @@ final class ContextMenuVC : UIViewController {
         view.addSubview(menuView)
         let menuHeight = CGFloat(actionViews.count) * ContextMenuVC.actionViewHeight
         let spacing = Values.smallSpacing
-        let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
+        
+        let margin = max(UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0, Values.mediumSpacing)
+        
+        //let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
             emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
