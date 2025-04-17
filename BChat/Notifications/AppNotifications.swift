@@ -319,8 +319,8 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         let context = Contact.context(for: thread)
         let senderName = Storage.shared.getContact(with: sender, using: transaction)?.displayName(for: context) ?? sender
         
-        let notificationTitle = "BChat"
-        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), senderName, emoji)
+        let notificationTitle = senderName
+        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), emoji)
         switch previewType {
             case .namePreview: break
             default: notificationBody = NotificationStrings.incomingMessageBody
