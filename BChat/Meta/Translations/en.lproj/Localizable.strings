@@ -824,7 +824,7 @@
 
 "PAY_AS_YOU_CHAT_DISCRIPTION_LABEL" = "To display pay as you chat, go to My Account -> Chat Settings -> Pay as you Chat to use this option";
 
-"EMOJI_REACTS_NOTIFICATION" = "%@ reacts to a message with %@";
+"EMOJI_REACTS_NOTIFICATION" = "reacted to your message %@";
 
 /* The name for the emoji category 'Activities' */
 "EMOJI_CATEGORY_ACTIVITIES_NAME" = "Activities";

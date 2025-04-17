@@ -178,8 +178,8 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         let context = Contact.context(for: thread)
         let senderName = Storage.shared.getContact(with: sender, using: transaction)?.displayName(for: context) ?? sender
         
-        let notificationTitle = "Session"
-        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), senderName, emoji)
+        let notificationTitle = senderName
+        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), emoji)
         let notificationsPreference = Environment.shared.preferences!.notificationPreviewType()
         switch notificationsPreference {
             case .namePreview: break
