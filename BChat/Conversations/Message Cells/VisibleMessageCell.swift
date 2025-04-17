@@ -1087,7 +1087,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         if viewItem.quotedReply != nil {
-            result.set(.width, to: size.width > 85 ? size.width : 85)
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 15
+            if width > maxWidth {
+                result.set(.width, to: width > maxWidth ? maxWidth : width)
+            } else {
+                result.set(.width, to: size.width > 85 ? size.width : 85)
+            }
         }
         return result
     }
