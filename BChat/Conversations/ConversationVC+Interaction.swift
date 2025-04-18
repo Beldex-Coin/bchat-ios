@@ -1613,7 +1613,9 @@ extension ConversationVC {
                 if isAlreadyReacted {
                     removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
                 }
-                addReaction(viewItem, with: emoji.rawValue)
+                DispatchQueue.main.async {
+                    self.addReaction(viewItem, with: emoji.rawValue)
+                }
             }
         }
         
