@@ -310,7 +310,7 @@ extension ReactionListSheet: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let publicKey = reactions[indexPath.row].authorId else { return }
         if publicKey == getUserHexEncodedPublicKey() {
-            delegate?.cancelReact(viewItem, for: selectedReaction!)
+            delegate?.cancelReact(viewItem, for: reactions[indexPath.row].emoji!)
         }
     }
     
@@ -399,7 +399,7 @@ extension ReactionListSheet {
 protocol ReactionDelegate : AnyObject {
     
     func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones)
-    func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones)
+    func cancelReact(_ viewItem: ConversationViewItem, for emoji: String)
     func cancelAllReact(reactMessages: [ReactMessage])
     
 }
