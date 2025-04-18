@@ -1623,8 +1623,8 @@ extension ConversationVC {
         react(viewItem, with: emoji)
     }
     
-    func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones) {
-        removeReaction(viewItem, with: emoji.rawValue)
+    func cancelReact(_ viewItem: ConversationViewItem, for emoji: String) {
+        removeReaction(viewItem, with: emoji)
     }
     
     func cancelAllReact(reactMessages: [ReactMessage]) {
@@ -1671,7 +1671,7 @@ extension ConversationVC {
             },
             completion: {
                 let visibleMessage = VisibleMessage()
-                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+//                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
                 visibleMessage.sentTimestamp = sentTimestamp
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
@@ -1697,17 +1697,14 @@ extension ConversationVC {
                     withDuration: 0.2,
                     animations: {
                         strongSelf.showInputAccessoryView()
+                    }) { _ in
+                        strongSelf.recoverInputView()
                         strongSelf.needsLayout()
                         strongSelf.handleScrollToBottomButtonTapped()
-                        strongSelf.recoverInputView()
-                    },
-                    completion: nil
-                )
+                    }
             }
         )
-        //view.bringSubviewToFront(emojiPicker.view)
-        emojiPicker.view.superview?.bringSubviewToFront(emojiPicker.view)
-        //emojiPicker.modalPresentationStyle = .overFullScreen
+        emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
     

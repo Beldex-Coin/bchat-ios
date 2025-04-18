@@ -822,7 +822,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             for reactionView in reactionContainerView.reactionViews {
                 if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
                     if reactionView.showBorder {
-                        delegate?.cancelReact(viewItem, for: reactionView.emoji)
+                        delegate?.cancelReact(viewItem, for: reactionView.emoji.rawValue)
                     } else {
                         delegate?.quickReact(viewItem, with: reactionView.emoji)
                     }
