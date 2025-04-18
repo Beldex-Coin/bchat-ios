@@ -1697,17 +1697,14 @@ extension ConversationVC {
                     withDuration: 0.2,
                     animations: {
                         strongSelf.showInputAccessoryView()
+                    }) { _ in
+                        strongSelf.recoverInputView()
                         strongSelf.needsLayout()
                         strongSelf.handleScrollToBottomButtonTapped()
-                        strongSelf.recoverInputView()
-                    },
-                    completion: nil
-                )
+                    }
             }
         )
-        //view.bringSubviewToFront(emojiPicker.view)
-        emojiPicker.view.superview?.bringSubviewToFront(emojiPicker.view)
-        //emojiPicker.modalPresentationStyle = .overFullScreen
+        emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
     

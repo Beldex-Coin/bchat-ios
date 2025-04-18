@@ -158,38 +158,26 @@ final class ReactionListSheet : BaseVC {
         // Close Button
         contentView.addSubview(closeButton)
         NSLayoutConstraint.activate([
-        closeButton.centerYAnchor.constraint(equalTo: reactionsLabel.centerYAnchor),
-        closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-        closeButton.heightAnchor.constraint(equalToConstant: 22),
-        closeButton.widthAnchor.constraint(equalToConstant: 22)
+            closeButton.centerYAnchor.constraint(equalTo: reactionsLabel.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            closeButton.heightAnchor.constraint(equalToConstant: 22),
+            closeButton.widthAnchor.constraint(equalToConstant: 22)
         ])
         
         
         // Seperator
         let seperator = UIView()
         seperator.backgroundColor = Colors.border.withAlphaComponent(0.1)
-        seperator.set(.height, to: 0.5)
+        seperator.set(.height, to: 1.0)
         contentView.addSubview(seperator)
         seperator.pin(.leading, to: .leading, of: contentView, withInset: Values.smallSpacing)
         seperator.pin(.trailing, to: .trailing, of: contentView, withInset: -Values.smallSpacing)
         seperator.pin(.top, to: .bottom, of: reactionContainer, withInset: Values.verySmallSpacing)
-        // Detail info & clear all
-//        let stackView = UIStackView(arrangedSubviews: [ detailInfoLabel, clearAllButton ])
-//        contentView.addSubview(stackView)
-//        stackView.pin(.top, to: .bottom, of: seperator, withInset: Values.smallSpacing)
-//        stackView.pin(.leading, to: .leading, of: contentView, withInset: Values.mediumSpacing)
-//        stackView.pin(.trailing, to: .trailing, of: contentView, withInset: -Values.mediumSpacing)
-        // Line
-        let line = UIView()
-        line.set(.height, to: 1)
-        line.backgroundColor = Colors.borderColorNew
-        contentView.addSubview(line)
-        line.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: contentView)
-        line.pin(.top, to: .bottom, of: reactionContainer, withInset: Values.smallSpacing)
+        
         // Reactor list
         contentView.addSubview(userListView)
         userListView.pin([ UIView.HorizontalEdge.trailing, UIView.HorizontalEdge.leading, UIView.VerticalEdge.bottom ], to: contentView)
-        userListView.pin(.top, to: .bottom, of: line, withInset: 0)
+        userListView.pin(.top, to: .bottom, of: seperator, withInset: 0)
         
         contentView.layer.cornerRadius = 16
         contentView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
