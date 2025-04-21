@@ -1086,13 +1086,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
-        if viewItem.quotedReply != nil {
+        let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
+        if viewItem.quotedReply != nil && attachments.isEmpty {
             let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
-            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 15
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 45 - 30
             if width > maxWidth {
                 result.set(.width, to: width > maxWidth ? maxWidth : width)
             } else {
-                result.set(.width, to: size.width > 85 ? size.width : 85)
+                if width > size.width {
+                    result.set(.width, to: width + 20)
+                } else {
+                    result.set(.width, to: size.width > 85 ? size.width : 85)
+                }
             }
         }
         return result

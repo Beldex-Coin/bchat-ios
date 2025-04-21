@@ -2134,6 +2134,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 switch update.updateItemType {
                     case .delete:
                         self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                        self.audioPlayer?.stop()
+                        self.audioPlayer = nil
                     case .insert:
                         // Perform inserts before updates
                         self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)

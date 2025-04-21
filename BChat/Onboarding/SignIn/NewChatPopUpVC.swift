@@ -213,7 +213,6 @@ extension NewChatPopUpVC: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            performAction()
             return false
         }
         return true
