@@ -180,6 +180,7 @@ final class QuoteView : UIView {
         lineView.set(.width, to: Values.accentLineThickness)
         if !hasAttachments {
             mainStackView.addArrangedSubview(lineView)
+            mainStackView.spacing = 0
         } else {
             let isAudio = MIMETypeUtil.isAudio(attachments.first!.contentType ?? "")
             if (body ?? "").isEmpty {
