@@ -435,6 +435,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
             delegate?.payAsYouChatLongPress()
         }
         guard inputViewButton == voiceMessageButton else { return }
+        // if call is connected need to restrict audio recording
+        if AppEnvironment.shared.callManager.currentCall != nil {
+            return
+        }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
     }
