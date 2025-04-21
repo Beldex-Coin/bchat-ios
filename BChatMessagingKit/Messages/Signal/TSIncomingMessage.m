@@ -183,6 +183,25 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
++ (nullable instancetype)findMessageWithtimestamp:(uint64_t)timestamp
+                                     transaction:(YapDatabaseReadWriteTransaction *)transaction
+{
+    __block TSIncomingMessage *foundMessage;
+    [TSDatabaseSecondaryIndexes
+        enumerateMessagesWithTimestamp:timestamp
+                             withBlock:^(NSString *collection, NSString *key, BOOL *stop) {
+                                 TSInteraction *interaction =
+                                     [TSInteraction fetchObjectWithUniqueID:key transaction:transaction];
+                                 if ([interaction isKindOfClass:[TSIncomingMessage class]]) {
+                                     TSIncomingMessage *message = (TSIncomingMessage *)interaction;
+                                         foundMessage = message;
+                                 }
+                             }
+                      usingTransaction:transaction];
+
+    return foundMessage;
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

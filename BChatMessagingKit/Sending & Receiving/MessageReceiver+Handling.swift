@@ -340,7 +340,7 @@ extension MessageReceiver {
             }
             currentWebRTCBChat.handleICECandidates(candidates)
         case .endCall:
-            //?????????????? END CALL NOTIFICATION
+            // END CALL NOTIFICATION
             SNLog("[Calls] Received end call message.")
             guard WebRTCBChat.current?.uuid == message.uuid! else { return }
             handleEndCallMessage?(message)
@@ -379,8 +379,11 @@ extension MessageReceiver {
         guard let threadID = storage.getOrCreateThread(for: message.syncTarget ?? message.sender!, groupPublicKey: message.groupPublicKey, openGroupID: openGroupID, using: transaction) else { throw Error.noThread }
         
         // Handle emoji reacts first
-        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, let author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
+        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
             var tsMessage: TSMessage?
+            if reaction.kind == .react {
+                author = message.sender!
+            }
             if author == getUserHexEncodedPublicKey() {
                 tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 if tsMessage == nil {
@@ -391,9 +394,11 @@ extension MessageReceiver {
                 if tsMessage == nil {
                     tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
                 }
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.findWithtimestamp(timestamp, transaction: transaction)
+                }
             }
             let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
-//            reactMessage.sender = message.sender
             if let serverID = message.openGroupServerMessageID {
                 reactMessage.messageId = "\(serverID)"
                 // Create a lookup between the openGroupServerMessageId and the tsMessage id for easy lookup
@@ -411,7 +416,11 @@ extension MessageReceiver {
                 case .none:
                     break
             }
-            SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
+            
+            if reaction.kind == .react {
+                SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
+            }
+            
             return ""
         }
         

@@ -113,7 +113,7 @@ final class QuoteView : UIView {
         self.hInset = hInset
         self.delegate = delegate
         super.init(frame: CGRect.zero)
-        setUpViewHierarchy() 
+        setUpViewHierarchy()
         
     }
     //additional Background View

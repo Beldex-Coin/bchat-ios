@@ -102,9 +102,19 @@ final class ContextMenuVC : UIViewController {
         view.addSubview(snapshot)
 //        snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
         if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
-            snapshot.center(.vertical, in: view)
+            snapshot.centerWithInset(.vertical, in: view, inset: 50)
         } else {
-            snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+            if UIScreen.main.bounds.height - frame.origin.y < 120 {
+                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
+            } else {
+//                if (snapshot.height() - 40) < (UIScreen.main.bounds.height - frame.origin.y) {
+//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - snapshot.height() + 20)
+//                } else {
+//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
+//                }
+                
+                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
+            }
         }
 //        snapshot.set(.width, to: frame.width)
 //        snapshot.set(.height, to: frame.height)
@@ -141,12 +151,17 @@ final class ContextMenuVC : UIViewController {
         let actionViews = ContextMenuVC.actions(for: viewItem, delegate: delegate).map { ActionView(for: $0, dismiss: snDismiss) }
         let menuStackView = UIStackView(arrangedSubviews: actionViews)
         menuStackView.axis = .vertical
+        menuStackView.alignment = .fill
+        menuStackView.distribution = .fillEqually
         menuView.addSubview(menuStackView)
         menuStackView.pin(to: menuView)
         view.addSubview(menuView)
         let menuHeight = CGFloat(actionViews.count) * ContextMenuVC.actionViewHeight
         let spacing = Values.smallSpacing
-        let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
+        menuView.set(.height, to: CGFloat(actionViews.count) * 33)
+        let margin = max(UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0, Values.mediumSpacing)
+        
+        //let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
             emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)

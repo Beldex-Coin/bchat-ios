@@ -91,6 +91,7 @@ class CallView : UIView {
     
     @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
         if let call = AppEnvironment.shared.callManager.currentCall {
+            NotificationCenter.default.post(name: .dismissMiniView, object: nil)
             AppEnvironment.shared.callManager.endCall(call) { error in
                 if let _ = error {
                     call.endBChatCall()

@@ -76,8 +76,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
                 let callVC = NewIncomingCallVC(for: call)
                 callVC.conversationVC = self
-                self.inputAccessoryView?.isHidden = true
-                self.inputAccessoryView?.alpha = 0
+                hideInputAccessoryView()
                 present(callVC, animated: true, completion: nil)
                 //CallVC
                 //NewIncomingCallVC
@@ -199,11 +198,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        let gifVC = GifPickerViewController(thread: thread)
-        gifVC.delegate = self
-        let navController = OWSNavigationController(rootViewController: gifVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true) { }
+//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+//            let gifVC = GifPickerViewController(thread: thread)
+//            gifVC.delegate = self
+//            let navController = OWSNavigationController(rootViewController: gifVC)
+//            navController.modalPresentationStyle = .fullScreen
+//            present(navController, animated: true) { }
+//        } else {
+//            //check your internet connection
+//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+//        }
     }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {
@@ -299,8 +303,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
-            inputAccessoryView?.isHidden = true
-            inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             let modal = OwnSeedWarningPopUp()
             modal.modalPresentationStyle = .overFullScreen
             modal.modalTransitionStyle = .crossDissolve
@@ -535,6 +538,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if newText.count < oldText.count {
             if !newText.hasPrefix("@") {
                 currentMentionStartIndex = nil
+                
                 snInputView.hideMentionsUI()
                 mentions = mentions.filter { $0.isContained(in: newText) }
             }
@@ -617,13 +621,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.currentMentionStartIndex = nil
         snInputView.hideMentionsUI()
         self.oldText = newText
-    }
-    
-    func showInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = false
-            self.inputAccessoryView?.alpha = 1
-        })
     }
 
     // MARK: View Item Interaction
@@ -943,8 +940,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
             alertVC.addAction(cancelAction)
             
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         } else {
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -978,8 +974,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
             }
             alertVC.addAction(cancelAction)
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         }
     }
@@ -1587,12 +1582,17 @@ extension ConversationVC {
     func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?) {
         guard let thread = thread as? TSGroupThread else { return }
         guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
-        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread)
+        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
+            self.reactionListOpened = false
+            self.snInputView.isHidden = false
+        }
         showingReactionListForMessageId = viewItem.interaction.uniqueId
         reactionListSheet.delegate = self
         reactionListSheet.selectedReaction = selectedReaction
         reactionListSheet.modalPresentationStyle = .overFullScreen
-        present(reactionListSheet, animated: true, completion: nil)
+        present(reactionListSheet, animated: true) {
+            self.reactionListOpened = true
+        }
     }
     
     func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1603,15 +1603,19 @@ extension ConversationVC {
         if message.reactions.count == 0 {
             addReaction(viewItem, with: emoji.rawValue)
         } else {
-            let oldRecord = message.reactions.first(where: { ($0 as! ReactMessage).authorId == getUserHexEncodedPublicKey() })
-            var isAlreadyReacted = message.reactions.contains(oldRecord as! ReactMessage)
+            let oldRecord = message.reactions.first { reaction in
+                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
+            }
+            let isAlreadyReacted = message.reactions.contains(oldRecord as? ReactMessage ?? false)
             if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
                 removeReaction(viewItem, with: emoji.rawValue)
             } else {
                 if isAlreadyReacted {
                     removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
                 }
-                addReaction(viewItem, with: emoji.rawValue)
+                DispatchQueue.main.async {
+                    self.addReaction(viewItem, with: emoji.rawValue)
+                }
             }
         }
         
@@ -1621,9 +1625,8 @@ extension ConversationVC {
         react(viewItem, with: emoji)
     }
     
-    func cancelReact(_ viewItem: ConversationViewItem, for emoji: EmojiWithSkinTones) {
-//        react(viewItem, with: emoji.rawValue, cancel: true)
-        removeReaction(viewItem, with: emoji.rawValue)
+    func cancelReact(_ viewItem: ConversationViewItem, for emoji: String) {
+        removeReaction(viewItem, with: emoji)
     }
     
     func cancelAllReact(reactMessages: [ReactMessage]) {
@@ -1638,15 +1641,15 @@ extension ConversationVC {
         let visibleMessage = VisibleMessage()
         let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
         visibleMessage.sentTimestamp = sentTimestamp
-        visibleMessage.reaction?.kind = .react
         var authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
         
         Storage.write(
             with: { transaction in
                 message.addReaction(reactMessage, transaction: transaction)
             },
             completion: {
+                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .react
@@ -1660,8 +1663,9 @@ extension ConversationVC {
     func removeReaction(_ viewItem: ConversationViewItem, with emoji: String) {
         guard let message = viewItem.interaction as? TSMessage else { return }
         
-        var authorId = getUserHexEncodedPublicKey()
-        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+        let authorId = getUserHexEncodedPublicKey()
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
             
         Storage.write(
             with: { transaction in
@@ -1669,8 +1673,9 @@ extension ConversationVC {
             },
             completion: {
                 let visibleMessage = VisibleMessage()
-                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+//                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
                 visibleMessage.sentTimestamp = sentTimestamp
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
                 visibleMessage.reaction?.kind = .remove
                 Storage.write { transaction in
@@ -1680,71 +1685,43 @@ extension ConversationVC {
         )
     }
     
-    
-    
-//    private func react(_ viewItem: ConversationViewItem, with emoji: String, cancel: Bool) {
-//        guard let message = viewItem.interaction as? TSMessage else { return }
-//        var authorId = getUserHexEncodedPublicKey()
-////        if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
-////        if cancel {
-////            authorId = getUserHexEncodedPublicKey()
-////        }
-//        let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
-////        reactMessage.sender = getUserHexEncodedPublicKey()
-//        let thread = self.thread
-//        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-//        let visibleMessage = VisibleMessage()
-//        visibleMessage.sentTimestamp = sentTimestamp
-//        visibleMessage.reaction = .from(reactMessage)
-//        visibleMessage.reaction?.kind = cancel ? .remove : .react
-//        Storage.write(
-//            with: { transaction in
-//                if cancel {
-//                    message.removeReaction(reactMessage, transaction: transaction) }
-//                else {
-//                    message.addReaction(reactMessage, transaction: transaction)
-//                }
-//            },
-//            completion: {
-//                Storage.write { transaction in
-//                    MessageSender.send(visibleMessage, in: thread, using: transaction)
-//                }
-//            }
-//        )
-//    }
-    
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
-        hideTextInputAccessoryView()
-        isEmojiWithKeyboardPresented = true
-        let emojiPicker = EmojiPickerSheet(completionHandler: { emoji in
-                if let emoji = emoji {
-                    self.react(viewItem, with: emoji)
-                }
-                isEmojiWithKeyboardPresented = false
-                self.showTextInputAccessoryView()
+        hideInputAccessoryView()
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { [weak self] emoji in
+                guard let strongSelf = self else { return }
+                guard let emoji: EmojiWithSkinTones = emoji else { return }
+                strongSelf.react(viewItem, with: emoji)
             },
-            dismissHandler: {
-                isEmojiWithKeyboardPresented = false
-            DispatchQueue.main.async {
-                self.showTextInputAccessoryView()
-                self.snInputView.isHidden = false
-                self.recoverInputView()
-                self.showInputAccessoryView()
-                self.snInputView.text = self.snInputView.text
+            dismissHandler: { [weak self] in
+                guard let strongSelf = self else { return }
+                UIView.animate(
+                    withDuration: 0.2,
+                    animations: {
+                        strongSelf.showInputAccessoryView()
+                    }) { _ in
+                        strongSelf.recoverInputView()
+                        strongSelf.needsLayout()
+                        strongSelf.handleScrollToBottomButtonTapped()
+                    }
             }
-            })
+        )
         emojiPicker.modalPresentationStyle = .overFullScreen
         present(emojiPicker, animated: true, completion: nil)
     }
     
-    func hideTextInputAccessoryView() {
-        self.inputAccessoryView?.isHidden = true
-        self.inputAccessoryView?.alpha = 0
+    func showInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = false
+            self.inputAccessoryView?.alpha = 1
+        })
     }
-    
-    func showTextInputAccessoryView() {
-        self.inputAccessoryView?.isHidden = false
-        self.inputAccessoryView?.alpha = 1
+
+    func hideInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+        })
     }
 }
 

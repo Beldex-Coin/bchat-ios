@@ -78,6 +78,19 @@ public extension UIView {
         return constraint
     }
     
+    @discardableResult
+    func centerWithInset(_ direction: Direction, in view: UIView, inset: CGFloat = 0) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint: NSLayoutConstraint = {
+            switch direction {
+            case .horizontal: return centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: inset)
+            case .vertical: return centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: inset)
+            }
+        }()
+        constraint.isActive = true
+        return constraint
+    }
+    
     func center(in view: UIView) {
         center(.horizontal, in: view)
         center(.vertical, in: view)

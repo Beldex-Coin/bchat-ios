@@ -49,6 +49,7 @@ struct Constants: Equatable {
     static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
     static let navigateToMyAccount = "navigateToMyAccount"
     static let leaveGroup = "leaveGroup"
+    static let dismissMiniView = "dismissMiniView"
     
     
     /// Userdefaults strings
