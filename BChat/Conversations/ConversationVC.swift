@@ -60,7 +60,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var scrollDistanceToBottomBeforeUpdate: CGFloat?
     var baselineKeyboardHeight: CGFloat = 0
     var isSyncingStatus = false
-    
+    var emojiPickersheet: EmojiPickerSheet?
     // Reaction
     var showingReactionListForMessageId: String?
     var reactionListOpened: Bool = false

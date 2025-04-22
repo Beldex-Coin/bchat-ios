@@ -5,7 +5,6 @@ import BChatUIKit
 
 class EmojiPickerSheet: BaseVC {
     let completionHandler: (EmojiWithSkinTones?) -> Void
-    let dismissHandler: () -> Void
     // MARK: Components
     
     private lazy var bottomConstraint: NSLayoutConstraint = contentView.pin(.bottom, to: .bottom, of: view)
@@ -42,13 +41,13 @@ class EmojiPickerSheet: BaseVC {
         
         return result
     }()
+    private let dismiss: () -> Void
 
     // MARK: - Initialization
 
-    init(completionHandler: @escaping (EmojiWithSkinTones?) -> Void, dismissHandler: @escaping () -> Void) {
+    init(completionHandler: @escaping (EmojiWithSkinTones?) -> Void, dismiss: @escaping () -> Void) {
         self.completionHandler = completionHandler
-        self.dismissHandler = dismissHandler
-        
+        self.dismiss = dismiss
         super.init(nibName: nil, bundle: nil)
         
         self.modalPresentationStyle = .overFullScreen
@@ -77,8 +76,8 @@ class EmojiPickerSheet: BaseVC {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handleKeyboardWillChangeFrameNotification(_:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
+            selector: #selector(handleKeyboardWillShowNotification(_:)),
+            name: UIResponder.keyboardWillShowNotification,
             object: nil
         )
         NotificationCenter.default.addObserver(
@@ -94,7 +93,7 @@ class EmojiPickerSheet: BaseVC {
         
         contentView.pin(.leading, to: .leading, of: view)
         contentView.pin(.trailing, to: .trailing, of: view)
-        contentView.set(.height, to: 440)
+        contentView.set(.height, to: 350)
         bottomConstraint.isActive = true
         
         let topStackView = UIStackView()
@@ -134,55 +133,18 @@ class EmojiPickerSheet: BaseVC {
     }
     
     // MARK: - Keyboard Avoidance
-
-    @objc func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
-        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
-        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
-        
-        UIView.animate(
-            withDuration: duration,
-            delay: 0,
-            options: options,
-            animations: { [weak self] in
-                // Note: We don't need to completely avoid the keyboard here for this to be useful (and
-                // probably don't want to on smaller screens anyway)
-                self?.bottomConstraint.constant = -(keyboardTop / 2)
-
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
+    
+    @objc func handleKeyboardWillShowNotification(_ notification: Notification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            // Only move view if it's not already moved
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardFrame.height // tweak this if too much/little
+            }
+        }
     }
 
     @objc func handleKeyboardWillHideNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
-
-        UIView.animate(
-            withDuration: duration,
-            delay: 0,
-            options: options,
-            animations: { [weak self] in
-                self?.bottomConstraint.constant = 0
-
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
-            },
-            completion: nil
-        )
+        self.view.frame.origin.y = 0
     }
     
     // MARK: Interaction
@@ -200,8 +162,8 @@ class EmojiPickerSheet: BaseVC {
     }
 
     @objc func close() {
-        dismiss(animated: true, completion: dismissHandler)
-//        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        self.dismiss()
     }
 }
 
@@ -212,7 +174,8 @@ extension EmojiPickerSheet: EmojiPickerCollectionViewDelegate {
     
     func emojiPicker(_ emojiPicker: EmojiPickerCollectionView?, didSelectEmoji emoji: EmojiWithSkinTones) {
         completionHandler(emoji)
-        dismiss(animated: true, completion: dismissHandler)
+        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        self.dismiss()
     }
 }
 

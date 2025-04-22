@@ -1687,27 +1687,31 @@ extension ConversationVC {
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideInputAccessoryView()
+        let window = ContextMenuWindow()
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { [weak self] emoji in
                 guard let strongSelf = self else { return }
                 guard let emoji: EmojiWithSkinTones = emoji else { return }
                 strongSelf.react(viewItem, with: emoji)
-            },
-            dismissHandler: { [weak self] in
-                guard let strongSelf = self else { return }
-                UIView.animate(
-                    withDuration: 0.2,
-                    animations: {
-                        strongSelf.showInputAccessoryView()
-                    }) { _ in
-                        strongSelf.recoverInputView()
-                        strongSelf.needsLayout()
-                        strongSelf.handleScrollToBottomButtonTapped()
-                    }
+            }, dismiss: {
+                [weak self] in
+                window.isHidden = true
+                guard let self = self else { return }
+                self.emojiPickersheet = nil
+                self.contextMenuWindow = nil
+                self.scrollButton.alpha = 0
+                UIView.animate(withDuration: 0.25) {
+                    self.scrollButton.alpha = self.getScrollButtonOpacity()
+                    self.unreadCountView.alpha = self.scrollButton.alpha
+                }
+                
             }
         )
-        emojiPicker.modalPresentationStyle = .overFullScreen
-        present(emojiPicker, animated: true, completion: nil)
+        self.emojiPickersheet = emojiPicker
+        contextMenuWindow = window
+        window.rootViewController = emojiPickersheet
+        window.makeKeyAndVisible()
+        window.backgroundColor = .clear
     }
     
     func showInputAccessoryView() {
