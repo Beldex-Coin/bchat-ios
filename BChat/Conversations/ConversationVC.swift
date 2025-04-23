@@ -354,6 +354,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var hashArray = [RecipientDomainSchema]()
     var recipientAddressON = false
     var isdaemonHeight : Int64 = 0
+    var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
     
     private lazy var hiddenView: UIView = {
         let result = UIView()
@@ -1836,6 +1837,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     // MARK: Updating
     
     func updateNavBarButtons() {
+        self.disappearingMessagesConfiguration = OWSDisappearingMessagesConfiguration.fetch(uniqueId: self.thread.uniqueId!)
+        if self.disappearingMessagesConfiguration == nil {
+            self.disappearingMessagesConfiguration = OWSDisappearingMessagesConfiguration(uniqueId: self.thread.uniqueId)
+        }
         navigationItem.hidesBackButton = isShowingSearchUI
         // get profile image
         self.navigationItem.leftItemsSupplementBackButton = true
@@ -1966,11 +1971,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     if shouldShowCallButton {
                         let callBtn = UIButton(type: .custom)
                         callBtn.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-                        callBtn.setImage(UIImage(named:"ic_call_new"), for: .normal)
+                        callBtn.setImage(UIImage(named:"ic_call"), for: .normal)
                         callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
                         let callBarItem = UIBarButtonItem(customView: callBtn)
                         rightBarButtonItems.append(callBarItem)
                         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
+                    }
+                    if (disappearingMessagesConfiguration!.isEnabled) {
+                        let disappearMessageButton = UIButton(type: .custom)
+                        disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
+                        rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
                 }
                 else {
@@ -1981,6 +1993,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 }
             }
             else {
+                
+                if let thread = thread as? TSGroupThread, thread.groupModel.groupType == .closedGroup {
+                    if (disappearingMessagesConfiguration!.isEnabled) {
+                        let disappearMessageButton = UIButton(type: .custom)
+                        disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
+                        rightBarButtonItems.append(disappearMessageButtonBarItem)
+                    }
+                }
                 
                 // Don't Delete this is for three dots menu
 //                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))

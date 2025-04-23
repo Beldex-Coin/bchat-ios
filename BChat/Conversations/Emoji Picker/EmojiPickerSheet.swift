@@ -35,7 +35,13 @@ class EmojiPickerSheet: BaseVC {
 
     private lazy var searchBar: SearchBar = {
         let result = SearchBar()
-        result.tintColor = .lightGray
+        result.tintColor = Colors.titleColor
+        if UIScreen.main.traitCollection.userInterfaceStyle == .light && !isLightMode {
+            result.tintColor = Colors.callCellTitle
+        }
+        if UIScreen.main.traitCollection.userInterfaceStyle == .dark && isLightMode {
+            result.tintColor = Colors.darkThemeTextBoxColor
+        }
         result.backgroundColor = isLightMode ? .white : .black
         result.delegate = self
         

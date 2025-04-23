@@ -1687,12 +1687,14 @@ extension ConversationVC {
     
     func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
         hideInputAccessoryView()
+        isEmojiSheetPresented = true
         let window = ContextMenuWindow()
         let emojiPicker = EmojiPickerSheet(
             completionHandler: { [weak self] emoji in
                 guard let strongSelf = self else { return }
                 guard let emoji: EmojiWithSkinTones = emoji else { return }
                 strongSelf.react(viewItem, with: emoji)
+                isEmojiSheetPresented = false
             }, dismiss: {
                 [weak self] in
                 window.isHidden = true
@@ -1704,7 +1706,7 @@ extension ConversationVC {
                     self.scrollButton.alpha = self.getScrollButtonOpacity()
                     self.unreadCountView.alpha = self.scrollButton.alpha
                 }
-                
+                isEmojiSheetPresented = false
             }
         )
         self.emojiPickersheet = emojiPicker
