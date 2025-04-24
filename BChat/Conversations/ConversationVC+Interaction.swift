@@ -863,6 +863,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
+        if isShowingSearchUI {
+            hideSearchUI()
+        }
         customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
         var quoteDraftOrNil: OWSQuotedReplyModel?

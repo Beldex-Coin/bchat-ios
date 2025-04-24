@@ -540,8 +540,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     let maxWidthOfLine = maxWidth
                     let widthOfLastLine = Int(maxWidthOfTextViewText) % Int(maxWidthOfLine)
 
+                    let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil {
+                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil  && !isOverLapping {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -558,16 +559,35 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let description = DateUtil.formatDate(forDisplay2: date)
                         messageTimeRightLabel.text = description
                         
-                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
-                        stackViewForMessageAndTime.axis = .horizontal
-                        stackViewForMessageAndTime.spacing = 5
-                        stackViewForMessageAndTime.alignment = .bottom
-                                                
-                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
-                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
-                                                
                         
-                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        if message.body?.count ?? 0 < 26 {
+                            let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+                            stackViewForMessageAndTime.axis = .horizontal
+                            stackViewForMessageAndTime.spacing = 5
+                            stackViewForMessageAndTime.alignment = .bottom
+                                                    
+                            stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+                            stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+                            stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        } else {
+                            let backgroundView = UIView()
+                            backgroundView.addSubview(bodyTextView)
+                            backgroundView.addSubview(messageTimeRightLabel)
+                            bodyTextView.pin(to: backgroundView)
+                            messageTimeRightLabel.pin(.right, to: .right, of: backgroundView, withInset: -2)
+                            messageTimeRightLabel.pin(.bottom, to: .bottom, of: backgroundView, withInset: 0)
+                            stackView.addArrangedSubview(backgroundView)
+                        }
+//                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+//                        stackViewForMessageAndTime.axis = .horizontal
+//                        stackViewForMessageAndTime.spacing = 5
+//                        stackViewForMessageAndTime.alignment = .bottom
+//                                                
+//                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+//                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+//                                                
+//                        
+//                        stackView.addArrangedSubview(stackViewForMessageAndTime)
                         // Constraints
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: 4)
@@ -698,7 +718,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         super.layoutSubviews()
         updateBubbleViewCorners()
         
-        
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
         profilePictureView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
         verifiedImageView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
@@ -729,7 +748,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
         reactionContainerView.update(reactions.orderedItems, isOutgoingMessage: direction == .outgoing, showNumbers: thread!.isGroupThread())
     }
-    
     
     private func updateBubbleViewCorners() {
         let cornersToRound = getCornersToRound()    
@@ -1140,5 +1158,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
+    func isOverlapping(view1: UIView, view2: UIView) -> Bool {
+        // Convert frames to the same coordinate space (e.g., their common superview)
+        guard let commonSuperview = view1.superview, view2.superview == commonSuperview else {
+            return false
+        }
+        let frame1 = view1.frame
+        let frame2 = view2.frame
+        return frame1.intersects(frame2)
+    }
     
 }
