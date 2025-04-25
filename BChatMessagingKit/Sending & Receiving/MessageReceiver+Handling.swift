@@ -389,6 +389,9 @@ extension MessageReceiver {
                 if tsMessage == nil {
                     tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
                 }
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.findWithtimestamp(timestamp, transaction: transaction)
+                }
             } else {
                 tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
                 if tsMessage == nil {
