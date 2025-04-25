@@ -794,7 +794,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         joinBeldexExplorer(id: id, amount: amount)
                     } else {
                         if isKeyboardPresented {
-                            UIApplication.dismissKeyboard()
+                            view.endEditing(true)
                         }
                     }
                 default: break

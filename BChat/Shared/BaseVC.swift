@@ -200,11 +200,4 @@ extension BaseVC {
         aView.isHidden = true
         aView.alpha = 0
     }
-    
-//    func showInputAccessoryView(_ view: UIView?) {
-//        guard let aView = view else { return }
-//        aView.isHidden = true
-//        aView.alpha = 0
-//    }
-    
 }
