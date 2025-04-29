@@ -138,6 +138,13 @@ class EmojiPickerSheet: BaseVC {
         contentView.layoutIfNeeded()
     }
     
+    @objc
+    override func appWillEnterBackground(_ notification: Notification) {
+        // To be implemented by child class
+        searchBar.resignFirstResponder()
+        close()
+    }
+    
     // MARK: - Keyboard Avoidance
     
     @objc func handleKeyboardWillShowNotification(_ notification: Notification) {
