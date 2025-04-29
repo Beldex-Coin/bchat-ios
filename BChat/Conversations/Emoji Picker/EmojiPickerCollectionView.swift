@@ -342,6 +342,7 @@ private class EmojiSectionHeader: UICollectionReusableView {
 
         label.font = .systemFont(ofSize: Values.smallFontSize)
         label.backgroundColor = .clear
+        label.textColor = isLightMode ? .black : .white
         addSubview(label)
         label.autoPinEdgesToSuperviewMargins()
         label.setCompressionResistanceHigh()

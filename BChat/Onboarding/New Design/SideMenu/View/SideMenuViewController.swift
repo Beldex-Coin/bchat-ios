@@ -111,7 +111,7 @@ class SideMenuViewController: BaseVC {
         
         guard let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] else { return }
         guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] else { return }
-        self.lblversion.text = "BChat \(version) (\(buildNumber))"
+        self.lblversion.text = "BChat \(version)"
 
         view.addSubview(tableView)
         
