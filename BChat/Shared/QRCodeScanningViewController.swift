@@ -128,7 +128,7 @@ class QRCodeScanningViewController: UIViewController, AVCaptureMetadataOutputObj
                         let device: AVCaptureDevice = maybeDevice,
                         let input: AVCaptureInput = try? AVCaptureDeviceInput(device: device)
                     else {
-                        return Log.error(.cat, "Failed to retrieve the device for enabling the QRCode scanning camera")
+                        return SNLog("Failed to retrieve the device for enabling the QRCode scanning camera")
                     }
                     
                     // Image output
@@ -146,11 +146,11 @@ class QRCodeScanningViewController: UIViewController, AVCaptureMetadataOutputObj
                     if capture.canAddOutput(metadataOutput) { capture.addOutput(metadataOutput) }
                     
                     guard !capture.inputs.isEmpty && capture.outputs.count == 2 else {
-                        return Log.error(.cat, "Failed to attach the input/output to the capture session")
+                        return SNLog("Failed to attach the input/output to the capture session")
                     }
                     
                     guard metadataOutput.availableMetadataObjectTypes.contains(.qr) else {
-                        return Log.error(.cat, "The output is unable to process QR codes")
+                        return SNLog("The output is unable to process QR codes")
                     }
                     
                     // Specify that we want to capture QR Codes (Needs to be done after being added
