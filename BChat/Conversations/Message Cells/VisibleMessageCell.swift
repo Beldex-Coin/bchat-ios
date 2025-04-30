@@ -19,8 +19,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var bubbleViewRightConstraint1 = bubbleView.pin(.right, to: .right, of: self, withInset: -VisibleMessageCell.contactThreadHSpacing)
     private lazy var bubbleViewRightConstraint2 = bubbleView.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -VisibleMessageCell.gutterSize)
     
-    private lazy var reactionContainerViewLeftConstraint = reactionContainerView.pin(.left, to: .left, of: bubbleView)
-    private lazy var reactionContainerViewRightConstraint = reactionContainerView.pin(.right, to: .right, of: bubbleView)
+    private lazy var reactionContainerViewLeftConstraint = reactionContainerView.pin(.left, to: .left, of: bubbleView, withInset: 4)
+    private lazy var reactionContainerViewRightConstraint = reactionContainerView.pin(.right, to: .right, of: bubbleView, withInset: -4)
     
     private lazy var messageStatusImageViewTopConstraint = messageStatusImageView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
     private lazy var messageStatusImageViewWidthConstraint = messageStatusImageView.set(.width, to: VisibleMessageCell.messageStatusImageViewSize)
@@ -290,8 +290,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         // Reaction view
         addSubview(reactionContainerView)
-        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: Values.verySmallSpacing)
-        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -Values.verySmallSpacing)
+        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: -6)
+        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -12)
         reactionContainerViewLeftConstraint.isActive = true
         reactionContainerViewHeightConstraint.isActive = true
         
