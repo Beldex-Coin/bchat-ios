@@ -761,7 +761,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, reactionContainerView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, reactionContainerView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -875,7 +875,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
             case .began:
@@ -915,7 +915,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
