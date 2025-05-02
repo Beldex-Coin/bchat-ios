@@ -26,10 +26,28 @@ class BaseVC : UIViewController {
 
     override func viewDidLoad() {
         setNeedsStatusBarAppearanceUpdate()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleAppModeChangedNotification(_:)), name: .appModeChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive(_:)), name: .OWSApplicationDidBecomeActive, object: nil)
-    
-        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppModeChangedNotification(_:)),
+            name: .appModeChanged,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive(_:)),
+            name: .OWSApplicationDidBecomeActive,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillEnterBackground(_:)),
+            name: .OWSApplicationWillEnterForeground,
+            object: nil)
+        
+        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(
+            target: self,
+            action: #selector(resignKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
@@ -140,6 +158,10 @@ class BaseVC : UIViewController {
     }
     
     @objc func appDidBecomeActive(_ notification: Notification) {
+        // To be implemented by child class
+    }
+    
+    @objc func appWillEnterBackground(_ notification: Notification) {
         // To be implemented by child class
     }
 

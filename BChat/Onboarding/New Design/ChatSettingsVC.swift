@@ -108,10 +108,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     var noteToSelfTitleArray = ["", "All Media", "Search Conversation"]
     var noteToSelfImageArray = ["bchat_chat_setting", "ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting"]
     
-    var contactTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messgaess", "Message Sound", "Mute", "Block This User", "Report Name"]
+    var contactTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messages", "Message Sound", "Mute", "Block This User", "Report Name"]
     var contactImageArray = ["bchat_chat_setting", "ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting", "ic_message_sound", "chatSetting_mute", "chatSetting_block", "chatSetting_report"]
     
-    var closeGroupTitleArray = ["All Media", "Search Conversation", "Disappearing Messgaess", "Edit Group", "Message Sound", "Notify for Mentions Only", "Mute", "Leave Group"]
+    var closeGroupTitleArray = ["All Media", "Search Conversation", "Disappearing Messages", "Edit Group", "Message Sound", "Notify for Mentions Only", "Mute", "Leave Group"]
     var closeGroupImageArray = ["ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting", "chatSetting_editGroup", "ic_message_sound", "chatSetting_notify", "chatSetting_mute", "chatSetting_leaveGroup"]
     
     
@@ -1271,7 +1271,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 if indexPath.row == 3 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
                     cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                    cell.titleLabel.text = "Disappearing Messgaess"
+                    cell.titleLabel.text = "Disappearing Messages"
                     cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                     
                     //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
@@ -1369,7 +1369,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 if indexPath.row == 3 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
                     cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                    cell.titleLabel.text = "Disappearing Messgaess"
+                    cell.titleLabel.text = "Disappearing Messages"
                     cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                     
                     cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
@@ -1515,7 +1515,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 if indexPath.row == 2 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
                     cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                    cell.titleLabel.text = "Disappearing Messgaess"
+                    cell.titleLabel.text = "Disappearing Messages"
                     cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
                     
                     let groupThread = self.thread as? TSGroupThread
