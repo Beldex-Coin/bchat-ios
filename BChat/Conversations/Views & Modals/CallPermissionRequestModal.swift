@@ -108,7 +108,7 @@ final class CallPermissionRequestModal : Modal {
     
     @objc func cancelButtonForCallAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
     }
     
 }
@@ -230,6 +230,6 @@ final class PayAsYouChatPermissionRequestModal : Modal {
     
     @objc func cancelButtonAction(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
     }
 }

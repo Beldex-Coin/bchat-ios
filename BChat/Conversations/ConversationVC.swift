@@ -1111,7 +1111,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             OpenGroupAPIV2.getMemberCount(for: v2OpenGroup.room, on: v2OpenGroup.server).retainUntilComplete()
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .showInputViewNotification, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
         tap.cancelsTouchesInView = false

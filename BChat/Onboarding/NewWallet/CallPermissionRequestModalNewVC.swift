@@ -145,7 +145,7 @@ class CallPermissionRequestModalNewVC: UIViewController {
     
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
     }
     
 }

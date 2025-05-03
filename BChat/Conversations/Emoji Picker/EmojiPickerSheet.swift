@@ -175,7 +175,7 @@ class EmojiPickerSheet: BaseVC {
     }
 
     @objc func close() {
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
         self.dismiss()
     }
 }
@@ -187,7 +187,7 @@ extension EmojiPickerSheet: EmojiPickerCollectionViewDelegate {
     
     func emojiPicker(_ emojiPicker: EmojiPickerCollectionView?, didSelectEmoji emoji: EmojiWithSkinTones) {
         completionHandler(emoji)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
         self.dismiss()
     }
 }

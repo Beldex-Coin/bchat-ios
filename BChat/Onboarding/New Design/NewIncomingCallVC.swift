@@ -687,7 +687,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         miniCallView.show()
         
         presentingViewController?.dismiss(animated: true) {
-            NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+            NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
         }
     }
     
