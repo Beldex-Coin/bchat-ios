@@ -290,8 +290,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         // Reaction view
         addSubview(reactionContainerView)
-        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: -5)
-        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -11)
+        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: -7)
+        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -13)
         reactionContainerViewLeftConstraint.isActive = true
         reactionContainerViewHeightConstraint.isActive = true
         
