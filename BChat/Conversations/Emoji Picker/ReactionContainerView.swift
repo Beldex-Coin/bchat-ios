@@ -79,7 +79,7 @@ final class ReactionContainerView : UIView {
     private func updateCollapsedReactions(_ reactions: [(EmojiWithSkinTones, (Int, Bool))]) {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = Values.smallSpacing
+        stackView.spacing = 2
         stackView.alignment = .center
         if isOutgoingMessage {
             stackView.semanticContentAttribute = .forceRightToLeft
