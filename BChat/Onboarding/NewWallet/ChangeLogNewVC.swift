@@ -32,7 +32,7 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
                      "\u{2022} Added BNS feature to start new chats \n\u{2022} Updated App Content \n\u{2022} Minor bug fixes",
                      "\u{2022} New design revamp \n\u{2022} Minor bug fixes",
                      "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Improved search functionality in home screen \n\u{2022} User can block a user on message request \n\u{2022} Minor bug fixes",
-                     "\u{2022} Added emoji reaction for messages \n\u{2022} Users can now swap the video call \n\u{2022} Improved Call functionality \n\u{2022} Minor bug fixes",]
+                     "\u{2022} Introducing emoji reaction feature \n\u{2022} Added message archive - unarchive functionality \n\u{2022} Updated secret group info \n\u{2022} User can swap the videos in video calls \n\u{2022} Fixes crash in calls \n\u{2022} Minor bug fixes",]
     var expandedRowArray = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
     
     
