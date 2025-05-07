@@ -1972,7 +1972,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         let callBtn = UIButton(type: .custom)
                         callBtn.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
                         callBtn.setImage(UIImage(named:"ic_call"), for: .normal)
-                        callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
+                        callBtn.addTarget(self, action: #selector(startCall), for: .touchUpInside)
                         let callBarItem = UIBarButtonItem(customView: callBtn)
                         rightBarButtonItems.append(callBarItem)
                         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
@@ -1981,6 +1981,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         let disappearMessageButton = UIButton(type: .custom)
                         disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
                         disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        disappearMessageButton.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
                         let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
                         rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
