@@ -1846,7 +1846,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.navigationItem.leftItemsSupplementBackButton = true
         if let contactThread: TSContactThread = (thread as? TSContactThread) {
             let publicKey = contactThread.contactBChatID()
-            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            let button: UIButton = UIButton(type: .custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
             button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
@@ -1955,6 +1955,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         else {
             var rightBarButtonItems: [UIBarButtonItem] = []
+            let disappearMessageButton = UIButton(type: .custom)
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
@@ -1978,7 +1979,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
                     }
                     if (disappearingMessagesConfiguration!.isEnabled) {
-                        let disappearMessageButton = UIButton(type: .custom)
+                        
                         disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
                         disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
                         disappearMessageButton.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
@@ -1997,9 +1998,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 
                 if let thread = thread as? TSGroupThread, thread.groupModel.groupType == .closedGroup {
                     if (disappearingMessagesConfiguration!.isEnabled) {
-                        let disappearMessageButton = UIButton(type: .custom)
                         disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
                         disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        disappearMessageButton.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
                         let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
                         rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
