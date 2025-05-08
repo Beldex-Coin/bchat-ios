@@ -50,7 +50,7 @@ final class JoinOpenGroupModal : Modal {
         
         joinButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         joinButton.setTitle("Join", for: UIControl.State.normal)
-        joinButton.addTarget(self, action: #selector(joinOpenGroup), for: UIControl.Event.touchUpInside)
+        joinButton.addTarget(self, action: #selector(joinOpenGroup), for: .touchUpInside)
         // Button stack view
         cancelButton.layer.cornerRadius = 17
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, joinButton ])
@@ -85,6 +85,7 @@ final class JoinOpenGroupModal : Modal {
             OpenGroupManagerV2.shared.add(room: room, server: server, publicKey: publicKey, using: transaction)
             .done(on: DispatchQueue.main) { _ in
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete() // FIXME: It's probably cleaner to do this inside addOpenGroup(...)
+                NotificationCenter.default.post(name: .joinedOpenGroup, object: nil)
             }
             .catch(on: DispatchQueue.main) { error in
                 let alert = UIAlertController(title: "Couldn't Join", message: error.localizedDescription, preferredStyle: .alert)

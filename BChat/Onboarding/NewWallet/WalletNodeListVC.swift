@@ -25,7 +25,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        result.addTarget(self, action: #selector(refreshButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(refreshButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.backgroundViewColor
         result.setTitleColor(Colors.addressBookNoContactLabelColor, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        result.addTarget(self, action: #selector(addNodeButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(addNodeButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false

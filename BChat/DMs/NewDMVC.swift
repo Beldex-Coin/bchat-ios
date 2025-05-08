@@ -188,7 +188,7 @@ private final class EnterPublicKeyVC : UIViewController {
     private lazy var copyButton: Button = {
         let result = Button(style: .unimportant, size: .medium)
         result.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(copyPublicKey), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(copyPublicKey), for: .touchUpInside)
         return result
     }()
     
@@ -238,14 +238,14 @@ private final class EnterPublicKeyVC : UIViewController {
         // Share button
         let shareButton = Button(style: .unimportant, size: .medium)
         shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
-        shareButton.addTarget(self, action: #selector(sharePublicKey), for: UIControl.Event.touchUpInside)
+        shareButton.addTarget(self, action: #selector(sharePublicKey), for: .touchUpInside)
         // Button container
         buttonContainer.addArrangedSubview(copyButton)
         buttonContainer.addArrangedSubview(shareButton)
         // Next button
         let nextButton = Button(style: .prominentOutline, size: .large)
         nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControl.State.normal)
-        nextButton.addTarget(self, action: #selector(startNewDMIfPossible), for: UIControl.Event.touchUpInside)
+        nextButton.addTarget(self, action: #selector(startNewDMIfPossible), for: .touchUpInside)
         let nextButtonContainer = UIView(wrapping: nextButton, withInsets: UIEdgeInsets(top: 0, leading: 80, bottom: 0, trailing: 80), shouldAdaptForIPadWithWidth: Values.iPadButtonWidth)
         // Main stack view
         let mainStackView = UIStackView(arrangedSubviews: [ publicKeyTextView, UIView.spacer(withHeight: Values.smallSpacing), explanationLabel, spacer1, separator, spacer2, userPublicKeyContainer, spacer3, buttonContainer, UIView.vStretchingSpacer(), nextButtonContainer ])
@@ -367,7 +367,7 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         callToActionButton.setTitleColor(Colors.bothGreenColor, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
-        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)
+        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: .touchUpInside)
         // Set up stack view
         let stackView = UIStackView(arrangedSubviews: [ explanationLabel, callToActionButton ])
         stackView.axis = .vertical

@@ -40,7 +40,7 @@ final class LinkPreviewModal : Modal {
         enableButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         enableButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         enableButton.setTitle(NSLocalizedString("modal_link_previews_button_title", comment: ""), for: UIControl.State.normal)
-        enableButton.addTarget(self, action: #selector(enable), for: UIControl.Event.touchUpInside)
+        enableButton.addTarget(self, action: #selector(enable), for: .touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, enableButton ])
         buttonStackView.axis = .horizontal

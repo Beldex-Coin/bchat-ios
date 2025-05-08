@@ -66,7 +66,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         let horizontalInset: CGFloat = 2
         textContainerInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
         addSubview(placeholderLabel)
-        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 3) // Slight visual adjustment
+        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 5) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)
         pin(.trailing, to: .trailing, of: placeholderLabel, withInset: horizontalInset)
         pin(.bottom, to: .bottom, of: placeholderLabel)

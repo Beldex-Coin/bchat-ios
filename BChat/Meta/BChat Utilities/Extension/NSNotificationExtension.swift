@@ -29,4 +29,5 @@ extension Notification.Name {
     static var navigateToMyAccountNotification = Notification.Name(rawValue: Constants.navigateToMyAccount)
     static var LeaveGroupNotification = Notification.Name(rawValue: Constants.leaveGroup)
     static var dismissMiniView = Notification.Name(rawValue: Constants.dismissMiniView)
+    static var joinedOpenGroup = Notification.Name(rawValue: Constants.joinedOpenGroup)
 }

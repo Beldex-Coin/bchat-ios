@@ -50,6 +50,7 @@ struct Constants: Equatable {
     static let navigateToMyAccount = "navigateToMyAccount"
     static let leaveGroup = "leaveGroup"
     static let dismissMiniView = "dismissMiniView"
+    static let joinedOpenGroup = "joinedOpenGroup"
     
     
     /// Userdefaults strings

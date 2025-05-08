@@ -51,11 +51,11 @@ final class LinkPreviewView : UIView {
     private lazy var cancelButton: UIButton = {
         let result = UIButton(type: .custom)
         let tint: UIColor = isLightMode ? .black : .white
-        result.setImage(UIImage(named: "X")?.withTint(tint), for: UIControl.State.normal)
+        result.setImage(UIImage(named: "X")?.withTint(tint), for: .normal)
         let cancelButtonSize = LinkPreviewView.cancelButtonSize
         result.set(.width, to: cancelButtonSize)
         result.set(.height, to: cancelButtonSize)
-        result.addTarget(self, action: #selector(cancel), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         return result
     }()
     

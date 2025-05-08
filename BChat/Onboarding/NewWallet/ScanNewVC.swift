@@ -268,7 +268,11 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
                 vc.mainBalance = mainBalanceForScan
                 navigationController!.pushViewController(vc, animated: true)
             } else {
-                self.showToast(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
+                if ECKeyPair.isValidHexEncodedPublicKey(candidate: qrCodeLink) {
+                    startNewDM(with: qrCodeLink)
+                } else {
+                    self.showToast(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
+                }
             }
         }
         self.dismiss(animated: true)

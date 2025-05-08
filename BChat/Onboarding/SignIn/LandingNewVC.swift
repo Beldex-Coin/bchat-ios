@@ -14,9 +14,9 @@ class LandingNewVC: BaseVC {
         result.backgroundColor = Colors.bothGreenColor
         result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
-        result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(createButtonActionTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(createButtonActionTapped), for: .touchUpInside)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         return result
     }()
@@ -28,9 +28,9 @@ class LandingNewVC: BaseVC {
         result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
-        result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(restoreButtonActionTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(restoreButtonActionTapped), for: .touchUpInside)
         result.setTitleColor(Colors.titleColor3, for: .normal)
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColorNew.cgColor
@@ -80,7 +80,7 @@ class LandingNewVC: BaseVC {
         let image = UIImage(named: "ic_Newunchecked")
         result.tintColor = isLightMode ? .white : .white
         result.setImage(image, for: .normal)
-        result.addTarget(self, action: #selector(checkedUncheckButtonActionTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(checkedUncheckButtonActionTapped), for: .touchUpInside)
         return result
     }()
 

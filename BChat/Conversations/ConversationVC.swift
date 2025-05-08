@@ -500,7 +500,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
-        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(inChatPaymentOkButtonTapped), for: .touchUpInside)
         return button
@@ -540,7 +540,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
-        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(isSuccessPopTappedButton), for: .touchUpInside)
         return button
@@ -1849,7 +1849,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let button: UIButton = UIButton(type: .custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+            button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true            
@@ -1888,7 +1888,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let barButton = UIBarButtonItem(customView: outerView)
             self.navigationItem.leftBarButtonItem = barButton
             
-            button.addTarget(self, action: #selector(handleProfileTap), for: UIControl.Event.touchUpInside)
+            button.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
         } else {
             let iconImageView = ProfilePictureView()
             iconImageView.update(for: self.thread)
@@ -1908,7 +1908,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)
                 } else {
-                    button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+                    button.setImage(iconImageView.getProfilePicture(), for: .normal)
                 }
             }
             
@@ -1964,7 +1964,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 //                    let setting = UIButton(type: .custom)
 //                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
 //                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
-//                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+//                    setting.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
 //                      let settingBarItem = UIBarButtonItem(customView: setting)
 //                    rightBarButtonItems.append(settingBarItem)
                     
@@ -2418,6 +2418,7 @@ extension ConversationVC {
     func scrollToBottom(isAnimated: Bool) {
         guard !isUserScrolling && !viewItems.isEmpty else { return }
         messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
+        scrollButton.alpha = 0
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

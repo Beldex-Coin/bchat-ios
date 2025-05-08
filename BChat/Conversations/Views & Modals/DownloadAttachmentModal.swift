@@ -42,14 +42,14 @@ final class DownloadAttachmentModal : Modal {
         downloadButton.set(.height, to: Values.mediumButtonHeight)
         downloadButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         downloadButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        downloadButton.setTitleColor(Colors.text, for: UIControl.State.normal)
-        downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: UIControl.State.normal)
+        downloadButton.setTitleColor(Colors.text, for: .normal)
+        downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: .normal)
         if isDarkMode {
             downloadButton.backgroundColor = Colors.buttonBackground
         }else {
             downloadButton.backgroundColor = UIColor.lightGray
         }
-        downloadButton.addTarget(self, action: #selector(trust), for: UIControl.Event.touchUpInside)
+        downloadButton.addTarget(self, action: #selector(trust), for: .touchUpInside)
         // Button stack view
         cancelButton.layer.cornerRadius = 17
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, downloadButton ])

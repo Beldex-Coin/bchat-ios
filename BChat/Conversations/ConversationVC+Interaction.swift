@@ -788,6 +788,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
                         joinOpenGroup(name: name, url: url)
+                    } else if let message = viewItem.interaction as? TSOutgoingMessage, let name = message.openGroupInvitationName,
+                              let url = message.openGroupInvitationURL {
+                              joinOpenGroup(name: name, url: url)
                     } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
                     } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
@@ -863,6 +866,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
+        if isAudioRecording { return }
+        
         if isShowingSearchUI {
             hideSearchUI()
         }

@@ -39,7 +39,7 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         let alpha = isLightMode ? CGFloat(0.1) : Values.highOpacity
         view.backgroundColor = UIColor(hex: 0x000000).withAlphaComponent(alpha)
-        cancelButton.addTarget(self, action: #selector(close), for: UIControl.Event.touchUpInside)
+        cancelButton.addTarget(self, action: #selector(close), for: .touchUpInside)
         
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(close))
         swipeGestureRecognizer.direction = .down

@@ -53,8 +53,8 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
     
     private lazy var copyButton: Button = {
         let result = Button(style: .prominentOutline, size: .medium)
-        result.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(copyPublicKey), for: UIControl.Event.touchUpInside)
+        result.setTitle(NSLocalizedString("copy", comment: ""), for: .normal)
+        result.addTarget(self, action: #selector(copyPublicKey), for: .touchUpInside)
         return result
     }()
 
@@ -67,46 +67,46 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
     
     private lazy var inviteButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("vc_settings_invite_a_friend_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("vc_settings_invite_a_friend_button_title", comment: ""), for: .normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.addTarget(self, action: #selector(sendInvitation), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(sendInvitation), for: .touchUpInside)
         return result
     }()
     
     private lazy var faqButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("vc_settings_faq_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("vc_settings_faq_button_title", comment: ""), for: .normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.addTarget(self, action: #selector(openFAQ), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(openFAQ), for: .touchUpInside)
         return result
     }()
     
     private lazy var surveyButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("vc_settings_survey_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("vc_settings_survey_button_title", comment: ""), for: .normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.addTarget(self, action: #selector(openSurvey), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(openSurvey), for: .touchUpInside)
         return result
     }()
     
     private lazy var supportButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("vc_settings_support_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("vc_settings_support_button_title", comment: ""), for: .normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.addTarget(self, action: #selector(shareLogs), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(shareLogs), for: .touchUpInside)
         return result
     }()
     
     private lazy var helpTranslateButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("vc_settings_help_us_translate_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("vc_settings_help_us_translate_button_title", comment: ""), for: .normal)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.addTarget(self, action: #selector(helpTranslate), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(helpTranslate), for: .touchUpInside)
         return result
     }()
     
@@ -170,8 +170,8 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
         let separator = Separator(title: NSLocalizedString("your_bchat_id", comment: ""))
         // Share button
         let shareButton = Button(style: .regular, size: .medium)
-        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
-        shareButton.addTarget(self, action: #selector(sharePublicKey), for: UIControl.Event.touchUpInside)
+        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: .normal)
+        shareButton.addTarget(self, action: #selector(sharePublicKey), for: .touchUpInside)
         // Button container
         let buttonContainer = UIStackView(arrangedSubviews: [ copyButton, shareButton ])
         buttonContainer.axis = .horizontal
@@ -242,10 +242,10 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
                 return image!
             }
             let backgroundColor = isLightMode ? UIColor(hex: 0xFCFCFC) : UIColor(hex: 0x1B1B1B)
-            button.setBackgroundImage(getImage(withColor: backgroundColor), for: UIControl.State.normal)
+            button.setBackgroundImage(getImage(withColor: backgroundColor), for: .normal)
             let selectedColor = isLightMode ? UIColor(hex: 0xDFDFDF) : UIColor(hex: 0x0C0C0C)
-            button.setBackgroundImage(getImage(withColor: selectedColor), for: UIControl.State.highlighted)
-            button.addTarget(self, action: selector, for: UIControl.Event.touchUpInside)
+            button.setBackgroundImage(getImage(withColor: selectedColor), for: .highlighted)
+            button.addTarget(self, action: selector, for: .touchUpInside)
             button.set(.height, to: SettingsVC.buttonHeight)
             return button
         }
@@ -329,15 +329,15 @@ final class SettingsVC : BaseVC, AvatarViewHelperDelegate {
                     appModeIcon = isDarkMode ? #imageLiteral(resourceName: "ic_dark_theme_on").withTintColor(.white) : #imageLiteral(resourceName: "ic_dark_theme_off").withTintColor(.black)
                 }
                 let appModeButton = UIButton()
-                appModeButton.setImage(appModeIcon, for: UIControl.State.normal)
+                appModeButton.setImage(appModeIcon, for: .normal)
                 appModeButton.tintColor = Colors.text
-                appModeButton.addTarget(self, action: #selector(switchAppMode), for: UIControl.Event.touchUpInside)
+                appModeButton.addTarget(self, action: #selector(switchAppMode), for: .touchUpInside)
                 appModeButton.accessibilityLabel = "Switch app mode button"
                 let qrCodeIcon = isDarkMode ? #imageLiteral(resourceName: "QRCode").withTintColor(.white) : #imageLiteral(resourceName: "QRCode").withTintColor(.black)
                 let qrCodeButton = UIButton()
                 qrCodeButton.setImage(qrCodeIcon, for: UIControl.State.normal)
                 qrCodeButton.tintColor = Colors.text
-                qrCodeButton.addTarget(self, action: #selector(showQRCode), for: UIControl.Event.touchUpInside)
+                qrCodeButton.addTarget(self, action: #selector(showQRCode), for: .touchUpInside)
                 qrCodeButton.accessibilityLabel = "Show QR code button"
                 let stackView = UIStackView(arrangedSubviews: [ appModeButton, qrCodeButton ])
                 stackView.axis = .horizontal
