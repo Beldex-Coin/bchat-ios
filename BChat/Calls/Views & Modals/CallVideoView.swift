@@ -86,18 +86,6 @@ class LocalVideoView: TargetView {
     
     override func renderFrame(_ frame: RTCVideoFrame?) {
         super.renderFrame(frame)
-        // Don't delete below lines, needs to be check
-//        DispatchMainThreadSafe {
-//            // This is a workaround for a weird issue that
-//            // sometimes the rotationOverride is not working
-//            // if it is only set once on initialization
-//            self.rotationOverride = NSNumber(value: RTCVideoRotation._0.rawValue)
-//            self.videoContentMode = .scaleAspectFit
-//#if targetEnvironment(simulator)
-//#else
-//            self.videoContentMode = .scaleAspectFill
-//#endif
-//        }
         guard let frame = frame else { return }
         DispatchMainThreadSafe {
             let frameRatio = Double(frame.height) / Double(frame.width)
