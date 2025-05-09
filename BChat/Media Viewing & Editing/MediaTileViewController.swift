@@ -220,7 +220,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         ])
         
 //        getAllDcouments()
-        fetchAllDocuments()
+//        fetchAllDocuments()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -352,7 +352,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
             }
         }
-        fetchAllDocuments()
+//        fetchAllDocuments()
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
@@ -694,16 +694,11 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             cell.dateLabel.text = formatDate(documentItem.createdTimeStamp)
             
-            var documentImage = ""
-            if documentItem.contentType == DocumentContentType.mswordDocument.rawValue {
-                documentImage = "ic_documentType_doc"
-            } else if documentItem.contentType == DocumentContentType.pdfDocument.rawValue {
-                documentImage = "ic_documentType_pdf"
-            } else if documentItem.contentType == DocumentContentType.textDocument.rawValue {
-                documentImage = "ic_documentType_text"
-            } else {
-                documentImage = "ic_documentType_doc"
-            }
+            let contentType = documentItem.contentType
+            let documentImage = contentType == DocumentContentType.mswordDocument.rawValue ? "ic_documentType_doc" :
+                                contentType == DocumentContentType.pdfDocument.rawValue ? "ic_documentType_pdf" :
+                                contentType == DocumentContentType.textDocument.rawValue ? "ic_documentType_text" : "ic_documentType_doc"
+            
             cell.documentImageView.image = UIImage(named: documentImage)
             return cell
         }
