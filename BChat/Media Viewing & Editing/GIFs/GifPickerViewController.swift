@@ -444,6 +444,11 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         if viewMode == .error || viewMode == .noResults {
             viewMode = .idle
         }
+        
+        if searchText.isEmpty {
+            loadTrending()
+            return
+        }
 
         // Do progressive search after a delay.
         progressiveSearchTimer?.invalidate()
