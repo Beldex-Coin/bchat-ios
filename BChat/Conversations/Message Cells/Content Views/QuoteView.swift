@@ -242,10 +242,10 @@ final class QuoteView : UIView {
         // Cancel button
         let cancelButton = UIButton(type: .custom)
         let tint: UIColor = isLightMode ? .black : .white
-        cancelButton.setImage(UIImage(named: "close_new")?.withTint(tint), for: UIControl.State.normal)
+        cancelButton.setImage(UIImage(named: "close_new")?.withTint(tint), for: .normal)
         cancelButton.set(.width, to: cancelButtonSizeNew)
         cancelButton.set(.height, to: cancelButtonSizeNew)
-        cancelButton.addTarget(self, action: #selector(cancel), for: UIControl.Event.touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         
         if hasAttachments {
             let spacer = UIView()

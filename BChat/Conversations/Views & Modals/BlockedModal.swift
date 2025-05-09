@@ -50,7 +50,7 @@ final class BlockedModal: Modal {
         }
         unblockButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         unblockButton.setTitle(NSLocalizedString("modal_blocked_button_title", comment: ""), for: UIControl.State.normal)
-        unblockButton.addTarget(self, action: #selector(unblock), for: UIControl.Event.touchUpInside)
+        unblockButton.addTarget(self, action: #selector(unblock), for: .touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, unblockButton ])
         buttonStackView.axis = .horizontal

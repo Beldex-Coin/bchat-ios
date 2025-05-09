@@ -45,8 +45,8 @@ final class PathVC : BaseVC {
 
     private lazy var learnMoreButton: Button = {
         let result = Button(style: .prominentFilled2, size: .large)
-        result.setTitle(NSLocalizedString("vc_path_learn_more_button_title", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(learnMore), for: UIControl.Event.touchUpInside)
+        result.setTitle(NSLocalizedString("vc_path_learn_more_button_title", comment: ""), for: .normal)
+        result.addTarget(self, action: #selector(learnMore), for: .touchUpInside)
         result.layer.borderWidth = 0
         result.setTitleColor(Colors.bchatLabelNameColor, for: .normal)
         result.layer.backgroundColor = Colors.bothGreenColor.cgColor

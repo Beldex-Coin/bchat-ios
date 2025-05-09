@@ -617,9 +617,9 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        result.addTarget(self, action: #selector(removePictureButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(removePictureButtonAction), for: .touchUpInside)
         result.layer.borderWidth = 0.5
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = Colors.bothGreenWithAlpha10
@@ -630,9 +630,9 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var saveButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
-        result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(saveButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)

@@ -45,6 +45,12 @@ class BaseVC : UIViewController {
             name: .OWSApplicationWillEnterForeground,
             object: nil)
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(backToHomeScreen),
+            name: .joinedOpenGroup,
+            object: nil)
+        
         let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(
             target: self,
             action: #selector(resignKeyboard))
@@ -157,11 +163,13 @@ class BaseVC : UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func appDidBecomeActive(_ notification: Notification) {
+    @objc
+    func appDidBecomeActive(_ notification: Notification) {
         // To be implemented by child class
     }
     
-    @objc func appWillEnterBackground(_ notification: Notification) {
+    @objc
+    func appWillEnterBackground(_ notification: Notification) {
         // To be implemented by child class
     }
 

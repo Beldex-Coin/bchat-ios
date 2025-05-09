@@ -47,7 +47,7 @@ final class CallPermissionRequestModal : Modal {
         }
         cancelButtonForCall.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         cancelButtonForCall.setTitle(NSLocalizedString("cancel", comment: ""), for: UIControl.State.normal)
-        cancelButtonForCall.addTarget(self, action: #selector(cancelButtonForCallAction), for: UIControl.Event.touchUpInside)
+        cancelButtonForCall.addTarget(self, action: #selector(cancelButtonForCallAction), for: .touchUpInside)
         
         // Enable button
         let goToSettingsButton = UIButton()
@@ -62,7 +62,7 @@ final class CallPermissionRequestModal : Modal {
         }
         goToSettingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         goToSettingsButton.setTitle(NSLocalizedString("vc_settings_title", comment: ""), for: UIControl.State.normal)
-        goToSettingsButton.addTarget(self, action: #selector(goToSettings), for: UIControl.Event.touchUpInside)
+        goToSettingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
         // Content stack view
         let contentStackView = UIStackView(arrangedSubviews: [ titleLabel, messageLabel ])
         contentStackView.axis = .vertical
@@ -170,7 +170,7 @@ final class PayAsYouChatPermissionRequestModal : Modal {
         }
         cancelButtonPayAsChat.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         cancelButtonPayAsChat.setTitle(NSLocalizedString("cancel", comment: ""), for: UIControl.State.normal)
-        cancelButtonPayAsChat.addTarget(self, action: #selector(cancelButtonAction), for: UIControl.Event.touchUpInside)
+        cancelButtonPayAsChat.addTarget(self, action: #selector(cancelButtonAction), for: .touchUpInside)
         
         // Enable button
         let goToSettingsButton = UIButton()
@@ -185,7 +185,7 @@ final class PayAsYouChatPermissionRequestModal : Modal {
         }
         goToSettingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         goToSettingsButton.setTitle(NSLocalizedString("vc_ok_title", comment: ""), for: UIControl.State.normal)
-        goToSettingsButton.addTarget(self, action: #selector(goToSettings), for: UIControl.Event.touchUpInside)
+        goToSettingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
         // Content stack view
         let contentStackView = UIStackView(arrangedSubviews: [theImageView, titleLabel, messageLabel ])
         contentStackView.axis = .vertical

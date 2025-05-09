@@ -847,14 +847,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     return
                 }
             }
-//            if let expandButton = reactionContainerView.expandButton, expandButton.frame.contains(convertedLocation) {
-//                reactionContainerView.showAllEmojis()
-//                delegate?.needsLayout()
-//            }
-//            if reactionContainerView.collapseButton.frame.contains(convertedLocation) {
-//                reactionContainerView.showLessEmojis()
-//                delegate?.needsLayout()
-//            }
         } else {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }

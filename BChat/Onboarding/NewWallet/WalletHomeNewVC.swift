@@ -876,7 +876,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UIButton()
         result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(cancelButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -887,7 +887,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UIButton()
         result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         result.layer.cornerRadius = 16
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)

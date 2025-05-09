@@ -115,9 +115,9 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }()
     private lazy var isRestoreFromDateButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
-        result.addTarget(self, action: #selector(isRestoreFromDateButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(isRestoreFromDateButtonAction), for: .touchUpInside)
         // Set the image
         let image = UIImage(named: "ic_calendar")?.withRenderingMode(.alwaysTemplate)
         result.setImage(image, for: .normal)
@@ -142,9 +142,9 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }()
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(restoreButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(restoreButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.set(.height, to: 58)
         result.backgroundColor = Colors.cellGroundColor2

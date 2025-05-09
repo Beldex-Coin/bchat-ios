@@ -175,8 +175,8 @@ private final class ViewMyQRCodeVC : UIViewController {
         explanationLabel.lineBreakMode = .byWordWrapping
         // Set up share button
         let shareButton = Button(style: .regular, size: .large)
-        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
-        shareButton.addTarget(self, action: #selector(shareQRCode), for: UIControl.Event.touchUpInside)
+        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: .normal)
+        shareButton.addTarget(self, action: #selector(shareQRCode), for: .touchUpInside)
         // Set up share button container
         let shareButtonContainer = UIView()
         shareButtonContainer.addSubview(shareButton)
@@ -239,7 +239,7 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
         callToActionButton.setTitleColor(Colors.bothGreenColor, for: UIControl.State.normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
-        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)
+        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: .touchUpInside)
         // Set up stack view
         let stackView = UIStackView(arrangedSubviews: [ explanationLabel, callToActionButton ])
         stackView.axis = .vertical

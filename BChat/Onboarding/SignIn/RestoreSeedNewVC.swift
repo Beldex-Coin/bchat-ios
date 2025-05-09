@@ -72,7 +72,7 @@ class RestoreSeedNewVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(restoreActionTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(restoreActionTapped), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.setTitleColor(UIColor(hex: 0x6C6C78), for: .normal)

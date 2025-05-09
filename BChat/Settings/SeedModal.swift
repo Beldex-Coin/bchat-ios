@@ -52,8 +52,8 @@ final class SeedModal : Modal {
         copyButton.backgroundColor = Colors.buttonBackground
         copyButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         copyButton.setTitleColor(Colors.text, for: UIControl.State.normal)
-        copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
-        copyButton.addTarget(self, action: #selector(copySeed), for: UIControl.Event.touchUpInside)
+        copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: .normal)
+        copyButton.addTarget(self, action: #selector(copySeed), for: .touchUpInside)
         // Set up button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, copyButton ])
         buttonStackView.axis = .horizontal

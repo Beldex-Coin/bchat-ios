@@ -36,9 +36,9 @@ final class ShareLogsModal : Modal {
         shareButton.layer.cornerRadius = Modal.buttonCornerRadius
         shareButton.backgroundColor = Colors.buttonBackground
         shareButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        shareButton.setTitleColor(Colors.text, for: UIControl.State.normal)
-        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
-        shareButton.addTarget(self, action: #selector(shareLogs), for: UIControl.Event.touchUpInside)
+        shareButton.setTitleColor(Colors.text, for: .normal)
+        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: .normal)
+        shareButton.addTarget(self, action: #selector(shareLogs), for: .touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, shareButton ])
         buttonStackView.axis = .horizontal

@@ -178,7 +178,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                                 
                                 DispatchQueue.main.async {
-                                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                                    tableView.reloadRows(at: [ indexPath ], with: .fade)
                                 }
                             }
                         )

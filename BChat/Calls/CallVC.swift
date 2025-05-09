@@ -159,7 +159,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
                 .withRenderingMode(.alwaysTemplate),
             for: .normal
         )
-        result.addTarget(self, action: #selector(dismissAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
         
         result.isHidden = !call.hasConnected
         result.set(.width, to: 60)
@@ -180,7 +180,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
         result.tintColor = .white
         //result.themeBackgroundColor = .callAccept_background
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(answerCall), for: .touchUpInside)
         
         result.isHidden = call.hasStartedConnecting
         result.set(.width, to: 72)
@@ -200,7 +200,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
         result.tintColor = .white
         //result.themeBackgroundColor = .callDecline_background
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         
@@ -226,7 +226,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
 //        result.themeTintColor = .textPrimary
 //        result.themeBackgroundColor = .backgroundSecondary
         result.layer.cornerRadius = 30
-        result.addTarget(self, action: #selector(switchCamera), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(switchCamera), for: .touchUpInside)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
         
@@ -249,7 +249,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
 //            .backgroundSecondary
 //        )
         result.layer.cornerRadius = 30
-        result.addTarget(self, action: #selector(switchAudio), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(switchAudio), for: .touchUpInside)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
         
@@ -266,7 +266,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate {
 //        result.themeTintColor = .textPrimary
 //        result.themeBackgroundColor = .backgroundSecondary
         result.layer.cornerRadius = 30
-        result.addTarget(self, action: #selector(operateCamera), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(operateCamera), for: .touchUpInside)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
         

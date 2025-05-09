@@ -146,6 +146,7 @@ final class JoinOpenGroupVC : BaseVC, UIPageViewControllerDataSource, UIPageView
                     self?.presentingViewController?.dismiss(animated: true, completion: nil)
                     
                     MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete() // FIXME: It's probably cleaner to do this inside addOpenGroup(...)
+                    NotificationCenter.default.post(name: .joinedOpenGroup, object: nil)
                 }
                 .catch(on: DispatchQueue.main) { [weak self] error in
                     self?.dismiss(animated: true, completion: nil) // Dismiss the loader
@@ -204,8 +205,8 @@ private final class EnterURLVC : UIViewController, UIGestureRecognizerDelegate, 
         view.backgroundColor = .clear
         // Next button
         let nextButton = Button(style: .prominentOutline, size: .large)
-        nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControl.State.normal)
-        nextButton.addTarget(self, action: #selector(joinOpenGroup), for: UIControl.Event.touchUpInside)
+        nextButton.setTitle(NSLocalizedString("next", comment: ""), for: .normal)
+        nextButton.addTarget(self, action: #selector(joinOpenGroup), for: .touchUpInside)
         let nextButtonContainer = UIView(wrapping: nextButton, withInsets: UIEdgeInsets(top: 0, leading: 80, bottom: 0, trailing: 80), shouldAdaptForIPadWithWidth: Values.iPadButtonWidth)
         // Stack view
         let stackView = UIStackView(arrangedSubviews: [ urlTextView, UIView.spacer(withHeight: Values.mediumSpacing), suggestionGridTitleLabel, UIView.spacer(withHeight: Values.mediumSpacing), suggestionGrid, UIView.vStretchingSpacer(), nextButtonContainer ])
@@ -305,9 +306,9 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Call to action button
         let callToActionButton = UIButton()
         callToActionButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        callToActionButton.setTitleColor(Colors.bothGreenColor, for: UIControl.State.normal)
+        callToActionButton.setTitleColor(Colors.bothGreenColor, for: .normal)
         callToActionButton.setTitle(NSLocalizedString("vc_scan_qr_code_grant_camera_access_button_title", comment: ""), for: UIControl.State.normal)
-        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: UIControl.Event.touchUpInside)
+        callToActionButton.addTarget(self, action: #selector(requestCameraAccess), for: .touchUpInside)
         // Stack view
         let stackView = UIStackView(arrangedSubviews: [ explanationLabel, callToActionButton ])
         stackView.axis = .vertical

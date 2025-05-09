@@ -88,8 +88,8 @@ final class HomeVC : BaseVC {
         explanationLabel2.textAlignment = .center
         explanationLabel2.text = NSLocalizedString("Go get some friends to BChat!", comment: "")
         let createNewPrivateChatButton = Button(style: .prominentFilled2, size: .large)
-        createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: UIControl.State.normal)
-        createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: UIControl.Event.touchUpInside)
+        createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: .normal)
+        createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: .touchUpInside)
         createNewPrivateChatButton.set(.width, to: 196)
         let result = UIStackView(arrangedSubviews: [ explanationLabel ,explanationLabel2])
         result.axis = .vertical
@@ -932,14 +932,14 @@ final class HomeVC : BaseVC {
         self.navigationItem.rightBarButtonItem = nil
         
         let publicKey = getUserHexEncodedPublicKey()
-        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+        let button: UIButton = UIButton(type: .custom)
                 //set image for button
         button.widthAnchor.constraint(equalToConstant: 42).isActive = true
         button.heightAnchor.constraint(equalToConstant: 42).isActive = true
 
-        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+        button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
                 //add function for button
-        button.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
                 //set frame
                 button.frame = CGRectMake(0, 0, 42, 42)
         button.layer.cornerRadius = 21
@@ -985,7 +985,7 @@ final class HomeVC : BaseVC {
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
-        plusButton.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+        plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
           let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         
         rightBarButtonItems.append(plusButtonBarItem)
@@ -1002,7 +1002,7 @@ final class HomeVC : BaseVC {
 //        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
 //        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
 //        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
-//        wallet.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+//        wallet.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
 //          let walletBarItem = UIBarButtonItem(customView: wallet)
 //
 //        rightBarButtonItems.append(walletBarItem)

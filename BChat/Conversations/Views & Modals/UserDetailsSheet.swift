@@ -49,8 +49,8 @@ final class UserDetailsSheet : Sheet {
         bchatIDLabelContainer.layer.borderColor = isLightMode ? UIColor.black.cgColor : UIColor.white.cgColor
         // Copy button
         let copyButton = Button(style: .prominentOutline, size: .medium)
-        copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
-        copyButton.addTarget(self, action: #selector(copyBChatID), for: UIControl.Event.touchUpInside)
+        copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: .normal)
+        copyButton.addTarget(self, action: #selector(copyBChatID), for: .touchUpInside)
         copyButton.set(.width, to: 160)
         // Stack view
         let stackView = UIStackView(arrangedSubviews: [ profilePictureView, displayNameLabel, bchatIDLabelContainer, copyButton, UIView.vSpacer(Values.largeSpacing) ])
