@@ -198,19 +198,27 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
+        //TODO
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             let gifVC = GifPickerViewController(thread: thread)
             gifVC.delegate = self
             let navController = OWSNavigationController(rootViewController: gifVC)
             navController.modalPresentationStyle = .fullScreen
-            present(navController, animated: true) { }
+            present(navController, animated: true) {
+                self.isInputViewShow = false
+            }
         } else {
             //check your internet connection
             self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
     }
+    
+    func didCancelGifPicker() {
+        isInputViewShow = true
+    }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {
+        isInputViewShow = true
         showAttachmentApprovalDialog(for: [ attachment ])
     }
     
@@ -1414,7 +1422,9 @@ extension ConversationVC {
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in
                 guard !isNewThread else { return Promise.value(()) }
-                guard let strongSelf = self else { return Promise(error: MessageSender.Error.noThread) }
+                guard let strongSelf = self else {
+                    return Promise(error: MessageSender.Error.noThread)
+                }
                 
                 // If we aren't creating a new thread (ie. sending a message request) then send a
                 // messageRequestResponse back to the sender (this allows the sender to know that
@@ -1591,7 +1601,7 @@ extension ConversationVC {
         guard let thread = thread as? TSGroupThread else { return }
         guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
         let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
-            self.reactionListOpened = false
+            self.isInputViewShow = true
             self.snInputView.isHidden = false
         }
         showingReactionListForMessageId = viewItem.interaction.uniqueId
@@ -1599,7 +1609,7 @@ extension ConversationVC {
         reactionListSheet.selectedReaction = selectedReaction
         reactionListSheet.modalPresentationStyle = .overFullScreen
         present(reactionListSheet, animated: true) {
-            self.reactionListOpened = true
+            self.isInputViewShow = false
         }
     }
     

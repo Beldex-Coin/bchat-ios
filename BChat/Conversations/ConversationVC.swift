@@ -63,7 +63,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var emojiPickersheet: EmojiPickerSheet?
     // Reaction
     var showingReactionListForMessageId: String?
-    var reactionListOpened: Bool = false
+    var isInputViewShow: Bool = true
     
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
@@ -1226,7 +1226,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func appDidBecomeActive(_ notification: Notification) {
         
-        if AppEnvironment.shared.callManager.currentCall == nil && !reactionListOpened {
+        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow {
             recoverInputView()
             snInputView.isHidden = false
         } else {
