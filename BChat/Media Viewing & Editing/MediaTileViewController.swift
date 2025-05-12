@@ -483,6 +483,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             if isInBatchSelectMode {
                 updateDeleteButton()
             } else {
+                gridCell.isSelected = false
                 collectionView.deselectItem(at: indexPath, animated: true)
                 self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
             }
@@ -903,18 +904,15 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             owsFailDebug("collectionView was unexpectedly nil")
             return
         }
-
-        collectionView.performBatchUpdates({
-//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
-//                collectionView.deselectItem(at: indexPath, animated: false)
-//            }
-
+        collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+            collectionView.deselectItem(at: indexPath, animated: false)
+        }
+        UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
             NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
             self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
             self.footerBar.superview?.layoutIfNeeded()
             collectionView.contentInset.bottom -= self.kFooterBarHeight
         }, completion: nil)
-        
         self.navigationItem.hidesBackButton = false
     }
     
