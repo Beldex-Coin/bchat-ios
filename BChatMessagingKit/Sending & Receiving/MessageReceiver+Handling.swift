@@ -340,6 +340,7 @@ extension MessageReceiver {
             }
             currentWebRTCBChat.handleICECandidates(candidates)
         case .endCall:
+            // END CALL NOTIFICATION
             SNLog("[Calls] Received end call message.")
             guard WebRTCBChat.current?.uuid == message.uuid! else { return }
             handleEndCallMessage?(message)
@@ -376,6 +377,56 @@ extension MessageReceiver {
         }
         // Get or create thread
         guard let threadID = storage.getOrCreateThread(for: message.syncTarget ?? message.sender!, groupPublicKey: message.groupPublicKey, openGroupID: openGroupID, using: transaction) else { throw Error.noThread }
+        
+        // Handle emoji reacts first
+        if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
+            var tsMessage: TSMessage?
+            if reaction.kind == .react {
+                author = message.sender!
+            }
+            if author == getUserHexEncodedPublicKey() {
+                tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                }
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.findWithtimestamp(timestamp, transaction: transaction)
+                }
+            } else {
+                tsMessage = TSIncomingMessage.find(withAuthorId: author, timestamp: timestamp, transaction: transaction)
+                if tsMessage == nil {
+                    tsMessage = TSOutgoingMessage.find(withTimestamp: timestamp)
+                }
+                if tsMessage == nil {
+                    tsMessage = TSIncomingMessage.findWithtimestamp(timestamp, transaction: transaction)
+                }
+            }
+            let reactMessage = ReactMessage(timestamp: timestamp, authorId: author, emoji: reaction.emoji)
+            if let serverID = message.openGroupServerMessageID {
+                reactMessage.messageId = "\(serverID)"
+                // Create a lookup between the openGroupServerMessageId and the tsMessage id for easy lookup
+                // For emoji reacts, the lookup is linking emoji react message server id to the id of the tsMessage that the emoji is reacted to
+                if let openGroup: OpenGroupV2 = storage.getV2OpenGroup(for: threadID) {
+                    storage.addOpenGroupServerIdLookup(serverID, tsMessageId: tsMessage?.uniqueId, in: openGroup.room, on: openGroup.server, using: transaction)
+                }
+            }
+            if let serverHash = message.serverHash { reactMessage.messageId = serverHash }
+            switch reaction.kind {
+                case .react:
+                    tsMessage?.addReaction(reactMessage, transaction: transaction)
+                case .remove:
+                    tsMessage?.removeReaction(reactMessage, transaction: transaction)
+                case .none:
+                    break
+            }
+            
+            if reaction.kind == .react {
+                SSKEnvironment.shared.notificationsManager?.notifyUser(forReaction: reactMessage, in: thread, transaction: transaction)
+            }
+            
+            return ""
+        }
+        
         // Parse quote if needed
         var tsQuotedMessage: TSQuotedMessage? = nil
         if message.quote != nil && proto.dataMessage?.quote != nil, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
@@ -531,6 +582,9 @@ extension MessageReceiver {
                 contact.profileEncryptionKey = profileKey
             }
         }
+        if profilePictureURL == nil {
+            contact.profilePictureFileName = nil
+        }
         // Persist changes
         Storage.shared.setContact(contact, using: transaction)
         // Download the profile picture if needed
@@ -569,16 +623,18 @@ extension MessageReceiver {
         // With new closed groups we only want to create them if the admin creating the closed group is an
         // approved contact (to prevent spam via closed groups getting around message requests if users are
         // on old or modified clients)
-        var hasApprovedAdmin: Bool = false
         
-        for adminId in admins {
-            if let contact: Contact = Storage.shared.getContact(with: adminId), contact.isApproved {
-                hasApprovedAdmin = true
-                break
-            }
-        }
-        
-        guard hasApprovedAdmin else { return }
+        // MARK: - Don't remove below comented lines, will remove later.
+//        var hasApprovedAdmin: Bool = false
+//        
+//        for adminId in admins {
+//            if let contact: Contact = Storage.shared.getContact(with: adminId), contact.isApproved {
+//                hasApprovedAdmin = true
+//                break
+//            }
+//        }
+//        
+//        guard hasApprovedAdmin else { return }
         
         // Create the group
         let groupID = LKGroupUtilities.getEncodedClosedGroupIDAsData(groupPublicKey)
@@ -794,7 +850,8 @@ extension MessageReceiver {
                 let _ = PushNotificationAPI.performOperation(.unsubscribe, for: groupPublicKey, publicKey: getUserHexEncodedPublicKey())
             } else {
                 let storage = SNMessagingKitConfiguration.shared.storage
-                let zombies = storage.getZombieMembers(for: groupPublicKey).union([ message.sender! ])
+                // MARK: - Don't remove below comented lines, will remove later.
+                let zombies = storage.getZombieMembers(for: groupPublicKey)//.union([ message.sender! ])
                 storage.setZombieMembers(for: groupPublicKey, to: zombies, using: transaction)
             }
             // Update the group
@@ -807,10 +864,15 @@ extension MessageReceiver {
             if let displayName = contact?.displayName(for: Contact.Context.regular) {
                 updateInfo = String(format: NSLocalizedString("GROUP_MEMBER_LEFT", comment: ""), displayName)
             } else {
-                updateInfo = NSLocalizedString("GROUP_UPDATED", comment: "")
+                updateInfo = String(format: NSLocalizedString("GROUP_MEMBER_LEFT", comment: ""), message.sender ?? "")
             }
             let infoMessage = TSInfoMessage(timestamp: message.sentTimestamp!, in: thread, messageType: .groupUpdated, customMessage: updateInfo)
             infoMessage.save(with: transaction)
+            if didAdminLeave {
+                MessageSender.leave(groupPublicKey, using: transaction).retainUntilComplete()
+                thread.removeAllThreadInteractions(with: transaction)
+                thread.remove(with: transaction)
+            }
         }
     }
     

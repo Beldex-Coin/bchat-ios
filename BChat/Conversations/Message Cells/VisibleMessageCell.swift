@@ -1,9 +1,13 @@
 
 final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
+    private var isHandlingLongPress: Bool = false
     private var unloadContent: (() -> Void)?
     private var previousX: CGFloat = 0
     var albumView: MediaAlbumView?
     var bodyTextView: UITextView?
+    private lazy var reactionContainerView = ReactionContainerView()
+    private lazy var reactionContainerViewHeightConstraint = reactionContainerView.set(.height, to: 22)
+    
     // Constraints
     private lazy var headerViewTopConstraint = headerView.pin(.top, to: .top, of: self, withInset: 1)
     private lazy var authorLabelHeightConstraint = authorLabel.set(.height, to: 0)
@@ -14,6 +18,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private lazy var bubbleViewTopConstraint = bubbleView.pin(.top, to: .bottom, of: authorLabel, withInset: VisibleMessageCell.authorLabelBottomSpacing)
     private lazy var bubbleViewRightConstraint1 = bubbleView.pin(.right, to: .right, of: self, withInset: -VisibleMessageCell.contactThreadHSpacing)
     private lazy var bubbleViewRightConstraint2 = bubbleView.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -VisibleMessageCell.gutterSize)
+    
+    private lazy var reactionContainerViewLeftConstraint = reactionContainerView.pin(.left, to: .left, of: bubbleView, withInset: 4)
+    private lazy var reactionContainerViewRightConstraint = reactionContainerView.pin(.right, to: .right, of: bubbleView, withInset: -4)
+    
     private lazy var messageStatusImageViewTopConstraint = messageStatusImageView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
     private lazy var messageStatusImageViewWidthConstraint = messageStatusImageView.set(.width, to: VisibleMessageCell.messageStatusImageViewSize)
     private lazy var messageStatusImageViewHeightConstraint = messageStatusImageView.set(.height, to: VisibleMessageCell.messageStatusImageViewSize)
@@ -280,6 +288,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         profilePictureView.isHidden = true
         verifiedImageView.isHidden = true
         
+        // Reaction view
+        addSubview(reactionContainerView)
+        reactionContainerView.pin(.top, to: .bottom, of: bubbleView, withInset: -7)
+        reactionContainerView.pin(.bottom, to: .bottom, of: self, withInset: -13)
+        reactionContainerViewLeftConstraint.isActive = true
+        reactionContainerViewHeightConstraint.isActive = true
+        
         messageTailRightView.pin(.right, to: .right, of: bubbleView, withInset: 0)
         messageTailRightView.pin(.top, to: .bottom, of: bubbleView, withInset: 0)
         messageTailLeftView.pin(.left, to: .left, of: bubbleView, withInset: 0)
@@ -349,6 +364,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         messageTimeBottomLabel.isHidden = false
         // Content view
         populateContentView(for: viewItem, message: message)
+        // Reaction view
+        reactionContainerView.isHidden = (message.reactions.count == 0)
+        reactionContainerViewLeftConstraint.isActive = (direction == .incoming)
+        reactionContainerViewRightConstraint.isActive = (direction == .outgoing)
+        reactionContainerViewHeightConstraint.constant = message.reactions.count == 0 ? 0 : 22
+        populateReaction(for: viewItem, message: message)
         // Date break
         headerViewTopConstraint.constant = shouldInsetHeader ? Values.mediumSpacing : 1
         headerView.subviews.forEach { $0.removeFromSuperview() }
@@ -403,6 +424,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             removeGestureRecognizer(panGestureRecognizer)
         } else {
             addGestureRecognizer(panGestureRecognizer)
+        }
+        if message.isDeleted {
+            reactionContainerView.isHidden = true
+            reactionContainerViewHeightConstraint.constant = 0
         }
     }
     
@@ -515,8 +540,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     let maxWidthOfLine = maxWidth
                     let widthOfLastLine = Int(maxWidthOfTextViewText) % Int(maxWidthOfLine)
 
+                    let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil {
+                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil  && !isOverLapping {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -533,16 +559,35 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let description = DateUtil.formatDate(forDisplay2: date)
                         messageTimeRightLabel.text = description
                         
-                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
-                        stackViewForMessageAndTime.axis = .horizontal
-                        stackViewForMessageAndTime.spacing = 5
-                        stackViewForMessageAndTime.alignment = .bottom
-                                                
-                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
-                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
-                                                
                         
-                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        if message.body?.count ?? 0 < 26 {
+                            let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+                            stackViewForMessageAndTime.axis = .horizontal
+                            stackViewForMessageAndTime.spacing = 5
+                            stackViewForMessageAndTime.alignment = .bottom
+                                                    
+                            stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+                            stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+                            stackView.addArrangedSubview(stackViewForMessageAndTime)
+                        } else {
+                            let backgroundView = UIView()
+                            backgroundView.addSubview(bodyTextView)
+                            backgroundView.addSubview(messageTimeRightLabel)
+                            bodyTextView.pin(to: backgroundView)
+                            messageTimeRightLabel.pin(.right, to: .right, of: backgroundView, withInset: -2)
+                            messageTimeRightLabel.pin(.bottom, to: .bottom, of: backgroundView, withInset: 0)
+                            stackView.addArrangedSubview(backgroundView)
+                        }
+//                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
+//                        stackViewForMessageAndTime.axis = .horizontal
+//                        stackViewForMessageAndTime.spacing = 5
+//                        stackViewForMessageAndTime.alignment = .bottom
+//                                                
+//                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
+//                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
+//                                                
+//                        
+//                        stackView.addArrangedSubview(stackViewForMessageAndTime)
                         // Constraints
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: 4)
@@ -673,7 +718,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         super.layoutSubviews()
         updateBubbleViewCorners()
         
-        
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSMessage else { return }
         profilePictureView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
         verifiedImageView.isHidden = !VisibleMessageCell.shouldShowProfilePicture(for: viewItem)
@@ -690,6 +734,21 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
+    private func populateReaction(for viewItem: ConversationViewItem, message: TSMessage) {
+        let reactions: OrderedDictionary<EmojiWithSkinTones, (Int, Bool)> = OrderedDictionary()
+        for reaction in message.reactions {
+            if let reactMessage = reaction as? ReactMessage, let rawEmoji = reactMessage.emoji, let emoji = EmojiWithSkinTones(rawValue: rawEmoji) {
+                let isSelfSend = (reactMessage.authorId! == getUserHexEncodedPublicKey())
+                if let value = reactions.value(forKey: emoji) {
+                    reactions.replace(key: emoji, value: (value.0 + 1, value.1 || isSelfSend))
+                } else {
+                    reactions.append(key: emoji, value: (1, isSelfSend))
+                }
+            }
+        }
+        reactionContainerView.update(reactions.orderedItems, isOutgoingMessage: direction == .outgoing, showNumbers: thread!.isGroupThread())
+    }
+    
     private func updateBubbleViewCorners() {
         let cornersToRound = getCornersToRound()    
         let maskPath = UIBezierPath(roundedRect: bubbleView.bounds, byRoundingCorners: cornersToRound,
@@ -702,7 +761,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         unloadContent?()
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         viewsToMove.forEach { $0.transform = .identity }
         replyButton.alpha = 0
         timerView.prepareForReuse()
@@ -744,9 +803,26 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
-    @objc func handleLongPress() {
+    @objc func handleLongPress(_ gestureRecognizer: UITapGestureRecognizer) {
+        if [ .ended, .cancelled, .failed ].contains(gestureRecognizer.state) {
+            isHandlingLongPress = false
+            return
+        }
+        guard !isHandlingLongPress else { return }
         guard let viewItem = viewItem else { return }
-        delegate?.handleViewItemLongPressed(viewItem)
+        let location = gestureRecognizer.location(in: self)
+        if reactionContainerView.frame.contains(location) {
+//            let convertedLocation = reactionContainerView.convert(location, from: self)
+            for reactionView in reactionContainerView.reactionViews {
+                //if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                    delegate?.showReactionList(viewItem, selectedReaction: reactionView.emoji)
+                    break
+                //}
+            }
+        } else {
+            delegate?.handleViewItemLongPressed(viewItem)
+        }
+        isHandlingLongPress = true
     }
 
     @objc private func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -759,8 +835,19 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         } else if replyButton.frame.contains(location) { // here tick mark option click means replay going i give hide
 //            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
 //            reply()
-        }
-        else {
+        } else if reactionContainerView.frame.contains(location) {
+            let convertedLocation = reactionContainerView.convert(location, from: self)
+            for reactionView in reactionContainerView.reactionViews {
+                if reactionContainerView.convert(reactionView.frame, from: reactionView.superview).contains(convertedLocation) {
+                    if reactionView.showBorder {
+                        delegate?.cancelReact(viewItem, for: reactionView.emoji.rawValue)
+                    } else {
+                        delegate?.quickReact(viewItem, with: reactionView.emoji)
+                    }
+                    return
+                }
+            }
+        } else {
             delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
         }
     }
@@ -780,7 +867,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
             return
         }
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
         switch gestureRecognizer.state {
             case .began:
@@ -820,7 +907,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private func resetReply() {
-        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView ]
+        let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         UIView.animate(withDuration: 0.25) {
             viewsToMove.forEach { $0.transform = .identity }
             self.replyButton.alpha = 0
@@ -1009,6 +1096,20 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
+        let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
+        if viewItem.quotedReply != nil && attachments.isEmpty {
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 45 - 30
+            if width > maxWidth {
+                result.set(.width, to: width > maxWidth ? maxWidth : width)
+            } else {
+                if width > size.width {
+                    result.set(.width, to: width + 20)
+                } else {
+                    result.set(.width, to: size.width > 85 ? size.width : 85)
+                }
+            }
+        }
         return result
     }
     
@@ -1049,5 +1150,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
     }
     
+    func isOverlapping(view1: UIView, view2: UIView) -> Bool {
+        // Convert frames to the same coordinate space (e.g., their common superview)
+        guard let commonSuperview = view1.superview, view2.superview == commonSuperview else {
+            return false
+        }
+        let frame1 = view1.frame
+        let frame2 = view2.frame
+        return frame1.intersects(frame2)
+    }
     
 }

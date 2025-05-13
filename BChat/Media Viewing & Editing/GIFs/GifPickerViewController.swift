@@ -206,7 +206,7 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         noResultsView.autoPinWidthToSuperview(withMargin: 20)
         noResultsView.autoAlignAxis(.horizontal, toSameAxisOf: self.collectionView)
 
-        let searchErrorView = createErrorLabel(text: NSLocalizedString("GIF_VIEW_SEARCH_ERROR",
+        let searchErrorView = createErrorLabel(text: NSLocalizedString("NO_RESULTS_FOUND",
                                                                       comment: "Indicates that an error occurred while searching."))
         self.searchErrorView = searchErrorView
         self.view.addSubview(searchErrorView)
@@ -257,39 +257,39 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         }
 
         switch viewMode {
-        case .idle:
-            self.collectionView.isHidden = true
-            noResultsView.isHidden = true
-            searchErrorView.isHidden = true
-            activityIndicator.isHidden = true
-            activityIndicator.stopAnimating()
-        case .searching:
-            self.collectionView.isHidden = true
-            noResultsView.isHidden = true
-            searchErrorView.isHidden = true
-            activityIndicator.isHidden = false
-            activityIndicator.startAnimating()
-        case .results:
-            self.collectionView.isHidden = false
-            noResultsView.isHidden = true
-            searchErrorView.isHidden = true
-            activityIndicator.isHidden = true
-            activityIndicator.stopAnimating()
+            case .idle:
+                self.collectionView.isHidden = true
+                noResultsView.isHidden = true
+                searchErrorView.isHidden = true
+                activityIndicator.isHidden = true
+                activityIndicator.stopAnimating()
+            case .searching:
+                self.collectionView.isHidden = true
+                noResultsView.isHidden = true
+                searchErrorView.isHidden = true
+                activityIndicator.isHidden = false
+                activityIndicator.startAnimating()
+            case .results:
+                self.collectionView.isHidden = false
+                noResultsView.isHidden = true
+                searchErrorView.isHidden = true
+                activityIndicator.isHidden = true
+                activityIndicator.stopAnimating()
 
-            self.collectionView.collectionViewLayout.invalidateLayout()
-            self.collectionView.reloadData()
-        case .noResults:
-            self.collectionView.isHidden = true
-            noResultsView.isHidden = false
-            searchErrorView.isHidden = true
-            activityIndicator.isHidden = true
-            activityIndicator.stopAnimating()
-        case .error:
-            self.collectionView.isHidden = true
-            noResultsView.isHidden = true
-            searchErrorView.isHidden = false
-            activityIndicator.isHidden = true
-            activityIndicator.stopAnimating()
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                self.collectionView.reloadData()
+            case .noResults:
+                self.collectionView.isHidden = true
+                noResultsView.isHidden = false
+                searchErrorView.isHidden = true
+                activityIndicator.isHidden = true
+                activityIndicator.stopAnimating()
+            case .error:
+                self.collectionView.isHidden = true
+                noResultsView.isHidden = true
+                searchErrorView.isHidden = false
+                activityIndicator.isHidden = true
+                activityIndicator.stopAnimating()
         }
     }
 

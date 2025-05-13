@@ -75,20 +75,20 @@ final class VoiceMessageRecordingView : UIView {
 
     private lazy var cancelButton: UIButton = {
         let result = UIButton()
-        result.setTitle("Cancel", for: UIControl.State.normal)
+        result.setTitle("Cancel", for: .normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(handleCancelButtonTapped), for: UIControl.Event.touchUpInside)
+        result.setTitleColor(Colors.text, for: .normal)
+        result.addTarget(self, action: #selector(handleCancelButtonTapped), for: .touchUpInside)
         result.alpha = 0
         return result
     }()
     
     private lazy var pauseButton: UIButton = {
         let result = UIButton()
-        result.setTitle("Pause", for: UIControl.State.normal)
+        result.setTitle("Pause", for: .normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(handlePauseButtonTapped), for: UIControl.Event.touchUpInside)
+        result.setTitleColor(Colors.text, for: .normal)
+        result.addTarget(self, action: #selector(handlePauseButtonTapped), for: .touchUpInside)
         result.alpha = 0
         return result
     }()
@@ -108,10 +108,10 @@ final class VoiceMessageRecordingView : UIView {
     
     private lazy var audioButton: UIButton = {
         let result = UIButton()
-        result.addTarget(self, action: #selector(audioButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
         result.alpha = 0
         let image = UIImage(named: "ic_record")
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.clipsToBounds = true
         return result
     }()

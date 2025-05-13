@@ -7,8 +7,15 @@ import BChatUtilitiesKit
 import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
-    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate,
-    ConversationTitleViewDelegate {
+    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate {
+    
+
+    func needsLayout() {
+        UIView.setAnimationsEnabled(false)
+        messagesTableView.beginUpdates()
+        messagesTableView.endUpdates()
+        UIView.setAnimationsEnabled(true)
+    }
 
     func handleTitleViewTapped() {
         
@@ -49,6 +56,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: Call
     @objc func startCall(_ sender: Any?) {
+        // if audio recording is on need to restrict call
+        if audioRecorder != nil {
+            return
+        }
         snInputView.resignFirstResponder()
         guard let thread = thread as? TSContactThread else { return }
         let publicKey = thread.contactBChatID()
@@ -65,8 +76,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
                 let callVC = NewIncomingCallVC(for: call)
                 callVC.conversationVC = self
-                self.inputAccessoryView?.isHidden = true
-                self.inputAccessoryView?.alpha = 0
+                hideInputAccessoryView()
                 present(callVC, animated: true, completion: nil)
                 //CallVC
                 //NewIncomingCallVC
@@ -188,11 +198,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        let gifVC = GifPickerViewController(thread: thread)
-        gifVC.delegate = self
-        let navController = OWSNavigationController(rootViewController: gifVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true) { }
+//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+//            let gifVC = GifPickerViewController(thread: thread)
+//            gifVC.delegate = self
+//            let navController = OWSNavigationController(rootViewController: gifVC)
+//            navController.modalPresentationStyle = .fullScreen
+//            present(navController, animated: true) { }
+//        } else {
+//            //check your internet connection
+//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+//        }
     }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {
@@ -288,8 +303,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
-            inputAccessoryView?.isHidden = true
-            inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             let modal = OwnSeedWarningPopUp()
             modal.modalPresentationStyle = .overFullScreen
             modal.modalTransitionStyle = .crossDissolve
@@ -524,6 +538,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if newText.count < oldText.count {
             if !newText.hasPrefix("@") {
                 currentMentionStartIndex = nil
+                
                 snInputView.hideMentionsUI()
                 mentions = mentions.filter { $0.isContained(in: newText) }
             }
@@ -607,16 +622,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         snInputView.hideMentionsUI()
         self.oldText = newText
     }
-    
-    func showInputAccessoryView() {
-        UIView.animate(withDuration: 0.25, animations: {
-            self.inputAccessoryView?.isHidden = false
-            self.inputAccessoryView?.alpha = 1
-        })
-    }
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
+        // if message is not sent then no need long press
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if let messageOutgoing = message as? TSOutgoingMessage {
+            let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
+            if status == .sent || status == .delivered || status == .skipped {} else { return }
+        }
+        
         // Show the context menu if applicable
         guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
             let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell,
@@ -653,6 +668,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let callVC = NewIncomingCallVC(for: call)
             callVC.conversationVC = self
             snInputView.isHidden = true
+            hideInputAccessoryView(self.inputAccessoryView)
+            if let viewController = callVC.conversationVC {
+                hideInputAccessoryView(viewController.inputAccessoryView)
+            }
             present(callVC, animated: true, completion: nil)
             
         } else {
@@ -769,13 +788,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
                         joinOpenGroup(name: name, url: url)
+                    } else if let message = viewItem.interaction as? TSOutgoingMessage, let name = message.openGroupInvitationName,
+                              let url = message.openGroupInvitationURL {
+                              joinOpenGroup(name: name, url: url)
                     } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
                     } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
                     } else {
                         if isKeyboardPresented {
-                            UIApplication.dismissKeyboard()
+                            view.endEditing(true)
                         }
                     }
                 default: break
@@ -844,6 +866,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
+        if isAudioRecording { return }
+        
+        if isShowingSearchUI {
+            hideSearchUI()
+        }
         customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
         var quoteDraftOrNil: OWSQuotedReplyModel?
@@ -865,6 +892,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
             let fullDetails = "Amount:\(amount), txnid:\(id)"
             UIPasteboard.general.string = fullDetails
+        } else if let message = viewItem.interaction as? TSMessage, let openGroupInvitationURL = message.openGroupInvitationURL {
+            if let range = openGroupInvitationURL.range(of: "?public_key=") {
+                UIPasteboard.general.string = String(openGroupInvitationURL[..<range.lowerBound])
+            } else {
+                UIPasteboard.general.string = openGroupInvitationURL
+            }
         } else {
             viewItem.copyTextAction()
         }
@@ -915,8 +948,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
             alertVC.addAction(cancelAction)
             
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         } else {
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -950,18 +982,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
             }
             alertVC.addAction(cancelAction)
-            self.inputAccessoryView?.isHidden = true
-            self.inputAccessoryView?.alpha = 0
+            hideInputAccessoryView()
             self.presentAlert(alertVC)
         }
     }
     
     func report(_ viewItem: ConversationViewItem) {
-        let uiAlert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
-        self.present(uiAlert, animated: true, completion: nil)
-        uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        let alert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
+        self.present(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
         }))
-        uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
         }))
     }
     
@@ -982,6 +1013,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
             SNMessagingKitConfiguration.shared.storage.write { transaction in
@@ -991,6 +1024,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func deleteForEveryone(_ viewItem: ConversationViewItem) {
+        audioPlayer?.stop()
+        audioPlayer = nil
         viewItem.deleteLocallyAction()
         viewItem.deleteRemotelyAction()
         if let unsendRequest = buildUnsendRequest(viewItem) {
@@ -1034,6 +1069,31 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let publicKey = message.authorId
             guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
             OpenGroupAPIV2.banAndDeleteAllMessages(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        presentAlert(alert)
+    }
+    
+    func messageBanAction(_ viewItem: ConversationViewItem, isOnlyBan: Bool) {
+        guard let conversationMessage = viewItem.interaction as? TSIncomingMessage, conversationMessage.isOpenGroupMessage else { return }
+        let message = isOnlyBan ? "This will ban the selected user from this room. It won't ban them from other rooms." :
+        "This will ban the selected user from this room and delete all messages sent by them. It won't ban them from other rooms or delete the messages they sent there."
+        showBanAlertController(message: message) { _ in
+            let publicKey = conversationMessage.authorId
+            guard let threadID = self.thread.uniqueId else { return }
+            guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
+            if isOnlyBan {
+                OpenGroupAPIV2.ban(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+            } else {
+                OpenGroupAPIV2.banAndDeleteAllMessages(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
+            }
+        }
+    }
+    
+    func showBanAlertController(message: String, completion: @escaping (Bool) -> ()) {
+        let alert = UIAlertController(title: "BChat", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            completion(true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
         presentAlert(alert)
@@ -1133,6 +1193,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
+        // if call is connected need to restrict audio recording
+        if AppEnvironment.shared.callManager.currentCall != nil {
+            return
+        }
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
@@ -1140,7 +1204,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self?.cancelVoiceMessageRecording()
         }
         // Keep screen on
-        UIApplication.shared.isIdleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = true
         guard AVAudioSession.sharedInstance().recordPermission == .granted else { return }
         // Cancel any current audio playback
         audioPlayer?.stop()
@@ -1191,7 +1255,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func endVoiceMessageRecording() {
-        UIApplication.shared.isIdleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = false
         // Hide the UI
         snInputView.hideVoiceMessageUI()
         // Cancel the timer
@@ -1523,6 +1587,156 @@ extension ConversationVC {
         })
     }
     
+    func showReactionList(_ viewItem: ConversationViewItem, selectedReaction: EmojiWithSkinTones?) {
+        guard let thread = thread as? TSGroupThread else { return }
+        guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
+        let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
+            self.reactionListOpened = false
+            self.snInputView.isHidden = false
+        }
+        showingReactionListForMessageId = viewItem.interaction.uniqueId
+        reactionListSheet.delegate = self
+        reactionListSheet.selectedReaction = selectedReaction
+        reactionListSheet.modalPresentationStyle = .overFullScreen
+        present(reactionListSheet, animated: true) {
+            self.reactionListOpened = true
+        }
+    }
+    
+    func react(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
+        Storage.write { transaction in
+            Storage.shared.recordRecentEmoji(emoji, transaction: transaction)
+        }
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        if message.reactions.count == 0 {
+            addReaction(viewItem, with: emoji.rawValue)
+        } else {
+            let oldRecord = message.reactions.first { reaction in
+                (reaction as! ReactMessage).authorId == getUserHexEncodedPublicKey()
+            }
+            let isAlreadyReacted = message.reactions.contains(oldRecord as? ReactMessage ?? false)
+            if (isAlreadyReacted && (oldRecord as! ReactMessage).emoji == emoji.rawValue) {
+                removeReaction(viewItem, with: emoji.rawValue)
+            } else {
+                if isAlreadyReacted {
+                    removeReaction(viewItem, with: (oldRecord as! ReactMessage).emoji!)
+                }
+                DispatchQueue.main.async {
+                    self.addReaction(viewItem, with: emoji.rawValue)
+                }
+            }
+        }
+        
+    }
+    
+    func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
+        react(viewItem, with: emoji)
+    }
+    
+    func cancelReact(_ viewItem: ConversationViewItem, for emoji: String) {
+        removeReaction(viewItem, with: emoji)
+    }
+    
+    func cancelAllReact(reactMessages: [ReactMessage]) {
+        guard let groupThread = thread as? TSGroupThread, groupThread.isOpenGroup else { return }
+        guard let threadId = groupThread.uniqueId, let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadId) else { return }
+        OpenGroupAPIV2.batchDeleteMessages(for: openGroupV2.room, on: openGroupV2.server, messageIds: reactMessages.compactMap{ $0.messageId })
+    }
+    
+    func addReaction(_ viewItem: ConversationViewItem, with emoji: String) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        let visibleMessage = VisibleMessage()
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        visibleMessage.sentTimestamp = sentTimestamp
+        var authorId = getUserHexEncodedPublicKey()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
+        
+        Storage.write(
+            with: { transaction in
+                message.addReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                if let incomingMessage = message as? TSIncomingMessage { authorId = incomingMessage.authorId }
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+                visibleMessage.reaction = .from(reactMessage)
+                visibleMessage.reaction?.kind = .react
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
+                }
+            }
+        )
+    }
+    
+    func removeReaction(_ viewItem: ConversationViewItem, with emoji: String) {
+        guard let message = viewItem.interaction as? TSMessage else { return }
+        
+        let authorId = getUserHexEncodedPublicKey()
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let reactMessage = ReactMessage(timestamp: sentTimestamp, authorId: authorId, emoji: emoji)
+            
+        Storage.write(
+            with: { transaction in
+                message.removeReaction(reactMessage, transaction: transaction)
+            },
+            completion: {
+                let visibleMessage = VisibleMessage()
+//                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+                visibleMessage.sentTimestamp = sentTimestamp
+                let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
+                visibleMessage.reaction = .from(reactMessage)
+                visibleMessage.reaction?.kind = .remove
+                Storage.write { transaction in
+                    MessageSender.send(visibleMessage, in: self.thread, using: transaction)
+                }
+            }
+        )
+    }
+    
+    func showFullEmojiKeyboard(_ viewItem: ConversationViewItem) {
+        hideInputAccessoryView()
+        isEmojiSheetPresented = true
+        let window = ContextMenuWindow()
+        let emojiPicker = EmojiPickerSheet(
+            completionHandler: { [weak self] emoji in
+                guard let strongSelf = self else { return }
+                guard let emoji: EmojiWithSkinTones = emoji else { return }
+                strongSelf.react(viewItem, with: emoji)
+                isEmojiSheetPresented = false
+            }, dismiss: {
+                [weak self] in
+                window.isHidden = true
+                guard let self = self else { return }
+                self.emojiPickersheet = nil
+                self.contextMenuWindow = nil
+                self.scrollButton.alpha = 0
+                UIView.animate(withDuration: 0.25) {
+                    self.scrollButton.alpha = self.getScrollButtonOpacity()
+                    self.unreadCountView.alpha = self.scrollButton.alpha
+                }
+                isEmojiSheetPresented = false
+            }
+        )
+        self.emojiPickersheet = emojiPicker
+        contextMenuWindow = window
+        window.rootViewController = emojiPickersheet
+        window.makeKeyAndVisible()
+        window.backgroundColor = .clear
+    }
+    
+    func showInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = false
+            self.inputAccessoryView?.alpha = 1
+        })
+    }
+
+    func hideInputAccessoryView() {
+        UIView.animate(withDuration: 0.25, animations: {
+            self.inputAccessoryView?.isHidden = true
+            self.inputAccessoryView?.alpha = 0
+        })
+    }
 }
 
 struct CustomSlideView {

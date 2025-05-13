@@ -172,13 +172,13 @@ class DownloadAttachmentPopUpViewController: BaseVC {
             Storage.shared.resumeAttachmentDownloadJobsIfNeeded(for: message.uniqueThreadId)
         })
         presentingViewController?.dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
     }
     
     /// Cancel Button Tapped
     @objc private func cancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
-        NotificationCenter.default.post(name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
     }
     
 }

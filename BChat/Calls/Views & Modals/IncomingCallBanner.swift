@@ -28,24 +28,24 @@ final class IncomingCallBanner: UIView, UIGestureRecognizerDelegate {
     private lazy var answerButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "AnswerCall")!.withTint(.white)?.resizedImage(to: CGSize(width: 24.8, height: 24.8))
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 48)
         result.set(.height, to: 48)
         result.backgroundColor = Colors.bothGreenColor
         result.layer.cornerRadius = 24
-        result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(answerCall), for: .touchUpInside)
         return result
     }()
     
     private lazy var hangUpButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "EndCall")!.withTint(.white)?.resizedImage(to: CGSize(width: 29.6, height: 11.2))
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 48)
         result.set(.height, to: 48)
         result.backgroundColor = Colors.destructive
         result.layer.cornerRadius = 24
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         return result
     }()
     

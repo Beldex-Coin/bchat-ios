@@ -110,10 +110,10 @@ public final class BChatCallManager: NSObject {
         if let reason = reason {
             self.provider?.reportCall(with: call.callID, endedAt: nil, reason: reason)
             switch (reason) {
-            case .answeredElsewhere: call.updateCallMessage(mode: .answeredElsewhere)
-            case .unanswered: call.updateCallMessage(mode: .unanswered)
-            case .declinedElsewhere: call.updateCallMessage(mode: .local)
-            default: call.updateCallMessage(mode: .remote)
+                case .answeredElsewhere: call.updateCallMessage(mode: .answeredElsewhere)
+                case .unanswered: call.updateCallMessage(mode: .unanswered)
+                case .declinedElsewhere: call.updateCallMessage(mode: .local)
+                default: call.updateCallMessage(mode: .remote)
             }
         } else {
             call.updateCallMessage(mode: .local)

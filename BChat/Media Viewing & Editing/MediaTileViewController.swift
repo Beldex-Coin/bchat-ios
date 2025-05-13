@@ -220,7 +220,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         ])
         
 //        getAllDcouments()
-        fetchAllDocuments()
+//        fetchAllDocuments()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -295,7 +295,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             self.collectionView.reloadData()
             documents.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
             }
         }
     }
@@ -310,7 +309,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 deletedDocuments = documentsDecoded
             }
             deletedDocuments.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
             }
         }
         
@@ -354,7 +352,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
             }
         }
-        fetchAllDocuments()
+//        fetchAllDocuments()
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
@@ -696,16 +694,11 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             cell.dateLabel.text = formatDate(documentItem.createdTimeStamp)
             
-            var documentImage = ""
-            if documentItem.contentType == DocumentContentType.mswordDocument.rawValue {
-                documentImage = "ic_documentType_doc"
-            } else if documentItem.contentType == DocumentContentType.pdfDocument.rawValue {
-                documentImage = "ic_documentType_pdf"
-            } else if documentItem.contentType == DocumentContentType.textDocument.rawValue {
-                documentImage = "ic_documentType_text"
-            } else {
-                documentImage = "ic_documentType_doc"
-            }
+            let contentType = documentItem.contentType
+            let documentImage = contentType == DocumentContentType.mswordDocument.rawValue ? "ic_documentType_doc" :
+                                contentType == DocumentContentType.pdfDocument.rawValue ? "ic_documentType_pdf" :
+                                contentType == DocumentContentType.textDocument.rawValue ? "ic_documentType_text" : "ic_documentType_doc"
+            
             cell.documentImageView.image = UIImage(named: documentImage)
             return cell
         }
@@ -910,21 +903,19 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             owsFailDebug("collectionView was unexpectedly nil")
             return
         }
-        
-        // hide toolbar
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut, animations: {
+
+        collectionView.performBatchUpdates({
+//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+//                collectionView.deselectItem(at: indexPath, animated: false)
+//            }
+
             NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
             self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
             self.footerBar.superview?.layoutIfNeeded()
-            
-            // undo "ensure toolbar doesn't cover bottom row."
             collectionView.contentInset.bottom -= self.kFooterBarHeight
         }, completion: nil)
         
         self.navigationItem.hidesBackButton = false
-        
-        // deselect any selected
-        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: false)}
     }
     
     @objc

@@ -154,18 +154,18 @@ public final class SearchResultsBar : UIView {
     private lazy var upButton: UIButton = {
         let icon = #imageLiteral(resourceName: "ic_chevron_up").withRenderingMode(.alwaysTemplate)
         let result = UIButton()
-        result.setImage(icon, for: UIControl.State.normal)
+        result.setImage(icon, for: .normal)
         result.tintColor = Colors.bothGreenColor
-        result.addTarget(self, action: #selector(handleUpButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(handleUpButtonTapped), for: .touchUpInside)
         return result
     }()
     
     private lazy var downButton: UIButton = {
         let icon = #imageLiteral(resourceName: "ic_chevron_down").withRenderingMode(.alwaysTemplate)
         let result = UIButton()
-        result.setImage(icon, for: UIControl.State.normal)
+        result.setImage(icon, for: .normal)
         result.tintColor = Colors.bothGreenColor
-        result.addTarget(self, action: #selector(handleDownButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(handleDownButtonTapped), for: .touchUpInside)
         return result
     }()
     

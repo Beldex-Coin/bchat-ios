@@ -305,16 +305,56 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
             )
         }
     }
+    
+    public func notifyUser(forReaction reactMessage: ReactMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isMuted else { return }
+        guard !thread.isGroupThread() else { return } // We do NOT notify emoji reacts in groups
+        guard !thread.isMessageRequest(using: transaction) else { return }
+        guard let sender = reactMessage.authorId, let emoji = reactMessage.emoji else { return }
+        guard let threadId = thread.uniqueId else { return }
+        if sender == getUserHexEncodedPublicKey() {
+            return
+        }
+        
+        let context = Contact.context(for: thread)
+        let senderName = Storage.shared.getContact(with: sender, using: transaction)?.displayName(for: context) ?? sender
+        
+        let notificationTitle = senderName
+        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), emoji)
+        switch previewType {
+            case .namePreview: break
+            default: notificationBody = NotificationStrings.incomingMessageBody
+        }
+        
+        let category = AppNotificationCategory.incomingMessage
+
+        let userInfo = [
+            AppNotificationUserInfoKey.threadId: threadId
+        ]
+
+        DispatchQueue.main.async {
+            let sound = self.requestSound(thread: thread)
+            
+            self.adaptee.notify(
+                category: category,
+                title: notificationTitle,
+                body: notificationBody,
+                userInfo: userInfo,
+                sound: sound,
+                replacingIdentifier: UUID().uuidString
+            )
+        }
+    }
 
     public func notifyForFailedSend(inThread thread: TSThread) {
         let notificationTitle: String?
         switch previewType {
-        case .noNameNoPreview:
-            notificationTitle = nil
-        case .nameNoPreview, .namePreview:
-            notificationTitle = thread.name()
-        default:
-            notificationTitle = nil
+            case .noNameNoPreview:
+                notificationTitle = nil
+            case .nameNoPreview, .namePreview:
+                notificationTitle = thread.name()
+            default:
+                notificationTitle = nil
         }
 
         let notificationBody = NotificationStrings.failedToSendBody

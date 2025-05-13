@@ -60,6 +60,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var scrollDistanceToBottomBeforeUpdate: CGFloat?
     var baselineKeyboardHeight: CGFloat = 0
     var isSyncingStatus = false
+    var emojiPickersheet: EmojiPickerSheet?
+    // Reaction
+    var showingReactionListForMessageId: String?
+    var reactionListOpened: Bool = false
     
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
@@ -350,6 +354,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var hashArray = [RecipientDomainSchema]()
     var recipientAddressON = false
     var isdaemonHeight : Int64 = 0
+    var disappearingMessagesConfiguration: OWSDisappearingMessagesConfiguration?
     
     private lazy var hiddenView: UIView = {
         let result = UIView()
@@ -495,7 +500,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
-        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(inChatPaymentOkButtonTapped), for: .touchUpInside)
         return button
@@ -535,7 +540,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.layer.cornerRadius = 6
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
-        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(isSuccessPopTappedButton), for: .touchUpInside)
         return button
@@ -1106,7 +1111,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             OpenGroupAPIV2.getMemberCount(for: v2OpenGroup.room, on: v2OpenGroup.server).retainUntilComplete()
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .hideOrShowInputViewNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideOrShowInputViewAction(_:)), name: .showInputViewNotification, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.callViewTapped(_:)))
         tap.cancelsTouchesInView = false
@@ -1167,7 +1172,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         newSlidePositionY = UIScreen.main.bounds.height/1.4
         customizeSlideToOpen.frame.origin.y = newSlidePositionY
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1221,7 +1225,13 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     override func appDidBecomeActive(_ notification: Notification) {
-        recoverInputView()
+        
+        if AppEnvironment.shared.callManager.currentCall == nil && !reactionListOpened {
+            recoverInputView()
+            snInputView.isHidden = false
+        } else {
+            snInputView.isHidden = true
+        }
     }
     
     deinit {
@@ -1286,6 +1296,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func hideOrShowInputViewAction(_ notification: Notification) {
         snInputView.isHidden = false
+        self.recoverInputView()
+        self.showInputAccessoryView()
     }
     
     @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
@@ -1825,15 +1837,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     // MARK: Updating
     
     func updateNavBarButtons() {
+        self.disappearingMessagesConfiguration = OWSDisappearingMessagesConfiguration.fetch(uniqueId: self.thread.uniqueId!)
+        if self.disappearingMessagesConfiguration == nil {
+            self.disappearingMessagesConfiguration = OWSDisappearingMessagesConfiguration(uniqueId: self.thread.uniqueId)
+        }
         navigationItem.hidesBackButton = isShowingSearchUI
         // get profile image
         self.navigationItem.leftItemsSupplementBackButton = true
         if let contactThread: TSContactThread = (thread as? TSContactThread) {
             let publicKey = contactThread.contactBChatID()
-            let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+            let button: UIButton = UIButton(type: .custom)
             button.widthAnchor.constraint(equalToConstant: 42).isActive = true
             button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+            button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
             button.frame = CGRectMake(0, 0, 42, 42)
             button.layer.cornerRadius = 21
             button.layer.masksToBounds = true            
@@ -1872,7 +1888,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let barButton = UIBarButtonItem(customView: outerView)
             self.navigationItem.leftBarButtonItem = barButton
             
-            button.addTarget(self, action: #selector(handleProfileTap), for: UIControl.Event.touchUpInside)
+            button.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
         } else {
             let iconImageView = ProfilePictureView()
             iconImageView.update(for: self.thread)
@@ -1892,7 +1908,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)
                 } else {
-                    button.setImage(iconImageView.getProfilePicture(), for: UIControl.State.normal)
+                    button.setImage(iconImageView.getProfilePicture(), for: .normal)
                 }
             }
             
@@ -1939,6 +1955,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         else {
             var rightBarButtonItems: [UIBarButtonItem] = []
+            let disappearMessageButton = UIButton(type: .custom)
             if let contactThread: TSContactThread = thread as? TSContactThread {
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
@@ -1947,7 +1964,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
 //                    let setting = UIButton(type: .custom)
 //                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
 //                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
-//                    setting.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+//                    setting.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
 //                      let settingBarItem = UIBarButtonItem(customView: setting)
 //                    rightBarButtonItems.append(settingBarItem)
                     
@@ -1955,11 +1972,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                     if shouldShowCallButton {
                         let callBtn = UIButton(type: .custom)
                         callBtn.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-                        callBtn.setImage(UIImage(named:"ic_call_new"), for: .normal)
-                        callBtn.addTarget(self, action: #selector(startCall), for: UIControl.Event.touchUpInside)
+                        callBtn.setImage(UIImage(named:"ic_call"), for: .normal)
+                        callBtn.addTarget(self, action: #selector(startCall), for: .touchUpInside)
                         let callBarItem = UIBarButtonItem(customView: callBtn)
                         rightBarButtonItems.append(callBarItem)
                         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
+                    }
+                    if (disappearingMessagesConfiguration!.isEnabled) {
+                        
+                        disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        disappearMessageButton.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
+                        let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
+                        rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
                 }
                 else {
@@ -1970,6 +1995,16 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 }
             }
             else {
+                
+                if let thread = thread as? TSGroupThread, thread.groupModel.groupType == .closedGroup {
+                    if (disappearingMessagesConfiguration!.isEnabled) {
+                        disappearMessageButton.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
+                        disappearMessageButton.setImage(UIImage(named:"ic_disappearMessage"), for: .normal)
+                        disappearMessageButton.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
+                        let disappearMessageButtonBarItem = UIBarButtonItem(customView: disappearMessageButton)
+                        rightBarButtonItems.append(disappearMessageButtonBarItem)
+                    }
+                }
                 
                 // Don't Delete this is for three dots menu
 //                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
@@ -2098,8 +2133,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self?.view.setNeedsLayout()
                 self?.view.layoutIfNeeded()
             },
-            completion: nil
-        )
+            completion: nil         )
     }
     
     func conversationViewModelWillUpdate() {
@@ -2124,6 +2158,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 switch update.updateItemType {
                     case .delete:
                         self.messagesTableView.deleteRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                        self.audioPlayer?.stop()
+                        self.audioPlayer = nil
                     case .insert:
                         // Perform inserts before updates
                         self.messagesTableView.insertRows(at: [ IndexPath(row: Int(update.newIndex), section: 0) ], with: .none)
@@ -2134,6 +2170,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         }
                     case .update:
                         self.messagesTableView.reloadRows(at: [ IndexPath(row: Int(update.oldIndex), section: 0) ], with: .none)
+                        if update.viewItem?.interaction.uniqueId == self.showingReactionListForMessageId {
+                            NotificationCenter.default.post(name: .emojiReactsUpdated, object: nil)
+                        }
                     default: preconditionFailure()
                 }
                 
@@ -2195,6 +2234,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc private func handleGroupUpdatedNotification() {
         thread.reload() // Needed so that thread.isCurrentUserMemberInGroup() is up to date
         reloadInputViews()
+        navigationItem.titleView = titleView
     }
     @objc private func handleMessageSentStatusChanged() {
         DispatchQueue.main.async {
@@ -2240,7 +2280,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func getMediaCache() -> NSCache<NSString, AnyObject> {
         return mediaCache
     }
-    
+
     func updateUnreadCountView() {
         let visibleViewItems = (messagesTableView.indexPathsForVisibleRows ?? []).map { viewItems[ifValid: $0.row] }
         for visibleItem in visibleViewItems {
@@ -2378,6 +2418,7 @@ extension ConversationVC {
     func scrollToBottom(isAnimated: Bool) {
         guard !isUserScrolling && !viewItems.isEmpty else { return }
         messagesTableView.scrollToRow(at: IndexPath(row: viewItems.count - 1, section: 0), at: .bottom, animated: isAnimated)
+        scrollButton.alpha = 0
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

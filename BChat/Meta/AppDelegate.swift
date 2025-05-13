@@ -15,7 +15,7 @@ extension AppDelegate {
     @objc func handleAppActivatedWithOngoingCallIfNeeded() {
         guard let call = AppEnvironment.shared.callManager.currentCall else { return }
         guard MiniCallView.current == nil else { return }
-        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
+        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
         let callVC = NewIncomingCallVC(for: call)
         if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
@@ -61,6 +61,9 @@ extension AppDelegate {
         var receivedCalls = Storage.shared.getReceivedCalls(for: sender, using: transaction)
         guard !receivedCalls.contains(uuid) else { return nil }
         let thread = TSContactThread.getOrCreateThread(withContactBChatID: message.sender!, transaction: transaction)
+        if thread.isArchived {
+            thread.isArchived = false
+        }
         let infoMessage = TSInfoMessage.from(message, associatedWith: thread)
         infoMessage.save(with: transaction)
         receivedCalls.insert(uuid)

@@ -46,7 +46,7 @@ final class DeleteAccountModel : Modal {
         result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.setTitle("Delete", for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()
     
@@ -71,7 +71,7 @@ final class DeleteAccountModel : Modal {
         result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(clearDeviceOnly), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(clearDeviceOnly), for: .touchUpInside)
         return result
     }()
     
@@ -87,7 +87,7 @@ final class DeleteAccountModel : Modal {
         result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Yes", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(clearEntireAccount), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()
     

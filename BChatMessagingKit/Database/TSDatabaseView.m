@@ -271,6 +271,9 @@ NSString *const TSLazyRestoreAttachmentsGroup = @"TSLazyRestoreAttachmentsGroup"
         }
         else if (thread.shouldBeVisible) {
             // Do nothing; we never hide threads that have ever had a message.
+            if (thread.isArchived) {
+                return TSArchiveGroup;
+            }
         } else {
             YapDatabaseViewTransaction *viewTransaction = [transaction ext:TSMessageDatabaseViewExtensionName];
             NSUInteger threadMessageCount = [viewTransaction numberOfItemsInGroup:thread.uniqueId];

@@ -86,8 +86,8 @@ final class NewSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelegat
             explanationLabel.textAlignment = .center
             explanationLabel.text = NSLocalizedString("Uh oh, you don't have any contacts yet.\nAdd some contacts first to start a secret group. ", comment: "")
             let createNewPrivateChatButton = Button(style: .prominentFilled3, size: .large)
-            createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: UIControl.State.normal)
-            createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: UIControl.Event.touchUpInside)
+            createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: .normal)
+            createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: .touchUpInside)
             createNewPrivateChatButton.set(.width, to: 196)
             let stackView = UIStackView(arrangedSubviews: [ explanationLabel, createNewPrivateChatButton ])
             stackView.axis = .vertical

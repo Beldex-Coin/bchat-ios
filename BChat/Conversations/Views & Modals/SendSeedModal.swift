@@ -32,7 +32,7 @@ final class SendSeedModal : Modal {
         result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? Colors.destructive : Colors.text, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("modal_send_seed_send_button_title", comment: ""), for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(sendSeed), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(sendSeed), for: .touchUpInside)
         return result
     }()
     

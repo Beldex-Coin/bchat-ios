@@ -95,7 +95,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     
     let tableView : UITableView = {
-        let t = UITableView()
+        let t = UITableView(frame: CGRectZero, style: .grouped)
         t.translatesAutoresizingMaskIntoConstraints = false
         t.layer.cornerRadius = 14
         return t
@@ -108,10 +108,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     var noteToSelfTitleArray = ["", "All Media", "Search Conversation"]
     var noteToSelfImageArray = ["bchat_chat_setting", "ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting"]
     
-    var contactTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messgaess", "Message Sound", "Mute", "Block This User", "Report Name"]
+    var contactTitleArray = ["", "All Media", "Search Conversation", "Disappearing Messages", "Message Sound", "Mute", "Block This User", "Report Name"]
     var contactImageArray = ["bchat_chat_setting", "ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting", "ic_message_sound", "chatSetting_mute", "chatSetting_block", "chatSetting_report"]
     
-    var closeGroupTitleArray = ["All Media", "Search Conversation", "Disappearing Messgaess", "Edit Group", "Message Sound", "Notify for Mentions Only", "Mute", "Leave Group"]
+    var closeGroupTitleArray = ["All Media", "Search Conversation", "Disappearing Messages", "Edit Group", "Message Sound", "Notify for Mentions Only", "Mute", "Leave Group"]
     var closeGroupImageArray = ["ic_allmedia", "ic_search_settingnew", "ic_disappearing_setting", "chatSetting_editGroup", "ic_message_sound", "chatSetting_notify", "chatSetting_mute", "chatSetting_leaveGroup"]
     
     
@@ -146,6 +146,26 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         super.init(coder: aDecoder)
         commonInit()
     }
+    
+    
+    private var zombies: Set<String> = []
+    private var membersAndZombies: [String] = [] { didSet { handleMembersChanged() } }
+    private lazy var groupPublicKey: String = {
+        if self.isClosedGroup() {
+            let groupThread = self.thread as? TSGroupThread
+            let groupID = groupThread?.groupModel.groupId
+            return LKGroupUtilities.getDecodedGroupID(groupID!)
+        }
+        return ""
+    }()
+    
+    var filteredUsers: [String] = []
+    var searchText: String = ""
+    var mainDict: [String: String] = [:]
+    var filterDict: [String: String] = [:]
+    var namesArray: [String] = []
+    var isSearchEnable = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -183,6 +203,8 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         tableView.register(CustomChatSettingsTableViewCell.self, forCellReuseIdentifier: "CustomChatSettingsTableViewCell")
         tableView.register(NotifyChatSettingsTableViewCell.self, forCellReuseIdentifier: "NotifyChatSettingsTableViewCell")
         tableView.register(DisappearingChatSettingsTableViewCell.self, forCellReuseIdentifier: "DisappearingChatSettingsTableViewCell")
+        tableView.register(ChatSettingsTableViewCell.self, forCellReuseIdentifier: "ChatSettingsTableViewCell")
+        tableView.register(ChatSettingsSearchTableViewCell.self, forCellReuseIdentifier: "ChatSettingsSearchTableViewCell")
         tableView.backgroundColor = Colors.cellGroundColor
         tableView.showsVerticalScrollIndicator = false
         tableView.rowHeight = UITableView.automaticDimension
@@ -281,6 +303,35 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(leaveGroupTapped), name: .LeaveGroupNotification, object: nil)
         
+        zombies = Storage.shared.getZombieMembers(for: groupPublicKey)
+        guard let groupThread = self.thread as? TSGroupThread else { return }
+        membersAndZombies = GroupUtilities.getClosedGroupMembers(groupThread).sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
+            + zombies.sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
+        
+        filteredUsers = membersAndZombies
+        if membersAndZombies.count > 0 {
+            namesArray = []
+            for i in 0...(membersAndZombies.count - 1) {
+                namesArray.append(Storage.shared.getContact(with: membersAndZombies[i])?.displayName(for: .regular) ?? membersAndZombies[i])
+            }
+            mainDict = Dictionary(uniqueKeysWithValues: zip(membersAndZombies, namesArray))
+            filterDict = mainDict
+        }
+        
+        if let adminId = groupThread.groupModel.groupAdminIds.first {
+            if let value = filterDict[adminId] {
+                filterDict.removeValue(forKey: adminId)
+                var orderedDictionary: [String: String] = [adminId: value]
+                for (key, value) in filterDict {
+                    orderedDictionary[key] = value
+                }
+                filterDict = orderedDictionary
+            }
+            if let index = filteredUsers.firstIndex(of: adminId) {
+                filteredUsers.remove(at: index)
+                filteredUsers.insert(adminId, at: 0)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -378,7 +429,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         return false
     }
     
-    
     func configure(with thread: TSThread?, viewItems: [ConversationViewItem]?, uiDatabaseConnection: YapDatabaseConnection?) {
         self.thread = thread
         self.viewItems = viewItems
@@ -436,7 +486,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             for user in selectedUsers {
                 let message = VisibleMessage()
                 message.sentTimestamp = NSDate.millisecondTimestamp()
-                //                message.openGroupInvitation = OpenGroupInvitation(name: openGroup.name, url: url)
                 let invitation = VisibleMessage.OpenGroupInvitation(name: openGroup.name, url: url)
                 message.openGroupInvitation = invitation
                 
@@ -507,14 +556,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         self.tableView.reloadData()
     }
-    
-    
-    
+        
     func editGroup() {
         let editSecretGroupVC = EditGroupViewController(with: thread!.uniqueId!)
         navigationController?.pushViewController(editSecretGroupVC, animated: true, completion: nil)
     }
-    
     
     func didTapLeaveGroup() {
         guard let groupThread = self.thread as? TSGroupThread else {
@@ -538,8 +584,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         
     }
     
-    
-    
     func hasLeftGroup() -> Bool {
         if isGroupThread() {
             let groupThread = thread as? TSGroupThread
@@ -556,10 +600,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 MessageSender.objc_leave(groupPublicKey, using: transaction).retainUntilComplete()
             }
         }
-        
-        navigationController?.popViewController(animated: true)
+        if gThread!.groupModel.groupAdminIds.contains(getUserHexEncodedPublicKey()) {
+            backToHomeScreen()
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
-    
     
     @objc func durationSliderDidChange(_ slider: UISlider) {
         let index = Int(slider.value + 0.5)
@@ -593,7 +639,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     func tappedConversationSearch() {
         conversationSettingsViewDelegate?.conversationSettingsDidRequestConversationSearch(self)
     }
-    
     
     @objc func showProfilePicture(_ tapGesture: UITapGestureRecognizer) {
         guard let profilePictureView = tapGesture.view as? ProfilePictureView,
@@ -765,7 +810,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 deletedDocuments = documentsDecoded
             }
             deletedDocuments.forEach { document in
-                debugPrint("document contentType **** \(document.contentType) timestamp **** \(document.createdTimeStamp)")
             }
         }
         
@@ -836,27 +880,199 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         return unsendRequest
     }
     
+    private func handleMembersChanged() {
+        tableView.reloadData()
+    }
+    
+    func getDisplayName(for publicKey: String) -> String {
+        return Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+    }
+   
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            // TODO: Pass in context?
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
+    }
+    
+    func reloadTableView() {
+        tableView.reloadData()
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? ChatSettingsSearchTableViewCell {
+            DispatchQueue.main.async {
+//                cell.searchTextField.becomeFirstResponder()
+            }
+        }
+        if isSearchEnable {
+            if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? ChatSettingsSearchTableViewCell {
+                DispatchQueue.main.async {
+//                    cell.searchTextField.becomeFirstResponder()
+                }
+            }
+        }
+    }
+    
+    
+//    // For Search
+    @objc func closeIconTapped(textField: UITextField) {
+        textField.text = ""
+        tableView.reloadData()
+        // Get the right view of the search text field
+        if let rightView = textField.rightView {
+            // Iterate through subviews of the right view to find the close icon image view
+            for subview in rightView.subviews {
+                if let closeIconImageView = subview as? UIImageView, closeIconImageView.tag == 1 {
+                    // Hide the close icon image view
+                    closeIconImageView.isHidden = true
+                    isFilterContacts(textField: textField)
+                }
+            }
+        }
+        // Get the right view of the search text field
+        if let rightView = textField.rightView {
+            // Iterate through subviews of the right view to find the search icon image view
+            for subview in rightView.subviews {
+                if let searchIconImageView = subview as? UIImageView, searchIconImageView.tag != 1 {
+                    // Show the search icon image view
+                    searchIconImageView.isHidden = false
+                    isFilterContacts(textField: textField)
+                }
+            }
+        }
+    }
+    
+    
+    func isFilterContacts(textField: UITextField) {
+        let currentText = textField.text ?? ""
+        searchText = currentText
+        if searchText.isEmpty {
+            filteredUsers = membersAndZombies
+            if membersAndZombies.count > 0 {
+                namesArray = []
+                for i in 0...(membersAndZombies.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: membersAndZombies[i])?.displayName(for: .regular) ?? membersAndZombies[i])
+                }
+                mainDict = Dictionary(uniqueKeysWithValues: zip(membersAndZombies, namesArray))
+                filterDict = mainDict
+            }
+        } else {
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+            filteredUsers = Array(filterDict.keys)
+        }
+        guard let groupThread = self.thread as? TSGroupThread else { return }
+        let adminId = groupThread.groupModel.groupAdminIds[0]
+        if let value = filterDict[adminId] {
+            filterDict.removeValue(forKey: adminId)
+            var orderedDictionary: [String: String] = [adminId: value]
+            for (key, value) in filterDict {
+                orderedDictionary[key] = value
+            }
+            filterDict = orderedDictionary
+        }
+        if let index = filteredUsers.firstIndex(of: adminId) {
+            filteredUsers.remove(at: index)
+            filteredUsers.insert(adminId, at: 0)
+        }
+        tableView.reloadData()
+    }
+    
+    func isFilterSearchContact(text:String) {
+        let currentText = text
+        searchText = currentText
+        if searchText.isEmpty {
+            filteredUsers = membersAndZombies
+            if membersAndZombies.count > 0 {
+                namesArray = []
+                for i in 0...(membersAndZombies.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: membersAndZombies[i])?.displayName(for: .regular) ?? membersAndZombies[i])
+                }
+                mainDict = Dictionary(uniqueKeysWithValues: zip(membersAndZombies, namesArray))
+                filterDict = mainDict
+            }
+        } else {
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+            filteredUsers = Array(filterDict.keys)
+        }
+        guard let groupThread = self.thread as? TSGroupThread else { return }
+        let adminId = groupThread.groupModel.groupAdminIds[0]
+        if let value = filterDict[adminId] {
+            filterDict.removeValue(forKey: adminId)
+            var orderedDictionary: [String: String] = [adminId: value]
+            for (key, value) in filterDict {
+                orderedDictionary[key] = value
+            }
+            filterDict = orderedDictionary
+        }
+        if let index = filteredUsers.firstIndex(of: adminId) {
+            filteredUsers.remove(at: index)
+            filteredUsers.insert(adminId, at: 0)
+        }
+        reloadTableView()
+    }
+    
     
 }
 
 
 extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if isSearchEnable {
+            return 1
+        }
+        if self.isClosedGroup() {
+            return 2
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard tableView.numberOfSections > 1 else {
+            return nil
+        }
+        let headerView = UIView()
+        headerView.backgroundColor = Colors.cellGroundColor
+        let separatorLine = UIView()
+        separatorLine.frame = CGRect(x: 0, y: headerView.frame.height - 1, width: tableView.frame.width, height: 1)
+        separatorLine.backgroundColor = Colors.chatSettingsSeperatorColor
+        headerView.addSubview(separatorLine)
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 1 ? 10.0 : 0.0
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.isOpenGroup() {
-            return self.socialGroupTitleArray.count
-        } else if self.thread!.isNoteToSelf() {
-            return self.noteToSelfTitleArray.count
-        } else if self.thread!.isKind(of: TSContactThread.self) {
-            return self.contactTitleArray.count
-        } else if self.isClosedGroup() {
-            return self.closeGroupTitleArray.count
+        if isSearchEnable {
+            return filteredUsers.count + 1//filterDict.count + 1
+        }
+        if section == 0 {
+            if self.isOpenGroup() {
+                return self.socialGroupTitleArray.count
+            } else if self.thread!.isNoteToSelf() {
+                return self.noteToSelfTitleArray.count
+            } else if self.thread!.isKind(of: TSContactThread.self) {
+                return self.contactTitleArray.count
+            } else if self.isClosedGroup() {
+                return self.closeGroupTitleArray.count
+            } else {
+                return 5
+            }
         } else {
-            return 5
+            return filteredUsers.count + 1
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if isSearchEnable {
+            return 66
+        }
         
         if self.isOpenGroup() {
             if indexPath.row == 4 {
@@ -891,617 +1107,715 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         if self.isClosedGroup() {
-            if indexPath.row == 2 {
-                if self.disappearingMessagesConfiguration?.isEnabled ?? false {
-                    return 98 + 21 + 26 + 26
-                } else {
-                    return 98
+            if indexPath.section == 0 {
+                if indexPath.row == 2 {
+                    if self.disappearingMessagesConfiguration?.isEnabled ?? false {
+                        return 98 + 21 + 26 + 26
+                    } else {
+                        return 98
+                    }
                 }
-            }
-            if indexPath.row == 5 {
-                return 84
+                if indexPath.row == 5 {
+                    return 84
+                }
+            } else {
+                return 66
             }
         }
         return 45
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomChatSettingsTableViewCell") as! CustomChatSettingsTableViewCell
         
-        if self.isOpenGroup() {  // Social Group
-            cell.titleLabel.text = self.socialGroupTitleArray[indexPath.row]
-            cell.leftIconImageView.image = UIImage(named: self.socialGroupLeftImageArray[indexPath.row])
-            
-            if cell.titleLabel.text == "All Media" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-            }
-            if cell.titleLabel.text == "Add Members" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-            }
-            if cell.titleLabel.text == "Search Conversation" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-            }
-            if cell.titleLabel.text == "Message Sound" {
-                cell.rightTitleLabel.isHidden = false
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.isHidden = true
-            }
-            if cell.titleLabel.text == "Notify for Mentions Only" {
-                cell.rightSwitch.isHidden = false
-                cell.rightIconImageView.isHidden = true
-                cell.rightTitleLabel.isHidden = true
-            }
-            if cell.titleLabel.text == "Mute" {
-                cell.rightSwitch.isHidden = false
-                cell.rightIconImageView.isHidden = true
-                cell.rightTitleLabel.isHidden = true
-            }
-            
-            if indexPath.row == 3 {
-                let sound = OWSSounds.notificationSound(for: self.thread!)
-                let displayName = OWSSounds.displayName(for: sound)
-                cell.rightTitleLabel.text = displayName
-            }
-            
-            if indexPath.row == 5 {
-                if let mutedUntilDate = self.thread?.mutedUntilDate {
-                    let now = Date()
-                    cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
-                } else {
-                    cell.rightSwitch.isOn = false
-                }
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
-            }
-            
-            if indexPath.row == 4 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "NotifyChatSettingsTableViewCell") as! NotifyChatSettingsTableViewCell
-                cell.leftIconImageView.image = UIImage(named: "chatSetting_notify")
-                cell.titleLabel.text = "Notify for Mentions Only"
-                cell.discriptionLabel.text = "When enabled,you’ll only be notified for messages mentioning you."
-                let groupThread = self.thread as? TSGroupThread
-                let isOnlyNotifyingForMentions = groupThread?.isOnlyNotifyingForMentions ?? false
-                cell.rightSwitch.isOn = isOnlyNotifyingForMentions
-                
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(notifyforMentionsOnlySwitchValueDidChange(_:)), for: .valueChanged)
-                
-                return cell
-                
-            }
-            
-        }
-        
-        
-        // Note to self
-        if self.thread!.isNoteToSelf() {
-            cell.titleLabel.text = self.noteToSelfTitleArray[indexPath.row]
-            cell.leftIconImageView.image = UIImage(named: self.noteToSelfImageArray[indexPath.row])
-            
+        if isSearchEnable {
             if indexPath.row == 0 {
-                cell.titleLabel.text = (thread as! TSContactThread).contactBChatID()
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
-            } else {
-                cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
-            }
-            if cell.titleLabel.text == "All Media" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Search Conversation" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            
-            if indexPath.row == 3 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
-                cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                cell.titleLabel.text = "Disappearing Messgaess"
-                cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
-                
-                //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
-                cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
-                
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                    cell.bottomView.isHidden = false
-                    
-                    if self.disappearingMessagesConfiguration!.isEnabled {
-                        let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                        self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
-                            let numberOfSeconds = self.disappearingMessagesDurations![10]
-                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
-                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        }
-                    } else {
-                        self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
-                    }
-                    
-                    cell.rightTitleLabelForSlider.text = self.sliderDurationText
-                    
-                    if let sliderView = view.viewWithTag(111) {
-                        sliderView.removeFromSuperview()
-                    }
-                    let slider = UISlider()
-                    slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
-                    slider.minimumValue = 0
-                    slider.tintColor = Colors.bothGreenColor
-                    slider.isContinuous = false
-                    slider.tag = 111
-                    slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
-                    slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
-                    slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
-                    cell.bottomView.addSubview(slider)
-                    slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
-                    slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
-                    slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
-                    
-                    
-                    
-                    
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                    cell.bottomView.isHidden = true
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsSearchTableViewCell") as! ChatSettingsSearchTableViewCell
+                cell.memberCountLabel.text = membersAndZombies.count > 1 ? "\(membersAndZombies.count) members" : "\(membersAndZombies.count) member"
                 
                 return cell
+        
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsTableViewCell") as! ChatSettingsTableViewCell
+                
+                let publicKey = filteredUsers[indexPath.row - 1]//Array(filterDict.keys)[indexPath.row - 1]//membersAndZombies[indexPath.row - 1]
+                cell.nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+                cell.profileImageView.image = getProfilePicture(of: 30, for: publicKey)
+                
+                let contact: Contact? = Storage.shared.getContact(with: publicKey)
+                if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                    cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                    cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                    cell.verifiedImageView.isHidden = isBnsUser ? false : true
+                }  else {
+                    cell.verifiedImageView.isHidden = true
+                }
+                            
+                let groupThread = self.thread as? TSGroupThread
+                let isCurrentUserAdmin = groupThread?.groupModel.groupAdminIds.contains(publicKey)
+                cell.adminButton.isHidden = (isCurrentUserAdmin ?? false) ? false : true
+                return cell
             }
-            
         }
         
         
-        // One To One Chat
-        if self.thread!.isKind(of: TSContactThread.self) {
-            cell.titleLabel.text = self.contactTitleArray[indexPath.row]
-            cell.leftIconImageView.image = UIImage(named: self.contactImageArray[indexPath.row])
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "CustomChatSettingsTableViewCell") as! CustomChatSettingsTableViewCell
             
-            if indexPath.row == 0 {
-                cell.titleLabel.text = (thread as! TSContactThread).contactBChatID()
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
-            } else {
-                cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
-            }
-            if cell.titleLabel.text == "All Media" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Search Conversation" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Message Sound" {
-                cell.rightTitleLabel.isHidden = false
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.isHidden = true
-            }
-            if cell.titleLabel.text == "Mute" {
-                cell.rightSwitch.isHidden = false
-                cell.rightIconImageView.isHidden = true
-                cell.rightTitleLabel.isHidden = true
-            }
-            
-            if indexPath.row == 3 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
-                cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                cell.titleLabel.text = "Disappearing Messgaess"
-                cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
+            if self.isOpenGroup() {  // Social Group
+                cell.titleLabel.text = self.socialGroupTitleArray[indexPath.row]
+                cell.leftIconImageView.image = UIImage(named: self.socialGroupLeftImageArray[indexPath.row])
                 
-                cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                    cell.bottomView.isHidden = false
-                    
-                    if self.disappearingMessagesConfiguration!.isEnabled {
-                        let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                        self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
-                            let numberOfSeconds = self.disappearingMessagesDurations![10]
-                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
-                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        }
-                    } else {
-                        self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
-                    }
-                    
-                    cell.rightTitleLabelForSlider.text = self.sliderDurationText
-                    
-                    if let sliderView = view.viewWithTag(111) {
-                        sliderView.removeFromSuperview()
-                    }
-                    let slider = UISlider()
-                    slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
-                    slider.minimumValue = 0
-                    slider.tintColor = Colors.bothGreenColor
-                    slider.isContinuous = false
-                    slider.tag = 111
-                    slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
-                    slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
-                    slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
-                    cell.bottomView.addSubview(slider)
-                    slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
-                    slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
-                    slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
-                    
-                    
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                    cell.bottomView.isHidden = true
+                if cell.titleLabel.text == "All Media" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                }
+                if cell.titleLabel.text == "Add Members" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                }
+                if cell.titleLabel.text == "Search Conversation" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                }
+                if cell.titleLabel.text == "Message Sound" {
+                    cell.rightTitleLabel.isHidden = false
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.isHidden = true
+                }
+                if cell.titleLabel.text == "Notify for Mentions Only" {
+                    cell.rightSwitch.isHidden = false
+                    cell.rightIconImageView.isHidden = true
+                    cell.rightTitleLabel.isHidden = true
+                }
+                if cell.titleLabel.text == "Mute" {
+                    cell.rightSwitch.isHidden = false
+                    cell.rightIconImageView.isHidden = true
+                    cell.rightTitleLabel.isHidden = true
                 }
                 
-                
-                
-                cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
-                
-                return cell
-                
-            }
-            
-            
-            if indexPath.row == 4 {
-                let sound = OWSSounds.notificationSound(for: self.thread!)
-                let displayName = OWSSounds.displayName(for: sound)
-                cell.rightTitleLabel.text = displayName
-            }
-            
-            if indexPath.row == 5 {
-                if let mutedUntilDate = self.thread?.mutedUntilDate {
-                    let now = Date()
-                    cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
-                } else {
-                    cell.rightSwitch.isOn = false
-                }
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
-            }
-            
-            
-            if indexPath.row == 6 {
-                cell.titleLabel.textColor = Colors.bothRedColor
-                let thread = self.thread as? TSContactThread
-                if thread!.isBlocked() {
-                    cell.titleLabel.text = "UnBlock This User"
-                } else {
-                    cell.titleLabel.text = "Block This User"
-                }
-            } else {
-                cell.titleLabel.textColor = Colors.titleColor
-            }
-            
-            if indexPath.row == 7 {
-                let thread = self.thread as? TSContactThread
-                cell.titleLabel.text = "Report \(Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous")"
-            }
-            
-            
-            
-        }
-        
-        
-        
-        // Close Group
-        if self.isClosedGroup() {
-            cell.titleLabel.text = self.closeGroupTitleArray[indexPath.row]
-            cell.leftIconImageView.image = UIImage(named: self.closeGroupImageArray[indexPath.row])
-            
-            
-            if cell.titleLabel.text == "All Media" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Search Conversation" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Message Sound" {
-                cell.rightTitleLabel.isHidden = false
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.isHidden = true
-            }
-            if cell.titleLabel.text == "Mute" {
-                cell.rightSwitch.isHidden = false
-                cell.rightIconImageView.isHidden = true
-                cell.rightTitleLabel.isHidden = true
-            }
-            if cell.titleLabel.text == "Edit Group" {
-                cell.rightIconImageView.isHidden = false
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
-            }
-            if cell.titleLabel.text == "Leave Group" {
-                cell.rightIconImageView.isHidden = true
-                cell.rightTitleLabel.isHidden = true
-                cell.rightSwitch.isHidden = true
-                cell.titleLabel.textColor = Colors.bothRedColor
-            } else {
-                cell.titleLabel.textColor = Colors.titleColor
-            }
-            
-            if indexPath.row == 2 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
-                cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
-                cell.titleLabel.text = "Disappearing Messgaess"
-                cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
-                
-                let groupThread = self.thread as? TSGroupThread
-                if !groupThread!.isCurrentUserMemberInGroup() {
-                    cell.rightSwitch.isEnabled = false
-                }
-                cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                    cell.bottomView.isHidden = false
-                    
-                    if self.disappearingMessagesConfiguration!.isEnabled {
-                        let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                        self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
-                            let numberOfSeconds = self.disappearingMessagesDurations![10]
-                            self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
-                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
-                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
-                        }
-                    } else {
-                        self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
-                    }
-                    
-                    cell.rightTitleLabelForSlider.text = self.sliderDurationText
-                    
-                    if let sliderView = view.viewWithTag(111) {
-                        sliderView.removeFromSuperview()
-                    }
-                    let slider = UISlider()
-                    slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
-                    slider.minimumValue = 0
-                    slider.tintColor = Colors.bothGreenColor
-                    slider.isContinuous = false
-                    slider.tag = 111
-                    slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
-                    slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
-                    slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
-                    cell.bottomView.addSubview(slider)
-                    slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
-                    slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
-                    slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
-                    
-                    
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                    cell.bottomView.isHidden = true
-                }
-                
-                cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
-                
-                return cell
-                
-            }
-            
-            
-            if indexPath.row == 4 {
-                let sound = OWSSounds.notificationSound(for: self.thread!)
-                let displayName = OWSSounds.displayName(for: sound)
-                cell.rightTitleLabel.text = displayName
-            }
-            
-            if indexPath.row == 6 {
-                let groupThread = self.thread as? TSGroupThread
-                if !groupThread!.isCurrentUserMemberInGroup() {
-                    cell.rightSwitch.isEnabled = false
-                }
-                if let mutedUntilDate = self.thread?.mutedUntilDate {
-                    let now = Date()
-                    cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
-                } else {
-                    cell.rightSwitch.isOn = false
-                }
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
-            }
-            
-            if indexPath.row == 5 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "NotifyChatSettingsTableViewCell") as! NotifyChatSettingsTableViewCell
-                cell.leftIconImageView.image = UIImage(named: "chatSetting_notify")
-                cell.titleLabel.text = "Notify for Mentions Only"
-                cell.discriptionLabel.text = "When enabled,you’ll only be notified for messages mentioning you."
-                let groupThread = self.thread as? TSGroupThread
-                let isOnlyNotifyingForMentions = groupThread?.isOnlyNotifyingForMentions ?? false
-                if !groupThread!.isCurrentUserMemberInGroup() {
-                    cell.rightSwitch.isEnabled = false
-                }
-                cell.rightSwitch.isOn = isOnlyNotifyingForMentions
-                
-                if cell.rightSwitch.isOn {
-                    cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.rightSwitch.addTarget(self, action: #selector(notifyforMentionsOnlySwitchValueDidChange(_:)), for: .valueChanged)
-                return cell
-            }
-            
-            let groupThread = self.thread as? TSGroupThread
-            if !groupThread!.isCurrentUserMemberInGroup() {
                 if indexPath.row == 3 {
-                    cell.titleLabel.alpha = 0.6
-                    cell.rightIconImageView.alpha = 0.6
-                    cell.leftIconImageView.alpha = 0.6
+                    let sound = OWSSounds.notificationSound(for: self.thread!)
+                    let displayName = OWSSounds.displayName(for: sound)
+                    cell.rightTitleLabel.text = displayName
                 }
+                
+                if indexPath.row == 5 {
+                    if let mutedUntilDate = self.thread?.mutedUntilDate {
+                        let now = Date()
+                        cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
+                    } else {
+                        cell.rightSwitch.isOn = false
+                    }
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
+                }
+                
+                if indexPath.row == 4 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "NotifyChatSettingsTableViewCell") as! NotifyChatSettingsTableViewCell
+                    cell.leftIconImageView.image = UIImage(named: "chatSetting_notify")
+                    cell.titleLabel.text = "Notify for Mentions Only"
+                    cell.discriptionLabel.text = "When enabled,you’ll only be notified for messages mentioning you."
+                    let groupThread = self.thread as? TSGroupThread
+                    let isOnlyNotifyingForMentions = groupThread?.isOnlyNotifyingForMentions ?? false
+                    cell.rightSwitch.isOn = isOnlyNotifyingForMentions
+                    
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(notifyforMentionsOnlySwitchValueDidChange(_:)), for: .valueChanged)
+                    
+                    return cell
+                    
+                }
+                
+            }
+            
+            
+            // Note to self
+            if self.thread!.isNoteToSelf() {
+                cell.titleLabel.text = self.noteToSelfTitleArray[indexPath.row]
+                cell.leftIconImageView.image = UIImage(named: self.noteToSelfImageArray[indexPath.row])
+                
+                if indexPath.row == 0 {
+                    cell.titleLabel.text = (thread as! TSContactThread).contactBChatID()
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
+                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                } else {
+                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                }
+                if cell.titleLabel.text == "All Media" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Search Conversation" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                
+                if indexPath.row == 3 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
+                    cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
+                    cell.titleLabel.text = "Disappearing Messages"
+                    cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
+                    
+                    //                cell.rightSwitch.isOn = self.isDisAppearMessageSwitchOn
+                    cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
+                    
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                        cell.bottomView.isHidden = false
+                        
+                        if self.disappearingMessagesConfiguration!.isEnabled {
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                                let numberOfSeconds = self.disappearingMessagesDurations![10]
+                                self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                                let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                                self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            }
+                        } else {
+                            self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
+                        }
+                        
+                        cell.rightTitleLabelForSlider.text = self.sliderDurationText
+                        
+                        if let sliderView = view.viewWithTag(111) {
+                            sliderView.removeFromSuperview()
+                        }
+                        let slider = UISlider()
+                        slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
+                        slider.minimumValue = 0
+                        slider.tintColor = Colors.bothGreenColor
+                        slider.isContinuous = false
+                        slider.tag = 111
+                        slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
+                        slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
+                        slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
+                        cell.bottomView.addSubview(slider)
+                        slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
+                        slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
+                        slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
+                        
+                        
+                        
+                        
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                        cell.bottomView.isHidden = true
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
+                    
+                    return cell
+                }
+                
+            }
+            
+            
+            // One To One Chat
+            if self.thread!.isKind(of: TSContactThread.self) {
+                cell.titleLabel.text = self.contactTitleArray[indexPath.row]
+                cell.leftIconImageView.image = UIImage(named: self.contactImageArray[indexPath.row])
+                
+                if indexPath.row == 0 {
+                    cell.titleLabel.text = (thread as! TSContactThread).contactBChatID()
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
+                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                } else {
+                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                }
+                if cell.titleLabel.text == "All Media" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Search Conversation" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Message Sound" {
+                    cell.rightTitleLabel.isHidden = false
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.isHidden = true
+                }
+                if cell.titleLabel.text == "Mute" {
+                    cell.rightSwitch.isHidden = false
+                    cell.rightIconImageView.isHidden = true
+                    cell.rightTitleLabel.isHidden = true
+                }
+                
+                if indexPath.row == 3 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
+                    cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
+                    cell.titleLabel.text = "Disappearing Messages"
+                    cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
+                    
+                    cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                        cell.bottomView.isHidden = false
+                        
+                        if self.disappearingMessagesConfiguration!.isEnabled {
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                                let numberOfSeconds = self.disappearingMessagesDurations![10]
+                                self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                                let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                                self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            }
+                        } else {
+                            self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
+                        }
+                        
+                        cell.rightTitleLabelForSlider.text = self.sliderDurationText
+                        
+                        if let sliderView = view.viewWithTag(111) {
+                            sliderView.removeFromSuperview()
+                        }
+                        let slider = UISlider()
+                        slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
+                        slider.minimumValue = 0
+                        slider.tintColor = Colors.bothGreenColor
+                        slider.isContinuous = false
+                        slider.tag = 111
+                        slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
+                        slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
+                        slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
+                        cell.bottomView.addSubview(slider)
+                        slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
+                        slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
+                        slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
+                        
+                        
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                        cell.bottomView.isHidden = true
+                    }
+                    
+                    
+                    
+                    cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
+                    
+                    return cell
+                    
+                }
+                
+                
+                if indexPath.row == 4 {
+                    let sound = OWSSounds.notificationSound(for: self.thread!)
+                    let displayName = OWSSounds.displayName(for: sound)
+                    cell.rightTitleLabel.text = displayName
+                }
+                
+                if indexPath.row == 5 {
+                    if let mutedUntilDate = self.thread?.mutedUntilDate {
+                        let now = Date()
+                        cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
+                    } else {
+                        cell.rightSwitch.isOn = false
+                    }
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
+                }
+                
+                
+                if indexPath.row == 6 {
+                    cell.titleLabel.textColor = Colors.bothRedColor
+                    let thread = self.thread as? TSContactThread
+                    if thread!.isBlocked() {
+                        cell.titleLabel.text = "UnBlock This User"
+                    } else {
+                        cell.titleLabel.text = "Block This User"
+                    }
+                } else {
+                    cell.titleLabel.textColor = Colors.titleColor
+                }
+                
+                if indexPath.row == 7 {
+                    let thread = self.thread as? TSContactThread
+                    cell.titleLabel.text = "Report \(Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous")"
+                }
+                
+                
+                
+            }
+            
+            
+            
+            // Close Group
+            if self.isClosedGroup() {
+                cell.titleLabel.text = self.closeGroupTitleArray[indexPath.row]
+                cell.leftIconImageView.image = UIImage(named: self.closeGroupImageArray[indexPath.row])
+                
+                
+                if cell.titleLabel.text == "All Media" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Search Conversation" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Message Sound" {
+                    cell.rightTitleLabel.isHidden = false
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.isHidden = true
+                }
+                if cell.titleLabel.text == "Mute" {
+                    cell.rightSwitch.isHidden = false
+                    cell.rightIconImageView.isHidden = true
+                    cell.rightTitleLabel.isHidden = true
+                }
+                if cell.titleLabel.text == "Edit Group" {
+                    cell.rightIconImageView.isHidden = false
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                }
+                if cell.titleLabel.text == "Leave Group" {
+                    cell.rightIconImageView.isHidden = true
+                    cell.rightTitleLabel.isHidden = true
+                    cell.rightSwitch.isHidden = true
+                    cell.titleLabel.textColor = Colors.bothRedColor
+                } else {
+                    cell.titleLabel.textColor = Colors.titleColor
+                }
+                
+                if indexPath.row == 2 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "DisappearingChatSettingsTableViewCell") as! DisappearingChatSettingsTableViewCell
+                    cell.leftIconImageView.image = UIImage(named: "ic_disappearing_setting")
+                    cell.titleLabel.text = "Disappearing Messages"
+                    cell.discriptionLabel.text = "When enabled, messages between you and the group will disappear after they have been seen."
+                    
+                    let groupThread = self.thread as? TSGroupThread
+                    if !groupThread!.isCurrentUserMemberInGroup() {
+                        cell.rightSwitch.isEnabled = false
+                    }
+                    cell.rightSwitch.isOn = self.disappearingMessagesConfiguration?.isEnabled ?? false
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                        cell.bottomView.isHidden = false
+                        
+                        if self.disappearingMessagesConfiguration!.isEnabled {
+                            let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                            self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            if self.disappearingMessagesConfiguration!.durationString == "0 seconds" {
+                                let numberOfSeconds = self.disappearingMessagesDurations![10]
+                                self.disappearingMessagesConfiguration!.durationSeconds = UInt32(numberOfSeconds.uintValue)
+                                let keepForFormat = NSLocalizedString("Disappear after %@", comment: "Format for disappearing messages duration label")
+                                self.sliderDurationText = String(format: keepForFormat, self.disappearingMessagesConfiguration!.durationString)
+                            }
+                        } else {
+                            self.sliderDurationText = NSLocalizedString("KEEP_MESSAGES_FOREVER", comment: "Slider label when disappearing messages is off")
+                        }
+                        
+                        cell.rightTitleLabelForSlider.text = self.sliderDurationText
+                        
+                        if let sliderView = view.viewWithTag(111) {
+                            sliderView.removeFromSuperview()
+                        }
+                        let slider = UISlider()
+                        slider.maximumValue = Float(disappearingMessagesDurations!.count - 1)
+                        slider.minimumValue = 0
+                        slider.tintColor = Colors.bothGreenColor
+                        slider.isContinuous = false
+                        slider.tag = 111
+                        slider.setThumbImage(UIImage(named: "chatSetting_slider"), for: .normal)
+                        slider.value = Float(disappearingMessagesConfiguration!.durationIndex)
+                        slider.addTarget(self, action: #selector(durationSliderDidChange(_:)), for: .valueChanged)
+                        cell.bottomView.addSubview(slider)
+                        slider.autoPinEdge(.leading, to: .leading, of: cell.titleLabelForSlider)
+                        slider.autoPinEdge(.trailing, to: .trailing, of: cell.rightTitleLabelForSlider)
+                        slider.autoPinEdge(.top, to: .bottom, of: cell.titleLabelForSlider, withOffset: 10)
+                        
+                        
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                        cell.bottomView.isHidden = true
+                    }
+                    
+                    cell.rightSwitch.addTarget(self, action: #selector(disAppearSwitchValueDidChange(_:)), for: .valueChanged)
+                    
+                    return cell
+                    
+                }
+                
+                
+                if indexPath.row == 4 {
+                    let sound = OWSSounds.notificationSound(for: self.thread!)
+                    let displayName = OWSSounds.displayName(for: sound)
+                    cell.rightTitleLabel.text = displayName
+                }
+                
+                if indexPath.row == 6 {
+                    let groupThread = self.thread as? TSGroupThread
+                    if !groupThread!.isCurrentUserMemberInGroup() {
+                        cell.rightSwitch.isEnabled = false
+                    }
+                    if let mutedUntilDate = self.thread?.mutedUntilDate {
+                        let now = Date()
+                        cell.rightSwitch.isOn = mutedUntilDate.timeIntervalSince(now) > 0
+                    } else {
+                        cell.rightSwitch.isOn = false
+                    }
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(handleMuteSwitchToggled(_:)), for: .valueChanged)
+                }
+                
+                if indexPath.row == 5 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "NotifyChatSettingsTableViewCell") as! NotifyChatSettingsTableViewCell
+                    cell.leftIconImageView.image = UIImage(named: "chatSetting_notify")
+                    cell.titleLabel.text = "Notify for Mentions Only"
+                    cell.discriptionLabel.text = "When enabled,you’ll only be notified for messages mentioning you."
+                    let groupThread = self.thread as? TSGroupThread
+                    let isOnlyNotifyingForMentions = groupThread?.isOnlyNotifyingForMentions ?? false
+                    if !groupThread!.isCurrentUserMemberInGroup() {
+                        cell.rightSwitch.isEnabled = false
+                    }
+                    cell.rightSwitch.isOn = isOnlyNotifyingForMentions
+                    
+                    if cell.rightSwitch.isOn {
+                        cell.rightSwitch.thumbTintColor = Colors.bothGreenColor
+                    } else {
+                        cell.rightSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                    }
+                    cell.rightSwitch.addTarget(self, action: #selector(notifyforMentionsOnlySwitchValueDidChange(_:)), for: .valueChanged)
+                    return cell
+                }
+                
+                let groupThread = self.thread as? TSGroupThread
+                if !groupThread!.isCurrentUserMemberInGroup() {
+                    if indexPath.row == 3 {
+                        cell.titleLabel.alpha = 0.6
+                        cell.rightIconImageView.alpha = 0.6
+                        cell.leftIconImageView.alpha = 0.6
+                    } else {
+                        cell.titleLabel.alpha = 1
+                        cell.rightIconImageView.alpha = 1
+                        cell.leftIconImageView.alpha = 1
+                    }
+                }
+                
+            }
+            return cell
+        } else {
+            
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsSearchTableViewCell") as! ChatSettingsSearchTableViewCell
+                cell.memberCountLabel.text = membersAndZombies.count > 1 ? "\(membersAndZombies.count) members" : "\(membersAndZombies.count) member"
+                
+                cell.searchCallback = {
+                    let vc = SearchGroupMemberVC()
+                    vc.thread = self.thread
+                    self.present(vc, animated: true, completion: nil)
+                }
+                
+                return cell
+        
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatSettingsTableViewCell") as! ChatSettingsTableViewCell
+                
+                let publicKey = filteredUsers[indexPath.row - 1]//Array(filterDict.keys)[indexPath.row - 1]//membersAndZombies[indexPath.row - 1]
+                cell.nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+                cell.profileImageView.image = getProfilePicture(of: 30, for: publicKey)
+                
+                let contact: Contact? = Storage.shared.getContact(with: publicKey)
+                if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                    cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                    cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                    cell.verifiedImageView.isHidden = isBnsUser ? false : true
+                }  else {
+                    cell.verifiedImageView.isHidden = true
+                }
+                            
+                let groupThread = self.thread as? TSGroupThread
+                let isCurrentUserAdmin = groupThread?.groupModel.groupAdminIds.contains(publicKey)
+                cell.adminButton.isHidden = (isCurrentUserAdmin ?? false) ? false : true
+                return cell
             }
             
         }
-        return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.isOpenGroup() { // Social Group
-            if indexPath.row == 0 {
-                self.showMediaGallery()
-            }
-            if indexPath.row == 1 {
-                self.inviteUsersToOpenGroup()
-            }
-            if indexPath.row == 2 {
-                self.tappedConversationSearch()
-            }
-            if indexPath.row == 3 {
-                let vc = OWSSoundSettingsViewController()
-                vc.thread = self.thread!
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
+        if isSearchEnable {
+            return
         }
-        
-        // Note to self
-        if self.thread!.isNoteToSelf() {
-            if indexPath.row == 0 {
-                self.copyBChatID()
-            }
-            if indexPath.row == 1 {
-                self.showMediaGallery()
-                return
-            }
-            if indexPath.row == 2 {
-                self.tappedConversationSearch()
+        if indexPath.section == 0 {
+            if self.isOpenGroup() { // Social Group
+                if indexPath.row == 0 {
+                    self.showMediaGallery()
+                }
+                if indexPath.row == 1 {
+                    self.inviteUsersToOpenGroup()
+                }
+                if indexPath.row == 2 {
+                    self.tappedConversationSearch()
+                }
+                if indexPath.row == 3 {
+                    let vc = OWSSoundSettingsViewController()
+                    vc.thread = self.thread!
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             }
             
-        }
-        
-        // One To One Chat
-        if self.thread!.isKind(of: TSContactThread.self) {
-            if indexPath.row == 0 {
-                self.copyBChatID()
-            }
-            if indexPath.row == 1 {
-                self.showMediaGallery()
-            }
-            if indexPath.row == 2 {
-                self.tappedConversationSearch()
-            }
-            if indexPath.row == 3 {
+            // Note to self
+            if self.thread!.isNoteToSelf() {
+                if indexPath.row == 0 {
+                    self.copyBChatID()
+                }
+                if indexPath.row == 1 {
+                    self.showMediaGallery()
+                    return
+                }
+                if indexPath.row == 2 {
+                    self.tappedConversationSearch()
+                }
                 
             }
-            if indexPath.row == 4 {
-                let vc = OWSSoundSettingsViewController()
-                vc.thread = self.thread!
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            if indexPath.row == 5 {
+            
+            // One To One Chat
+            if self.thread!.isKind(of: TSContactThread.self) {
+                if indexPath.row == 0 {
+                    self.copyBChatID()
+                }
+                if indexPath.row == 1 {
+                    self.showMediaGallery()
+                }
+                if indexPath.row == 2 {
+                    self.tappedConversationSearch()
+                }
+                if indexPath.row == 3 {
+                    
+                }
+                if indexPath.row == 4 {
+                    let vc = OWSSoundSettingsViewController()
+                    vc.thread = self.thread!
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                if indexPath.row == 5 {
+                    
+                }
+                if indexPath.row == 6 { // Block and UnBlock Contact Index Cell
+                    if let contactThread = self.thread as? TSContactThread {
+                        let isCurrentlyBlocked = contactThread.isBlocked()
+                        if !isCurrentlyBlocked {
+                            let vc = BlockContactPopUpVC()
+                            vc.modalPresentationStyle = .overFullScreen
+                            vc.modalTransitionStyle = .crossDissolve
+                            self.present(vc, animated: true, completion: nil)
+                        } else {
+                            let vc = BlockContactPopUpVC()
+                            vc.isBlocked = true
+                            vc.modalPresentationStyle = .overFullScreen
+                            vc.modalTransitionStyle = .crossDissolve
+                            self.present(vc, animated: true, completion: nil)
+                        }
+                    }
+                }
                 
-            }
-            if indexPath.row == 6 { // Block and UnBlock Contact Index Cell
-                if let contactThread = self.thread as? TSContactThread {
-                    let isCurrentlyBlocked = contactThread.isBlocked()
-                    if !isCurrentlyBlocked {
-                        let vc = BlockContactPopUpVC()
-                        vc.modalPresentationStyle = .overFullScreen
-                        vc.modalTransitionStyle = .crossDissolve
-                        self.present(vc, animated: true, completion: nil)
-                    } else {
-                        let vc = BlockContactPopUpVC()
-                        vc.isBlocked = true
-                        vc.modalPresentationStyle = .overFullScreen
-                        vc.modalTransitionStyle = .crossDissolve
-                        self.present(vc, animated: true, completion: nil)
+                if indexPath.row == 7 {
+                    if let thread = self.thread as? TSContactThread {
+                        if let contact = Storage.shared.getContact(with: thread.contactBChatID()) {
+                            let displayName = contact.displayName(for: Contact.Context.regular)
+                            let fullDisplayName = String(format: NSLocalizedString("Report %@ ", comment: ""), displayName!)
+                            
+                            let alert = UIAlertController(title: fullDisplayName, message: NSLocalizedString("This user will be reported to BChat Team.", comment: ""), preferredStyle: .alert)
+                            
+                            // Add Buttons
+                            let yesButton = UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default) { _ in
+                                // Handle your 'Ok' button action here
+                            }
+                            let noButton = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
+                                // Handle 'Cancel' button action here
+                            }
+                            
+                            // Add buttons to alert controller
+                            alert.addAction(yesButton)
+                            alert.addAction(noButton)
+                            
+                            // Present alert
+                            self.present(alert, animated: true, completion: nil)
+                        }
                     }
                 }
             }
             
-            if indexPath.row == 7 {
-                if let thread = self.thread as? TSContactThread {
-                    if let contact = Storage.shared.getContact(with: thread.contactBChatID()) {
-                        let displayName = contact.displayName(for: Contact.Context.regular)
-                        let fullDisplayName = String(format: NSLocalizedString("Report %@ ", comment: ""), displayName!)
-                        
-                        let alert = UIAlertController(title: fullDisplayName, message: NSLocalizedString("This user will be reported to BChat Team.", comment: ""), preferredStyle: .alert)
-                        
-                        // Add Buttons
-                        let yesButton = UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default) { _ in
-                            // Handle your 'Ok' button action here
-                        }
-                        let noButton = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
-                            // Handle 'Cancel' button action here
-                        }
-                        
-                        // Add buttons to alert controller
-                        alert.addAction(yesButton)
-                        alert.addAction(noButton)
-                        
-                        // Present alert
-                        self.present(alert, animated: true, completion: nil)
+            
+            
+            // Close Group
+            if self.isClosedGroup() {
+                if indexPath.row == 0 {
+                    self.showMediaGallery()
+                }
+                if indexPath.row == 1 {
+                    self.tappedConversationSearch()
+                }
+                if indexPath.row == 3 {
+                    let groupThread = self.thread as? TSGroupThread
+                    if groupThread!.isCurrentUserMemberInGroup() {
+                        self.editGroup()
                     }
+                }
+                if indexPath.row == 4 {
+                    let vc = OWSSoundSettingsViewController()
+                    vc.thread = self.thread!
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                if indexPath.row == 7 {
+                    self.didTapLeaveGroup()
                 }
             }
         }
         
-        
-        
-        // Close Group
-        if self.isClosedGroup() {
-            if indexPath.row == 0 {
-                self.showMediaGallery()
-            }
-            if indexPath.row == 1 {
-                self.tappedConversationSearch()
-            }
-            if indexPath.row == 3 {
-                let groupThread = self.thread as? TSGroupThread
-                if groupThread!.isCurrentUserMemberInGroup() {
-                    self.editGroup()
-                }
-            }
-            if indexPath.row == 4 {
-                let vc = OWSSoundSettingsViewController()
-                vc.thread = self.thread!
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-            if indexPath.row == 7 {
-                self.didTapLeaveGroup()
+        if indexPath.section == 1 {
+            if indexPath.row != 0 {
+                let publicKey = filteredUsers[indexPath.row - 1]
+                if publicKey == getUserHexEncodedPublicKey() { return }
+                let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
+                let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+                let vc = UserInfoPopUp()
+                vc.thread = thread
+                vc.name = name
+                vc.modalPresentationStyle = .overFullScreen
+                vc.modalTransitionStyle = .crossDissolve
+                present(vc, animated: true, completion: nil)
             }
         }
     }

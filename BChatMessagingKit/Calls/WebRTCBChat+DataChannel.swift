@@ -37,6 +37,11 @@ extension WebRTCBChat: RTCDataChannelDelegate {
             if let isRemoteVideoEnabled = json["video"] as? Bool {
                 delegate?.isRemoteVideoDidChange(isEnabled: isRemoteVideoEnabled)
             }
+            
+            if let isAudioMuted = json["audio"] as? Bool {
+                delegate?.isAudioMuted(isAudioMuted: !isAudioMuted)
+            }
+            
             if let _ = json["hangup"] {
                 delegate?.didReceiveHangUpSignal()
             }

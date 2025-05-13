@@ -34,8 +34,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         self.messageCollectionView.isHidden = true
         
         switch section {
-            case 0:
-                return 0
+            case 0: return threadCountForArchivedChats > 0 ? 1 : 0
             case 1: return Int(threadCount)
             default: return 0
         }
@@ -44,14 +43,8 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MessageRequestsCell.reuseIdentifier) as! MessageRequestsCell
-                cell.update(with: Int(unreadMessageRequestCount))
-                
-                let logoName = isLightMode ? "arrowmsg1" : "arrowmsg2"
-                let image = UIImage(named: logoName)!
-                let checkmark = UIImageView(frame:CGRect(x:0, y:0, width:(image.size.width), height:(image.size.height)));
-                checkmark.image = image
-                cell.accessoryView = checkmark
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ArchiveViewCell") as! ArchiveViewCell
+                cell.archivedMessageCountLabel.text = "\(threadCountForArchivedChats)"
                 return cell
                 
             default:
@@ -67,8 +60,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.section {
             case 0:
-                let viewController: MessageRequestsViewController = MessageRequestsViewController()
-                self.navigationController?.pushViewController(viewController, animated: true)
+                archivedButtonTapped()
                 return
             default:
                 guard let thread = self.thread(at: indexPath.row) else { return }
@@ -100,7 +92,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     })
                 })
                 hide.backgroundColor = Colors.destructive
-                return UISwipeActionsConfiguration(actions: [hide])
+                return UISwipeActionsConfiguration(actions: [])
             default:
                 guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
                 let delete = UIContextualAction(style: .destructive, title: "Delete", handler: { (action, view, success) in
@@ -137,6 +129,17 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 unpin.backgroundColor = Colors.mainBackGroundColor2
                 unpin.image = UIImage(named: "ic_unPinNew_Home")
                 
+            // Archive
+            let isArchived = thread.isArchived
+            let archive = UIContextualAction(style: .destructive, title: "Archive", handler: { (action, view, success) in
+                thread.isArchived = true
+                thread.save()
+                self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
+                tableView.reloadRows(at: [indexPath], with: .fade)
+            })
+            archive.backgroundColor = Colors.mainBackGroundColor2
+            archive.image = UIImage(named: "ic_archive")
+            
                 if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                     let publicKey = thread.contactBChatID()
                     
@@ -175,7 +178,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                                 
                                 DispatchQueue.main.async {
-                                    tableView.reloadRows(at: [ indexPath ], with: UITableView.RowAnimation.fade)
+                                    tableView.reloadRows(at: [ indexPath ], with: .fade)
                                 }
                             }
                         )
@@ -183,10 +186,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     unblock.backgroundColor = Colors.mainBackGroundColor2
                     unblock.image = UIImage(named: "ic_unBlockNew_Home")
                     
-                    return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isPinned ? unpin : pin) ])
+                    return UISwipeActionsConfiguration(actions: [ delete, (thread.isBlocked() ? unblock : block), (isArchived ? archive : archive), (isPinned ? unpin : pin) ])
                 }
                 else {
-                    return UISwipeActionsConfiguration(actions: [ delete, (isPinned ? unpin : pin) ])
+                    return UISwipeActionsConfiguration(actions: [ delete, (isArchived ? archive : archive), (isPinned ? unpin : pin) ])
                 }
         }
     }

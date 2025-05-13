@@ -41,8 +41,8 @@ final class URLModal : Modal {
         openButton.backgroundColor = Colors.buttonBackground
         openButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         openButton.setTitleColor(Colors.text, for: UIControl.State.normal)
-        openButton.setTitle(NSLocalizedString("modal_open_url_button_title", comment: ""), for: UIControl.State.normal)
-        openButton.addTarget(self, action: #selector(openURL), for: UIControl.Event.touchUpInside)
+        openButton.setTitle(NSLocalizedString("modal_open_url_button_title", comment: ""), for: .normal)
+        openButton.addTarget(self, action: #selector(openURL), for: .touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, openButton ])
         buttonStackView.axis = .horizontal

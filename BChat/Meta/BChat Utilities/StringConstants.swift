@@ -27,7 +27,7 @@ struct Constants: Equatable {
     static let callConnectingShowView = "connectingCallShowView"
     static let callConnectionHideView = "connectingCallHideView"
     static let showPayAsYouChat = "showPayAsYouChat"
-    static let showHideInputView = "hideOrShowInputView"
+    static let showInputView = "showInputView"
     static let bdxSlidingView = "bdxAmountPassingSliderView"
     static let rescanAction = "reScaneButtonAction"
     static let reconnect = "reconnectButtonAction"
@@ -49,6 +49,8 @@ struct Constants: Equatable {
     static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
     static let navigateToMyAccount = "navigateToMyAccount"
     static let leaveGroup = "leaveGroup"
+    static let dismissMiniView = "dismissMiniView"
+    static let joinedOpenGroup = "joinedOpenGroup"
     
     
     /// Userdefaults strings
