@@ -40,6 +40,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     private var documents: [Document] = []
     private var documentItems: [GalleryDate: [Document]]?
     
+    var footerBarBottomConstraint: NSLayoutConstraint!
+    let kFooterBarHeight: CGFloat = 40
+    
     deinit {
         Logger.debug("deinit")
     }
@@ -219,8 +222,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             noDataMessageLabel.bottomAnchor.constraint(equalTo: noDataView.bottomAnchor, constant: 0),
         ])
         
-//        getAllDcouments()
-//        fetchAllDocuments()
+        getAllDcouments()
+        fetchAllDocuments()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -352,7 +355,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
             }
         }
-//        fetchAllDocuments()
+        fetchAllDocuments()
     }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
@@ -483,6 +486,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             if isInBatchSelectMode {
                 updateDeleteButton()
             } else {
+                gridCell.isSelected = false
                 collectionView.deselectItem(at: indexPath, animated: true)
                 self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
             }
@@ -849,18 +853,20 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     }
     
     func updateSelectButton() {
-        if isInBatchSelectMode {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
-        } else {
-            if containerViewForMediaAndDocument.selectedIndex == 0 {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
-                                                                         style: .plain,
-                                                                         target: self,
-                                                                         action: #selector(didTapSelect))
-            } else {
-                self.navigationItem.rightBarButtonItem = nil
-            }
-        }
+//        if isInBatchSelectMode {
+//            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
+//        } else {
+//            if containerViewForMediaAndDocument.selectedIndex == 0 {
+//                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
+//                                                                         style: .plain,
+//                                                                         target: self,
+//                                                                         action: #selector(didTapSelect))
+//            } else {
+//                self.navigationItem.rightBarButtonItem = nil
+//            }
+//        }
+        
+        self.navigationItem.rightBarButtonItem = nil
     }
     
     @objc
@@ -899,23 +905,38 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     func endSelectMode() {
         isInBatchSelectMode = false
         
-        guard let collectionView = self.collectionView else {
-            owsFailDebug("collectionView was unexpectedly nil")
-            return
-        }
-
+//        guard let collectionView = self.collectionView else {
+//            owsFailDebug("collectionView was unexpectedly nil")
+//            return
+//        }
+//
         collectionView.performBatchUpdates({
-//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
-//                collectionView.deselectItem(at: indexPath, animated: false)
-//            }
-
-            NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
-            self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
-            self.footerBar.superview?.layoutIfNeeded()
-            collectionView.contentInset.bottom -= self.kFooterBarHeight
-        }, completion: nil)
+            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+                collectionView.deselectItem(at: indexPath, animated: false)
+            }
+        })
+            //
+//            NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
+//            self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
+//            self.footerBar.superview?.layoutIfNeeded()
+//            collectionView.contentInset.bottom -= self.kFooterBarHeight
+//        }, completion: nil)
+//        
+//        self.navigationItem.hidesBackButton = false
         
-        self.navigationItem.hidesBackButton = false
+        // hide toolbar
+        let view: UIView = self.view
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
+            self?.footerBarBottomConstraint?.isActive = false
+            self?.footerBarBottomConstraint = self?.footerBar.pin(.bottom, to: .bottom, of: view, withInset: -(self?.kFooterBarHeight ?? 0))
+            self?.footerBar.superview?.layoutIfNeeded()
+
+            // Undo "Ensure toolbar doesn't cover bottom row."
+            self?.collectionView.contentInset.bottom -= self?.kFooterBarHeight ?? 0
+        }, completion: nil)
+
+        // Deselect any selected
+        collectionView.indexPathsForSelectedItems?.forEach { collectionView.deselectItem(at: $0, animated: false)}
     }
     
     @objc
@@ -983,9 +1004,6 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         
         presentAlert(actionSheet)
     }
-    
-    var footerBarBottomConstraint: NSLayoutConstraint!
-    let kFooterBarHeight: CGFloat = 40
     
     // MARK: MediaGalleryDataSourceDelegate
     

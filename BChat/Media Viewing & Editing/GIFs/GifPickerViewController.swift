@@ -447,12 +447,6 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         if viewMode == .error || viewMode == .noResults {
             viewMode = .idle
         }
-        
-        if searchText.isEmpty {
-            loadTrending()
-            return
-        }
-
         // Do progressive search after a delay.
         progressiveSearchTimer?.invalidate()
         progressiveSearchTimer = nil
@@ -461,7 +455,6 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
             guard let strongSelf = self else {
                 return
             }
-
             strongSelf.tryToSearch()
         }
     }
@@ -486,6 +479,11 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
 
         if (viewMode == .searching || viewMode == .results) && lastQuery == query {
             Logger.info("ignoring duplicate search: \(query)")
+            return
+        }
+        
+        guard !query.isEmpty else {
+            loadTrending()
             return
         }
 

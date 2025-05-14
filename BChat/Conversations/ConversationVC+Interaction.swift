@@ -198,18 +198,40 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-        //TODO
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            let gifVC = GifPickerViewController(thread: thread)
-            gifVC.delegate = self
-            let navController = OWSNavigationController(rootViewController: gifVC)
-            navController.modalPresentationStyle = .fullScreen
-            present(navController, animated: true) {
-                self.isInputViewShow = false
+        if SSKPreferences.isGifPermissionEnabled {
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                let gifVC = GifPickerViewController(thread: thread)
+                gifVC.delegate = self
+                let navController = OWSNavigationController(rootViewController: gifVC)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: true) {
+                    self.isInputViewShow = false
+                }
+            } else {
+                //check your internet connection
+                self.showToast(message: "Please check your internet connection", seconds: 1.0)
             }
         } else {
-            //check your internet connection
-            self.showToast(message: "Please check your internet connection", seconds: 1.0)
+            // show confirmation enable modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    title: "Search GIF's",
+                    body: .text("You will not have full metadata protection when sending GIF's"),
+                    showCondition: .disabled,
+                    confirmTitle: "Ok",
+                    onConfirm: { _ in
+                        self.isInputViewShow = true
+                        SSKPreferences.isGifPermissionEnabled = true
+                    }, afterClosed: {
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion:  {
+                self.isInputViewShow = false
+            })
+            return
         }
     }
     

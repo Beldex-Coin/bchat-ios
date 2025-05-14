@@ -414,6 +414,10 @@
 		8A60F48F2C19529F009AB837 /* WebSocketResources.proto in Sources */ = {isa = PBXBuildFile; fileRef = 8A60F48D2C19529F009AB837 /* WebSocketResources.proto */; };
 		8A69082A2D83D5BD005B63C1 /* ContextMenuVC+EmojiReactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6908292D83D5BD005B63C1 /* ContextMenuVC+EmojiReactsView.swift */; };
 		8A69082C2D83D814005B63C1 /* ReactionListSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A69082B2D83D814005B63C1 /* ReactionListSheet.swift */; };
+		8A6908542DD1C03800E1ABAB /* ConfirmationModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6908532DD1C03800E1ABAB /* ConfirmationModal.swift */; };
+		8A69085B2DD480EF00E1ABAB /* Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A69085A2DD480EF00E1ABAB /* Accessibility.swift */; };
+		8A6908612DD481EA00E1ABAB /* ScrollableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6908602DD481EA00E1ABAB /* ScrollableLabel.swift */; };
+		8A6908632DD4861B00E1ABAB /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A6908622DD4861B00E1ABAB /* ModalView.swift */; };
 		8A72CC282D635B23004D2018 /* ReactionContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC272D635B23004D2018 /* ReactionContainerView.swift */; };
 		8A72CC2A2D635B2B004D2018 /* ReactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC292D635B2B004D2018 /* ReactionView.swift */; };
 		8A72CC2C2D635B33004D2018 /* EmojiPickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2B2D635B33004D2018 /* EmojiPickerCollectionView.swift */; };
@@ -1604,6 +1608,10 @@
 		8A60F48D2C19529F009AB837 /* WebSocketResources.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.protobuf; path = WebSocketResources.proto; sourceTree = "<group>"; };
 		8A6908292D83D5BD005B63C1 /* ContextMenuVC+EmojiReactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContextMenuVC+EmojiReactsView.swift"; sourceTree = "<group>"; };
 		8A69082B2D83D814005B63C1 /* ReactionListSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionListSheet.swift; sourceTree = "<group>"; };
+		8A6908532DD1C03800E1ABAB /* ConfirmationModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationModal.swift; sourceTree = "<group>"; };
+		8A69085A2DD480EF00E1ABAB /* Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessibility.swift; sourceTree = "<group>"; };
+		8A6908602DD481EA00E1ABAB /* ScrollableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableLabel.swift; sourceTree = "<group>"; };
+		8A6908622DD4861B00E1ABAB /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 		8A72CC272D635B23004D2018 /* ReactionContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionContainerView.swift; sourceTree = "<group>"; };
 		8A72CC292D635B2B004D2018 /* ReactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactionView.swift; sourceTree = "<group>"; };
 		8A72CC2B2D635B33004D2018 /* EmojiPickerCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPickerCollectionView.swift; sourceTree = "<group>"; };
@@ -2720,6 +2728,9 @@
 				60BE188A29FA3C7500048350 /* TabBar.swift */,
 				60BE188929FA3C7200048350 /* TextField.swift */,
 				60BE188E29FA3C7E00048350 /* TextView.swift */,
+				8A6908602DD481EA00E1ABAB /* ScrollableLabel.swift */,
+				8A6908622DD4861B00E1ABAB /* ModalView.swift */,
+				8A6908532DD1C03800E1ABAB /* ConfirmationModal.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2755,8 +2766,9 @@
 				60F0F17F29FA3513000BEF3F /* BChatUIKit.h */,
 				60BE188729FA3B2F00048350 /* BChatUIKitInfo.plist */,
 				60BE18AD29FA75E000048350 /* Utilities */,
-				60BE18AC29FA75BE00048350 /* Style Guide */,
 				60BE18AB29FA75A300048350 /* Components */,
+				60BE18AC29FA75BE00048350 /* Style Guide */,
+				8A6908592DD480C700E1ABAB /* Types */,
 			);
 			path = BChatUIKit;
 			sourceTree = "<group>";
@@ -3080,6 +3092,14 @@
 				8A5A0B492C05913300288474 /* HostType.swift */,
 			);
 			path = "Host Helper";
+			sourceTree = "<group>";
+		};
+		8A6908592DD480C700E1ABAB /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				8A69085A2DD480EF00E1ABAB /* Accessibility.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		8A72CC262D635B07004D2018 /* Emoji Picker */ = {
@@ -5349,14 +5369,18 @@
 				60BE18A829FA3CCB00048350 /* DeviceUtilities.swift in Sources */,
 				60BE189029FA3C7E00048350 /* TabBar.swift in Sources */,
 				60BE189C29FA3CA300048350 /* AppMode.swift in Sources */,
+				8A6908542DD1C03800E1ABAB /* ConfirmationModal.swift in Sources */,
 				60BE189D29FA3CA300048350 /* Gradients.swift in Sources */,
 				60BE189329FA3C7E00048350 /* SearchBar.swift in Sources */,
 				60BE189429FA3C7E00048350 /* TextView.swift in Sources */,
+				8A6908612DD481EA00E1ABAB /* ScrollableLabel.swift in Sources */,
 				60BE18A729FA3CCB00048350 /* UIView+Rendering.swift in Sources */,
 				60BE18AA29FA3CCB00048350 /* UIImage+Tinting.swift in Sources */,
 				60BE189E29FA3CA300048350 /* Notification+AppMode.swift in Sources */,
+				8A6908632DD4861B00E1ABAB /* ModalView.swift in Sources */,
 				60BE18A029FA3CA300048350 /* Values.swift in Sources */,
 				60BE18A929FA3CCB00048350 /* UIView+Constraints.swift in Sources */,
+				8A69085B2DD480EF00E1ABAB /* Accessibility.swift in Sources */,
 				60BE189129FA3C7E00048350 /* Separator.swift in Sources */,
 				60BE189229FA3C7E00048350 /* Button.swift in Sources */,
 			);
@@ -7419,7 +7443,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7465,7 +7489,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -7505,7 +7529,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7551,7 +7575,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
