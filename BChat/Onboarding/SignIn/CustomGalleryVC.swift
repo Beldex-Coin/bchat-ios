@@ -51,9 +51,9 @@ class CustomGalleryVC: BaseVC {
     }()
     private lazy var changeImageButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("Change image", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("Change image", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(changeImageButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(changeImageButtonAction), for: .touchUpInside)
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.setTitleColor(.lightGray, for: .normal)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -61,9 +61,9 @@ class CustomGalleryVC: BaseVC {
     }()
     private lazy var saveButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString("Save", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("Save", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(saveButtonAction), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(saveButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = 16
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)

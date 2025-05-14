@@ -785,7 +785,6 @@ NS_ASSUME_NONNULL_BEGIN
     // NOTE: Order doesn't matter.
     for (NSString *itemId in updatedItemSet) {
         if (![newItemIdList containsObject:itemId]) {
-            OWSFailDebug(@"Updated view item not in new view item list.");
             continue;
         }
         if ([insertedItemIdList containsObject:itemId]) {

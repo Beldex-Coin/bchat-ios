@@ -71,7 +71,7 @@ public enum MessageReceiver {
             switch envelope.type {
                 case .sessionMessage:
                     guard let userX25519KeyPair = SNMessagingKitConfiguration.shared.storage.getUserKeyPair() else { throw Error.noUserX25519KeyPair }
-                    (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: userX25519KeyPair)
+                    (plaintext, sender, beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: userX25519KeyPair)
                 case .closedGroupMessage:
                     guard let hexEncodedGroupPublicKey = envelope.source, SNMessagingKitConfiguration.shared.storage.isClosedGroup(hexEncodedGroupPublicKey) else { throw Error.invalidGroupPublicKey }
                     var encryptionKeyPairs = Storage.shared.getClosedGroupEncryptionKeyPairs(for: hexEncodedGroupPublicKey)
@@ -81,7 +81,7 @@ public enum MessageReceiver {
                     var encryptionKeyPair = encryptionKeyPairs.removeLast()
                     func decrypt() throws {
                         do {
-                            (plaintext, sender,beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: encryptionKeyPair)
+                            (plaintext, sender, beldexAddress) = try decryptWithSessionProtocol(ciphertext: ciphertext, using: encryptionKeyPair)
                         } catch {
                             if !encryptionKeyPairs.isEmpty {
                                 encryptionKeyPair = encryptionKeyPairs.removeLast()

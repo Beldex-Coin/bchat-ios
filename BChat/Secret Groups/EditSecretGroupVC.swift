@@ -35,8 +35,8 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
 
     private lazy var addMembersButton: Button = {
         let result = Button(style: .prominentFilled, size: .large)
-        result.setTitle("Add Members", for: UIControl.State.normal)
-        result.addTarget(self, action: #selector(addMembers), for: UIControl.Event.touchUpInside)
+        result.setTitle("Add Members", for: .normal)
+        result.addTarget(self, action: #selector(addMembers), for: .touchUpInside)
         result.contentEdgeInsets = UIEdgeInsets(top: 0, leading: Values.mediumSpacing, bottom: 0, trailing: Values.mediumSpacing)
         return result
     }()
@@ -117,7 +117,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
             addMembersButton.isUserInteractionEnabled = false
             let disabledColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
             addMembersButton.layer.borderColor = disabledColor.cgColor
-            addMembersButton.setTitleColor(disabledColor, for: UIControl.State.normal)
+            addMembersButton.setTitleColor(disabledColor, for: .normal)
         }
         // Middle stack view
         let middleStackView = UIStackView(arrangedSubviews: [ membersLabel, addMembersButton ])
@@ -268,7 +268,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
             self.addMembersButton.isUserInteractionEnabled = hasContactsToAdd
             let color = hasContactsToAdd ? Colors.bothGreenColor : Colors.text.withAlphaComponent(Values.mediumOpacity)
             self.addMembersButton.layer.borderColor = color.cgColor
-            self.addMembersButton.setTitleColor(color, for: UIControl.State.normal)
+            self.addMembersButton.setTitleColor(color, for: .normal)
         }
         navigationController!.pushViewController(userSelectionVC, animated: true, completion: nil)
     }

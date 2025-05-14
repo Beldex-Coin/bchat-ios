@@ -37,20 +37,20 @@ class VideoPreviewVC: UIViewController, CameraManagerDelegate {
     private lazy var closeButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "X")!.withTint(.white)
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
-        result.addTarget(self, action: #selector(cancel), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         return result
     }()
     
     private lazy var confirmButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "Check")!.withTint(.white)
-        result.setImage(image, for: UIControl.State.normal)
+        result.setImage(image, for: .normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
-        result.addTarget(self, action: #selector(confirm), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(confirm), for: .touchUpInside)
         return result
     }()
     

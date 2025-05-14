@@ -232,10 +232,47 @@ class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDeleg
         if qrCodeLink.isEmpty {
             self.showToast(message: NSLocalizedString("INVALID_QR_CODE", comment: ""), seconds: 1.0)
         } else {
-            if ECKeyPair.isValidHexEncodedPublicKey(candidate: qrCodeLink) {
-                startNewDM(with: qrCodeLink)
+            if isFromWallet == true {
+                var qrString = qrCodeLink
+                if qrString.contains("Beldex:") {
+                    qrString = qrString.replacingOccurrences(of: "Beldex:", with: "")
+                }
+                let vc = WalletSendNewVC()
+                vc.wallet = self.wallet
+                if qrString.contains("?") {
+                    let walletAddress = qrString.components(separatedBy: "?")
+                    guard BChatWalletWrapper.validAddress(walletAddress[0]) else {
+                        let alertController = UIAlertController(title: "", message: "Not a valid Payment QR Code", preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                            self.navigationController?.popViewController(animated: true)
+                        }))
+                        self.dismiss(animated: true)
+                        present(alertController, animated: true, completion: nil)
+                        return
+                    }
+                    vc.walletAddress = walletAddress[0]
+                } else {
+                    guard BChatWalletWrapper.validAddress(qrString) else {
+                        self.dismiss(animated: true)
+                        self.showToast(message: NSLocalizedString("INVALID_QR_CODE", comment: ""), seconds: 2.0)
+                        return
+                    }
+                    vc.walletAddress = qrString
+                }
+                if qrString.contains("=") {
+                    let walletAmount = qrString.components(separatedBy: "=")
+                    vc.walletAmount = walletAmount[1]
+                } else {
+                    vc.walletAmount = ""
+                }
+                vc.mainBalance = mainBalanceForScan
+                navigationController!.pushViewController(vc, animated: true)
             } else {
-                self.showToast(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
+                if ECKeyPair.isValidHexEncodedPublicKey(candidate: qrCodeLink) {
+                    startNewDM(with: qrCodeLink)
+                } else {
+                    self.showToast(message: NSLocalizedString("invalid_bchat_id", comment: ""), seconds: 1.0)
+                }
             }
         }
         self.dismiss(animated: true)

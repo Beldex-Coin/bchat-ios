@@ -40,7 +40,7 @@ class AcceptMessageRequestPopUp: BaseVC {
         button.setTitle("Yes", for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.bothRedColor
+        button.backgroundColor = Colors.bothGreenColor
         button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)

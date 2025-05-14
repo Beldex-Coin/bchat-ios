@@ -9,7 +9,7 @@ enum ContactUtilities {
             TSContactThread.enumerateCollectionObjects(with: transaction) { object, _ in
                 guard
                     let thread: TSContactThread = object as? TSContactThread,
-                    thread.shouldBeVisible,
+                    thread.shouldBeVisible, !thread.isArchived,
                     Storage.shared.getContact(
                         with: thread.contactBChatID(),
                         using: transaction

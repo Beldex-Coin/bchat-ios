@@ -33,15 +33,16 @@ extension ContextMenuVC {
             iconImageView.set(.width, to: iconImageViewSize)
             iconImageView.set(.height, to: iconImageViewSize)
             iconImageView.contentMode = .scaleAspectFit
+            iconImageView.tintColor = isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
             // Title
             let titleLabel = UILabel()
             titleLabel.text = action.title
-            titleLabel.textColor = UIColor(hex: 0xEBEBEB)
+            titleLabel.textColor =  isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
             if action.title == "Delete" {
                 titleLabel.textColor = Colors.bothRedColor
             }
             if action.title == "Save" {
-                iconImageView.tintColor = Colors.bothWhiteColor
+                iconImageView.tintColor = isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
             }
             titleLabel.font = Fonts.OpenSans(ofSize: 12)
             // Stack view

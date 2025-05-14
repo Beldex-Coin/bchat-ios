@@ -77,6 +77,7 @@ class CallView : UIView {
             callIconImageView.contentMode = .scaleAspectFit
             let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleCallDeclineTapped(_:)))
             tap.cancelsTouchesInView = false
+            callIconImageView.isUserInteractionEnabled = true
             callIconImageView.addGestureRecognizer(tap)
         } else {
             if let recognizers = callIconImageView.gestureRecognizers {
@@ -90,6 +91,7 @@ class CallView : UIView {
     
     @objc func handleCallDeclineTapped(_ sender: UITapGestureRecognizer? = nil) {
         if let call = AppEnvironment.shared.callManager.currentCall {
+            NotificationCenter.default.post(name: .dismissMiniView, object: nil)
             AppEnvironment.shared.callManager.endCall(call) { error in
                 if let _ = error {
                     call.endBChatCall()

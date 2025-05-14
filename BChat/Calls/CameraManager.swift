@@ -8,6 +8,8 @@ protocol CameraManagerDelegate : AnyObject {
     func handleVideoOutputCaptured(sampleBuffer: CMSampleBuffer)
 }
 
+var currentCameraPosition: AVCaptureDevice.Position = .front
+
 final class CameraManager : NSObject {
     private let captureSession = AVCaptureSession()
     private let videoDataOutput = AVCaptureVideoDataOutput()
@@ -20,9 +22,10 @@ final class CameraManager : NSObject {
     private var videoCaptureDevice: AVCaptureDevice?
     private var videoInput: AVCaptureDeviceInput?
     
+    
     func prepare() {
         print("[Calls] Preparing camera.")
-        addNewVideoIO(position: .front)
+        addNewVideoIO(position: currentCameraPosition)
     }
     
     private func addNewVideoIO(position: AVCaptureDevice.Position) {
@@ -40,6 +43,7 @@ final class CameraManager : NSObject {
             connection.videoOrientation = .portrait
             connection.automaticallyAdjustsVideoMirroring = false
             connection.isVideoMirrored = (position == .front)
+            connection.videoPreviewLayer?.videoGravity = .resizeAspectFill
         } else {
             SNLog("Couldn't add video data output to capture bchat.")
         }
@@ -57,6 +61,7 @@ final class CameraManager : NSObject {
         print("[Calls] Stopping camera.")
         isCapturing = false
         captureSession.stopRunning()
+        currentCameraPosition = .front
     }
     
     func switchCamera() {
@@ -66,10 +71,12 @@ final class CameraManager : NSObject {
             captureSession.removeInput(videoInput)
             captureSession.removeOutput(videoDataOutput)
             addNewVideoIO(position: .back)
+            currentCameraPosition = .back
         } else {
             captureSession.removeInput(videoInput)
             captureSession.removeOutput(videoDataOutput)
             addNewVideoIO(position: .front)
+            currentCameraPosition = .front
         }
         start()
     }

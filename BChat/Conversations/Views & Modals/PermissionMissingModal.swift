@@ -46,7 +46,7 @@ final class PermissionMissingModal : Modal {
         settingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
         settingsButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         settingsButton.setTitle("Settings", for: UIControl.State.normal)
-        settingsButton.addTarget(self, action: #selector(goToSettings), for: UIControl.Event.touchUpInside)
+        settingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)
         // Button stack view
         let buttonStackView = UIStackView(arrangedSubviews: [ cancelButton, settingsButton ])
         buttonStackView.axis = .horizontal

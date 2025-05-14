@@ -26,6 +26,12 @@ final class HomeVC : BaseVC {
     internal var threadCount: UInt {
         threads.numberOfItems(inGroup: TSInboxGroup)
     }
+    
+    private var threadsForArchivedChats: YapDatabaseViewMappings!
+    internal var threadCountForArchivedChats: UInt {
+        threadsForArchivedChats.numberOfItems(inGroup: TSArchiveGroup)
+    }
+    
     private lazy var dbConnection: YapDatabaseConnection = {
         let result = OWSPrimaryStorage.shared().newDatabaseConnection()
         result.objectCacheLimit = 500
@@ -53,6 +59,7 @@ final class HomeVC : BaseVC {
         result.separatorStyle = .none
         result.register(MessageRequestsCell.self, forCellReuseIdentifier: MessageRequestsCell.reuseIdentifier)
         result.register(HomeTableViewCell.self, forCellReuseIdentifier: "HomeTableViewCell")
+        result.register(ArchiveViewCell.self, forCellReuseIdentifier: "ArchiveViewCell")
         result.showsVerticalScrollIndicator = false
         return result
     }()
@@ -81,8 +88,8 @@ final class HomeVC : BaseVC {
         explanationLabel2.textAlignment = .center
         explanationLabel2.text = NSLocalizedString("Go get some friends to BChat!", comment: "")
         let createNewPrivateChatButton = Button(style: .prominentFilled2, size: .large)
-        createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: UIControl.State.normal)
-        createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: UIControl.Event.touchUpInside)
+        createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: .normal)
+        createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: .touchUpInside)
         createNewPrivateChatButton.set(.width, to: 196)
         let result = UIStackView(arrangedSubviews: [ explanationLabel ,explanationLabel2])
         result.axis = .vertical
@@ -101,7 +108,7 @@ final class HomeVC : BaseVC {
         return theImageView
     }()
     
-    var type = HostManager.shared.hostType.hostValue
+    var hostType = HostManager.shared.hostType.hostValue
     var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
     lazy var statusTextState = { return Observable<String>("") }()
@@ -339,6 +346,7 @@ final class HomeVC : BaseVC {
     }()
     
     
+    
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
@@ -358,8 +366,6 @@ final class HomeVC : BaseVC {
         dbConnection.beginLongLivedReadTransaction() // Freeze the connection for use on the main thread (this gives us a stable data source that doesn't change until we tell it to)
         // Preparation
         SignalApp.shared().homeViewController = self
-        // Gradient & nav bar
-//        setUpGradientBackground()
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         if navigationController?.navigationBar != nil {
             setUpNavBarStyle()
@@ -443,6 +449,7 @@ final class HomeVC : BaseVC {
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.layer.cornerRadius = 22
         tableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        
         // Empty state view
         view.addSubview(emptyStateView)
         emptyStateView.center(.horizontal, in: view)
@@ -499,6 +506,13 @@ final class HomeVC : BaseVC {
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
+        
+        threadsForArchivedChats = YapDatabaseViewMappings(groups: [ TSArchiveGroup ], view: TSThreadDatabaseViewExtensionName) // The extension should be registered at this point
+        threadsForArchivedChats.setIsReversed(true, forGroup: TSArchiveGroup)
+        dbConnection.read { transaction in
+            self.threadsForArchivedChats.update(with: transaction) // Perform the initial update
+        }
+        
         // Start polling if needed (i.e. if the user just created or restored their BChat ID)
         if OWSIdentityManager.shared().identityKeyPair() != nil {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -621,11 +635,11 @@ final class HomeVC : BaseVC {
     override func appDidBecomeActive(_ notification: Notification) {
         reload()
     }
-
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
     }
+    
     @objc func tappedMe() {
         let searchController = GlobalSearchViewController()
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
@@ -707,7 +721,6 @@ final class HomeVC : BaseVC {
             let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
             thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
         }
-        
         return thread
     }
     
@@ -858,6 +871,11 @@ final class HomeVC : BaseVC {
             self.threads.update(with: transaction)
         }
         threadViewModelCache.removeAll()
+        
+        dbConnection.beginLongLivedReadTransaction() // Jump to the latest commit
+        dbConnection.read { transaction in
+            self.threadsForArchivedChats.update(with: transaction)
+        }
         tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
         tableView.reloadData()
         emptyStateView.isHidden = (threadCount != 0)
@@ -914,14 +932,14 @@ final class HomeVC : BaseVC {
         self.navigationItem.rightBarButtonItem = nil
         
         let publicKey = getUserHexEncodedPublicKey()
-        let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
+        let button: UIButton = UIButton(type: .custom)
                 //set image for button
         button.widthAnchor.constraint(equalToConstant: 42).isActive = true
         button.heightAnchor.constraint(equalToConstant: 42).isActive = true
 
-        button.setImage(getProfilePicture(of: 42, for: publicKey), for: UIControl.State.normal)
+        button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
                 //add function for button
-        button.addTarget(self, action: #selector(openSettings), for: UIControl.Event.touchUpInside)
+        button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
                 //set frame
                 button.frame = CGRectMake(0, 0, 42, 42)
         button.layer.cornerRadius = 21
@@ -967,7 +985,7 @@ final class HomeVC : BaseVC {
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
-        plusButton.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+        plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
           let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         
         rightBarButtonItems.append(plusButtonBarItem)
@@ -984,7 +1002,7 @@ final class HomeVC : BaseVC {
 //        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
 //        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
 //        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
-//        wallet.addTarget(self, action: #selector(showWallet), for: UIControl.Event.touchUpInside)
+//        wallet.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
 //          let walletBarItem = UIBarButtonItem(customView: wallet)
 //
 //        rightBarButtonItems.append(walletBarItem)
@@ -1049,6 +1067,14 @@ final class HomeVC : BaseVC {
             }
         }
     }
+    
+    // Archived Chat
+    func archivedButtonTapped() {
+        let vc = ArchiveChatsVC()
+        vc.syncedflag = syncedflag
+        navigationController!.pushViewController(vc, animated: true)
+    }
+    
     
     // New Chat
     @objc private func newChatButtonTapped(_ sender: UIButton) {
@@ -1121,7 +1147,7 @@ final class HomeVC : BaseVC {
 //            self.showToast(message: "Please check your internet connection", seconds: 1.0)
 //        }
 
-        let vc = NewPlusButtonChatVC()
+        let vc = NewChatVC()
         navigationController!.pushViewController(vc, animated: true)
     }
     

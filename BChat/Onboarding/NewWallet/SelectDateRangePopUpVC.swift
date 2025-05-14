@@ -103,7 +103,7 @@ class SelectDateRangePopUpVC: BaseVC {
         let result = UIButton()
         result.setTitle(NSLocalizedString("OK", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.boldOpenSans(ofSize: 16)
-        result.addTarget(self, action: #selector(okButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)

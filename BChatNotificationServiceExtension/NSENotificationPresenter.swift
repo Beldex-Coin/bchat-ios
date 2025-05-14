@@ -110,6 +110,8 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         } else {
             trigger = nil
         }
+        
+        addNotifcationRequest(identifier: identifier, notificationContent: notificationContent, trigger: trigger)
 
         let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: trigger)
         SNLog("Add remote notification request: \(notificationContent.body)")
@@ -149,6 +151,8 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
             notificationContent.body = String(format: "modal_call_missed_tips_explanation".localized(), thread.name(with: transaction))
         }
         
+        addNotifcationRequest(identifier: UUID().uuidString, notificationContent: notificationContent, trigger: nil)
+        
         // Add request
         let identifier = UUID().uuidString
         let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: nil)
@@ -164,6 +168,36 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         SNLog("Finish adding remote notification request")
     }
     
+    public func notifyUser(forReaction reactMessage: ReactMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isMuted else { return }
+        guard !thread.isGroupThread() else { return } // We do NOT notify emoji reacts in groups
+        guard !thread.isMessageRequest(using: transaction) else { return }
+        guard let sender = reactMessage.authorId, let emoji = reactMessage.emoji else { return }
+        guard let threadID = thread.uniqueId else { return }
+        
+        let context = Contact.context(for: thread)
+        let senderName = Storage.shared.getContact(with: sender, using: transaction)?.displayName(for: context) ?? sender
+        
+        let notificationTitle = senderName
+        var notificationBody = String(format: "EMOJI_REACTS_NOTIFICATION".localized(), emoji)
+        let notificationsPreference = Environment.shared.preferences!.notificationPreviewType()
+        switch notificationsPreference {
+            case .namePreview: break
+            default: notificationBody = NotificationStrings.incomingMessageBody
+        }
+
+        var userInfo: [String:Any] = [ NotificationServiceExtension.isFromRemoteKey : true ]
+        userInfo[NotificationServiceExtension.threadIdKey] = threadID
+        
+        let notificationContent = UNMutableNotificationContent()
+        notificationContent.userInfo = userInfo
+        notificationContent.sound = OWSSounds.notificationSound(for: thread).notificationSound(isQuiet: false)
+        notificationContent.title = notificationTitle
+        notificationContent.body = notificationBody
+        
+        addNotifcationRequest(identifier: UUID().uuidString, notificationContent: notificationContent, trigger: nil)
+    }
+    
     public func cancelNotification(_ identifier: String) {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [ identifier ])
@@ -174,6 +208,20 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.removeAllPendingNotificationRequests()
         notificationCenter.removeAllDeliveredNotifications()
+    }
+    
+    private func addNotifcationRequest(identifier: String, notificationContent: UNNotificationContent, trigger: UNNotificationTrigger?) {
+        let request = UNNotificationRequest(identifier: identifier, content: notificationContent, trigger: nil)
+        SNLog("Add remote notification request: \(notificationContent.body)")
+        let semaphore = DispatchSemaphore(value: 0)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                SNLog("Failed to add notification request due to error:\(error)")
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        SNLog("Finish adding remote notification request")
     }
 }
 

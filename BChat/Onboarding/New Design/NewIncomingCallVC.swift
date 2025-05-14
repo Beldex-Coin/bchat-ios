@@ -7,13 +7,13 @@ import BChatUtilitiesKit
 import UIKit
 import MediaPlayer
 import AVFoundation
-import CoreBluetooth
 
-final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerDelegate {
+final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     
-    var bluetoothManager: CBPeripheralManager?
+    private static let floatingVideoViewWidth: CGFloat = (UIDevice.current.isIPad ? 312 : 116)
+    private static let floatingVideoViewHeight: CGFloat = (UIDevice.current.isIPad ? 270: 135)
     
-    let call: BChatCall
+    let bChatCall: BChatCall
     var latestKnownAudioOutputDeviceName: String?
     var durationTimer: Timer?
     var duration: Int = 0
@@ -26,13 +26,15 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         return result
     }()
     
+    var audioSession: AVAudioSession!
+    
     private var isSpeakerEnabled = false
     private var isBluetoothEnabled = false
     private var isBluetoothConnectedWithDevice = false
     
     // MARK: Lifecycle
     init(for call: BChatCall) {
-        self.call = call
+        self.bChatCall = call
         super.init(nibName: nil, bundle: nil)
         setupStateChangeCallbacks()
         self.modalPresentationStyle = .overFullScreen
@@ -41,23 +43,84 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     
     required init(coder: NSCoder) { preconditionFailure("Use init(for:) instead.") }
     
-    
-    private lazy var localVideoView: LocalVideoView = {
+    // Floating local video view
+    private lazy var floatingLocalVideoView: LocalVideoView = {
         let result = LocalVideoView()
-        result.isHidden = !call.isVideoEnabled
-        result.layer.cornerRadius = 10
-        result.layer.masksToBounds = true
-        result.set(.width, to: LocalVideoView.width)
-        result.set(.height, to: LocalVideoView.height)
-        result.makeViewDraggable()
+        result.alpha = 0
+        result.backgroundColor = .clear
+        result.set(.width, to: Self.floatingVideoViewWidth)
+        result.set(.height, to: Self.floatingVideoViewHeight)
+        
         return result
     }()
     
-    private lazy var remoteVideoView: RemoteVideoView = {
+    // Floating remote video view
+    private lazy var floatingRemoteVideoView: RemoteVideoView = {
         let result = RemoteVideoView()
         result.alpha = 0
-        result.backgroundColor = .black
-        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleRemoteVieioViewTapped)))
+        result.backgroundColor = .clear
+        result.set(.width, to: Self.floatingVideoViewWidth)
+        result.set(.height, to: Self.floatingVideoViewHeight)
+        
+        return result
+    }()
+    
+    // Fullscreen local video view
+    private lazy var fullScreenLocalVideoView: LocalVideoView = {
+        let result = LocalVideoView()
+        result.alpha = 0
+        result.backgroundColor = .clear
+        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleFullScreenVideoViewTapped)))
+        return result
+    }()
+    
+    // Fullscreen remote video view
+    private lazy var fullScreenRemoteVideoView: RemoteVideoView = {
+        let result = RemoteVideoView()
+        result.alpha = 0
+        result.backgroundColor = .clear
+        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleFullScreenVideoViewTapped)))
+        return result
+    }()
+    
+    private lazy var floatingViewContainer: UIView = {
+        let result = UIView()
+        result.isHidden = true
+        result.clipsToBounds = true
+        result.layer.cornerRadius = UIDevice.current.isIPad ? 20 : 10
+        result.layer.masksToBounds = true
+        result.backgroundColor = Colors.backgroundViewColor
+        result.makeViewDraggable()
+        
+        let userIcon: UIImageView = UIImageView()
+        userIcon.image = getProfilePicture(of: 65, for: self.bChatCall.bchatID)
+        userIcon.set(.width, to: 65)
+        userIcon.set(.height, to: 65)
+        userIcon.layer.masksToBounds = true
+        userIcon.contentMode = .scaleAspectFit
+        userIcon.layer.cornerRadius = 32.5
+        result.addSubview(userIcon)
+        userIcon.center(in: result)
+        
+        result.addSubview(floatingLocalVideoView)
+        floatingLocalVideoView.pin(to: result)
+        
+        result.addSubview(floatingRemoteVideoView)
+        floatingRemoteVideoView.pin(to: result)
+        
+        let swappingVideoIcon: UIImageView = UIImageView(
+            image: UIImage(systemName: "arrow.2.squarepath")?
+                .withRenderingMode(.alwaysTemplate)
+        )
+//        swappingVideoIcon.tintColor = Colors.textColor
+//        swappingVideoIcon.set(.width, to: 16)
+//        swappingVideoIcon.set(.height, to: 12)
+//        result.addSubview(swappingVideoIcon)
+//        swappingVideoIcon.pin(.top, to: .top, of: result, withInset: Values.smallSpacing)
+//        swappingVideoIcon.pin(.trailing, to: .trailing, of: result, withInset: -Values.smallSpacing)
+        
+        result.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(switchVideo)))
+        
         return result
     }()
     
@@ -109,7 +172,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.textColor = Colors.titleColor3
         result.font = Fonts.OpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-        if call.hasStartedConnecting { result.text = "Connecting..." }
+        if bChatCall.hasStartedConnecting { result.text = "Connecting..." }
         return result
     }()
     
@@ -120,7 +183,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(answerCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(answerCall), for: .touchUpInside)
         return result
     }()
     
@@ -131,7 +194,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         return result
     }()
     
@@ -180,12 +243,12 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     
     private lazy var backButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.isHidden = call.hasConnected
+        result.isHidden = bChatCall.hasConnected
         let image = UIImage(named: "NavBarBack")!.withTint(isLightMode ? .black : .white)
         result.setImage(image, for: .normal)
         result.set(.width, to: 60)
         result.set(.height, to: 60)
-        result.addTarget(self, action: #selector(pop), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(pop), for: .touchUpInside)
         return result
     }()
     
@@ -225,20 +288,22 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(videoButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(videoButtonTapped), for: .touchUpInside)
         return result
     }()
-        
+    
     private lazy var cameraButton: UIButton = { //switchCameraButton
         let result = UIButton(type: .custom)
-        let image = UIImage(named: "cameraRotate_disable")
+        let image = UIImage(named: "cameraRotate_enable")
         result.setImage(image, for: .normal)
         let imageSelected = UIImage(named: "cameraRotate_enable")
         result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(cameraButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(cameraButtonTapped), for: .touchUpInside)
+        result.isEnabled = false
+        result.isSelected = false
         return result
     }()
     
@@ -260,7 +325,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(audioButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(audioButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -273,7 +338,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 52)
         result.set(.height, to: 52)
         result.layer.cornerRadius = 26
-        result.addTarget(self, action: #selector(speakerButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(speakerButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -284,7 +349,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.set(.width, to: 72)
         result.set(.height, to: 72)
         result.layer.cornerRadius = 36
-        result.addTarget(self, action: #selector(endCall), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(endCall), for: .touchUpInside)
         return result
     }()
     
@@ -310,7 +375,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.spacing = 0
         return result
     }()
-        
+    
     private lazy var bluetoothButton: UIButton = {
         let result = UIButton(type: .custom)
         let image = UIImage(named: "callScreen_bluetooth_white")
@@ -319,7 +384,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
-        result.addTarget(self, action: #selector(bluetoothButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(bluetoothButtonTapped), for: .touchUpInside)
         return result
     }()
     
@@ -331,28 +396,62 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         result.setImage(imageSelected, for: .selected)
         result.set(.width, to: 26)
         result.set(.height, to: 26)
-        result.addTarget(self, action: #selector(internalSpeakerButtonTapped), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(internalSpeakerButtonTapped), for: .touchUpInside)
+        return result
+    }()
+    
+    private lazy var muteCallLabel: UILabel = {
+        let result = UILabel()
+        result.textColor = Colors.titleColor3
+        result.font = Fonts.OpenSans(ofSize: 16)
+        result.translatesAutoresizingMaskIntoConstraints = false
+        result.text = "Mute"
+        result.isHidden = true
+        return result
+    }()
+    
+    private lazy var smallCallerImageViewForFloatingView: UIImageView = {
+        let result = UIImageView()
+        result.image = UIImage(named: "")
+        result.set(.width, to: 65)
+        result.set(.height, to: 65)
+        result.layer.masksToBounds = true
+        result.contentMode = .scaleAspectFit
+        result.layer.cornerRadius = 32.5
         return result
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if shouldRestartCamera { cameraManager.prepare() }
+        
+        callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
+        backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
+        
+        view.addSubview(voiceCallLabel)
+        view.addSubview(callerNameLabel)
+        view.addSubview(callerImageBackgroundView)
+        view.addSubview(backGroundViewForIconAndLabel)
+        
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         view.addSubview(backgroundImageView)
         backgroundImageView.pin(to: view)
         
         // Remote video view
-        call.attachRemoteVideoRenderer(remoteVideoView)
-        view.addSubview(remoteVideoView)
-        remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
-        remoteVideoView.pin(to: view)
-        // Local video view
-        call.attachLocalVideoRenderer(localVideoView)
+        bChatCall.attachRemoteVideoRenderer(fullScreenRemoteVideoView)
+        view.addSubview(fullScreenRemoteVideoView)
+        fullScreenRemoteVideoView.translatesAutoresizingMaskIntoConstraints = false
+        fullScreenRemoteVideoView.pin(to: view)
         
-        view.addSubViews(voiceCallLabel, backGroundViewForIconAndLabel, callerImageBackgroundView, callerNameLabel, incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView)
-        backGroundViewForIconAndLabel.addSubViews(iconView, endToEndLabel)
-        callerImageBackgroundView.addSubViews(callerImageView, verifiedImageView)
+        // Local video view
+        bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+        view.addSubview(fullScreenLocalVideoView)
+        fullScreenLocalVideoView.translatesAutoresizingMaskIntoConstraints = false
+        fullScreenLocalVideoView.pin(to: view)
+        
+        view.addSubViews(incomingCallLabel, buttonStackView, bottomView, hangUpButtonSecond, callDurationLabel, speakerOptionStackView, muteCallLabel)
+        
         buttonStackView.addArrangedSubview(answerButton)
         buttonStackView.addArrangedSubview(hangUpButton)
         bottomView.addSubViews(stackViewForBottomView)
@@ -416,6 +515,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             hangUpButtonSecond.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: -33),
             callDurationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             callDurationLabel.bottomAnchor.constraint(equalTo: hangUpButtonSecond.topAnchor, constant: -36),
+            
+            muteCallLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            muteCallLabel.bottomAnchor.constraint(equalTo: callDurationLabel.topAnchor, constant: -16),
 
             speakerOptionStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             speakerOptionStackView.bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: -9),
@@ -423,9 +525,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         
         verifiedImageView.pin(.trailing, to: .trailing, of: callerImageView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: callerImageView, withInset: 3)
-        callerImageView.image = getProfilePicture(of: 132, for: self.call.bchatID)
+        callerImageView.image = getProfilePicture(of: 132, for: self.bChatCall.bchatID)
         
-        let contact: Contact? = Storage.shared.getContact(with: self.call.bchatID)
+        let contact: Contact? = Storage.shared.getContact(with: self.bChatCall.bchatID)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
             callerImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
             callerImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
@@ -434,11 +536,9 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             verifiedImageView.isHidden = true
         }
         
-        
-        if shouldRestartCamera { cameraManager.prepare() }
-        touch(call.videoCapturer)
-        callerNameLabel.text = self.call.contactName
-        AppEnvironment.shared.callManager.startCall(call) { error in
+        touch(bChatCall.videoCapturer)
+        callerNameLabel.text = self.bChatCall.contactName
+        AppEnvironment.shared.callManager.startCall(bChatCall) { error in
             DispatchQueue.main.async {
                 if let _ = error {
                     self.incomingCallLabel.text = "Can't start a call."
@@ -462,6 +562,50 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             self.callDurationLabel.isHidden = true
             self.bottomView.isHidden = true
         }
+        audioSession = AVAudioSession.sharedInstance()
+    }
+       
+    func setAudioOutputToSpeaker() {
+        do {
+            // Set the audio session to route audio to the speaker
+            try audioSession.overrideOutputAudioPort(.speaker)
+            print("Audio output set to Speaker")
+            internalSpeakerButton.isSelected = true
+            let image = UIImage(named: "speaker_enable")
+            speakerButton.setImage(image, for: .normal)
+        } catch {
+            print("Failed to set audio output to speaker: \(error.localizedDescription)")
+        }
+    }
+    
+    func setAudioOutputToBluetoothOrSpeaker() {
+        do {
+            // Set the category to allow both playback and recording
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .allowBluetoothA2DP])
+            
+            // Activate the audio session
+            try audioSession.setActive(true)
+            
+            // Check for Bluetooth availability
+            if let availableInputs = audioSession.availableInputs {
+                // Try to find a Bluetooth HFP (Hands-Free Profile) input
+                if let bluetoothInput = availableInputs.first(where: { $0.portType == .bluetoothHFP || $0.portType == .bluetoothA2DP || $0.portType == .bluetoothLE}) {
+                    // If Bluetooth is available, use it
+                    try audioSession.setPreferredInput(bluetoothInput)
+                    print("Audio routed to Bluetooth.")
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    isBluetoothConnectedWithDevice = true
+                } else {
+                    disableSpeaker()
+                    print("Audio routed to Loudspeaker.")
+                }
+            }
+        } catch {
+            print("Failed to set audio session: \(error)")
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -473,61 +617,86 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         }
     }
     
-    private func addLocalVideoView() {
-        let safeAreaInsets = UIApplication.shared.keyWindow!.safeAreaInsets
-        let window = CurrentAppContext().mainWindow!
-        window.addSubview(localVideoView)
-        localVideoView.autoPinEdge(toSuperviewEdge: .right, withInset: Values.smallSpacing)
-        let topMargin = safeAreaInsets.top + Values.veryLargeSpacing
-        localVideoView.autoPinEdge(toSuperviewEdge: .top, withInset: topMargin)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) {
+            cameraButton.isEnabled = true
+            cameraButton.isSelected = true
+            cameraManager.prepare()
+            cameraManager.start()
+        }
+        shouldRestartCamera = true
+        addFloatingVideoView()
+        self.conversationVC?.inputAccessoryView?.isHidden = true
+        self.conversationVC?.inputAccessoryView?.alpha = 0
+        setupStateChangeCallbacks()
+        
+        if bChatCall.hasConnected {
+            self.incomingCallLabel.isHidden = true
+            self.buttonStackView.isHidden = true
+            self.hangUpButtonSecond.isHidden = false
+            self.callDurationLabel.isHidden = false
+            self.bottomView.isHidden = false
+            updateTimer()
+        }
+        if bChatCall.hasStartedConnecting {
+            self.incomingCallLabel.isHidden = true
+            self.buttonStackView.isHidden = true
+            self.hangUpButtonSecond.isHidden = false
+            self.callDurationLabel.isHidden = false
+            self.bottomView.isHidden = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
-        shouldRestartCamera = true
-        addLocalVideoView()
-        remoteVideoView.alpha = call.isRemoteVideoEnabled ? 1 : 0
-        self.conversationVC?.inputAccessoryView?.isHidden = true
-        self.conversationVC?.inputAccessoryView?.alpha = 0
-        setupStateChangeCallbacks()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
         self.conversationVC?.inputAccessoryView?.isHidden = true
         self.conversationVC?.inputAccessoryView?.alpha = 0
         
-        if call.hasConnected {
-            self.incomingCallLabel.isHidden = true
-            self.buttonStackView.isHidden = true
-            self.hangUpButtonSecond.isHidden = false
-            self.callDurationLabel.isHidden = false
-            self.bottomView.isHidden = false
-        }
-        if call.hasStartedConnecting {
-            self.incomingCallLabel.isHidden = true
-            self.buttonStackView.isHidden = true
-            self.hangUpButtonSecond.isHidden = false
-            self.callDurationLabel.isHidden = false
-            self.bottomView.isHidden = false
-        }
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.start() }
         
-        if call.hasConnected {
-            updateTimer()
-        }
+        addFloatingVideoView()
+        let remoteVideoView: RemoteVideoView = bChatCall.floatingViewVideoSource == .remote ? floatingRemoteVideoView : fullScreenRemoteVideoView
+        remoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if (call.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
-        localVideoView.removeFromSuperview()
+        
+        floatingViewContainer.removeFromSuperview()
+        let currentCallDuration = AppEnvironment.shared.callManager.currentCall?.duration
+        if currentCallDuration == nil {
+            durationTimer?.invalidate()
+            durationTimer = nil
+        }
     }
     
     @objc private func pop() {
-        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
+        //Don't delete the below lines
+//        NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
+//        self.conversationVC?.showInputAccessoryView()
+//        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        
+        self.shouldRestartCamera = false
         self.conversationVC?.showInputAccessoryView()
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        let miniCallView = MiniCallView(from: self)
+        miniCallView.show()
+        
+        presentingViewController?.dismiss(animated: true) {
+            NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
+        }
+    }
+    
+    private func addFloatingVideoView() {
+        guard let window: UIWindow = CurrentAppContext().mainWindow else { return }
+        
+        window.addSubview(floatingViewContainer)
+        floatingViewContainer.pin(.bottom, to: .bottom, of: window, withInset: window.safeAreaInsets.bottom - 160)
+        floatingViewContainer.pin(.right, to: .right, of: window, withInset: -Values.smallSpacing)
     }
     
     // MARK: - Orientation
@@ -538,9 +707,21 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     }
     
     func setupStateChangeCallbacks() {
-        self.call.remoteVideoStateDidChange = { isEnabled in
+        self.bChatCall.remoteAudioMuted = { isMuted in
+            DispatchQueue.main.async {
+                self.muteCallLabel.isHidden = !isMuted
+                self.muteCallLabel.text = isMuted ? "Muted" : ""
+            }
+        }
+        
+        self.bChatCall.remoteVideoStateDidChange = { isEnabled in
             NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
             DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.25) {
+                    let remoteVideoView: RemoteVideoView = self.bChatCall.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
+                    remoteVideoView.alpha = isEnabled ? 1 : 0
+                }
+                    
                 if self.incomingCallLabel.alpha < 0.5 {
                     UIView.animate(withDuration: 0.25) {
                         self.callDurationLabel.text = "Connecting..."
@@ -548,7 +729,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
                 }
             }
         }
-        self.call.hasStartedConnectingDidChange = {
+        self.bChatCall.hasStartedConnectingDidChange = {
             DispatchQueue.main.async {
                 self.callDurationLabel.text = "Connecting..."
                 NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
@@ -559,34 +740,35 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
                 self.buttonStackView.isHidden = true
                 self.hangUpButtonSecond.isHidden = false
                 self.bottomView.isHidden = false
-                self.bluetoothManager = CBPeripheralManager(delegate: self, queue: nil, options: nil)
             }
         }
-        self.call.hasConnectedDidChange = {
+        self.bChatCall.hasConnectedDidChange = {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
                 self.callDurationLabel.text = "Connected"
                 self.updateTimer()
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
+                self.setAudioOutputToBluetoothOrSpeaker()
             }
         }
-        self.call.hasEndedDidChange = {
+        self.bChatCall.hasEndedDidChange = {
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
+                if (self.bChatCall.isVideoEnabled && self.shouldRestartCamera) { self.cameraManager.stop() }
                 self.durationTimer?.invalidate()
                 self.durationTimer = nil
                 self.handleEndCallMessage()
+                NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
             }
         }
-        self.call.hasStartedReconnecting = {
+        self.bChatCall.hasStartedReconnecting = {
             DispatchQueue.main.async {
                 self.incomingCallLabel.isHidden = false
                 self.callDurationLabel.isHidden = true
                 self.callDurationLabel.text = "Reconnecting..."
             }
         }
-        self.call.hasReconnected = {
+        self.bChatCall.hasReconnected = {
             DispatchQueue.main.async {
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
@@ -595,19 +777,44 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         }
     }
     
+    @objc private func switchVideo() {
+        if self.bChatCall.floatingViewVideoSource == .remote {
+            bChatCall.removeRemoteVideoRenderer(floatingRemoteVideoView)
+            bChatCall.removeLocalVideoRenderer(fullScreenLocalVideoView)
+            
+            floatingRemoteVideoView.alpha = 0
+            floatingLocalVideoView.alpha = bChatCall.isVideoEnabled ? 1 : 0
+            fullScreenRemoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+            fullScreenLocalVideoView.alpha = 0
+            
+            bChatCall.floatingViewVideoSource = .local
+            bChatCall.attachRemoteVideoRenderer(fullScreenRemoteVideoView)
+            bChatCall.attachLocalVideoRenderer(floatingLocalVideoView)
+        } else {
+            bChatCall.removeRemoteVideoRenderer(fullScreenRemoteVideoView)
+            bChatCall.removeLocalVideoRenderer(floatingLocalVideoView)
+            
+            floatingRemoteVideoView.alpha = bChatCall.isRemoteVideoEnabled ? 1 : 0
+            floatingLocalVideoView.alpha = 0
+            fullScreenRemoteVideoView.alpha = 0
+            fullScreenLocalVideoView.alpha = bChatCall.isVideoEnabled ? 1 : 0
+            
+            bChatCall.floatingViewVideoSource = .remote
+            bChatCall.attachRemoteVideoRenderer(floatingRemoteVideoView)
+            bChatCall.attachLocalVideoRenderer(fullScreenLocalVideoView)
+        }
+    }
+    
     func updateTimer() {
         self.durationTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.callDurationLabel.text = self.call.duration.stringFromTimeInterval()
-            NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
+            self.callDurationLabel.text = self.bChatCall.duration.stringFromTimeInterval()
             self.buttonStackView.isHidden = true
             self.hangUpButtonSecond.isHidden = false
             self.bottomView.isHidden = false
             self.backButton.isHidden = false
-            self.callerImageView.isHidden = self.call.isRemoteVideoEnabled
-            self.callerNameLabel.isHidden = self.call.isRemoteVideoEnabled
-            self.remoteVideoView.alpha = self.call.isRemoteVideoEnabled ? 1 : 0
-            self.voiceCallLabel.text = self.call.isVideoEnabled ? "Video Call" : "Voice Call"
-            self.callerImageBackgroundView.isHidden = self.call.isVideoEnabled || self.call.isRemoteVideoEnabled
+            self.voiceCallLabel.text = self.bChatCall.isVideoEnabled ? "Video Call" : "Voice Call"
+                
+            NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }
     }
     
@@ -645,16 +852,26 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     }
     
     func handleEndCallMessage() {
-        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
+        //END CALL NOTIFICATION
         SNLog("[Calls] Ending call.")
         self.incomingCallLabel.isHidden = true
         self.callDurationLabel.isHidden = true
         callDurationLabel.text = "Call Ended"
         self.alertOnCallEnding()
+        durationTimer?.invalidate()
+        durationTimer = nil
+        if (bChatCall.isVideoEnabled && shouldRestartCamera) { cameraManager.stop() }
         Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
             self.conversationVC?.showInputAccessoryView()
             self.presentingViewController?.dismiss(animated: true, completion: nil)
         }
+        
+        UIView.animate(withDuration: 0.25) {
+            let remoteVideoView: RemoteVideoView = self.bChatCall.floatingViewVideoSource == .remote ? self.floatingRemoteVideoView : self.fullScreenRemoteVideoView
+            remoteVideoView.alpha = 0
+        }
+        
+        NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
     }
     
     @objc private func answerCall() {
@@ -665,7 +882,7 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         self.bottomView.isHidden = false
         
         UIApplication.shared.isIdleTimerDisabled = true
-        AppEnvironment.shared.callManager.answerCall(call) { error in
+        AppEnvironment.shared.callManager.answerCall(bChatCall) { error in
             DispatchQueue.main.async {
                 if let _ = error {
                     self.callDurationLabel.text = "Can't answer the call."
@@ -678,19 +895,20 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     @objc private func endCall() {
         UIApplication.shared.isIdleTimerDisabled = false
         NotificationCenter.default.post(name: .connectingCallHideViewNotification, object: nil)
-        AppEnvironment.shared.callManager.endCall(call) { error in
+        AppEnvironment.shared.callManager.endCall(bChatCall) { error in
             if let _ = error {
-                self.call.endBChatCall()
+                self.bChatCall.endBChatCall()
                 AppEnvironment.shared.callManager.reportCurrentCallEnded(reason: nil)
             }
             DispatchQueue.main.async {
+                self.floatingLocalVideoView.isHidden = true
                 self.conversationVC?.showInputAccessoryView()
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
             }
         }
     }
     
-    func alertOnCallEnding(){
+    func alertOnCallEnding() {
         guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
             print("error");
             return;
@@ -708,7 +926,6 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         }
     }
     
-    
     func isCallOutgoing() -> Bool {
         guard let call = AppEnvironment.shared.callManager.currentCall else { return true }
         return call.isOutgoing
@@ -716,159 +933,139 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
     
     @objc private func videoButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
-        if (call.isVideoEnabled) {
-            localVideoView.isHidden = true
+        if (bChatCall.isVideoEnabled) {
+            floatingViewContainer.isHidden = bChatCall.floatingViewVideoSource == .local || !bChatCall.isRemoteVideoEnabled
             cameraManager.stop()
-            call.isVideoEnabled = false
+            bChatCall.isVideoEnabled = false
             cameraButton.isEnabled = false
             cameraButton.isSelected = false
             videoButton.tintColor = .white
             videoButton.backgroundColor = UIColor(hex: 0x1F1F1F)
+            
+            //bChatCall.removeLocalVideoRenderer(fullScreenLocalVideoView)
+            fullScreenLocalVideoView.alpha = 0
         } else {
             guard requestCameraPermissionIfNeeded() else { return }
             let previewVC = VideoPreviewVC()
             previewVC.delegate = self
-            present(previewVC, animated: true, completion: nil)
+            present(previewVC, animated: true)
         }
     }
     
     func cameraDidConfirmTurningOn() {
-        localVideoView.isHidden = false
+        floatingViewContainer.isHidden = false
+        let localVideoView: LocalVideoView = bChatCall.floatingViewVideoSource == .local ? floatingLocalVideoView : fullScreenLocalVideoView
+        localVideoView.alpha = 1
+        
         cameraManager.prepare()
         cameraManager.start()
-        call.isVideoEnabled = true
+        bChatCall.isVideoEnabled = true
         cameraButton.isEnabled = true
         cameraButton.isSelected = true
         videoButton.tintColor = UIColor(hex: 0x1F1F1F)
         videoButton.backgroundColor = .white
-        let currentSession = AVAudioSession.sharedInstance()
-        do {
-            try currentSession.overrideOutputAudioPort(AVAudioSession.PortOverride.speaker)
-        } catch let error as NSError {
-            print("audioSession error: \(error.localizedDescription)")
-        }
+        setAudioOutputForVideoCall()
     }
     
     
     @objc private func cameraButtonTapped(sender : UIButton) {
-        sender.isSelected = !sender.isSelected
-        cameraManager.switchCamera()
+        if bChatCall.isVideoEnabled {
+            sender.isSelected = !sender.isSelected
+            cameraManager.switchCamera()
+        } else {
+            debugPrint("Enable video call first")
+        }
     }
     
     @objc private func audioButtonTapped(sender : UIButton) {
         sender.isSelected = !sender.isSelected
-        if call.isMuted {
+        if bChatCall.isMuted {
             audioButton.backgroundColor = UIColor(hex: 0x1F1F1F)
-            call.isMuted = false
+            bChatCall.isMuted = false
         } else {
             audioButton.backgroundColor = Colors.destructive
-            call.isMuted = true
+            bChatCall.isMuted = true
         }
     }
     
     @objc private func speakerButtonTapped(sender : UIButton) {
         speakerOptionStackView.isHidden = !speakerOptionStackView.isHidden
-        
         if !isBluetoothConnectedWithDevice {
             speakerOptionStackView.isHidden = true
             isSpeakerEnabled.toggle()
             if isSpeakerEnabled {
-                enableSpeaker()
+                setAudioOutputToSpeaker()
             } else {
                 disableSpeaker()
             }
         } else {
             bluetoothButton.isHidden = false
         }
-        
     }
     
     @objc private func bluetoothButtonTapped(sender : UIButton) {
-        sender.isSelected = !sender.isSelected
         speakerOptionStackView.isHidden = true
+        enableBluetooth()
+        sender.isSelected = true
         internalSpeakerButton.isSelected = false
-        
-        isBluetoothEnabled.toggle()
-        if isBluetoothEnabled {
-            // Logic to enable Bluetooth audio
-            enableBluetooth()
-            sender.isSelected = true
-        } else {
-            // Logic to disable Bluetooth audio (revert to default)
-            disableBluetooth()
-            sender.isSelected = false
-        }
     }
     
-    private func enableBluetooth() {
+    func enableBluetooth() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
-            try AVAudioSession.sharedInstance().setActive(true)
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: .allowBluetooth)
+            try audioSession.setActive(true)
+            bluetoothButton.isSelected = true
             let image = UIImage(named: "speaker_bluetooth")
             speakerButton.setImage(image, for: .normal)
-            print("Bluetooth audio enabled")
         } catch {
-            print("Failed to enable Bluetooth audio: \(error)")
-        }
-    }
-
-    private func disableBluetooth() {
-        do {
-            // Revert to default audio route
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
-            try AVAudioSession.sharedInstance().setActive(true)
-            let image = UIImage(named: "speaker_disable")
-            speakerButton.setImage(image, for: .normal)
-            print("Bluetooth audio disabled")
-        } catch {
-            print("Failed to disable Bluetooth audio: \(error)")
+            print("Error setting up audio session: \(error.localizedDescription)")
         }
     }
     
-    @objc private func internalSpeakerButtonTapped(sender : UIButton) {
-        sender.isSelected = !sender.isSelected
-        speakerOptionStackView.isHidden = true
-        bluetoothButton.isSelected = false
-        
-        isSpeakerEnabled.toggle()
-        if isSpeakerEnabled {
-            // Logic to enable the speaker
-            enableSpeaker()
-            sender.isSelected = true
-        } else {
-            // Logic to disable the speaker
-            disableSpeaker()
-            sender.isSelected = false
-        }
-    }
-    
-    private func enableSpeaker() {
+    func disableSpeaker() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothA2DP, .allowAirPlay, .allowBluetooth])
-            try AVAudioSession.sharedInstance().setActive(true)
-            print("Speaker enabled")
-            internalSpeakerButton.isSelected = true
-            let image = UIImage(named: "speaker_enable")
-            speakerButton.setImage(image, for: .normal)
-        } catch {
-            print("Failed to enable speaker: \(error)")
-        }
-    }
-
-    private func disableSpeaker() {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
-            try AVAudioSession.sharedInstance().setActive(true)
-            print("Speaker disabled")
+            // Set the audio session to route audio to the speaker
+            try audioSession.overrideOutputAudioPort(.none)
+            bluetoothButton.isSelected = false
             internalSpeakerButton.isSelected = false
             let image = UIImage(named: "speaker_disable")
             speakerButton.setImage(image, for: .normal)
         } catch {
-            print("Failed to disable speaker: \(error)")
+            print("Failed to set audio output to speaker: \(error.localizedDescription)")
         }
     }
     
-    @objc private func audioRouteDidChange() {
+    @objc private func internalSpeakerButtonTapped(sender : UIButton) {
+        speakerOptionStackView.isHidden = true
+        setAudioOutputToSpeaker()
+        sender.isSelected = true
+        bluetoothButton.isSelected = false
+    }
+    
+    func setAudioOutputForVideoCall() {
+        do {
+            try audioSession.setCategory(.playAndRecord, mode: .voiceChat, options: [.allowBluetooth, .allowBluetoothA2DP])
+            try audioSession.setActive(true)
+            if let availableInputs = audioSession.availableInputs {
+                if let bluetoothInput = availableInputs.first(where: { $0.portType == .bluetoothHFP || $0.portType == .bluetoothA2DP || $0.portType == .bluetoothLE}) {
+                    try audioSession.setPreferredInput(bluetoothInput)
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    isBluetoothConnectedWithDevice = true
+                } else {
+                    setAudioOutputToSpeaker()
+                    bluetoothButton.isHidden = true
+                    isBluetoothConnectedWithDevice = false
+                }
+            }
+        } catch {
+            print("Failed to set audio session: \(error)")
+        }
+    }
+    
+    @objc private func audioRouteDidChange(_ notification: Notification) {
         let currentSession = AVAudioSession.sharedInstance()
         let currentRoute = currentSession.currentRoute
         if let currentOutput = currentRoute.outputs.first {
@@ -877,44 +1074,57 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
             
             switch currentOutput.portType {
                 case .builtInSpeaker:
-                let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: .normal)
-                internalSpeakerButton.isSelected = true
-                bluetoothButton.isHidden = true
-                bluetoothButton.isSelected = false
+                    let image = UIImage(named: "speaker_enable")
+                    speakerButton.setImage(image, for: .normal)
+                    internalSpeakerButton.isSelected = true
                 case .headphones:
-                let image = UIImage(named: "speaker_enable")
-                speakerButton.setImage(image, for: .normal)
-                internalSpeakerButton.isSelected = true
-                bluetoothButton.isHidden = true
-                bluetoothButton.isSelected = false
+                    let image = UIImage(named: "speaker_enable")
+                    speakerButton.setImage(image, for: .normal)
+                    internalSpeakerButton.isSelected = true
                 case .bluetoothLE: fallthrough
                 case .bluetoothA2DP:
-                bluetoothButton.isHidden = false
-                internalSpeakerButton.isSelected = false
-                bluetoothButton.isSelected = true
-                let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    internalSpeakerButton.isSelected = false
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
                 case .bluetoothHFP:
-                bluetoothButton.isHidden = false
-                internalSpeakerButton.isSelected = false
-                bluetoothButton.isSelected = true
-                let image = UIImage(named: "speaker_bluetooth")
-                speakerButton.setImage(image, for: .normal)
+                    bluetoothButton.isHidden = false
+                    internalSpeakerButton.isSelected = false
+                    bluetoothButton.isSelected = true
+                    let image = UIImage(named: "speaker_bluetooth")
+                    speakerButton.setImage(image, for: .normal)
                 case .builtInReceiver: fallthrough
                 default:
-                bluetoothButton.isHidden = true
-                bluetoothButton.isSelected = false
-                let image = UIImage(named: "speaker_disable")
-                speakerButton.setImage(image, for: .normal)
-                internalSpeakerButton.isSelected = false
+                    let image = UIImage(named: "speaker_disable")
+                    speakerButton.setImage(image, for: .normal)
             }
+
         }
         
-    }
-    
-    @objc private func handleRemoteVieioViewTapped(gesture: UITapGestureRecognizer) {
-        let isHidden = callDurationLabel.alpha < 0.5
+        guard let info = notification.userInfo,
+              let reasonValue = info[AVAudioSessionRouteChangeReasonKey] as? UInt,
+              let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+            return
+        }
+        
+        switch reason {
+            case .newDeviceAvailable:
+                print("New audio device connected.")
+            case .oldDeviceUnavailable:
+                print("Audio device disconnected (e.g., Bluetooth).")
+                disableSpeaker()
+                bluetoothButton.isHidden = true
+                isBluetoothConnectedWithDevice = false
+            case .categoryChange:
+                print("Audio session category changed.")
+            case .override:
+                print("Audio session override.")
+            case .wakeFromSleep:
+                print("Audio session woke from sleep.")
+            @unknown default:
+                print("Unknown audio route change.")
+        }
     }
 
     func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
@@ -928,17 +1138,24 @@ final class NewIncomingCallVC: BaseVC,VideoPreviewDelegate, CBPeripheralManagerD
         }
     }
     
-    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
-        if peripheral.state == .poweredOn {
-            bluetoothButton.isHidden = false
-            isBluetoothConnectedWithDevice = true
-            enableBluetooth()
-        } else {
-            bluetoothButton.isHidden = true
-            bluetoothButton.isSelected = false
-            isBluetoothConnectedWithDevice = false
-            disableBluetooth()
+    @objc private func handleFullScreenVideoViewTapped() {
+        let isHidden = callDurationLabel.alpha < 0.5
+        
+        UIView.animate(withDuration: 0.5) {
+            self.hangUpButtonSecond.alpha = isHidden ? 1 : 0
+            self.bottomView.alpha = isHidden ? 1 : 0
+            self.callDurationLabel.alpha = isHidden ? 1 : 0
+            self.backButton.alpha = isHidden ? 1 : 0
+            self.muteCallLabel.alpha  = isHidden ? 1 : 0
+            self.voiceCallLabel.alpha  = isHidden ? 1 : 0
+            self.endToEndLabel.alpha  = isHidden ? 1 : 0
+            self.iconView.alpha = isHidden ? 1 : 0
         }
     }
     
+    
+    // MARK: RTCVideoViewDelegate
+    func videoView(_ videoView: RTCVideoRenderer, didChangeVideoSize size: CGSize) {
+        videoView.setSize(floatingLocalVideoView.size)
+    }
 }

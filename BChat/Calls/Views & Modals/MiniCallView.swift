@@ -2,7 +2,7 @@ import UIKit
 import WebRTC
 
 final class MiniCallView: UIView, RTCVideoViewDelegate {
-    var callVC: CallVC
+    var callVC: NewIncomingCallVC
     
     // MARK: UI
     private static let defaultSize: CGFloat = 100
@@ -29,7 +29,7 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     private lazy var remoteVideoView: RTCMTLVideoView = {
         let result = RTCMTLVideoView()
         result.delegate = self
-        result.alpha = self.callVC.call.isRemoteVideoEnabled ? 1 : 0
+        result.alpha = self.callVC.bChatCall.isRemoteVideoEnabled ? 1 : 0
         result.videoContentMode = .scaleAspectFit
         result.backgroundColor = .black
         return result
@@ -39,14 +39,14 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     // MARK: Initialization
     public static var current: MiniCallView?
     
-    init(from callVC: CallVC) {
+    init(from callVC: NewIncomingCallVC) {
         self.callVC = callVC
         super.init(frame: CGRect.zero)
         self.backgroundColor = UIColor.init(white: 0, alpha: 0.8)
         setUpViewHierarchy()
         setUpGestureRecognizers()
         MiniCallView.current = self
-        self.callVC.call.remoteVideoStateDidChange = { isEnabled in
+        self.callVC.bChatCall.remoteVideoStateDidChange = { isEnabled in
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.25) {
                     self.remoteVideoView.alpha = isEnabled ? 1 : 0
@@ -77,10 +77,12 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         self.addSubview(background)
         background.pin(to: self)
         // Remote video view
-        callVC.call.attachRemoteVideoRenderer(remoteVideoView)
+        callVC.bChatCall.attachRemoteVideoRenderer(remoteVideoView)
         self.addSubview(remoteVideoView)
         remoteVideoView.translatesAutoresizingMaskIntoConstraints = false
         remoteVideoView.pin(to: self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideMiniView(_:)), name: .dismissMiniView, object: nil)
     }
     
     private func getBackgroudView() -> UIView {
@@ -89,7 +91,7 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         imageView.layer.cornerRadius = 32
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
-        imageView.image = callVC.call.profilePicture
+        imageView.image = callVC.bChatCall.profilePicture
         background.addSubview(imageView)
         imageView.set(.width, to: 64)
         imageView.set(.height, to: 64)
@@ -126,11 +128,16 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
         }, completion: nil)
     }
     
+    @objc
+    public func hideMiniView(_ notification: Notification) {
+        dismiss()
+    }
+    
     public func dismiss() {
         UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {
             self.alpha = 0.0
         }, completion: { _ in
-            self.callVC.call.removeRemoteVideoRenderer(self.remoteVideoView)
+            self.callVC.bChatCall.removeRemoteVideoRenderer(self.remoteVideoView)
             self.callVC.setupStateChangeCallbacks()
             MiniCallView.current = nil
             self.removeFromSuperview()

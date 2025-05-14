@@ -131,7 +131,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         result.setTitle(NSLocalizedString("All media", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.titleColor, for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
-        result.addTarget(self, action: #selector(didPressAllMediaButton), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(didPressAllMediaButton), for: .touchUpInside)
         let image = UIImage(named: "ic_videoImage")?.withRenderingMode(.alwaysTemplate)
         result.setImage(image, for: .normal)
         result.tintColor = Colors.titleColor
@@ -146,7 +146,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         result.setTitle(NSLocalizedString("Delete", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(.red, for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
-        result.addTarget(self, action: #selector(didPressDelete), for: UIControl.Event.touchUpInside)
+        result.addTarget(self, action: #selector(didPressDelete), for: .touchUpInside)
         let image = UIImage(named: "ic_delete_image")?.withRenderingMode(.alwaysTemplate)
         result.setImage(image, for: .normal)
         result.tintColor = .red

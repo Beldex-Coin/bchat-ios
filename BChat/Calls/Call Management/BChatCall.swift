@@ -4,6 +4,11 @@ import BChatMessagingKit
 import PromiseKit
 import CallKit
 
+enum FloatingViewVideoSource {
+    case local
+    case remote
+}
+
 public final class BChatCall: NSObject, WebRTCBChatDelegate {
     
     @objc static let isEnabled = true
@@ -39,6 +44,12 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     var isRemoteVideoEnabled = false {
         didSet {
             remoteVideoStateDidChange?(isRemoteVideoEnabled)
+        }
+    }
+    
+    var isRemoteAudioMuted = false {
+        didSet {
+            remoteAudioMuted?(isRemoteAudioMuted)
         }
     }
     
@@ -120,6 +131,7 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     var remoteVideoStateDidChange: ((Bool) -> Void)?
     var hasStartedReconnecting: (() -> Void)?
     var hasReconnected: (() -> Void)?
+    var remoteAudioMuted: ((Bool) -> Void)?
     
     // MARK: Derived Properties
     var hasStartedConnecting: Bool {
@@ -152,6 +164,9 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     }
     
     var reconnectTimer: Timer? = nil
+    var isVideoSwapped = false
+    
+    var floatingViewVideoSource: FloatingViewVideoSource = .local
     
     // MARK: Initialization
     init(for bchatID: String, uuid: String, mode: Mode, outgoing: Bool = false) {
@@ -285,6 +300,10 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
         webRTCBChat.attachLocalRenderer(renderer)
     }
     
+    func removeLocalVideoRenderer(_ renderer: RTCVideoRenderer) {
+        webRTCBChat.removeLocalRenderer(renderer)
+    }
+    
     // MARK: Delegate
     public func webRTCIsConnected() {
         self.invalidateTimeoutTimer()
@@ -299,6 +318,10 @@ public final class BChatCall: NSObject, WebRTCBChatDelegate {
     
     public func isRemoteVideoDidChange(isEnabled: Bool) {
         isRemoteVideoEnabled = isEnabled
+    }
+    
+    public func isAudioMuted(isAudioMuted: Bool) {
+        isRemoteAudioMuted = isAudioMuted
     }
     
     public func didReceiveHangUpSignal() {

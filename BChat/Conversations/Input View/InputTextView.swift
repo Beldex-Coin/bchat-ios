@@ -66,7 +66,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         let horizontalInset: CGFloat = 2
         textContainerInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
         addSubview(placeholderLabel)
-        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 3) // Slight visual adjustment
+        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: horizontalInset + 5) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)
         pin(.trailing, to: .trailing, of: placeholderLabel, withInset: horizontalInset)
         pin(.bottom, to: .bottom, of: placeholderLabel)
@@ -74,7 +74,19 @@ public final class InputTextView : UITextView, UITextViewDelegate {
 
     // MARK: Updating
     public func textViewDidChange(_ textView: UITextView) {
+        let cursorPosition = textView.selectedRange
         handleTextChanged()
+        
+        let selectedRange = textView.selectedRange
+        if let startPosition = textView.position(from: textView.beginningOfDocument, offset: selectedRange.location),
+           let endPosition = textView.position(from: startPosition, offset: selectedRange.length) {
+            let textRange = textView.textRange(from: startPosition, to: endPosition)
+            let caretRect = textView.firstRect(for: textRange!)
+            UIView.performWithoutAnimation {
+                textView.setContentOffset(CGPoint(x: 0, y: caretRect.origin.y), animated: false)
+                textView.selectedRange = cursorPosition
+            }
+        }
     }
     
     private func handleTextChanged() {

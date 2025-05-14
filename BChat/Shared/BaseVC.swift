@@ -1,4 +1,6 @@
 
+var isEmojiSheetPresented = false
+
 class BaseVC : UIViewController {
     private var hasGradient = false
 
@@ -24,26 +26,47 @@ class BaseVC : UIViewController {
 
     override func viewDidLoad() {
         setNeedsStatusBarAppearanceUpdate()
-        NotificationCenter.default.addObserver(self, selector: #selector(handleAppModeChangedNotification(_:)), name: .appModeChanged, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive(_:)), name: .OWSApplicationDidBecomeActive, object: nil)
         
-        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppModeChangedNotification(_:)),
+            name: .appModeChanged,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appDidBecomeActive(_:)),
+            name: .OWSApplicationDidBecomeActive,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(appWillEnterBackground(_:)),
+            name: .OWSApplicationWillEnterForeground,
+            object: nil)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(backToHomeScreen),
+            name: .joinedOpenGroup,
+            object: nil)
+        
+        let tapGesture: UITapGestureRecognizer =  UITapGestureRecognizer(
+            target: self,
+            action: #selector(resignKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
     
     @objc func resignKeyboard() {
-        view.endEditing(true)
+        if isEmojiSheetPresented == false {
+            view.endEditing(true)
+        }
     }
     
     internal func ensureWindowBackground() {
         let appMode = AppModeManager.shared.currentAppMode
-        switch appMode {
-            case .light:
-                UIApplication.shared.delegate?.window??.backgroundColor = .white
-            case .dark:
-                UIApplication.shared.delegate?.window??.backgroundColor = .black
-        }
+        UIApplication.shared.delegate?.window??.backgroundColor = appMode == .light ? .white : .black
     }
 
     internal func setUpGradientBackground() {
@@ -140,7 +163,13 @@ class BaseVC : UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func appDidBecomeActive(_ notification: Notification) {
+    @objc
+    func appDidBecomeActive(_ notification: Notification) {
+        // To be implemented by child class
+    }
+    
+    @objc
+    func appWillEnterBackground(_ notification: Notification) {
         // To be implemented by child class
     }
 
@@ -176,10 +205,18 @@ extension BaseVC {
             requestMicrophonePermissionIfNeeded { }
             guard let call = AppEnvironment.shared.callManager.currentCall else { return }
             guard MiniCallView.current == nil else { return }
-            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.call == call { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
             let callVC = NewIncomingCallVC(for: call)
-            presentingVC.present(callVC, animated: true, completion: nil)
+            if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
+                callVC.conversationVC = conversationVC
+                if let viewController = callVC.conversationVC {
+                    hideInputAccessoryView(viewController.inputAccessoryView)
+                }
+            }
+            presentingVC.present(callVC, animated: true) {
+                callVC.setupStateChangeCallbacks()
+            }
         } else {
             let vc = CallPermissionRequestModalNewVC()
             vc.modalPresentationStyle = .overFullScreen
@@ -188,5 +225,9 @@ extension BaseVC {
         }
     }
     
-    
+    func hideInputAccessoryView(_ view: UIView?) {
+        guard let aView = view else { return }
+        aView.isHidden = true
+        aView.alpha = 0
+    }
 }
