@@ -208,7 +208,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     self.isInputViewShow = false
                 }
             } else {
-                //check your internet connection
                 self.showToast(message: "Please check your internet connection", seconds: 1.0)
             }
         } else {
@@ -222,6 +221,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     onConfirm: { _ in
                         self.isInputViewShow = true
                         SSKPreferences.isGifPermissionEnabled = true
+                        self.handleGIFButtonTapped()
                     }, afterClosed: {
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
