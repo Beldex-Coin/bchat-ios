@@ -1,5 +1,6 @@
 import BChatUIKit
 
+var bottomConstraintOfAttachmentButton: CGFloat = 4
 final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private weak var delegate: ExpandingAttachmentsButtonDelegate?
     var isExpanded = false { didSet { expandOrCollapse() } }
@@ -93,7 +94,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         preconditionFailure("Use init(delegate:) instead.")
     }
     
-    private func setUpViewHierarchy() {
+    func setUpViewHierarchy() {
         cameraButton.backgroundColor = Colors.holdViewbackgroundColor
         documentButton.backgroundColor = Colors.holdViewbackgroundColor
         libraryButton.backgroundColor = Colors.holdViewbackgroundColor
@@ -134,7 +135,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         
         mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
         let expandedButtonSize = InputViewButton.expandedSize
-        let spacing: CGFloat = 4
+        let spacing: CGFloat = bottomConstraintOfAttachmentButton
         cameraButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
         libraryButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
         documentButtonContainerBottomConstraint.constant = -1 * (expandedButtonSize + spacing)
@@ -249,7 +250,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
             
             mainButton.accessibilityLabel = NSLocalizedString("accessibility_main_button_collapse", comment: "")
             let expandedButtonSize = InputViewButton.expandedSize
-            let spacing: CGFloat = 4
+            let spacing: CGFloat = bottomConstraintOfAttachmentButton
             cameraButtonContainerBottomConstraint.constant = isFromExpandedValue * (expandedButtonSize + spacing)
             libraryButtonContainerBottomConstraint.constant = isFromExpandedValue * (expandedButtonSize + spacing)
             documentButtonContainerBottomConstraint.constant = isFromExpandedValue * (expandedButtonSize + spacing)

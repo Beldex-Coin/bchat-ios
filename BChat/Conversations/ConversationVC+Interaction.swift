@@ -1134,6 +1134,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func handleQuoteViewCancelButtonTapped() {
+        bottomConstraintOfAttachmentButton = 4
+        snInputView.attachmentsButton.setUpViewHierarchy()
         snInputView.quoteDraftInfo = nil
     }
     
@@ -1163,6 +1165,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
+        bottomConstraintOfAttachmentButton = 60
+        snInputView.attachmentsButton.setUpViewHierarchy()
         reply(viewItem)
     }
     
@@ -1430,7 +1434,7 @@ extension ConversationVC: UIDocumentInteractionControllerDelegate {
 
 extension ConversationVC {
     
-    fileprivate func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
+    func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
         guard let contactThread: TSContactThread = thread as? TSContactThread else { return Promise.value(()) }
         
         // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
@@ -1443,6 +1447,9 @@ extension ConversationVC {
         
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in
+                if !contact.isApproved {
+                    return Promise.value(())
+                }
                 guard !isNewThread else { return Promise.value(()) }
                 guard let strongSelf = self else {
                     return Promise(error: MessageSender.Error.noThread)
