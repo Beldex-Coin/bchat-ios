@@ -156,16 +156,16 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             owsFailDebug("collectionView was unexpectedly nil")
             return
         }
-        view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
+        //view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
         
-        containerViewForMediaAndDocument.items = ["Media", "Documents"]
-        containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
-        containerViewForMediaAndDocument.selectedIndex = 0
-        containerViewForMediaAndDocument.padding = 4
-        containerViewForMediaAndDocument.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+//        containerViewForMediaAndDocument.items = ["Media"] //, "Documents"]
+//        containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
+//        containerViewForMediaAndDocument.selectedIndex = 0
+//        containerViewForMediaAndDocument.padding = 4
+//        containerViewForMediaAndDocument.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         
-        mediaLineView.backgroundColor = Colors.bothGreenColor
-        documentLineView.backgroundColor = Colors.borderColorNew
+//        mediaLineView.backgroundColor = Colors.bothGreenColor
+//        documentLineView.backgroundColor = Colors.borderColorNew
         
         
         collectionView.backgroundColor = Colors.navigationBarBackground
@@ -179,7 +179,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         
         
         if let collectionView = self.collectionView {
-            collectionView.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+            //UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
         } else {
             owsFailDebug("collectionView was unexpectedly nil")
         }
@@ -192,20 +193,20 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         updateSelectButton()
         self.mediaTileViewLayout.invalidateLayout()
         
-        NSLayoutConstraint.activate([
-            containerViewForMediaAndDocument.heightAnchor.constraint(equalToConstant: 58),
-            containerViewForMediaAndDocument.topAnchor.constraint(equalTo: view.topAnchor),
-            containerViewForMediaAndDocument.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerViewForMediaAndDocument.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            mediaLineView.heightAnchor.constraint(equalToConstant: 2),
-            documentLineView.heightAnchor.constraint(equalToConstant: 2),
-            mediaLineView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/2),
-            documentLineView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/2),
-            mediaLineView.topAnchor.constraint(equalTo: containerViewForMediaAndDocument.bottomAnchor),
-            mediaLineView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            documentLineView.topAnchor.constraint(equalTo: containerViewForMediaAndDocument.bottomAnchor),
-            documentLineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
+//        NSLayoutConstraint.activate([
+//            containerViewForMediaAndDocument.heightAnchor.constraint(equalToConstant: 58),
+//            containerViewForMediaAndDocument.topAnchor.constraint(equalTo: view.topAnchor),
+//            containerViewForMediaAndDocument.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            containerViewForMediaAndDocument.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            mediaLineView.heightAnchor.constraint(equalToConstant: 2),
+//            documentLineView.heightAnchor.constraint(equalToConstant: 2),
+//            mediaLineView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/2),
+//            documentLineView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width/2),
+//            mediaLineView.topAnchor.constraint(equalTo: containerViewForMediaAndDocument.bottomAnchor),
+//            mediaLineView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            documentLineView.topAnchor.constraint(equalTo: containerViewForMediaAndDocument.bottomAnchor),
+//            documentLineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//        ])
         
         view.addSubview(noDataView)
         noDataView.addSubViews(noDataImageView, noDataMessageLabel)
@@ -222,8 +223,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             noDataMessageLabel.bottomAnchor.constraint(equalTo: noDataView.bottomAnchor, constant: 0),
         ])
         
-        getAllDcouments()
-        fetchAllDocuments()
+//        getAllDcouments()
+//        fetchAllDocuments()
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -640,6 +641,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                     return sectionHeader
                 }
             }
+        } else {
+            return defaultView
         }
         
         return defaultView
@@ -791,7 +794,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     func updateLayout(selectedIndex: Int) {
         
         self.noDataView.isHidden = false
-        if selectedIndex == 0 {
+        if containerViewForMediaAndDocument.selectedIndex == 0 {
             if galleryDates.count > 0 {
                 self.noDataView.isHidden = true
             }
