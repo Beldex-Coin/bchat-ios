@@ -1135,7 +1135,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     func handleQuoteViewCancelButtonTapped() {
         bottomConstraintOfAttachmentButton = 4
-        resetAttachmenstOptions()
+        resetAttachmentOptions()
         snInputView.quoteDraftInfo = nil
     }
     
@@ -1166,11 +1166,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
         bottomConstraintOfAttachmentButton = 60
-        resetAttachmenstOptions()
+        resetAttachmentOptions()
         reply(viewItem)
     }
     
-    func resetAttachmenstOptions() {
+    func resetAttachmentOptions() {
         snInputView.attachmentsButton.layoutIfNeeded()
         snInputView.attachmentsButton.isExpanded = snInputView.attachmentsButton.isExpanded
     }
