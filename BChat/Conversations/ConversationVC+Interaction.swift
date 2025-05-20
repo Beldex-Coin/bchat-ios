@@ -908,6 +908,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
+        if quoteDraft.attachmentStream != nil {
+            bottomConstraintOfAttachmentButton = 72
+        } else {
+            bottomConstraintOfAttachmentButton = 60
+        }
+        resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
         snInputView.becomeFirstResponder()
@@ -1165,8 +1171,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
-        bottomConstraintOfAttachmentButton = 60
-        resetAttachmentOptions()
         reply(viewItem)
     }
     
