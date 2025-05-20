@@ -5,15 +5,15 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     private weak var delegate: ExpandingAttachmentsButtonDelegate?
     var isExpanded = false { didSet { expandOrCollapse() } }
     
-    override var isUserInteractionEnabled: Bool {
-        didSet {
-            gifButton.isUserInteractionEnabled = isUserInteractionEnabled
-            documentButton.isUserInteractionEnabled = isUserInteractionEnabled
-            libraryButton.isUserInteractionEnabled = isUserInteractionEnabled
-            cameraButton.isUserInteractionEnabled = isUserInteractionEnabled
-            mainButton.isUserInteractionEnabled = isUserInteractionEnabled
-        }
-    }
+//    override var isUserInteractionEnabled: Bool {
+//        didSet {
+//            gifButton.isUserInteractionEnabled = isUserInteractionEnabled
+//            documentButton.isUserInteractionEnabled = isUserInteractionEnabled
+//            libraryButton.isUserInteractionEnabled = isUserInteractionEnabled
+//            cameraButton.isUserInteractionEnabled = isUserInteractionEnabled
+//            mainButton.isUserInteractionEnabled = isUserInteractionEnabled
+//        }
+//    }
     private lazy var attachmentBackgroundView: UIView = {
         let stackView = UIView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
