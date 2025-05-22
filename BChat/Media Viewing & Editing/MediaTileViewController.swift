@@ -1040,15 +1040,10 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return
         }
         
-//        collectionView.performBatchUpdates({
-//            collectionView.deleteSections(deletedSections)
-//            collectionView.deleteItems(at: deletedItems)
-//        })
-
-        
-//        collectionView.deleteSections(deletedSections)
-//        collectionView.deleteItems(at: deletedItems)
-        
+        collectionView.performBatchUpdates({
+            collectionView.deleteSections(deletedSections)
+            collectionView.deleteItems(at: deletedItems)
+        })
     }
     
     // MARK: Lazy Loading
