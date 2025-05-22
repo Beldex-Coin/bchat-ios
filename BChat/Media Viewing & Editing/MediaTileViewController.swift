@@ -231,20 +231,38 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         super.viewWillAppear(animated)
         
 //        if containerViewForMediaAndDocument.selectedIndex == 0 {
-            guard let focusedItem = self.focusedItem else {
-                return
-            }
-            
-            guard let indexPath = self.indexPath(galleryItem: focusedItem) else {
-                owsFailDebug("unexpectedly unable to find indexPath for focusedItem: \(focusedItem)")
-                return
-            }
-            
-            Logger.debug("scrolling to focused item at indexPath: \(indexPath)")
-            self.view.layoutIfNeeded()
-            self.collectionView?.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
-            self.autoLoadMoreIfNecessary()
+        
+//            guard let focusedItem = self.focusedItem else {
+//                return
+//            }
+//            
+//            guard let indexPath = self.indexPath(galleryItem: focusedItem) else {
+//                owsFailDebug("unexpectedly unable to find indexPath for focusedItem: \(focusedItem)")
+//                return
+//            }
+//            
+//            Logger.debug("scrolling to focused item at indexPath: \(indexPath)")
+//            self.view.layoutIfNeeded()
+//            self.collectionView?.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
+//            self.autoLoadMoreIfNecessary()
+        
 //        }
+    }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        guard let focusedItem = self.focusedItem else {
+            return
+        }
+        
+        guard let indexPath = self.indexPath(galleryItem: focusedItem) else {
+            owsFailDebug("unexpectedly unable to find indexPath for focusedItem: \(focusedItem)")
+            return
+        }
+        
+        Logger.debug("scrolling to focused item at indexPath: \(indexPath)")
+        self.view.layoutIfNeeded()
+        self.collectionView?.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
+        self.autoLoadMoreIfNecessary()
     }
     
     override public func viewWillTransition(to size: CGSize,
@@ -262,7 +280,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return nil
         }
         guard let rowIdx = galleryItems[galleryItem.galleryDate]!.firstIndex(of: galleryItem) else {
-            return nil
+            return IndexPath(row: 0, section: sectionIdx + 1)
+//            return nil
         }
         
         return IndexPath(row: rowIdx, section: sectionIdx + 1)
@@ -1040,10 +1059,18 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return
         }
         
-        collectionView.performBatchUpdates({
-            collectionView.deleteSections(deletedSections)
-            collectionView.deleteItems(at: deletedItems)
-        })
+//        collectionView.performBatchUpdates({
+//            collectionView.deleteSections(deletedSections)
+//            collectionView.deleteItems(at: deletedItems)
+//        })
+        
+//        collectionView.performBatchUpdates({
+//            collectionView.deleteSections(deletedSections)
+//            // Make sure no items in deletedItems belong to deletedSections
+//            let safeDeletedItems = deletedItems.filter { !deletedSections.contains($0.section) }
+//            collectionView.deleteItems(at: safeDeletedItems)
+//        })
+        
     }
     
     // MARK: Lazy Loading
