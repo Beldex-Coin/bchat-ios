@@ -156,7 +156,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             owsFailDebug("collectionView was unexpectedly nil")
             return
         }
-        //view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
+//        view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
         
 //        containerViewForMediaAndDocument.items = ["Media"] //, "Documents"]
 //        containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
@@ -164,14 +164,14 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 //        containerViewForMediaAndDocument.padding = 4
 //        containerViewForMediaAndDocument.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         
-//        mediaLineView.backgroundColor = Colors.bothGreenColor
-//        documentLineView.backgroundColor = Colors.borderColorNew
+        mediaLineView.backgroundColor = Colors.bothGreenColor
+        documentLineView.backgroundColor = Colors.borderColorNew
         
         
         collectionView.backgroundColor = Colors.navigationBarBackground
         
         collectionView.register(PhotoGridViewCell.self, forCellWithReuseIdentifier: PhotoGridViewCell.reuseIdentifier)
-        collectionView.register(DocumentCollectionViewCell.self, forCellWithReuseIdentifier: DocumentCollectionViewCell.reuseidentifier)
+        //collectionView.register(DocumentCollectionViewCell.self, forCellWithReuseIdentifier: DocumentCollectionViewCell.reuseidentifier)
         collectionView.register(MediaGallerySectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaGallerySectionHeader.reuseIdentifier)
         collectionView.register(MediaGalleryStaticHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaGalleryStaticHeader.reuseIdentifier)
         
@@ -193,7 +193,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         updateSelectButton()
         self.mediaTileViewLayout.invalidateLayout()
         
-//        NSLayoutConstraint.activate([
+        NSLayoutConstraint.activate([
 //            containerViewForMediaAndDocument.heightAnchor.constraint(equalToConstant: 58),
 //            containerViewForMediaAndDocument.topAnchor.constraint(equalTo: view.topAnchor),
 //            containerViewForMediaAndDocument.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -206,7 +206,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 //            mediaLineView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 //            documentLineView.topAnchor.constraint(equalTo: containerViewForMediaAndDocument.bottomAnchor),
 //            documentLineView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//        ])
+        ])
         
         view.addSubview(noDataView)
         noDataView.addSubViews(noDataImageView, noDataMessageLabel)
@@ -230,7 +230,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard let focusedItem = self.focusedItem else {
                 return
             }
@@ -244,7 +244,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             self.view.layoutIfNeeded()
             self.collectionView?.scrollToItem(at: indexPath, at: .centeredVertically, animated: false)
             self.autoLoadMoreIfNecessary()
-        }
+//        }
     }
     
     override public func viewWillTransition(to size: CGSize,
@@ -281,9 +281,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             documentLineView.backgroundColor = Colors.bothGreenColor
             mediaLineView.backgroundColor = Colors.borderColorNew
             
-            self.noDataView.isHidden = false
-            self.noDataImageView.image = UIImage(named: "no_document_image")
-            self.noDataMessageLabel.text = "No Document items to show!"
+//            self.noDataView.isHidden = false
+//            self.noDataImageView.image = UIImage(named: "no_document_image")
+//            self.noDataMessageLabel.text = "No Document items to show!"
         }
         updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
         updateSelectButton()
@@ -416,7 +416,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     override public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 return false
             }
@@ -427,15 +427,15 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             default:
                 return true
             }
-        } else {
-            return true
-        }
+//        } else {
+//            return true
+//        }
     }
     
     override public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 return false
             }
@@ -446,15 +446,15 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             default:
                 return true
             }
-        } else {
-            return true
-        }
+//        } else {
+//            return true
+//        }
     }
     
     public override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 return false
             }
@@ -465,15 +465,15 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             default:
                 return true
             }
-        } else {
-            return true
-        }
+//        } else {
+//            return true
+//        }
     }
     
     override public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Logger.debug("")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard let gridCell = self.collectionView(collectionView, cellForItemAt: indexPath) as? PhotoGridViewCell else {
                 owsFailDebug("galleryCell was unexpectedly nil")
                 return
@@ -491,35 +491,35 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 collectionView.deselectItem(at: indexPath, animated: true)
                 self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
             }
-        } else {
-            
-            if isInBatchSelectMode {
-                updateDeleteButton()
-            } else {
-                collectionView.deselectItem(at: indexPath, animated: true)
-                let viewItem = documents[indexPath.item]
-                if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
-                    viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
-                    viewItem.contentType == DocumentContentType.textDocument.rawValue {
-                    let fileUrl: URL = viewItem.originalMediaURL//URL(fileURLWithPath: viewItem.originalFilePath)
-                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                    interactionController.delegate = self
-                    interactionController.presentPreview(animated: true)
-                }
-                else {
-                    // Open the document if possible
-                    let url = viewItem.originalMediaURL
-                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                    if UIDevice.current.isIPad {
-                        shareVC.excludedActivityTypes = []
-                        shareVC.popoverPresentationController?.permittedArrowDirections = []
-                        shareVC.popoverPresentationController?.sourceView = self.view
-                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
-                    }
-                    navigationController!.present(shareVC, animated: true, completion: nil)
-                }
-            }
-        }
+//        } else {
+//            
+//            if isInBatchSelectMode {
+//                updateDeleteButton()
+//            } else {
+//                collectionView.deselectItem(at: indexPath, animated: true)
+//                let viewItem = documents[indexPath.item]
+//                if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
+//                    viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
+//                    viewItem.contentType == DocumentContentType.textDocument.rawValue {
+//                    let fileUrl: URL = viewItem.originalMediaURL//URL(fileURLWithPath: viewItem.originalFilePath)
+//                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+//                    interactionController.delegate = self
+//                    interactionController.presentPreview(animated: true)
+//                }
+//                else {
+//                    // Open the document if possible
+//                    let url = viewItem.originalMediaURL
+//                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+//                    if UIDevice.current.isIPad {
+//                        shareVC.excludedActivityTypes = []
+//                        shareVC.popoverPresentationController?.permittedArrowDirections = []
+//                        shareVC.popoverPresentationController?.sourceView = self.view
+//                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+//                    }
+//                    navigationController!.present(shareVC, animated: true, completion: nil)
+//                }
+//            }
+//        }
         
     }
     
@@ -542,21 +542,21 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     // MARK: UICollectionViewDataSource
     
     override public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 // empty gallery
                 return 1
             }
             // One for each galleryDate plus a "loading older" and "loading newer" section
             return galleryItems.keys.count + 2
-        } else {
-            return 1
-        }
+//        } else {
+//            return 1
+//        }
     }
     
     override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection sectionIdx: Int) -> Int {
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 // empty gallery
                 return 0
@@ -583,16 +583,16 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             
             return section.count
-        } else {
-            return documents.count
-        }
+//        }  else {
+//            return documents.count
+//        }
     }
     
     override public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let defaultView = UICollectionReusableView()
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        //if containerViewForMediaAndDocument.selectedIndex == 0 {
             guard galleryDates.count > 0 else {
                 guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaGalleryStaticHeader.reuseIdentifier, for: indexPath) as? MediaGalleryStaticHeader else {
                     
@@ -641,9 +641,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                     return sectionHeader
                 }
             }
-        } else {
-            return defaultView
-        }
+//        } else {
+//            return defaultView
+//        }
         
         return defaultView
     }
@@ -651,7 +651,7 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     override public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         Logger.debug("indexPath: \(indexPath)")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             let defaultCell = UICollectionViewCell()
             
             guard galleryDates.count > 0 else {
@@ -660,17 +660,17 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             
             switch indexPath.section {
-            case kLoadOlderSectionIdx:
-                owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
-                return defaultCell
-            case loadNewerSectionIdx:
-                owsFailDebug("unexpected cell for loadNewerSectionIdx")
-                return defaultCell
-            default:
-                guard let galleryItem = galleryItem(at: indexPath) else {
-                    owsFailDebug("no message for path: \(indexPath)")
+                case kLoadOlderSectionIdx:
+                    owsFailDebug("unexpected cell for kLoadOlderSectionIdx")
                     return defaultCell
-                }
+                case loadNewerSectionIdx:
+                    owsFailDebug("unexpected cell for loadNewerSectionIdx")
+                    return defaultCell
+                default:
+                    guard let galleryItem = galleryItem(at: indexPath) else {
+                        owsFailDebug("no message for path: \(indexPath)")
+                        return defaultCell
+                    }
                 
                 guard let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: PhotoGridViewCell.reuseIdentifier, for: indexPath) as? PhotoGridViewCell else {
                     owsFailDebug("unexpected cell for indexPath: \(indexPath)")
@@ -682,7 +682,9 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
                 
                 return cell
             }
-        } else {
+//        }
+        
+        /*else {
             let cell = self.collectionView!.dequeueReusableCell(withReuseIdentifier: DocumentCollectionViewCell.reuseidentifier, for: indexPath) as! DocumentCollectionViewCell
             
             let documentItem = documents[indexPath.item]
@@ -708,14 +710,14 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             
             cell.documentImageView.image = UIImage(named: documentImage)
             return cell
-        }
+        } */
     }
     
     public func collectionView(_ collectionView: UICollectionView,
                                layout collectionViewLayout: UICollectionViewLayout,
                                referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             let kMonthHeaderSize: CGSize = CGSize(width: 0, height: 50)
             let kStaticHeaderSize: CGSize = CGSize(width: 0, height: 100)
             
@@ -729,18 +731,18 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             }
             
             switch section {
-            case kLoadOlderSectionIdx:
-                // Show "loading older..." iff there is still older data to be fetched
-                return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
-            case loadNewerSectionIdx:
-                // Show "loading newer..." iff there is still more recent data to be fetched
-                return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
-            default:
-                return kMonthHeaderSize
+                case kLoadOlderSectionIdx:
+                    // Show "loading older..." iff there is still older data to be fetched
+                    return mediaGalleryDataSource.hasFetchedOldest ? CGSize.zero : kStaticHeaderSize
+                case loadNewerSectionIdx:
+                    // Show "loading newer..." iff there is still more recent data to be fetched
+                    return mediaGalleryDataSource.hasFetchedMostRecent ? CGSize.zero : kStaticHeaderSize
+                default:
+                    return kMonthHeaderSize
             }
-        } else {
-            return CGSize.zero
-        }
+//        } else {
+//            return CGSize.zero
+//        }
     }
     
     func galleryItem(at indexPath: IndexPath) -> MediaGalleryItem? {
@@ -794,20 +796,20 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
     func updateLayout(selectedIndex: Int) {
         
         self.noDataView.isHidden = false
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+//        if containerViewForMediaAndDocument.selectedIndex == 0 {
             if galleryDates.count > 0 {
                 self.noDataView.isHidden = true
             }
-        } else {
-            if documents.count > 0 {
-                self.noDataView.isHidden = true
-            }
-        }
+//        } else {
+//            if documents.count > 0 {
+//                self.noDataView.isHidden = true
+//            }
+//        }
         
         var kItemsPerPortraitRow = 4
-        if containerViewForMediaAndDocument.selectedIndex == 1 {
-            kItemsPerPortraitRow = 1
-        }
+//        if containerViewForMediaAndDocument.selectedIndex == 1 {
+//            kItemsPerPortraitRow = 1
+//        }
         
         let containerWidth: CGFloat
         if #available(iOS 11.0, *) {
@@ -824,7 +826,8 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
         let availableWidth = containerWidth - spaceWidth
         
         let itemWidth = floor(availableWidth / CGFloat(itemCount))
-        let newItemSize = CGSize(width: itemWidth, height: containerViewForMediaAndDocument.selectedIndex == 1 ? 90 : itemWidth)
+        let newItemSize = CGSize(width: itemWidth, height: itemWidth)
+                                    //containerViewForMediaAndDocument.selectedIndex == 1 ? 90 : itemWidth)
         
         if (newItemSize != mediaTileViewLayout.itemSize) {
             mediaTileViewLayout.itemSize = newItemSize
@@ -913,11 +916,11 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
 //            return
 //        }
 //
-        collectionView.performBatchUpdates({
-            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
-                collectionView.deselectItem(at: indexPath, animated: false)
-            }
-        })
+//        collectionView.performBatchUpdates({
+//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
+//                collectionView.deselectItem(at: indexPath, animated: false)
+//            }
+//        })
             //
 //            NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
 //            self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
@@ -956,29 +959,29 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return
         }
         
-        if containerViewForMediaAndDocument.selectedIndex == 1 {
-            let documentsItems: [Document] = indexPaths.compactMap { return self.galleryItemForDocuments(at: $0) }
-            print("selected Documents : ",documentsItems)
-            
-            // Don't delete
-            if documentsItems.count > 0 {
-                for documentsItem in documentsItems {
-                    documents = documents.filter { $0.documentId != documentsItem.documentId }
-                    self.collectionView.reloadData()
-                }
-            }
-            
-            if !documentsItems.isEmpty {
-                UserDefaults.standard.removeObject(forKey: Constants.deleteAttachedDocuments)
-                let encoder = JSONEncoder()
-                if let encoded = try? encoder.encode(documentsItems) {
-                    UserDefaults.standard.set(encoded, forKey: Constants.deleteAttachedDocuments)
-                    self.endSelectMode()
-                }
-            }
-            
-           return
-        }
+//        if containerViewForMediaAndDocument.selectedIndex == 1 {
+//            let documentsItems: [Document] = indexPaths.compactMap { return self.galleryItemForDocuments(at: $0) }
+//            print("selected Documents : ",documentsItems)
+//            
+//            // Don't delete
+//            if documentsItems.count > 0 {
+//                for documentsItem in documentsItems {
+//                    documents = documents.filter { $0.documentId != documentsItem.documentId }
+//                    self.collectionView.reloadData()
+//                }
+//            }
+//            
+//            if !documentsItems.isEmpty {
+//                UserDefaults.standard.removeObject(forKey: Constants.deleteAttachedDocuments)
+//                let encoder = JSONEncoder()
+//                if let encoded = try? encoder.encode(documentsItems) {
+//                    UserDefaults.standard.set(encoded, forKey: Constants.deleteAttachedDocuments)
+//                    self.endSelectMode()
+//                }
+//            }
+//            
+//           return
+//        }
         
         let items: [MediaGalleryItem] = indexPaths.compactMap { return self.galleryItem(at: $0) }
         
@@ -1037,10 +1040,15 @@ public class MediaTileViewController: UICollectionViewController, MediaGalleryDa
             return
         }
         
-        collectionView.performBatchUpdates({
-            collectionView.deleteSections(deletedSections)
-            collectionView.deleteItems(at: deletedItems)
-        })
+//        collectionView.performBatchUpdates({
+//            collectionView.deleteSections(deletedSections)
+//            collectionView.deleteItems(at: deletedItems)
+//        })
+
+        
+//        collectionView.deleteSections(deletedSections)
+//        collectionView.deleteItems(at: deletedItems)
+        
     }
     
     // MARK: Lazy Loading

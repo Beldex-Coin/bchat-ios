@@ -1183,6 +1183,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             CustomSlideView.isFromExpandAttachment = false
         }
         hideAttachmentExpandedButtons()
+        handleQuoteViewCancelButtonTapped()
         hideOpenURLView()
     }
     
