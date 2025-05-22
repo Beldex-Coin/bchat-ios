@@ -697,11 +697,17 @@ class ChatSettingsNewVC: BaseVC, SheetViewControllerDelegate {
     
     func showMediaGallery() {
 
-        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
-        self.mediaGallery = mediaGallery
-
-        assert(self.navigationController is OWSNavigationController)
-        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
+//        let mediaGallery = MediaGallery(thread: self.thread!, options: .sliderEnabled)
+//        self.mediaGallery = mediaGallery
+//
+//        assert(self.navigationController is OWSNavigationController)
+//        mediaGallery.pushTileView(fromNavController: self.navigationController as! OWSNavigationController)
+        
+        
+        let tileVC = AllMediaViewController(
+            thread: self.thread!
+        )
+        navigationController?.pushViewController(tileVC, animated: true)
     }
     
     func tappedConversationSearch() {

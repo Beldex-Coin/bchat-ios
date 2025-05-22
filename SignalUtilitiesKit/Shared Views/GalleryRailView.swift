@@ -115,7 +115,7 @@ public class GalleryRailView: UIView, GalleryRailCellViewDelegate {
         addSubview(scrollView)
         scrollView.clipsToBounds = false
         scrollView.layoutMargins = .zero
-        scrollView.autoPinEdgesToSuperviewMargins()
+        scrollView.autoPinEdgesToSuperviewMargins() 
     }
 
     public required init?(coder aDecoder: NSCoder) {

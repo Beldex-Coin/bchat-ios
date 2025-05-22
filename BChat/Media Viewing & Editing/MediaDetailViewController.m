@@ -493,7 +493,7 @@ AVPlayerLayer *_playerLayer;
         _playerLayer.frame = self.view.bounds;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationBarForFullscreenVideo"
                                                             object:nil
-                                                          userInfo:nil];
+                                                          userInfo:nil];2
         
         if (self.isVideo) {
             self.videoProgressBar.translatesAutoresizingMaskIntoConstraints = YES;
