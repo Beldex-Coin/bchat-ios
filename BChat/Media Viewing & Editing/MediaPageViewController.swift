@@ -602,7 +602,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     @objc
     public func didPressDelete(_ sender: Any) {
-        topBackGroundView.isHidden = true
+        hideMenuPopup(true)
         guard let currentViewController = self.viewControllers?[0] as? MediaDetailViewController else {
             owsFailDebug("currentViewController was unexpectedly nil")
             return
