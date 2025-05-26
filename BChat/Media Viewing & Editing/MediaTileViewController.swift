@@ -29,10 +29,9 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         }
         return mediaGalleryDataSource.sectionDates
     }
+    
     public var focusedItem: MediaGalleryItem?
-    
     private let uiDatabaseConnection: YapDatabaseConnection
-    
     public weak var delegate: MediaTileViewControllerDelegate?
     var viewItems: [ConversationViewItem]?
     
@@ -172,6 +171,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         self.view.addSubview(mediaCollectionView)
         
+        mediaCollectionView.backgroundColor = Colors.navigationBarBackground
+        
         mediaCollectionView.pin(.top, to: .top, of: view)
         mediaCollectionView.pin(.leading, to: .leading, of: view)
         mediaCollectionView.pin(.trailing, to: .trailing, of: view)
@@ -238,6 +239,9 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             self.view.layoutIfNeeded()
             self.autoLoadMoreIfNecessary()
             self.mediaCollectionView.reloadData()
+        
+        isInBatchSelectMode = false
+        updateSelectButton()
 //        }
     }
     
@@ -257,7 +261,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         }
         guard let rowIdx = galleryItems[galleryItem.galleryDate]!.firstIndex(of: galleryItem) else {
             return IndexPath(row: 0, section: sectionIdx + 1)
-//            return nil
         }
         
         return IndexPath(row: rowIdx, section: sectionIdx + 1)
@@ -276,9 +279,9 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             documentLineView.backgroundColor = Colors.bothGreenColor
             mediaLineView.backgroundColor = Colors.borderColorNew
             
-//            self.noDataView.isHidden = false
-//            self.noDataImageView.image = UIImage(named: "no_document_image")
-//            self.noDataMessageLabel.text = "No Document items to show!"
+            self.noDataView.isHidden = false
+            self.noDataImageView.image = UIImage(named: "no_document_image")
+            self.noDataMessageLabel.text = "No Document items to show!"
         }
         updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
         updateSelectButton()
@@ -356,30 +359,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
         viewItem.deleteLocallyAction()
-//        if let unsendRequest = buildUnsendRequest(viewItem) {
-//            SNMessagingKitConfiguration.shared.storage.write { transaction in
-//                MessageSender.send(unsendRequest, to: .contact(publicKey: getUserHexEncodedPublicKey()), using: transaction).retainUntilComplete()
-//            }
-//        }
     }
-    
-//    private func buildUnsendRequest(_ viewItem: ConversationViewItem) -> UnsendRequest? {
-//        if let message = viewItem.interaction as? TSMessage,
-//           message.isOpenGroupMessage || message.serverHash == nil { return nil }
-//        let unsendRequest = UnsendRequest()
-//        switch viewItem.interaction.interactionType() {
-//        case .incomingMessage:
-//            if let incomingMessage = viewItem.interaction as? TSIncomingMessage {
-//                unsendRequest.author = incomingMessage.authorId
-//            }
-//        case .outgoingMessage: unsendRequest.author = getUserHexEncodedPublicKey()
-//        default: return nil // Should never occur
-//        }
-//        unsendRequest.timestamp = viewItem.interaction.timestamp
-//        return unsendRequest
-//    }
-
-    
     
     // Date formate for document
     func formatDate(_ date: Date) -> String {
@@ -482,7 +462,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         if isInBatchSelectMode {
             updateDeleteButton()
         } else {
-            gridCell.isSelected = false
             collectionView.deselectItem(at: indexPath, animated: true)
             self.delegate?.mediaTileViewController(self, didTapView: gridCell.imageView, mediaGalleryItem: galleryItem)
         }
@@ -829,7 +808,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     }
     
     func updateDeleteButton() {
-        
         if let count = mediaCollectionView.indexPathsForSelectedItems?.count, count > 0 {
             self.deleteButton.isEnabled = true
         } else {
@@ -838,20 +816,18 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     }
     
     func updateSelectButton() {
-//        if isInBatchSelectMode {
-//            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
-//        } else {
-//            if containerViewForMediaAndDocument.selectedIndex == 0 {
-//                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
-//                                                                         style: .plain,
-//                                                                         target: self,
-//                                                                         action: #selector(didTapSelect))
-//            } else {
-//                self.navigationItem.rightBarButtonItem = nil
-//            }
-//        }
-        
-        self.navigationItem.rightBarButtonItem = nil
+        if isInBatchSelectMode {
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
+        } else {
+            if containerViewForMediaAndDocument.selectedIndex == 0 && galleryDates.count > 0 {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
+                                                                         style: .plain,
+                                                                         target: self,
+                                                                         action: #selector(didTapSelect))
+            } else {
+                self.navigationItem.rightBarButtonItem = nil
+            }
+        }
     }
     
     @objc
@@ -885,24 +861,12 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     func endSelectMode() {
         isInBatchSelectMode = false
         
-//        guard let collectionView = self.collectionView else {
-//            owsFailDebug("collectionView was unexpectedly nil")
-//            return
-//        }
-//
-//        collectionView.performBatchUpdates({
-//            collectionView.indexPathsForSelectedItems?.forEach { indexPath in
-//                collectionView.deselectItem(at: indexPath, animated: false)
-//            }
-//        })
-            //
-//            NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
-//            self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
-//            self.footerBar.superview?.layoutIfNeeded()
-//            collectionView.contentInset.bottom -= self.kFooterBarHeight
-//        }, completion: nil)
-//        
-//        self.navigationItem.hidesBackButton = false
+        NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
+        self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
+        self.footerBar.superview?.layoutIfNeeded()
+        mediaCollectionView.contentInset.bottom -= self.kFooterBarHeight
+        
+        self.navigationItem.hidesBackButton = false
         
         // hide toolbar
         let view: UIView = self.view
@@ -971,6 +935,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         let deleteAction = UIAlertAction(title: confirmationTitle, style: .destructive) { _ in
             mediaGalleryDataSource.delete(items: items, initiatedBy: self)
             self.endSelectMode()
+            self.mediaCollectionView.reloadData()
         }
         
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
