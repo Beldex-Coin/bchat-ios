@@ -1,8 +1,8 @@
 
 @objc(SNDataExtractionNotificationInfoMessage)
-final class DataExtractionNotificationInfoMessage : TSInfoMessage {
+public final class DataExtractionNotificationInfoMessage : TSInfoMessage {
     
-    init(type: TSInfoMessageType, sentTimestamp: UInt64, thread: TSThread, referencedAttachmentTimestamp: UInt64?) {
+    public init(type: TSInfoMessageType, sentTimestamp: UInt64, thread: TSThread, referencedAttachmentTimestamp: UInt64?) {
         super.init(timestamp: sentTimestamp, in: thread, messageType: type)
     }
     
@@ -14,11 +14,12 @@ final class DataExtractionNotificationInfoMessage : TSInfoMessage {
         try super.init(dictionary: dictionaryValue)
     }
     
-    override func previewText(with transaction: YapDatabaseReadTransaction) -> String {
+    public override func previewText(with transaction: YapDatabaseReadTransaction) -> String {
         guard let thread = thread as? TSContactThread else { return "" } // Should never occur
         let bchatID = thread.contactBChatID()
         let displayName = Storage.shared.getContact(with: bchatID)?.displayName(for: .regular) ?? bchatID
         switch messageType {
+        case .screenshotTakenNotification: return "You took a screenshot!"
         case .screenshotNotification: return String(format: NSLocalizedString("screenshot_taken", comment: ""), displayName)
         case .mediaSavedNotification:
             // TODO: Use referencedAttachmentTimestamp to tell the user * which * media was saved

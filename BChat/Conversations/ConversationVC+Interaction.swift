@@ -5,6 +5,7 @@ import PhotosUI
 import PromiseKit
 import BChatUtilitiesKit
 import SignalUtilitiesKit
+import BChatMessagingKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
     SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate {
@@ -1358,14 +1359,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
-        /*
         guard thread is TSContactThread else { return }
         let message = DataExtractionNotification()
         message.kind = .screenshot
         Storage.write { transaction in
+            let type: TSInfoMessageType
+            type = .screenshotTakenNotification
+            let messageToSend = DataExtractionNotificationInfoMessage(type: type, sentTimestamp: NSDate.millisecondTimestamp(), thread: self.thread, referencedAttachmentTimestamp: nil)
+            messageToSend.save(with: transaction)
             MessageSender.send(message, in: self.thread, using: transaction)
         }
-         */
     }
     
     func sendMediaSavedNotificationIfNeeded(for viewItem: ConversationViewItem) {
