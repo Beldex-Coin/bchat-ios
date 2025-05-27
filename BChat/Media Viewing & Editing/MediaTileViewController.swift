@@ -234,7 +234,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         self.view.layoutIfNeeded()
         self.autoLoadMoreIfNecessary()
         self.mediaCollectionView.reloadData()
-    
+        
         isInBatchSelectMode = false
         updateSelectButton()
         
@@ -265,7 +265,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     // Top SegmentView Changed
     @objc func segmentValueChanged(_ sender: AnyObject?) {
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        let segmentSelectedIndex = containerViewForMediaAndDocument.selectedIndex
+        if segmentSelectedIndex == 0 {
             mediaLineView.backgroundColor = Colors.bothGreenColor
             documentLineView.backgroundColor = Colors.borderColorNew
             
@@ -281,9 +282,11 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             self.noDataMessageLabel.text = "No Document items to show!"
         }
         
-        let topEdge: CGFloat = containerViewForMediaAndDocument.selectedIndex == 0 ? 0 : 60
+        endSelectMode()
+        deleteButton.isEnabled = false
+        let topEdge: CGFloat = segmentSelectedIndex == 0 ? 0 : 60
         mediaCollectionView.contentInset = UIEdgeInsets(top: topEdge, left: 0, bottom: 20, right: 0)
-        updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
+        updateLayout(selectedIndex:segmentSelectedIndex)
         updateSelectButton()
         mediaCollectionView.reloadData()
     }
@@ -572,8 +575,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
                     owsFailDebug("unable to build section header for kLoadOlderSectionIdx")
                     return defaultView
                 }
-                let title = NSLocalizedString("GALLERY_TILES_EMPTY_GALLERY", comment: "Label indicating media gallery is empty")
-                sectionHeader.configure(title: title)
+//                let title = NSLocalizedString("GALLERY_TILES_EMPTY_GALLERY", comment: "Label indicating media gallery is empty")
+//                sectionHeader.configure(title: title)
                 self.noDataView.isHidden = false
                 self.noDataImageView.image = UIImage(named: "no_media_image")
                 self.noDataMessageLabel.text = "No Media items to show!"
@@ -783,8 +786,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         let availableWidth = containerWidth - spaceWidth
         
         let itemWidth = floor(availableWidth / CGFloat(itemCount))
-        let newItemSize = CGSize(width: itemWidth, height: itemWidth)
-                                    //containerViewForMediaAndDocument.selectedIndex == 1 ? 90 : itemWidth)
+        let newItemSize = CGSize(width: itemWidth, height: containerViewForMediaAndDocument.selectedIndex == 1 ? 90 : itemWidth)
         
         if (newItemSize != mediaTileViewLayout.itemSize) {
             mediaTileViewLayout.itemSize = newItemSize
