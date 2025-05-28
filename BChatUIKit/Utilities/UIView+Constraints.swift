@@ -140,4 +140,30 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
+    
+    func setContentHugging(to priority: UILayoutPriority) {
+        setContentHuggingPriority(priority, for: .vertical)
+        setContentHuggingPriority(priority, for: .horizontal)
+    }
+    
+    func setContentHugging(_ direction: Direction, to priority: UILayoutPriority) {
+        switch direction {
+            case .vertical: setContentHuggingPriority(priority, for: .vertical)
+            case .horizontal: setContentHuggingPriority(priority, for: .horizontal)
+        }
+    }
+}
+
+public extension NSLayoutConstraint {
+    @discardableResult
+    func setting(isActive: Bool) -> NSLayoutConstraint {
+        self.isActive = isActive
+        return self
+    }
+    
+    @discardableResult
+    func setting(priority: UILayoutPriority) -> NSLayoutConstraint {
+        self.priority = priority
+        return self
+    }
 }

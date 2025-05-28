@@ -4,8 +4,6 @@ import UIKit
 
 class AllMediaViewController: BaseVC {
     
-    
-    
     lazy var containerViewForMediaAndDocument: SegmentedControl = {
        let stackView = SegmentedControl()
        stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +122,6 @@ class AllMediaViewController: BaseVC {
             collectionview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -12)
         ])
     }
-    
     
     @objc func segmentValueChanged(_ sender: AnyObject?){
         self.collectionview.reloadData()

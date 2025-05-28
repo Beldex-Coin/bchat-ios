@@ -86,7 +86,6 @@ class CallPermissionRequestModalNewVC: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        // Do any additional setup after loading the view.
         view.backgroundColor = Colors.backGroundColorWithAlpha
         let darkBlur = UIBlurEffect(style: UIBlurEffect.Style.dark)
         let blurView = UIVisualEffectView(effect: darkBlur)

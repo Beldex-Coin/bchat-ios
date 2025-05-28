@@ -135,12 +135,12 @@ public class PhotoGridViewCell: UICollectionViewCell {
         }
 
         switch item.type {
-        case .video:
-            self.contentTypeBadgeImage = PhotoGridViewCell.videoBadgeImage
-        case .animated:
-            self.contentTypeBadgeImage = PhotoGridViewCell.animatedBadgeImage
-        case .photo:
-            self.contentTypeBadgeImage = nil
+            case .video:
+                self.contentTypeBadgeImage = PhotoGridViewCell.videoBadgeImage
+            case .animated:
+                self.contentTypeBadgeImage = PhotoGridViewCell.animatedBadgeImage
+            case .photo:
+                self.contentTypeBadgeImage = nil
         }
     }
 

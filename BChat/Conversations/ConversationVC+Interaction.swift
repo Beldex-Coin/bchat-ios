@@ -199,19 +199,49 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
-//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-//            let gifVC = GifPickerViewController(thread: thread)
-//            gifVC.delegate = self
-//            let navController = OWSNavigationController(rootViewController: gifVC)
-//            navController.modalPresentationStyle = .fullScreen
-//            present(navController, animated: true) { }
-//        } else {
-//            //check your internet connection
-//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
-//        }
+        if SSKPreferences.isGifPermissionEnabled {
+            if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
+                let gifVC = GifPickerViewController(thread: thread)
+                gifVC.delegate = self
+                let navController = OWSNavigationController(rootViewController: gifVC)
+                navController.modalPresentationStyle = .fullScreen
+                present(navController, animated: true) {
+                    self.isInputViewShow = false
+                }
+            } else {
+                self.showToast(message: "Please check your internet connection", seconds: 1.0)
+            }
+        } else {
+            // show confirmation enable modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    title: "Search GIF's",
+                    body: .text("You will not have full metadata protection when sending GIF's"),
+                    showCondition: .disabled,
+                    confirmTitle: "Ok",
+                    onConfirm: { _ in
+                        self.isInputViewShow = true
+                        SSKPreferences.isGifPermissionEnabled = true
+                        self.handleGIFButtonTapped()
+                    }, afterClosed: {
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion:  {
+                self.isInputViewShow = false
+            })
+            return
+        }
+    }
+    
+    func didCancelGifPicker() {
+        isInputViewShow = true
     }
 
     func gifPickerDidSelect(attachment: SignalAttachment) {
+        isInputViewShow = true
         showAttachmentApprovalDialog(for: [ attachment ])
     }
     
@@ -879,6 +909,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
+        if quoteDraft.attachmentStream != nil {
+            bottomConstraintOfAttachmentButton = 72
+        } else {
+            bottomConstraintOfAttachmentButton = 60
+        }
+        resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
         snInputView.becomeFirstResponder()
@@ -1105,6 +1141,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func handleQuoteViewCancelButtonTapped() {
+        bottomConstraintOfAttachmentButton = 4
+        resetAttachmentOptions()
         snInputView.quoteDraftInfo = nil
     }
     
@@ -1135,6 +1173,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
         reply(viewItem)
+    }
+    
+    func resetAttachmentOptions() {
+        snInputView.attachmentsButton.layoutIfNeeded()
+        snInputView.attachmentsButton.isExpanded = snInputView.attachmentsButton.isExpanded
     }
     
     func showUserDetails(for bchatID: String) {
@@ -1402,7 +1445,7 @@ extension ConversationVC: UIDocumentInteractionControllerDelegate {
 
 extension ConversationVC {
     
-    fileprivate func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
+    func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
         guard let contactThread: TSContactThread = thread as? TSContactThread else { return Promise.value(()) }
         
         // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
@@ -1415,8 +1458,13 @@ extension ConversationVC {
         
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in
+                if !contact.isApproved {
+                    return Promise.value(())
+                }
                 guard !isNewThread else { return Promise.value(()) }
-                guard let strongSelf = self else { return Promise(error: MessageSender.Error.noThread) }
+                guard let strongSelf = self else {
+                    return Promise(error: MessageSender.Error.noThread)
+                }
                 
                 // If we aren't creating a new thread (ie. sending a message request) then send a
                 // messageRequestResponse back to the sender (this allows the sender to know that
@@ -1593,7 +1641,7 @@ extension ConversationVC {
         guard let thread = thread as? TSGroupThread else { return }
         guard let message = viewItem.interaction as? TSMessage, message.reactions.count > 0 else { return }
         let reactionListSheet = ReactionListSheet(for: viewItem, thread: thread) {
-            self.reactionListOpened = false
+            self.isInputViewShow = true
             self.snInputView.isHidden = false
         }
         showingReactionListForMessageId = viewItem.interaction.uniqueId
@@ -1601,7 +1649,7 @@ extension ConversationVC {
         reactionListSheet.selectedReaction = selectedReaction
         reactionListSheet.modalPresentationStyle = .overFullScreen
         present(reactionListSheet, animated: true) {
-            self.reactionListOpened = true
+            self.isInputViewShow = false
         }
     }
     
