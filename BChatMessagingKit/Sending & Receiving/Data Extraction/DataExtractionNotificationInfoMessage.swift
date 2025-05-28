@@ -19,8 +19,10 @@ public final class DataExtractionNotificationInfoMessage : TSInfoMessage {
         let bchatID = thread.contactBChatID()
         let displayName = Storage.shared.getContact(with: bchatID)?.displayName(for: .regular) ?? bchatID
         switch messageType {
-        case .screenshotTakenNotification: return "You took a screenshot!"
-        case .screenshotNotification: return String(format: NSLocalizedString("screenshot_taken", comment: ""), displayName)
+        case .screenshotTakenNotification: 
+            return "You took a screenshot!"
+        case .screenshotNotification:
+            return String(format: NSLocalizedString("screenshot_taken", comment: ""), displayName)
         case .mediaSavedNotification:
             // TODO: Use referencedAttachmentTimestamp to tell the user * which * media was saved
             return String(format: NSLocalizedString("meida_saved", comment: ""), displayName)
