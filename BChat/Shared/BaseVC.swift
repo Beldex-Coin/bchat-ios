@@ -218,18 +218,18 @@ extension BaseVC {
                 callVC.setupStateChangeCallbacks()
             }
         } else {
-            showCallPermissionModal {
-                Logger.debug("On Confirmed")
+            showCallPermissionModel {
+                debugPrint("On Confirmed")
             } onAfterClosed: {
-                Logger.debug("On After Closed")
+                debugPrint("On After Closed")
             } onCompletion: {
-                Logger.debug("On Completion")
+                debugPrint("On Completion")
             }
 
         }
     }
     
-    func showCallPermissionModal(
+    func showCallPermissionModel(
         onConfirmed: (() -> Void)? = nil,
         onAfterClosed: (() -> Void)? = nil,
         onCompletion: (() -> Void)? = nil) {
