@@ -30,7 +30,7 @@ class CustomChatSettingsTableViewCell: UITableViewCell {
     }()
     
     lazy var rightIconImageView: UIImageView = {
-        let imageView = UIImageView() //withRenderingMode(.alwaysTemplate)
+        let imageView = UIImageView()
         imageView.contentMode = .center
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
