@@ -89,7 +89,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func showCallPermissionModel() {
         snInputView.isHidden = true
-        showCallPermissionModel {
+        showCallPermissionModal {
             self.isInputViewShow = true
             if let navController = UIWindow.key?.rootViewController as? UINavigationController {
                 let bChatSettingsNewVC = BChatSettingsNewVC()
