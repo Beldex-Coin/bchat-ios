@@ -73,8 +73,10 @@ class CustomChatSettingsTableViewCell: UITableViewCell {
         titleLabel.text = "Search Conversation"
         rightTitleLabel.text = "Default"
         leftIconImageView.image = UIImage(named: "ic_search_setting")
-        rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
         
+        rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")?.withRenderingMode(.alwaysTemplate)
+        rightIconImageView.tintColor = isLightMode ? UIColor(hex: 0x333333) :UIColor(hex: 0xEBEBEB)
+
         NSLayoutConstraint.activate([
             leftIconImageView.heightAnchor.constraint(equalToConstant: 22),
             leftIconImageView.widthAnchor.constraint(equalToConstant: 22),
