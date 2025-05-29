@@ -218,16 +218,61 @@ extension BaseVC {
                 callVC.setupStateChangeCallbacks()
             }
         } else {
-            let vc = CallPermissionRequestModalNewVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            showCallPermissionModel {
+                debugPrint("On Confirmed")
+            } onAfterClosed: {
+                debugPrint("On After Closed")
+            } onCompletion: {
+                debugPrint("On Completion")
+            }
+
         }
+    }
+    
+    func showCallPermissionModel(
+        onConfirmed: (() -> Void)? = nil,
+        onAfterClosed: (() -> Void)? = nil,
+        onCompletion: (() -> Void)? = nil) {
+        
+        let title = NSLocalizedString("modal_call_permission_request_title", comment: "")
+        let description = callPermisionDescription()
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalImageType: .callPermission,
+                title: title,
+                body: .attributedText(description),
+                showCondition: .disabled,
+                confirmTitle: "Settings",
+                onConfirm: { _ in
+                    onConfirmed?()
+                }, afterClosed: {
+                    onAfterClosed?()
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion:  {
+            onCompletion?()
+        })
+        return
     }
     
     func hideInputAccessoryView(_ view: UIView?) {
         guard let aView = view else { return }
         aView.isHidden = true
         aView.alpha = 0
+    }
+    
+    func callPermisionDescription() -> NSAttributedString {
+        let string = "You can enable the ‘Voice and video calls’ permission in the Privacy Settings."
+        let attributedString = NSMutableAttributedString(string: string)
+        // Apply bold font to "Voice and video calls"
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Voice and video calls"))
+        // Apply bold font to "Privacy Settings"
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Privacy Settings"))
+        // The attributed string
+        return attributedString
+        
     }
 }

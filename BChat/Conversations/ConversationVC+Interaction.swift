@@ -81,14 +81,28 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 //CallVC
                 //NewIncomingCallVC
             } else {
-                snInputView.isHidden = true
-                let vc = CallPermissionRequestModalNewVC()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                self.present(vc, animated: true, completion: nil)
+                showCallPermissionModel()
             }
         }
     }
+    
+    func showCallPermissionModel() {
+        snInputView.isHidden = true
+        showCallPermissionModel {
+            self.isInputViewShow = true
+            if let navController = UIWindow.key?.rootViewController as? UINavigationController {
+                let bChatSettingsNewVC = BChatSettingsNewVC()
+                navController.pushViewController(bChatSettingsNewVC, animated: true)
+            }
+        } onAfterClosed: {
+            self.isInputViewShow = true
+            self.showInputAccessoryView()
+        } onCompletion: {
+            self.isInputViewShow = false
+        }
+    }
+    
+    
 
     // MARK: Blocking
     @objc func unblock() {
@@ -211,7 +225,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 self.showToast(message: "Please check your internet connection", seconds: 1.0)
             }
         } else {
-            // show confirmation enable modal
+            // show confirmation modal
             let confirmationModal: ConfirmationModal = ConfirmationModal(
                 info: ConfirmationModal.Info(
                     title: "Search GIF's",
@@ -705,11 +719,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             present(callVC, animated: true, completion: nil)
             
         } else {
-            snInputView.isHidden = true
-            let vc = CallPermissionRequestModalNewVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            showCallPermissionModel()
         }
     }
     
@@ -721,7 +731,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.present(vc, animated: true, completion: nil)
     }
 
-    // ??????
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
         
         if snInputView.attachmentsButton.isExpanded {
