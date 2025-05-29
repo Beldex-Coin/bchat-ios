@@ -1064,7 +1064,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleAudioDidFinishPlayingNotification(_:)), name: .SNAudioDidFinishPlaying, object: nil)
         notificationCenter.addObserver(self, selector: #selector(addOrRemoveBlockedBanner), name: .contactBlockedStateChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleMessageSentStatusChanged), name: .messageSentStatusDidChange, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
@@ -1124,7 +1123,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
-
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
             CustomSlideView.isFromExpandAttachment = false
@@ -1185,6 +1184,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         hideAttachmentExpandedButtons()
         handleQuoteViewCancelButtonTapped()
         hideOpenURLView()
+        NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
