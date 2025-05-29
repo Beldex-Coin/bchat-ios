@@ -19,7 +19,6 @@ open class ModalView: UIViewController, UIGestureRecognizerDelegate {
     internal var contentTopConstraint: NSLayoutConstraint?
     internal var contentCenterYConstraint: NSLayoutConstraint?
     
-    
     private lazy var dimmingView: UIView = {
         let result = UIVisualEffectView()
         result.effect = UIBlurEffect(style: (.dark))

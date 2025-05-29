@@ -22,6 +22,12 @@ public class ConfirmationModal: ModalView {
         return result
     }()
     
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let result: UILabel = UILabel()
         result.textColor = Colors.aboutContentLabelColor
@@ -33,8 +39,8 @@ public class ConfirmationModal: ModalView {
         return result
     }()
     
-    private lazy var explanationLabel: UILabel = {
-        let result: UILabel = UILabel()
+    private lazy var explanationLabel: ScrollableLabel = {
+        let result: ScrollableLabel = ScrollableLabel()
         result.textColor = Colors.aboutContentLabelColor
         result.font = Fonts.OpenSans(ofSize: 14)
         result.textAlignment = .center
@@ -91,7 +97,7 @@ public class ConfirmationModal: ModalView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let result = UIStackView(arrangedSubviews: [ titleLabel, explanationLabel ])
+        let result = UIStackView(arrangedSubviews: [ imageView, titleLabel, explanationLabel ])
         result.axis = .vertical
         result.spacing = Values.smallSpacing
         result.isLayoutMarginsRelativeArrangement = true
@@ -115,14 +121,14 @@ public class ConfirmationModal: ModalView {
     
     // MARK: - Lifecycle
     
-    public init(targetView: UIView? = nil, info: Info) {
+    public init(targetView: UIView? = nil, info: Info, modalImageType: ConfirmationModalImageType = .none) {
         self.info = info
         
         super.init(targetView: targetView, dismissType: info.dismissType, afterClosed: info.afterClosed)
         
         self.modalPresentationStyle = .overFullScreen
         self.modalTransitionStyle = .crossDissolve
-        self.updateContent(with: info)
+        self.updateContent(with: info, modalImageType: modalImageType)
     }
     
     required init?(coder: NSCoder) {
@@ -146,8 +152,9 @@ public class ConfirmationModal: ModalView {
     
     // MARK: - Content
     
-    public func updateContent(with info: Info) {
+    public func updateContent(with info: Info, modalImageType: ConfirmationModalImageType) {
         self.info = info
+        
         internalOnBodyTap = nil
         internalOnConfirm = { modal in
             if info.dismissOnConfirm {
@@ -165,6 +172,14 @@ public class ConfirmationModal: ModalView {
         
         // Set the content based on the provided info
         titleLabel.text = info.title
+        
+        if info.modalImageType != .none {
+            imageView.isHidden = false
+            imageView.image = UIImage(named: info.modalImageType.imageName)
+        } else {
+            imageView.isHidden = true
+            imageView.image = nil
+        }
         
         switch info.body {
             case .none:
@@ -227,6 +242,7 @@ public extension ConfirmationModal {
     }
     
     struct Info: Equatable, Hashable {
+        internal var modalImageType: ConfirmationModalImageType
         internal let title: String
         public let body: Body
         public let showCondition: ShowCondition
@@ -244,6 +260,7 @@ public extension ConfirmationModal {
         // MARK: - Initialization
         
         public init(
+            modalImageType: ConfirmationModalImageType = .none,
             title: String,
             body: Body = .none,
             showCondition: ShowCondition = .none,
@@ -257,7 +274,9 @@ public extension ConfirmationModal {
             onConfirm: ((ConfirmationModal) -> ())? = nil,
             onCancel: ((ConfirmationModal) -> ())? = nil,
             afterClosed: (() -> ())? = nil
+            
         ) {
+            self.modalImageType = modalImageType
             self.title = title
             self.body = body
             self.showCondition = showCondition
@@ -282,6 +301,7 @@ public extension ConfirmationModal {
             afterClosed: (() -> ())? = nil
         ) -> Info {
             return Info(
+                modalImageType: self.modalImageType,
                 title: self.title,
                 body: (body ?? self.body),
                 showCondition: self.showCondition,
@@ -302,6 +322,7 @@ public extension ConfirmationModal {
         
         public static func == (lhs: ConfirmationModal.Info, rhs: ConfirmationModal.Info) -> Bool {
             return (
+                lhs.modalImageType == rhs.modalImageType &&
                 lhs.title == rhs.title &&
                 lhs.body == rhs.body &&
                 lhs.showCondition == rhs.showCondition &&
@@ -316,6 +337,7 @@ public extension ConfirmationModal {
         }
         
         public func hash(into hasher: inout Hasher) {
+            modalImageType.hash(into: &hasher)
             title.hash(into: &hasher)
             body.hash(into: &hasher)
             showCondition.hash(into: &hasher)
