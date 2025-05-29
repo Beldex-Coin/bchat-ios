@@ -1123,11 +1123,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
+        
         NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.customizeSlideToOpen.isHidden = true
             CustomSlideView.isFromExpandAttachment = false
         }
+        
         self.saveReceipeinetAddressOnAndOff()
         snInputView.isHidden = false
         recoverInputView()
@@ -1184,6 +1187,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         hideAttachmentExpandedButtons()
         handleQuoteViewCancelButtonTapped()
         hideOpenURLView()
+        
         NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
