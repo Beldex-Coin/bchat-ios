@@ -582,6 +582,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true, completion: nil)
         
+        
+        
+        
+        
+        
+        
     }
     
     func hasLeftGroup() -> Bool {

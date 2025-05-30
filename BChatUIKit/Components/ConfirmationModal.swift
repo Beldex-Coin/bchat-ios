@@ -121,7 +121,7 @@ public class ConfirmationModal: ModalView {
     
     // MARK: - Lifecycle
     
-    public init(targetView: UIView? = nil, info: Info, modalImageType: ConfirmationModalImageType = .none) {
+    public init(targetView: UIView? = nil, info: Info, modalImageType: ConfirmationModalType = .none) {
         self.info = info
         
         super.init(targetView: targetView, dismissType: info.dismissType, afterClosed: info.afterClosed)
@@ -152,7 +152,7 @@ public class ConfirmationModal: ModalView {
     
     // MARK: - Content
     
-    public func updateContent(with info: Info, modalImageType: ConfirmationModalImageType) {
+    public func updateContent(with info: Info, modalImageType: ConfirmationModalType) {
         self.info = info
         
         internalOnBodyTap = nil
@@ -173,9 +173,9 @@ public class ConfirmationModal: ModalView {
         // Set the content based on the provided info
         titleLabel.text = info.title
         
-        if info.modalImageType != .none {
+        if info.modalType.isShowImage {
             imageView.isHidden = false
-            imageView.image = UIImage(named: info.modalImageType.imageName)
+            imageView.image = UIImage(named: info.modalType.imageName)
         } else {
             imageView.isHidden = true
             imageView.image = nil
@@ -242,7 +242,7 @@ public extension ConfirmationModal {
     }
     
     struct Info: Equatable, Hashable {
-        internal var modalImageType: ConfirmationModalImageType
+        internal var modalType: ConfirmationModalType
         internal let title: String
         public let body: Body
         public let showCondition: ShowCondition
@@ -260,7 +260,7 @@ public extension ConfirmationModal {
         // MARK: - Initialization
         
         public init(
-            modalImageType: ConfirmationModalImageType = .none,
+            modalType: ConfirmationModalType = .none,
             title: String,
             body: Body = .none,
             showCondition: ShowCondition = .none,
@@ -276,7 +276,7 @@ public extension ConfirmationModal {
             afterClosed: (() -> ())? = nil
             
         ) {
-            self.modalImageType = modalImageType
+            self.modalType = modalType
             self.title = title
             self.body = body
             self.showCondition = showCondition
@@ -301,7 +301,7 @@ public extension ConfirmationModal {
             afterClosed: (() -> ())? = nil
         ) -> Info {
             return Info(
-                modalImageType: self.modalImageType,
+                modalType: self.modalType,
                 title: self.title,
                 body: (body ?? self.body),
                 showCondition: self.showCondition,
@@ -322,7 +322,7 @@ public extension ConfirmationModal {
         
         public static func == (lhs: ConfirmationModal.Info, rhs: ConfirmationModal.Info) -> Bool {
             return (
-                lhs.modalImageType == rhs.modalImageType &&
+                lhs.modalType == rhs.modalType &&
                 lhs.title == rhs.title &&
                 lhs.body == rhs.body &&
                 lhs.showCondition == rhs.showCondition &&
@@ -337,7 +337,7 @@ public extension ConfirmationModal {
         }
         
         public func hash(into hasher: inout Hasher) {
-            modalImageType.hash(into: &hasher)
+            modalType.hash(into: &hasher)
             title.hash(into: &hasher)
             body.hash(into: &hasher)
             showCondition.hash(into: &hasher)
