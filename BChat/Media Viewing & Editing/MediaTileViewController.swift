@@ -84,7 +84,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         result.delegate = self
         result.dataSource = self
         result.alwaysBounceVertical = true
-        result.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
         
         //for media
         result.register(PhotoGridViewCell.self, forCellWithReuseIdentifier: PhotoGridViewCell.reuseIdentifier)
@@ -241,6 +240,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             noDataMessageLabel.centerXAnchor.constraint(equalTo: noDataView.centerXAnchor),
             noDataMessageLabel.bottomAnchor.constraint(equalTo: noDataView.bottomAnchor, constant: 0),
         ])
+        
+        mediaCollectionView.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
     }
     
     override public func viewWillAppear(_ animated: Bool) {
