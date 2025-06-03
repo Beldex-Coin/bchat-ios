@@ -123,6 +123,4 @@ class DocumentCollectionViewCell: UICollectionViewCell {
         self.selectedView.isHidden = true
         self.selectedBadgeView.isHidden = true
     }
-    
-    
 }
