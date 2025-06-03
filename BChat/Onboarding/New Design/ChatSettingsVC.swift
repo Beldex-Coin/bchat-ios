@@ -838,7 +838,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                             guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
                             let theDocument = Document(contentType: stream.contentType,
                                                        originalFilePath: filePath,
-                                                       originalMediaURL: mediaUrl,
+                                                       originalMediaURL: mediaUrl.absoluteString,
                                                        createdTimeStamp: stream.creationTimestamp,
                                                        documentId: attachmentID)
                             documents.append(theDocument) //appending only documents
@@ -847,10 +847,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 }
             }
         }
+        
         if !documents.isEmpty {
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(documents) {
-                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
+            if let encodedData = try? encoder.encode(documents) {
+                UserDefaults.standard.set(encodedData, forKey: Constants.attachedDocuments)
             }
         }
     }

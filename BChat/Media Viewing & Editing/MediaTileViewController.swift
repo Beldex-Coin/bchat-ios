@@ -6,6 +6,13 @@ import Foundation
 import BChatUIKit
 import UIKit
 
+// MARK: Media type
+
+public enum MediaType {
+    case media
+    case document
+}
+
 public protocol MediaTileViewControllerDelegate: class {
     func mediaTileViewController(_ viewController: MediaTileViewController, didTapView tappedView: UIView, mediaGalleryItem: MediaGalleryItem)
 }
@@ -34,6 +41,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     private let uiDatabaseConnection: YapDatabaseConnection
     public weak var delegate: MediaTileViewControllerDelegate?
     var viewItems: [ConversationViewItem]?
+    var mediaType: MediaType = .media
     
     //documents
     private var documents: [Document] = []
@@ -75,9 +83,17 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         result.backgroundColor = Colors.navigationBarBackground
         result.delegate = self
         result.dataSource = self
+        result.alwaysBounceVertical = true
+        result.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 20, right: 0)
+        
+        //for media
         result.register(PhotoGridViewCell.self, forCellWithReuseIdentifier: PhotoGridViewCell.reuseIdentifier)
         result.register(MediaGallerySectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaGallerySectionHeader.reuseIdentifier)
         result.register(MediaGalleryStaticHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaGalleryStaticHeader.reuseIdentifier)
+        
+        // for document
+        result.register(DocumentCollectionViewCell.self, forCellWithReuseIdentifier: DocumentCollectionViewCell.reuseIdentifier)
+        
         // Feels a bit weird to have content smashed all the way to the bottom edge.
         result.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         
@@ -182,7 +198,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         containerViewForMediaAndDocument.items = ["Media", "Documents"]
         containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
-        containerViewForMediaAndDocument.selectedIndex = 0
         containerViewForMediaAndDocument.padding = 4
         containerViewForMediaAndDocument.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         
@@ -232,13 +247,13 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         super.viewWillAppear(animated)
         
         self.view.layoutIfNeeded()
+        
         self.autoLoadMoreIfNecessary()
         self.mediaCollectionView.reloadData()
         
         isInBatchSelectMode = false
         updateSelectButton()
         
-        getAllDcouments()
         fetchAllDocuments()
     }
     
@@ -249,7 +264,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.updateLayout(selectedIndex: containerViewForMediaAndDocument.selectedIndex)
+        
+        self.updateLayout(selectedIndex: 0) //containerViewForMediaAndDocument.selectedIndex)
     }
     
     private func indexPath(galleryItem: MediaGalleryItem) -> IndexPath? {
@@ -266,7 +282,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     // Top SegmentView Changed
     @objc func segmentValueChanged(_ sender: AnyObject?) {
         let segmentSelectedIndex = containerViewForMediaAndDocument.selectedIndex
-        if segmentSelectedIndex == 0 {
+        if mediaType == .document {
+            mediaType = .media
             mediaLineView.backgroundColor = Colors.bothGreenColor
             documentLineView.backgroundColor = Colors.borderColorNew
             
@@ -274,6 +291,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             self.noDataImageView.image = UIImage(named: "no_media_image")
             self.noDataMessageLabel.text = "No Media items to show!"
         } else {
+            mediaType = .document
             documentLineView.backgroundColor = Colors.bothGreenColor
             mediaLineView.backgroundColor = Colors.borderColorNew
             
@@ -284,81 +302,83 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         endSelectMode()
         deleteButton.isEnabled = false
-        let topEdge: CGFloat = segmentSelectedIndex == 0 ? 0 : 60
-        mediaCollectionView.contentInset = UIEdgeInsets(top: topEdge, left: 0, bottom: 20, right: 0)
-        updateLayout(selectedIndex:segmentSelectedIndex)
+        updateLayout(selectedIndex: 0)
         updateSelectButton()
         mediaCollectionView.reloadData()
     }
     
     func fetchAllDocuments() {
         documents = []
-        if let objects = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as? Data {
-            let decoder = JSONDecoder()
-            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
-                documents = documentsDecoded
-            }
+        
+        let objectData = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as! Data
+        let decoder = JSONDecoder()
+        
+        if let decodedDocuments = try? decoder.decode([Document].self, from: objectData) {
+            documents = decodedDocuments
             mediaCollectionView.reloadData()
             documents.forEach { document in
+                debugPrint("Document ----- \(document)")
             }
         }
     }
     
-    func getAllDcouments() {
-        UserDefaults.standard.removeObject(forKey: Constants.attachedDocuments)
-        
-        var deletedDocuments: [Document] = []
-        if let objects = UserDefaults.standard.value(forKey: Constants.deleteAttachedDocuments) as? Data {
-            let decoder = JSONDecoder()
-            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
-                deletedDocuments = documentsDecoded
-            }
-            deletedDocuments.forEach { document in
-            }
-        }
-        
-        var allAttachments: [TSAttachmentStream] = []
-        var documents: [Document] = []
-        guard let theViewItems = viewItems else { return }
-        theViewItems.forEach { viewItem in
-            if let message = viewItem.interaction as? TSMessage {
-                Storage.read { transaction in
-                    message.attachmentIds.forEach { attachmentID in
-                        guard let attachmentID = attachmentID as? String else { return }
-                        let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
-                        guard let stream = attachment as? TSAttachmentStream else { return }
-                        allAttachments.append(stream) //appending all attachments
-                        
-                        if stream.contentType == DocumentContentType.mswordDocument.rawValue || stream.contentType == DocumentContentType.pdfDocument.rawValue || stream.contentType == DocumentContentType.textDocument.rawValue {
-                            
-                            if !deletedDocuments.isEmpty {
-                                for document in deletedDocuments {
-                                    if document.documentId == attachmentID {
-                                        self.deleteLocally(viewItem)
-                                    }
-                                }
-                            }
-                            
-                            guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
-                            let theDocument = Document(contentType: stream.contentType,
-                                                       originalFilePath: filePath,
-                                                       originalMediaURL: mediaUrl,
-                                                       createdTimeStamp: stream.creationTimestamp,
-                                                       documentId: attachmentID)
-                            documents.append(theDocument) //appending only documents
-                        }
-                    }
-                }
-            }
-        }
-        if !documents.isEmpty {
-            let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(documents) {
-                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
-            }
-        }
-        fetchAllDocuments()
-    }
+//    func getAllDcouments() {
+//        UserDefaults.standard.removeObject(forKey: Constants.attachedDocuments)
+//        
+//        var deletedDocuments: [Document] = []
+//        if let objects = UserDefaults.standard.value(forKey: Constants.deleteAttachedDocuments) as? Data {
+//            let decoder = JSONDecoder()
+//            if let documentsDecoded = try? decoder.decode([Document].self, from: objects) as [Document] {
+//                deletedDocuments = documentsDecoded
+//            }
+//            deletedDocuments.forEach { document in
+//            }
+//        }
+//        
+//        var allAttachments: [TSAttachmentStream] = []
+//        var documents: [Document] = []
+//        guard let theViewItems = viewItems else { return }
+//        theViewItems.forEach { viewItem in
+//            if let message = viewItem.interaction as? TSMessage {
+//                Storage.read { transaction in
+//                    message.attachmentIds.forEach { attachmentID in
+//                        guard let attachmentID = attachmentID as? String else { return }
+//                        let attachment = TSAttachment.fetch(uniqueId: attachmentID, transaction: transaction)
+//                        guard let stream = attachment as? TSAttachmentStream else { return }
+//                        allAttachments.append(stream) //appending all attachments
+//                        
+//                        if stream.contentType == DocumentContentType.mswordDocument.rawValue || stream.contentType == DocumentContentType.pdfDocument.rawValue || stream.contentType == DocumentContentType.textDocument.rawValue {
+//                            
+//                            if !deletedDocuments.isEmpty {
+//                                for document in deletedDocuments {
+//                                    if document.documentId == attachmentID {
+//                                        self.deleteLocally(viewItem)
+//                                    }
+//                                }
+//                            }
+//                            
+//                            guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
+//                            let theDocument = Document(contentType: stream.contentType,
+//                                                       originalFilePath: filePath,
+//                                                       originalMediaURL: mediaUrl.absoluteString,
+//                                                       createdTimeStamp: stream.creationTimestamp,
+//                                                       documentId: attachmentID)
+//                            documents.append(theDocument) //appending only documents
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        
+//        if !documents.isEmpty {
+//            let encoder = JSONEncoder()
+//            if let encoded = try? encoder.encode(documents) {
+//                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
+//            }
+//        }
+//        
+//        fetchAllDocuments()
+//    }
     
     func deleteLocally(_ viewItem: ConversationViewItem) {
         viewItem.deleteLocallyAction()
@@ -394,16 +414,16 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 return false
             }
             
             switch indexPath.section {
-            case kLoadOlderSectionIdx, loadNewerSectionIdx:
-                return false
-            default:
-                return true
+                case kLoadOlderSectionIdx, loadNewerSectionIdx:
+                    return false
+                default:
+                    return true
             }
         } else {
             return true
@@ -413,16 +433,16 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 return false
             }
             
             switch indexPath.section {
-            case kLoadOlderSectionIdx, loadNewerSectionIdx:
-                return false
-            default:
-                return true
+                case kLoadOlderSectionIdx, loadNewerSectionIdx:
+                    return false
+                default:
+                    return true
             }
         } else {
             return true
@@ -432,16 +452,16 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
         
         Logger.debug("")
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 return false
             }
             
             switch indexPath.section {
-            case kLoadOlderSectionIdx, loadNewerSectionIdx:
-                return false
-            default:
-                return true
+                case kLoadOlderSectionIdx, loadNewerSectionIdx:
+                    return false
+                default:
+                    return true
             }
         } else {
             return true
@@ -451,7 +471,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         Logger.debug("")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard let gridCell = collectionView.cellForItem(at: indexPath) as? PhotoGridViewCell else {
                 owsFailDebug("galleryCell was unexpectedly nil")
                 return
@@ -477,22 +497,24 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
                 if viewItem.contentType == DocumentContentType.pdfDocument.rawValue ||
                     viewItem.contentType == DocumentContentType.mswordDocument.rawValue ||
                     viewItem.contentType == DocumentContentType.textDocument.rawValue {
-                    let fileUrl: URL = viewItem.originalMediaURL//URL(fileURLWithPath: viewItem.originalFilePath)
-                    let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
-                    interactionController.delegate = self
-                    interactionController.presentPreview(animated: true)
+                    if let fileUrl = URL(string: viewItem.originalMediaUrl) { //URL(fileURLWithPath: viewItem.originalFilePath)
+                        let interactionController: UIDocumentInteractionController = UIDocumentInteractionController(url: fileUrl)
+                        interactionController.delegate = self
+                        interactionController.presentPreview(animated: true)
+                    }
                 }
                 else {
                     // Open the document if possible
-                    let url = viewItem.originalMediaURL
-                    let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
-                    if UIDevice.current.isIPad {
-                        shareVC.excludedActivityTypes = []
-                        shareVC.popoverPresentationController?.permittedArrowDirections = []
-                        shareVC.popoverPresentationController?.sourceView = self.view
-                        shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                    if let url = URL(string: viewItem.originalMediaUrl) {
+                        let shareVC = UIActivityViewController(activityItems: [ url ], applicationActivities: nil)
+                        if UIDevice.current.isIPad {
+                            shareVC.excludedActivityTypes = []
+                            shareVC.popoverPresentationController?.permittedArrowDirections = []
+                            shareVC.popoverPresentationController?.sourceView = self.view
+                            shareVC.popoverPresentationController?.sourceRect = self.view.bounds
+                        }
+                        navigationController!.present(shareVC, animated: true, completion: nil)
                     }
-                    navigationController!.present(shareVC, animated: true, completion: nil)
                 }
             }
         }
@@ -502,7 +524,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         Logger.debug("")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             if isInBatchSelectMode {
                 updateDeleteButton()
             }
@@ -518,7 +540,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     // MARK: UICollectionViewDataSource
     
      public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 // empty gallery
                 return 1
@@ -532,7 +554,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection sectionIdx: Int) -> Int {
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 // empty gallery
                 return 0
@@ -568,7 +590,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         let defaultView = UICollectionReusableView()
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             guard galleryDates.count > 0 else {
                 guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaGalleryStaticHeader.reuseIdentifier, for: indexPath) as? MediaGalleryStaticHeader else {
                     
@@ -625,7 +647,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         Logger.debug("indexPath: \(indexPath)")
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             let defaultCell = UICollectionViewCell()
             
             guard galleryDates.count > 0 else {
@@ -657,11 +679,14 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
                 return cell
             }
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DocumentCollectionViewCell.reuseidentifier, for: indexPath) as! DocumentCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DocumentCollectionViewCell.reuseIdentifier, for: indexPath) as! DocumentCollectionViewCell
             
             let documentItem = documents[indexPath.item]
             
-            cell.titleLabel.text = documentItem.originalMediaURL.lastPathComponent
+            if let mediaURL = URL(string: documentItem.originalMediaUrl) {
+                cell.titleLabel.text = mediaURL.lastPathComponent
+            }
+            
             let filePath = documentItem.originalFilePath
             var fileSize : UInt64
             do {
@@ -689,7 +714,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
                                layout collectionViewLayout: UICollectionViewLayout,
                                referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             let kMonthHeaderSize: CGSize = CGSize(width: 0, height: 50)
             let kStaticHeaderSize: CGSize = CGSize(width: 0, height: 100)
             
@@ -713,7 +738,9 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
                     return kMonthHeaderSize
             }
         } else {
-            return CGSize.zero
+            //return CGSize.zero
+            
+            return .zero
         }
     }
     
@@ -756,7 +783,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     func updateLayout(selectedIndex: Int) {
         
         self.noDataView.isHidden = false
-        if containerViewForMediaAndDocument.selectedIndex == 0 {
+        if mediaType == .media {
             if galleryDates.count > 0 {
                 self.noDataView.isHidden = true
             }
@@ -767,7 +794,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         }
         
         var kItemsPerPortraitRow = 4
-        if containerViewForMediaAndDocument.selectedIndex == 1 {
+        if mediaType == .document {
             kItemsPerPortraitRow = 1
         }
         
@@ -786,7 +813,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         let availableWidth = containerWidth - spaceWidth
         
         let itemWidth = floor(availableWidth / CGFloat(itemCount))
-        let newItemSize = CGSize(width: itemWidth, height: containerViewForMediaAndDocument.selectedIndex == 1 ? 90 : itemWidth)
+        let newItemSize = CGSize(width: itemWidth, height: mediaType == .document ? 90 : itemWidth)
         
         if (newItemSize != mediaTileViewLayout.itemSize) {
             mediaTileViewLayout.itemSize = newItemSize
@@ -816,7 +843,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         if isInBatchSelectMode {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
         } else {
-            if containerViewForMediaAndDocument.selectedIndex == 0 && galleryDates.count > 0 {
+            if mediaType == .media && galleryDates.count > 0 {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
                                                                          style: .plain,
                                                                          target: self,

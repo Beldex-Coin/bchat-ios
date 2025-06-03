@@ -4,7 +4,7 @@ import UIKit
 
 class DocumentCollectionViewCell: UICollectionViewCell {
     
-    static let reuseidentifier = "DocumentCollectionViewCell"
+    static let reuseIdentifier = "DocumentCollectionViewCell"
     
     lazy var titleLabel: UILabel = {
         let result = UILabel()
