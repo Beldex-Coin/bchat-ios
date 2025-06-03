@@ -310,8 +310,9 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     func fetchAllDocuments() {
         documents = []
         
-        if UserDefaults.standard.value(forKey: Constants.attachedDocuments) != nil {
-            let objectData = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as! Data
+        let attachedDocuments = UserDefaults.standard.value(forKey: Constants.attachedDocuments)
+        if attachedDocuments != nil {
+            let objectData = attachedDocuments as! Data
             let decoder = JSONDecoder()
             
             if let decodedDocuments = try? decoder.decode([Document].self, from: objectData) {
