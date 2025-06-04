@@ -282,7 +282,6 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     // Top SegmentView Changed
     @objc func segmentValueChanged(_ sender: AnyObject?) {
-        let segmentSelectedIndex = containerViewForMediaAndDocument.selectedIndex
         if mediaType == .document {
             mediaType = .media
             mediaLineView.backgroundColor = Colors.bothGreenColor
@@ -311,14 +310,17 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     func fetchAllDocuments() {
         documents = []
         
-        let objectData = UserDefaults.standard.value(forKey: Constants.attachedDocuments) as! Data
-        let decoder = JSONDecoder()
-        
-        if let decodedDocuments = try? decoder.decode([Document].self, from: objectData) {
-            documents = decodedDocuments
-            mediaCollectionView.reloadData()
-            documents.forEach { document in
-                debugPrint("Document ----- \(document)")
+        let attachedDocuments = UserDefaults.standard.value(forKey: Constants.attachedDocuments)
+        if attachedDocuments != nil {
+            let objectData = attachedDocuments as! Data
+            let decoder = JSONDecoder()
+            
+            if let decodedDocuments = try? decoder.decode([Document].self, from: objectData) {
+                documents = decodedDocuments
+                mediaCollectionView.reloadData()
+                documents.forEach { document in
+                    debugPrint("Document ----- \(document)")
+                }
             }
         }
     }
@@ -833,10 +835,12 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     }
     
     func updateDeleteButton() {
-        if let count = mediaCollectionView.indexPathsForSelectedItems?.count, count > 0 {
+        if let count = mediaCollectionView.indexPathsForSelectedItems?.count, count > 0 && mediaType == .media {
             self.deleteButton.isEnabled = true
+            self.deleteButton.tintColor = Colors.text
         } else {
             self.deleteButton.isEnabled = false
+            self.deleteButton.tintColor = .clear
         }
     }
     
