@@ -822,7 +822,7 @@
 // Secret Group
 "CREATE_GROUP" = "Create a Secret Group +";
 
-"PAY_AS_YOU_CHAT_DISCRIPTION_LABEL" = "To display pay as you chat, go to My Account -> Chat Settings -> Pay as you Chat to use this option";
+"PAY_AS_YOU_CHAT_DISCRIPTION_LABEL" = "To display pay as you chat, go to Settings -> Pay as you Chat to use this option";
 
 "EMOJI_REACTS_NOTIFICATION" = "reacted to your message %@";
 

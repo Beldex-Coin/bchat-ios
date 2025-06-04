@@ -73,7 +73,8 @@ public enum ConfirmationModalType: Int {
         
         switch self {
             case .gifEnable, .payAsYouChat, .leaveGroup, .none:
-                color = .systemBlue
+            // TODO: Set color
+                color = .clear
             case .cameraPermission,
                     .callPermission,
                     .setPwdSuccess,
@@ -82,7 +83,8 @@ public enum ConfirmationModalType: Int {
                     .walletSync,
                     .transactionIntiate,
                     .transactionSuccess:
-                color = .red
+            // TODO: Set color
+                color = .clear
         }
         
         return color

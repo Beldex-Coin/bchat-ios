@@ -1821,9 +1821,9 @@ extension ConversationVC {
     func payAsYouChatDescription() -> NSAttributedString {
         let string = NSLocalizedString("PAY_AS_YOU_CHAT_DISCRIPTION_LABEL", comment: "")
         let attributedString = NSMutableAttributedString(string: string)
-        // Apply bold font to "My Account -> Chat Settings -> Pay as you Chat"
+        // Apply bold font to "Settings -> Pay as you Chat"
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
-        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "My Account -> Chat Settings -> Pay as you Chat"))
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Settings -> Pay as you Chat"))
         // The attributed string
         return attributedString
     }
