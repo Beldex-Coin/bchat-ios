@@ -206,7 +206,8 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         self.view.addSubview(self.footerBar)
         footerBar.autoPinWidthToSuperview()
         footerBar.autoSetDimension(.height, toSize: kFooterBarHeight)
-        self.footerBarBottomConstraint = footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -kFooterBarHeight)
+
+        self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewSafeArea: .bottom)
         
         updateSelectButton()
         self.mediaTileViewLayout.invalidateLayout()
@@ -835,12 +836,10 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     }
     
     func updateDeleteButton() {
-        if let count = mediaCollectionView.indexPathsForSelectedItems?.count, count > 0 && mediaType == .media {
+        if let count = mediaCollectionView.indexPathsForSelectedItems?.count, count > 0 {
             self.deleteButton.isEnabled = true
-            self.deleteButton.tintColor = Colors.text
         } else {
             self.deleteButton.isEnabled = false
-            self.deleteButton.tintColor = .clear
         }
     }
     
@@ -889,19 +888,15 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     
     func endSelectMode() {
         isInBatchSelectMode = false
-        
-        NSLayoutConstraint.deactivate([self.footerBarBottomConstraint])
-        self.footerBarBottomConstraint = self.footerBar.autoPinEdge(toSuperviewEdge: .bottom, withInset: -self.kFooterBarHeight)
-        self.footerBar.superview?.layoutIfNeeded()
-        mediaCollectionView.contentInset.bottom -= self.kFooterBarHeight
+        deleteButton.isEnabled = false
         
         self.navigationItem.hidesBackButton = false
         
         // hide toolbar
-        let view: UIView = self.view
         UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseInOut, animations: { [weak self] in
             self?.footerBarBottomConstraint?.isActive = false
-            self?.footerBarBottomConstraint = self?.footerBar.pin(.bottom, to: .bottom, of: view, withInset: -(self?.kFooterBarHeight ?? 0))
+            self?.footerBarBottomConstraint = self?.footerBar.autoPinEdge(toSuperviewSafeArea: .bottom)
+            
             self?.footerBar.superview?.layoutIfNeeded()
 
             // Undo "Ensure toolbar doesn't cover bottom row."

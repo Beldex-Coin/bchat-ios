@@ -20,7 +20,6 @@ public enum ConfirmationModalType: Int {
     case transactionSuccess
     case none
     
-    
     /// image name
     var imageName: String {
         let name: String
@@ -68,7 +67,6 @@ public enum ConfirmationModalType: Int {
     }
     
     var confirmationButtonBgColor: UIColor {
-        
         var color: UIColor
         
         switch self {

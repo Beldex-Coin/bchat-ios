@@ -794,7 +794,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             }
                         }
                         guard let stream = attachment as? TSAttachmentStream else { return }
-                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ]) //*************
+                        let gallery = MediaGallery(thread: thread, options: [ .sliderEnabled, .showAllMediaButton ])
                         gallery.presentDetailView(fromViewController: self, mediaAttachment: stream)
                     }
                 case .genericAttachment:
