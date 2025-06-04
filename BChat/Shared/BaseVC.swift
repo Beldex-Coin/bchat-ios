@@ -222,8 +222,8 @@ extension BaseVC {
                 Logger.debug("On Confirmed")
             } onAfterClosed: {
                 Logger.debug("On After Closed")
-            } onCompletion: {
-                Logger.debug("On Completion")
+            } onModalPresented: {
+                Logger.debug("On Modal Presented")
             }
         }
     }
@@ -231,14 +231,14 @@ extension BaseVC {
     func showCallPermissionModal(
         onConfirmed: (() -> Void)? = nil,
         onAfterClosed: (() -> Void)? = nil,
-        onCompletion: (() -> Void)? = nil) {
+        onModalPresented: (() -> Void)? = nil) {
         
         let title = NSLocalizedString("modal_call_permission_request_title", comment: "")
         let description = callPermisionDescription()
         // show confirmation modal
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
-                modalImageType: .callPermission,
+                modalType: .callPermission,
                 title: title,
                 body: .attributedText(description),
                 showCondition: .disabled,
@@ -251,9 +251,8 @@ extension BaseVC {
             )
         )
         present(confirmationModal, animated: true, completion:  {
-            onCompletion?()
+            onModalPresented?()
         })
-        return
     }
     
     func hideInputAccessoryView(_ view: UIView?) {
@@ -272,6 +271,5 @@ extension BaseVC {
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Privacy Settings"))
         // The attributed string
         return attributedString
-        
     }
 }

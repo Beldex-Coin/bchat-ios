@@ -1,10 +1,15 @@
 // Copyright © 2025 Beldex International Limited OU. All rights reserved.
 
 import Foundation
+import UIKit
 
 // Top level confirmation modal image type for popup
-public enum ConfirmationModalImageType: Int {
-
+public enum ConfirmationModalType: Int {
+    
+    case gifEnable
+    case payAsYouChat
+    case leaveGroup
+    
     case cameraPermission
     case callPermission
     case setPwdSuccess
@@ -21,24 +26,65 @@ public enum ConfirmationModalImageType: Int {
         let name: String
         
         switch self {
-        case .cameraPermission:
-            name = ""
-        case .callPermission:
-            name = "ic_settings_call_permission"
-        case .setPwdSuccess, .changePwdSuccess:
+            case .cameraPermission:
                 name = ""
-        case .linkBnsSuccess:
-            name = ""
-        case .walletSync:
-            name = ""
-        case .transactionIntiate:
-            name = ""
-        case .transactionSuccess:
-            name = ""
-        case .none:
-            name = ""
+            case .callPermission:
+                name = "ic_settings_call_permission"
+            case .setPwdSuccess, .changePwdSuccess:
+                    name = ""
+            case .linkBnsSuccess:
+                name = ""
+            case .walletSync:
+                name = ""
+            case .transactionIntiate:
+                name = ""
+            case .transactionSuccess:
+                name = ""
+            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+                name = ""
         }
         
         return name
+    }
+    
+    var isShowImage: Bool {
+        let isShow: Bool
+        
+        switch self {
+            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+                isShow = false
+            case .cameraPermission,
+                .callPermission,
+                .setPwdSuccess,
+                .changePwdSuccess,
+                .linkBnsSuccess,
+                .walletSync,
+                .transactionIntiate,
+                .transactionSuccess:
+                    isShow = true
+        }
+        
+        return isShow
+    }
+    
+    var confirmationButtonBgColor: UIColor {
+        
+        var color: UIColor
+        
+        switch self {
+            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+                color = .systemBlue
+            case .cameraPermission,
+                    .callPermission,
+                    .setPwdSuccess,
+                    .changePwdSuccess,
+                    .linkBnsSuccess,
+                    .walletSync,
+                    .transactionIntiate,
+                    .transactionSuccess:
+                color = .red
+        }
+        
+        return color
     }
 }
