@@ -334,7 +334,6 @@
 		81423AA82A29E2BB001BBBFA /* BChatSnodeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A59F255385C100C340D1 /* BChatSnodeKit.framework */; };
 		81423AB02A29E2C4001BBBFA /* BChatUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3C2A679255388CC00C340D1 /* BChatUtilitiesKit.framework */; };
 		81423AB42A29E2C8001BBBFA /* SignalUtilitiesKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33FD9AB255A548A00E217F9 /* SignalUtilitiesKit.framework */; };
-		814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */; };
 		814712142B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */; };
 		815427BA2B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */; };
 		815427BC2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */; };
@@ -1527,7 +1526,6 @@
 		813609CB2B3AFDDC004D3FAC /* DisplayNameNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayNameNewVC.swift; sourceTree = "<group>"; };
 		813B392C2BF896EC0037FD0F /* ChatSettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsVC.swift; sourceTree = "<group>"; };
 		81423A972A29DEC5001BBBFA /* BChatNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BChatNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayAsYouChatPopUpVC.swift; sourceTree = "<group>"; };
 		814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionSuccessPopUpVC.swift; sourceTree = "<group>"; };
 		815427B92B4BE78200A4A244 /* CreateSecretGroupScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupScreenVC.swift; sourceTree = "<group>"; };
 		815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSecretGroupTableViewCell.swift; sourceTree = "<group>"; };
@@ -2927,7 +2925,6 @@
 				817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */,
 				817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */,
 				817314772B4FEB410020E333 /* NewClearDataVC.swift */,
-				814712112B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift */,
 				814712132B5135DE00FB71FF /* TransactionSuccessPopUpVC.swift */,
 				8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */,
 				8129ABEC2B57CF0800417EE2 /* EnableWalletVC.swift */,
@@ -5954,7 +5951,6 @@
 				C328254925CA60E60062D0A7 /* ContextMenuVC+Action.swift in Sources */,
 				8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */,
 				84B9C0822DA51F8E007CEFCE /* ReactionListCell.swift in Sources */,
-				814712122B512D7D00FB71FF /* PayAsYouChatPopUpVC.swift in Sources */,
 				8A4B95DE2C2E76A40061C7D4 /* DocumentCollectionViewCell.swift in Sources */,
 				4542DF54208D40AC007B4E76 /* LoadingViewController.swift in Sources */,
 				84B7A4A02D646D28001CCBE6 /* NewChatTableViewCellForTitle.swift in Sources */,

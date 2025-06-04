@@ -81,28 +81,30 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 //CallVC
                 //NewIncomingCallVC
             } else {
-                showCallPermissionModel()
+                showCallPermissionModal()
             }
         }
     }
     
-    func showCallPermissionModel() {
+    func showCallPermissionModal() {
         snInputView.isHidden = true
         showCallPermissionModal {
             self.isInputViewShow = true
-            if let navController = UIWindow.key?.rootViewController as? UINavigationController {
-                let bChatSettingsNewVC = BChatSettingsNewVC()
-                navController.pushViewController(bChatSettingsNewVC, animated: true)
-            }
+            self.gotoSettingsScreen()
         } onAfterClosed: {
             self.isInputViewShow = true
             self.showInputAccessoryView()
-        } onCompletion: {
+        } onModalPresented: {
             self.isInputViewShow = false
         }
     }
     
-    
+    func gotoSettingsScreen() {
+        if let navController = UIWindow.key?.rootViewController as? UINavigationController {
+            let bChatSettingsNewVC = BChatSettingsNewVC()
+            navController.pushViewController(bChatSettingsNewVC, animated: true)
+        }
+    }
 
     // MARK: Blocking
     @objc func unblock() {
@@ -228,6 +230,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             // show confirmation modal
             let confirmationModal: ConfirmationModal = ConfirmationModal(
                 info: ConfirmationModal.Info(
+                    modalType: .gifEnable,
                     title: "Search GIF's",
                     body: .text("You will not have full metadata protection when sending GIF's"),
                     showCondition: .disabled,
@@ -719,7 +722,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             present(callVC, animated: true, completion: nil)
             
         } else {
-            showCallPermissionModel()
+            showCallPermissionModal()
         }
     }
     
@@ -1237,10 +1240,29 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func payAsYouChatLongPress() {
         if !SSKPreferences.arePayAsYouChatEnabled {
             snInputView.isHidden = true
-            let vc = PayAsYouChatPopUpVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            let title = "Pay as you chat"
+            let description = payAsYouChatDescription()
+            
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .payAsYouChat,
+                    title: title,
+                    body: .attributedText(description),
+                    showCondition: .disabled,
+                    confirmTitle: "OK",
+                    onConfirm: { _ in
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                        self.gotoSettingsScreen()
+                    }, afterClosed: {
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion:  {
+                self.isInputViewShow = false
+            })
         }
     }
 
@@ -1795,10 +1817,19 @@ extension ConversationVC {
             self.inputAccessoryView?.alpha = 0
         })
     }
+    
+    func payAsYouChatDescription() -> NSAttributedString {
+        let string = NSLocalizedString("PAY_AS_YOU_CHAT_DISCRIPTION_LABEL", comment: "")
+        let attributedString = NSMutableAttributedString(string: string)
+        // Apply bold font to "My Account -> Chat Settings -> Pay as you Chat"
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "My Account -> Chat Settings -> Pay as you Chat"))
+        // The attributed string
+        return attributedString
+    }
 }
 
 struct CustomSlideView {
     static var isFromExpandAttachment = false
     static var isFromNormalAttachment = false
 }
-
