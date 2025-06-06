@@ -176,7 +176,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendAttachments(attachments, with: messageText ?? "") { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
+        
         scrollToBottom(isAnimated: false)
         resetMentions()
         self.snInputView.text = ""
@@ -1488,6 +1488,9 @@ extension ConversationVC {
         
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in
+                if !contact.isApproved {
+                    return Promise.value(())
+                }
                 guard !isNewThread else { return Promise.value(()) }
                 guard let strongSelf = self else {
                     return Promise(error: MessageSender.Error.noThread)
