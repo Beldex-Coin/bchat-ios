@@ -95,7 +95,8 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         placeholderLabel.isHidden = !(text ?? "").isEmpty
         
         let height = frame.height
-        let size = CGSize(width: contentSize.width, height: contentSize.height)
+        let size = sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
+        // CGSize(width: contentSize.width, height: contentSize.height)
         
         // `textView.contentSize` isn't accurate when restoring a multiline draft, so we set it here manually
         self.contentSize = size
