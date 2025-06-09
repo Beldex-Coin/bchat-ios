@@ -91,14 +91,18 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private func handleTextChanged() {
         defer { snDelegate?.inputTextViewDidChangeContent(self) }
+        
         placeholderLabel.isHidden = !(text ?? "").isEmpty
+        
         let height = frame.height
-        let contentSize = self.contentSize
         let size = CGSize(width: contentSize.width, height: contentSize.height)
+        
         // `textView.contentSize` isn't accurate when restoring a multiline draft, so we set it here manually
         self.contentSize = size
         let newHeight = size.height.clamp(minHeight, maxHeight)
+        
         guard newHeight != height else { return }
+        
         heightConstraint.constant = newHeight
         snDelegate?.inputTextViewDidChangeSize(self)
     }
