@@ -160,7 +160,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendAttachments(attachments, with: messageText ?? "") { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        
+        self.dismiss(animated: true, completion: nil)
         scrollToBottom(isAnimated: false)
         resetMentions()
         self.snInputView.text = ""
