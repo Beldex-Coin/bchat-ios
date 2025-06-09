@@ -1443,8 +1443,10 @@ extension ConversationVC {
                         return promise
                     }
                     .map { _ in
-                        if self?.presentedViewController is ModalActivityIndicatorViewController {
-                            self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                        DispatchQueue.main.async {
+                            if self?.presentedViewController is ModalActivityIndicatorViewController {
+                                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                            }
                         }
                     }
             }

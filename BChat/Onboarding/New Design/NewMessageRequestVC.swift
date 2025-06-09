@@ -506,10 +506,16 @@ extension NewMessageRequestVC {
                         return promise
                     }
                     .map { _ in
-                        if self?.presentedViewController is ModalActivityIndicatorViewController {
-                            self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                            let conversationVC = ConversationVC(thread: thread!)
-                            self?.navigationController?.pushViewController(conversationVC, animated: true)
+                        DispatchQueue.main.async {
+                            if self?.presentedViewController is ModalActivityIndicatorViewController {
+                                self?.dismiss(animated: true) {
+                                    let conversationVC = ConversationVC(thread: thread!)
+                                    self?.navigationController?.pushViewController(conversationVC, animated: true)
+                                }
+                            } else {
+                                let conversationVC = ConversationVC(thread: thread!)
+                                self?.navigationController?.pushViewController(conversationVC, animated: true)
+                            }
                         }
                     }
             }
