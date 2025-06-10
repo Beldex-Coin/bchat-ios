@@ -69,8 +69,6 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         font = InputTextView.defaultFont
         tintColor = Colors.bothGreenColor
         
-        backgroundColor = .red
-        
         keyboardAppearance = isLightMode ? .light : .dark
         heightConstraint.isActive = true
         let horizontalInset: CGFloat = 2

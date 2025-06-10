@@ -177,6 +177,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         bottomStackView2.axis = .horizontal
         bottomStackView2.backgroundColor = .clear
         bottomStackView2.layer.cornerRadius = 24
+        bottomStackView2.spacing = 4
         bottomStackView2.alignment = .center
         self.finalBottomStack = bottomStackView2
         
