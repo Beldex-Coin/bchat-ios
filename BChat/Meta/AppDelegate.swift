@@ -218,7 +218,7 @@ extension AppDelegate {
 }
 
 extension UIWindow {
-    static var key: UIWindow? {
+    static var keyWindow: UIWindow? {
         if #available(iOS 13, *) {
             return UIApplication.shared.connectedScenes
                 .filter({$0.activationState == .foregroundActive})

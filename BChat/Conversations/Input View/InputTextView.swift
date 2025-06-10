@@ -1,5 +1,10 @@
 
 public final class InputTextView : UITextView, UITextViewDelegate {
+    
+    private static let defaultFont = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+    private static let defaultTextColor = Colors.text
+    private static let maxMessageCharacterCount: Int = 2000
+    
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
     private lazy var heightConstraint = self.set(.height, to: minHeight)
@@ -23,6 +28,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     init(delegate: InputTextViewDelegate, maxWidth: CGFloat) {
         snDelegate = delegate
         self.maxWidth = maxWidth
+        
         super.init(frame: CGRect.zero, textContainer: nil)
         setUpViewHierarchy()
         self.delegate = self
@@ -57,10 +63,14 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private func setUpViewHierarchy() {
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        
         backgroundColor = .clear
-        textColor = Colors.text
-        font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        textColor = InputTextView.defaultTextColor
+        font = InputTextView.defaultFont
         tintColor = Colors.bothGreenColor
+        
+        backgroundColor = .red
+        
         keyboardAppearance = isLightMode ? .light : .dark
         heightConstraint.isActive = true
         let horizontalInset: CGFloat = 2
@@ -71,8 +81,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         pin(.trailing, to: .trailing, of: placeholderLabel, withInset: horizontalInset)
         pin(.bottom, to: .bottom, of: placeholderLabel)
     }
-
-    // MARK: Updating
+    
+    // MARK: - Updating
+    
     public func textViewDidChange(_ textView: UITextView) {
         let cursorPosition = textView.selectedRange
         handleTextChanged()
@@ -96,7 +107,6 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         let height = frame.height
         let size = sizeThatFits(CGSize(width: maxWidth, height: .greatestFiniteMagnitude))
-        // CGSize(width: contentSize.width, height: contentSize.height)
         
         // `textView.contentSize` isn't accurate when restoring a multiline draft, so we set it here manually
         self.contentSize = size
@@ -109,9 +119,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     }
 }
 
-// MARK: Delegate
+// MARK: - InputTextViewDelegate
+
 protocol InputTextViewDelegate : AnyObject {
-    
     func inputTextViewDidChangeSize(_ inputTextView: InputTextView)
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
     func didPasteImageFromPasteboard(_ inputTextView: InputTextView, image: UIImage)

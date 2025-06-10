@@ -33,7 +33,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
 
     private lazy var tableView: UITableView = {
         let tableView: UITableView = UITableView()
-        tableView.backgroundColor = Colors.viewBackgroundColorNew
+        tableView.backgroundColor = Colors.mainBackGroundColor2
         tableView.separatorStyle = .none
         tableView.register(view: SimplifiedConversationCell.self)
         tableView.showsVerticalScrollIndicator = false
@@ -57,11 +57,9 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupNavBar()
-        
-        // Gradient
         view.backgroundColor = Colors.viewBackgroundColorNew
-//        view.setGradient(Gradients.defaultBackground)
+        
+        setupNavBar()
         
         // Threads
         dbConnection.beginLongLivedReadTransaction() // Freeze the connection for use on the main thread (this gives us a stable data source that doesn't change until we tell it to)
@@ -75,11 +73,10 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         navigationItem.titleView = titleLabel
         
         // Table view
-        
         view.addSubview(tableView)
-//        view.addSubview(fadeView)
         
         setupLayout()
+        
         // Reload
         reload()
     }
@@ -102,14 +99,8 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     // MARK: Layout
     
-    private func setupLayout() {
-        let topInset = 0.15 * view.height()
-        
+    private func setupLayout() {        
         tableView.pin(to: view)
-//        fadeView.pin(.leading, to: .leading, of: view)
-//        fadeView.pin(.top, to: .top, of: view, withInset: topInset)
-//        fadeView.pin(.trailing, to: .trailing, of: view)
-//        fadeView.pin(.bottom, to: .bottom, of: view)
     }
     
     // MARK: Table View Data Source
