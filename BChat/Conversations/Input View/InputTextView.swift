@@ -22,7 +22,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     // MARK: Settings
     private let minHeight: CGFloat = 22
-    private let maxHeight: CGFloat = 80
+    private let maxHeight: CGFloat = 100
 
     // MARK: Lifecycle
     init(delegate: InputTextViewDelegate, maxWidth: CGFloat) {
@@ -72,7 +72,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         keyboardAppearance = isLightMode ? .light : .dark
         heightConstraint.isActive = true
         let inset: CGFloat = 2
-        textContainerInset = UIEdgeInsets(top: inset, left: 0, bottom: inset, right: 0)
+        textContainerInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         addSubview(placeholderLabel)
         placeholderLabel.pin(.leading, to: .leading, of: self, withInset: inset + 5) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)

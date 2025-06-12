@@ -192,9 +192,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mainStackView.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: self)
         mainStackView.pin(.bottom, to: .bottom, of: self)
         
-        mainStackView.translatesAutoresizingMaskIntoConstraints = false
-        inputTextView.translatesAutoresizingMaskIntoConstraints = false
-        
         addSubview(disabledInputLabel)
         
         disabledInputLabel.pin(.top, to: .top, of: mainStackView)
@@ -523,8 +520,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     func showMentionsUI(for candidates: [Mention], in thread: TSThread) {
         if let openGroupV2 = Storage.shared.getV2OpenGroup(for: thread.uniqueId!) {
-            
-            
+            mentionsView.openGroupServer = openGroupV2.server
+            mentionsView.openGroupRoom = openGroupV2.room
         }
         mentionsView.candidates = candidates
         let mentionCellHeight = Values.smallProfilePictureSize + 2 * Values.smallSpacing
