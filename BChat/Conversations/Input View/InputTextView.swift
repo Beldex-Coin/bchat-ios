@@ -7,7 +7,6 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
-    private lazy var heightConstraint = self.set(.height, to: minHeight)
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -59,6 +58,27 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         }
         super.paste(sender)
     }
+    
+    public override var intrinsicContentSize: CGSize {
+        let fittingSize = CGSize(width: bounds.width, height: .greatestFiniteMagnitude)
+        let size = sizeThatFits(fittingSize)
+        let clampedHeight = min(max(size.height, minHeight), maxHeight)
+        return CGSize(width: bounds.width, height: clampedHeight)
+    }
+    
+    public override var contentSize: CGSize {
+        didSet {
+            // Notify layout system only when size changes
+            if oldValue != contentSize {
+                invalidateIntrinsicContentSize()
+            }
+        }
+    }
+    
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        isScrollEnabled = (intrinsicContentSize.height >= maxHeight)
+    }
 
     private func setUpViewHierarchy() {
         showsHorizontalScrollIndicator = false
@@ -68,9 +88,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         textColor = InputTextView.defaultTextColor
         font = InputTextView.defaultFont
         tintColor = Colors.bothGreenColor
+        isScrollEnabled = false
         
         keyboardAppearance = isLightMode ? .light : .dark
-        heightConstraint.isActive = true
         let inset: CGFloat = 2
         textContainerInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         addSubview(placeholderLabel)
@@ -83,100 +103,20 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     // MARK: - Updating
     
     public func textViewDidChange(_ textView: UITextView) {
+        placeholderLabel.isHidden = !textView.text.isEmpty
         
-        let cursorPosition = textView.selectedRange
-        
-        handleTextChanged()
-        
+        // Restore caret and scroll range to visible (no flicker)
         let selectedRange = textView.selectedRange
-        if let startPosition = textView.position(from: textView.beginningOfDocument, offset: selectedRange.location),
-           let endPosition = textView.position(from: startPosition, offset: selectedRange.length) {
-            let textRange = textView.textRange(from: startPosition, to: endPosition)
-            let caretRect = textView.firstRect(for: textRange!)
-            
-            UIView.performWithoutAnimation {
-                textView.setContentOffset(CGPoint(x: 0, y: caretRect.origin.y), animated: false)
-                textView.selectedRange = cursorPosition
-            }
+        UIView.performWithoutAnimation {
+            textView.scrollRangeToVisible(selectedRange)
+            textView.selectedRange = selectedRange
         }
-    }
-    
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        let currentText: String = (textView.text ?? "")
-        guard let textRange: Range<String.Index> = Range(range, in: currentText) else { return true }
-        
-        /// Use utf16 view for proper length calculation
-        let currentLength: Int = currentText.count
-        let rangeLength: Int = currentText[textRange].count
-        let newLength: Int = ((currentLength - rangeLength) + text.count)
-        
-        /// If the updated length is within the limit then just let the OS handle it (no need to do anything custom
-        guard newLength > InputTextView.maxMessageCharacterCount else { return true }
-        
-        /// Ensure there is actually space remaining (if not then just don't allow editing)
-        let remainingSpace: Int = InputTextView.maxMessageCharacterCount - (currentLength - rangeLength)
-        guard remainingSpace > 0 else { return false }
-        
-        /// Truncate text based on character count (use `textStorage.replaceCharacters` for built in `undo` support)
-        let truncatedText: String = String(text.prefix(remainingSpace))
-        let offset: Int = range.location + truncatedText.count
-        
-        /// Pasting a value that is too large into the input will result in some odd default OS styling being applied to the text which is very
-        /// different from our desired text style, in order to avoid this we need to detect this case and explicitly set the value as an attributed
-        /// string with our explicit styling
-        ///
-        /// **Note:** If we add any additional attributes these will need to be updated to match
-        if currentText.isEmpty {
-            textView.textStorage.setAttributedString(
-                NSAttributedString(
-                    string: truncatedText,
-                    attributes: [
-                        .font: textView.font ?? InputTextView.defaultFont,
-                        .foregroundColor: textView.textColor ?? InputTextView.defaultTextColor
-                    ]
-                )
-            )
-        }
-        else {
-            textView.textStorage.replaceCharacters(in: range, with: truncatedText)
-        }
-        
-        /// Position cursor after inserted text
-        ///
-        /// **Note:** We need to dispatch to the next run loop because it seems that iOS might revert the `selectedTextRange`
-        /// after returning `false` from this function, by dispatching we then override this reverted position with a desired final position
-        if let newPosition: UITextPosition = textView.position(from: textView.beginningOfDocument, offset: offset) {
-            DispatchQueue.main.async {
-                textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
-            }
-        }
-        
-        /// We need to manually trigger the `handleTextChanged` call because returning `false` here means the
-        /// `textViewDidChange(_:)`delegate won't be called
-        handleTextChanged()
-        
-        return false
     }
     
     private func handleTextChanged() {
-        defer { snDelegate?.inputTextViewDidChangeContent(self) }
+        do { snDelegate?.inputTextViewDidChangeContent(self) }
         
-        placeholderLabel.isHidden = !(text ?? "").isEmpty
-        
-        let height = frame.height
-        let size = sizeThatFits(CGSize(width: frame.width, height: .greatestFiniteMagnitude))
-        
-        let newHeight = size.height.clamp(minHeight, maxHeight)
-        
-        guard newHeight != height else { return }
-        
-        // `textView.contentSize` isn't accurate when restoring a multiline draft, so we set it here manually
-        UIView.performWithoutAnimation {
-            self.contentSize = size
-        }
-        
-        heightConstraint.constant = newHeight
-        snDelegate?.inputTextViewDidChangeSize(self)
+        placeholderLabel.isHidden = !text.isEmpty
     }
 }
 
