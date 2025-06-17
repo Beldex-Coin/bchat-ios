@@ -1445,6 +1445,10 @@ extension ConversationVC {
                     .map { _ in
                         DispatchQueue.main.async {
                             if self?.presentedViewController is ModalActivityIndicatorViewController {
+                                Storage.writeSync { transaction in
+                                    let infoMessage = TSInfoMessage(timestamp: NSDate.millisecondTimestamp(), in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
+                                    infoMessage.save(with: transaction)
+                                }
                                 self?.dismiss(animated: true, completion: nil) // Dismiss the loader
                             }
                         }
