@@ -77,7 +77,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        isScrollEnabled = (intrinsicContentSize.height >= maxHeight)
+        isScrollEnabled = intrinsicContentSize.height >= maxHeight
     }
 
     private func setUpViewHierarchy() {
@@ -107,15 +107,17 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // Restore caret and scroll range to visible (no flicker)
         let selectedRange = textView.selectedRange
+        
         UIView.performWithoutAnimation {
             textView.scrollRangeToVisible(selectedRange)
             textView.selectedRange = selectedRange
         }
+        
+        handleTextChanged()
     }
     
     private func handleTextChanged() {
-        do { snDelegate?.inputTextViewDidChangeContent(self) }
-        
+        defer { snDelegate?.inputTextViewDidChangeContent(self) }
         placeholderLabel.isHidden = !text.isEmpty
     }
 }

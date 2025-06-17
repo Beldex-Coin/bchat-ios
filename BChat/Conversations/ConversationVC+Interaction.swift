@@ -626,9 +626,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func applyColorToMentionedUsers(text : String) {
-        let text = text
-        let Attribute = [ NSAttributedString.Key.foregroundColor: Colors.text]
-        let attributedString = NSMutableAttributedString(string: text, attributes: Attribute)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: Fonts.OpenSans(ofSize: Values.mediumFontSize),
+            .foregroundColor: Colors.text
+        ]
+        let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
         let words = text.split(separator: " ")
         let mentionColor = Colors.bothGreenColor
         for word in words {
@@ -637,10 +639,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let nsRange = NSRange(range, in: text)
                     attributedString.addAttribute(.foregroundColor, value: mentionColor, range: nsRange)
                 }
+                
+                UIView.performWithoutAnimation {
+                    let selectedRange = snInputView.inputTextView.selectedRange
+                    snInputView.inputTextView.attributedText = attributedString
+                    snInputView.inputTextView.selectedRange = selectedRange
+                }
             }
         }
-        snInputView.inputTextView.attributedText = attributedString
-        snInputView.inputTextView.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
     }
     
 
