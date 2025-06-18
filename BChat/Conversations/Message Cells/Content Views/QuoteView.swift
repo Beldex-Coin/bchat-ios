@@ -205,7 +205,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = groupThread.isOpenGroup ? .openGroup : .regular
-            authorLabel.text = Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
@@ -223,7 +223,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = .regular
-            authorLabel.text = Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
