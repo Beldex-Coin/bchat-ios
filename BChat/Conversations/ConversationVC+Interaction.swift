@@ -1278,6 +1278,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if AppEnvironment.shared.callManager.currentCall != nil {
             return
         }
+        
+        if snInputView.inputTextView.isFirstResponder {
+            snInputView.inputTextView.resignFirstResponder()
+        }
+        
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
