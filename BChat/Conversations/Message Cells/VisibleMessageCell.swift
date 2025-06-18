@@ -1104,7 +1104,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 result.set(.width, to: width > maxWidth ? maxWidth : width)
             } else {
                 if width > size.width {
-                    result.set(.width, to: width + 20)
+                    result.set(.width, to: width + 50)
                 } else {
                     result.set(.width, to: size.width > 85 ? size.width : 85)
                 }
