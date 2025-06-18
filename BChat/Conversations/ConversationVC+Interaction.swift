@@ -1218,7 +1218,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func playOrPauseAudio(for viewItem: ConversationViewItem) {
         
         if isAudioRecording {
-            audioRecorder?.stop()
+            return
         }
         
         guard let attachment = viewItem.attachmentStream else { return }
