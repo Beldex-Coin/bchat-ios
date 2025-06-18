@@ -321,11 +321,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {
-        let slide = MTSlideToOpenView(frame: CGRect(x: 40, y: UIScreen.main.bounds.height/1.4, width: 300, height: 50))
+        let slide = MTSlideToOpenView()
+        slide.translatesAutoresizingMaskIntoConstraints = false
         slide.sliderViewTopDistance = 0
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
-        slide.sliderCornerRadius = 28
+        slide.sliderCornerRadius = 25
         slide.draggedView.backgroundColor = .clear
         slide.delegate = self
         slide.thumnailImageView.image = #imageLiteral(resourceName: "ic_sliderImage").imageFlippedForRightToLeftLayoutDirection()
@@ -334,7 +335,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return slide
     }()
     private var SelectedDecimal = ""
-    var newSlidePositionY = 0.0
     var finalWalletAddress = ""
     var finalWalletAmount = ""
     var wallet: BDXWallet?
@@ -990,11 +990,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             isSuccessPopView.heightAnchor.constraint(equalToConstant: 165)
         ])
         
-        customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
-        view.addSubview(customizeSlideToOpen)
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         isSyncingUI = true
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
@@ -1056,6 +1052,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         deleteAudioButton.pin(to: deleteAudioView)
         deleteAudioView.isHidden = true
+        
+        view.addSubview(customizeSlideToOpen)
+        customizeSlideToOpen.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        customizeSlideToOpen.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        customizeSlideToOpen.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: 40).isActive = true
+        customizeSlideToOpen.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+        customizeSlideToOpen.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        customizeSlideToOpen.isHidden = true
                 
         // Notifications
         let notificationCenter = NotificationCenter.default
@@ -1170,8 +1174,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 snInputView.isUserInteractionEnabled = true
             }
         }
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -2038,9 +2040,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        newSlidePositionY = UIScreen.main.bounds.height / 2.9
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
-        
         // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
         // needed for proper calculations, so force an initial layout if it doesn't have a size)
         var hasDoneLayout: Bool = true
@@ -2056,12 +2055,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
         if keyboardTop <= 100 {
             messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
-            newSlidePositionY = UIScreen.main.bounds.height / 1.4
-            customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = false
         } else {
-            newSlidePositionY = UIScreen.main.bounds.height / 2.9
-            customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = true
         }
         let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
@@ -2114,9 +2109,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
-        
-        newSlidePositionY = UIScreen.main.bounds.height / 1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         self.isKeyboardPresented = false
         
         UIView.animate(
