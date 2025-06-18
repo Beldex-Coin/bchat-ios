@@ -1216,6 +1216,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func playOrPauseAudio(for viewItem: ConversationViewItem) {
+        
+        if isAudioRecording {
+            audioRecorder?.stop()
+        }
+        
         guard let attachment = viewItem.attachmentStream else { return }
         let fileManager = FileManager.default
         guard let path = attachment.originalFilePath, fileManager.fileExists(atPath: path),
@@ -1394,7 +1399,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         isAudioRecording = false
     }
     
-    func pauseRecording() {
+    func pauseRecording() { // ?????
         deleteAudioView.isHidden = false
         audioRecorder?.stop()
     }
