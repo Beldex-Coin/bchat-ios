@@ -516,6 +516,10 @@ extension NewMessageRequestVC {
                                 let conversationVC = ConversationVC(thread: thread!)
                                 self?.navigationController?.pushViewController(conversationVC, animated: true)
                             }
+                            Storage.writeSync { transaction in
+                                let infoMessage = TSInfoMessage(timestamp: timestamp - 1, in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
+                                infoMessage.save(with: transaction)
+                            }
                         }
                     }
             }
