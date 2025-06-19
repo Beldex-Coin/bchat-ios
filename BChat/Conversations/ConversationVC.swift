@@ -1225,6 +1225,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.scrollButton.alpha = self.getScrollButtonOpacity()
             }
         }
+        
+        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
+        if inputTextViewLines >= 2 {
+            bottomConstraintOfAttachmentButton = inputTextViewLines == 3 ? 16 :
+                                                    inputTextViewLines >= 4 ? 28 : 4
+        }
     }
     
     override func appDidBecomeActive(_ notification: Notification) {

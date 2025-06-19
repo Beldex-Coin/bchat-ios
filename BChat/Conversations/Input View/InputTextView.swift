@@ -60,9 +60,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     }
     
     public override var intrinsicContentSize: CGSize {
-        let fittingSize = CGSize(width: bounds.width, height: .greatestFiniteMagnitude)
-        let size = sizeThatFits(fittingSize)
-        let clampedHeight = min(max(size.height, minHeight), maxHeight)
+        let clampedHeight = min(max(textSize.height, minHeight), maxHeight)
         return CGSize(width: bounds.width, height: clampedHeight)
     }
     
@@ -78,6 +76,15 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     public override func layoutSubviews() {
         super.layoutSubviews()
         isScrollEnabled = intrinsicContentSize.height >= maxHeight
+    }
+    
+    var numberOfVisibleLines: Int {
+        let lineHeight = InputTextView.defaultFont.lineHeight
+        return Int(textSize.height / lineHeight)
+    }
+    
+    var textSize: CGSize {
+        return sizeThatFits(CGSize(width: frame.width, height: CGFloat.greatestFiniteMagnitude))
     }
 
     private func setUpViewHierarchy() {

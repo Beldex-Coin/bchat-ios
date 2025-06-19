@@ -523,6 +523,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: Input View
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
+        hideAttachmentExpandedButtons()
         let newText = inputTextView.text ?? ""
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
@@ -648,7 +649,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
         }
     }
-    
 
     func resetMentions() {
         oldText = ""
@@ -1276,6 +1276,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             })
         }
     }
+    
+    func updateInputView() {
+        if snInputView.inputTextView.isFirstResponder {
+            snInputView.inputTextView.resignFirstResponder()
+        }
+        
+        hideAttachmentExpandedButtons()
+    }
 
     // MARK: Voice Message Recording
     func startVoiceMessageRecording() {
@@ -1284,9 +1292,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             return
         }
         
-        if snInputView.inputTextView.isFirstResponder {
-            snInputView.inputTextView.resignFirstResponder()
-        }
+        // update input view
+        updateInputView()
         
         // Request permission if needed
         self.customizeSlideToOpen.isHidden = true
