@@ -169,8 +169,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
                         attachments[0].linkPreviewDraft,
                         using: transaction
                     )
-                }
-                else {
+                } else {
                     tsMessage.save(with: transaction)
                 }
             },
@@ -185,7 +184,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
             }
         )
         
-        shareVC!.dismiss(animated: true, completion: nil)
+        shareVC?.dismiss(animated: true, completion: nil)
         
         ModalActivityIndicatorViewController.present(fromViewController: shareVC!, canCancel: false, message: "vc_share_sending_message".localized()) { activityIndicator in
             MessageSender.sendNonDurably(message, with: finalAttachments, in: self.selectedThread!)

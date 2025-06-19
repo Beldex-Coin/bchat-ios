@@ -3505,6 +3505,7 @@
 		B8FF8E6025C10D8B004D1F22 /* Countries */ = {
 			isa = PBXGroup;
 			children = (
+				34D99CE3217509C1000AFB39 /* AppEnvironment.swift */,
 				B8FF8E6125C10DA5004D1F22 /* GeoLite2-Country-Blocks-IPv4 */,
 				B8FF8E7325C10FC3004D1F22 /* GeoLite2-Country-Locations-English */,
 			);
@@ -4457,7 +4458,6 @@
 				76EB03C218170B33006006FC /* AppDelegate.h */,
 				76EB03C318170B33006006FC /* AppDelegate.m */,
 				C3AAFFF125AE99710089E6DD /* AppDelegate.swift */,
-				34D99CE3217509C1000AFB39 /* AppEnvironment.swift */,
 				8A4767582D56329C00BF491F /* Emoji */,
 				8A5A0B462C04A6AE00288474 /* Host Helper */,
 				6007B5E028ABC76B0004BD61 /* BChat Utilities */,
