@@ -422,6 +422,11 @@
 		8A72CC302D635B48004D2018 /* EmojiPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC2F2D635B48004D2018 /* EmojiPickerSheet.swift */; };
 		8A72CC322D6E1105004D2018 /* VisibleMessage+Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC312D6E1105004D2018 /* VisibleMessage+Reaction.swift */; };
 		8A72CC362D6E18F5004D2018 /* Optional+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A72CC352D6E18F5004D2018 /* Optional+Utilities.swift */; };
+		8A7E89CF2E05332C00E3B914 /* publicnode1.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA21F2CB7B407001D388B /* publicnode1.der */; };
+		8A7E89D02E05333C00E3B914 /* publicnode5.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA2202CB7B407001D388B /* publicnode5.der */; };
+		8A7E89D12E05333C00E3B914 /* publicnode4.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA21E2CB7B407001D388B /* publicnode4.der */; };
+		8A7E89D22E05333C00E3B914 /* publicnode3.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA21D2CB7B406001D388B /* publicnode3.der */; };
+		8A7E89D32E05333C00E3B914 /* publicnode2.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA2212CB7B407001D388B /* publicnode2.der */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */; };
 		8AD510B72D805F7D00D02C83 /* ReactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B62D805F7D00D02C83 /* ReactMessage.swift */; };
@@ -5019,11 +5024,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A7E89CF2E05332C00E3B914 /* publicnode1.der in Resources */,
 				60BE18AF29FA782700048350 /* Colors.xcassets in Resources */,
 				4535186E1FC635DD00210559 /* MainInterface.storyboard in Resources */,
 				347850551FD749C0007B8332 /* Localizable.strings in Resources */,
 				B8D07406265C683A00F77E07 /* ElegantIcons.ttf in Resources */,
 				3478504C1FD7496D007B8332 /* Images.xcassets in Resources */,
+				8A7E89D02E05333C00E3B914 /* publicnode5.der in Resources */,
+				8A7E89D12E05333C00E3B914 /* publicnode4.der in Resources */,
+				8A7E89D22E05333C00E3B914 /* publicnode3.der in Resources */,
+				8A7E89D32E05333C00E3B914 /* publicnode2.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

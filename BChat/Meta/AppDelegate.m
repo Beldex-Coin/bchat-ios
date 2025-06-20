@@ -124,6 +124,11 @@ static NSTimeInterval launchStartedAt;
     [self stopOpenGroupPollers];
 }
 
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    [self verifyBnsName];
+}
+
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     OWSLogInfo(@"applicationDidReceiveMemoryWarning");

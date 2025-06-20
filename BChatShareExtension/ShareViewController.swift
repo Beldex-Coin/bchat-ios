@@ -177,8 +177,7 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
     private func showLockScreenOrMainContent() {
         if OWSScreenLock.shared.isScreenLockEnabled() {
             showLockScreen()
-        }
-        else {
+        } else {
             showMainContent()
         }
     }

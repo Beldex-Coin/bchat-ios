@@ -6,7 +6,59 @@ public enum HTTP {
     private static let seedNodeURLSessionDelegate = SeedNodeURLSessionDelegateImplementation()
     private static let snodeURLSession = URLSession(configuration: .ephemeral, delegate: snodeURLSessionDelegate, delegateQueue: nil)
     private static let snodeURLSessionDelegate = SnodeURLSessionDelegateImplementation()
+    
+    private static let storageSeed1Cert: SecCertificate? = {
+        guard let path = Bundle.main.path(forResource: "publicnode1", ofType: "der"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let cert = SecCertificateCreateWithData(nil, data as CFData) else {
+            print("⚠️ Failed to load certificate from publicnode2.der")
+            return nil
+        }
+        return cert
+    }()
+    
+    private static let storageSeed3Cert: SecCertificate? = {
+        guard let path = Bundle.main.path(forResource: "publicnode2", ofType: "der"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let cert = SecCertificateCreateWithData(nil, data as CFData) else {
+            print("⚠️ Failed to load certificate from publicnode2.der")
+            return nil
+        }
+        return cert
+    }()
+    
+    
+    private static let publicBeldexFoundationCert: SecCertificate? = {
+        guard let path = Bundle.main.path(forResource: "publicnode3", ofType: "der"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let cert = SecCertificateCreateWithData(nil, data as CFData) else {
+            print("⚠️ Failed to load certificate from publicnode2.der")
+            return nil
+        }
+        return cert
+    }()
+    
+    private static let publicBeldexFoundationCert4: SecCertificate? = {
+        guard let path = Bundle.main.path(forResource: "publicnode4", ofType: "der"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let cert = SecCertificateCreateWithData(nil, data as CFData) else {
+            print("⚠️ Failed to load certificate from publicnode2.der")
+            return nil
+        }
+        return cert
+    }()
+    
+    private static let publicBeldexFoundationCert5: SecCertificate? = {
+        guard let path = Bundle.main.path(forResource: "publicnode5", ofType: "der"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let cert = SecCertificateCreateWithData(nil, data as CFData) else {
+            print("⚠️ Failed to load certificate from publicnode2.der")
+            return nil
+        }
+        return cert
+    }()
 
+    /*
     private static let storageSeed1Cert: SecCertificate = {
         let path = Bundle.main.path(forResource: "publicnode1", ofType: "der")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
@@ -31,7 +83,7 @@ public enum HTTP {
         let path = Bundle.main.path(forResource: "publicnode5", ofType: "der")!
         let data = try! Data(contentsOf: URL(fileURLWithPath: path))
         return SecCertificateCreateWithData(nil, data as CFData)!
-      }()
+      }() */
     
     // MARK: Settings
     public static let timeout: TimeInterval = 10

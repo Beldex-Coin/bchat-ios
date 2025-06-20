@@ -79,6 +79,9 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         // Reload
         reload()
+        
+        // Re-populate snode pool if needed
+        SnodeAPI.getSnodePool().retainUntilComplete()
     }
     
     private func setupNavBar() {
