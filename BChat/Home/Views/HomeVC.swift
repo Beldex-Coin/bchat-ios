@@ -1062,6 +1062,10 @@ final class HomeVC : BaseVC {
                 thread.removeAllThreadInteractions(with: transaction)
                 thread.remove(with: transaction)
             } else {
+                if thread.isNoteToSelf() {
+                    thread.removeAllThreadInteractions(with: transaction)
+                    return
+                }
                 thread.removeAllThreadInteractions(with: transaction)
                 thread.remove(with: transaction)
             }
