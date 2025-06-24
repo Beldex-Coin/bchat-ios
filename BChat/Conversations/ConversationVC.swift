@@ -1672,18 +1672,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             inChatPaymentFeelabel.attributedText = attributedString
             initiatingTransactionPopView.isHidden = true
         } else {
+            self.dismiss(animated: true)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
                 CustomSlideView.isFromExpandAttachment = false
+                
+                self.initiatingTransactionPopView.isHidden = true
+                let errMsg = wallet.commitPendingTransactionError()
+                let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
+                let okayAction = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+                alert.addAction(okayAction)
+                self.present(alert, animated: true, completion: nil)
             }
-            initiatingTransactionPopView.isHidden = true
-            let errMsg = wallet.commitPendingTransactionError()
-            let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                self.navigationController?.popViewController(animated: true)
-            })
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
         }
     }
     

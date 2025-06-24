@@ -495,6 +495,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         resetMentions()
         self.snInputView.text = ""
         self.snInputView.quoteDraftInfo = nil
+        bottomConstraintOfAttachmentButton = 4
+        hideAttachmentExpandedButtons()
         
         // Update the input state if this is a contact thread
         if let contactThread: TSContactThread = thread as? TSContactThread {
@@ -994,7 +996,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     self.showInputAccessoryView()
                 }
             }
-            alertVC.addAction(deleteRemotelyAction)
+            if !thread.isNoteToSelf() {
+                alertVC.addAction(deleteRemotelyAction)
+            }
             
             let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
                 if !self.thread.isBlocked() {
