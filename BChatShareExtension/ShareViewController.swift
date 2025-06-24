@@ -70,6 +70,12 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
             object: nil
         )
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Note: The share extension doesn't have a proper window so we need to manually update
+    }
 
     @objc
     func versionMigrationsDidComplete(needsConfigSync: Bool) {
@@ -137,6 +143,13 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
         AppReadiness.runNowOrWhenAppDidBecomeReady { [weak self] in
             AssertIsOnMainThread()
             self?.showLockScreenOrMainContent()
+        }
+        
+        let appMode = AppModeManager.shared.currentAppMode        
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+        } else {
+            // Fallback on earlier versions
         }
     }
 

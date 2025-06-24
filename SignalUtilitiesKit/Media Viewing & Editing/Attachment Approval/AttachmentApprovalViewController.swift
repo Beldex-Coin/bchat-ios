@@ -212,6 +212,13 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        let appMode = AppModeManager.shared.currentAppMode
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         self.view.backgroundColor = Colors.navigationBarBackground
         

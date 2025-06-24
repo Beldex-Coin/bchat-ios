@@ -71,6 +71,13 @@ public class OWSNavigationBar: UINavigationBar {
         guard respectsTheme else {
             return
         }
+        
+        let appMode = AppModeManager.shared.currentAppMode
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         backgroundColor = Colors.navigationBarBackground
         tintColor = Colors.text

@@ -57,6 +57,13 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let appMode = AppModeManager.shared.currentAppMode
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         view.backgroundColor = Colors.viewBackgroundColorNew
         
         setupNavBar()
@@ -109,6 +116,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 //        view.setGradient(Gradients.defaultBackground)
 //        fadeView.setGradient(Gradients.homeVCFade)
     }

@@ -149,6 +149,13 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        let appMode = AppModeManager.shared.currentAppMode
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         view.backgroundColor = Colors.navigationBarBackground
         view.addSubview(contentContainerView)
         
