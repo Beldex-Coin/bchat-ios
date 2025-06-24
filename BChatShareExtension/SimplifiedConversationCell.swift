@@ -55,10 +55,16 @@ final class SimplifiedConversationCell : UITableViewCell {
     // MARK: - Initialization
     
     private func setUpViewHierarchy() {
-        backgroundColor = Colors.cellBackground
+        
+        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
+        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
+        
+        backgroundColor = isDarkMode ? .black : .white
+        displayNameLabel.textColor = isDarkMode ? .white : .black
+        accentLineView.backgroundColor = isDarkMode ? .white : .black
         
         let selectedBackgroundView = UIView()
-        selectedBackgroundView.backgroundColor = Colors.cellSelected
+        selectedBackgroundView.backgroundColor = .lightGray
         self.selectedBackgroundView = selectedBackgroundView
         
         addSubview(stackView)

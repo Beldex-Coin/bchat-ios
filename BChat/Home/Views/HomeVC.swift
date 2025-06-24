@@ -545,6 +545,8 @@ final class HomeVC : BaseVC {
         callView.addGestureRecognizer(tap)
         
         mainButton.isHidden = true
+        
+        setAppTheme(isLightMode ? "light" : "dark")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -638,6 +640,15 @@ final class HomeVC : BaseVC {
     
     @objc func notificationReceived(_ notification: Notification) {
         guard let text = notification.userInfo?["text"] as? String else { return }
+        setAppTheme(text)
+    }
+    
+    func setAppTheme(_ text: String) {
+        let isDarkMode = text == "darkMode" ? true : false
+        if let defaults = UserDefaults(suiteName: "group.com.beldex.bchat") {
+            defaults.set(isDarkMode, forKey: "darkMode")
+            defaults.synchronize()
+        }
     }
     
     @objc func tappedMe() {

@@ -223,7 +223,6 @@
 		60BE18A929FA3CCB00048350 /* UIView+Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE18A529FA3CC900048350 /* UIView+Constraints.swift */; };
 		60BE18AA29FA3CCB00048350 /* UIImage+Tinting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */; };
 		60BE18AE29FA782100048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
-		60BE18AF29FA782700048350 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
 		60C51BAC2BC6BC1A0051C05F /* wallet2_api.h in Headers */ = {isa = PBXBuildFile; fileRef = 60C51BAB2BC6BC1A0051C05F /* wallet2_api.h */; };
 		60C51BAE2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C51BAD2BC8F5BD0051C05F /* DownloadAttachmentPopUpViewController.swift */; };
 		60C8E17B2B1062BE00755333 /* MTSlideToOpenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C8E17A2B1062BE00755333 /* MTSlideToOpenView.swift */; };
@@ -434,6 +433,8 @@
 		8AE01A9A2C47A580000EDB1D /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE01A992C47A580000EDB1D /* PhotosUI.framework */; };
 		8AE04A762CF0329D002A8B11 /* libwallet_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8AE04A752CF0329D002A8B11 /* libwallet_api.a */; };
 		8AE2EE2B2DE7FD3A0061754E /* ConfirmationModelImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE2EE2A2DE7FD3A0061754E /* ConfirmationModelImageType.swift */; };
+		8AF3E7182E097C8B00A24C21 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60BE189829FA3C9900048350 /* Colors.xcassets */; };
+		8AF3E7192E09845800A24C21 /* bchatlogo_animation.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5D328ABC7540004BD61 /* bchatlogo_animation.gif */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
 		8C6B0F968BF63A064CA905B4 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 969BDB8E4B5909FD726053D0 /* Pods_GlobalDependencies_FrameworkAndExtensionDependencies_ExtendedDependencies_BChatMessagingKit.framework */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
@@ -5025,11 +5026,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A7E89CF2E05332C00E3B914 /* publicnode1.der in Resources */,
-				60BE18AF29FA782700048350 /* Colors.xcassets in Resources */,
+				8AF3E7192E09845800A24C21 /* bchatlogo_animation.gif in Resources */,
 				4535186E1FC635DD00210559 /* MainInterface.storyboard in Resources */,
 				347850551FD749C0007B8332 /* Localizable.strings in Resources */,
 				B8D07406265C683A00F77E07 /* ElegantIcons.ttf in Resources */,
 				3478504C1FD7496D007B8332 /* Images.xcassets in Resources */,
+				8AF3E7182E097C8B00A24C21 /* Colors.xcassets in Resources */,
 				8A7E89D02E05333C00E3B914 /* publicnode5.der in Resources */,
 				8A7E89D12E05333C00E3B914 /* publicnode4.der in Resources */,
 				8A7E89D22E05333C00E3B914 /* publicnode3.der in Resources */,

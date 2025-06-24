@@ -57,9 +57,15 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = Colors.viewBackgroundColorNew
+        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
+        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
         
-        setupNavBar()
+        let themeColor: UIColor = isDarkMode ? .black : .white
+        view.backgroundColor = themeColor
+        tableView.backgroundColor = themeColor
+        titleLabel.textColor = isDarkMode ? .white : .black
+        
+        setupNavBar(themeColor)
         
         // Threads
         dbConnection.beginLongLivedReadTransaction() // Freeze the connection for use on the main thread (this gives us a stable data source that doesn't change until we tell it to)
@@ -71,6 +77,14 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         // Title
         navigationItem.titleView = titleLabel
+                
+        // Cancel button to left side
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(handleCancel)
+        )
+        navigationItem.leftBarButtonItem?.tintColor = isDarkMode ? .white : .black
         
         // Table view
         view.addSubview(tableView)
@@ -84,15 +98,20 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         SnodeAPI.getSnodePool().retainUntilComplete()
     }
     
-    private func setupNavBar() {
+    private func setupNavBar(_ themeColor: UIColor) {
         guard let navigationBar = navigationController?.navigationBar else { return }
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.navigationBarBackground
+            appearance.backgroundColor = themeColor
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         }
+    }
+    
+    @objc private func handleCancel() {
+        // Close the share extension
+        self.extensionContext?.cancelRequest(withError: NSError(domain: "UserCancelled", code: 0))
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

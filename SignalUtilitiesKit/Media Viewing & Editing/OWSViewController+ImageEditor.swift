@@ -11,8 +11,12 @@ public extension NSObject {
                                      selector: Selector) -> UIView {
         let button = OWSButton()
         button.setImage(imageName: imageName)
-        button.tintColor = isLightMode ? UIColor.black : UIColor.white
         button.addTarget(self, action: selector, for: .touchUpInside)
+        
+        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
+        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
+        button.tintColor = isDarkMode ? .white : .black
+        
         return button
     }
 }
@@ -47,15 +51,18 @@ public extension UIViewController {
 
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: stackView)
         
+        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
+        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
+        
         // Beldex: Set navigation bar background color
         let navigationBar = navigationController!.navigationBar
         navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         navigationBar.shadowImage = UIImage()
         navigationBar.isTranslucent = false
-        let color = isLightMode ? UIColor(hex: 0xFCFCFC) : UIColor(hex: 0x161616)
-        navigationBar.barTintColor = color
-        navigationBar.backgroundColor = color
-        let backgroundImage = UIImage(color: color)
+        let themeColor: UIColor = isDarkMode ? .black : .white
+        navigationBar.barTintColor = themeColor == .white ? .white : .black
+        navigationBar.backgroundColor = themeColor
+        let backgroundImage = UIImage(color: themeColor)
         navigationBar.setBackgroundImage(backgroundImage, for: .default)
     }
 }
