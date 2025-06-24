@@ -99,9 +99,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         keyboardAppearance = isLightMode ? .light : .dark
         let inset: CGFloat = 2
-        textContainerInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        textContainerInset = UIEdgeInsets(top: inset, left: 0, bottom: inset, right: inset)
         addSubview(placeholderLabel)
-        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: inset + 5) // Slight visual adjustment
+        placeholderLabel.pin(.leading, to: .leading, of: self, withInset: inset + 3) // Slight visual adjustment
         placeholderLabel.pin(.top, to: .top, of: self)
         pin(.trailing, to: .trailing, of: placeholderLabel, withInset: inset)
         pin(.bottom, to: .bottom, of: placeholderLabel)

@@ -166,7 +166,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Bottom stack view
         let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, payAsChatButton ])
         bottomStackView.axis = .horizontal
-        bottomStackView.spacing = Values.smallSpacing
+        bottomStackView.spacing = Values.borderThickness
         bottomStackView.backgroundColor = Colors.incomingMessageColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
