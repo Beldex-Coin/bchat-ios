@@ -599,8 +599,8 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
                     bluetoothButton.isHidden = false
                     isBluetoothConnectedWithDevice = true
                 } else {
-                    disableSpeaker()
-                    print("Audio routed to Loudspeaker.")
+                    isSpeakerEnabled ? setAudioOutputToSpeaker() : disableSpeaker()
+                    print("Audio routed to default.")
                 }
             }
         } catch {
