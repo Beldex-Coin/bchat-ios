@@ -71,12 +71,9 @@ public class OWSNavigationBar: UINavigationBar {
         guard respectsTheme else {
             return
         }
-        
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
 
-        backgroundColor = isDarkMode ? .black : .white
-        tintColor = isDarkMode ? .white : .black
+        backgroundColor = Colors.navigationBarBackground
+        tintColor = Colors.text
         
         if UIAccessibility.isReduceTransparencyEnabled {
             blurEffectView?.isHidden = true

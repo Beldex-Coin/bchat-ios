@@ -25,7 +25,6 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
     // MARK: - Properties
 
     weak var prepDelegate: AttachmentPrepViewControllerDelegate?
-    private var themeColor: UIColor = .clear
 
     let attachmentItem: SignalAttachmentItem
     var attachment: SignalAttachment {
@@ -150,11 +149,7 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
-        themeColor = isDarkMode ? .black : .white
-        
-        view.backgroundColor = themeColor
+        view.backgroundColor = Colors.navigationBarBackground
         view.addSubview(contentContainerView)
         
         contentContainerView.addSubview(scrollView)
@@ -539,8 +534,7 @@ extension AttachmentPrepViewController: ImageEditorViewDelegate {
             ? .overFullScreen
             : .fullScreen)
         navigationController.ows_prefersStatusBarHidden = true
-        navigationController.view.backgroundColor = themeColor
-        //Colors.navigationBarBackground
+        navigationController.view.backgroundColor = Colors.navigationBarBackground
 
         if let navigationBar = navigationController.navigationBar as? OWSNavigationBar {
             navigationBar.overrideTheme(type: .clear)

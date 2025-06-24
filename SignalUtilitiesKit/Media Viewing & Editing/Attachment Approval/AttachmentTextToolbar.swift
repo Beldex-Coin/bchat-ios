@@ -50,9 +50,6 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         self.textViewHeight = AttachmentTextToolbar.kMinTextViewHeight
 
         super.init(frame: CGRect.zero)
-        
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
 
         // Specifying autorsizing mask and an intrinsic content size allows proper
         // sizing when used as an input accessory view.
@@ -117,14 +114,6 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         lengthLimitLabel.autoPinEdge(.bottom, to: .top, of: textContainer, withOffset: -6)
         lengthLimitLabel.setContentHuggingHigh()
         lengthLimitLabel.setCompressionResistanceHigh()
-        
-        let textColor: UIColor = isDarkMode ? .white : .black
-        textContainer.backgroundColor = isDarkMode ? .black : .white
-        textContainer.layer.borderColor = textColor.cgColor
-        lengthLimitLabel.textColor = textColor
-        textView.textColor = textColor
-        textView.tintColor = textColor
-        placeholderTextView.textColor = textColor
     }
 
     required init?(coder aDecoder: NSCoder) {

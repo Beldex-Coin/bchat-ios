@@ -57,15 +57,9 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
+        view.backgroundColor = Colors.viewBackgroundColorNew
         
-        let themeColor: UIColor = isDarkMode ? .black : .white
-        view.backgroundColor = themeColor
-        tableView.backgroundColor = themeColor
-        titleLabel.textColor = isDarkMode ? .white : .black
-        
-        setupNavBar(themeColor)
+        setupNavBar()
         
         // Threads
         dbConnection.beginLongLivedReadTransaction() // Freeze the connection for use on the main thread (this gives us a stable data source that doesn't change until we tell it to)
@@ -98,13 +92,13 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         SnodeAPI.getSnodePool().retainUntilComplete()
     }
     
-    private func setupNavBar(_ themeColor: UIColor) {
+    private func setupNavBar() {
         guard let navigationBar = navigationController?.navigationBar else { return }
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = themeColor
-            navigationBar.standardAppearance = appearance;
+            appearance.backgroundColor = Colors.navigationBarBackground
+            navigationBar.standardAppearance = appearance
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         }
     }

@@ -58,17 +58,14 @@ class AttachmentApprovalInputAccessoryView: UIView {
         self.backgroundColor = .clear
 
         preservesSuperviewLayoutMargins = true
-        
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
 
         // Use a background view that extends below the keyboard to avoid animation glitches.
         let backgroundView = UIView()
-        backgroundView.backgroundColor = isDarkMode ? UIColor.black.withAlphaComponent(0.6) : UIColor.white.withAlphaComponent(0.6)
+        backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         addSubview(backgroundView)
         backgroundView.autoPinEdgesToSuperviewEdges()
 
-        currentCaptionLabel.textColor = isDarkMode ? .white : .black
+        currentCaptionLabel.textColor = .white
         currentCaptionLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         currentCaptionLabel.numberOfLines = 5
         currentCaptionLabel.lineBreakMode = .byWordWrapping

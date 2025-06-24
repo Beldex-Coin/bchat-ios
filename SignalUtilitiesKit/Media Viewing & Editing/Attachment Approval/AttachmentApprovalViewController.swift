@@ -55,7 +55,6 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
 
     private let mode: Mode
     private let isAddMoreVisible: Bool
-    private var themeColor: UIColor = .clear
 
     public weak var approvalDelegate: AttachmentApprovalViewControllerDelegate?
 
@@ -213,21 +212,17 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        
-        let defaults = UserDefaults(suiteName: "group.com.your.bundle.id")
-        let isDarkMode = defaults?.bool(forKey: "darkMode") ?? false
-        themeColor = isDarkMode ? .black : .white
 
-        self.view.backgroundColor = themeColor
+        self.view.backgroundColor = Colors.navigationBarBackground
         
-        let backgroundImage: UIImage = UIImage(color: themeColor)
+        let backgroundImage: UIImage = UIImage(color: Colors.navigationBarBackground)
         self.navigationItem.title = nil
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = themeColor == .white ? .white : .black
+        self.navigationController?.navigationBar.barTintColor = Colors.navigationBarBackground
         (self.navigationController?.navigationBar as? OWSNavigationBar)?.respectsTheme = true
-        self.navigationController?.navigationBar.backgroundColor = themeColor
+        self.navigationController?.navigationBar.backgroundColor = Colors.navigationBarBackground
         self.navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
 
         // Avoid an unpleasant "bounce" which doesn't make sense in the context of a single item.
@@ -366,8 +361,7 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
                 navigationBarItems.append(captionButton)
             }
         }
-
-        let textColor: UIColor = themeColor == .white ? .black : .white
+        
         updateNavigationBar(navigationBarItems: navigationBarItems)
         
         if mode != .sharedNavigation {
@@ -375,7 +369,7 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
             let cancelButton = OWSButton(title: CommonStrings.cancelButton) { [weak self] in
                 self?.cancelPressed()
             }
-            cancelButton.setTitleColor(textColor, for: .normal)
+            cancelButton.setTitleColor(Colors.text, for: .normal)
             if let titleLabel = cancelButton.titleLabel {
                 titleLabel.font = Fonts.OpenSans(ofSize: 17.0)
             } else {
@@ -388,7 +382,7 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
             // Mimic a conventional back button, but with a shadow.
             let isRTL = CurrentAppContext().isRTL
             let imageName = (isRTL ? "NavBarBackRTL" : "NavBarBack")
-            let backButton = OWSButton(imageName: imageName, tintColor: textColor) { [weak self] in
+            let backButton = OWSButton(imageName: imageName, tintColor: Colors.text) { [weak self] in
                 self?.navigationController?.popViewController(animated: true)
             }
 

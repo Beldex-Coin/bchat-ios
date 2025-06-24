@@ -2739,6 +2739,7 @@
 		60BE18AC29FA75BE00048350 /* Style Guide */ = {
 			isa = PBXGroup;
 			children = (
+				8AF3E71A2E0A5B2E00A24C21 /* Theme */,
 				60BE189529FA3C9200048350 /* AppMode.swift */,
 				60BE189B29FA3CA300048350 /* Colors.swift */,
 				60BE189829FA3C9900048350 /* Colors.xcassets */,
@@ -3121,6 +3122,13 @@
 				8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */,
 			);
 			path = "Emoji Reacts";
+			sourceTree = "<group>";
+		};
+		8AF3E71A2E0A5B2E00A24C21 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Theme;
 			sourceTree = "<group>";
 		};
 		9404664EC513585B05DF1350 /* Pods */ = {
