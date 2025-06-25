@@ -50,6 +50,13 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         self.textViewHeight = AttachmentTextToolbar.kMinTextViewHeight
 
         super.init(frame: CGRect.zero)
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         // Specifying autorsizing mask and an intrinsic content size allows proper
         // sizing when used as an input accessory view.
@@ -114,6 +121,8 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         lengthLimitLabel.autoPinEdge(.bottom, to: .top, of: textContainer, withOffset: -6)
         lengthLimitLabel.setContentHuggingHigh()
         lengthLimitLabel.setCompressionResistanceHigh()
+        
+        textContainer.layer.borderColor = Colors.border.cgColor
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -138,12 +147,12 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
         let lengthLimitLabel = UILabel()
 
         // Length Limit Label shown when the user inputs too long of a message
-        lengthLimitLabel.textColor = .white
+        lengthLimitLabel.textColor = Colors.text
         lengthLimitLabel.text = NSLocalizedString("ATTACHMENT_APPROVAL_MESSAGE_LENGTH_LIMIT_REACHED", comment: "One-line label indicating the user can add no more text to the media message field.")
         lengthLimitLabel.textAlignment = .center
 
         // Add shadow in case overlayed on white content
-        lengthLimitLabel.layer.shadowColor = UIColor.black.cgColor
+        lengthLimitLabel.layer.shadowColor = Colors.text.cgColor
         lengthLimitLabel.layer.shadowOffset = .zero
         lengthLimitLabel.layer.shadowOpacity = 0.8
         lengthLimitLabel.layer.shadowRadius = 2.0
@@ -164,6 +173,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
     private lazy var placeholderTextView: UITextView = {
         let placeholderTextView = buildTextView()
 
+        placeholderTextView.textColor = Colors.text
         placeholderTextView.text = NSLocalizedString("Message", comment: "")
         placeholderTextView.isEditable = false
 
@@ -173,7 +183,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
     private lazy var textContainer: UIView = {
         let textContainer = UIView()
 
-        textContainer.layer.borderColor = UIColor.white.cgColor
+        textContainer.layer.borderColor = Colors.text.cgColor
         textContainer.layer.borderWidth = Values.separatorThickness
         textContainer.layer.cornerRadius = (AttachmentTextToolbar.kMinTextViewHeight / 2)
         textContainer.clipsToBounds = true
@@ -192,10 +202,10 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
 
         textView.keyboardAppearance = isLightMode ? .default : .dark
         textView.backgroundColor = .clear
-        textView.tintColor = .white
+        textView.tintColor = Colors.text
 
         textView.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
-        textView.textColor = .white
+        textView.textColor = Colors.text
         textView.showsVerticalScrollIndicator = false
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 

@@ -26,6 +26,12 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
         SetCurrentAppContext(appContext)
 
         AppModeManager.configure(delegate: self)
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         Logger.info("")
 
@@ -143,13 +149,6 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
         AppReadiness.runNowOrWhenAppDidBecomeReady { [weak self] in
             AssertIsOnMainThread()
             self?.showLockScreenOrMainContent()
-        }
-        
-        let appMode = AppModeManager.shared.currentAppMode        
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
-        } else {
-            // Fallback on earlier versions
         }
     }
 

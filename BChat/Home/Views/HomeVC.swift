@@ -4,6 +4,7 @@ import SideMenu
 import SVGKit
 import BChatUIKit
 import Alamofire
+import SignalUtilitiesKit
 
 final class HomeVC : BaseVC {
     private var threads: YapDatabaseViewMappings!
@@ -546,7 +547,7 @@ final class HomeVC : BaseVC {
         
         mainButton.isHidden = true
         
-        setAppTheme(isLightMode ? "light" : "dark")
+        setAppThemeForShareExtension()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -639,16 +640,17 @@ final class HomeVC : BaseVC {
     }
     
     @objc func notificationReceived(_ notification: Notification) {
-        guard let text = notification.userInfo?["text"] as? String else { return }
-        setAppTheme(text)
+        //guard let text = notification.userInfo?["text"] as? String else { return }
+        setAppThemeForShareExtension()
     }
     
-    func setAppTheme(_ text: String) {
-        let isDarkMode = text == "darkMode" ? true : false
-        if let defaults = UserDefaults(suiteName: "group.com.beldex.bchat") {
-            defaults.set(isDarkMode, forKey: "darkMode")
+    func setAppThemeForShareExtension() {
+        let isLightMode = isLightMode ? true : false
+        if let defaults = UserDefaults(suiteName: SignalApplicationGroup) {
+            defaults.set(isLightMode, forKey: appThemeIsLight)
             defaults.synchronize()
         }
+        setUpNavBarStyle()
     }
     
     @objc func tappedMe() {

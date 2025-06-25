@@ -72,6 +72,7 @@ BOOL IsUsingProductionService(void);
 #define textSecure2FAAPI @"/v1/accounts/pin"
 
 #define SignalApplicationGroup @"group.com.beldex.bchat"
+#define appThemeIsLight @"appThemeIsLight"
 
 #endif
 

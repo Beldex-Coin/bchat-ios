@@ -77,15 +77,24 @@ class BaseVC : UIViewController {
     }
 
     internal func setUpNavBarStyle() {
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         guard let navigationBar = navigationController?.navigationBar else { return }
         
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.navigationBarBackground
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor
             appearance.shadowColor = .clear
+            navigationBar.tintColor = Colors.text
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+            (navigationBar as? OWSNavigationBar)?.respectsTheme = true
         } else {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
@@ -94,9 +103,9 @@ class BaseVC : UIViewController {
         }
         
         // Back button (to appear on pushed screen)
-            let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            backButton.tintColor = Colors.text
-            navigationItem.backBarButtonItem = backButton
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        backButton.tintColor = Colors.text
+        navigationItem.backBarButtonItem = backButton
     }
 
     internal func setNavBarTitle(_ title: String, customFontSize: CGFloat? = nil) {

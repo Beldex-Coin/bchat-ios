@@ -11,8 +11,10 @@ public extension NSObject {
                                      selector: Selector) -> UIView {
         let button = OWSButton()
         button.setImage(imageName: imageName)
-        button.tintColor = isLightMode ? UIColor.black : UIColor.white
         button.addTarget(self, action: selector, for: .touchUpInside)
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        button.tintColor = isAppThemeLight ? .black : .white
         
         return button
     }
@@ -46,17 +48,37 @@ public extension UIViewController {
         }
         stackView.frame = CGRect(origin: .zero, size: stackSize)
 
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: stackView)
         
-        // Beldex: Set navigation bar background color
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = false
-        let color = isLightMode ? UIColor(hex: 0xFCFCFC) : UIColor(hex: 0x161616)
-        navigationBar.barTintColor = color
-        navigationBar.backgroundColor = color
-        let backgroundImage = UIImage(color: color)
-        navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.shadowColor = .clear
+            appearance.backgroundColor = Colors.navigationBarBackground //isAppThemeLight ? .black : .white
+            navigationBar.tintColor = Colors.text
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+            navigationBar.compactAppearance = appearance
+        } else {
+            // Beldex: Set navigation bar background color
+            let navigationBar = navigationController!.navigationBar
+            navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+            navigationBar.shadowImage = UIImage()
+            navigationBar.isTranslucent = false
+            let color = isLightMode ? UIColor(hex: 0xFCFCFC) : UIColor(hex: 0x161616)
+            navigationBar.barTintColor = color
+            navigationBar.backgroundColor = color
+            navigationBar.tintColor = isAppThemeLight ? .black : .white
+            let backgroundImage = UIImage(color: color)
+            navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        }
     }
 }

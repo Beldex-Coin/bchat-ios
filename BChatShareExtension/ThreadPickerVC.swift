@@ -57,9 +57,9 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appMode = AppModeManager.shared.currentAppMode
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
         if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
         } else {
             // Fallback on earlier versions
         }
@@ -78,14 +78,6 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         // Title
         navigationItem.titleView = titleLabel
-                
-        // Cancel button to left side
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(handleCancel)
-        )
-        navigationItem.leftBarButtonItem?.tintColor = isDarkMode ? .white : .black
         
         // Table view
         view.addSubview(tableView)
@@ -108,6 +100,14 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
             navigationBar.standardAppearance = appearance
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
         }
+
+        // Cancel button to left side
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(handleCancel)
+        )
+        navigationItem.leftBarButtonItem?.tintColor = Colors.text
     }
     
     @objc private func handleCancel() {

@@ -161,6 +161,14 @@ public class ImageEditorTextViewController: OWSViewController, VAlignTextViewDel
     }
 
     public override func loadView() {
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         self.view = UIView()
         self.view.backgroundColor = Colors.navigationBarBackground
         self.view.isOpaque = true
