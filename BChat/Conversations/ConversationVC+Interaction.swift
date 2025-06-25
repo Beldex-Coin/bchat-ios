@@ -176,7 +176,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendAttachments(attachments, with: messageText ?? "") { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        
+        self.dismiss(animated: true, completion: nil)
         scrollToBottom(isAnimated: false)
         resetMentions()
         self.snInputView.text = ""
@@ -1550,8 +1550,14 @@ extension ConversationVC {
                         return promise
                     }
                     .map { _ in
-                        if self?.presentedViewController is ModalActivityIndicatorViewController {
-                            self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                        DispatchQueue.main.async {
+                            if self?.presentedViewController is ModalActivityIndicatorViewController {
+                                Storage.writeSync { transaction in
+                                    let infoMessage = TSInfoMessage(timestamp: timestamp - 1, in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
+                                    infoMessage.save(with: transaction)
+                                }
+                                self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                            }
                         }
                     }
             }

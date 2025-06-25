@@ -729,10 +729,11 @@ final class HomeVC : BaseVC {
     
     func threadForMessageRequest(at index: Int) -> TSThread? {
         var thread: TSThread? = nil
-        
         dbConnection.read { transaction in
-            let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
-            thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
+            guard let ext = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction else { return }
+            let count = self.threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
+            let reversedIndex = Int(count) - 1 - index
+            thread = ext.object(atRow: UInt(reversedIndex), inSection: 0, with: self.threads) as? TSThread
         }
         return thread
     }
