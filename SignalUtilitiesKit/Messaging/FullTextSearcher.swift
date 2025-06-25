@@ -67,13 +67,12 @@ public class HomeScreenSearchResultSet: NSObject {
     public class var noteToSelfOnly: HomeScreenSearchResultSet {
         var conversations: [ConversationSearchResult<ConversationSortKey>] = []
         Storage.read { transaction in
-            if let thread = TSContactThread.fetch(for: getUserHexEncodedPublicKey(), using: transaction) {
+            let thread = TSContactThread.getOrCreateThread(contactBChatID: getUserHexEncodedPublicKey())
                 let threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
                 let sortKey = ConversationSortKey(creationDate: thread.creationDate,
                                                   lastMessageReceivedAtDate: thread.lastInteractionForInbox(transaction: transaction)?.receivedAtDate())
                 let searchResult = ConversationSearchResult(thread: threadViewModel, sortKey: sortKey)
                 conversations.append(searchResult)
-            }
         }
         return HomeScreenSearchResultSet(searchText: "", conversations: conversations, messages: [])
     }

@@ -75,6 +75,11 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
+        Storage.read { transaction in
+            let thread = TSContactThread.fetch(for: getUserHexEncodedPublicKey(), using: transaction)
+            thread?.save()
+        }
+        
         
         // Title
         navigationItem.titleView = titleLabel
