@@ -309,6 +309,9 @@ NSString *const TSLazyRestoreAttachmentsGroup = @"TSLazyRestoreAttachmentsGroup"
         }
         TSThread *thread = (TSThread *)object;
 
+            if (thread.isNoteToSelf) {
+                return TSShareExtensionGroup;
+            }
         if ([thread isMessageRequestUsingTransaction:transaction]) {
             return nil;
         }
