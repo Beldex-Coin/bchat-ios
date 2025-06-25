@@ -30,6 +30,30 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         return titleLabel
     }()
+    
+    private lazy var databaseErrorLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.font = .systemFont(ofSize: Values.mediumFontSize)
+        result.text = "shareExtensionDatabaseError".localized()
+        result.textAlignment = .center
+        result.textColor = Colors.text
+        result.numberOfLines = 0
+        result.isHidden = true
+        
+        return result
+    }()
+    
+    private lazy var noAccountErrorLabel: UILabel = {
+        let result: UILabel = UILabel()
+        result.font = .systemFont(ofSize: Values.mediumFontSize)
+        result.text = "shareExtensionNoAccountError".localized()
+        result.textAlignment = .center
+        result.textColor = Colors.text
+        result.numberOfLines = 0
+        result.isHidden = true
+        
+        return result
+    }()
 
     private lazy var tableView: UITableView = {
         let tableView: UITableView = UITableView()
@@ -65,6 +89,8 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         
         view.backgroundColor = Colors.viewBackgroundColorNew
+        view.addSubview(databaseErrorLabel)
+        view.addSubview(noAccountErrorLabel)
         
         setupNavBar()
         
@@ -75,11 +101,12 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         dbConnection.read { transaction in
             self.threads.update(with: transaction) // Perform the initial update
         }
+        
+        // Save thread
         Storage.read { transaction in
             let thread = TSContactThread.fetch(for: getUserHexEncodedPublicKey(), using: transaction)
             thread?.save()
         }
-        
         
         // Title
         navigationItem.titleView = titleLabel
@@ -130,18 +157,14 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     private func setupLayout() {        
         tableView.pin(to: view)
-    }
-    
-    // MARK: Table View Data Source
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(threadCount)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: SimplifiedConversationCell = tableView.dequeue(type: SimplifiedConversationCell.self, for: indexPath)
-        cell.threadViewModel = threadViewModel(at: indexPath.row)
         
-        return cell
+        databaseErrorLabel.pin(.top, to: .top, of: view, withInset: Values.massiveSpacing)
+        databaseErrorLabel.pin(.leading, to: .leading, of: view, withInset: Values.veryLargeSpacing)
+        databaseErrorLabel.pin(.trailing, to: .trailing, of: view, withInset: -Values.veryLargeSpacing)
+        
+        noAccountErrorLabel.pin(.top, to: .top, of: view, withInset: Values.massiveSpacing)
+        noAccountErrorLabel.pin(.leading, to: .leading, of: view, withInset: Values.veryLargeSpacing)
+        noAccountErrorLabel.pin(.trailing, to: .trailing, of: view, withInset: -Values.veryLargeSpacing)
     }
     
     // MARK: - Updating
@@ -154,9 +177,25 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         }
         threadViewModelCache.removeAll()
         tableView.reloadData()
+        
+        tableView.isHidden = threads.isEmpty()
+        noAccountErrorLabel.isHidden = !threads.isEmpty()
     }
     
-    // MARK: - Interaction
+    // MARK: Table View Data Source
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return Int(threadCount)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: SimplifiedConversationCell = tableView.dequeue(type: SimplifiedConversationCell.self, for: indexPath)
+        cell.threadViewModel = threadViewModel(at: indexPath.row)
+        
+        return cell
+    }
+    
+    // MARK: - Table View Delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -170,6 +209,8 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         let approvalVC = AttachmentApprovalViewController.wrappedInNavController(attachments: attachments, approvalDelegate: self)
         navigationController!.present(approvalVC, animated: true, completion: nil)
     }
+    
+    // MARK: -
     
     func attachmentApproval(_ attachmentApproval: AttachmentApprovalViewController, didApproveAttachments attachments: [SignalAttachment], messageText: String?) {
         // Sharing a URL or plain text will populate the 'messageText' field so in those
@@ -252,8 +293,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         if let cachedThreadViewModel = threadViewModelCache[thread.uniqueId!] {
             return cachedThreadViewModel
-        }
-        else {
+        } else {
             var threadViewModel: ThreadViewModel? = nil
             dbConnection.read { transaction in
                 threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
