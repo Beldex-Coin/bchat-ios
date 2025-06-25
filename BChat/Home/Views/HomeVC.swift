@@ -1117,7 +1117,7 @@ final class HomeVC : BaseVC {
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
         let menu = SideMenuNavigationController(rootViewController: SideMenuViewController())
-        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let appScreenRect = UIWindow.keyWindow?.bounds ?? UIWindow().bounds
         let minimumSize = min(appScreenRect.width, appScreenRect.height)
         menu.menuWidth = round(minimumSize * 0.80)
         SideMenuManager.default.leftMenuNavigationController = menu

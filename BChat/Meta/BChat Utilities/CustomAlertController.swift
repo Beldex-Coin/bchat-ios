@@ -19,7 +19,7 @@ public class CustomAlertController {
     
     private func topMostController() -> UIViewController?
     {
-        var presentedVC = UIApplication.shared.keyWindow?.rootViewController
+        var presentedVC = UIWindow.keyWindow?.rootViewController
         while let pVC = presentedVC?.presentedViewController
         {
             presentedVC = pVC

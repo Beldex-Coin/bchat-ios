@@ -6,8 +6,8 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     
     // MARK: UI
     private static let defaultSize: CGFloat = 100
-    private let topMargin = UIApplication.shared.keyWindow!.safeAreaInsets.top + Values.veryLargeSpacing
-    private let bottomMargin = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+    private let topMargin = (UIWindow.keyWindow?.safeAreaInsets.top ?? 0) + Values.veryLargeSpacing
+    private let bottomMargin = UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0
     
     private var widthW: NSLayoutConstraint?
     private var heightH: NSLayoutConstraint?

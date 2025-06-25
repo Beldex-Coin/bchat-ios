@@ -109,7 +109,7 @@ class UserInfoPopUp: BaseVC {
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
-        if let navController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+        if let navController = UIWindow.keyWindow?.rootViewController as? UINavigationController {
             navController.view.layer.add(transition, forKey: kCATransition)
             navController.pushViewController(conversationVC, animated: true)
         }

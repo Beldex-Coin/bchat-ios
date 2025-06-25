@@ -159,9 +159,8 @@ final class ContextMenuVC : UIViewController {
         let menuHeight = CGFloat(actionViews.count) * ContextMenuVC.actionViewHeight
         let spacing = Values.smallSpacing
         menuView.set(.height, to: CGFloat(actionViews.count) * 33)
-        let margin = max(UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0, Values.mediumSpacing)
-        
-        //let margin = max(UIApplication.shared.keyWindow!.safeAreaInsets.bottom, Values.mediumSpacing)
+        //let margin = max(UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0, Values.mediumSpacing)
+        let margin = max(UIWindow.keyWindow?.safeAreaInsets.bottom  ?? 0, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
             emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)

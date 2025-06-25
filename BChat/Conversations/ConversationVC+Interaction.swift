@@ -78,8 +78,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 callVC.conversationVC = self
                 hideInputAccessoryView()
                 present(callVC, animated: true, completion: nil)
-                //CallVC
-                //NewIncomingCallVC
             } else {
                 showCallPermissionModal()
             }
@@ -145,8 +143,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     // MARK: Attachments
     func didPasteImageFromPasteboard(_ image: UIImage) {
         guard let imageData = image.jpegData(compressionQuality: 1.0) else { return }
-        let dataSource = DataSourceValue.dataSource(with: imageData, utiType: kUTTypeJPEG as String)
-        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: kUTTypeJPEG as String, imageQuality: .medium)
+        let dataSource = DataSourceValue.dataSource(with: imageData, utiType: UTType.jpeg.identifier)
+        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: UTType.jpeg.identifier, imageQuality: .medium)
         
         let approvalVC = AttachmentApprovalViewController.wrappedInNavController(attachments: [ attachment ], approvalDelegate: self)
         approvalVC.modalPresentationStyle = .fullScreen
@@ -264,7 +262,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func handleDocumentButtonTapped() {
         // UIDocumentPickerModeImport copies to a temp file within our container.
         // It uses more memory than "open" but lets us avoid working with security scoped URLs.
-        let documentPickerVC = UIDocumentPickerViewController(documentTypes: [ kUTTypeItem as String ], in: UIDocumentPickerMode.import)
+        let documentPickerVC = UIDocumentPickerViewController(documentTypes: [ UTType.item.identifier ], in: UIDocumentPickerMode.import)
         documentPickerVC.delegate = self
         documentPickerVC.modalPresentationStyle = .fullScreen
         SNAppearance.switchToDocumentPickerAppearance()
@@ -286,7 +284,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             return presentAlert(alert)
         }
-        let type = urlResourceValues.typeIdentifier ?? (kUTTypeData as String)
+        let type = urlResourceValues.typeIdentifier ?? UTType.data.identifier
         guard urlResourceValues.isDirectory != true else {
             DispatchQueue.main.async {
                 let title = NSLocalizedString("ATTACHMENT_PICKER_DOCUMENTS_PICKED_DIRECTORY_FAILED_ALERT_TITLE", comment: "")
@@ -693,7 +691,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let snapshot = cell.bubbleView.snapshotView(afterScreenUpdates: false), contextMenuWindow == nil,
             !ContextMenuVC.actions(for: viewItem, delegate: self).isEmpty else { return }
         UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        let frame = cell.convert(cell.bubbleView.frame, to: UIApplication.shared.keyWindow!)
+        let frame = cell.convert(cell.bubbleView.frame, to: UIWindow.keyWindow)
         let window = ContextMenuWindow()
         let contextMenuVC = ContextMenuVC(snapshot: snapshot, viewItem: viewItem, frame: frame, delegate: self) { [weak self] in
             window.isHidden = true
@@ -1389,7 +1387,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // Create attachment
         let fileName = (NSLocalizedString("VOICE_MESSAGE_FILE_NAME", comment: "") as NSString).appendingPathExtension("m4a")
         dataSource.sourceFilename = fileName
-        let attachment = SignalAttachment.voiceMessageAttachment(dataSource: dataSource, dataUTI: kUTTypeMPEG4Audio as String)
+        let attachment = SignalAttachment.voiceMessageAttachment(dataSource: dataSource, dataUTI: UTType.mpeg4Audio.identifier)
         guard !attachment.hasError else {
             return showErrorAlert(for: attachment, onDismiss: nil)
         }
