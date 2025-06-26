@@ -732,6 +732,7 @@ final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegat
         self.bChatCall.hasStartedConnectingDidChange = {
             DispatchQueue.main.async {
                 self.callDurationLabel.text = "Connecting..."
+                self.setAudioOutputToBluetoothOrSpeaker()
                 NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 }, completion: nil)
