@@ -669,6 +669,7 @@
 "modal_pay_as_you_chat_permission_request_title" = "Pay As You Chat";
 "modal_pay_as_you_chat_permission_request_explanation" = "To disable pay as you chat, go to Settings -> Wallet Settings -> Pay As You Chat to use this option";
 "vc_ok_title" = "Ok";
+"MESSAGE_REQUESTS_ACCEPTED_BY_YOU" = "You have accepted the message request";
 
 /* LandingNewVC */
 "CREATE_ACCOUNT_NEW" = "Create Account";

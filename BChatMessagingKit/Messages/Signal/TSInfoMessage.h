@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, TSInfoMessageType) {
     TSInfoMessageTypeMediaSavedNotification,
     TSInfoMessageTypeCall,
     TSInfoMessageTypeGroupCurrentUserRemoved,
+    TSInfoMessageTypeMessageRequestAcceptedByYou,
     TSInfoMessageTypeMessageRequestAccepted = 99 // Avoid conficts wit TSInfoMessageTypeCall
 };
 
