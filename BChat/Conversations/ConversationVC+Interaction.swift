@@ -1412,8 +1412,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
-        guard thread is TSContactThread else { return }
+        guard let thread = thread as? TSContactThread else { return }
         if thread.isNoteToSelf() { return }
+        let publicKey = thread.contactBChatID()
+        let contact: Contact = Storage.shared.getContact(with: publicKey)!
+        if contact.isBlocked { return }
         Storage.write { transaction in
             let messageToSend = DataExtractionNotificationInfoMessage(type: .screenshotTakenNotification, sentTimestamp: NSDate.millisecondTimestamp(), thread: self.thread, referencedAttachmentTimestamp: nil)
             messageToSend.save(with: transaction)
