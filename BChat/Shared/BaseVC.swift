@@ -213,9 +213,9 @@ extension BaseVC {
             requestMicrophonePermissionIfNeeded { }
             guard let call = AppEnvironment.shared.callManager.currentCall else { return }
             guard MiniCallView.current == nil else { return }
-            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? CallVC, callVC.bChatCall == call { return }
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
-            let callVC = NewIncomingCallVC(for: call)
+            let callVC = CallVC(for: call)
             if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
                 callVC.conversationVC = conversationVC
                 if let viewController = callVC.conversationVC {

@@ -2,7 +2,7 @@ import UIKit
 import WebRTC
 
 final class MiniCallView: UIView, RTCVideoViewDelegate {
-    var callVC: NewIncomingCallVC
+    var callVC: CallVC
     
     // MARK: UI
     private static let defaultSize: CGFloat = 100
@@ -39,7 +39,7 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     // MARK: Initialization
     public static var current: MiniCallView?
     
-    init(from callVC: NewIncomingCallVC) {
+    init(from callVC: CallVC) {
         self.callVC = callVC
         super.init(frame: CGRect.zero)
         self.backgroundColor = UIColor.init(white: 0, alpha: 0.8)

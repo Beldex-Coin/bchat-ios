@@ -8,7 +8,7 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-final class NewIncomingCallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
+final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     
     private static let floatingVideoViewWidth: CGFloat = (UIDevice.current.isIPad ? 312 : 116)
     private static let floatingVideoViewHeight: CGFloat = (UIDevice.current.isIPad ? 270: 135)

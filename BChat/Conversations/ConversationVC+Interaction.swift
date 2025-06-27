@@ -74,7 +74,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
                 guard AppEnvironment.shared.callManager.currentCall == nil else { return }
                 let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-                let callVC = NewIncomingCallVC(for: call)
+                let callVC = CallVC(for: call)
                 callVC.conversationVC = self
                 hideInputAccessoryView()
                 present(callVC, animated: true, completion: nil)
@@ -718,7 +718,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             guard let contactBChatID = (thread as? TSContactThread)?.contactBChatID() else { return }
             guard AppEnvironment.shared.callManager.currentCall == nil else { return }
             let call = BChatCall(for: contactBChatID, uuid: UUID().uuidString.lowercased(), mode: .offer, outgoing: true)
-            let callVC = NewIncomingCallVC(for: call)
+            let callVC = CallVC(for: call)
             callVC.conversationVC = self
             snInputView.isHidden = true
             hideInputAccessoryView(self.inputAccessoryView)

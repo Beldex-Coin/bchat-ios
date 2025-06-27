@@ -2,7 +2,7 @@
 
 import WebRTC
 
-extension NewIncomingCallVC : CameraManagerDelegate {
+extension CallVC : CameraManagerDelegate {
     
     func handleVideoOutputCaptured(sampleBuffer: CMSampleBuffer) {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
