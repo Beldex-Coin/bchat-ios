@@ -42,6 +42,13 @@ class AttachmentApprovalInputAccessoryView: UIView {
         galleryRailView.autoSetDimension(.height, toSize: kGalleryRailViewHeight)
 
         super.init(frame: .zero)
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         createContents()
     }
@@ -53,19 +60,20 @@ class AttachmentApprovalInputAccessoryView: UIView {
     private func createContents() {
         // Specifying auto-resizing mask and an intrinsic content size allows proper
         // sizing when used as an input accessory view.
+        
         self.autoresizingMask = .flexibleHeight
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .clear
+        self.backgroundColor = Colors.navigationBarBackground
 
         preservesSuperviewLayoutMargins = true
 
         // Use a background view that extends below the keyboard to avoid animation glitches.
         let backgroundView = UIView()
-        backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        backgroundView.backgroundColor = Colors.navigationBarBackground.withAlphaComponent(0.6)
         addSubview(backgroundView)
         backgroundView.autoPinEdgesToSuperviewEdges()
 
-        currentCaptionLabel.textColor = .white
+        currentCaptionLabel.textColor = Colors.text
         currentCaptionLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
         currentCaptionLabel.numberOfLines = 5
         currentCaptionLabel.lineBreakMode = .byWordWrapping
@@ -105,6 +113,7 @@ class AttachmentApprovalInputAccessoryView: UIView {
 
     private func updateContents() {
         var hasCurrentCaption = false
+        attachmentCaptionToolbar.tintColor = Colors.text
         if let currentAttachmentItem = currentAttachmentItem,
             let captionText = currentAttachmentItem.captionText {
             hasCurrentCaption = captionText.count > 0

@@ -36,6 +36,13 @@ public class ImageEditorView: UIView {
         self.canvasView = ImageEditorCanvasView(model: model)
 
         super.init(frame: .zero)
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         model.add(observer: self)
     }

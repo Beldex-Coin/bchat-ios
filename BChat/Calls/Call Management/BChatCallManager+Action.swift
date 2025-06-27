@@ -9,11 +9,11 @@ extension BChatCallManager {
     @discardableResult
     public func answerCallAction() -> Bool {
         guard let call = self.currentCall else { return false }
-        if let _ = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC {
+        if let _ = CurrentAppContext().frontmostViewController() as? CallVC {
             call.answerBChatCall()
         } else {
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { return false } // FIXME: Handle more gracefully
-            let callVC = NewIncomingCallVC(for: self.currentCall!)
+            let callVC = CallVC(for: self.currentCall!)
             if let conversationVC = presentingVC as? ConversationVC {
                 callVC.conversationVC = conversationVC
                 conversationVC.inputAccessoryView?.isHidden = true

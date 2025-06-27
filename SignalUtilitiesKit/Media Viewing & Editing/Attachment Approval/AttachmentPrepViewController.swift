@@ -149,9 +149,9 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appMode = AppModeManager.shared.currentAppMode
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
         if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
         } else {
             // Fallback on earlier versions
         }

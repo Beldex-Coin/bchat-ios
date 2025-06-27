@@ -6,6 +6,7 @@
 #import "UIView+OWS.h"
 #import <BChatUIKit/BChatUIKit.h>
 #import "AppContext.h"
+#import <SignalUtilitiesKit/SignalUtilitiesKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -85,6 +86,14 @@ UIInterfaceOrientationMask DefaultUIInterfaceOrientationMask(void)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    BOOL isAppThemeLight = [[CurrentAppContext() appUserDefaults] boolForKey: appThemeIsLight];
+    if (@available(iOS 13.0, *)) {
+        self.overrideUserInterfaceStyle = isAppThemeLight ? UIUserInterfaceStyleLight : UIUserInterfaceStyleDark;
+    } else {
+        // Fallback on earlier versions
+    }
+
 
     if (self.shouldUseTheme) {
         self.view.backgroundColor = [LKColors navigationBarBackground];

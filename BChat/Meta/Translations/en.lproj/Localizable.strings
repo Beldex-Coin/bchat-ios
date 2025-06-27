@@ -593,6 +593,8 @@
 "vc_share_link_previews_error" = "Unable to load preview";
 "vc_share_link_previews_disabled_title" = "Link Previews Disabled";
 "vc_share_link_previews_disabled_explanation" = "Enabling link previews will show previews for URLs you share. This can be useful, but BChat will need to contact linked websites to generate previews.\n\nYou can enable link previews in BChat's settings.";
+"shareExtensionDatabaseError" = "There is an issue opening the database. Please restart the app and try again.";
+"shareExtensionNoAccountError" = "Oops! Looks like you don't have a BChat account yet. You'll need to create one in the BChat app before you can share.";
 "view_open_group_invitation_description" = "Social group invitation";
 "vc_conversation_settings_invite_button_title" = "Add Members";
 "vc_settings_faq_button_title" = "FAQ";

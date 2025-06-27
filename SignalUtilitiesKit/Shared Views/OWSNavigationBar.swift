@@ -72,9 +72,9 @@ public class OWSNavigationBar: UINavigationBar {
             return
         }
         
-        let appMode = AppModeManager.shared.currentAppMode
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
         if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
         } else {
             // Fallback on earlier versions
         }
@@ -186,26 +186,25 @@ public class OWSNavigationBar: UINavigationBar {
     public func overrideTheme(type: NavigationBarThemeOverride) {
         respectsTheme = false
 
-        barStyle = .black
         titleTextAttributes = [NSAttributedString.Key.foregroundColor: Colors.text]
-        barTintColor = Colors.navigationBarBackground.withAlphaComponent(0.6)
+        barTintColor = Colors.navigationBarBackground
         tintColor = Colors.text
 
         switch type {
-        case .clear:
-            blurEffectView?.isHidden = true
-            clipsToBounds = true
+            case .clear:
+                blurEffectView?.isHidden = true
+                clipsToBounds = true
 
-            // Making a toolbar transparent requires setting an empty uiimage
-            setBackgroundImage(UIImage(), for: .default)
-            shadowImage = UIImage()
-            backgroundColor = .clear
-        case .alwaysDark:
-            blurEffectView?.isHidden = false
-            clipsToBounds = false
+                // Making a toolbar transparent requires setting an empty uiimage
+                setBackgroundImage(UIImage(), for: .default)
+                shadowImage = UIImage()
+                backgroundColor = .clear
+            case .alwaysDark:
+                blurEffectView?.isHidden = false
+                clipsToBounds = false
 
-            setBackgroundImage(nil, for: .default)
-            shadowImage = nil
+                setBackgroundImage(nil, for: .default)
+                shadowImage = nil
         }
     }
 }

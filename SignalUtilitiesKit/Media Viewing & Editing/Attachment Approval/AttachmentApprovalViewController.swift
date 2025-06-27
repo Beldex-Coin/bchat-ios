@@ -163,6 +163,7 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
         vc.approvalDelegate = approvalDelegate
         
         let navController = OWSNavigationController(rootViewController: vc)
+        navController.modalPresentationStyle = .fullScreen
         navController.ows_prefersStatusBarHidden = true
         
         return navController
@@ -213,24 +214,36 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        let appMode = AppModeManager.shared.currentAppMode
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
         if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = appMode.rawValue == 0 ? .light : .dark
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
         } else {
             // Fallback on earlier versions
         }
 
         self.view.backgroundColor = Colors.navigationBarBackground
         
-        let backgroundImage: UIImage = UIImage(color: Colors.navigationBarBackground)
-        self.navigationItem.title = nil
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = Colors.navigationBarBackground
-        (self.navigationController?.navigationBar as? OWSNavigationBar)?.respectsTheme = true
-        self.navigationController?.navigationBar.backgroundColor = Colors.navigationBarBackground
-        self.navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.shadowColor = .clear
+            appearance.backgroundColor = Colors.navigationBarBackground
+            navigationBar.tintColor = Colors.text
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+        } else {
+            let backgroundImage: UIImage = UIImage(color: Colors.navigationBarBackground)
+            self.navigationItem.title = nil
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.isTranslucent = false
+            self.navigationController?.navigationBar.barTintColor = Colors.navigationBarBackground
+            self.navigationController?.navigationBar.tintColor = Colors.text
+            (self.navigationController?.navigationBar as? OWSNavigationBar)?.respectsTheme = true
+            self.navigationController?.navigationBar.backgroundColor = Colors.navigationBarBackground
+            self.navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        }
 
         // Avoid an unpleasant "bounce" which doesn't make sense in the context of a single item.
         pagerScrollView?.isScrollEnabled = (attachmentItems.count > 1)

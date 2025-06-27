@@ -11,7 +11,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode1", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("⚠️ Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode2.der")
             return nil
         }
         return cert
@@ -21,7 +21,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode2", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("⚠️ Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode2.der")
             return nil
         }
         return cert
@@ -32,7 +32,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode3", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("⚠️ Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode2.der")
             return nil
         }
         return cert
@@ -42,7 +42,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode4", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("⚠️ Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode2.der")
             return nil
         }
         return cert
@@ -52,41 +52,14 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode5", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("⚠️ Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode2.der")
             return nil
         }
         return cert
     }()
-
-    /*
-    private static let storageSeed1Cert: SecCertificate = {
-        let path = Bundle.main.path(forResource: "publicnode1", ofType: "der")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        return SecCertificateCreateWithData(nil, data as CFData)!
-      }()
-      private static let storageSeed3Cert: SecCertificate = {
-        let path = Bundle.main.path(forResource: "publicnode2", ofType: "der")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        return SecCertificateCreateWithData(nil, data as CFData)!
-      }()
-      private static let publicBeldexFoundationCert: SecCertificate = {
-        let path = Bundle.main.path(forResource: "publicnode3", ofType: "der")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        return SecCertificateCreateWithData(nil, data as CFData)!
-      }()
-      private static let publicBeldexFoundationCert4: SecCertificate = {
-        let path = Bundle.main.path(forResource: "publicnode4", ofType: "der")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        return SecCertificateCreateWithData(nil, data as CFData)!
-      }()
-      private static let publicBeldexFoundationCert5: SecCertificate = {
-        let path = Bundle.main.path(forResource: "publicnode5", ofType: "der")!
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path))
-        return SecCertificateCreateWithData(nil, data as CFData)!
-      }() */
     
     // MARK: Settings
-    public static let timeout: TimeInterval = 10
+    public static let timeout: TimeInterval = 30
 
     // MARK: Seed Node URL BChat Delegate Implementation
     private final class SeedNodeURLSessionDelegateImplementation : NSObject, URLSessionDelegate {
@@ -142,9 +115,9 @@ public enum HTTP {
 
         public var errorDescription: String? {
             switch self {
-            case .generic: return "An error occurred."
-            case .httpRequestFailed(let statusCode, _): return "HTTP request failed with status code: \(statusCode)."
-            case .invalidJSON: return "Invalid JSON."
+                case .generic: return "An error occurred."
+                case .httpRequestFailed(let statusCode, _): return "HTTP request failed with status code: \(statusCode)."
+                case .invalidJSON: return "Invalid JSON."
             }
         }
     }
@@ -174,8 +147,8 @@ public enum HTTP {
         request.httpBody = body
         request.timeoutInterval = timeout
         request.allHTTPHeaderFields?.removeValue(forKey: "User-Agent")
-        request.setValue("WhatsApp", forHTTPHeaderField: "User-Agent") // Set a fake value
-        request.setValue("en-us", forHTTPHeaderField: "Accept-Language") // Set a fake value
+        //request.setValue("WhatsApp", forHTTPHeaderField: "User-Agent") // Set a fake value
+        //request.setValue("en-us", forHTTPHeaderField: "Accept-Language") // Set a fake value
         let (promise, seal) = Promise<JSON>.pending()
         let urlSession = useSeedNodeURLSession ? seedNodeURLSession : snodeURLSession
         let task = urlSession.dataTask(with: request) { data, response, error in

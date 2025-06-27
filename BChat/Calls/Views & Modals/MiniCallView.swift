@@ -2,12 +2,12 @@ import UIKit
 import WebRTC
 
 final class MiniCallView: UIView, RTCVideoViewDelegate {
-    var callVC: NewIncomingCallVC
+    var callVC: CallVC
     
     // MARK: UI
     private static let defaultSize: CGFloat = 100
-    private let topMargin = UIApplication.shared.keyWindow!.safeAreaInsets.top + Values.veryLargeSpacing
-    private let bottomMargin = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+    private let topMargin = (UIWindow.keyWindow?.safeAreaInsets.top ?? 0) + Values.veryLargeSpacing
+    private let bottomMargin = UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0
     
     private var widthW: NSLayoutConstraint?
     private var heightH: NSLayoutConstraint?
@@ -39,7 +39,7 @@ final class MiniCallView: UIView, RTCVideoViewDelegate {
     // MARK: Initialization
     public static var current: MiniCallView?
     
-    init(from callVC: NewIncomingCallVC) {
+    init(from callVC: CallVC) {
         self.callVC = callVC
         super.init(frame: CGRect.zero)
         self.backgroundColor = UIColor.init(white: 0, alpha: 0.8)
