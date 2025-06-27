@@ -140,7 +140,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         return true
     }
 
-    // MARK: Attachments
+    // MARK: - Attachments
+    
     func didPasteImageFromPasteboard(_ image: UIImage) {
         guard let imageData = image.jpegData(compressionQuality: 1.0) else { return }
         let dataSource = DataSourceValue.dataSource(with: imageData, utiType: UTType.jpeg.identifier)
@@ -187,6 +188,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func attachmentApproval(_ attachmentApproval: AttachmentApprovalViewController, didChangeMessageText newMessageText: String?) {
         snInputView.text = newMessageText ?? ""
     }
+    
+    // MARK: - Handle button taps
 
     func handleCameraButtonTapped() {
         guard requestCameraPermissionIfNeeded() else { return }
@@ -262,7 +265,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func handleDocumentButtonTapped() {
         // UIDocumentPickerModeImport copies to a temp file within our container.
         // It uses more memory than "open" but lets us avoid working with security scoped URLs.
-        let documentPickerVC = UIDocumentPickerViewController(documentTypes: [ UTType.item.identifier ], in: UIDocumentPickerMode.import)
+        let documentPickerVC = UIDocumentPickerViewController(forOpeningContentTypes: [.item],
+                                                              asCopy: true)
         documentPickerVC.delegate = self
         documentPickerVC.modalPresentationStyle = .fullScreen
         SNAppearance.switchToDocumentPickerAppearance()
@@ -321,7 +325,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: true, message: nil) { [weak self] modalActivityIndicator in
             let dataSource = DataSourcePath.dataSource(with: url, shouldDeleteOnDeallocation: false)!
             dataSource.sourceFilename = fileName
-            let compressionResult: SignalAttachment.VideoCompressionResult = SignalAttachment.compressVideoAsMp4(dataSource: dataSource, dataUTI: kUTTypeMPEG4 as String)
+            let compressionResult: SignalAttachment.VideoCompressionResult = SignalAttachment.compressVideoAsMp4(dataSource: dataSource, dataUTI: UTType.mpeg4Movie.identifier)
             compressionResult.attachmentPromise.done { attachment in
                 guard !modalActivityIndicator.wasCancelled, let attachment = attachment as? SignalAttachment else { return }
                 modalActivityIndicator.dismiss {
@@ -335,7 +339,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
 
-    // MARK: Message Sending
+    // MARK: - Message Sending
+    
     func handleSendButtonTapped() {
         sendMessage()
     }
