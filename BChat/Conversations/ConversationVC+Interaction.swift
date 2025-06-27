@@ -175,7 +175,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendAttachments(attachments, with: messageText ?? "") { [weak self] in
             self?.dismiss(animated: true, completion: nil)
         }
-        self.dismiss(animated: true, completion: nil)
         scrollToBottom(isAnimated: false)
         resetMentions()
         self.snInputView.text = ""
@@ -215,6 +214,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleGIFButtonTapped() {
+        self.hideInputAccessoryView()
         if SSKPreferences.isGifPermissionEnabled {
             if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                 let gifVC = GifPickerViewController(thread: thread)
@@ -224,6 +224,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 present(navController, animated: true) {
                     self.isInputViewShow = false
                 }
+                self.showInputAccessoryView()
             } else {
                 self.showToast(message: "Please check your internet connection", seconds: 1.0)
             }
@@ -1518,9 +1519,6 @@ extension ConversationVC {
         
         return Promise.value(())
             .then { [weak self] _ -> Promise<Void> in
-                if !contact.isApproved {
-                    return Promise.value(())
-                }
                 guard !isNewThread else { return Promise.value(()) }
                 guard let strongSelf = self else {
                     return Promise(error: MessageSender.Error.noThread)
@@ -1534,7 +1532,9 @@ extension ConversationVC {
                     isApproved: true
                 )
                 messageRequestResponse.sentTimestamp = timestamp
-                
+                if strongSelf.presentedViewController is OWSNavigationController {
+                    strongSelf.dismiss(animated: true, completion: nil)
+                }
                 // Show a loading indicator
                 ModalActivityIndicatorViewController.present(fromViewController: strongSelf, canCancel: false) { _ in
                     seal.fulfill(())
@@ -1555,11 +1555,11 @@ extension ConversationVC {
                     .map { _ in
                         DispatchQueue.main.async {
                             if self?.presentedViewController is ModalActivityIndicatorViewController {
-                                Storage.writeSync { transaction in
-                                    let infoMessage = TSInfoMessage(timestamp: timestamp - 1, in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
-                                    infoMessage.save(with: transaction)
-                                }
                                 self?.dismiss(animated: true, completion: nil) // Dismiss the loader
+                            }
+                            Storage.writeSync { transaction in
+                                let infoMessage = TSInfoMessage(timestamp: timestamp - 1, in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
+                                infoMessage.save(with: transaction)
                             }
                         }
                     }

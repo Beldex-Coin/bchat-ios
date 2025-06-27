@@ -542,7 +542,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 
                     let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil  && !isOverLapping {
+                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && !isOverLapping || message.body?.count ?? 0 <= 26 {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -560,7 +560,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeRightLabel.text = description
                         
                         
-                        if message.body?.count ?? 0 < 26 {
+                        if message.body?.count ?? 0 <= 26 {
                             let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                             stackViewForMessageAndTime.axis = .horizontal
                             stackViewForMessageAndTime.spacing = 5
@@ -648,7 +648,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     // Body text view
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
                         bubbleViewBottomConstraint.isActive = false
-                        bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0)
+                        bubbleViewBottomConstraint = body.count < 18 ? snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0) : snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                         let inset: CGFloat = 12
                         let maxWidth = size.width - 2 * inset
                         let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 20, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
