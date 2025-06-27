@@ -59,7 +59,7 @@ public enum HTTP {
     }()
     
     // MARK: Settings
-    public static let timeout: TimeInterval = 10
+    public static let timeout: TimeInterval = 30
 
     // MARK: Seed Node URL BChat Delegate Implementation
     private final class SeedNodeURLSessionDelegateImplementation : NSObject, URLSessionDelegate {
