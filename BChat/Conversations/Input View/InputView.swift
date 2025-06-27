@@ -310,9 +310,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         quoteView.pin(.right, to: .right, of: additionalContentContainerOuterView, withInset: -10)
         quoteView.pin(.bottom, to: .bottom, of: additionalContentContainerOuterView, withInset: -20)
         
-        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0)
+        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0.5)
         additionalContentContainerOuterView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -51)
+        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -52.5)
         additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
     

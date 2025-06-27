@@ -92,6 +92,7 @@ final class QuoteView : UIView {
     static let labelStackViewVMargin: CGFloat = 4
     static let cancelButtonSize: CGFloat = 33
     static let cancelButtonSizeNew: CGFloat = 43
+    static let cancelBackgroundSize: CGFloat = 15
 
     // MARK: Lifecycle
     init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat) {
@@ -237,7 +238,6 @@ final class QuoteView : UIView {
             labelStackView.isLayoutMarginsRelativeArrangement = true
             labelStackView.layoutMargins = UIEdgeInsets(top: labelStackViewVMargin, left: 0, bottom: labelStackViewVMargin, right: 0)
             mainStackView.addArrangedSubview(labelStackView)
-//            mainStackView.addArrangedSubview(bodyLabel)
         }
         // Cancel button
         let cancelButton = UIButton(type: .custom)
@@ -246,6 +246,12 @@ final class QuoteView : UIView {
         cancelButton.set(.width, to: cancelButtonSizeNew)
         cancelButton.set(.height, to: cancelButtonSizeNew)
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
+        
+        let cancelBackgroundView = UIView()
+        cancelBackgroundView.backgroundColor = Colors.darkThemeTextBoxColor.withAlphaComponent(0.5)
+        cancelBackgroundView.set(.width, to: QuoteView.cancelBackgroundSize)
+        cancelBackgroundView.set(.height, to: QuoteView.cancelBackgroundSize)
+        cancelBackgroundView.layer.cornerRadius = (QuoteView.cancelBackgroundSize / 2)
         
         if hasAttachments {
             let spacer = UIView()
@@ -299,9 +305,11 @@ final class QuoteView : UIView {
         contentView.set(.height, to: contentViewHeight)
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
+            addSubview(cancelBackgroundView)
             addSubview(cancelButton)
             cancelButton.pin(.top, to: .top, of: self, withInset: -5)
             cancelButton.pin(.right, to: .right, of: self, withInset: 5)
+            cancelBackgroundView.center(in: cancelButton)
         }
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
