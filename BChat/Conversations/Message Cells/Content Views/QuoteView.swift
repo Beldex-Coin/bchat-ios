@@ -248,7 +248,7 @@ final class QuoteView : UIView {
         cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         
         let cancelBackgroundView = UIView()
-        cancelBackgroundView.backgroundColor = Colors.darkThemeTextBoxColor.withAlphaComponent(0.5)
+        cancelBackgroundView.backgroundColor = Colors.homeScreenFloatingbackgroundColor.withAlphaComponent(0.5)
         cancelBackgroundView.set(.width, to: QuoteView.cancelBackgroundSize)
         cancelBackgroundView.set(.height, to: QuoteView.cancelBackgroundSize)
         cancelBackgroundView.layer.cornerRadius = (QuoteView.cancelBackgroundSize / 2)
