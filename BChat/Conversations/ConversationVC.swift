@@ -1226,10 +1226,21 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
         }
         
+        var constraintValue: CGFloat = 4
         let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
         if inputTextViewLines >= 2 {
-            bottomConstraintOfAttachmentButton = inputTextViewLines == 3 ? 16 :
-                                                    inputTextViewLines >= 4 ? 28 : 4
+            constraintValue = inputTextViewLines == 3 ? 16 :
+                                                    inputTextViewLines >= 4 ? 28 : constraintValue
+        }
+        
+        if snInputView.quoteDraftInfo != nil {
+            constraintValue += 68
+        }
+
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                bottomConstraintOfAttachmentButton = constraintValue
+            }
         }
     }
     

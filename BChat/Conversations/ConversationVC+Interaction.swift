@@ -933,15 +933,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
-        if quoteDraft.attachmentStream != nil {
-            bottomConstraintOfAttachmentButton = 72
-        } else {
-            bottomConstraintOfAttachmentButton = 60
-        }
         resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
         snInputView.becomeFirstResponder()
+        view.layoutIfNeeded()
     }
     
     func copy(_ viewItem: ConversationViewItem) {
@@ -1170,6 +1166,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         bottomConstraintOfAttachmentButton = 4
         resetAttachmentOptions()
         snInputView.quoteDraftInfo = nil
+        view.layoutIfNeeded()
     }
     
     func hideAttachmentExpandedButtons() {
@@ -1202,8 +1199,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func resetAttachmentOptions() {
-        snInputView.attachmentsButton.layoutIfNeeded()
-        snInputView.attachmentsButton.isExpanded = snInputView.attachmentsButton.isExpanded
+        DispatchQueue.main.async {
+            self.snInputView.attachmentsButton.layoutIfNeeded()
+            self.snInputView.attachmentsButton.isExpanded = self.snInputView.attachmentsButton.isExpanded
+            self.hideAttachmentExpandedButtons()
+        }
     }
     
     func showUserDetails(for bchatID: String) {
