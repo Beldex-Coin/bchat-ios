@@ -4,7 +4,7 @@ import UIKit
 import AVFoundation
 import BChatUIKit
 
-class ScanNewVC: BaseVC,OWSQRScannerDelegate,AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     /// Scanner View
     private lazy var scannerView: QRScannerView = {
