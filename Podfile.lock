@@ -132,9 +132,6 @@ PODS:
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
   - YYImage/Core (1.0.4)
-  - ZXingObjC (3.6.9):
-    - ZXingObjC/All (= 3.6.9)
-  - ZXingObjC/All (3.6.9)
 
 DEPENDENCIES:
   - AFNetworking
@@ -159,7 +156,6 @@ DEPENDENCIES:
   - WebRTC-lib
   - YapDatabase/SQLCipher (from `https://github.com/oxen-io/session-ios-yap-database.git`, branch `signal-release`)
   - YYImage (from `https://github.com/signalapp/YYImage`)
-  - ZXingObjC
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -183,7 +179,6 @@ SPEC REPOS:
     - SwiftProtobuf
     - SwiftyRSA
     - WebRTC-lib
-    - ZXingObjC
 
 EXTERNAL SOURCES:
   Curve25519Kit:
@@ -243,8 +238,7 @@ SPEC CHECKSUMS:
   WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
-  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 9b64a63e365977cff7e32294c77fd32f1c7ad6db
+PODFILE CHECKSUM: 9a99f99747c2fa9ca5bd85c149cd1d017c6bc527
 
 COCOAPODS: 1.15.2

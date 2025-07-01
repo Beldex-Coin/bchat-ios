@@ -280,15 +280,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         preconditionFailure("Use init(thread:) instead.")
     }
     
-    var someImageView: UIImageView = {
-        let theImageView = UIImageView()
-        theImageView.layer.masksToBounds = true
-        let logoName = isLightMode ? "svg_light" : "svg_dark"
-        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-        theImageView.image = namSvgImgVar.uiImage
-        return theImageView
-    }()
-    
     private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     private var isSyncingUI = false {
         didSet {
@@ -804,27 +795,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     /// View didload
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Gradient
-//        setUpGradientBackground()
+        
         // Nav bar
         setUpNavBarStyle()
         navigationItem.titleView = titleView
         updateNavBarButtons()
         
-        //adding Bg Image
-//        view.addSubview(someImageView)
-//        someImageView.pin(to: view)
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         
-        // Constraints
         view.addSubview(messagesTableView)
-//        messagesTableView.pin(to: view)
-//        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
         tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
         messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
         messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
         messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
-        
         messagesTableView.layer.cornerRadius = 20
         messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         

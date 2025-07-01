@@ -76,7 +76,6 @@
 		4C586926224FAB83003FD070 /* AVAudioSession+OWS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C586925224FAB83003FD070 /* AVAudioSession+OWS.m */; };
 		4C63CC00210A620B003AE45C /* SignalTSan.supp in Resources */ = {isa = PBXBuildFile; fileRef = 4C63CBFF210A620B003AE45C /* SignalTSan.supp */; };
 		4C6F527C20FFE8400097DEEE /* SignalUBSan.supp in Resources */ = {isa = PBXBuildFile; fileRef = 4C6F527B20FFE8400097DEEE /* SignalUBSan.supp */; };
-		4C9CA25D217E676900607C63 /* ZXingObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C9CA25C217E676900607C63 /* ZXingObjC.framework */; };
 		4CA46F4C219CCC630038ABDE /* CaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA46F4B219CCC630038ABDE /* CaptionView.swift */; };
 		4CA485BB2232339F004B9E7D /* PhotoCaptureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA485BA2232339F004B9E7D /* PhotoCaptureViewController.swift */; };
 		4CC1ECFB211A553000CC13BE /* AppUpdateNag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC1ECFA211A553000CC13BE /* AppUpdateNag.swift */; };
@@ -87,8 +86,6 @@
 		6007B5B628A4D75F0004BD61 /* BChatWalletBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */; };
 		6007B5B828A4D77D0004BD61 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B728A4D77D0004BD61 /* Wallet.swift */; };
 		6007B5BA28A4D7920004BD61 /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5B928A4D7920004BD61 /* WalletService.swift */; };
-		6007B5CC28ABC5C80004BD61 /* svg_dark.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5CA28ABC5C70004BD61 /* svg_dark.svg */; };
-		6007B5CD28ABC5C80004BD61 /* svg_light.svg in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5CB28ABC5C70004BD61 /* svg_light.svg */; };
 		6007B5D128ABC6420004BD61 /* UserDefaultsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6007B5D028ABC6420004BD61 /* UserDefaultsData.swift */; };
 		6007B5DA28ABC75B0004BD61 /* bchatlogo_animation.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5D328ABC7540004BD61 /* bchatlogo_animation.gif */; };
 		6007B5DB28ABC75B0004BD61 /* Pop_up_3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5D428ABC7550004BD61 /* Pop_up_3.gif */; };
@@ -1256,7 +1253,6 @@
 		4C586925224FAB83003FD070 /* AVAudioSession+OWS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AVAudioSession+OWS.m"; sourceTree = "<group>"; };
 		4C63CBFF210A620B003AE45C /* SignalTSan.supp */ = {isa = PBXFileReference; lastKnownFileType = text; path = SignalTSan.supp; sourceTree = "<group>"; };
 		4C6F527B20FFE8400097DEEE /* SignalUBSan.supp */ = {isa = PBXFileReference; lastKnownFileType = text; path = SignalUBSan.supp; sourceTree = "<group>"; };
-		4C9CA25C217E676900607C63 /* ZXingObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZXingObjC.framework; path = ThirdParty/Carthage/Build/iOS/ZXingObjC.framework; sourceTree = "<group>"; };
 		4CA46F4B219CCC630038ABDE /* CaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptionView.swift; sourceTree = "<group>"; };
 		4CA485BA2232339F004B9E7D /* PhotoCaptureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureViewController.swift; sourceTree = "<group>"; };
 		4CC1ECFA211A553000CC13BE /* AppUpdateNag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateNag.swift; sourceTree = "<group>"; };
@@ -1268,8 +1264,6 @@
 		6007B5B428A4D75F0004BD61 /* BChatWalletBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BChatWalletBuilder.swift; sourceTree = "<group>"; };
 		6007B5B728A4D77D0004BD61 /* Wallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		6007B5B928A4D7920004BD61 /* WalletService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
-		6007B5CA28ABC5C70004BD61 /* svg_dark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = svg_dark.svg; sourceTree = "<group>"; };
-		6007B5CB28ABC5C70004BD61 /* svg_light.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = svg_light.svg; sourceTree = "<group>"; };
 		6007B5D028ABC6420004BD61 /* UserDefaultsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsData.swift; sourceTree = "<group>"; };
 		6007B5D328ABC7540004BD61 /* bchatlogo_animation.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = bchatlogo_animation.gif; sourceTree = "<group>"; };
 		6007B5D428ABC7550004BD61 /* Pop_up_3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Pop_up_3.gif; sourceTree = "<group>"; };
@@ -2311,7 +2305,6 @@
 				455A16DE1F1FEA0000F86704 /* MetalKit.framework in Frameworks */,
 				45847E871E4283C30080EAB3 /* Intents.framework in Frameworks */,
 				4520D8D51D417D8E00123472 /* Photos.framework in Frameworks */,
-				4C9CA25D217E676900607C63 /* ZXingObjC.framework in Frameworks */,
 				B6B226971BE4B7D200860F4D /* ContactsUI.framework in Frameworks */,
 				45BD60821DE9547E00A8F436 /* Contacts.framework in Frameworks */,
 				B6FE7EB71ADD62FA00A6D22F /* PushKit.framework in Frameworks */,
@@ -2554,8 +2547,6 @@
 				6007B5D528ABC7560004BD61 /* gifAnimation_dark.gif */,
 				6007B5D328ABC7540004BD61 /* bchatlogo_animation.gif */,
 				6007B5D428ABC7550004BD61 /* Pop_up_3.gif */,
-				6007B5CA28ABC5C70004BD61 /* svg_dark.svg */,
-				6007B5CB28ABC5C70004BD61 /* svg_light.svg */,
 			);
 			path = SVGfiles;
 			sourceTree = "<group>";
@@ -4528,7 +4519,6 @@
 				C35E8AA22485C72300ACB629 /* SwiftCSV.framework */,
 				B847570023D568EB00759540 /* SignalServiceKit.framework */,
 				3496955F21A2FC8100DCFE74 /* CloudKit.framework */,
-				4C9CA25C217E676900607C63 /* ZXingObjC.framework */,
 				455A16DB1F1FEA0000F86704 /* Metal.framework */,
 				455A16DC1F1FEA0000F86704 /* MetalKit.framework */,
 				45847E861E4283C30080EAB3 /* Intents.framework */,
@@ -5107,7 +5097,6 @@
 				604BA2D529F63F5600C9A7A4 /* OpenSans-Regular.ttf in Resources */,
 				6042B18029EE548C005FC06B /* pulse-quiet.aifc in Resources */,
 				6042B16829EE548C005FC06B /* input.aifc in Resources */,
-				6007B5CD28ABC5C80004BD61 /* svg_light.svg in Resources */,
 				6098CA852A1DFDF5005A5502 /* webrtc_call_end.mp3 in Resources */,
 				6007B5DC28ABC75B0004BD61 /* gifAnimation_dark.gif in Resources */,
 				6042B17929EE548C005FC06B /* bamboo-quiet.aifc in Resources */,
@@ -5129,7 +5118,6 @@
 				B8D07405265C683300F77E07 /* ElegantIcons.ttf in Resources */,
 				B8FF8E7425C10FC3004D1F22 /* GeoLite2-Country-Locations-English in Resources */,
 				6045DC9629CAEEB800321B43 /* gifAnimation_white.gif in Resources */,
-				6007B5CC28ABC5C80004BD61 /* svg_dark.svg in Resources */,
 				C3CA3ABE255CDB0D00F4C6D4 /* portuguese.txt in Resources */,
 				6042B16429EE548C005FC06B /* keys.aifc in Resources */,
 				6042B17D29EE548C005FC06B /* note.aifc in Resources */,
@@ -5197,9 +5185,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -7338,7 +7330,7 @@
 				);
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-D DEBUG";
 				SDKROOT = iphoneos;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
@@ -7411,7 +7403,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "App Store Release";

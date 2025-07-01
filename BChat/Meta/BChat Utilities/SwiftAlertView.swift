@@ -215,7 +215,7 @@ public class SwiftAlertView: UIView {
     
     // show the alert view at center of screen
     public func show() {
-        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+        if let window = UIWindow.keyWindow {
             show(in: window)
         }
     }

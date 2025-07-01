@@ -100,15 +100,6 @@ final class HomeVC : BaseVC {
         return result
     }()
     
-    var someImageView: UIImageView = {
-        let theImageView = UIImageView()
-        theImageView.layer.masksToBounds = true
-        let logoName = isLightMode ? "svg_light" : "svg_dark"
-        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-        theImageView.image = namSvgImgVar.uiImage
-        return theImageView
-    }()
-    
     var hostType = HostManager.shared.hostType.hostValue
     var nodeArray = HostManager.shared.hostNet
     var randomNodeValue = ""
