@@ -27,7 +27,6 @@ abstract_target 'GlobalDependencies' do
     pod 'SVGKit'
     pod 'SwiftyRSA'
     pod 'Alamofire'
-    pod 'FSCalendar'
     pod 'DifferenceKit'
   end
   
