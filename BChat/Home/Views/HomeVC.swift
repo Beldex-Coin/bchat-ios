@@ -993,33 +993,20 @@ final class HomeVC : BaseVC {
         
         var rightBarButtonItems: [UIBarButtonItem] = []
         
-        
         let plusButton = UIButton(type: .custom)
         plusButton.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
         plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
-          let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
-        
+        let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         rightBarButtonItems.append(plusButtonBarItem)
-        
         
         // Right bar button item - search button
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchUI))
         rightBarButtonItem.accessibilityLabel = "Search button"
         rightBarButtonItem.isAccessibilityElement  = true
         rightBarButtonItems.append(rightBarButtonItem)
-        
-//        let wallet = UIButton(type: .custom)
-//        wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-//        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
-//        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
-//        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
-//        wallet.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
-//          let walletBarItem = UIBarButtonItem(customView: wallet)
-//
-//        rightBarButtonItems.append(walletBarItem)
         
         navigationItem.rightBarButtonItems = rightBarButtonItems
         setUpNavBarSessionHeading()

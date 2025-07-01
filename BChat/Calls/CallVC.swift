@@ -569,12 +569,12 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
         do {
             // Set the audio session to route audio to the speaker
             try audioSession.overrideOutputAudioPort(.speaker)
-            print("Audio output set to Speaker")
+            debugPrint("Audio output set to Speaker")
             internalSpeakerButton.isSelected = true
             let image = UIImage(named: "speaker_enable")
             speakerButton.setImage(image, for: .normal)
         } catch {
-            print("Failed to set audio output to speaker: \(error.localizedDescription)")
+            debugPrint("Failed to set audio output to speaker: \(error.localizedDescription)")
         }
     }
     
@@ -592,7 +592,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
                 if let bluetoothInput = availableInputs.first(where: { $0.portType == .bluetoothHFP || $0.portType == .bluetoothA2DP || $0.portType == .bluetoothLE}) {
                     // If Bluetooth is available, use it
                     try audioSession.setPreferredInput(bluetoothInput)
-                    print("Audio routed to Bluetooth.")
+                    debugPrint("Audio routed to Bluetooth.")
                     bluetoothButton.isSelected = true
                     let image = UIImage(named: "speaker_bluetooth")
                     speakerButton.setImage(image, for: .normal)
@@ -600,11 +600,11 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
                     isBluetoothConnectedWithDevice = true
                 } else {
                     isSpeakerEnabled ? setAudioOutputToSpeaker() : disableSpeaker()
-                    print("Audio routed to default.")
+                    debugPrint("Audio routed to default.")
                 }
             }
         } catch {
-            print("Failed to set audio session: \(error)")
+            debugPrint("Failed to set audio session: \(error)")
         }
     }
     
@@ -732,6 +732,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
         self.bChatCall.hasStartedConnectingDidChange = {
             DispatchQueue.main.async {
                 self.callDurationLabel.text = "Connecting..."
+                self.setAudioOutputToBluetoothOrSpeaker()
                 NotificationCenter.default.post(name: .callConnectingTapNotification, object: nil)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 }, completion: nil)
@@ -910,19 +911,19 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     
     func alertOnCallEnding() {
         guard let url = Bundle.main.url(forResource: "webrtc_call_end", withExtension: "mp3") else {
-            print("error");
+            debugPrint("error");
             return;
         }
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, options: AVAudioSession.CategoryOptions.mixWithOthers);
             player = try AVAudioPlayer(contentsOf: url);
             guard let player = player else {
-                print("error");
+                debugPrint("error");
                 return;
             }
             player.play();
         } catch let error {
-            print(error.localizedDescription);
+            debugPrint(error.localizedDescription);
         }
     }
     
@@ -1018,7 +1019,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
             let image = UIImage(named: "speaker_bluetooth")
             speakerButton.setImage(image, for: .normal)
         } catch {
-            print("Error setting up audio session: \(error.localizedDescription)")
+            debugPrint("Error setting up audio session: \(error.localizedDescription)")
         }
     }
     
@@ -1031,7 +1032,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
             let image = UIImage(named: "speaker_disable")
             speakerButton.setImage(image, for: .normal)
         } catch {
-            print("Failed to set audio output to speaker: \(error.localizedDescription)")
+            debugPrint("Failed to set audio output to speaker: \(error.localizedDescription)")
         }
     }
     
@@ -1061,7 +1062,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
                 }
             }
         } catch {
-            print("Failed to set audio session: \(error)")
+            debugPrint("Failed to set audio session: \(error)")
         }
     }
     
@@ -1110,20 +1111,20 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
         
         switch reason {
             case .newDeviceAvailable:
-                print("New audio device connected.")
+                debugPrint("New audio device connected.")
             case .oldDeviceUnavailable:
-                print("Audio device disconnected (e.g., Bluetooth).")
+                debugPrint("Audio device disconnected (e.g., Bluetooth).")
                 disableSpeaker()
                 bluetoothButton.isHidden = true
                 isBluetoothConnectedWithDevice = false
             case .categoryChange:
-                print("Audio session category changed.")
+                debugPrint("Audio session category changed.")
             case .override:
-                print("Audio session override.")
+                debugPrint("Audio session override.")
             case .wakeFromSleep:
-                print("Audio session woke from sleep.")
+                debugPrint("Audio session woke from sleep.")
             @unknown default:
-                print("Unknown audio route change.")
+                debugPrint("Unknown audio route change.")
         }
     }
 
