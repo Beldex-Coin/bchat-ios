@@ -610,7 +610,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let firstTouch = touches.first {
-            let hitView = self.view.hitTest(firstTouch.location(in: self.view), with: event)
+            let _ = self.view.hitTest(firstTouch.location(in: self.view), with: event)
             if !speakerOptionStackView.isHidden {
                 speakerOptionStackView.isHidden = true
             }

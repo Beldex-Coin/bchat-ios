@@ -1209,11 +1209,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
         }
         
+        debugPrint("quote ----")
         var constraintValue: CGFloat = 4
         let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
         if inputTextViewLines >= 2 {
             constraintValue = inputTextViewLines == 3 ? 16 :
-                                                    inputTextViewLines >= 4 ? 28 : constraintValue
+                                inputTextViewLines >= 4 ? 28 : constraintValue
         }
         
         if snInputView.quoteDraftInfo != nil {
