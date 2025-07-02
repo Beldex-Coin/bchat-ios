@@ -2,7 +2,6 @@ import BChatUIKit
 import AVFAudio
 import BChatMessagingKit
 import UIKit
-import SVGKit
 import PromiseKit
 import BChatUtilitiesKit
 import NVActivityIndicatorView

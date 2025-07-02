@@ -60,8 +60,6 @@ PODS:
   - SQLCipher/common (4.6.1)
   - SQLCipher/standard (4.6.1):
     - SQLCipher/common
-  - SVGKit (3.0.0):
-    - CocoaLumberjack (~> 3.0)
   - SwiftProtobuf (1.5.0)
   - SwiftyRSA (1.7.0):
     - SwiftyRSA/ObjC (= 1.7.0)
@@ -150,7 +148,6 @@ DEPENDENCIES:
   - SignalCoreKit (from `https://github.com/oxen-io/session-ios-core-kit`, branch `session-version`)
   - SocketRocket (~> 0.5.1)
   - Sodium (~> 0.9.1)
-  - SVGKit
   - SwiftProtobuf (~> 1.5.0)
   - SwiftyRSA
   - WebRTC-lib
@@ -175,7 +172,6 @@ SPEC REPOS:
     - SocketRocket
     - Sodium
     - SQLCipher
-    - SVGKit
     - SwiftProtobuf
     - SwiftyRSA
     - WebRTC-lib
@@ -232,13 +228,12 @@ SPEC CHECKSUMS:
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
-  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
   WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
 
-PODFILE CHECKSUM: 9a99f99747c2fa9ca5bd85c149cd1d017c6bc527
+PODFILE CHECKSUM: 923430f55dc6d3d7f743bf348bdf31f2bdedcafd
 
 COCOAPODS: 1.15.2

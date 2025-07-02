@@ -1,7 +1,6 @@
 
 import UIKit
 import SideMenu
-import SVGKit
 import BChatUIKit
 import Alamofire
 import SignalUtilitiesKit

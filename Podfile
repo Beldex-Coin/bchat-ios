@@ -23,7 +23,6 @@ abstract_target 'GlobalDependencies' do
     pod 'YYImage', git: 'https://github.com/signalapp/YYImage'
     pod 'Mantle', git: 'https://github.com/signalapp/Mantle', branch: 'signal-master'
     pod 'SideMenu'
-    pod 'SVGKit'
     pod 'SwiftyRSA'
     pod 'Alamofire'
     pod 'DifferenceKit'
