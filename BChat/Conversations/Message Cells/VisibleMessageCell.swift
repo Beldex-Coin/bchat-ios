@@ -544,7 +544,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 
                     let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false {
+                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false || (widthOfLastLine > Int(maxWidthOfLine) - 10 && viewItem.quotedReply == nil) {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -562,7 +562,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeRightLabel.text = description
                         
                         
-                        if message.body?.count ?? 0 <= 26 {
+                        if message.body?.count ?? 0 <= 26 || (widthOfLastLine < 190 && message.body?.count ?? 0 <= 31) {
                             let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                             stackViewForMessageAndTime.axis = .horizontal
                             stackViewForMessageAndTime.spacing = 5
@@ -582,24 +582,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                             messageTimeRightLabel.pin(.bottom, to: .bottom, of: backgroundView, withInset: 0)
                             stackView.addArrangedSubview(backgroundView)
                         }
-//                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
-//                        stackViewForMessageAndTime.axis = .horizontal
-//                        stackViewForMessageAndTime.spacing = 5
-//                        stackViewForMessageAndTime.alignment = .bottom
-//                                                
-//                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
-//                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
-//                                                
-//                        
-//                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+
                         // Constraints
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: 4)
-                        
-//                        messageTimeRightLabel.isHidden = true
-//                        if viewItem.isLastInCluster {
-//                            messageTimeRightLabel.isHidden = false
-//                        }
                         
                     } else {
                         
@@ -615,15 +601,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeBottomLabel.isHidden = false
                         stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
                         snContentView.addSubview(stackView)
-//                        stackView.pin(to: snContentView, withInset: inset)
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
                         stackView.pin(.left, to: .left, of: snContentView, withInset: 2)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
                         stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
-//                        messageTimeBottomLabel.isHidden = true
-//                        if viewItem.isLastInCluster {
-//                            messageTimeBottomLabel.isHidden = false
-//                        }
                     }
                 }
             case .mediaMessage:
