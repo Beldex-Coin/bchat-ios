@@ -536,7 +536,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
                     // Body text view
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     let maxWidthOfTextViewText = widthOfLastLine(in: bodyTextView)
                     let maxWidthOfLine = maxWidth - 10
@@ -544,7 +544,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 
                     let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false || (widthOfLastLine > Int(maxWidthOfLine) - 10 && viewItem.quotedReply == nil) {
+                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false && (message.body?.count ?? 0 <= 26) {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -562,7 +562,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeRightLabel.text = description
                         
                         
-                        if message.body?.count ?? 0 <= 26 || (widthOfLastLine < 190 && message.body?.count ?? 0 <= 31) {
+                        if message.body?.count ?? 0 <= 26 || (Int(maxWidthOfTextViewText) < Int(maxWidthOfLine) && message.body?.count ?? 0 <= 31) {
                             let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                             stackViewForMessageAndTime.axis = .horizontal
                             stackViewForMessageAndTime.spacing = 5
@@ -697,8 +697,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 deletedMessageView.pin(to: snContentView)
             default: return
         }
-        
-        //messageTimeBottomLabel.isHidden = true
     }
     
     override func layoutSubviews() {
@@ -1080,7 +1078,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isUserInteractionEnabled = true
         result.delegate = delegate
         result.linkTextAttributes = [ .foregroundColor : textColor, .underlineStyle : NSUnderlineStyle.single.rawValue ]
-        let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
+        let availableSpace = CGSize(width: availableWidth + 10, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
