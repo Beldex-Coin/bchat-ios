@@ -530,13 +530,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
-                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
                         stackView.addArrangedSubview(quoteViewContainer)
                     }
                     // Body text view
-                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
+                    let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     let maxWidthOfTextViewText = widthOfLastLine(in: bodyTextView)
                     let maxWidthOfLine = maxWidth - 10
@@ -602,7 +602,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
                         snContentView.addSubview(stackView)
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
-                        stackView.pin(.left, to: .left, of: snContentView, withInset: 2)
+                        stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
                         stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
                     }
@@ -1083,15 +1083,15 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
         if viewItem.quotedReply != nil && attachments.isEmpty {
-            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
-            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 45 - 30
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
-                result.set(.width, to: width > maxWidth ? maxWidth : width)
+                result.set(.width, to: size.width > maxWidth ? size.width - 4 : maxWidth)
             } else {
                 if width > size.width {
                     result.set(.width, to: width + 50)
                 } else {
-                    result.set(.width, to: size.width > 85 ? size.width : 85)
+                    result.set(.width, to: size.width > 85 ? size.width - 4 : 85)
                 }
             }
         }
