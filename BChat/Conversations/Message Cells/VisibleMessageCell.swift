@@ -604,7 +604,11 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
                         stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
-                        stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+                        if message.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+                        } else {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -6)
+                        }
                     }
                 }
             case .mediaMessage:
@@ -1086,14 +1090,17 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
-                result.set(.width, to: size.width > maxWidth ? size.width - 4 : maxWidth)
+                result.set(.width, to: size.width > maxWidth ? size.width : maxWidth)
             } else {
                 if width > size.width {
                     result.set(.width, to: width + 50)
                 } else {
-                    result.set(.width, to: size.width > 85 ? size.width - 4 : 85)
+                    result.set(.width, to: size.width > 85 ? size.width : 85)
                 }
             }
+        }
+        if viewItem.quotedReply == nil && attachments.isEmpty {
+            result.set(.width, to: size.width)
         }
         return result
     }
