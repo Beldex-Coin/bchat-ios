@@ -530,7 +530,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
-                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
                         stackView.addArrangedSubview(quoteViewContainer)
@@ -544,7 +544,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
 
                     let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false || (widthOfLastLine > Int(maxWidthOfLine) - 10 && viewItem.quotedReply == nil) {
+                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false && (message.body?.count ?? 0 <= 26) {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -562,7 +562,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeRightLabel.text = description
                         
                         
-                        if message.body?.count ?? 0 <= 26 || (widthOfLastLine < 190 && message.body?.count ?? 0 <= 31) {
+                        if message.body?.count ?? 0 <= 26 || (Int(maxWidthOfTextViewText) < Int(maxWidthOfLine) && message.body?.count ?? 0 <= 31) {
                             let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                             stackViewForMessageAndTime.axis = .horizontal
                             stackViewForMessageAndTime.spacing = 5
@@ -602,9 +602,13 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
                         snContentView.addSubview(stackView)
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
-                        stackView.pin(.left, to: .left, of: snContentView, withInset: 2)
+                        stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
-                        stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+                        if message.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+                        } else {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -6)
+                        }
                     }
                 }
             case .mediaMessage:
@@ -697,8 +701,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 deletedMessageView.pin(to: snContentView)
             default: return
         }
-        
-        //messageTimeBottomLabel.isHidden = true
     }
     
     override func layoutSubviews() {
@@ -1080,15 +1082,15 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isUserInteractionEnabled = true
         result.delegate = delegate
         result.linkTextAttributes = [ .foregroundColor : textColor, .underlineStyle : NSUnderlineStyle.single.rawValue ]
-        let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
+        let availableSpace = CGSize(width: availableWidth + 10, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
         if viewItem.quotedReply != nil && attachments.isEmpty {
-            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
-            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 45 - 30
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
-                result.set(.width, to: width > maxWidth ? maxWidth : width)
+                result.set(.width, to: size.width > maxWidth ? size.width : maxWidth)
             } else {
                 if width > size.width {
                     result.set(.width, to: width + 50)
@@ -1096,6 +1098,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     result.set(.width, to: size.width > 85 ? size.width : 85)
                 }
             }
+        }
+        if viewItem.quotedReply == nil && attachments.isEmpty {
+            result.set(.width, to: size.width)
         }
         return result
     }
