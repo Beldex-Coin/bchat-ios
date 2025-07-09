@@ -195,6 +195,7 @@ final class VoiceMessageRecordingView : UIView {
         recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             self?.updateDurationLabel()
         }
+        RunLoop.main.add(recordingTimer!, forMode: .common)
     }
 
     override init(frame: CGRect) {
@@ -285,10 +286,12 @@ final class VoiceMessageRecordingView : UIView {
 
     // MARK: Updating
     @objc private func updateDurationLabel() {
-        timerSecond += 1
-        let interval = Date().timeIntervalSince(recordingStartDate)
-        durationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
-        audioDurationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+        DispatchQueue.main.async {
+            self.timerSecond += 1
+            let interval = Date().timeIntervalSince(self.recordingStartDate)
+            self.durationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+            self.audioDurationLabel.text = OWSFormat.formatDurationSeconds(Int(interval))
+        }
         
         // For Resume Audio Don't Delete
 //        getSecondsIntoMinutesAndSecondFormate(seconds: self.timerSecond) { minutes, seconds in
