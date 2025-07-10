@@ -509,7 +509,6 @@
 		B886B4A92398BA1500211ABE /* QRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B886B4A82398BA1500211ABE /* QRCode.swift */; };
 		B88A1AC725C90A4700E6D421 /* TypingIndicatorInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34B6A904218B4C90007C4606 /* TypingIndicatorInteraction.swift */; };
 		B88FA7B826045D100049422F /* OpenGroupAPIV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88FA7B726045D100049422F /* OpenGroupAPIV2.swift */; };
-		B88FA7F2260C3EB10049422F /* OpenGroupSuggestionGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88FA7F1260C3EB10049422F /* OpenGroupSuggestionGrid.swift */; };
 		B88FA7FB26114EA70049422F /* Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88FA7FA26114EA70049422F /* Hex.swift */; };
 		B893063F2383961A005EAA8E /* ScanQRCodeWrapperVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B893063E2383961A005EAA8E /* ScanQRCodeWrapperVC.swift */; };
 		B894D0752339EDCF00B4D94D /* NukeDataModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B894D0742339EDCF00B4D94D /* NukeDataModal.swift */; };
@@ -529,8 +528,6 @@
 		B8C2B332256376F000551B4D /* ThreadUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B8C2B331256376F000551B4D /* ThreadUtil.m */; };
 		B8C2B3442563782400551B4D /* ThreadUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = B8C2B33B2563770800551B4D /* ThreadUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B8CCF63723961D6D0091D419 /* NewDMVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CCF63623961D6D0091D419 /* NewDMVC.swift */; };
-		B8CCF63F23975CFB0091D419 /* JoinOpenGroupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CCF63E23975CFB0091D419 /* JoinOpenGroupVC.swift */; };
-		B8CCF6432397711F0091D419 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CCF6422397711F0091D419 /* SettingsVC.swift */; };
 		B8D07405265C683300F77E07 /* ElegantIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8D07404265C683300F77E07 /* ElegantIcons.ttf */; };
 		B8D07406265C683A00F77E07 /* ElegantIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8D07404265C683300F77E07 /* ElegantIcons.ttf */; };
 		B8D0A25925E367AC00C1835E /* Notification+MessageReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8D0A25825E367AC00C1835E /* Notification+MessageReceiver.swift */; };
@@ -1685,7 +1682,6 @@
 		B886B4A62398B23E00211ABE /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
 		B886B4A82398BA1500211ABE /* QRCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCode.swift; sourceTree = "<group>"; };
 		B88FA7B726045D100049422F /* OpenGroupAPIV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenGroupAPIV2.swift; sourceTree = "<group>"; };
-		B88FA7F1260C3EB10049422F /* OpenGroupSuggestionGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenGroupSuggestionGrid.swift; sourceTree = "<group>"; };
 		B88FA7FA26114EA70049422F /* Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hex.swift; sourceTree = "<group>"; };
 		B893063E2383961A005EAA8E /* ScanQRCodeWrapperVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRCodeWrapperVC.swift; sourceTree = "<group>"; };
 		B894D0742339EDCF00B4D94D /* NukeDataModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NukeDataModal.swift; sourceTree = "<group>"; };
@@ -1706,8 +1702,6 @@
 		B8C2B331256376F000551B4D /* ThreadUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreadUtil.m; sourceTree = "<group>"; };
 		B8C2B33B2563770800551B4D /* ThreadUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreadUtil.h; sourceTree = "<group>"; };
 		B8CCF63623961D6D0091D419 /* NewDMVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewDMVC.swift; sourceTree = "<group>"; };
-		B8CCF63E23975CFB0091D419 /* JoinOpenGroupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinOpenGroupVC.swift; sourceTree = "<group>"; };
-		B8CCF6422397711F0091D419 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		B8D07404265C683300F77E07 /* ElegantIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ElegantIcons.ttf; sourceTree = "<group>"; };
 		B8D0A25825E367AC00C1835E /* Notification+MessageReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Notification+MessageReceiver.swift"; path = "BChatMessagingKit/Sending & Receiving/Notification+MessageReceiver.swift"; sourceTree = SOURCE_ROOT; };
 		B8D0A26825E4A2C200C1835E /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
@@ -2623,7 +2617,6 @@
 				C36096BA25AD1B14008B62B2 /* Media Viewing & Editing */,
 				C36096BB25AD1BBB008B62B2 /* Notifications */,
 				C360968D25AD16B4008B62B2 /* Onboarding */,
-				C360969B25AD180B008B62B2 /* Open Groups */,
 				C360969A25AD17E3008B62B2 /* Path */,
 				C360969125AD1765008B62B2 /* Settings */,
 				B8CCF63B239757C10091D419 /* Shared */,
@@ -3859,7 +3852,6 @@
 				7B13E1EA2811138200BD4F64 /* PrivacySettingsTableViewController.swift */,
 				B886B4A62398B23E00211ABE /* QRCodeVC.swift */,
 				B86BD08523399CEF000F5AE3 /* SeedModal.swift */,
-				B8CCF6422397711F0091D419 /* SettingsVC.swift */,
 				7B7CB18A270591630079FF93 /* ShareLogsModal.swift */,
 			);
 			path = Settings;
@@ -3872,15 +3864,6 @@
 				B879D448247E1BE300DB3608 /* PathVC.swift */,
 			);
 			path = Path;
-			sourceTree = "<group>";
-		};
-		C360969B25AD180B008B62B2 /* Open Groups */ = {
-			isa = PBXGroup;
-			children = (
-				B8CCF63E23975CFB0091D419 /* JoinOpenGroupVC.swift */,
-				B88FA7F1260C3EB10049422F /* OpenGroupSuggestionGrid.swift */,
-			);
-			path = "Open Groups";
 			sourceTree = "<group>";
 		};
 		C360969C25AD18BA008B62B2 /* Secret Groups */ = {
@@ -5929,7 +5912,6 @@
 				7BA6890D27325CCC00EFC32F /* BChatCallManager+CXCallController.swift in Sources */,
 				C374EEEB25DA3CA70073A857 /* ConversationTitleView.swift in Sources */,
 				8A69082C2D83D814005B63C1 /* ReactionListSheet.swift in Sources */,
-				B88FA7F2260C3EB10049422F /* OpenGroupSuggestionGrid.swift in Sources */,
 				8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */,
 				604BA2DE29F7974900C9A7A4 /* CustomAlertController.swift in Sources */,
 				6098CA682A1DCC42005A5502 /* BeldexWalletListener.m in Sources */,
@@ -5983,7 +5965,6 @@
 				6098CA6A2A1DCC42005A5502 /* BChatWalletWrapper.mm in Sources */,
 				6098CA482A1DCAD0005A5502 /* Helper.swift in Sources */,
 				6098CA7F2A1DCD44005A5502 /* UIView + Extension.swift in Sources */,
-				B8CCF63F23975CFB0091D419 /* JoinOpenGroupVC.swift in Sources */,
 				8A4767602D56338100BF491F /* Emoji+SkinTones.swift in Sources */,
 				34ABC0E421DD20C500ED9469 /* ConversationMessageMapping.swift in Sources */,
 				45B5360E206DD8BB00D61655 /* UIResponder+OWS.swift in Sources */,
@@ -5995,7 +5976,6 @@
 				7B7CB190270FB2150079FF93 /* MiniCallView.swift in Sources */,
 				B875885A264503A6000E60D0 /* JoinOpenGroupModal.swift in Sources */,
 				817314782B4FEB410020E333 /* NewClearDataVC.swift in Sources */,
-				B8CCF6432397711F0091D419 /* SettingsVC.swift in Sources */,
 				60505E8529F7CB1F00B0C4E5 /* SwiftAlertView.swift in Sources */,
 				6049BF052B62229A003DD410 /* AboutNewVC.swift in Sources */,
 				7B13E1E92810F01300BD4F64 /* BChatCallManager+Action.swift in Sources */,
