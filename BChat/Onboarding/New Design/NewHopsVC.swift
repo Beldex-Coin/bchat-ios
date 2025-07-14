@@ -187,6 +187,8 @@ class NewHopsVC: BaseVC {
     }()
     
     var count = 0
+    static let dotSize = CGFloat(8)
+    static let expandedDotSize = CGFloat(16)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -365,10 +367,10 @@ private final class LineView2 : UIView {
 
     private lazy var dotView: UIView = {
         let result = UIView()
-        result.layer.cornerRadius = PathVC.dotSize / 2
+        result.layer.cornerRadius = NewHopsVC.dotSize / 2
         let glowRadius: CGFloat = isLightMode ? 1 : 2
         let glowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
-        let glowConfiguration = UIView.CircularGlowConfiguration(size: PathVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
+        let glowConfiguration = UIView.CircularGlowConfiguration(size: NewHopsVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
         result.setCircularGlow(with: glowConfiguration)
         result.backgroundColor = Colors.bothGreenColor
         return result
@@ -404,7 +406,7 @@ private final class LineView2 : UIView {
         case .top, .middle: lineView.pin(.bottom, to: .bottom, of: self)
         case .bottom: lineView.bottomAnchor.constraint(equalTo: centerYAnchor).isActive = true
         }
-        let dotSize = PathVC.dotSize
+        let dotSize = NewHopsVC.dotSize
         dotViewWidthConstraint = dotView.set(.width, to: dotSize)
         dotViewHeightConstraint = dotView.set(.height, to: dotSize)
         addSubview(dotView)
@@ -431,14 +433,14 @@ private final class LineView2 : UIView {
     }
 
     private func expandDot() {
-        let newSize = PathVC.expandedDotSize
+        let newSize = NewHopsVC.expandedDotSize
         let newGlowRadius: CGFloat = isLightMode ? 4 : 6
         let newGlowColor = Colors.bothGreenColor.withAlphaComponent(0.6)
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
     }
 
     private func collapseDot() {
-        let newSize = PathVC.dotSize
+        let newSize = NewHopsVC.dotSize
         let newGlowRadius: CGFloat = isLightMode ? 1 : 2
         let newGlowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
