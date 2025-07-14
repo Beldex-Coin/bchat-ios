@@ -336,17 +336,6 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }    
-    
     private func commitChanges() {
         let popToConversationVC: (EditGroupViewController) -> Void = { editVC in
             if let conversationVC = editVC.navigationController!.viewControllers.first(where: { $0 is ConversationVC }) {

@@ -257,17 +257,6 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
         completion(selectedUsers)
         navigationController!.popViewController(animated: true)
     }
-
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filterDict.count

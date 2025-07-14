@@ -1002,18 +1002,6 @@ final class HomeVC : BaseVC {
         setUpNavBarSessionHeading()
     }
     
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
-    
-    
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {
         super.handleAppModeChangedNotification(notification)
         view.backgroundColor = Colors.cancelButtonBackgroundColor
