@@ -89,9 +89,7 @@ final class ContextMenuVC : UIViewController {
         blurView.pin(to: view)
         
         // Emoji view
-        //if !viewItem.isGroupThread {
-            view.addSubview(emojiBarView)
-        //}
+        view.addSubview(emojiBarView)
         
         // Snapshot
         snapshot.layer.shadowColor = UIColor.black.cgColor
@@ -99,24 +97,15 @@ final class ContextMenuVC : UIViewController {
         snapshot.layer.shadowOpacity = 0.4
         snapshot.layer.shadowRadius = 4
         view.addSubview(snapshot)
-//        snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
         if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
             snapshot.centerWithInset(.vertical, in: view, inset: -40)
         } else {
             if UIScreen.main.bounds.height - frame.origin.y < 120 {
                 snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
             } else {
-//                if (snapshot.height() - 40) < (UIScreen.main.bounds.height - frame.origin.y) {
-//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - snapshot.height() + 20)
-//                } else {
-//                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y)
-//                }
-                
                 snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
             }
         }
-//        snapshot.set(.width, to: frame.width)
-//        snapshot.set(.height, to: frame.height)
         if snapshot.height > 440 {
             if frame.origin.x < 30 {
                 snapshot.pin(.left, to: .left, of: view, withInset: frame.origin.x)
@@ -158,7 +147,6 @@ final class ContextMenuVC : UIViewController {
         let menuHeight = CGFloat(actionViews.count) * ContextMenuVC.actionViewHeight
         let spacing = Values.smallSpacing
         menuView.set(.height, to: CGFloat(actionViews.count) * 33)
-        //let margin = max(UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.last { $0.isKeyWindow }?.safeAreaInsets.bottom ?? 0, Values.mediumSpacing)
         let margin = max(UIWindow.keyWindow?.safeAreaInsets.bottom  ?? 0, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin && snapshot.height < 440 {
             menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)

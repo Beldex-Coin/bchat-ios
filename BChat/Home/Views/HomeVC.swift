@@ -1206,7 +1206,6 @@ final class HomeVC : BaseVC {
             }, completion: nil)
         }
     }
-    
 }
 
 extension HomeVC: BeldexWalletDelegate {
