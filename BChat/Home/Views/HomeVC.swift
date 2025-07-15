@@ -1110,36 +1110,8 @@ final class HomeVC : BaseVC {
     }
     
     @objc private func showWallet() {
-//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-//            // MARK: - Old flow (without wallet)
-//            if SaveUserDefaultsData.israndomUUIDPassword == "" {
-//                let vc = EnableWalletVC()
-//                navigationController!.pushViewController(vc, animated: true)
-//                return
-//            }
-//            // MARK: - New flow (with wallet)
-//            if SSKPreferences.areWalletEnabled {
-//                if SaveUserDefaultsData.WalletPassword.isEmpty {
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingWallet = true
-//                    vc.isVerifyPassword = true
-//                    navigationController!.pushViewController(vc, animated: true)
-//                } else {
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingWallet = true
-//                    vc.isVerifyPassword = true
-//                    navigationController!.pushViewController(vc, animated: true)
-//                }
-//            } else {
-//                let vc = EnableWalletVC()
-//                navigationController!.pushViewController(vc, animated: true)
-//            }
-//        } else {
-//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
-//        }
-
         let vc = NewChatVC()
-        navigationController!.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc(createNewDMFromDeepLink:)

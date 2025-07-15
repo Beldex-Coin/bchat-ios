@@ -213,6 +213,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     
+    func handleShareContactButtonTapped() {
+        self.hideInputAccessoryView()
+        let shareContactViewController = ShareContactViewController()
+        let navController = OWSNavigationController(rootViewController: shareContactViewController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true) {
+            self.isInputViewShow = false
+        }
+        self.showInputAccessoryView()
+    }
+    
     func handleGIFButtonTapped() {
         self.hideInputAccessoryView()
         if SSKPreferences.isGifPermissionEnabled {
