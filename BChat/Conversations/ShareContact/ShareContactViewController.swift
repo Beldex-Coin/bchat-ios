@@ -9,6 +9,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     private var searchTextField = UITextField()
     private var sendButton = UIButton()
     private var searchCloseImageView = UIImageView()
+    private let noContactStackView = UIStackView()
 
     private var contacts: [ShareContact] = []
     private var filteredContacts: [ShareContact] = []
@@ -22,6 +23,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         setupSearchTextFeild()
         setupTableView()
         setupSendButton()
+        setupNoResultsView()
         loadContacts()
     }
 
@@ -123,6 +125,38 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             sendButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
     }
+    
+    private func setupNoResultsView() {
+        // No Contact Image
+        let noContactImageView = UIImageView()
+        noContactImageView.image = UIImage(named: "no_contact")
+        noContactImageView.contentMode = .scaleAspectFit
+        
+        // No Contact Label
+        let noContactLabel = UILabel()
+        noContactLabel.text = "No Contact Found!"
+        noContactLabel.textColor = .lightGray
+        noContactLabel.font = UIFont.systemFont(ofSize: 16)
+        noContactLabel.textAlignment = .center
+        
+        // Stack View
+        noContactStackView.axis = .vertical
+        noContactStackView.alignment = .center
+        noContactStackView.spacing = 12
+        noContactStackView.translatesAutoresizingMaskIntoConstraints = false
+        noContactStackView.addArrangedSubview(noContactImageView)
+        noContactStackView.addArrangedSubview(noContactLabel)
+        noContactStackView.isHidden = true
+        view.addSubview(noContactStackView)
+        
+        // Constraints
+        NSLayoutConstraint.activate([
+            noContactStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noContactStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noContactImageView.heightAnchor.constraint(equalToConstant: 80),
+            noContactImageView.widthAnchor.constraint(equalToConstant: 80)
+        ])
+    }
 
     private func loadContacts() {
         contacts = [
@@ -135,7 +169,11 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person7", isSelected: false),
             ShareContact(name: "Santhosh", address: "bd603e758a61ea058ed........9b54465", imageName: "person8", isSelected: true)
         ]
+        
+        contacts = []
         filteredContacts = contacts
+        noContactStackView.isHidden = !contacts.isEmpty
+        sendButton.isHidden = contacts.isEmpty
         tableView.reloadData()
     }
     
