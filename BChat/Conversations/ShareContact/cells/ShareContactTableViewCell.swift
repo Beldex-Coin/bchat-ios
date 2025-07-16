@@ -36,11 +36,13 @@ class ShareContactTableViewCell: UITableViewCell {
         containerView.layer.borderWidth = 1
         containerView.translatesAutoresizingMaskIntoConstraints = false
 
+        let profilePictureViewSize = CGFloat(36)
+        profileImageView.set(.width, to: profilePictureViewSize)
+        profileImageView.set(.height, to: profilePictureViewSize)
+        profileImageView.size = profilePictureViewSize
         profileImageView.layer.cornerRadius = 18
         profileImageView.clipsToBounds = true
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.backgroundColor = .lightGray
         
         verifiedImageView.set(.width, to: 18)
         verifiedImageView.set(.height, to: 18)
@@ -75,8 +77,8 @@ class ShareContactTableViewCell: UITableViewCell {
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
-            profileImageView.widthAnchor.constraint(equalToConstant: 36),
-            profileImageView.heightAnchor.constraint(equalToConstant: 36),
+//            profileImageView.widthAnchor.constraint(equalToConstant: 36),
+//            profileImageView.heightAnchor.constraint(equalToConstant: 36),
             mainStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
             mainStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
             mainStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
