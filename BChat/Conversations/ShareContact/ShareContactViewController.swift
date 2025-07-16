@@ -276,18 +276,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
     
     func filteredContactsBySearchText(text: String) {
-        let currentText = text
-        searchText = currentText
+        searchText = text
         if searchText.isEmpty {
-            filteredContacts = contacts
-            if !contacts.isEmpty {
-                namesArray = []
-                for i in 0...(contacts.count - 1) {
-                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
-                }
-                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
-                filterDict = mainDict
-            }
+            namesArray = []
+            loadContacts()
         } else {
             let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
             filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
