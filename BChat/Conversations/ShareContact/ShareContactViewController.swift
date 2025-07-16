@@ -14,23 +14,15 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     private var searchCloseImageView = UIImageView()
     private let noContactStackView = UIStackView()
     
-    private var threads: YapDatabaseViewMappings!
-    private var threadViewModelCache: [String: ThreadViewModel] = [:]
-    private var selectedThread: TSThread?
+    private let contacts = ContactUtilities.getAllContacts()
+    private var selectedContacts: Set<String> = []
+
+    var filteredContacts: [String] = []
+    var searchText: String = ""
+    var mainDict: [String: String] = [:]
+    var filterDict: [String: String] = [:]
+    var namesArray: [String] = []
     
-    private var threadCount: UInt {
-        threads.numberOfItems(inGroup: TSInboxGroup)
-    }
-    
-    private lazy var dbConnection: YapDatabaseConnection = {
-        let result = OWSPrimaryStorage.shared().newDatabaseConnection()
-        result.objectCacheLimit = 500
-        return result
-    }()
-    
-    private var dbReadConnection: YapDatabaseConnection {
-        return OWSPrimaryStorage.shared().dbReadConnection
-    }
     
     // MARK: - Life cycle
 
@@ -39,29 +31,22 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         
         view.backgroundColor = Colors.mainBackGroundColor2
         
-        setupDB()
         setupNavigation()
         setupSearchTextFeild()
         setupTableView()
         setupSendButton()
         setupNoResultsView()
-    }
-    
-    private func setupDB() {
         
-        dbConnection.beginLongLivedReadTransaction()
-        
-        // Notifications
-        NotificationCenter.default.addObserver(self, selector: #selector(handleYapDatabaseModifiedNotification(_:)), name: .YapDatabaseModified, object: OWSPrimaryStorage.shared().dbNotificationObject)
-        
-        threads = YapDatabaseViewMappings(groups: [ TSMessageRequestGroup, TSInboxGroup ], view: TSThreadDatabaseViewExtensionName)
-        threads.setIsReversed(true, forGroup: TSInboxGroup)
-        dbConnection.read { transaction in
-            self.threads.update(with: transaction)
+        filteredContacts = contacts
+        if contacts.count > 0 {
+            for i in 0...(contacts.count - 1) {
+                namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+            }
+            mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+            filterDict = mainDict
         }
-        
-        noContactStackView.isHidden = !threads.isEmpty()
-        sendButton.isHidden = threads.isEmpty()
+        filterDict.count > 0 ? (noContactStackView.isHidden = true) : (noContactStackView.isHidden = false)
+        filterDict.count > 0 ? (sendButton.isHidden = false) : (sendButton.isHidden = true)
         tableView.reloadData()
     }
 
@@ -142,7 +127,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
@@ -205,13 +190,14 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     
     @objc private func searchCloseTapped() {
         searchTextField.text = ""
-        tableView.reloadData()
+        searchCloseImageView.isHidden = true
+        filteredContactsBySearchText(text: searchTextField.text ?? "")
     }
 
     // MARK: - TableView Data Source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(threadCount)
+        return filterDict.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -219,75 +205,82 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ShareContactTableViewCell.identifier, for: indexPath) as? ShareContactTableViewCell else {
             return UITableViewCell()
         }
+        
+        let publicKey = Array(filterDict.keys)[indexPath.row]
+        cell.publicKey = publicKey
+        let isSelected = selectedContacts.contains(publicKey)
+        cell.checkbox.isSelected = isSelected
+        cell.update()
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            cell.verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            cell.verifiedImageView.isHidden = true
+        }
 
-        cell.threadViewModel = threadViewModel(at: indexPath.row)
-//        cell.toggleSelection = { [weak self] in
-//            guard let self = self else { return }
-//            contact.isSelected.toggle()
-//            if let index = self.contacts.firstIndex(where: { $0.name == contact.name && $0.address == contact.address }) {
-//                self.contacts[index] = contact
-//                self.filteredContacts = self.contacts
-//            }
-//            tableView.reloadRows(at: [indexPath], with: .automatic)
-//        }
+        cell.toggleSelection = { [weak self] in
+            guard let self = self else { return }
+            if self.filterDict.count > 0 {
+                let publicKey = Array(self.filterDict.keys)[indexPath.row]
+                if !self.selectedContacts.contains(publicKey) {
+                    self.selectedContacts.removeAll()
+                    self.selectedContacts.insert(publicKey)
+                } else {
+                    self.selectedContacts.remove(publicKey)
+                }
+                self.tableView.reloadData()
+            }
+        }
 
         return cell
+    }
+        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if self.filterDict.count > 0 {
+            let publicKey = Array(filterDict.keys)[indexPath.row]
+            if !selectedContacts.contains(publicKey) {
+                selectedContacts.removeAll()
+                selectedContacts.insert(publicKey)
+            } else {
+                selectedContacts.remove(publicKey)
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 68
     }
     
     // MARK: - UITextField
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let searchText = textField.text else { return }
-        if searchText.isEmpty {
-            //filteredContacts = contacts
-        } else {
-            //filteredContacts = contacts.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
+        filteredContactsBySearchText(text:textField.text!)
         searchCloseImageView.isHidden = searchText.isEmpty
-        tableView.reloadData()
     }
     
-    private func reload() {
-        AssertIsOnMainThread()
-//        guard !isReloading else { return }
-//        isReloading = true
-        dbConnection.beginLongLivedReadTransaction()
-        dbConnection.read { transaction in
-            self.threads.update(with: transaction)
-        }
-        threadViewModelCache.removeAll()
-        tableView.reloadData()
-//        isReloading = false
-    }
-    
-    @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
-        AssertIsOnMainThread()
-        reload()
-    }
-    
-    // MARK: - Thread
-    
-    private func thread(at index: Int) -> TSThread? {
-        var thread: TSThread? = nil
-        dbConnection.read { transaction in
-            let ext = transaction.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewTransaction
-            thread = ext.object(atRow: UInt(index), inSection: 1, with: self.threads) as? TSThread
-        }
-        return thread
-    }
-    
-    private func threadViewModel(at index: Int) -> ThreadViewModel? {
-        guard let thread = thread(at: index) else { return nil }
-        
-        if let cachedThreadViewModel = threadViewModelCache[thread.uniqueId!] {
-            return cachedThreadViewModel
-        } else {
-            var threadViewModel: ThreadViewModel? = nil
-            dbConnection.read { transaction in
-                threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
+    func filteredContactsBySearchText(text:String) {
+        let currentText = text
+        searchText = currentText
+        if searchText.isEmpty {
+            filteredContacts = contacts
+            if contacts.count > 0 {
+                namesArray = []
+                for i in 0...(contacts.count - 1) {
+                    namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+                }
+                mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+                filterDict = mainDict
             }
-            threadViewModelCache[thread.uniqueId!] = threadViewModel
-            return threadViewModel
+        } else {
+            let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
+            filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
         }
+        tableView.reloadData()
     }
+    
+
 }

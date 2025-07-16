@@ -10,12 +10,25 @@ class ShareContactTableViewCell: UITableViewCell {
     let profileImageView = ProfilePictureView()
     let nameLabel = UILabel()
     let addressLabel = UILabel()
-    let checkbox = UIButton(type: .custom)
+    
+    lazy var checkbox: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .clear
+        button.setBackgroundImage(UIImage(named: "contact_uncheck"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "contact_check"), for: .selected)
+        button.addTarget(self, action: #selector(checkboxTapped), for: .touchUpInside)
+        return button
+    }()
+    
     let verifiedImageView = UIImageView()
     
     var isContactSelected: Bool = false
     var toggleSelection: (() -> Void)?
     var threadViewModel: ThreadViewModel! { didSet { update() } }
+    
+    var publicKey = ""
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -35,14 +48,6 @@ class ShareContactTableViewCell: UITableViewCell {
         containerView.layer.borderColor = Colors.borderColor3.cgColor
         containerView.layer.borderWidth = 1
         containerView.translatesAutoresizingMaskIntoConstraints = false
-
-        let profilePictureViewSize = CGFloat(36)
-        profileImageView.set(.width, to: profilePictureViewSize)
-        profileImageView.set(.height, to: profilePictureViewSize)
-        profileImageView.size = profilePictureViewSize
-        profileImageView.layer.cornerRadius = 18
-        profileImageView.clipsToBounds = true
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
         
         verifiedImageView.set(.width, to: 18)
         verifiedImageView.set(.height, to: 18)
@@ -51,53 +56,42 @@ class ShareContactTableViewCell: UITableViewCell {
 
         nameLabel.textColor = Colors.titleColor3
         nameLabel.font = Fonts.semiOpenSans(ofSize: 16)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
 
         addressLabel.textColor = Colors.textFieldPlaceHolderColor
         addressLabel.font = Fonts.regularOpenSans(ofSize: 12)
-
-        checkbox.translatesAutoresizingMaskIntoConstraints = false
-        checkbox.addTarget(self, action: #selector(checkboxTapped), for: .touchUpInside)
-
-        let labelsStack = UIStackView(arrangedSubviews: [nameLabel, addressLabel])
-        labelsStack.axis = .vertical
-        labelsStack.spacing = 4
-
-        let mainStack = UIStackView(arrangedSubviews: [profileImageView, verifiedImageView, labelsStack, checkbox])
-        mainStack.axis = .horizontal
-        mainStack.alignment = .center
-        mainStack.spacing = 12
-        mainStack.translatesAutoresizingMaskIntoConstraints = false
-
-        containerView.addSubview(mainStack)
+        addressLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         contentView.addSubview(containerView)
+        containerView.addSubViews(profileImageView, nameLabel, addressLabel, checkbox, verifiedImageView)
+        let profilePictureViewSize = CGFloat(36)
+        profileImageView.set(.width, to: profilePictureViewSize)
+        profileImageView.set(.height, to: profilePictureViewSize)
+        profileImageView.size = profilePictureViewSize
+        profileImageView.layer.masksToBounds = true
+        profileImageView.layer.cornerRadius = 18
         
         NSLayoutConstraint.activate([
-            containerView.heightAnchor.constraint(equalToConstant: 62),
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
             containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -14),
-//            profileImageView.widthAnchor.constraint(equalToConstant: 36),
-//            profileImageView.heightAnchor.constraint(equalToConstant: 36),
-            mainStack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-            mainStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-            mainStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            mainStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -3),
+            profileImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 14),
+            profileImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+            nameLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -60),
+            addressLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 12),
+            addressLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 3),
+            addressLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -60),
             checkbox.widthAnchor.constraint(equalToConstant: 24),
-            checkbox.heightAnchor.constraint(equalToConstant: 24)
+            checkbox.heightAnchor.constraint(equalToConstant: 24),
+            checkbox.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            checkbox.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -14),
         ])
         
         verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
-    }
-
-    func configure(with contact: [String]) {
-//        nameLabel.text = contact.name
-//        addressLabel.text = contact.address
-//        //profileImageView.image = UIImage(named: contact.imageName)
-//
-//        let imageName = contact.isSelected ? "contact_check" : "contact_uncheck"
-//        checkbox.setImage(UIImage(named: imageName), for: .normal)
     }
 
     @objc private func checkboxTapped() {
@@ -115,33 +109,12 @@ class ShareContactTableViewCell: UITableViewCell {
         }
     }
     
-    private func update() {
+    func update() {
         AssertIsOnMainThread()
-        guard let thread = threadViewModel?.threadRecord else { return }
-        profileImageView.update(for: thread)
-        nameLabel.text = getDisplayName().firstCharacterUpperCase()
-        addressLabel.text = threadViewModel.contactBChatID
-        
-        let imageName = isContactSelected ? "contact_check" : "contact_uncheck"
-        checkbox.setImage(UIImage(named: imageName), for: .normal)
-        
-        if let contactThread: TSContactThread = thread as? TSContactThread {
-            let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
-            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
-                profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-                verifiedImageView.isHidden = isBnsUser ? false : true
-            } else {
-                setupImageView()
-            }
-        } else {
-            setupImageView()
-        }
+        profileImageView.publicKey = publicKey
+        profileImageView.update()
+        nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        addressLabel.text = publicKey
     }
     
-    private func setupImageView() {
-        verifiedImageView.isHidden = true
-        profileImageView.layer.borderWidth = 0
-        profileImageView.layer.borderColor = UIColor.clear.cgColor
-    }
 }
