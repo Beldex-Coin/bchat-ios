@@ -32,8 +32,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         return OWSPrimaryStorage.shared().dbReadConnection
     }
     
-    private let contacts = ContactUtilities.getAllContacts()
-    
     // MARK: - Life cycle
 
     override func viewDidLoad() {
@@ -50,6 +48,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
     
     private func setupDB() {
+        
         dbConnection.beginLongLivedReadTransaction()
         
         // Notifications
@@ -60,9 +59,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         dbConnection.read { transaction in
             self.threads.update(with: transaction)
         }
-        
-        
-        
         
         noContactStackView.isHidden = !threads.isEmpty()
         sendButton.isHidden = threads.isEmpty()
@@ -223,10 +219,8 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ShareContactTableViewCell.identifier, for: indexPath) as? ShareContactTableViewCell else {
             return UITableViewCell()
         }
-        
-        cell.configure(with: contacts)
 
-        //cell.threadViewModel = threadViewModel(at: indexPath.row)
+        cell.threadViewModel = threadViewModel(at: indexPath.row)
 //        cell.toggleSelection = { [weak self] in
 //            guard let self = self else { return }
 //            contact.isSelected.toggle()

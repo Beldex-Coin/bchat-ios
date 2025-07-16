@@ -16,7 +16,6 @@ class ShareContactTableViewCell: UITableViewCell {
     var toggleSelection: (() -> Void)?
     
     var threadViewModel: ThreadViewModel! { didSet { update() } }
-
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
