@@ -36,18 +36,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         setupTableView()
         setupSendButton()
         setupNoResultsView()
-        
-        filteredContacts = contacts
-        if contacts.count > 0 {
-            for i in 0...(contacts.count - 1) {
-                namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
-            }
-            mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
-            filterDict = mainDict
-        }
-        filterDict.count > 0 ? (noContactStackView.isHidden = true) : (noContactStackView.isHidden = false)
-        filterDict.count > 0 ? (sendButton.isHidden = false) : (sendButton.isHidden = true)
-        tableView.reloadData()
+        loadContacts()
     }
 
     private func setupNavigation() {
@@ -122,6 +111,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(ShareContactTableViewCell.self, forCellReuseIdentifier: ShareContactTableViewCell.identifier)
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -139,6 +129,8 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         sendButton.backgroundColor = Colors.bothGreenColor
         sendButton.setTitleColor(.white, for: .normal)
         sendButton.layer.cornerRadius = 12
+        sendButton.isEnabled = false
+        sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         view.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
 
@@ -182,7 +174,25 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         ])
     }
     
+    private func loadContacts() {
+        filteredContacts = contacts
+        if !contacts.isEmpty {
+            for i in 0...(contacts.count - 1) {
+                namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
+            }
+            mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
+            filterDict = mainDict
+        }
+        filterDict.count > 0 ? (noContactStackView.isHidden = true) : (noContactStackView.isHidden = false)
+        filterDict.count > 0 ? (sendButton.isHidden = false) : (sendButton.isHidden = true)
+        tableView.reloadData()
+    }
+    
     // MARK: - Event Handlers
+    
+    @objc private func sendButtonTapped() {
+        
+    }
     
     @objc private func CancelTapped() {
         dismiss(animated: true, completion: nil)
@@ -222,23 +232,24 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
 
         cell.toggleSelection = { [weak self] in
             guard let self = self else { return }
-            if self.filterDict.count > 0 {
-                let publicKey = Array(self.filterDict.keys)[indexPath.row]
-                if !self.selectedContacts.contains(publicKey) {
-                    self.selectedContacts.removeAll()
-                    self.selectedContacts.insert(publicKey)
-                } else {
-                    self.selectedContacts.remove(publicKey)
-                }
-                self.tableView.reloadData()
-            }
+            updateSelectedContacts(with: indexPath)
         }
 
         return cell
     }
+    
+    // MARK: - TableView Delegate
         
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.filterDict.count > 0 {
+        updateSelectedContacts(with: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        68
+    }
+    
+    private func updateSelectedContacts(with indexPath: IndexPath) {
+        if !filterDict.isEmpty {
             let publicKey = Array(filterDict.keys)[indexPath.row]
             if !selectedContacts.contains(publicKey) {
                 selectedContacts.removeAll()
@@ -246,28 +257,30 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             } else {
                 selectedContacts.remove(publicKey)
             }
-            self.tableView.reloadData()
+            tableView.reloadData()
         }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 68
+        sendButton.isEnabled = !selectedContacts.isEmpty
     }
     
     // MARK: - UITextField
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let searchText = textField.text else { return }
-        filteredContactsBySearchText(text:textField.text!)
+        filteredContactsBySearchText(text: searchText)
         searchCloseImageView.isHidden = searchText.isEmpty
     }
     
-    func filteredContactsBySearchText(text:String) {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func filteredContactsBySearchText(text: String) {
         let currentText = text
         searchText = currentText
         if searchText.isEmpty {
             filteredContacts = contacts
-            if contacts.count > 0 {
+            if !contacts.isEmpty {
                 namesArray = []
                 for i in 0...(contacts.count - 1) {
                     namesArray.append(Storage.shared.getContact(with: contacts[i])?.displayName(for: .regular) ?? contacts[i])
@@ -281,6 +294,4 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         }
         tableView.reloadData()
     }
-    
-
 }

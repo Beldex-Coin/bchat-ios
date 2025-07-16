@@ -663,6 +663,15 @@ struct SessionProtos_DataMessage {
   /// Clears the value of `payment`. Subsequent reads from it will return its default value.
   mutating func clearPayment() {_uniqueStorage()._payment = nil}
 
+  var sharedContact: SessionProtos_DataMessage.SharedContact {
+    get {return _storage._sharedContact ?? SessionProtos_DataMessage.SharedContact()}
+    set {_uniqueStorage()._sharedContact = newValue}
+  }
+  /// Returns true if `sharedContact` has been explicitly set.
+  var hasSharedContact: Bool {return _storage._sharedContact != nil}
+  /// Clears the value of `sharedContact`. Subsequent reads from it will return its default value.
+  mutating func clearSharedContact() {_uniqueStorage()._sharedContact = nil}
+
   var unknownFields = SwiftProtobuf.UnknownStorage()
 
   enum Flags: SwiftProtobuf.Enum {
@@ -906,16 +915,16 @@ struct SessionProtos_DataMessage {
 
       init?(rawValue: Int) {
         switch rawValue {
-            case 0: self = .react
-            case 1: self = .remove
-            default: return nil
+        case 0: self = .react
+        case 1: self = .remove
+        default: return nil
         }
       }
 
       var rawValue: Int {
         switch self {
-            case .react: return 0
-            case .remove: return 1
+        case .react: return 0
+        case .remove: return 1
         }
       }
 
@@ -1176,6 +1185,47 @@ struct SessionProtos_DataMessage {
     fileprivate var _name: String? = nil
     fileprivate var _encryptionKeyPair: SessionProtos_KeyPair? = nil
     fileprivate var _expirationTimer: UInt32? = nil
+  }
+
+  struct SharedContact {
+    // SwiftProtobuf.Message conformance is added in an extension below. See the
+    // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+    // methods supported on all messages.
+
+    var threadID: Double {
+      get {return _threadID ?? 0}
+      set {_threadID = newValue}
+    }
+    /// Returns true if `threadID` has been explicitly set.
+    var hasThreadID: Bool {return self._threadID != nil}
+    /// Clears the value of `threadID`. Subsequent reads from it will return its default value.
+    mutating func clearThreadID() {self._threadID = nil}
+
+    var address: String {
+      get {return _address ?? String()}
+      set {_address = newValue}
+    }
+    /// Returns true if `address` has been explicitly set.
+    var hasAddress: Bool {return self._address != nil}
+    /// Clears the value of `address`. Subsequent reads from it will return its default value.
+    mutating func clearAddress() {self._address = nil}
+
+    var name: String {
+      get {return _name ?? String()}
+      set {_name = newValue}
+    }
+    /// Returns true if `name` has been explicitly set.
+    var hasName: Bool {return self._name != nil}
+    /// Clears the value of `name`. Subsequent reads from it will return its default value.
+    mutating func clearName() {self._name = nil}
+
+    var unknownFields = SwiftProtobuf.UnknownStorage()
+
+    init() {}
+
+    fileprivate var _threadID: Double? = nil
+    fileprivate var _address: String? = nil
+    fileprivate var _name: String? = nil
   }
 
   init() {}
@@ -1742,6 +1792,7 @@ extension SessionProtos_DataMessage.Payment: @unchecked Sendable {}
 extension SessionProtos_DataMessage.ClosedGroupControlMessage: @unchecked Sendable {}
 extension SessionProtos_DataMessage.ClosedGroupControlMessage.TypeEnum: @unchecked Sendable {}
 extension SessionProtos_DataMessage.ClosedGroupControlMessage.KeyPairWrapper: @unchecked Sendable {}
+extension SessionProtos_DataMessage.SharedContact: @unchecked Sendable {}
 extension SessionProtos_ConfigurationMessage: @unchecked Sendable {}
 extension SessionProtos_ConfigurationMessage.ClosedGroup: @unchecked Sendable {}
 extension SessionProtos_ConfigurationMessage.Contact: @unchecked Sendable {}
@@ -2329,6 +2380,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
     104: .same(proto: "closedGroupControlMessage"),
     105: .same(proto: "syncTarget"),
     106: .same(proto: "payment"),
+    107: .same(proto: "sharedContact"),
   ]
 
   fileprivate class _StorageClass {
@@ -2347,6 +2399,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
     var _closedGroupControlMessage: SessionProtos_DataMessage.ClosedGroupControlMessage? = nil
     var _syncTarget: String? = nil
     var _payment: SessionProtos_DataMessage.Payment? = nil
+    var _sharedContact: SessionProtos_DataMessage.SharedContact? = nil
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -2376,6 +2429,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       _closedGroupControlMessage = source._closedGroupControlMessage
       _syncTarget = source._syncTarget
       _payment = source._payment
+      _sharedContact = source._sharedContact
     }
   }
 
@@ -2396,6 +2450,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       if let v = _storage._openGroupInvitation, !v.isInitialized {return false}
       if let v = _storage._closedGroupControlMessage, !v.isInitialized {return false}
       if let v = _storage._payment, !v.isInitialized {return false}
+      if let v = _storage._sharedContact, !v.isInitialized {return false}
       return true
     }
   }
@@ -2423,6 +2478,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
         case 104: try { try decoder.decodeSingularMessageField(value: &_storage._closedGroupControlMessage) }()
         case 105: try { try decoder.decodeSingularStringField(value: &_storage._syncTarget) }()
         case 106: try { try decoder.decodeSingularMessageField(value: &_storage._payment) }()
+        case 107: try { try decoder.decodeSingularMessageField(value: &_storage._sharedContact) }()
         default: break
         }
       }
@@ -2480,6 +2536,9 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
       try { if let v = _storage._payment {
         try visitor.visitSingularMessageField(value: v, fieldNumber: 106)
       } }()
+      try { if let v = _storage._sharedContact {
+        try visitor.visitSingularMessageField(value: v, fieldNumber: 107)
+      } }()
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -2504,6 +2563,7 @@ extension SessionProtos_DataMessage: SwiftProtobuf.Message, SwiftProtobuf._Messa
         if _storage._closedGroupControlMessage != rhs_storage._closedGroupControlMessage {return false}
         if _storage._syncTarget != rhs_storage._syncTarget {return false}
         if _storage._payment != rhs_storage._payment {return false}
+        if _storage._sharedContact != rhs_storage._sharedContact {return false}
         return true
       }
       if !storagesAreEqual {return false}
@@ -3045,6 +3105,61 @@ extension SessionProtos_DataMessage.ClosedGroupControlMessage.KeyPairWrapper: Sw
   static func ==(lhs: SessionProtos_DataMessage.ClosedGroupControlMessage.KeyPairWrapper, rhs: SessionProtos_DataMessage.ClosedGroupControlMessage.KeyPairWrapper) -> Bool {
     if lhs._publicKey != rhs._publicKey {return false}
     if lhs._encryptedKeyPair != rhs._encryptedKeyPair {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  static let protoMessageName: String = SessionProtos_DataMessage.protoMessageName + ".SharedContact"
+  static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "threadId"),
+    2: .same(proto: "address"),
+    3: .same(proto: "name"),
+  ]
+
+  public var isInitialized: Bool {
+    if self._threadID == nil {return false}
+    if self._address == nil {return false}
+    if self._name == nil {return false}
+    return true
+  }
+
+  mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularDoubleField(value: &self._threadID) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self._address) }()
+      case 3: try { try decoder.decodeSingularStringField(value: &self._name) }()
+      default: break
+      }
+    }
+  }
+
+  func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._threadID {
+      try visitor.visitSingularDoubleField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._address {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._name {
+      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  static func ==(lhs: SessionProtos_DataMessage.SharedContact, rhs: SessionProtos_DataMessage.SharedContact) -> Bool {
+    if lhs._threadID != rhs._threadID {return false}
+    if lhs._address != rhs._address {return false}
+    if lhs._name != rhs._name {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

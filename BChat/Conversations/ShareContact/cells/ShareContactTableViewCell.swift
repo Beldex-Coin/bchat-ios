@@ -10,19 +10,18 @@ class ShareContactTableViewCell: UITableViewCell {
     let profileImageView = ProfilePictureView()
     let nameLabel = UILabel()
     let addressLabel = UILabel()
+    let verifiedImageView = UIImageView()
     
     lazy var checkbox: UIButton = {
         let button = UIButton()
-        button.setTitle("", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
+        //button.setTitle("", for: .normal)
+//        button.backgroundColor = .clear
         button.setBackgroundImage(UIImage(named: "contact_uncheck"), for: .normal)
         button.setBackgroundImage(UIImage(named: "contact_check"), for: .selected)
         button.addTarget(self, action: #selector(checkboxTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-    
-    let verifiedImageView = UIImageView()
     
     var isContactSelected: Bool = false
     var toggleSelection: (() -> Void)?
@@ -116,5 +115,5 @@ class ShareContactTableViewCell: UITableViewCell {
         nameLabel.text = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
         addressLabel.text = publicKey
     }
-    
 }
+
