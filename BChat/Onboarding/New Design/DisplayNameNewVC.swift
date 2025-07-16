@@ -19,7 +19,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor5
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -32,7 +32,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -40,7 +40,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])

@@ -209,7 +209,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
         result.textColor = Colors.titleColor
         result.textAlignment = .center
@@ -438,7 +438,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             label.backgroundColor = UIColor.lightGray
         }
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -453,7 +453,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let label = UILabel()
         label.text = "Address :"
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -463,7 +463,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var inChatPaymentFeelabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -479,7 +479,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             button.backgroundColor = UIColor.lightGray
         }
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -491,7 +491,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(inChatPaymentOkButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -531,7 +531,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(isSuccessPopTappedButton), for: .touchUpInside)
         return button
     }()
@@ -559,7 +559,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let label = UILabel()
         label.text = "Please don't close this window or attend calls or navigate to another app until the transaction gets initiated."
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -641,7 +641,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     lazy var blockedBannerLabel: UILabel = {
         let result = PaddingLabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.incomingMessageColor
         result.paddingTop = 6
@@ -728,7 +728,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     lazy var openURLViewSubTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""))
         result.numberOfLines = 0
@@ -1208,7 +1208,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
         }
         
-        debugPrint("quote ----")
         var constraintValue: CGFloat = 4
         let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
         if inputTextViewLines >= 2 {

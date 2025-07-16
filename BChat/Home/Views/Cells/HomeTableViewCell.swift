@@ -78,7 +78,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var lastMessageLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-       result.font = Fonts.OpenSans(ofSize: 12)
+       result.font = Fonts.regularOpenSans(ofSize: 12)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result
@@ -144,7 +144,7 @@ class HomeTableViewCell: UITableViewCell {
     lazy var dateLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -436,7 +436,7 @@ class HomeTableViewCell: UITableViewCell {
 //            result.append(imageString)
 //            result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
-        let font = threadViewModel.hasUnreadMessages ? Fonts.OpenSans(ofSize: Values.smallFontSize) : Fonts.OpenSans(ofSize: Values.smallFontSize)
+        let font = threadViewModel.hasUnreadMessages ? Fonts.regularOpenSans(ofSize: Values.smallFontSize) : Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
             result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }

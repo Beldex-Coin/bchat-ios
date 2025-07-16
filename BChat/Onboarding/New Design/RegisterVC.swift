@@ -24,7 +24,7 @@ class RegisterVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -51,7 +51,7 @@ class RegisterVC: BaseVC {
         let result = UILabel()
         result.text = ""
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -91,7 +91,7 @@ class RegisterVC: BaseVC {
         let result = UILabel()
         result.text = ""
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0

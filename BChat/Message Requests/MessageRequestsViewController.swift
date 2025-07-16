@@ -48,7 +48,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isUserInteractionEnabled = false
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.text = NSLocalizedString("MESSAGE_REQUESTS_EMPTY_TEXT", comment: "")
         result.textColor = Colors.text
         result.textAlignment = .center

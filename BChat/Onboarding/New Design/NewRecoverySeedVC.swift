@@ -39,7 +39,7 @@ class NewRecoverySeedVC: BaseVC {
     private lazy var seedLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = ""
         result.adjustsFontSizeToFitWidth = true
@@ -59,7 +59,7 @@ class NewRecoverySeedVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button

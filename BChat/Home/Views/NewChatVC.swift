@@ -19,7 +19,7 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
             string: "Search people and groups",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -84,8 +84,8 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         }
     }
     
-    var recentSearchResults: [String] = Array(Storage.shared.getRecentSearchResults().reversed())
-    var defaultSearchResults: HomeScreenSearchResultSet = HomeScreenSearchResultSet.noteToSelfOnly
+//    var recentSearchResults: [String] = Array(Storage.shared.getRecentSearchResults().reversed())
+//    var defaultSearchResults: HomeScreenSearchResultSet = HomeScreenSearchResultSet.noteToSelfOnly
     var searchResultSet: HomeScreenSearchResultSet = HomeScreenSearchResultSet.empty
     private var lastSearchText: String?
     var searcher: FullTextSearcher {

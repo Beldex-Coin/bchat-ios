@@ -132,7 +132,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
-        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 14) : Fonts.OpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.regularOpenSans(ofSize: 14) : Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -180,7 +180,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var bchatIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textColor
-        result.font = UIDevice.current.isIPad ? Fonts.OpenSans(ofSize: 14) : Fonts.OpenSans(ofSize: 12)
+        result.font = UIDevice.current.isIPad ? Fonts.regularOpenSans(ofSize: 14) : Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -305,7 +305,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: .touchUpInside)
         result.layer.borderWidth = 0.5
         result.layer.borderColor = Colors.bothGreenColor.cgColor
@@ -318,7 +318,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     private lazy var saveButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(saveButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor

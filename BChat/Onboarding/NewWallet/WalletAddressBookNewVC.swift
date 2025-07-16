@@ -14,7 +14,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("SEARCH_CONTACT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.placeholderColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor3.cgColor
         result.backgroundColor = Colors.cellGroundColor3
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +88,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         let result = UILabel()
         result.text = "Save address to show!"
         result.textColor = Colors.addressBookSaveAddressLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -108,7 +108,7 @@ class WalletAddressBookNewVC: BaseVC, UITextFieldDelegate {
         result.text = "No Contacts"
         result.textColor = Colors.addressBookNoContactLabelColor
         result.backgroundColor = Colors.searchViewBackgroundColor
-        result.font = Fonts.OpenSans(ofSize: 15)
+        result.font = Fonts.regularOpenSans(ofSize: 15)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = result.frame.size.height / 2
         result.clipsToBounds = true
@@ -480,7 +480,7 @@ class AddressBookTableCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.addressBookNoContactLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

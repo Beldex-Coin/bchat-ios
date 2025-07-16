@@ -40,7 +40,7 @@ class ChatSettingsSearchTableViewCell: UITableViewCell, UITextFieldDelegate {
     lazy var memberCountLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-       result.font = Fonts.OpenSans(ofSize: 14)
+       result.font = Fonts.regularOpenSans(ofSize: 14)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result

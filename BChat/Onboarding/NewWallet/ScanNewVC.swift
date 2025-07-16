@@ -29,7 +29,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         button.setTitleColor(Colors.aboutContentLabelColor, for: .normal)
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.layer.borderWidth = 1
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(uploadFromGalleryButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -38,7 +38,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
     private lazy var descriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0

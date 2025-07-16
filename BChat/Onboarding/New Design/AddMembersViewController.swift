@@ -10,7 +10,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
             string: "Search Contact",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +71,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()

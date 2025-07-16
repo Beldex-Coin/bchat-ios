@@ -40,7 +40,7 @@ class InitiatingTransactionVC: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Please don’t close the window or attend calls or navigate to another app until the transaction gets initiated"
         result.numberOfLines = 0

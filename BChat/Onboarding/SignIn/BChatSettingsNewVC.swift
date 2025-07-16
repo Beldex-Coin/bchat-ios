@@ -638,7 +638,7 @@ class BChatSettingsTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -727,7 +727,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -735,7 +735,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -825,7 +825,7 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.text = "Screen Lock Timeout"
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -834,7 +834,7 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

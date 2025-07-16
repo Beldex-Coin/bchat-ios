@@ -45,7 +45,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
@@ -296,7 +296,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 1
@@ -309,7 +309,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 2
@@ -322,7 +322,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 3
@@ -335,7 +335,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 4
@@ -348,7 +348,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 5
@@ -361,7 +361,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 6
@@ -374,7 +374,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 7
@@ -387,7 +387,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 8
@@ -400,7 +400,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 9
@@ -413,7 +413,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 0
@@ -426,7 +426,7 @@ class NewPasswordVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 26)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 26)
         button.addTarget(self, action: #selector(passwordButtonTapped), for: .touchUpInside)
         button.tag = 10
         return button

@@ -931,7 +931,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     lazy private var portraitHeaderNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.text
-        label.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
@@ -942,7 +942,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     lazy private var portraitHeaderDateLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.text
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8

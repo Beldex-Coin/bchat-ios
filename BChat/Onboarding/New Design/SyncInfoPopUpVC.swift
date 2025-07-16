@@ -27,7 +27,7 @@ class SyncInfoPopUpVC: BaseVC {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xEBEBEB)
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "You have scanned from the block height 2250000. However we recommend to scan the blockchain from the block height at which you created the wallet, to get all the transactions and correct balance."
         result.numberOfLines = 0

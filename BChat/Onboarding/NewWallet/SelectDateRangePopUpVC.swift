@@ -36,7 +36,7 @@ class SelectDateRangePopUpVC: BaseVC {
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
@@ -64,7 +64,7 @@ class SelectDateRangePopUpVC: BaseVC {
     private lazy var toDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2

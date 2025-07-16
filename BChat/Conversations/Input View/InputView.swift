@@ -112,7 +112,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var disabledInputLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0

@@ -63,7 +63,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var displayNameTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
@@ -76,7 +76,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreHeightTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_BLOCK_HEIGHT_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
@@ -89,7 +89,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreDateHeightTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_DATE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
         result.set(.height, to: 60)
@@ -116,7 +116,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var isRestoreFromDateButton: UIButton = {
         let result = UIButton(type: .custom)
         result.setTitle(NSLocalizedString("RESTORE_DATE_TITLE_SPACE_NEW", comment: ""), for: .normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
         result.addTarget(self, action: #selector(isRestoreFromDateButtonAction), for: .touchUpInside)
         // Set the image
         let image = UIImage(named: "ic_calendar")?.withRenderingMode(.alwaysTemplate)
@@ -143,7 +143,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: .normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.set(.height, to: 58)

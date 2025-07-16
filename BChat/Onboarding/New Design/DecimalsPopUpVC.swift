@@ -34,7 +34,7 @@ class DecimalsPopUpVC: BaseVC {
     lazy var fourButton: UIButton = {
         let button = UIButton()
         button.setTitle("4 - Four (0.0000)", for: .normal)
-        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = Values.buttonRadius
@@ -44,7 +44,7 @@ class DecimalsPopUpVC: BaseVC {
     lazy var threeButton: UIButton = {
         let button = UIButton()
         button.setTitle("3 - Three (0.000)", for: .normal)
-        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = Values.buttonRadius
@@ -54,7 +54,7 @@ class DecimalsPopUpVC: BaseVC {
     lazy var twoButton: UIButton = {
         let button = UIButton()
         button.setTitle("2 - Two (0.00)", for: .normal)
-        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = Values.buttonRadius
@@ -64,7 +64,7 @@ class DecimalsPopUpVC: BaseVC {
     lazy var zeroButton: UIButton = {
         let button = UIButton()
         button.setTitle("0 - Zero (0)", for: .normal)
-        button.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
         button.layer.cornerRadius = Values.buttonRadius
@@ -158,85 +158,85 @@ class DecimalsPopUpVC: BaseVC {
     func fourButtonUtilities(){
         fourButton.layer.borderWidth = 1
         fourButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        fourButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        fourButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         fourButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         threeButton.layer.borderWidth = 1
         threeButton.layer.borderColor = Colors.borderColorNew.cgColor
-        threeButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        threeButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         twoButton.layer.borderWidth = 1
         twoButton.layer.borderColor = Colors.borderColorNew.cgColor
-        twoButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        twoButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
         zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
-        zeroButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        zeroButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func threeButtonUtilities(){
         threeButton.layer.borderWidth = 1
         threeButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        threeButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        threeButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         threeButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         fourButton.layer.borderWidth = 1
         fourButton.layer.borderColor = Colors.borderColorNew.cgColor
-        fourButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        fourButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         twoButton.layer.borderWidth = 1
         twoButton.layer.borderColor = Colors.borderColorNew.cgColor
-        twoButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        twoButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
         zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
-        zeroButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        zeroButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func twoButtonUtilities(){
         twoButton.layer.borderWidth = 1
         twoButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        twoButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        twoButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         twoButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         threeButton.layer.borderWidth = 1
         threeButton.layer.borderColor = Colors.borderColorNew.cgColor
-        threeButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        threeButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         fourButton.layer.borderWidth = 1
         fourButton.layer.borderColor = Colors.borderColorNew.cgColor
-        fourButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        fourButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         zeroButton.layer.borderWidth = 1
         zeroButton.layer.borderColor = Colors.borderColorNew.cgColor
-        zeroButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        zeroButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         zeroButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     func zeroButtonUtilities(){
         zeroButton.layer.borderWidth = 1
         zeroButton.layer.borderColor = Colors.bothGreenColor.cgColor
-        zeroButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        zeroButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         zeroButton.setTitleColor(Colors.titleColor3, for: .normal)
         
         twoButton.layer.borderWidth = 1
         twoButton.layer.borderColor = Colors.borderColorNew.cgColor
-        twoButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        twoButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         twoButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         threeButton.layer.borderWidth = 1
         threeButton.layer.borderColor = Colors.borderColorNew.cgColor
-        threeButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        threeButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         threeButton.setTitleColor(Colors.bothGrayColor, for: .normal)
         
         fourButton.layer.borderWidth = 1
         fourButton.layer.borderColor = Colors.borderColorNew.cgColor
-        fourButton.titleLabel?.font = Fonts.OpenSans(ofSize: 16)
+        fourButton.titleLabel?.font = Fonts.regularOpenSans(ofSize: 16)
         fourButton.setTitleColor(Colors.bothGrayColor, for: .normal)
     }
     

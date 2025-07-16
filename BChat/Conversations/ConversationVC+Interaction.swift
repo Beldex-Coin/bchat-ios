@@ -645,7 +645,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func applyColorToMentionedUsers(text : String) {
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: Fonts.OpenSans(ofSize: Values.mediumFontSize),
+            .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
             .foregroundColor: Colors.text
         ]
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)

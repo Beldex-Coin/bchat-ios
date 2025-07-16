@@ -98,7 +98,7 @@ extension String {
 
 extension String {
     func withBoldText(text: String, font: UIFont? = nil) -> NSAttributedString {
-        let _font = font ?? Fonts.OpenSans(ofSize: 14)
+        let _font = font ?? Fonts.regularOpenSans(ofSize: 14)
         let fullString = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: _font])
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
         let range = (self as NSString).range(of: text)

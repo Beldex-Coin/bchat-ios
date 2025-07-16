@@ -52,7 +52,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     private lazy var paymentIDTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.text = "Payment ID integrated"
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -108,7 +108,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 10
@@ -186,7 +186,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textAlignment = .left
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.regularOpenSans(ofSize: 13)
         result.delegate = self
         result.backgroundColor = .clear
         return result
@@ -289,7 +289,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(Colors.buttonTextColor, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -610,7 +610,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     func placeHolderSeedLabel() {
         placeholderLabel = UILabel()
         placeholderLabel.text = "Enter Address or BNS name"
-        placeholderLabel.font = Fonts.OpenSans(ofSize: 13)
+        placeholderLabel.font = Fonts.regularOpenSans(ofSize: 13)
         placeholderLabel.sizeToFit()
         beldexAddressTextview.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (beldexAddressTextview.font?.pointSize)! / 2)

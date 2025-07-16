@@ -28,7 +28,7 @@ final class JoinOpenGroupModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = "Are you sure you want to join the \(name) open group?";
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
@@ -48,7 +48,7 @@ final class JoinOpenGroupModal : Modal {
             joinButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
         
-        joinButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        joinButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         joinButton.setTitle("Join", for: UIControl.State.normal)
         joinButton.addTarget(self, action: #selector(joinOpenGroup), for: .touchUpInside)
         // Button stack view

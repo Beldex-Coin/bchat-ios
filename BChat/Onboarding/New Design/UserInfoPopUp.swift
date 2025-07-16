@@ -31,7 +31,7 @@ class UserInfoPopUp: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 18)
         button.setTitleColor(Colors.titleColor, for: .normal)
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(messageButtonTapped), for: .touchUpInside)
@@ -44,7 +44,7 @@ class UserInfoPopUp: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 18)
         button.setTitleColor(Colors.titleColor, for: .normal)
         button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)

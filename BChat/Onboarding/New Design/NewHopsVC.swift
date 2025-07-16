@@ -10,7 +10,7 @@ class NewHopsVC: BaseVC {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleNewColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -77,7 +77,7 @@ class NewHopsVC: BaseVC {
     private lazy var entryNodeInfoLabel: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xACACAC)
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "United States [3.111.164.59]"
         return result
@@ -114,7 +114,7 @@ class NewHopsVC: BaseVC {
     private lazy var masterNodeInfoLabel1: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xACACAC)
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "United States [3.111.164.59]"
         return result
@@ -153,7 +153,7 @@ class NewHopsVC: BaseVC {
     private lazy var masterNodeInfoLabel2: UILabel = {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xACACAC)
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "United States [3.111.164.59]"
         return result

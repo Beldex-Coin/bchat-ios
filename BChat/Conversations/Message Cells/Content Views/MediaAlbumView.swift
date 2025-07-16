@@ -146,7 +146,7 @@ public class MediaAlbumView: UIStackView {
                 moreLabel.text = moreText
                 moreLabel.textColor = UIColor.ows_white
                 // We don't want to use dynamic text here.
-                moreLabel.font = Fonts.OpenSans(ofSize: 24)
+                moreLabel.font = Fonts.regularOpenSans(ofSize: 24)
                 lastView.addSubview(moreLabel)
                 moreLabel.autoCenterInSuperview()
             }

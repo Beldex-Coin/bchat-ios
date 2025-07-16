@@ -62,7 +62,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         let result = UITextField()
         let attributes = [
             NSAttributedString.Key.foregroundColor: Colors.titleColor,
-            NSAttributedString.Key.font: Fonts.OpenSans(ofSize: 18)
+            NSAttributedString.Key.font: Fonts.regularOpenSans(ofSize: 18)
         ]
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -183,7 +183,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
-            .font: Fonts.OpenSans(ofSize: 16),
+            .font: Fonts.regularOpenSans(ofSize: 16),
             .foregroundColor: Colors.titleColor
         ]
         let attributedPlaceholder = NSAttributedString(string: "Display name", attributes: placeholderAttributes)
@@ -1254,9 +1254,9 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
                     cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 12)
                 } else {
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 16)
                 }
                 if cell.titleLabel.text == "All Media" {
                     cell.rightIconImageView.isHidden = false
@@ -1342,9 +1342,9 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
                     cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 12)
                 } else {
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 16)
                 }
                 if cell.titleLabel.text == "All Media" {
                     cell.rightIconImageView.isHidden = false

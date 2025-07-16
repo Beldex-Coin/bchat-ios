@@ -10,7 +10,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -29,7 +29,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     private lazy var groupUrlTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.setLeftPaddingPoints(8)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +65,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
         button.setTitleColor(Colors.buttonTextColor, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -73,7 +73,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     private lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor5
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

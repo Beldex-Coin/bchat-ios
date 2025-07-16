@@ -35,7 +35,7 @@ final class CallMissedTipsModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
         messageLabel.text = message
         messageLabel.numberOfLines = 0

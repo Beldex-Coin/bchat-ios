@@ -56,7 +56,7 @@ class MissedCallPopUp: BaseVC {
         result.textColor = Colors.titleColor
         result.textAlignment = .center
         result.numberOfLines = 0
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Call Missed from because you needed to enable the ‘Voice and video calls’ permission in the privacy settings."
         return result
@@ -68,7 +68,7 @@ class MissedCallPopUp: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button

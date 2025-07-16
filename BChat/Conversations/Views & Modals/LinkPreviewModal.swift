@@ -26,7 +26,7 @@ final class LinkPreviewModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = NSLocalizedString("modal_link_previews_explanation", comment: "")
         messageLabel.text = message
         messageLabel.numberOfLines = 0
@@ -37,7 +37,7 @@ final class LinkPreviewModal : Modal {
         enableButton.set(.height, to: Values.mediumButtonHeight)
         enableButton.layer.cornerRadius = Modal.buttonCornerRadius
         enableButton.backgroundColor = Colors.buttonBackground
-        enableButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        enableButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         enableButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         enableButton.setTitle(NSLocalizedString("modal_link_previews_button_title", comment: ""), for: UIControl.State.normal)
         enableButton.addTarget(self, action: #selector(enable), for: .touchUpInside)

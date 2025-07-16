@@ -46,7 +46,7 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Search Currency", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.cellGroundColor2
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -250,7 +250,7 @@ class CurrencyPopUpVC: BaseVC,UITableViewDataSource, UITableViewDelegate,UITextF
         let cell = tableView.cellForRow(at: indexPath) as! CurrencyPopUpTableCell
         cell.selectionStyle = .none
         cell.nameLabel.textColor = Colors.bothGrayColor
-        cell.nameLabel.font = Fonts.OpenSans(ofSize: 16)
+        cell.nameLabel.font = Fonts.regularOpenSans(ofSize: 16)
     }
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension

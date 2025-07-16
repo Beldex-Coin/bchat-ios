@@ -95,7 +95,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
     private lazy var discriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.callCellTitle
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "No answer"
         return result
@@ -114,7 +114,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
     private lazy var timeLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.callCellTitle
-        result.font = Fonts.OpenSans(ofSize: 9)
+        result.font = Fonts.regularOpenSans(ofSize: 9)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()

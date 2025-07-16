@@ -24,7 +24,7 @@ class Modal: BaseVC, UIGestureRecognizerDelegate {
         result.layer.borderWidth = 0.5
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = Colors.bothGreenWithAlpha10
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothGrayColor, for: UIControl.State.normal)
         result.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControl.State.normal)
         return result

@@ -2,6 +2,9 @@
 
 import Foundation
 import UIKit
+import BChatUIKit
+import BChatMessagingKit
+import BChatUtilitiesKit
 
 final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableViewDelegate, UISearchTextFieldDelegate {
 
@@ -10,21 +13,60 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     private var sendButton = UIButton()
     private var searchCloseImageView = UIImageView()
     private let noContactStackView = UIStackView()
-
-    private var contacts: [ShareContact] = []
-    private var filteredContacts: [ShareContact] = []
+    
+    private var threads: YapDatabaseViewMappings!
+    private var threadViewModelCache: [String: ThreadViewModel] = [:]
+    private var selectedThread: TSThread?
+    
+    private var threadCount: UInt {
+        threads.numberOfItems(inGroup: TSInboxGroup)
+    }
+    
+    private lazy var dbConnection: YapDatabaseConnection = {
+        let result = OWSPrimaryStorage.shared().newDatabaseConnection()
+        result.objectCacheLimit = 500
+        return result
+    }()
+    
+    private var dbReadConnection: YapDatabaseConnection {
+        return OWSPrimaryStorage.shared().dbReadConnection
+    }
+    
+    private let contacts = ContactUtilities.getAllContacts()
+    
+    // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
         
+        setupDB()
         setupNavigation()
         setupSearchTextFeild()
         setupTableView()
         setupSendButton()
         setupNoResultsView()
-        loadContacts()
+    }
+    
+    private func setupDB() {
+        dbConnection.beginLongLivedReadTransaction()
+        
+        // Notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(handleYapDatabaseModifiedNotification(_:)), name: .YapDatabaseModified, object: OWSPrimaryStorage.shared().dbNotificationObject)
+        
+        threads = YapDatabaseViewMappings(groups: [ TSMessageRequestGroup, TSInboxGroup ], view: TSThreadDatabaseViewExtensionName)
+        threads.setIsReversed(true, forGroup: TSInboxGroup)
+        dbConnection.read { transaction in
+            self.threads.update(with: transaction)
+        }
+        
+        
+        
+        
+        noContactStackView.isHidden = !threads.isEmpty()
+        sendButton.isHidden = threads.isEmpty()
+        tableView.reloadData()
     }
 
     private func setupNavigation() {
@@ -44,12 +86,13 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             string: "Search Contact",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        searchTextField.font = Fonts.OpenSans(ofSize: 14)
+        searchTextField.font = Fonts.regularOpenSans(ofSize: 14)
         searchTextField.layer.borderColor = Colors.borderColorNew.cgColor
         searchTextField.backgroundColor = Colors.unlockButtonBackgroundColor
         searchTextField.translatesAutoresizingMaskIntoConstraints = false
         searchTextField.layer.cornerRadius = 24
-        searchTextField.layer.borderWidth = 0
+        searchTextField.layer.borderWidth = 1
+        searchTextField.layer.borderColor = Colors.borderColor3.cgColor
         searchTextField.textColor = Colors.titleColor3
         searchTextField.textAlignment = .left
         
@@ -135,8 +178,8 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         // No Contact Label
         let noContactLabel = UILabel()
         noContactLabel.text = "No Contact Found!"
-        noContactLabel.textColor = .lightGray
-        noContactLabel.font = UIFont.systemFont(ofSize: 16)
+        noContactLabel.textColor = Colors.noDataLabelColor
+        noContactLabel.font = Fonts.semiOpenSans(ofSize: 16)
         noContactLabel.textAlignment = .center
         
         // Stack View
@@ -157,25 +200,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             noContactImageView.widthAnchor.constraint(equalToConstant: 80)
         ])
     }
-
-    private func loadContacts() {
-        contacts = [
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person1", isSelected: true),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person2", isSelected: false),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person3", isSelected: false),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person4", isSelected: true),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person5", isSelected: false),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person6", isSelected: true),
-            ShareContact(name: "Name", address: "bd603e758a61ea058ed........9b54465", imageName: "person7", isSelected: false),
-            ShareContact(name: "Santhosh", address: "bd603e758a61ea058ed........9b54465", imageName: "person8", isSelected: true)
-        ]
-        
-        contacts = []
-        filteredContacts = contacts
-        noContactStackView.isHidden = !contacts.isEmpty
-        sendButton.isHidden = contacts.isEmpty
-        tableView.reloadData()
-    }
     
     // MARK: - Event Handlers
     
@@ -185,14 +209,13 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     
     @objc private func searchCloseTapped() {
         searchTextField.text = ""
-        filteredContacts = contacts
         tableView.reloadData()
     }
 
     // MARK: - TableView Data Source
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredContacts.count
+        return Int(threadCount)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -200,18 +223,19 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ShareContactTableViewCell.identifier, for: indexPath) as? ShareContactTableViewCell else {
             return UITableViewCell()
         }
+        
+        cell.configure(with: contacts)
 
-        var contact = filteredContacts[indexPath.row]
-        cell.configure(with: contact)
-        cell.toggleSelection = { [weak self] in
-            guard let self = self else { return }
-            contact.isSelected.toggle()
-            if let index = self.contacts.firstIndex(where: { $0.name == contact.name && $0.address == contact.address }) {
-                self.contacts[index] = contact
-                self.filteredContacts = self.contacts
-            }
-            tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
+        //cell.threadViewModel = threadViewModel(at: indexPath.row)
+//        cell.toggleSelection = { [weak self] in
+//            guard let self = self else { return }
+//            contact.isSelected.toggle()
+//            if let index = self.contacts.firstIndex(where: { $0.name == contact.name && $0.address == contact.address }) {
+//                self.contacts[index] = contact
+//                self.filteredContacts = self.contacts
+//            }
+//            tableView.reloadRows(at: [indexPath], with: .automatic)
+//        }
 
         return cell
     }
@@ -221,11 +245,55 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     @objc func textFieldDidChange(_ textField: UITextField) {
         guard let searchText = textField.text else { return }
         if searchText.isEmpty {
-            filteredContacts = contacts
+            //filteredContacts = contacts
         } else {
-            filteredContacts = contacts.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            //filteredContacts = contacts.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
         searchCloseImageView.isHidden = searchText.isEmpty
         tableView.reloadData()
+    }
+    
+    private func reload() {
+        AssertIsOnMainThread()
+//        guard !isReloading else { return }
+//        isReloading = true
+        dbConnection.beginLongLivedReadTransaction()
+        dbConnection.read { transaction in
+            self.threads.update(with: transaction)
+        }
+        threadViewModelCache.removeAll()
+        tableView.reloadData()
+//        isReloading = false
+    }
+    
+    @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
+        AssertIsOnMainThread()
+        reload()
+    }
+    
+    // MARK: - Thread
+    
+    private func thread(at index: Int) -> TSThread? {
+        var thread: TSThread? = nil
+        dbConnection.read { transaction in
+            let ext = transaction.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewTransaction
+            thread = ext.object(atRow: UInt(index), inSection: 1, with: self.threads) as? TSThread
+        }
+        return thread
+    }
+    
+    private func threadViewModel(at index: Int) -> ThreadViewModel? {
+        guard let thread = thread(at: index) else { return nil }
+        
+        if let cachedThreadViewModel = threadViewModelCache[thread.uniqueId!] {
+            return cachedThreadViewModel
+        } else {
+            var threadViewModel: ThreadViewModel? = nil
+            dbConnection.read { transaction in
+                threadViewModel = ThreadViewModel(thread: thread, transaction: transaction)
+            }
+            threadViewModelCache[thread.uniqueId!] = threadViewModel
+            return threadViewModel
+        }
     }
 }

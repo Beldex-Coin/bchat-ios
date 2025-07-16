@@ -33,7 +33,7 @@ final class NukeDataModal : Modal {
     private lazy var explanationLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.text = NSLocalizedString("CLEAR_ALL_DATA_CONFIRMATION_TEXT", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
@@ -46,7 +46,7 @@ final class NukeDataModal : Modal {
         result.set(.height, to: 52)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothRedColor
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.setTitle("Clear", for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
@@ -70,7 +70,7 @@ final class NukeDataModal : Modal {
         }else {
             result.backgroundColor = UIColor.lightGray
         }
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: .normal)
         result.setTitle(NSLocalizedString("No", comment: ""), for: .normal)
         result.addTarget(self, action: #selector(clearDeviceOnly), for: .touchUpInside)
@@ -85,7 +85,7 @@ final class NukeDataModal : Modal {
             result.backgroundColor = Colors.destructive
         }
         result.backgroundColor = Colors.destructive
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: .normal)
         result.setTitle(NSLocalizedString("Yes", comment: ""), for: .normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)

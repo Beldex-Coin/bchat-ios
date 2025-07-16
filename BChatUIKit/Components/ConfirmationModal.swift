@@ -42,7 +42,7 @@ public class ConfirmationModal: ModalView {
     private lazy var explanationLabel: ScrollableLabel = {
         let result: ScrollableLabel = ScrollableLabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -56,7 +56,7 @@ public class ConfirmationModal: ModalView {
         result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = Colors.bothGreenWithAlpha10
-        result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel?.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.setTitleColor(Colors.titleColor3, for: .normal)
@@ -71,7 +71,7 @@ public class ConfirmationModal: ModalView {
         result.setTitle("Ok", for: .normal)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.addTarget(self, action: #selector(confirmationPressed), for: .touchUpInside)
         result.set(.height, to: Values.alertButtonHeight)

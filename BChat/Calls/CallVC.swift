@@ -161,7 +161,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     private lazy var endToEndLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "End to End Encrypted"
         return result
@@ -170,7 +170,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     private lazy var incomingCallLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 18)
+        result.font = Fonts.regularOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         if bChatCall.hasStartedConnecting { result.text = "Connecting..." }
         return result
@@ -356,7 +356,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     private lazy var callDurationLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 18)
+        result.font = Fonts.regularOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -403,7 +403,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
     private lazy var muteCallLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Mute"
         result.isHidden = true

@@ -98,14 +98,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     lazy var messageTimeLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.textColor = Colors.messageTimeLabelColor
         return result
     }()
     
     lazy var messageTimeBottomLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 9)
+        result.font = Fonts.regularOpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.textAlignment = .right
         return result
@@ -113,7 +113,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     lazy var messageTimeRightLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 9)
+        result.font = Fonts.regularOpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.textAlignment = .right
         return result
@@ -442,7 +442,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateHeader(for viewItem: ConversationViewItem) {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
-        dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)
+        dateBreakLabel.font = Fonts.regularOpenSans(ofSize: 12)
         dateBreakLabel.textColor = Colors.messageTimeLabelColor
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
@@ -604,7 +604,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
                         stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
-                        if message.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
+                        if message.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
                             stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
                         } else {
                             stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -6)
@@ -1062,7 +1062,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isEditable = false
         let attributes: [NSAttributedString.Key:Any] = [
             .foregroundColor : textColor,
-            .font : Fonts.OpenSans(ofSize: getFontSize(for: viewItem))
+            .font : Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))
         ]
         let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: message.body ?? "", isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
         
@@ -1087,7 +1087,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
         if viewItem.quotedReply != nil && attachments.isEmpty {
-            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
                 result.set(.width, to: size.width > maxWidth ? size.width : maxWidth)

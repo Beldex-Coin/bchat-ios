@@ -11,7 +11,7 @@ public final class TextView : UITextView, UITextViewDelegate {
 
     private lazy var placeholderLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         return result
     }()
@@ -41,7 +41,7 @@ public final class TextView : UITextView, UITextViewDelegate {
         placeholderLabel.text = placeholder
         backgroundColor = Colors.bchatViewBackgroundColor
         textColor = Colors.text
-        font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         tintColor = Colors.bothGreenColor
         keyboardAppearance = isLightMode ? .light : .dark
         if usesDefaultHeight {
@@ -71,7 +71,7 @@ public final class TextView : UITextView, UITextViewDelegate {
     public func setPlaceholder() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = NSLocalizedString("ENTER_CHAT_ID_NEW", comment: "")
-        placeholderLabel.font = Fonts.OpenSans(ofSize: 14)
+        placeholderLabel.font = Fonts.regularOpenSans(ofSize: 14)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 2, y: 8)

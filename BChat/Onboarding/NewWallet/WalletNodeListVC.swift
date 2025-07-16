@@ -24,7 +24,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var refreshButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(refreshButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.backgroundViewColor
         result.setTitleColor(Colors.addressBookNoContactLabelColor, for: .normal)
@@ -36,7 +36,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var addNodeButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(addNodeButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
@@ -380,7 +380,7 @@ class NodeListTableCell: UITableViewCell {
     lazy var nodeIPLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.cellIpLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

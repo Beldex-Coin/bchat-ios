@@ -34,7 +34,7 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
             string: "Search people",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.translatesAutoresizingMaskIntoConstraints = false
