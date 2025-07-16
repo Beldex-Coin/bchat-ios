@@ -13,8 +13,8 @@ class ShareContactTableViewCell: UITableViewCell {
     let checkbox = UIButton(type: .custom)
     let verifiedImageView = UIImageView()
     
+    var isContactSelected: Bool = false
     var toggleSelection: (() -> Void)?
-    
     var threadViewModel: ThreadViewModel! { didSet { update() } }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -121,6 +121,9 @@ class ShareContactTableViewCell: UITableViewCell {
         profileImageView.update(for: thread)
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         addressLabel.text = threadViewModel.contactBChatID
+        
+        let imageName = isContactSelected ? "contact_check" : "contact_uncheck"
+        checkbox.setImage(UIImage(named: imageName), for: .normal)
         
         if let contactThread: TSContactThread = thread as? TSContactThread {
             let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
