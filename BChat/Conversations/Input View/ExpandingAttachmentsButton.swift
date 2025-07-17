@@ -270,7 +270,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
             $0.constant = 0
         }
         UIView.animate(withDuration: 0.25) {
-            [ self.shareContactButton, self.gifButtonContainer, self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
+            [ self.shareContactButtonContainer, self.gifButtonContainer, self.documentButtonContainer, self.libraryButtonContainer, self.cameraButtonContainer ].forEach {
                 $0.alpha = 0
             }
             self.layoutIfNeeded()
