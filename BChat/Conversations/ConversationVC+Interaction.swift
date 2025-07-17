@@ -215,7 +215,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func handleShareContactButtonTapped() {
         self.hideInputAccessoryView()
-        let shareContactViewController = ShareContactViewController()
+        let shareContactViewController = ShareContactViewController(state: .fromAttachment)
         let navController = OWSNavigationController(rootViewController: shareContactViewController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true) {

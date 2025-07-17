@@ -6,13 +6,22 @@ import BChatUIKit
 import BChatMessagingKit
 import BChatUtilitiesKit
 
+enum SharedContactState: Int, CaseIterable {
+    case fromAttachment
+    case fromChat
+}
+
 final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableViewDelegate, UISearchTextFieldDelegate {
+    
+    // MARK: - UI Elements
 
     private var tableView = UITableView()
     private var searchTextField = UITextField()
     private var sendButton = UIButton()
     private var searchCloseImageView = UIImageView()
     private let noContactStackView = UIStackView()
+    
+    // MARK: - Properties
     
     private let contacts = ContactUtilities.getAllContacts()
     private var selectedContacts: Set<String> = []
@@ -22,7 +31,18 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     var mainDict: [String: String] = [:]
     var filterDict: [String: String] = [:]
     var namesArray: [String] = []
+    var state: SharedContactState?
     
+    // MARK: - Initialize
+    
+    init(state: SharedContactState) {
+        self.state = state
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        preconditionFailure("Use init(thread:) instead.")
+    }
     
     // MARK: - Life cycle
 
@@ -38,19 +58,21 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         setupNoResultsView()
         loadContacts()
     }
+    
+    // MARK: - Setup UI
 
     private func setupNavigation() {
         setUpNavBarStyle()
-        navigationItem.title = "Send Contact"
+        navigationItem.title = state == .fromAttachment ? "Send Contact" : "View Contact"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                 target: self,
-                                                                action: #selector(CancelTapped))
+                                                                action: #selector(cancelTapped))
     }
 
     private func setupSearchTextFeild() {
-        
         view.addSubview(searchTextField)
         searchTextField.delegate = self
+        searchTextField.isHidden = state == .fromChat
         
         searchTextField.attributedPlaceholder = NSAttributedString(
             string: "Search Contact",
@@ -115,9 +137,11 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         tableView.register(ShareContactTableViewCell.self, forCellReuseIdentifier: ShareContactTableViewCell.identifier)
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let topAnchor: NSLayoutYAxisAnchor = state == .fromChat ? view.topAnchor : searchTextField.bottomAnchor
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 8),
+            tableView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
@@ -138,7 +162,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             sendButton.heightAnchor.constraint(equalToConstant: 58),
             sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            sendButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            sendButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
     }
     
@@ -183,18 +207,17 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             mainDict = Dictionary(uniqueKeysWithValues: zip(contacts, namesArray))
             filterDict = mainDict
         }
-        filterDict.count > 0 ? (noContactStackView.isHidden = true) : (noContactStackView.isHidden = false)
-        filterDict.count > 0 ? (sendButton.isHidden = false) : (sendButton.isHidden = true)
+        
+        noContactStackView.isHidden = !filterDict.isEmpty
+        sendButton.isHidden = filterDict.isEmpty || state == .fromChat
+//        filterDict.count > 0 ? (noContactStackView.isHidden = true) : (noContactStackView.isHidden = false)
+//        filterDict.count > 0 ? (sendButton.isHidden = false) : (sendButton.isHidden = true)
         tableView.reloadData()
     }
     
     // MARK: - Event Handlers
     
-    @objc private func sendButtonTapped() {
-        
-    }
-    
-    @objc private func CancelTapped() {
+    @objc private func cancelTapped() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -202,6 +225,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         searchTextField.text = ""
         searchCloseImageView.isHidden = true
         filteredContactsBySearchText(text: searchTextField.text ?? "")
+    }
+    
+    @objc private func sendButtonTapped() {
+        
     }
 
     // MARK: - TableView Data Source
@@ -218,21 +245,23 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         
         let publicKey = Array(filterDict.keys)[indexPath.row]
         cell.publicKey = publicKey
-        let isSelected = selectedContacts.contains(publicKey)
-        cell.checkbox.isSelected = isSelected
+        cell.checkboxButton.isSelected = selectedContacts.contains(publicKey)
+        cell.state = state
         cell.update()
-        let contact: Contact? = Storage.shared.getContact(with: publicKey)
-        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-            cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
-            cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-            cell.verifiedImageView.isHidden = isBnsUser ? false : true
-        } else {
-            cell.verifiedImageView.isHidden = true
-        }
 
-        cell.toggleSelection = { [weak self] in
+        cell.checkboxToggleSelection = { [weak self] in
             guard let self = self else { return }
             updateSelectedContacts(with: indexPath)
+        }
+        
+        cell.chatToggle = { [weak self] in
+            guard let self = self else { return }
+            debugPrint("chat toggle")
+        }
+        
+        cell.removeContactToggle = { [weak self] in
+            guard let self = self else { return }
+            debugPrint("remove contact toggle")
         }
 
         return cell
@@ -248,20 +277,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         68
     }
     
-    private func updateSelectedContacts(with indexPath: IndexPath) {
-        if !filterDict.isEmpty {
-            let publicKey = Array(filterDict.keys)[indexPath.row]
-            if !selectedContacts.contains(publicKey) {
-                selectedContacts.removeAll()
-                selectedContacts.insert(publicKey)
-            } else {
-                selectedContacts.remove(publicKey)
-            }
-            tableView.reloadData()
-        }
-        sendButton.isEnabled = !selectedContacts.isEmpty
-    }
-    
     // MARK: - UITextField
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -275,7 +290,9 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         return true
     }
     
-    func filteredContactsBySearchText(text: String) {
+    // MARK: -
+    
+    private func filteredContactsBySearchText(text: String) {
         searchText = text
         if searchText.isEmpty {
             namesArray = []
@@ -285,5 +302,19 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
         }
         tableView.reloadData()
+    }
+    
+    private func updateSelectedContacts(with indexPath: IndexPath) {
+        if !filterDict.isEmpty {
+            let publicKey = Array(filterDict.keys)[indexPath.row]
+            if !selectedContacts.contains(publicKey) {
+                selectedContacts.removeAll()
+                selectedContacts.insert(publicKey)
+            } else {
+                selectedContacts.remove(publicKey)
+            }
+            tableView.reloadData()
+        }
+        sendButton.isEnabled = !selectedContacts.isEmpty
     }
 }
