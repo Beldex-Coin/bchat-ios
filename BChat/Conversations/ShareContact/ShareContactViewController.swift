@@ -99,16 +99,16 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         searchTextField.rightViewMode = .always
         
         // Create an UIImageView and set its image for search icon
-        searchCloseImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
-        searchCloseImageView.frame = CGRect(x: 16, y: 0, width: 16, height: 16)
-        searchCloseImageView.contentMode = .scaleAspectFit
-        paddingViewLeft.addSubview(searchCloseImageView)
+        var searchImageView = UIImageView()
+        searchImageView = UIImageView(image: UIImage(named: "ic_Search_Vector_New"))
+        searchImageView.frame = CGRect(x: 16, y: 0, width: 16, height: 16)
+        searchImageView.contentMode = .scaleAspectFit
+        paddingViewLeft.addSubview(searchImageView)
         
         // Create an UIImageView for close icon initially hidden
         searchCloseImageView = UIImageView(image: UIImage(named: "ic_closeNew"))
         searchCloseImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 14)
         searchCloseImageView.contentMode = .scaleAspectFit
-        searchCloseImageView.tag = 1 // Set a tag to distinguish it from the search icon
         searchCloseImageView.isHidden = true
         paddingViewRight.addSubview(searchCloseImageView)
         
