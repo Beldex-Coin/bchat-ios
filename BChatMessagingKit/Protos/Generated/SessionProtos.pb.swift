@@ -1192,12 +1192,10 @@ struct SessionProtos_DataMessage {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var threadID: Double {
-      get {return _threadID ?? 0}
+    var threadID: String {
+      get {return _threadID ?? String()}
       set {_threadID = newValue}
     }
-    /// Returns true if `threadID` has been explicitly set.
-    var hasThreadID: Bool {return self._threadID != nil}
     /// Clears the value of `threadID`. Subsequent reads from it will return its default value.
     mutating func clearThreadID() {self._threadID = nil}
 
@@ -1223,7 +1221,7 @@ struct SessionProtos_DataMessage {
 
     init() {}
 
-    fileprivate var _threadID: Double? = nil
+    fileprivate var _threadID: String? = nil
     fileprivate var _address: String? = nil
     fileprivate var _name: String? = nil
   }
@@ -3131,7 +3129,7 @@ extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftP
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularDoubleField(value: &self._threadID) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self._threadID) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self._address) }()
       case 3: try { try decoder.decodeSingularStringField(value: &self._name) }()
       default: break
@@ -3145,7 +3143,7 @@ extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftP
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
     try { if let v = self._threadID {
-      try visitor.visitSingularDoubleField(value: v, fieldNumber: 1)
+      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 1)
     } }()
     try { if let v = self._address {
       try visitor.visitSingularStringField(value: v, fieldNumber: 2)

@@ -16,6 +16,7 @@ public final class VisibleMessage : Message {
     @objc public var payment: Payment?
     @objc public var beldexAddress: String?
     @objc public var isBnsHolder: Bool = false
+    @objc public var shareContact: ShareContact?
     
     @objc public var reaction: Reaction?
 
@@ -51,6 +52,7 @@ public final class VisibleMessage : Message {
         if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
         
         if let reaction = coder.decodeObject(forKey: "reaction") as! Reaction? { self.reaction = reaction }
+        if let shareContact = coder.decodeObject(forKey: "shareContact") as! ShareContact? { self.shareContact = shareContact }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -68,6 +70,7 @@ public final class VisibleMessage : Message {
         coder.encode(isBnsHolder,forKey: "isBnsHolder")
         
         coder.encode(reaction, forKey: "reaction")
+        coder.encode(shareContact, forKey: "shareContact")
     }
 
     // MARK: Proto Conversion
@@ -92,6 +95,10 @@ public final class VisibleMessage : Message {
             result.reaction = reaction
         }
         
+        if let shareContact = ShareContact.fromProto(dataMessage) {
+            result.shareContact = shareContact
+        }
+            
         result.syncTarget = dataMessage.syncTarget
         return result
     }
@@ -99,7 +106,7 @@ public final class VisibleMessage : Message {
     public override func toProto(using transaction: YapDatabaseReadWriteTransaction) -> SNProtoContent? {
         let proto = SNProtoContent.builder()
         var attachmentIDs = self.attachmentIDs
-        let dataMessage: SNProtoDataMessage.SNProtoDataMessageBuilder
+        var dataMessage: SNProtoDataMessage.SNProtoDataMessageBuilder
         // Profile
         if let profile = profile, let profileProto = profile.toProto() {
             dataMessage = profileProto.asBuilder()
@@ -136,6 +143,11 @@ public final class VisibleMessage : Message {
         // Emoji react
         if let reaction = reaction, let reactionProto = reaction.toProto(using: transaction) {
             dataMessage.setReaction(reactionProto)
+        }
+        
+        // Share Contact
+        if let shareContact = shareContact, let shareContactProto = shareContact.toProto() {
+            dataMessage.setSharedContact(shareContactProto)
         }
         
         // Group context

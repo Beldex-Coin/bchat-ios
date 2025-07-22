@@ -414,6 +414,7 @@
 		8A7E89D12E05333C00E3B914 /* publicnode4.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA21E2CB7B407001D388B /* publicnode4.der */; };
 		8A7E89D22E05333C00E3B914 /* publicnode3.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA21D2CB7B406001D388B /* publicnode3.der */; };
 		8A7E89D32E05333C00E3B914 /* publicnode2.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA2212CB7B407001D388B /* publicnode2.der */; };
+		8AA00BF32E2F72AA002B320C /* VisibleMessage+ShareContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA00BF22E2F72AA002B320C /* VisibleMessage+ShareContact.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
 		8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */; };
 		8AD510B72D805F7D00D02C83 /* ReactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B62D805F7D00D02C83 /* ReactMessage.swift */; };
@@ -1590,6 +1591,7 @@
 		8A7658002E24E71000803F49 /* AppVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		8A76580B2E26803A00803F49 /* ShareContactViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareContactViewController.swift; sourceTree = "<group>"; };
 		8A76580E2E2680CA00803F49 /* ShareContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareContactTableViewCell.swift; sourceTree = "<group>"; };
+		8AA00BF22E2F72AA002B320C /* VisibleMessage+ShareContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+ShareContact.swift"; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Emoji.swift"; sourceTree = "<group>"; };
 		8AD510B62D805F7D00D02C83 /* ReactMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactMessage.swift; sourceTree = "<group>"; };
@@ -3493,6 +3495,7 @@
 				C3C2A75E2553A3C500C340D1 /* VisibleMessage+LinkPreview.swift */,
 				C3C2A7672553A3D900C340D1 /* VisibleMessage+Contact.swift */,
 				C300A5B12554AF9800555489 /* VisibleMessage+Profile.swift */,
+				8AA00BF22E2F72AA002B320C /* VisibleMessage+ShareContact.swift */,
 				B8EB20ED2640F28000773E52 /* VisibleMessage+OpenGroupInvitation.swift */,
 			);
 			path = "Visible Messages";
@@ -5576,6 +5579,7 @@
 				C3C2A74D2553A39700C340D1 /* VisibleMessage.swift in Sources */,
 				C32C5AAD256DBE8F003C73A2 /* TSInfoMessage.m in Sources */,
 				C32C5A13256DB7A5003C73A2 /* PushNotificationAPI.swift in Sources */,
+				8AA00BF32E2F72AA002B320C /* VisibleMessage+ShareContact.swift in Sources */,
 				7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */,
 				7BD477AA27F15F24004E2822 /* OpenGroupServerIdLookup.swift in Sources */,
 				C32A026325A801AA000ED5D4 /* NSData+messagePadding.m in Sources */,

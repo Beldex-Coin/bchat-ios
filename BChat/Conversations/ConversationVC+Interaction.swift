@@ -7,9 +7,8 @@ import BChatUtilitiesKit
 import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
-    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate {
+    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate, ShareContactDelegate {
     
-
     func needsLayout() {
         UIView.setAnimationsEnabled(false)
         messagesTableView.beginUpdates()
@@ -216,12 +215,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func handleShareContactButtonTapped() {
         self.hideInputAccessoryView()
         let shareContactViewController = ShareContactViewController(state: .fromAttachment)
+        shareContactViewController.delegate = self
         let navController = OWSNavigationController(rootViewController: shareContactViewController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true) {
             self.isInputViewShow = false
         }
         self.showInputAccessoryView()
+    }
+    
+    func shareContactDidSelect(with shareContact: VisibleMessage.ShareContact) {
+        self.shareContact = shareContact
     }
     
     func handleGIFButtonTapped() {
@@ -395,6 +399,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.sentTimestamp = sentTimestamp
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
+//                message.shareContact =
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'

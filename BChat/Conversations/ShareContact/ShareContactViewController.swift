@@ -11,6 +11,11 @@ enum SharedContactState: Int, CaseIterable {
     case fromChat
 }
 
+@objc
+protocol ShareContactDelegate: AnyObject {
+    func shareContactDidSelect(with shareContact: VisibleMessage.ShareContact)
+}
+
 final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableViewDelegate, UISearchTextFieldDelegate {
     
     // MARK: - UI Elements
@@ -32,6 +37,9 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     var filterDict: [String: String] = [:]
     var namesArray: [String] = []
     var state: SharedContactState?
+    
+    @objc
+    public weak var delegate: ShareContactDelegate?
     
     // MARK: - Initialize
     
@@ -228,7 +236,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
     
     @objc private func sendButtonTapped() {
-        
+//        let shareContact = VisibleMessage.ShareContact()
+//        shareContact.threadId = 
+//        shareContact.address = selectedContacts.first
+//        shareContact.name = ""
     }
 
     // MARK: - TableView Data Source
@@ -256,12 +267,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         
         cell.chatToggle = { [weak self] in
             guard let self = self else { return }
-            debugPrint("chat toggle")
         }
         
         cell.removeContactToggle = { [weak self] in
             guard let self = self else { return }
-            debugPrint("remove contact toggle")
         }
 
         return cell
@@ -305,16 +314,15 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
     
     private func updateSelectedContacts(with indexPath: IndexPath) {
-        if !filterDict.isEmpty {
-            let publicKey = Array(filterDict.keys)[indexPath.row]
-            if !selectedContacts.contains(publicKey) {
-                selectedContacts.removeAll()
-                selectedContacts.insert(publicKey)
-            } else {
-                selectedContacts.remove(publicKey)
-            }
-            tableView.reloadData()
+        guard !filterDict.isEmpty else { return }
+        let publicKey = Array(filterDict.keys)[indexPath.row]
+        if !selectedContacts.contains(publicKey) {
+            selectedContacts.removeAll()
+            selectedContacts.insert(publicKey)
+        } else {
+            selectedContacts.remove(publicKey)
         }
+        tableView.reloadData()
         sendButton.isEnabled = !selectedContacts.isEmpty
     }
 }
