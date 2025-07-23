@@ -13,7 +13,7 @@
 #import "ContactCellView.h"
 #import "ContactTableViewCell.h"
 #import "ConversationViewItem.h"
-#import "ConversationViewModel.h"
+//#import "ConversationViewModel.h"
 #import "DateUtil.h"
 #import "MediaDetailViewController.h"
 #import "NotificationSettingsViewController.h"
@@ -82,3 +82,5 @@
 #import "BChatWalletWrapper.h"
 #import "NotificationSettingsOptionsViewController.h"
 #import "OWSSoundSettingsViewController.h"
+#import "NSDate+OWS.h"
+
