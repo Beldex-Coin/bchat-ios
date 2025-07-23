@@ -4,13 +4,13 @@ import BChatUtilitiesKit
 
 public extension VisibleMessage {
 
-    @objc(BCShareContact)
-    class ShareContact: NSObject, NSCoding {
+    @objc(BCSharedContact)
+    class SharedContact: NSObject, NSCoding {
         public var threadId: String?
         public var address: String?
         public var name: String?
 
-        internal init(threadId: String? = nil, address: String? = nil, name: String? = nil) {
+        public init(threadId: String? = nil, address: String? = nil, name: String? = nil) {
             self.threadId = threadId
             self.address = address
             self.name = name
@@ -28,10 +28,10 @@ public extension VisibleMessage {
             coder.encode(name, forKey: "name")
         }
 
-        public static func fromProto(_ proto: SNProtoDataMessage) -> ShareContact? {
+        public static func fromProto(_ proto: SNProtoDataMessage) -> SharedContact? {
             guard let shareContactProto = proto.sharedContact else { return nil }
             guard let threadID = shareContactProto.threadID, let address = shareContactProto.address, let name = shareContactProto.name else { return nil }
-            return ShareContact(threadId: threadID, address: address, name: name)
+            return SharedContact(threadId: threadID, address: address, name: name)
         }
 
         public func toProto() -> SNProtoDataMessageSharedContact? {

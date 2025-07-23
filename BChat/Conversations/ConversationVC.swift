@@ -64,6 +64,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var showingReactionListForMessageId: String?
     var isInputViewShow: Bool = true
     
+    var shareContact: VisibleMessage.SharedContact?
+    
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
     var viewItems: [ConversationViewItem] { viewModel.viewState.viewItems }

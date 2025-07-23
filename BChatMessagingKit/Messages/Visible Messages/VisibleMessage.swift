@@ -16,7 +16,7 @@ public final class VisibleMessage : Message {
     @objc public var payment: Payment?
     @objc public var beldexAddress: String?
     @objc public var isBnsHolder: Bool = false
-    @objc public var shareContact: ShareContact?
+    @objc public var shareContact: SharedContact?
     
     @objc public var reaction: Reaction?
 
@@ -52,7 +52,7 @@ public final class VisibleMessage : Message {
         if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
         
         if let reaction = coder.decodeObject(forKey: "reaction") as! Reaction? { self.reaction = reaction }
-        if let shareContact = coder.decodeObject(forKey: "shareContact") as! ShareContact? { self.shareContact = shareContact }
+        if let shareContact = coder.decodeObject(forKey: "shareContact") as! SharedContact? { self.shareContact = shareContact }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -95,7 +95,7 @@ public final class VisibleMessage : Message {
             result.reaction = reaction
         }
         
-        if let shareContact = ShareContact.fromProto(dataMessage) {
+        if let shareContact = SharedContact.fromProto(dataMessage) {
             result.shareContact = shareContact
         }
             
@@ -183,7 +183,8 @@ public final class VisibleMessage : Message {
             profile: \(profile?.description ?? "null"),
             reaction: \(reaction?.description ?? "null"),
             "openGroupInvitation": \(openGroupInvitation?.description ?? "null"),
-            "payment": \(payment?.description ?? "null")
+            "payment": \(payment?.description ?? "null"),
+            "shareContact": \(shareContact?.description ?? "null"),
         )
         """
     }

@@ -3143,7 +3143,7 @@ extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftP
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
     try { if let v = self._threadID {
-      try visitor.visitSingularUInt64Field(value: v, fieldNumber: 1)
+      try visitor.visitSingularStringField(value: v, fieldNumber: 1)
     } }()
     try { if let v = self._address {
       try visitor.visitSingularStringField(value: v, fieldNumber: 2)

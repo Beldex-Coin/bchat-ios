@@ -224,8 +224,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.showInputAccessoryView()
     }
     
-    func shareContactDidSelect(with shareContact: VisibleMessage.ShareContact) {
+    func shareContactDidSelect(with shareContact: VisibleMessage.SharedContact) {
         self.shareContact = shareContact
+        sendSharedContact()
     }
     
     func handleGIFButtonTapped() {
@@ -354,6 +355,33 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }.retainUntilComplete()
         }
     }
+    
+    // MARK: - Contact Sending
+    
+    func sendSharedContact() {
+        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+        let message: VisibleMessage = VisibleMessage()
+        message.sentTimestamp = sentTimestamp
+        if shareContact != nil {
+            message.shareContact = shareContact
+        }
+        
+        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+        Storage.shared.write(
+            with: { transaction in
+                tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
+            },
+            completion: { [weak self] in
+                self?.scrollToBottom(isAnimated: false)
+            }
+        )
+        
+        Storage.shared.write { transaction in
+            MessageSender.send(message, with: [], in: self.thread, using: transaction as! YapDatabaseReadWriteTransaction)
+        }
+        
+        handleMessageSent()
+    }
 
     // MARK: - Message Sending
     
@@ -399,7 +427,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.sentTimestamp = sentTimestamp
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-//                message.shareContact =
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'
@@ -517,6 +544,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.snInputView.quoteDraftInfo = nil
         bottomConstraintOfAttachmentButton = 4
         hideAttachmentExpandedButtons()
+        shareContact = nil
         
         // Update the input state if this is a contact thread
         if let contactThread: TSContactThread = thread as? TSContactThread {
@@ -1758,7 +1786,6 @@ extension ConversationVC {
                 }
             }
         }
-        
     }
     
     func quickReact(_ viewItem: ConversationViewItem, with emoji: EmojiWithSkinTones) {
@@ -1813,7 +1840,6 @@ extension ConversationVC {
             },
             completion: {
                 let visibleMessage = VisibleMessage()
-//                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
                 visibleMessage.sentTimestamp = sentTimestamp
                 let reactMessage = ReactMessage(timestamp: message.timestamp, authorId: authorId, emoji: emoji)
                 visibleMessage.reaction = .from(reactMessage)
