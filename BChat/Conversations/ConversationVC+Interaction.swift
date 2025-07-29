@@ -224,11 +224,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.showInputAccessoryView()
     }
     
-    func shareContactDidSelect(with shareContact: VisibleMessage.SharedContact) {
-        self.shareContact = shareContact
-        sendSharedContact()
-    }
-    
     func handleGIFButtonTapped() {
         self.hideInputAccessoryView()
         if SSKPreferences.isGifPermissionEnabled {
@@ -358,29 +353,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Contact Sending
     
-    func sendSharedContact() {
-        let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-        let message: VisibleMessage = VisibleMessage()
-        message.sentTimestamp = sentTimestamp
-        if shareContact != nil {
-            message.shareContact = shareContact
-        }
-        
-        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
-        Storage.shared.write(
-            with: { transaction in
-                tsMessage.save(with: transaction as! YapDatabaseReadWriteTransaction)
-            },
-            completion: { [weak self] in
-                self?.scrollToBottom(isAnimated: false)
-            }
-        )
-        
-        Storage.shared.write { transaction in
-            MessageSender.send(message, with: [], in: self.thread, using: transaction as! YapDatabaseReadWriteTransaction)
-        }
-        
-        handleMessageSent()
+    func sendSharedContact(with address: String, name: String) {
+        sendMessage(address: address, name: name)
     }
 
     // MARK: - Message Sending
@@ -389,11 +363,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendMessage()
     }
     
-    func sendMessage(hasPermissionToSendSeed: Bool = false) {
+    func sendMessage(hasPermissionToSendSeed: Bool = false, address: String? = nil, name: String? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
         let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
         let thread = self.thread
-        guard !text.isEmpty else { return }
+        guard !text.isEmpty || address != nil else { return }
         
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
@@ -427,6 +401,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.sentTimestamp = sentTimestamp
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
+                if let contactAddress = address, let contactName = name {
+                    message.sharedContact = VisibleMessage.SharedContact(threadId: thread.uniqueId, address: contactAddress, name: contactName)
+                }
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'
@@ -544,7 +521,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         self.snInputView.quoteDraftInfo = nil
         bottomConstraintOfAttachmentButton = 4
         hideAttachmentExpandedButtons()
-        shareContact = nil
         
         // Update the input state if this is a contact thread
         if let contactThread: TSContactThread = thread as? TSContactThread {

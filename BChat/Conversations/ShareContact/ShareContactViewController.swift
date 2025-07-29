@@ -13,7 +13,7 @@ enum SharedContactState: Int, CaseIterable {
 
 @objc
 protocol ShareContactDelegate: AnyObject {
-    func shareContactDidSelect(with shareContact: VisibleMessage.SharedContact)
+    func sendSharedContact(with address: String, name: String)
 }
 
 final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableViewDelegate, UISearchTextFieldDelegate {
@@ -236,8 +236,11 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
     
     @objc private func sendButtonTapped() {
-        let shareContact = VisibleMessage.SharedContact(threadId: "1234566", address: "babdbas", name: "Santhosh")
-        delegate?.shareContactDidSelect(with: shareContact)
+        guard !selectedContacts.isEmpty else { return }
+        let publicKey: String = selectedContacts.first ?? ""
+        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+        let name = contact?.displayName(for: .regular) ?? publicKey
+        delegate?.sendSharedContact(with: publicKey, name: name)
         cancelTapped()
     }
 

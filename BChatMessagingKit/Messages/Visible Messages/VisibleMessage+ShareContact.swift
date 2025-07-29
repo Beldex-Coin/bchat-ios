@@ -58,7 +58,7 @@ public extension VisibleMessage {
         
         public override var description: String {
             """
-            ShareContact(
+            SharedContact(
                                 threadId: \(threadId ?? "null"),
                                 address: \(address ?? "null"),
                                 name: \(name ?? "null")

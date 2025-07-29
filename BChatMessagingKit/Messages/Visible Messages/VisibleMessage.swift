@@ -16,9 +16,9 @@ public final class VisibleMessage : Message {
     @objc public var payment: Payment?
     @objc public var beldexAddress: String?
     @objc public var isBnsHolder: Bool = false
-    @objc public var shareContact: SharedContact?
     
     @objc public var reaction: Reaction?
+    @objc public var sharedContact: SharedContact?
 
     public override var isSelfSendValid: Bool { true }
     
@@ -52,7 +52,7 @@ public final class VisibleMessage : Message {
         if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
         
         if let reaction = coder.decodeObject(forKey: "reaction") as! Reaction? { self.reaction = reaction }
-        if let shareContact = coder.decodeObject(forKey: "shareContact") as! SharedContact? { self.shareContact = shareContact }
+        if let sharedContact = coder.decodeObject(forKey: "sharedContact") as! SharedContact? { self.sharedContact = sharedContact }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -70,7 +70,7 @@ public final class VisibleMessage : Message {
         coder.encode(isBnsHolder,forKey: "isBnsHolder")
         
         coder.encode(reaction, forKey: "reaction")
-        coder.encode(shareContact, forKey: "shareContact")
+        coder.encode(sharedContact, forKey: "sharedContact")
     }
 
     // MARK: Proto Conversion
@@ -96,7 +96,7 @@ public final class VisibleMessage : Message {
         }
         
         if let shareContact = SharedContact.fromProto(dataMessage) {
-            result.shareContact = shareContact
+            result.sharedContact = shareContact
         }
             
         result.syncTarget = dataMessage.syncTarget
@@ -146,7 +146,7 @@ public final class VisibleMessage : Message {
         }
         
         // Share Contact
-        if let shareContact = shareContact, let shareContactProto = shareContact.toProto() {
+        if let shareContact = sharedContact, let shareContactProto = shareContact.toProto() {
             dataMessage.setSharedContact(shareContactProto)
         }
         
@@ -184,7 +184,7 @@ public final class VisibleMessage : Message {
             reaction: \(reaction?.description ?? "null"),
             "openGroupInvitation": \(openGroupInvitation?.description ?? "null"),
             "payment": \(payment?.description ?? "null"),
-            "shareContact": \(shareContact?.description ?? "null"),
+            "sharedContact": \(sharedContact?.description ?? "null"),
         )
         """
     }

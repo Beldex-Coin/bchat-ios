@@ -34,6 +34,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
             return @"OWSMessageCellType_OversizeTextDownloading";
         case OWSMessageCellType_DeletedMessage:
             return @"OWSMessageCellType_DeletedMessage";
+        case OWSMessageCellType_SharedContact:
+            return @"OWSMessageCellType_SharedContact";
     }
 }
 
@@ -592,6 +594,10 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
             }
         }
     }
+    
+    if (self.messageCellType == OWSMessageCellType_SharedContact) {
+        self.messageCellType = OWSMessageCellType_SharedContact;
+    }
 
     if (self.messageCellType == OWSMessageCellType_Unknown) {
         // Messages of unknown type (including messages with missing attachments)
@@ -834,6 +840,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         }
         case OWSMessageCellType_OversizeTextDownloading:
             return NO;
+        case OWSMessageCellType_SharedContact:
+            return NO;
     }
 }
 
@@ -873,6 +881,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         }
         case OWSMessageCellType_OversizeTextDownloading:
             return NO;
+        case OWSMessageCellType_SharedContact:
+            return NO;
     }
 }
 
@@ -886,6 +896,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_Unknown:
         case OWSMessageCellType_TextOnlyMessage:
         case OWSMessageCellType_Audio:
+        case OWSMessageCellType_SharedContact:
             OWSFailDebug(@"Cannot save media data.");
             break;
         case OWSMessageCellType_GenericAttachment:
@@ -1068,6 +1079,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_TextOnlyMessage:
         case OWSMessageCellType_Audio:
         case OWSMessageCellType_GenericAttachment:
+        case OWSMessageCellType_SharedContact:
             return self.attachmentStream != nil;
         case OWSMessageCellType_MediaMessage:
             return self.firstValidAlbumAttachment != nil;
