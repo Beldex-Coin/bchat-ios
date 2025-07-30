@@ -157,7 +157,8 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                                 openGroupInvitationURL:nil
                                                             serverHash:nil
                                                           paymentTxnid:nil
-                                                         paymentAmount:nil];
+                                                         paymentAmount:nil
+                                                         sharedContactMessage:nil];
 }
 
 + (instancetype)outgoingMessageInThread:(nullable TSThread *)thread
@@ -179,7 +180,8 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                                 openGroupInvitationURL:nil
                                                             serverHash:nil
                                                           paymentTxnid:nil
-                                                         paymentAmount:nil];
+                                                         paymentAmount:nil
+                                                         sharedContactMessage:nil];
 }
 
 - (instancetype)initOutgoingMessageWithTimestamp:(uint64_t)timestamp
@@ -197,6 +199,7 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                       serverHash:(nullable NSString *)serverHash
                                     paymentTxnid:(nullable NSString *)paymentTxnid
                                    paymentAmount:(nullable NSString *)paymentAmount
+                                   sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initMessageWithTimestamp:timestamp
                                   inThread:thread
@@ -210,7 +213,8 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                     openGroupInvitationURL:openGroupInvitationURL
                                 serverHash:serverHash
                               paymentTxnid:paymentTxnid
-                             paymentAmount:paymentAmount];
+                             paymentAmount:paymentAmount
+                             sharedContactMessage:sharedContactMessage];
     if (!self) {
         return self;
     }

@@ -56,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
                        serverHash:(nullable NSString *)serverHash
                      paymentTxnid:(nullable NSString *)paymentTxnid
                       paymentAmount:(nullable NSString *)paymentAmount
+             sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initMessageWithTimestamp:timestamp
                                   inThread:thread
@@ -69,7 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
                     openGroupInvitationURL:openGroupInvitationURL
                                 serverHash:serverHash
                               paymentTxnid:paymentTxnid
-                             paymentAmount:paymentAmount];
+                             paymentAmount:paymentAmount
+                             sharedContactMessage:sharedContactMessage];
 
     if (!self) {
         return self;

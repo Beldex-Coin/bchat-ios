@@ -875,6 +875,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             view.endEditing(true)
                         }
                     }
+                case .sharedContact:
+                    debugPrint("Shared Contact **** clicked \(viewItem.sharedContactMessage?.threadId)")
                 default: break
             }
         }

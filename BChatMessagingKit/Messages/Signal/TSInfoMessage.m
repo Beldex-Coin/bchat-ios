@@ -61,7 +61,8 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
                     openGroupInvitationURL:nil
                                 serverHash:nil
                               paymentTxnid:nil
-                             paymentAmount:nil];
+                             paymentAmount:nil
+                              sharedContactMessage:nil];
 
     if (!self) {
         return self;

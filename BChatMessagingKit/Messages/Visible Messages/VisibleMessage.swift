@@ -32,6 +32,7 @@ public final class VisibleMessage : Message {
         if openGroupInvitation != nil { return true }
         if payment != nil { return true }
         if reaction != nil { return true }
+        if sharedContact != nil { return true }
         if let text = text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty { return true }
         return false
     }

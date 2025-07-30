@@ -700,10 +700,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 snContentView.addSubview(deletedMessageView)
                 deletedMessageView.pin(to: snContentView)
             case .sharedContact:
-                debugPrint("sharedContact *********")
                 bubbleViewBottomConstraint.isActive = false
                 bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
-                let contactView = ContactView(bChatID: "", isOutgoing: isOutgoing, contactName: "")
+                guard let sharedContactMessage = viewItem.sharedContactMessage else { return }
+                let contactView = ContactView(bChatID: sharedContactMessage.address ?? "", isOutgoing: isOutgoing, contactName: sharedContactMessage.name ?? "")
                 snContentView.addSubview(contactView)
                 contactView.pin(to: snContentView)
             default: return

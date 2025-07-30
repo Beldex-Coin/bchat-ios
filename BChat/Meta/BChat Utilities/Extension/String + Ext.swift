@@ -123,3 +123,15 @@ extension String {
         return size.width
     }
 }
+
+extension String {
+    func truncateMiddle() -> String {
+        let prefixLength = 19
+        let suffixLength = 7
+        guard self.count > prefixLength + suffixLength else { return self }
+
+        let start = self.prefix(prefixLength)
+        let end = self.suffix(suffixLength)
+        return "\(start)........\(end)"
+    }
+}

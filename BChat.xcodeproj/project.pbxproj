@@ -416,6 +416,8 @@
 		8A7E89D32E05333C00E3B914 /* publicnode2.der in Resources */ = {isa = PBXBuildFile; fileRef = 819CA2212CB7B407001D388B /* publicnode2.der */; };
 		8AA00BF32E2F72AA002B320C /* VisibleMessage+ShareContact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AA00BF22E2F72AA002B320C /* VisibleMessage+ShareContact.swift */; };
 		8AC709092C4F5E4A003AD13E /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */; };
+		8ACF92742E39ECC400B56A3B /* SharedContactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF92732E39ECC400B56A3B /* SharedContactMessage.swift */; };
+		8ACF92762E3A365100B56A3B /* SharedContactMessage+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACF92752E3A365100B56A3B /* SharedContactMessage+Conversion.swift */; };
 		8AD510B42D805EAE00D02C83 /* Storage+Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */; };
 		8AD510B72D805F7D00D02C83 /* ReactMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B62D805F7D00D02C83 /* ReactMessage.swift */; };
 		8AD510B92D805F8F00D02C83 /* ReactMessage+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */; };
@@ -1593,6 +1595,8 @@
 		8A76580E2E2680CA00803F49 /* ShareContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareContactTableViewCell.swift; sourceTree = "<group>"; };
 		8AA00BF22E2F72AA002B320C /* VisibleMessage+ShareContact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisibleMessage+ShareContact.swift"; sourceTree = "<group>"; };
 		8AC709082C4F5E4A003AD13E /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
+		8ACF92732E39ECC400B56A3B /* SharedContactMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContactMessage.swift; sourceTree = "<group>"; };
+		8ACF92752E3A365100B56A3B /* SharedContactMessage+Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedContactMessage+Conversion.swift"; sourceTree = "<group>"; };
 		8AD510B32D805EAE00D02C83 /* Storage+Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Emoji.swift"; sourceTree = "<group>"; };
 		8AD510B62D805F7D00D02C83 /* ReactMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactMessage.swift; sourceTree = "<group>"; };
 		8AD510B82D805F8F00D02C83 /* ReactMessage+Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReactMessage+Conversion.swift"; sourceTree = "<group>"; };
@@ -3068,6 +3072,15 @@
 			path = cells;
 			sourceTree = "<group>";
 		};
+		8ACF92722E39EC8E00B56A3B /* SharedContact */ = {
+			isa = PBXGroup;
+			children = (
+				8ACF92732E39ECC400B56A3B /* SharedContactMessage.swift */,
+				8ACF92752E3A365100B56A3B /* SharedContactMessage+Conversion.swift */,
+			);
+			path = SharedContact;
+			sourceTree = "<group>";
+		};
 		8AD510B52D805F6700D02C83 /* Emoji Reacts */ = {
 			isa = PBXGroup;
 			children = (
@@ -3522,6 +3535,7 @@
 		C300A5F02554B08500555489 /* Sending & Receiving */ = {
 			isa = PBXGroup;
 			children = (
+				8ACF92722E39EC8E00B56A3B /* SharedContact */,
 				8AD510B52D805F6700D02C83 /* Emoji Reacts */,
 				C3D9E3B52567685D0040E4F3 /* Attachments */,
 				B8F5F61925EDE4B0003BF8D4 /* Data Extraction */,
@@ -5610,6 +5624,7 @@
 				8A72CC362D6E18F5004D2018 /* Optional+Utilities.swift in Sources */,
 				C3DB66AC260ACA42001EFC55 /* OpenGroupManagerV2.swift in Sources */,
 				B8F5F61B25EDE4BF003BF8D4 /* DataExtractionNotificationInfoMessage.swift in Sources */,
+				8ACF92762E3A365100B56A3B /* SharedContactMessage+Conversion.swift in Sources */,
 				C379DCF4256735770002D4EB /* VisibleMessage+Attachment.swift in Sources */,
 				B8856D34256F1192001CE70E /* Environment.m in Sources */,
 				8A72CC322D6E1105004D2018 /* VisibleMessage+Reaction.swift in Sources */,
@@ -5654,6 +5669,7 @@
 				C3ECBF7B257056B700EA7FCE /* Threading.swift in Sources */,
 				C32C5AAB256DBE8F003C73A2 /* TSIncomingMessage+Conversion.swift in Sources */,
 				B866CE112581C1A900535CC4 /* Sodium+Conversion.swift in Sources */,
+				8ACF92742E39ECC400B56A3B /* SharedContactMessage.swift in Sources */,
 				C32C5A88256DBCF9003C73A2 /* MessageReceiver+Handling.swift in Sources */,
 				C32C5C1B256DC9E0003C73A2 /* General.swift in Sources */,
 				C32C5A02256DB658003C73A2 /* MessageSender+Convenience.swift in Sources */,

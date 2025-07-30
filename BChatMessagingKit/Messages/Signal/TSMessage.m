@@ -68,7 +68,8 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
                   openGroupInvitationURL:(nullable NSString *)openGroupInvitationURL
                               serverHash:(nullable NSString *)serverHash
                             paymentTxnid:(nullable NSString *)paymentTxnid
-                             paymentAmount:(nullable NSString *)paymentAmount
+                           paymentAmount:(nullable NSString *)paymentAmount
+                    sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initInteractionWithTimestamp:timestamp inThread:thread];
 
@@ -94,6 +95,7 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
     _isDeleted = false;
     _isCallMessage = false;
     _reactions = [NSMutableArray new];
+    _sharedContactMessage = sharedContactMessage;
 
     return self;
 }

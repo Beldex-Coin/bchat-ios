@@ -161,7 +161,7 @@ final class ShareContactTableViewCell: UITableViewCell {
         
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
         nameLabel.text = contact?.displayName(for: .regular) ?? publicKey
-        addressLabel.text = publicKey
+        addressLabel.text = publicKey.truncateMiddle()
         
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {
             profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0

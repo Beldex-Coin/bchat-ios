@@ -19,7 +19,7 @@ final class ContactView : UIView {
         self.bChatID = bChatID
         self.contactName = contactName
         self.isOutgoing = isOutgoing
-        super.init(frame: CGRect.zero)
+        super.init(frame: .zero)
         setUpViewHierarchy()
     }
     
@@ -34,7 +34,7 @@ final class ContactView : UIView {
     private func setUpViewHierarchy() {
         // bchatIDLabel
         let bchatIDLabel = UILabel()
-        bchatIDLabel.text = bChatID
+        bchatIDLabel.text = bChatID.truncateMiddle()
         bchatIDLabel.textColor = isOutgoing ? Colors.noDataLabelColor : Colors.textFieldPlaceHolderColor
         bchatIDLabel.font = Fonts.regularOpenSans(ofSize: 10)
         
@@ -86,6 +86,5 @@ final class ContactView : UIView {
         bchatIDLabel.pin(.left, to: .right, of: contactIconImageView, withInset: 4)
         bchatIDLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
         bchatIDLabel.pin(.right, to: .left, of: profileImageView, withInset: -20)
-        
     }
 }

@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TSContactThread;
 @class TSGroupThread;
+@class BCSharedContactMessage;
 
 @interface TSIncomingMessage : TSMessage <OWSReadTracking>
 
@@ -64,7 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
            openGroupInvitationURL:(nullable NSString *)openGroupInvitationURL
                        serverHash:(nullable NSString*)serverHash
                      paymentTxnid:(nullable NSString *)paymentTxnid
-                    paymentAmount:(nullable NSString *)paymentAmount NS_DESIGNATED_INITIALIZER;
+                    paymentAmount:(nullable NSString *)paymentAmount
+             sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 

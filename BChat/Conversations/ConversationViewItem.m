@@ -103,6 +103,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
 @property (nonatomic, nullable) NSString *systemMessageText;
 @property (nonatomic, nullable) TSThread *incomingMessageAuthorThread;
 @property (nonatomic, nullable) NSString *authorConversationColorName;
+@property (nonatomic, nullable) BCSharedContactMessage *sharedContactMessage;
 
 @end
 
@@ -594,10 +595,6 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
             }
         }
     }
-    
-    if (self.messageCellType == OWSMessageCellType_SharedContact) {
-        self.messageCellType = OWSMessageCellType_SharedContact;
-    }
 
     if (self.messageCellType == OWSMessageCellType_Unknown) {
         // Messages of unknown type (including messages with missing attachments)
@@ -605,6 +602,11 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         OWSLogWarn(@"Treating unknown message as empty text message: %@ %llu", message.class, message.timestamp);
         self.messageCellType = OWSMessageCellType_TextOnlyMessage;
         self.displayableBodyText = [[DisplayableText alloc] initWithFullText:@"" displayText:@"" isTextTruncated:NO];
+    }
+    
+    if (message.sharedContactMessage) {
+        self.sharedContactMessage = message.sharedContactMessage;
+        self.messageCellType = OWSMessageCellType_SharedContact;
     }
 }
 

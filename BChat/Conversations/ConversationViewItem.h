@@ -35,6 +35,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType);
 @class TSAttachmentStream;
 @class TSInteraction;
 @class TSThread;
+@class BCSharedContactMessage;
 @class YapDatabaseReadTransaction;
 
 @interface ConversationMediaAlbumItem : NSObject
@@ -119,6 +120,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType);
 
 @property (nonatomic, readonly, nullable) OWSLinkPreview *linkPreview;
 @property (nonatomic, readonly, nullable) TSAttachment *linkPreviewAttachment;
+
+@property (nonatomic, readonly, nullable) BCSharedContactMessage *sharedContactMessage;
 
 @property (nonatomic, readonly, nullable) NSString *systemMessageText;
 
