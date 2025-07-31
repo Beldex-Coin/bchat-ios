@@ -1,10 +1,11 @@
 // Copyright © 2025 Beldex International Limited OU. All rights reserved.
 
 import Foundation
-//
+
 @objc(BCSharedContactMessage)
 public final class SharedContactMessage : MTLModel {
     
+    @objc
     public var threadId: String?
     
     @objc

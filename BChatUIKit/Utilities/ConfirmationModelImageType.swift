@@ -9,6 +9,7 @@ public enum ConfirmationModalType: Int {
     case gifEnable
     case payAsYouChat
     case leaveGroup
+    case shareContact
     
     case cameraPermission
     case callPermission
@@ -39,7 +40,7 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .transactionSuccess:
                 name = ""
-            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
                 name = ""
         }
         
@@ -50,7 +51,7 @@ public enum ConfirmationModalType: Int {
         let isShow: Bool
         
         switch self {
-            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
                 isShow = false
             case .cameraPermission,
                 .callPermission,
@@ -70,7 +71,7 @@ public enum ConfirmationModalType: Int {
         var color: UIColor
         
         switch self {
-            case .gifEnable, .payAsYouChat, .leaveGroup, .none:
+            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
             // TODO: Set color
                 color = .clear
             case .cameraPermission,

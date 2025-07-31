@@ -377,6 +377,8 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
         } else {
             return @"Payment";
         }
+    } else if (self.sharedContactMessage != nil) {
+        return [NSString stringWithFormat:@"👤 %@", self.sharedContactMessage.name];
     } else {
         // TODO: We should do better here.
         return @"";

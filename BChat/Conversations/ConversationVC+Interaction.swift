@@ -877,6 +877,37 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     }
                 case .sharedContact:
                     debugPrint("Shared Contact **** clicked \(viewItem.sharedContactMessage?.threadId)")
+                    guard let sharedContact = viewItem.sharedContactMessage,
+                            let bchatId = viewItem.sharedContactMessage?.address else { return }
+                    let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
+                    if thread.uniqueId != self.thread.uniqueId {
+                        // show confirmation modal
+                        let confirmationModal: ConfirmationModal = ConfirmationModal(
+                            info: ConfirmationModal.Info(
+                                modalType: .shareContact,
+                                title: (sharedContact.name ?? sharedContact.address?.truncateMiddle()) ?? "",
+                                body: .text("Do you want to chat with this contact now?"),
+                                showCondition: .disabled,
+                                confirmTitle: "Chat",
+                                onConfirm: { _ in
+                                    self.isInputViewShow = true
+                                    CATransaction.begin()
+                                    CATransaction.setCompletionBlock {
+                                        let conversationVC = ConversationVC(thread: thread)
+                                        self.navigationController?.pushViewController(conversationVC, animated: true)
+                                    }
+                                    self.navigationController?.popViewController(animated: true)
+                                    CATransaction.commit()
+                                }, afterClosed: {
+                                    self.isInputViewShow = true
+                                    self.showInputAccessoryView()
+                                }
+                            )
+                        )
+                        present(confirmationModal, animated: true, completion:  {
+                            self.isInputViewShow = false
+                        })
+                    }
                 default: break
             }
         }
