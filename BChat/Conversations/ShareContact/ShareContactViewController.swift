@@ -28,7 +28,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     
     // MARK: - Properties
     
-    private let contacts = ContactUtilities.getAllContacts()
+    private var contacts: [String] = []
     private var selectedContacts: Set<String> = []
 
     var filteredContacts: [String] = []
@@ -58,7 +58,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
-        
+        self.contacts = getAllContactsWithArchiveContacts()
         setupNavigation()
         setupSearchTextFeild()
         setupTableView()
@@ -327,4 +327,37 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         tableView.reloadData()
         sendButton.isEnabled = !selectedContacts.isEmpty
     }
+    
+    func getAllContactsWithArchiveContacts() -> [String] {
+        var result: [String] = []
+        Storage.read { transaction in
+            TSContactThread.enumerateCollectionObjects(with: transaction) { object, _ in
+                guard
+                    let thread: TSContactThread = object as? TSContactThread,
+                    thread.shouldBeVisible,
+                    Storage.shared.getContact(
+                        with: thread.contactBChatID(),
+                        using: transaction
+                    )?.didApproveMe == true
+                else {
+                    return
+                }
+                
+                result.append(thread.contactBChatID())
+            }
+        }
+        
+        func getDisplayName(for publicKey: String) -> String {
+            return Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        }
+        
+        // Remove the current user
+        if let index = result.firstIndex(of: getUserHexEncodedPublicKey()) {
+            result.remove(at: index)
+        }
+        
+        // Sort alphabetically
+        return result.sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
+    }
+    
 }

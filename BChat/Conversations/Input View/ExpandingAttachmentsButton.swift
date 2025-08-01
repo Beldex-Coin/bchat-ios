@@ -35,7 +35,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
     // MARK: - UI Components
     
     lazy var shareContactButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "share_contact"), delegate: self, hasOpaqueBackground: false, isAttachmentButton: true)
+        let result = InputViewButton(icon: #imageLiteral(resourceName: "share_contact_chat"), delegate: self, hasOpaqueBackground: false, isAttachmentButton: true)
         result.tintColor = UIColor.white
         result.set(.width, to: 36)
         result.set(.height, to: 36)

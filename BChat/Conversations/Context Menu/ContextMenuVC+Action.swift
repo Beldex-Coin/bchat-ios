@@ -123,7 +123,7 @@ extension ContextMenuVC {
                     result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
                 }
                 return result
-            case .mediaMessage, .audio, .genericAttachment:
+        case .mediaMessage, .audio, .genericAttachment, .sharedContact:
                 var result: [Action] = []
                 if isReplyingAllowed() {
                     var quoteDraftOrNil: OWSQuotedReplyModel?
