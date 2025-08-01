@@ -32,11 +32,11 @@ final class ContactView : UIView {
     }
     
     private func setUpViewHierarchy() {
-        // bchatIDLabel
-        let bchatIDLabel = UILabel()
-        bchatIDLabel.text = bChatID.truncateMiddle()
-        bchatIDLabel.textColor = isOutgoing ? Colors.noDataLabelColor : Colors.textFieldPlaceHolderColor
-        bchatIDLabel.font = Fonts.regularOpenSans(ofSize: 10)
+        // addressLabel
+        let addressLabel = UILabel()
+        addressLabel.text = bChatID.truncateMiddle()
+        addressLabel.textColor = isOutgoing ? Colors.noDataLabelColor : Colors.textFieldPlaceHolderColor
+        addressLabel.font = Fonts.regularOpenSans(ofSize: 10)
         
         // contactNameLabel
         let contactNameLabel = UILabel()
@@ -55,7 +55,6 @@ final class ContactView : UIView {
         profileImageView.publicKey = bChatID
         profileImageView.update()
         
-        
         addSubview(backGroundView)
         backGroundView.pin(.right, to: .right, of: self, withInset: -6)
         backGroundView.pin(.top, to: .top, of: self, withInset: 6)
@@ -63,28 +62,26 @@ final class ContactView : UIView {
         backGroundView.pin(.bottom, to: .bottom, of: self, withInset: -15)
         backGroundView.set(.width, to: (UIScreen.main.bounds.width / 2) + 70 )
         
-        
-        let contactIconImageView = UIImageView(image: UIImage(named: "ic_contact"))
+        let contactIconImageView = UIImageView(image: #imageLiteral(resourceName: "ic_contact"))
         contactIconImageView.contentMode = .scaleAspectFit
         contactIconImageView.set(.width, to: 10)
         contactIconImageView.set(.height, to: 10)
         
-        
-        backGroundView.addSubViews([profileImageView, contactNameLabel, contactIconImageView, bchatIDLabel])
+        backGroundView.addSubViews([profileImageView, contactNameLabel, contactIconImageView, addressLabel])
         profileImageView.pin(.top, to: .top, of: backGroundView, withInset: 7)
         profileImageView.pin(.right, to: .right, of: backGroundView, withInset: -7)
         profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -7)
         
         contactNameLabel.pin(.top, to: .top, of: backGroundView, withInset: 11)
         contactNameLabel.pin(.left, to: .left, of: backGroundView, withInset: 14)
-        contactNameLabel.pin(.right, to: .left, of: profileImageView, withInset: -20)
+        contactNameLabel.pin(.right, to: .left, of: profileImageView, withInset: -16)
         
         contactIconImageView.pin(.top, to: .bottom, of: contactNameLabel, withInset: 6)
         contactIconImageView.pin(.left, to: .left, of: backGroundView, withInset: 13)
         
-        bchatIDLabel.pin(.top, to: .bottom, of: contactNameLabel, withInset: 4)
-        bchatIDLabel.pin(.left, to: .right, of: contactIconImageView, withInset: 4)
-        bchatIDLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
-        bchatIDLabel.pin(.right, to: .left, of: profileImageView, withInset: -20)
+        addressLabel.pin(.top, to: .bottom, of: contactNameLabel, withInset: 4)
+        addressLabel.pin(.left, to: .right, of: contactIconImageView, withInset: 4)
+        addressLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
+        addressLabel.pin(.right, to: .left, of: profileImageView, withInset: -16)
     }
 }
