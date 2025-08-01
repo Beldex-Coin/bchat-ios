@@ -1069,7 +1069,7 @@ extension ConversationViewModel {
 //                print("Could not reload interaction")
                 return
             }
-            viewItem.replace(updatedInteraction, transaction: transaction)
+            viewItem.replaceInteraction(updatedInteraction, transaction: transaction)
         }
     }
     

@@ -47,7 +47,7 @@ func string(for cellType: OWSMessageCellType) -> String {
 
 // MARK: - ConversationMediaAlbumItem
 
-class ConversationMediaAlbumItem: NSObject {
+@objc class ConversationMediaAlbumItem: NSObject {
     let attachment: TSAttachment
     let attachmentStream: TSAttachmentStream?
     let caption: String?
@@ -73,8 +73,8 @@ class ConversationMediaAlbumItem: NSObject {
 
 // MARK: - ConversationViewItem Protocol
 
-@objc protocol ConversationViewItem: OWSAudioPlayerDelegate {
-    var interaction: TSInteraction { get }
+@objc protocol ConversationViewItem: OWSAudioPlayerDelegate, NSObjectProtocol {
+   @objc var interaction: TSInteraction { get }
     var quotedReply: OWSQuotedReplyModel? { get }
 
     var isGroupThread: Bool { get }
@@ -149,10 +149,10 @@ class ConversationMediaAlbumItem: NSObject {
 
 // MARK: - ConversationInteractionViewItem
 
-class ConversationInteractionViewItem: NSObject, ConversationViewItem {
+@objc class ConversationInteractionViewItem: NSObject, ConversationViewItem {
     
-    
-    var interaction: TSInteraction
+   @objc var interaction: TSInteraction
+//    @objc private(set) var interaction: TSInteraction
     let isGroupThread: Bool
 
     var quotedReply: OWSQuotedReplyModel?
@@ -185,7 +185,7 @@ class ConversationInteractionViewItem: NSObject, ConversationViewItem {
         super.init()
         ensureViewState(transaction: transaction)
     }
-
+    
     func replaceInteraction(_ interaction: TSInteraction, transaction: YapDatabaseReadTransaction) {
         self.messageCellType = .unknown
         self.displayableBodyText = nil
@@ -703,12 +703,12 @@ class ConversationInteractionViewItem: NSObject, ConversationViewItem {
             }
             UIPasteboard.general.string = displayableBodyText.fullText
 
-        case .unknown:
+        case .unknown: break
 //            OWSFailDebug("No text to copy")
 
-        case .oversizeTextDownloading:
+        case .oversizeTextDownloading: break
 //            OWSFailDebug("Can't copy not-yet-downloaded attachment")
-        case .deletedMessage:
+        case .deletedMessage: break
 //            OWSFailDebug("Missing body text")
         }
     }
@@ -840,16 +840,16 @@ class ConversationInteractionViewItem: NSObject, ConversationViewItem {
         }
 
         switch self.messageCellType {
-        case .unknown, .textOnlyMessage, .audio, .genericAttachment:
+        case .unknown, .textOnlyMessage, .audio, .genericAttachment: break
 //            OWSFailDebug("Cannot save media data.")
 
         case .mediaMessage:
             saveMediaAlbumItems()
 
-        case .oversizeTextDownloading:
+        case .oversizeTextDownloading: break
 //            OWSFailDebug("Can't save not-yet-downloaded attachment")
 
-        case .deletedMessage:
+        case .deletedMessage: break
 //            OWSFailDebug("Deleted messages can't be saved.")
         }
     }

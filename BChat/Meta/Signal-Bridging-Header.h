@@ -12,8 +12,6 @@
 #import "AVAudioSession+OWS.h"
 #import "ContactCellView.h"
 #import "ContactTableViewCell.h"
-#import "ConversationViewItem.h"
-//#import "ConversationViewModel.h"
 #import "DateUtil.h"
 #import "MediaDetailViewController.h"
 #import "NotificationSettingsViewController.h"
