@@ -894,9 +894,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                     CATransaction.begin()
                                     CATransaction.setCompletionBlock {
                                         let conversationVC = ConversationVC(thread: thread)
-                                        self.navigationController?.pushViewController(conversationVC, animated: true)
+                                        var viewControllers = self.navigationController?.viewControllers
+                                        if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
+                                        viewControllers?.append(conversationVC)
+                                        self.navigationController?.setViewControllers(viewControllers!, animated: true)
                                     }
-                                    self.navigationController?.popViewController(animated: true)
                                     CATransaction.commit()
                                 }, afterClosed: {
                                     self.isInputViewShow = true
@@ -906,6 +908,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         )
                         present(confirmationModal, animated: true, completion:  {
                             self.isInputViewShow = false
+                            self.hideInputAccessoryView()
                         })
                     }
                 default: break

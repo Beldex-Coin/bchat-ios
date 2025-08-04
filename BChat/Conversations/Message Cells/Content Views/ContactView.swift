@@ -4,6 +4,7 @@ final class ContactView : UIView {
     private let bChatID: String
     private let contactName: String
     private let isOutgoing: Bool
+    private let searchString: String
         
     private lazy var backGroundView: UIView = {
         let result = UIView()
@@ -15,10 +16,11 @@ final class ContactView : UIView {
     
     
     // MARK: Lifecycle
-    init(bChatID: String, isOutgoing: Bool, contactName: String) {
+    init(bChatID: String, isOutgoing: Bool, contactName: String, searchString: String) {
         self.bChatID = bChatID
         self.contactName = contactName
         self.isOutgoing = isOutgoing
+        self.searchString = searchString
         super.init(frame: .zero)
         setUpViewHierarchy()
     }
@@ -43,6 +45,7 @@ final class ContactView : UIView {
         contactNameLabel.text = contactName
         contactNameLabel.textColor = isOutgoing ? Colors.callCellTitle : Colors.titleColor
         contactNameLabel.font = Fonts.semiOpenSans(ofSize: 12)
+        contactNameLabel.attributedText = highlight(text: contactName, search: searchString)
 
         // profileImageView
         let profileImageView = ProfilePictureView()
@@ -54,6 +57,15 @@ final class ContactView : UIView {
         profileImageView.layer.cornerRadius = 20
         profileImageView.publicKey = bChatID
         profileImageView.update()
+        
+        lazy var verifiedImageView: UIImageView = {
+            let result = UIImageView()
+            result.set(.width, to: 18)
+            result.set(.height, to: 18)
+            result.contentMode = .center
+            result.image = UIImage(named: "ic_verified_image")
+            return result
+        }()
         
         addSubview(backGroundView)
         backGroundView.pin(.right, to: .right, of: self, withInset: -6)
@@ -67,7 +79,7 @@ final class ContactView : UIView {
         contactIconImageView.set(.width, to: 10)
         contactIconImageView.set(.height, to: 10)
         
-        backGroundView.addSubViews([profileImageView, contactNameLabel, contactIconImageView, addressLabel])
+        backGroundView.addSubViews([profileImageView, verifiedImageView, contactNameLabel, contactIconImageView, addressLabel])
         profileImageView.pin(.top, to: .top, of: backGroundView, withInset: 7)
         profileImageView.pin(.right, to: .right, of: backGroundView, withInset: -7)
         profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -7)
@@ -83,5 +95,34 @@ final class ContactView : UIView {
         addressLabel.pin(.left, to: .right, of: contactIconImageView, withInset: 4)
         addressLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
         addressLabel.pin(.right, to: .left, of: profileImageView, withInset: -16)
+        
+        verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
+        verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
+        
+        
+        let contact: Contact? = Storage.shared.getContact(with: bChatID)
+        if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+            profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+            profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+            verifiedImageView.isHidden = isBnsUser ? false : true
+        } else {
+            verifiedImageView.isHidden = true
+        }
     }
+    
+    func highlight(text: String, search: String) -> NSAttributedString {
+        let attributed = NSMutableAttributedString(string: text)
+        guard !search.isEmpty else { return attributed }
+        let lowercasedText = text.lowercased()
+        let lowercasedSearch = search.lowercased()
+        var searchRange = lowercasedText.startIndex..<lowercasedText.endIndex
+        while let foundRange = lowercasedText.range(of: lowercasedSearch, options: [], range: searchRange) {
+            let nsRange = NSRange(foundRange, in: text)
+            attributed.addAttribute(.backgroundColor, value: UIColor.systemOrange, range: nsRange)
+            
+            searchRange = foundRange.upperBound..<lowercasedText.endIndex
+        }
+        return attributed
+    }
+    
 }

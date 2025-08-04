@@ -311,6 +311,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         } else {
             let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
             filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
+            noContactStackView.isHidden = !filterDict.isEmpty
         }
         tableView.reloadData()
     }

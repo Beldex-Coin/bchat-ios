@@ -1119,6 +1119,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         snInputView.isHidden = false
         recoverInputView()
         self.showInputAccessoryView()
+        self.isInputViewShow = true
         hideInputViewForBlockedContact()
         
         if AppEnvironment.shared.callManager.currentCall == nil {
@@ -1231,7 +1232,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func appDidBecomeActive(_ notification: Notification) {
         
-        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow {
+        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow && !thread.isBlocked() {
             recoverInputView()
             snInputView.isHidden = false
         } else {
