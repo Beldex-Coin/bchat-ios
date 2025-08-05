@@ -48,15 +48,13 @@ final class ContactView : UIView {
         contactNameLabel.attributedText = highlight(text: contactName, search: searchString)
 
         // profileImageView
-        let profileImageView = ProfilePictureView()
+        let profileImageView = UIImageView()
         let profilePictureViewSize = CGFloat(40)
         profileImageView.set(.width, to: profilePictureViewSize)
         profileImageView.set(.height, to: profilePictureViewSize)
-        profileImageView.size = profilePictureViewSize
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
-        profileImageView.publicKey = bChatID
-        profileImageView.update()
+        profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: bChatID)
         
         lazy var verifiedImageView: UIImageView = {
             let result = UIImageView()
@@ -123,6 +121,16 @@ final class ContactView : UIView {
             searchRange = foundRange.upperBound..<lowercasedText.endIndex
         }
         return attributed
+    }
+    
+    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
+        guard !publicKey.isEmpty else { return nil }
+        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
+            return profilePicture
+        } else {
+            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? contactName
+            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
+        }
     }
     
 }
