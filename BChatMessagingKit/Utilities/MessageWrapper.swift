@@ -35,7 +35,7 @@ public enum MessageWrapper {
             let builder = SNProtoEnvelope.builder(type: type)
             builder.setSource(senderPublicKey)
             builder.setTimestamp(timestamp)
-            builder.setBnsHolder(isBnsHolder)
+            builder.setIsBnsHolder(isBnsHolder)
             builder.setSourceDevice(1)
             if let content = Data(base64Encoded: base64EncodedContent, options: .ignoreUnknownCharacters) {
                 builder.setContent(content)

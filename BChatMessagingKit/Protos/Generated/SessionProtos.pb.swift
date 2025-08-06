@@ -1192,13 +1192,6 @@ struct SessionProtos_DataMessage {
     // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
     // methods supported on all messages.
 
-    var threadID: String {
-      get {return _threadID ?? String()}
-      set {_threadID = newValue}
-    }
-    /// Clears the value of `threadID`. Subsequent reads from it will return its default value.
-    mutating func clearThreadID() {self._threadID = nil}
-
     var address: String {
       get {return _address ?? String()}
       set {_address = newValue}
@@ -1221,7 +1214,6 @@ struct SessionProtos_DataMessage {
 
     init() {}
 
-    fileprivate var _threadID: String? = nil
     fileprivate var _address: String? = nil
     fileprivate var _name: String? = nil
   }
@@ -3111,13 +3103,11 @@ extension SessionProtos_DataMessage.ClosedGroupControlMessage.KeyPairWrapper: Sw
 extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   static let protoMessageName: String = SessionProtos_DataMessage.protoMessageName + ".SharedContact"
   static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .same(proto: "threadId"),
-    2: .same(proto: "address"),
-    3: .same(proto: "name"),
+    1: .same(proto: "address"),
+    2: .same(proto: "name"),
   ]
 
   public var isInitialized: Bool {
-    if self._threadID == nil {return false}
     if self._address == nil {return false}
     if self._name == nil {return false}
     return true
@@ -3129,9 +3119,8 @@ extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftP
       // allocates stack space for every case branch when no optimizations are
       // enabled. https://github.com/apple/swift-protobuf/issues/1034
       switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self._threadID) }()
-      case 2: try { try decoder.decodeSingularStringField(value: &self._address) }()
-      case 3: try { try decoder.decodeSingularStringField(value: &self._name) }()
+      case 1: try { try decoder.decodeSingularStringField(value: &self._address) }()
+      case 2: try { try decoder.decodeSingularStringField(value: &self._name) }()
       default: break
       }
     }
@@ -3142,20 +3131,16 @@ extension SessionProtos_DataMessage.SharedContact: SwiftProtobuf.Message, SwiftP
     // allocates stack space for every if/case branch local when no optimizations
     // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
     // https://github.com/apple/swift-protobuf/issues/1182
-    try { if let v = self._threadID {
+    try { if let v = self._address {
       try visitor.visitSingularStringField(value: v, fieldNumber: 1)
     } }()
-    try { if let v = self._address {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
-    } }()
     try { if let v = self._name {
-      try visitor.visitSingularStringField(value: v, fieldNumber: 3)
+      try visitor.visitSingularStringField(value: v, fieldNumber: 2)
     } }()
     try unknownFields.traverse(visitor: &visitor)
   }
 
   static func ==(lhs: SessionProtos_DataMessage.SharedContact, rhs: SessionProtos_DataMessage.SharedContact) -> Bool {
-    if lhs._threadID != rhs._threadID {return false}
     if lhs._address != rhs._address {return false}
     if lhs._name != rhs._name {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}

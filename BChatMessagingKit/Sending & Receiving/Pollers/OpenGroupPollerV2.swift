@@ -74,7 +74,7 @@ public final class OpenGroupPollerV2 : NSObject {
                 let envelope = SNProtoEnvelope.builder(type: .sessionMessage)
                 envelope.setContent(data)
                 envelope.setTimestamp(message.sentTimestamp)
-                envelope.setBnsHolder(isBnsUser)
+                envelope.setIsBnsHolder(isBnsUser)
                 envelope.setSource(message.sender!) // Safe because messages with a nil sender are filtered out
                 do {
                     let data = try envelope.buildSerializedData()

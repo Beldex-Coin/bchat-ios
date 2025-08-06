@@ -6,17 +6,13 @@ import Foundation
 public final class SharedContactMessage : MTLModel {
     
     @objc
-    public var threadId: String?
-    
-    @objc
     public var address: String?
     
     @objc
     public var name: String?
     
     @objc
-    public init(threadId: String, address: String, name: String) {
-        self.threadId = threadId
+    public init(address: String, name: String) {
         self.address = address
         self.name = name
         super.init()
@@ -40,6 +36,6 @@ public final class SharedContactMessage : MTLModel {
     @objc
     public override func isEqual(_ object: Any!) -> Bool {
         guard let other = object as? SharedContactMessage else { return false }
-        return other.threadId == self.threadId && other.address == self.address && other.name == self.name
+        return other.address == self.address && other.name == self.name
      }
 }

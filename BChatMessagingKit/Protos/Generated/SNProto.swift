@@ -57,7 +57,7 @@ public enum SNProtoError: Error {
             builder.setContent(_value)
         }
         if hasIsBnsHolder {
-            builder.setBnsHolder(isBnsHolder)
+            builder.setIsBnsHolder(isBnsHolder)
         }
         if hasServerTimestamp {
             builder.setServerTimestamp(serverTimestamp)
@@ -97,7 +97,7 @@ public enum SNProtoError: Error {
             proto.content = valueParam
         }
 
-        @objc public func setBnsHolder(_ valueParam: Bool) {
+        @objc public func setIsBnsHolder(_ valueParam: Bool) {
             proto.isBnsHolder = valueParam
         }
 
@@ -117,14 +117,15 @@ public enum SNProtoError: Error {
     fileprivate let proto: SessionProtos_Envelope
 
     @objc public let type: SNProtoEnvelopeType
-    
+
     @objc public var timestamp: UInt64 {
         return proto.timestamp
     }
+    
     @objc public var hasTimestamp: Bool {
         return proto.hasTimestamp
     }
-    
+
     @objc public var source: String? {
         guard proto.hasSource else {
             return nil
@@ -158,7 +159,7 @@ public enum SNProtoError: Error {
     @objc public var hasIsBnsHolder: Bool {
         return proto.hasIsBnsHolder
     }
-    
+
     @objc public var serverTimestamp: UInt64 {
         return proto.serverTimestamp
     }
@@ -2523,9 +2524,6 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
     // asBuilder() constructs a builder that reflects the proto's contents.
     @objc public func asBuilder() -> SNProtoDataMessageSharedContactBuilder {
         let builder = SNProtoDataMessageSharedContactBuilder()
-        if let _value = threadID {
-            builder.setThreadID(_value)
-        }
         if let _value = address {
             builder.setAddress(_value)
         }
@@ -2540,10 +2538,6 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         private var proto = SessionProtos_DataMessage.SharedContact()
 
         @objc fileprivate override init() {}
-
-        @objc public func setThreadID(_ valueParam: String) {
-            proto.threadID = valueParam
-        }
 
         @objc public func setAddress(_ valueParam: String) {
             proto.address = valueParam
@@ -2563,10 +2557,6 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
     }
 
     fileprivate let proto: SessionProtos_DataMessage.SharedContact
-
-    @objc public var threadID: String? {
-        return proto.threadID
-    }
 
     @objc public var address: String? {
         return proto.address

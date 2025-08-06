@@ -402,7 +402,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
                 if let contactAddress = address, let contactName = name {
-                    message.sharedContact = VisibleMessage.SharedContact(threadId: thread.uniqueId, address: contactAddress, name: contactName)
+                    message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
                 }
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
@@ -876,7 +876,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                 case .sharedContact:
-                    debugPrint("Shared Contact **** clicked \(viewItem.sharedContactMessage?.threadId)")
                     guard let sharedContact = viewItem.sharedContactMessage,
                             let bchatId = viewItem.sharedContactMessage?.address else { return }
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
