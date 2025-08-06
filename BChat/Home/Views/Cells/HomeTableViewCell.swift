@@ -447,9 +447,7 @@ class HomeTableViewCell: UITableViewCell {
         
         // Adding image for Shared Contact last message text
         guard let lastMessageText = threadViewModel.lastMessageText else { return result }
-        if lastMessageText.contains("👤") {
-            debugPrint("Shred Contact Found \(lastMessageText)")
-            
+        if lastMessageText.contains("👤") {            
             let attachment = NSTextAttachment()
             attachment.image = UIImage(named: "ic_contact")
             attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
