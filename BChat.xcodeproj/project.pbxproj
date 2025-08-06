@@ -331,7 +331,7 @@
 		8164F10C2B3C280500590775 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8164F10B2B3C280500590775 /* RegisterVC.swift */; };
 		816564BF2AA729C800477BC7 /* WalletHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 816564BE2AA729C800477BC7 /* WalletHelper.swift */; };
 		817314782B4FEB410020E333 /* NewClearDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817314772B4FEB410020E333 /* NewClearDataVC.swift */; };
-		817DC5DD2B4E586600A37CC9 /* NewHopsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */; };
+		817DC5DD2B4E586600A37CC9 /* HopsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5DC2B4E586600A37CC9 /* HopsViewController.swift */; };
 		817DC5DF2B4E965700A37CC9 /* NewBlockedContactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */; };
 		817DC5E12B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */; };
 		819AE3982A29EB4800F15166 /* NotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC01A3D241F40AB00BC7C55 /* NotificationServiceExtension.swift */; };
@@ -1514,7 +1514,7 @@
 		8164F10B2B3C280500590775 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		816564BE2AA729C800477BC7 /* WalletHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletHelper.swift; sourceTree = "<group>"; };
 		817314772B4FEB410020E333 /* NewClearDataVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClearDataVC.swift; sourceTree = "<group>"; };
-		817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewHopsVC.swift; sourceTree = "<group>"; };
+		817DC5DC2B4E586600A37CC9 /* HopsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HopsViewController.swift; sourceTree = "<group>"; };
 		817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlockedContactVC.swift; sourceTree = "<group>"; };
 		817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBlockContactTableViewCell.swift; sourceTree = "<group>"; };
 		81934DA42A304A2C00505F24 /* FirebaseMessaging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseMessaging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2871,7 +2871,7 @@
 				815427BB2B4C18C700A4A244 /* CreateSecretGroupTableViewCell.swift */,
 				81FBC2412B4D3E6300B2CA3D /* NewDesignSettingsVC.swift */,
 				81FBC2432B4D555A00B2CA3D /* NewSettingsTableViewCell.swift */,
-				817DC5DC2B4E586600A37CC9 /* NewHopsVC.swift */,
+				817DC5DC2B4E586600A37CC9 /* HopsViewController.swift */,
 				817DC5DE2B4E965700A37CC9 /* NewBlockedContactVC.swift */,
 				817DC5E02B4E9BB800A37CC9 /* NewBlockContactTableViewCell.swift */,
 				817314772B4FEB410020E333 /* NewClearDataVC.swift */,
@@ -6055,7 +6055,7 @@
 				81DBDA062B5FB8BB0006C404 /* FeePriorityVC.swift in Sources */,
 				60D33B6329F7D9E7003CAE13 /* StringConstants.swift in Sources */,
 				B897621C25D201F7004F83B2 /* ScrollToBottomButton.swift in Sources */,
-				817DC5DD2B4E586600A37CC9 /* NewHopsVC.swift in Sources */,
+				817DC5DD2B4E586600A37CC9 /* HopsViewController.swift in Sources */,
 				346B66311F4E29B200E5122F /* CropScaleImageViewController.swift in Sources */,
 				81134CF92B60D16000070127 /* NewMessageRequestVC.swift in Sources */,
 				45E5A6991F61E6DE001E4A8A /* MarqueeLabel.swift in Sources */,

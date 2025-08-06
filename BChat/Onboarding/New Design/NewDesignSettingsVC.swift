@@ -4,7 +4,6 @@ import UIKit
 
 class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
-    
     let tableView : UITableView = {
         let table = UITableView()
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +64,7 @@ class NewDesignSettingsVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if indexPath.row == 0 { //Hops
-            let vc = NewHopsVC()
+            let vc = HopsViewController()
             self.navigationController?.pushViewController(vc, animated: true)
         }
         

@@ -988,7 +988,7 @@ final class HomeVC : BaseVC {
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
-        plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(showNewChatView), for: .touchUpInside)
         let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         rightBarButtonItems.append(plusButtonBarItem)
         
@@ -1109,7 +1109,7 @@ final class HomeVC : BaseVC {
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
-    @objc private func showWallet() {
+    @objc private func showNewChatView() {
         let vc = NewChatVC()
         navigationController?.pushViewController(vc, animated: true)
     }

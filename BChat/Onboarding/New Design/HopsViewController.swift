@@ -4,8 +4,7 @@ import UIKit
 import BChatUIKit
 import NVActivityIndicatorView
 
-class NewHopsVC: BaseVC {
-    
+class HopsViewController: BaseVC {
     
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
@@ -82,7 +81,6 @@ class NewHopsVC: BaseVC {
         result.text = "United States [3.111.164.59]"
         return result
     }()
-    
     
     private lazy var lineView2: UIImageView = {
         let result = UIImageView()
@@ -228,7 +226,6 @@ class NewHopsVC: BaseVC {
             entryNodeInfoLabel.topAnchor.constraint(equalTo: entryNodeLabel.bottomAnchor, constant: 0),
             entryNodeInfoLabel.leadingAnchor.constraint(equalTo: borderDotView1.leadingAnchor, constant: 0),
             
-            
             lineView2.topAnchor.constraint(equalTo: entryNodeInfoLabel.bottomAnchor, constant: 9),
             lineView2.centerXAnchor.constraint(equalTo: filledDotView1.centerXAnchor),
             
@@ -242,7 +239,6 @@ class NewHopsVC: BaseVC {
             
             masterNodeInfoLabel1.topAnchor.constraint(equalTo: masterNodeLabel1.bottomAnchor, constant: 0),
             masterNodeInfoLabel1.leadingAnchor.constraint(equalTo: borderDotView1.leadingAnchor, constant: 0),
-            
             
             lineView3.topAnchor.constraint(equalTo: masterNodeInfoLabel1.bottomAnchor, constant: 9),
             lineView3.centerXAnchor.constraint(equalTo: filledDotView1.centerXAnchor),
@@ -275,8 +271,10 @@ class NewHopsVC: BaseVC {
         update()
         registerObservers()
     }
-    
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     private func registerObservers() {
         let notificationCenter = NotificationCenter.default
@@ -285,18 +283,12 @@ class NewHopsVC: BaseVC {
         notificationCenter.addObserver(self, selector: #selector(handleOnionRequestPathCountriesLoadedNotification), name: .onionRequestPathCountriesLoaded, object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    // MARK: Updating
+    // MARK: - Updating
     @objc private func handleBuildingPathsNotification() { update() }
     @objc private func handlePathsBuiltNotification() { update() }
     @objc private func handleOnionRequestPathCountriesLoadedNotification() { update() }
 
-    
     private func update() {
-//        pathStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         if !OnionRequestAPI.paths.isEmpty {
             let pathToDisplay = OnionRequestAPI.paths.first!
             let dotAnimationRepeatInterval = Double(pathToDisplay.count) + 2
@@ -305,18 +297,10 @@ class NewHopsVC: BaseVC {
                  getPathRow(snode: snode, location: .middle, dotAnimationStartDelay: Double(index) + 2, dotAnimationRepeatInterval: dotAnimationRepeatInterval, isGuardSnode: isGuardSnode)
                 return UIStackView()
             }
-//            let youRow = getPathRow(title: NSLocalizedString("vc_path_device_row_title", comment: ""), subtitle: nil, location: .top, dotAnimationStartDelay: 1, dotAnimationRepeatInterval: dotAnimationRepeatInterval)
-//            let destinationRow = getPathRow(title: NSLocalizedString("vc_path_destination_row_title", comment: ""), subtitle: nil, location: .bottom, dotAnimationStartDelay: Double(pathToDisplay.count) + 2, dotAnimationRepeatInterval: dotAnimationRepeatInterval)
-//            let rows = [ youRow ] + snodeRows + [ destinationRow ]
-//            rows.forEach { pathStackView.addArrangedSubview($0) }
-//            gifimageView.isHidden = true
-            //spinner.stopAnimating()
             UIView.animate(withDuration: 0.25) {
                 self.spinner.alpha = 0
             }
         } else {
-//            gifimageView.isHidden = false
-//            spinner.startAnimating()
             UIView.animate(withDuration: 0.25) {
                 self.spinner.alpha = 1
             }
@@ -346,12 +330,8 @@ class NewHopsVC: BaseVC {
             masterNodeInfoLabel2.text = country
             return
         }
-        
     }
-   
-
 }
-
 
 private final class LineView2 : UIView {
     private let location: Location
@@ -367,10 +347,10 @@ private final class LineView2 : UIView {
 
     private lazy var dotView: UIView = {
         let result = UIView()
-        result.layer.cornerRadius = NewHopsVC.dotSize / 2
+        result.layer.cornerRadius = HopsViewController.dotSize / 2
         let glowRadius: CGFloat = isLightMode ? 1 : 2
         let glowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
-        let glowConfiguration = UIView.CircularGlowConfiguration(size: NewHopsVC.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
+        let glowConfiguration = UIView.CircularGlowConfiguration(size: HopsViewController.dotSize, color: glowColor, isAnimated: true, animationDuration: 0.5, radius: glowRadius)
         result.setCircularGlow(with: glowConfiguration)
         result.backgroundColor = Colors.bothGreenColor
         return result
@@ -406,7 +386,7 @@ private final class LineView2 : UIView {
         case .top, .middle: lineView.pin(.bottom, to: .bottom, of: self)
         case .bottom: lineView.bottomAnchor.constraint(equalTo: centerYAnchor).isActive = true
         }
-        let dotSize = NewHopsVC.dotSize
+        let dotSize = HopsViewController.dotSize
         dotViewWidthConstraint = dotView.set(.width, to: dotSize)
         dotViewHeightConstraint = dotView.set(.height, to: dotSize)
         addSubview(dotView)
@@ -433,14 +413,14 @@ private final class LineView2 : UIView {
     }
 
     private func expandDot() {
-        let newSize = NewHopsVC.expandedDotSize
+        let newSize = HopsViewController.expandedDotSize
         let newGlowRadius: CGFloat = isLightMode ? 4 : 6
         let newGlowColor = Colors.bothGreenColor.withAlphaComponent(0.6)
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
     }
 
     private func collapseDot() {
-        let newSize = NewHopsVC.dotSize
+        let newSize = HopsViewController.dotSize
         let newGlowRadius: CGFloat = isLightMode ? 1 : 2
         let newGlowColor = isLightMode ? UIColor.black.withAlphaComponent(0.4) : UIColor.black
         updateDotView(size: newSize, glowRadius: newGlowRadius, glowColor: newGlowColor)
