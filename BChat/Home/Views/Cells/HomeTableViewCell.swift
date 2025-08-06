@@ -444,6 +444,25 @@ class HomeTableViewCell: UITableViewCell {
             let snippet = MentionUtilities.highlightMentions(in: rawSnippet, threadID: threadViewModel.threadRecord.uniqueId!)
             result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }
+        
+        // Adding image for Shared Contact last message text
+        guard let lastMessageText = threadViewModel.lastMessageText else { return result }
+        if lastMessageText.contains("👤") {
+            debugPrint("Shred Contact Found \(lastMessageText)")
+            
+            let attachment = NSTextAttachment()
+            attachment.image = UIImage(named: "ic_contact")
+            attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
+            let imageAttrString = NSAttributedString(attachment: attachment)
+            
+            let textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤 ", with: " "))
+
+            let finalString = NSMutableAttributedString()
+            finalString.append(imageAttrString)
+            finalString.append(textAttrString)
+            return finalString
+        }
+        
         return result
     }
 
