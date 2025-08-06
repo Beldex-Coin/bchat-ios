@@ -455,7 +455,7 @@ class HomeTableViewCell: UITableViewCell {
             attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
             let imageAttrString = NSAttributedString(attachment: attachment)
             
-            let textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤 ", with: " "))
+            let textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
 
             let finalString = NSMutableAttributedString()
             finalString.append(imageAttrString)
