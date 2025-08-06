@@ -37,7 +37,6 @@ class HomeTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
     }
     
     var isShowingGlobalSearchResult = false
@@ -123,7 +122,6 @@ class HomeTableViewCell: UITableViewCell {
         result.image = UIImage(named: "ic_mute_homeTableCell")
         return result
     }()
-    
     
     lazy var messageCountLabel: UILabel = {
         let result = PaddingLabel()
@@ -241,7 +239,8 @@ class HomeTableViewCell: UITableViewCell {
     }
     
     
-    // MARK: Updating for search results
+    // MARK: - Updating for search results
+    
     private func updateForSearchResult() {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
@@ -255,7 +254,6 @@ class HomeTableViewCell: UITableViewCell {
         lastMessageLabel.attributedText = NSMutableAttributedString(string: snippet, attributes: [.foregroundColor:Colors.textFieldPlaceHolderColor.withAlphaComponent(Values.lowOpacity)])
         dateLabel.isHidden = true
     }
-    
     
     public func configure(snippet: String?, searchText: String, message: TSMessage? = nil) {
         let normalizedSearchText = searchText.lowercased()
@@ -312,7 +310,8 @@ class HomeTableViewCell: UITableViewCell {
         return result
     }
     
-    // MARK: Updating
+    // MARK: - Updating
+    
     private func update() {
         AssertIsOnMainThread()
         guard let thread = threadViewModel?.threadRecord else { return }
@@ -357,7 +356,6 @@ class HomeTableViewCell: UITableViewCell {
             }
         }
         
-        
         nameLabel.text = getDisplayName().firstCharacterUpperCase()
         dateLabel.text = DateUtil.formatDate(forDisplay: threadViewModel.lastMessageDate)
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {
@@ -365,7 +363,6 @@ class HomeTableViewCell: UITableViewCell {
         } else {
             lastMessageLabel.attributedText = getSnippet()
         }
-        let lastMessage = threadViewModel.lastMessageForInbox
     }
     
     private func setBnsUserProfile(isBnsUser: Bool) {
@@ -397,11 +394,7 @@ class HomeTableViewCell: UITableViewCell {
     
     private func getDisplayName() -> String {
         if threadViewModel.isGroupThread {
-            if threadViewModel.name.isEmpty {
-                return "Unknown Group"
-            } else {
-                return threadViewModel.name
-            }
+            return threadViewModel.name.isEmpty ? "Unknown Group" : threadViewModel.name
         }
         else {
             if threadViewModel.threadRecord.isNoteToSelf() {
@@ -419,35 +412,31 @@ class HomeTableViewCell: UITableViewCell {
         muteImageView.isHidden = true
         notifyMentionImageView.isHidden = true
         let result = NSMutableAttributedString()
+        
+        // Muted message
         if threadViewModel.isMuted {
             muteImageView.isHidden = false
-            // Don't Delete i will remove after confirmation of flow
-            
-//            result.append(NSAttributedString(string: "\u{e067}  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
+        
+        // Mentioned message
         if threadViewModel.isOnlyNotifyingForMentions {
             notifyMentionImageView.isHidden = false
-            // Don't Delete i will remove after confirmation of flow
-            
-//            let imageAttachment = NSTextAttachment()
-//            imageAttachment.image = UIImage(named: "NotifyMentions.png")?.asTintedImage(color: Colors.unimportant)
-//            imageAttachment.bounds = CGRect(x: 0, y: -2, width: Values.smallFontSize, height: Values.smallFontSize)
-//            let imageString = NSAttributedString(attachment: imageAttachment)
-//            result.append(imageString)
-//            result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
+        
+        // Group message
         let font = threadViewModel.hasUnreadMessages ? Fonts.regularOpenSans(ofSize: Values.smallFontSize) : Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
             result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }
-        if let rawSnippet = threadViewModel.lastMessageText {
-            let snippet = MentionUtilities.highlightMentions(in: rawSnippet, threadID: threadViewModel.threadRecord.uniqueId!)
-            result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
-        }
+        
+        guard let lastMessageText = threadViewModel.lastMessageText else { return result }
+        
+        // Text message
+        let snippet = MentionUtilities.highlightMentions(in: lastMessageText, threadID: threadViewModel.threadRecord.uniqueId!)
+        result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         
         // Adding image for Shared Contact last message text
-        guard let lastMessageText = threadViewModel.lastMessageText else { return result }
-        if lastMessageText.contains("👤") {            
+        if lastMessageText.contains("👤") {
             let attachment = NSTextAttachment()
             attachment.image = UIImage(named: "ic_contact")
             attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
