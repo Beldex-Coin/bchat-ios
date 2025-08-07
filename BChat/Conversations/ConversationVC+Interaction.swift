@@ -402,6 +402,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
                 if let contactAddress = address, let contactName = name {
+                    message.text = contactName
                     message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
                 }
                 
