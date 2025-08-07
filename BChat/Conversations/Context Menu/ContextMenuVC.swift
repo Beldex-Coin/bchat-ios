@@ -100,10 +100,18 @@ final class ContextMenuVC : UIViewController {
         if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
             snapshot.centerWithInset(.vertical, in: view, inset: -40)
         } else {
-            if UIScreen.main.bounds.height - frame.origin.y < 120 {
-                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
+            if viewItem.messageCellType == .sharedContact {
+                if frame.origin.y < 150 {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 80)
+                } else {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 70)
+                }
             } else {
-                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
+                if UIScreen.main.bounds.height - frame.origin.y < 120 {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
+                } else {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
+                }
             }
         }
         if snapshot.height > 440 {
