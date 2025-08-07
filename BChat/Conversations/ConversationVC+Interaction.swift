@@ -441,8 +441,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             Storage.shared.write { transaction in
                                 MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
                             }
-                            
-                            self?.handleMessageSent()
+                            if message.sharedContact == nil {
+                                self?.handleMessageSent()
+                            }
                         })
                     }
                 
