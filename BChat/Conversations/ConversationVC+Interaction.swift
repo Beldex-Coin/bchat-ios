@@ -992,7 +992,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let quoteDraft = quoteDraftOrNil else { return }
         resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing)
+        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing, isSharedContact: viewItem.sharedContactMessage != nil)
         snInputView.becomeFirstResponder()
         view.layoutIfNeeded()
     }

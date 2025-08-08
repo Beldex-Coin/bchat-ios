@@ -529,7 +529,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if viewItem.quotedReply != nil {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: viewItem.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8

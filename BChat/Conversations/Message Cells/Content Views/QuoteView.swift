@@ -6,6 +6,8 @@ final class QuoteView : UIView {
     private let hInset: CGFloat
     private let maxWidth: CGFloat
     private let delegate: QuoteViewDelegate?
+    var viewitem : ConversationViewItem? = nil
+    var isSharedContact: Bool
 
     private var maxBodyLabelHeight: CGFloat {
         switch mode {
@@ -95,24 +97,27 @@ final class QuoteView : UIView {
     static let cancelBackgroundSize: CGFloat = 15
 
     // MARK: Lifecycle
-    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat) {
+    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, isSharedContact: Bool) {
         self.mode = .regular(viewItem)
         self.thread = thread ?? TSThread.fetch(uniqueId: viewItem.interaction.uniqueThreadId)!
         self.maxWidth = maxWidth
         self.direction = direction
         self.hInset = hInset
         self.delegate = nil
+        self.viewitem = viewItem
+        self.isSharedContact = isSharedContact
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
 
-    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate) {
+    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool) {
         self.mode = .draft(model)
         self.thread = TSThread.fetch(uniqueId: model.threadId)!
         self.maxWidth = maxWidth
         self.direction = direction
         self.hInset = hInset
         self.delegate = delegate
+        self.isSharedContact = isSharedContact
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         
@@ -179,7 +184,7 @@ final class QuoteView : UIView {
         let lineView = UIView()
         lineView.backgroundColor = .clear
         lineView.set(.width, to: Values.accentLineThickness)
-        if !hasAttachments {
+        if !hasAttachments || isSharedContact {
             mainStackView.addArrangedSubview(lineView)
             mainStackView.spacing = 0
         } else {
@@ -197,7 +202,20 @@ final class QuoteView : UIView {
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.regularOpenSans(ofSize: 11)
-        bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+        if isSharedContact {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "ic_contact")
+            let imageOffsetY: CGFloat = -4.0
+            imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 16, height: 16)
+            let attachmentString = NSAttributedString(attachment: imageAttachment)
+            let fullString = NSMutableAttributedString(string: "")
+            fullString.append(attachmentString)
+            fullString.append(NSAttributedString(string: " "))
+            fullString.append(NSAttributedString(string: body ?? ""))
+            bodyLabel.attributedText = fullString
+        } else {
+            bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+        }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
         // Label stack view
@@ -292,7 +310,7 @@ final class QuoteView : UIView {
         }
         let bodyLabelHeight = bodyLabelSize.height.clamp(0, maxBodyLabelHeight)
         let contentViewHeight: CGFloat
-        if hasAttachments {
+        if hasAttachments || isSharedContact {
             contentViewHeight = thumbnailSize + 8 // Add a small amount of spacing above and below the thumbnail
             bodyLabel.set(.height, to: 18) // Experimentally determined
         } else {

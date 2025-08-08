@@ -20,7 +20,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     let thread: TSThread
     private weak var delegate: InputViewDelegate?
-    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool)? { didSet { handleQuoteDraftChanged() } }
+    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool, isSharedContact: Bool)? { didSet { handleQuoteDraftChanged() } }
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
     private var voiceMessageRecordingView: VoiceMessageRecordingView?
     private lazy var mentionsViewHeightConstraint = mentionsView.set(.height, to: 0)
@@ -295,7 +295,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
         let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
-        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
+        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self, isSharedContact: quoteDraftInfo.isSharedContact)
         additionalContentContainerOuterView.addSubview(quoteView)
         additionalContentContainer.addSubview(additionalContentContainerOuterView)
         quoteView.backgroundColor = Colors.mainBackGroundColor2
