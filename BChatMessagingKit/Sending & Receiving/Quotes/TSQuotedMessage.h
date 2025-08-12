@@ -52,6 +52,7 @@ typedef NS_ENUM(NSUInteger, TSQuotedMessageContentSource) {
 @property (nonatomic, readonly) uint64_t timestamp;
 @property (nonatomic, readonly) NSString *authorId;
 @property (nonatomic, readonly) TSQuotedMessageContentSource bodySource;
+@property (nonatomic, readonly) BOOL isContact;
 
 // This property should be set IFF we are quoting a text message
 // or attachment with caption.

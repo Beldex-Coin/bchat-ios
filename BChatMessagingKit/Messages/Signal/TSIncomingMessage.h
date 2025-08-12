@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
                        serverHash:(nullable NSString*)serverHash
                      paymentTxnid:(nullable NSString *)paymentTxnid
                     paymentAmount:(nullable NSString *)paymentAmount
+                  isContact:(BOOL)isContact
              sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

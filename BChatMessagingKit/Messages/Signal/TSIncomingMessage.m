@@ -56,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
                        serverHash:(nullable NSString *)serverHash
                      paymentTxnid:(nullable NSString *)paymentTxnid
                       paymentAmount:(nullable NSString *)paymentAmount
+                        isContact:(BOOL)isContact
              sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initMessageWithTimestamp:timestamp
@@ -71,6 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 serverHash:serverHash
                               paymentTxnid:paymentTxnid
                              paymentAmount:paymentAmount
+                                 isContact:isContact
                              sharedContactMessage:sharedContactMessage];
 
     if (!self) {

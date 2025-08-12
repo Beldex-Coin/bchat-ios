@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 // This property should be set IFF we are quoting a text message
 // or attachment with caption.
 @property (nullable, nonatomic, readonly) NSString *body;
+@property (nonatomic, readonly) BOOL isContact;
 @property (nonatomic, readonly) BOOL isRemotelySourced;
 
 #pragma mark - Attachments

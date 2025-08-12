@@ -24,7 +24,7 @@ public extension TSIncomingMessage {
             openGroupInvitationURL: visibleMessage.openGroupInvitation?.url,
             serverHash: visibleMessage.serverHash,
             paymentTxnid: visibleMessage.payment?.txnId,
-            paymentAmount: visibleMessage.payment?.amount,
+            paymentAmount: visibleMessage.payment?.amount, isContact: visibleMessage.sharedContact != nil,
             sharedContactMessage: SharedContactMessage.from(visibleMessage.sharedContact)
         )
         result.openGroupServerMessageID = openGroupServerMessageID

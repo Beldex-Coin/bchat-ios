@@ -69,6 +69,7 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
                               serverHash:(nullable NSString *)serverHash
                             paymentTxnid:(nullable NSString *)paymentTxnid
                            paymentAmount:(nullable NSString *)paymentAmount
+                               isContact:(BOOL)isContact
                     sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initInteractionWithTimestamp:timestamp inThread:thread];
@@ -92,6 +93,7 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
     _serverHash = serverHash;
     _paymentTxnid = paymentTxnid;
     _paymentAmount = paymentAmount;
+    _isContact = isContact;
     _isDeleted = false;
     _isCallMessage = false;
     _reactions = [NSMutableArray new];
