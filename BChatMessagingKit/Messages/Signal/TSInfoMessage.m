@@ -62,7 +62,6 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
                                 serverHash:nil
                               paymentTxnid:nil
                              paymentAmount:nil
-                                 isContact:nil
                               sharedContactMessage:nil];
 
     if (!self) {

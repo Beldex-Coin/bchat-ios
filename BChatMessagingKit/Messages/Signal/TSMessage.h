@@ -43,7 +43,6 @@ extern const NSUInteger kOversizeTextMessageSizeThreshold;
 @property (nonatomic, nullable) NSString *serverHash;
 @property (nonatomic, readonly, nullable) NSString *paymentTxnid;
 @property (nonatomic, readonly, nullable) NSString *paymentAmount;
-@property (nonatomic, readonly) BOOL isContact;
 @property (nonatomic) BOOL isDeleted;
 @property (nonatomic) BOOL isCallMessage;
 @property (nonatomic, readonly) NSMutableArray<SNReactMessage *> *reactions;
@@ -64,7 +63,6 @@ extern const NSUInteger kOversizeTextMessageSizeThreshold;
                               serverHash:(nullable NSString *)serverHash
                             paymentTxnid:(nullable NSString *)paymentTxnid
                            paymentAmount:(nullable NSString *)paymentAmount
-                               isContact:(BOOL)isContact
                            sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

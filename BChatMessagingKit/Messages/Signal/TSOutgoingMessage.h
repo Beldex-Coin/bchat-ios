@@ -98,7 +98,6 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
                                       serverHash:(nullable NSString *)serverHash
                                     paymentTxnid:(nullable NSString *)paymentTxnid
                                    paymentAmount:(nullable NSString *)paymentAmount
-                                       isContact:(BOOL)isContact
                                    sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;

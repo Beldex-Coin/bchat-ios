@@ -158,7 +158,6 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                                             serverHash:nil
                                                           paymentTxnid:nil
                                                          paymentAmount:nil
-                                                             isContact:nil
                                                          sharedContactMessage:nil];
 }
 
@@ -182,7 +181,6 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                                             serverHash:nil
                                                           paymentTxnid:nil
                                                          paymentAmount:nil
-                                                             isContact:nil
                                                          sharedContactMessage:nil];
 }
 
@@ -201,7 +199,6 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                       serverHash:(nullable NSString *)serverHash
                                     paymentTxnid:(nullable NSString *)paymentTxnid
                                    paymentAmount:(nullable NSString *)paymentAmount
-                                       isContact:(BOOL)isContact
                                    sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initMessageWithTimestamp:timestamp
@@ -217,7 +214,6 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
                                 serverHash:serverHash
                               paymentTxnid:paymentTxnid
                              paymentAmount:paymentAmount
-                                 isContact:isContact
                              sharedContactMessage:sharedContactMessage];
     if (!self) {
         return self;
