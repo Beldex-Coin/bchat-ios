@@ -46,7 +46,7 @@ extern const NSUInteger kOversizeTextMessageSizeThreshold;
 @property (nonatomic) BOOL isDeleted;
 @property (nonatomic) BOOL isCallMessage;
 @property (nonatomic, readonly) NSMutableArray<SNReactMessage *> *reactions;
-@property (nonatomic, readonly) BCSharedContactMessage *sharedContactMessage;
+@property (nonatomic, readonly, nullable) BCSharedContactMessage *sharedContactMessage;
 
 - (instancetype)initInteractionWithTimestamp:(uint64_t)timestamp inThread:(TSThread *)thread NS_UNAVAILABLE;
 

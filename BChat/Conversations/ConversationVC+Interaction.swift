@@ -406,6 +406,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
                 }
                 
+                if snInputView.quoteDraftInfo?.isSharedContact == true {
+                    message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
+                }
+                
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'
                 // flags appropriately
@@ -441,7 +445,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             Storage.shared.write { transaction in
                                 MessageSender.send(message, with: [], in: thread, using: transaction as! YapDatabaseReadWriteTransaction)
                             }
-                            if message.sharedContact == nil {
+                            if message.sharedContact == nil || message.quote != nil {
                                 self?.handleMessageSent()
                             }
                         })
@@ -993,6 +997,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
         snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing, isSharedContact: viewItem.sharedContactMessage != nil)
+        snInputView.viewItem = viewItem
         snInputView.becomeFirstResponder()
         view.layoutIfNeeded()
     }

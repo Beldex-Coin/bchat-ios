@@ -21,6 +21,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     let thread: TSThread
     private weak var delegate: InputViewDelegate?
     var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool, isSharedContact: Bool)? { didSet { handleQuoteDraftChanged() } }
+    var viewItem: ConversationViewItem?
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
     private var voiceMessageRecordingView: VoiceMessageRecordingView?
     private lazy var mentionsViewHeightConstraint = mentionsView.set(.height, to: 0)

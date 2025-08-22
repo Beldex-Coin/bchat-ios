@@ -604,7 +604,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         self.displayableBodyText = [[DisplayableText alloc] initWithFullText:@"" displayText:@"" isTextTruncated:NO];
     }
     
-    if (message.sharedContactMessage) {
+    if (message.sharedContactMessage && message.quotedMessage == nil) {
         self.sharedContactMessage = message.sharedContactMessage;
         self.messageCellType = OWSMessageCellType_SharedContact;
     }

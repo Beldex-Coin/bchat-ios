@@ -131,7 +131,11 @@ extension ContextMenuVC {
                         quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
                     }
                     if let quoteDraft = quoteDraftOrNil {
-                        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil { } else {
+                        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+                            if viewItem.messageCellType == .sharedContact {
+                                result.append(Action.reply(viewItem, delegate))
+                            }
+                        } else {
                             result.append(Action.reply(viewItem, delegate))
                         }
                     }

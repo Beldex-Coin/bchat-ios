@@ -55,6 +55,7 @@ import BChatUtilitiesKit
         result.attachmentIDs = tsMessage.attachmentIds.compactMap { $0 as? String }
         result.quote = VisibleMessage.Quote.from(tsMessage.quotedMessage)
         result.linkPreview = VisibleMessage.LinkPreview.from(tsMessage.linkPreview)
+        result.sharedContact = VisibleMessage.SharedContact.from(tsMessage.sharedContactMessage)
         return result
     }
 }

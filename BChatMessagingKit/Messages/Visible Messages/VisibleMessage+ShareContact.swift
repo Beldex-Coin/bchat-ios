@@ -25,8 +25,14 @@ public extension VisibleMessage {
         }
 
         public static func fromProto(_ proto: SNProtoDataMessage) -> SharedContact? {
-            guard let shareContactProto = proto.sharedContact else { return nil }
-            guard let address = shareContactProto.address, let name = shareContactProto.name else { return nil }
+            guard let shareContactProto = proto.sharedContact else {
+                SNLog("Couldn't construct share contact proto from: \(self).")
+                return nil
+            }
+            guard let address = shareContactProto.address, let name = shareContactProto.name else {
+                SNLog("Couldn't construct share contact proto from: \(self).")
+                return nil
+            }
             return SharedContact(address: address, name: name)
         }
 

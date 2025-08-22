@@ -529,7 +529,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if viewItem.quotedReply != nil {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: viewItem.sharedContactMessage != nil)
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
@@ -860,7 +860,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
-        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil && viewItem.sharedContactMessage == nil {
             return
         }
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
