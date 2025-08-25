@@ -198,6 +198,7 @@ public class ConfirmationModal: ModalView {
         
         confirmButton.accessibilityIdentifier = info.confirmTitle
         confirmButton.isAccessibilityElement = true
+        confirmButton.backgroundColor = info.modalType.confirmationButtonBgColor
         confirmButton.setTitle(info.confirmTitle, for: .normal)
         confirmButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         confirmButton.isHidden = (info.confirmTitle == nil)

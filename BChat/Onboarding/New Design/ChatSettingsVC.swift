@@ -301,8 +301,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             secretGroupImageView.isHidden = false
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(leaveGroupTapped), name: .LeaveGroupNotification, object: nil)
-        
         zombies = Storage.shared.getZombieMembers(for: groupPublicKey)
         guard let groupThread = self.thread as? TSGroupThread else { return }
         membersAndZombies = GroupUtilities.getClosedGroupMembers(groupThread).sorted { getDisplayName(for: $0) < getDisplayName(for: $1) }
@@ -576,12 +574,22 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             message = NSLocalizedString("CONFIRM_LEAVE_GROUP_DESCRIPTION", comment: "Alert body")
         }
         
-        let vc = LeaveGroupPopUp()
-        vc.message = message
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
-
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .leaveGroup,
+                title: "Leave Group?",
+                body: .text(message),
+                showCondition: .disabled,
+                confirmTitle: "Leave",
+                onConfirm: { _ in
+                    self.leaveGroup()
+                }, afterClosed: {
+                    debugPrint("leaveGroup popup closed")
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
     func hasLeftGroup() -> Bool {
@@ -732,11 +740,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.doneButton.isHidden = true
         self.editIconImage.isHidden = false
     }
-    
-    @objc func leaveGroupTapped() {
-        leaveGroup()
-    }
-    
     
     // MARK: - Notification Observers -
     
