@@ -52,7 +52,7 @@ public enum ConfirmationModalType: Int {
         
         switch self {
             case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
-                isShow = false
+                    isShow = false
             case .cameraPermission,
                 .callPermission,
                 .setPwdSuccess,
@@ -71,11 +71,11 @@ public enum ConfirmationModalType: Int {
         var color: UIColor
         
         switch self {
-            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
-            // TODO: Set color
-                color = .clear
+            case .gifEnable, .payAsYouChat, .shareContact, .callPermission, .none:
+                color = Colors.bothGreenColor
+            case  .leaveGroup:
+                color = Colors.bothRedColor
             case .cameraPermission,
-                    .callPermission,
                     .setPwdSuccess,
                     .changePwdSuccess,
                     .linkBnsSuccess,
