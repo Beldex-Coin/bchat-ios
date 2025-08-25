@@ -38,9 +38,6 @@ struct Constants: Equatable {
     static let refreshNodePopup = "refreshNodePopup"
     static let switchNodePopup = "switchNodePopUp"
     static let reloadSettingScreen = "reloadSettingScreenTable"
-    static let blockMessageRequest = "blockMessageRequestTapped"
-    static let acceptMessageRequest = "acceptMessageRequestTapped"
-    static let deleteMessageRequest = "deleteMessageRequestTapped"
     static let blockContact = "blockContact"
     static let hideAttachment = "attachmentHidden"
     static let doodleChangeNotification = "doodleChangeNotification"
@@ -48,7 +45,6 @@ struct Constants: Equatable {
     static let clearChatHistory = "clearChatHistory"
     static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
     static let navigateToMyAccount = "navigateToMyAccount"
-    static let leaveGroup = "leaveGroup"
     static let dismissMiniView = "dismissMiniView"
     static let joinedOpenGroup = "joinedOpenGroup"
     

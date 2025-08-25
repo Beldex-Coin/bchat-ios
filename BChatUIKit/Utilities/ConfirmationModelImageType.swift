@@ -10,6 +10,9 @@ public enum ConfirmationModalType: Int {
     case payAsYouChat
     case leaveGroup
     case shareContact
+    case acceptMsgRequest
+    case deleteMsgRequest
+    case blockUserRequest
     
     case cameraPermission
     case callPermission
@@ -40,7 +43,14 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .transactionSuccess:
                 name = ""
-            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
+            case .gifEnable,
+                .payAsYouChat,
+                .leaveGroup,
+                .shareContact,
+                .acceptMsgRequest,
+                .deleteMsgRequest,
+                .blockUserRequest,
+                .none:
                 name = ""
         }
         
@@ -51,7 +61,14 @@ public enum ConfirmationModalType: Int {
         let isShow: Bool
         
         switch self {
-            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
+            case .gifEnable,
+                .payAsYouChat,
+                .leaveGroup,
+                .shareContact,
+                .acceptMsgRequest,
+                .deleteMsgRequest,
+                .blockUserRequest,
+                .none:
                     isShow = false
             case .cameraPermission,
                 .callPermission,
@@ -71,9 +88,16 @@ public enum ConfirmationModalType: Int {
         var color: UIColor
         
         switch self {
-            case .gifEnable, .payAsYouChat, .shareContact, .callPermission, .none:
+            case .gifEnable,
+                .payAsYouChat,
+                .shareContact,
+                .callPermission,
+                .acceptMsgRequest,
+                .none:
                 color = Colors.bothGreenColor
-            case  .leaveGroup:
+            case  .leaveGroup,
+                .deleteMsgRequest,
+                .blockUserRequest:
                 color = Colors.bothRedColor
             case .cameraPermission,
                     .setPwdSuccess,
@@ -82,8 +106,7 @@ public enum ConfirmationModalType: Int {
                     .walletSync,
                     .transactionIntiate,
                     .transactionSuccess:
-            // TODO: Set color
-                color = .clear
+                color = Colors.bothGreenColor
         }
         
         return color

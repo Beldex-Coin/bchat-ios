@@ -73,10 +73,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.addSubview(tableView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(blockMessageRequestTapped(_:)), name: .blockMessageRequestTappedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: .acceptMessageRequestTappedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: .deleteMessageRequestTappedNotification, object: nil)
-        
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 22.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -160,24 +156,63 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         cell.acceptCallback = {
             self.tappedIndex = indexPath.row
-            let vc = AcceptMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .acceptMsgRequest,
+                    title: "Message Request",
+                    body: .text("Are you sure you want to accept this request?"),
+                    showCondition: .disabled,
+                    confirmTitle: "Yes",
+                    onConfirm: { _ in
+                        self.acceptMessageRequest()
+                    }, afterClosed: {
+                        debugPrint("accept message request popup closed")
+                    }
+                )
+            )
+            self.present(confirmationModal, animated: true, completion: nil)
         }
         cell.deleteCallback = {
             self.tappedIndex = indexPath.row
-            let vc = DeleteMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .deleteMsgRequest,
+                    title: "Message Request",
+                    body: .text("Are you sure you want to delete this request?"),
+                    showCondition: .disabled,
+                    confirmTitle: "Yes",
+                    onConfirm: { _ in
+                        self.deleteMessageRequest()
+                    }, afterClosed: {
+                        debugPrint("delete message request popup closed")
+                    }
+                )
+            )
+            self.present(confirmationModal, animated: true, completion: nil)
         }
         cell.blockCallback = {
             self.tappedIndex = indexPath.row
-            let vc = BlockMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .blockUserRequest,
+                    title: "Message Request",
+                    body: .text("Are you sure you want to Block this user?"),
+                    showCondition: .disabled,
+                    confirmTitle: "Yes",
+                    onConfirm: { _ in
+                        self.blockMessageRequest()
+                    }, afterClosed: {
+                        debugPrint("block message request popup closed")
+                    }
+                )
+            )
+            self.present(confirmationModal, animated: true, completion: nil)
         }
         
         return cell
@@ -190,7 +225,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.pushViewController(conversationVC, animated: true)
     }
     
-    @objc func acceptMessageRequestTapped(_ notification: Notification) {
+    func acceptMessageRequest() {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
             for: thread,
@@ -207,7 +242,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
-    @objc func blockMessageRequestTapped(_ notification: Notification) {
+    func blockMessageRequest() {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         let thread2 = thread as? TSContactThread
         let publicKey = thread2!.contactBChatID()
@@ -226,7 +261,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
-    @objc func deleteMessageRequestTapped(_ notification: Notification) {
+    func deleteMessageRequest() {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         self.delete(thread)
         self.tableView.reloadData()

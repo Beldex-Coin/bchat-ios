@@ -298,7 +298,6 @@
 		81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */; };
 		81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */; };
 		811391B62C18249D005C7BC8 /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811391B52C18249D005C7BC8 /* CustomSwitch.swift */; };
-		8113C48E2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */; };
 		8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */; };
 		811498132BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */; };
 		81179E592BDA0A8E00B5C820 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81179E582BDA0A8E00B5C820 /* SideMenuViewController.swift */; };
@@ -1485,7 +1484,6 @@
 		81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlertRecoverySeedVC.swift; sourceTree = "<group>"; };
 		81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecoverySeedVC.swift; sourceTree = "<group>"; };
 		811391B52C18249D005C7BC8 /* CustomSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
-		8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptMessageRequestPopUp.swift; sourceTree = "<group>"; };
 		8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeListVC.swift; sourceTree = "<group>"; };
 		811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		81179E582BDA0A8E00B5C820 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -2889,7 +2887,6 @@
 				81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */,
 				81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */,
 				81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */,
-				8113C48D2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift */,
 				8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */,
 				8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */,
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
@@ -5966,7 +5963,6 @@
 				6049BF052B62229A003DD410 /* AboutNewVC.swift in Sources */,
 				7B13E1E92810F01300BD4F64 /* BChatCallManager+Action.swift in Sources */,
 				8A5A0B542C0D935000288474 /* NSNotificationExtension.swift in Sources */,
-				8113C48E2B9AA43D00C9A7C5 /* AcceptMessageRequestPopUp.swift in Sources */,
 				C354E75A23FE2A7600CE22E3 /* BaseVC.swift in Sources */,
 				6007B5BA28A4D7920004BD61 /* WalletService.swift in Sources */,
 				8A5A0B452C04942300288474 /* HostManager.swift in Sources */,
