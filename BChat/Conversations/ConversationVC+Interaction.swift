@@ -404,10 +404,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 if let contactAddress = address, let contactName = name {
                     message.text = contactName
                     message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
+                    message.quote?.text = ""
                 }
                 
                 if snInputView.quoteDraftInfo?.isSharedContact == true {
                     message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
+                    message.quote?.text = ""
                 }
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
