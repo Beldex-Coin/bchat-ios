@@ -1061,7 +1061,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(unblock), name: .unblockContactNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .clearChatHistoryNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
@@ -1691,18 +1690,26 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     
     @objc func clearChatButtonTapped() {
-        let vc = ClearChatPopUp()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .clearChat,
+                title: "Delete Chat",
+                body: .text("Are you sure you want to delete this chat from this contact?"),
+                showCondition: .disabled,
+                confirmTitle: "Delete",
+                onConfirm: { _ in
+                    self.clearChat()
+                }, afterClosed: {
+                    debugPrint("clear chat popup closed")
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
     @objc func unblockButtonTapped() {
-        let vc = BlockContactPopUpVC()
-        vc.isBlocked = true
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
+        showBlockedNUnblockedPopup(true)
     }
     
     /// Delete Chat

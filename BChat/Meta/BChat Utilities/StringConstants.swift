@@ -42,7 +42,7 @@ struct Constants: Equatable {
     static let hideAttachment = "attachmentHidden"
     static let doodleChangeNotification = "doodleChangeNotification"
     static let unblockContact = "unblockContact"
-    static let clearChatHistory = "clearChatHistory"
+//    static let clearChatHistory = "clearChatHistory"
     static let dismissLinkBNSPopUp = "dismissLinkBNSPopUp"
     static let navigateToMyAccount = "navigateToMyAccount"
     static let dismissMiniView = "dismissMiniView"

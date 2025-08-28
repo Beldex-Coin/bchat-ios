@@ -13,9 +13,13 @@ public enum ConfirmationModalType: Int {
     case acceptMsgRequest
     case deleteMsgRequest
     case blockUserRequest
+    case blockContact
+    case unblockContact
     
     case cameraPermission
     case callPermission
+    case clearChat
+    case missedCall
     case setPwdSuccess
     case changePwdSuccess
     case linkBnsSuccess
@@ -33,6 +37,10 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .callPermission:
                 name = "ic_settings_call_permission"
+            case .clearChat:
+                name = "ic_clearChatPopUp"
+            case .missedCall:
+                name = "ic_missedCall"
             case .setPwdSuccess, .changePwdSuccess:
                     name = ""
             case .linkBnsSuccess:
@@ -50,6 +58,8 @@ public enum ConfirmationModalType: Int {
                 .acceptMsgRequest,
                 .deleteMsgRequest,
                 .blockUserRequest,
+                .blockContact,
+                .unblockContact,
                 .none:
                 name = ""
         }
@@ -68,10 +78,14 @@ public enum ConfirmationModalType: Int {
                 .acceptMsgRequest,
                 .deleteMsgRequest,
                 .blockUserRequest,
+                .blockContact,
+                .unblockContact,
                 .none:
                     isShow = false
             case .cameraPermission,
                 .callPermission,
+                .clearChat,
+                .missedCall,
                 .setPwdSuccess,
                 .changePwdSuccess,
                 .linkBnsSuccess,
@@ -93,22 +107,57 @@ public enum ConfirmationModalType: Int {
                 .shareContact,
                 .callPermission,
                 .acceptMsgRequest,
+                .blockContact,
+                .unblockContact,
+            
+                .cameraPermission,
+                .missedCall,
+                .setPwdSuccess,
+                .changePwdSuccess,
+                .linkBnsSuccess,
+                .walletSync,
+                .transactionIntiate,
+                .transactionSuccess,
                 .none:
                 color = Colors.bothGreenColor
             case  .leaveGroup,
                 .deleteMsgRequest,
-                .blockUserRequest:
+                .blockUserRequest,
+                .clearChat:
                 color = Colors.bothRedColor
-            case .cameraPermission,
-                    .setPwdSuccess,
-                    .changePwdSuccess,
-                    .linkBnsSuccess,
-                    .walletSync,
-                    .transactionIntiate,
-                    .transactionSuccess:
-                color = Colors.bothGreenColor
         }
         
         return color
     }
+    
+//    var cancelButtonBgColor: UIColor {
+//        var color: UIColor
+//        
+//        switch self {
+//            case .gifEnable,
+//                .payAsYouChat,
+//                .shareContact,
+//                .callPermission,
+//                .acceptMsgRequest,
+//                .blockContact,
+//                .unblockContact,
+//                .cameraPermission,
+//                .setPwdSuccess,
+//                .changePwdSuccess,
+//                .linkBnsSuccess,
+//                .walletSync,
+//                .transactionIntiate,
+//                .transactionSuccess,
+//                .leaveGroup,
+//                .deleteMsgRequest,
+//                .blockUserRequest,
+//                .clearChat,
+//                .none:
+//                color = Colors.bothGreenWithAlpha10
+//            case .missedCall:
+//                    color = Colors.bothGreenColor
+//        }
+//        
+//        return color
+//    }
 }
