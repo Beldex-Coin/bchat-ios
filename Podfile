@@ -22,12 +22,9 @@ abstract_target 'GlobalDependencies' do
     pod 'NVActivityIndicatorView'
     pod 'YYImage', git: 'https://github.com/signalapp/YYImage'
     pod 'Mantle', git: 'https://github.com/signalapp/Mantle', branch: 'signal-master'
-    pod 'ZXingObjC'
     pod 'SideMenu'
-    pod 'SVGKit'
     pod 'SwiftyRSA'
     pod 'Alamofire'
-    pod 'FSCalendar'
     pod 'DifferenceKit'
   end
   

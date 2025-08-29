@@ -107,6 +107,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let result = UILabel()
         result.font = Fonts.OpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textAlignment = .right
         return result
     }()
     
@@ -114,6 +115,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let result = UILabel()
         result.font = Fonts.OpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
+        result.textAlignment = .right
         return result
     }()
     
@@ -528,7 +530,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
                         let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
-                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: hInset))
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
                         stackView.addArrangedSubview(quoteViewContainer)
@@ -537,12 +539,12 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 12, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                     self.bodyTextView = bodyTextView
                     let maxWidthOfTextViewText = widthOfLastLine(in: bodyTextView)
-                    let maxWidthOfLine = maxWidth
+                    let maxWidthOfLine = maxWidth - 10
                     let widthOfLastLine = Int(maxWidthOfTextViewText) % Int(maxWidthOfLine)
 
                     let isOverLapping = isOverlapping(view1: bodyTextView, view2: messageTimeRightLabel)
                     guard let message = viewItem.interaction as? TSMessage else { preconditionFailure() }
-                    if widthOfLastLine < 190 /*message.body?.count ?? 0 < 25*/ && viewItem.quotedReply == nil  && !isOverLapping {
+                    if widthOfLastLine < 190 && viewItem.quotedReply == nil  && isOverLapping == false && (message.body?.count ?? 0 <= 26) {
                         messageTimeBottomLabel.text = ""
                         messageTimeBottomLabel.isHidden = true
                         
@@ -560,12 +562,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeRightLabel.text = description
                         
                         
-                        if message.body?.count ?? 0 < 26 {
+                        if message.body?.count ?? 0 <= 26 || (Int(maxWidthOfTextViewText) < Int(maxWidthOfLine) && message.body?.count ?? 0 <= 31) {
                             let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
                             stackViewForMessageAndTime.axis = .horizontal
                             stackViewForMessageAndTime.spacing = 5
                             stackViewForMessageAndTime.alignment = .bottom
-                                                    
+                            
+                            let spacer1 = UIView.spacer(withWidth: 1)
+                            stackViewForMessageAndTime.addArrangedSubview(spacer1)
                             stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
                             stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
                             stackView.addArrangedSubview(stackViewForMessageAndTime)
@@ -578,24 +582,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                             messageTimeRightLabel.pin(.bottom, to: .bottom, of: backgroundView, withInset: 0)
                             stackView.addArrangedSubview(backgroundView)
                         }
-//                        let stackViewForMessageAndTime = UIStackView(arrangedSubviews: [])
-//                        stackViewForMessageAndTime.axis = .horizontal
-//                        stackViewForMessageAndTime.spacing = 5
-//                        stackViewForMessageAndTime.alignment = .bottom
-//                                                
-//                        stackViewForMessageAndTime.addArrangedSubview(bodyTextView)
-//                        stackViewForMessageAndTime.addArrangedSubview(messageTimeRightLabel)
-//                                                
-//                        
-//                        stackView.addArrangedSubview(stackViewForMessageAndTime)
+
                         // Constraints
                         snContentView.addSubview(stackView)
                         stackView.pin(to: snContentView, withInset: 4)
-                        
-//                        messageTimeRightLabel.isHidden = true
-//                        if viewItem.isLastInCluster {
-//                            messageTimeRightLabel.isHidden = false
-//                        }
                         
                     } else {
                         
@@ -611,15 +601,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         messageTimeBottomLabel.isHidden = false
                         stackView.addArrangedSubview(stackViewForSpacerAndbodyTextView)
                         snContentView.addSubview(stackView)
-//                        stackView.pin(to: snContentView, withInset: inset)
-                        stackView.pin(.top, to: .top, of: snContentView, withInset: 1)
+                        stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
                         stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
-                        stackView.pin(.right, to: .right, of: snContentView, withInset: 0)
-                        stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
-//                        messageTimeBottomLabel.isHidden = true
-//                        if viewItem.isLastInCluster {
-//                            messageTimeBottomLabel.isHidden = false
-//                        }
+                        stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
+                        if message.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
+                        } else {
+                            stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -6)
+                        }
                     }
                 }
             case .mediaMessage:
@@ -647,6 +636,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     stackView.addArrangedSubview(albumView)
                     // Body text view
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                        bubbleViewBottomConstraint.isActive = false
+                        bubbleViewBottomConstraint = body.count < 18 ? snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0) : snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                         let inset: CGFloat = 12
                         let maxWidth = size.width - 2 * inset
                         let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 20, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
@@ -710,8 +701,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 deletedMessageView.pin(to: snContentView)
             default: return
         }
-        
-        //messageTimeBottomLabel.isHidden = true
     }
     
     override func layoutSubviews() {
@@ -1093,22 +1082,25 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isUserInteractionEnabled = true
         result.delegate = delegate
         result.linkTextAttributes = [ .foregroundColor : textColor, .underlineStyle : NSUnderlineStyle.single.rawValue ]
-        let availableSpace = CGSize(width: availableWidth, height: .greatestFiniteMagnitude)
+        let availableSpace = CGSize(width: availableWidth + 10, height: .greatestFiniteMagnitude)
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
         if viewItem.quotedReply != nil && attachments.isEmpty {
-            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: 11)) ?? 0
-            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 45 - 30
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
-                result.set(.width, to: width > maxWidth ? maxWidth : width)
+                result.set(.width, to: size.width > maxWidth ? size.width : maxWidth)
             } else {
                 if width > size.width {
-                    result.set(.width, to: width + 20)
+                    result.set(.width, to: width + 50)
                 } else {
                     result.set(.width, to: size.width > 85 ? size.width : 85)
                 }
             }
+        }
+        if viewItem.quotedReply == nil && attachments.isEmpty {
+            result.set(.width, to: size.width)
         }
         return result
     }

@@ -1,6 +1,7 @@
 // Copyright © 2022 Beldex International. All rights reserved.
 
 import UIKit
+import BChatUIKit
 import SignalUtilitiesKit
 import BChatUtilitiesKit
 import BChatMessagingKit

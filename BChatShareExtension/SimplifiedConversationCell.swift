@@ -55,6 +55,7 @@ final class SimplifiedConversationCell : UITableViewCell {
     // MARK: - Initialization
     
     private func setUpViewHierarchy() {
+        
         backgroundColor = Colors.cellBackground
         
         let selectedBackgroundView = UIView()

@@ -151,10 +151,6 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let maxLength : Int
-        if textField == groupNameTextField {
-            maxLength = 26
-        }
         let currentString: NSString = textField.text! as NSString
         let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
         return newString.length <= 26

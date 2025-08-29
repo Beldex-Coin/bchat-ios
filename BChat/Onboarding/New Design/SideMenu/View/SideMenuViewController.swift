@@ -172,7 +172,7 @@ class SideMenuViewController: BaseVC {
         let image = UIImage(named: "X")?.withRenderingMode(.alwaysTemplate)
         closeButton.setImage(image, for: .normal)
         closeButton.tintColor = isLightMode ? .black : .white
-        let userInfo = [ "text" : "dark" ]
+        let userInfo = [ "text" : isLightMode ? "light" : "dark" ]
         NotificationCenter.default.post(name: .doodleChangeNotification, object: nil, userInfo: userInfo)
         tableView.reloadData()
     }

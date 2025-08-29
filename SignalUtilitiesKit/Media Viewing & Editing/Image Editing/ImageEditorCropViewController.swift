@@ -86,6 +86,13 @@ class ImageEditorCropViewController: OWSViewController {
 
     override func loadView() {
         self.view = UIView()
+        
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         self.view.backgroundColor = Colors.navigationBarBackground
         self.view.layoutMargins = .zero

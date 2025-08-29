@@ -1,9 +1,9 @@
 
 import UIKit
 import SideMenu
-import SVGKit
 import BChatUIKit
 import Alamofire
+import SignalUtilitiesKit
 
 final class HomeVC : BaseVC {
     private var threads: YapDatabaseViewMappings!
@@ -97,15 +97,6 @@ final class HomeVC : BaseVC {
         result.alignment = .center
         result.isHidden = true
         return result
-    }()
-    
-    var someImageView: UIImageView = {
-        let theImageView = UIImageView()
-        theImageView.layer.masksToBounds = true
-        let logoName = isLightMode ? "svg_light" : "svg_dark"
-        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-        theImageView.image = namSvgImgVar.uiImage
-        return theImageView
     }()
     
     var hostType = HostManager.shared.hostType.hostValue
@@ -545,6 +536,8 @@ final class HomeVC : BaseVC {
         callView.addGestureRecognizer(tap)
         
         mainButton.isHidden = true
+        
+        setAppThemeForShareExtension()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -637,7 +630,17 @@ final class HomeVC : BaseVC {
     }
     
     @objc func notificationReceived(_ notification: Notification) {
-        guard let text = notification.userInfo?["text"] as? String else { return }
+        //guard let text = notification.userInfo?["text"] as? String else { return }
+        setAppThemeForShareExtension()
+    }
+    
+    func setAppThemeForShareExtension() {
+        let isLightMode = isLightMode ? true : false
+        if let defaults = UserDefaults(suiteName: SignalApplicationGroup) {
+            defaults.set(isLightMode, forKey: appThemeIsLight)
+            defaults.synchronize()
+        }
+        setUpNavBarStyle()
     }
     
     @objc func tappedMe() {
@@ -716,10 +719,11 @@ final class HomeVC : BaseVC {
     
     func threadForMessageRequest(at index: Int) -> TSThread? {
         var thread: TSThread? = nil
-        
         dbConnection.read { transaction in
-            let ext: YapDatabaseViewTransaction? = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction
-            thread = ext?.object(atRow: UInt(index), inSection: 0, with: self.threads) as? TSThread
+            guard let ext = transaction.ext(TSThreadDatabaseViewExtensionName) as? YapDatabaseViewTransaction else { return }
+            let count = self.threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
+            let reversedIndex = Int(count) - 1 - index
+            thread = ext.object(atRow: UInt(reversedIndex), inSection: 0, with: self.threads) as? TSThread
         }
         return thread
     }
@@ -979,33 +983,20 @@ final class HomeVC : BaseVC {
         
         var rightBarButtonItems: [UIBarButtonItem] = []
         
-        
         let plusButton = UIButton(type: .custom)
         plusButton.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
         plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
-          let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
-        
+        let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         rightBarButtonItems.append(plusButtonBarItem)
-        
         
         // Right bar button item - search button
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(showSearchUI))
         rightBarButtonItem.accessibilityLabel = "Search button"
         rightBarButtonItem.isAccessibilityElement  = true
         rightBarButtonItems.append(rightBarButtonItem)
-        
-//        let wallet = UIButton(type: .custom)
-//        wallet.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-//        wallet.widthAnchor.constraint(equalToConstant: 28).isActive = true
-//        wallet.heightAnchor.constraint(equalToConstant: 28).isActive = true
-//        wallet.setImage(UIImage(named:"ic_walletHomeNew"), for: .normal)
-//        wallet.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
-//          let walletBarItem = UIBarButtonItem(customView: wallet)
-//
-//        rightBarButtonItems.append(walletBarItem)
         
         navigationItem.rightBarButtonItems = rightBarButtonItems
         setUpNavBarSessionHeading()
@@ -1103,7 +1094,7 @@ final class HomeVC : BaseVC {
     @objc private func openSettings() {
         mainButtonPopUpView.isHidden = true
         let menu = SideMenuNavigationController(rootViewController: SideMenuViewController())
-        let appScreenRect = UIApplication.shared.keyWindow?.bounds ?? UIWindow().bounds
+        let appScreenRect = UIWindow.keyWindow?.bounds ?? UIWindow().bounds
         let minimumSize = min(appScreenRect.width, appScreenRect.height)
         menu.menuWidth = round(minimumSize * 0.80)
         SideMenuManager.default.leftMenuNavigationController = menu
@@ -1215,7 +1206,6 @@ final class HomeVC : BaseVC {
             }, completion: nil)
         }
     }
-    
 }
 
 extension HomeVC: BeldexWalletDelegate {

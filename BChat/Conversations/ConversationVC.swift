@@ -2,7 +2,6 @@ import BChatUIKit
 import AVFAudio
 import BChatMessagingKit
 import UIKit
-import SVGKit
 import PromiseKit
 import BChatUtilitiesKit
 import NVActivityIndicatorView
@@ -63,7 +62,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     var emojiPickersheet: EmojiPickerSheet?
     // Reaction
     var showingReactionListForMessageId: String?
-    var reactionListOpened: Bool = false
+    var isInputViewShow: Bool = true
     
     var audioSession: OWSAudioSession { Environment.shared.audioSession }
     var dbConnection: YapDatabaseConnection { OWSPrimaryStorage.shared().uiDatabaseConnection }
@@ -280,15 +279,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         preconditionFailure("Use init(thread:) instead.")
     }
     
-    var someImageView: UIImageView = {
-        let theImageView = UIImageView()
-        theImageView.layer.masksToBounds = true
-        let logoName = isLightMode ? "svg_light" : "svg_dark"
-        let namSvgImgVar: SVGKImage = SVGKImage(named: logoName)!
-        theImageView.image = namSvgImgVar.uiImage
-        return theImageView
-    }()
-    
     private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     private var isSyncingUI = false {
         didSet {
@@ -321,11 +311,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     // MARK: Slide left and Right swipe
     lazy var customizeSlideToOpen: MTSlideToOpenView = {
-        let slide = MTSlideToOpenView(frame: CGRect(x: 40, y: UIScreen.main.bounds.height/1.4, width: 300, height: 50))
+        let slide = MTSlideToOpenView()
+        slide.translatesAutoresizingMaskIntoConstraints = false
         slide.sliderViewTopDistance = 0
         slide.thumbnailViewTopDistance = 4;
         slide.thumbnailViewStartingDistance = 4;
-        slide.sliderCornerRadius = 28
+        slide.sliderCornerRadius = 25
         slide.draggedView.backgroundColor = .clear
         slide.delegate = self
         slide.thumnailImageView.image = #imageLiteral(resourceName: "ic_sliderImage").imageFlippedForRightToLeftLayoutDirection()
@@ -334,7 +325,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return slide
     }()
     private var SelectedDecimal = ""
-    var newSlidePositionY = 0.0
     var finalWalletAddress = ""
     var finalWalletAmount = ""
     var wallet: BDXWallet?
@@ -804,27 +794,19 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     /// View didload
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Gradient
-//        setUpGradientBackground()
+        
         // Nav bar
         setUpNavBarStyle()
         navigationItem.titleView = titleView
         updateNavBarButtons()
         
-        //adding Bg Image
-//        view.addSubview(someImageView)
-//        someImageView.pin(to: view)
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         
-        // Constraints
         view.addSubview(messagesTableView)
-//        messagesTableView.pin(to: view)
-//        messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
         tableViewTopConstraint = messagesTableView.pin(.top, to: .top, of: view, withInset: 14)
         messagesTableView.pin(.bottom, to: .bottom, of: view, withInset: 0)
         messagesTableView.pin(.left, to: .left, of: view, withInset: 0)
         messagesTableView.pin(.right, to: .right, of: view, withInset: 0)
-        
         messagesTableView.layer.cornerRadius = 20
         messagesTableView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
@@ -990,11 +972,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             isSuccessPopView.heightAnchor.constraint(equalToConstant: 165)
         ])
         
-        customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
-        view.addSubview(customizeSlideToOpen)
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         isSyncingUI = true
         //Save Receipent Address fun developed In Local
         self.saveReceipeinetAddressOnAndOff()
@@ -1056,6 +1034,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         ])
         deleteAudioButton.pin(to: deleteAudioView)
         deleteAudioView.isHidden = true
+        
+        view.addSubview(customizeSlideToOpen)
+        customizeSlideToOpen.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        customizeSlideToOpen.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        customizeSlideToOpen.leadingAnchor.constraint(equalTo: view.trailingAnchor, constant: 40).isActive = true
+        customizeSlideToOpen.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40).isActive = true
+        customizeSlideToOpen.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        customizeSlideToOpen.isHidden = true
                 
         // Notifications
         let notificationCenter = NotificationCenter.default
@@ -1170,8 +1156,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 snInputView.isUserInteractionEnabled = true
             }
         }
-        newSlidePositionY = UIScreen.main.bounds.height/1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1183,6 +1167,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             CustomSlideView.isFromExpandAttachment = false
         }
         hideAttachmentExpandedButtons()
+        handleQuoteViewCancelButtonTapped()
         hideOpenURLView()
     }
     
@@ -1222,11 +1207,32 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.scrollButton.alpha = self.getScrollButtonOpacity()
             }
         }
+        
+        debugPrint("quote ----")
+        var constraintValue: CGFloat = 4
+        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
+        if inputTextViewLines >= 2 {
+            constraintValue = inputTextViewLines == 3 ? 16 :
+                                inputTextViewLines >= 4 ? 28 : constraintValue
+        }
+        
+        if snInputView.quoteDraftInfo != nil {
+            let msg: VisibleMessage = VisibleMessage()
+            msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
+            guard let quoteText = msg.quote?.text else { return }
+            constraintValue += quoteText.count >= 100 ? 78 : 68
+        }
+
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                bottomConstraintOfAttachmentButton = constraintValue
+            }
+        }
     }
     
     override func appDidBecomeActive(_ notification: Notification) {
         
-        if AppEnvironment.shared.callManager.currentCall == nil && !reactionListOpened {
+        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow {
             recoverInputView()
             snInputView.isHidden = false
         } else {
@@ -1663,18 +1669,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             inChatPaymentFeelabel.attributedText = attributedString
             initiatingTransactionPopView.isHidden = true
         } else {
+            self.dismiss(animated: true)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
                 CustomSlideView.isFromExpandAttachment = false
+                
+                self.initiatingTransactionPopView.isHidden = true
+                let errMsg = wallet.commitPendingTransactionError()
+                let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
+                let okayAction = UIAlertAction(title: "Okay", style: .cancel, handler: nil)
+                alert.addAction(okayAction)
+                self.present(alert, animated: true, completion: nil)
             }
-            initiatingTransactionPopView.isHidden = true
-            let errMsg = wallet.commitPendingTransactionError()
-            let alert = UIAlertController(title: "Create Transaction Error", message: errMsg, preferredStyle: .alert)
-            let okayAction = UIAlertAction(title: "Okay", style: .default, handler: { (_) in
-                self.navigationController?.popViewController(animated: true)
-            })
-            alert.addAction(okayAction)
-            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -2037,9 +2043,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        newSlidePositionY = UIScreen.main.bounds.height / 2.9
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
-        
         // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
         // needed for proper calculations, so force an initial layout if it doesn't have a size)
         var hasDoneLayout: Bool = true
@@ -2055,12 +2058,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
         if keyboardTop <= 100 {
             messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
-            newSlidePositionY = UIScreen.main.bounds.height / 1.4
-            customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = false
         } else {
-            newSlidePositionY = UIScreen.main.bounds.height / 2.9
-            customizeSlideToOpen.frame.origin.y = newSlidePositionY
             self.isKeyboardPresented = true
         }
         let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
@@ -2113,9 +2112,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         
         let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
-        
-        newSlidePositionY = UIScreen.main.bounds.height / 1.4
-        customizeSlideToOpen.frame.origin.y = newSlidePositionY
         self.isKeyboardPresented = false
         
         UIView.animate(
@@ -2484,93 +2480,4 @@ extension ConversationVC: BeldexWalletDelegate {
         let balance_modify = Helper.displayDigitsAmount(balance)
         self.mainbalance = balance_modify
     }
-}
-
-extension ConversationVC {
-    fileprivate func approveMessageRequestIfNeeded(for thread: TSThread?, isNewThread: Bool, timestamp: UInt64) -> Promise<Void> {
-        guard let contactThread: TSContactThread = thread as? TSContactThread else { return Promise.value(()) }
-        // If the contact doesn't exist then we should create it so we can store the 'isApproved' state
-        // (it'll be updated with correct profile info if they accept the message request so this
-        // shouldn't cause weird behaviours)
-        let bchatId: String = contactThread.contactBChatID()
-        let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
-        guard !contact.isApproved else { return Promise.value(()) }
-        return Promise.value(())
-            .then { [weak self] _ -> Promise<Void> in
-                guard !isNewThread else { return Promise.value(()) }
-                guard let strongSelf = self else { return Promise(error: MessageSender.Error.noThread) }
-                // If we aren't creating a new thread (ie. sending a message request) then send a
-                // messageRequestResponse back to the sender (this allows the sender to know that
-                // they have been approved and can now use this contact in closed groups)
-                let (promise, seal) = Promise<Void>.pending()
-                let messageRequestResponse: MessageRequestResponse = MessageRequestResponse(
-                    isApproved: true
-                )
-                messageRequestResponse.sentTimestamp = timestamp
-                // Show a loading indicator
-                ModalActivityIndicatorViewController.present(fromViewController: strongSelf, canCancel: false) { _ in
-                    seal.fulfill(())
-                }
-                return promise
-                    .then { _ -> Promise<Void> in
-                        let (promise, seal) = Promise<Void>.pending()
-                        Storage.writeSync { transaction in
-                            MessageSender.sendNonDurably(messageRequestResponse, in: contactThread, using: transaction)
-                                .done { seal.fulfill(()) }
-                                .catch { _ in seal.fulfill(()) } // Fulfill even if this failed; the configuration in the swarm should be at most 2 days old
-                                .retainUntilComplete()
-                        }
-                        
-                        return promise
-                    }
-                    .map { _ in
-                        if self?.presentedViewController is ModalActivityIndicatorViewController {
-                            self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                        }
-                    }
-            }
-            .map { _ in
-                // Default 'didApproveMe' to true for the person approving the message request
-                Storage.write { transaction in
-                    contact.isApproved = true
-                    contact.didApproveMe = (contact.didApproveMe || !isNewThread)
-                    Storage.shared.setContact(contact, using: transaction)
-                }
-                // Send a sync message with the details of the contact
-                MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                // Hide the 'messageRequestView' since the request has been approved and force a config
-                // sync to propagate the contact approval state (both must run on the main thread)
-                DispatchQueue.main.async { [weak self] in
-                    let messageRequestViewWasVisible: Bool = (self?.messageRequestView.isHidden == false)
-                    UIView.animate(withDuration: 0.3) {
-                        self?.messageRequestView.isHidden = true
-                        self?.scrollButtonMessageRequestsBottomConstraint?.isActive = false
-                        self?.scrollButtonBottomConstraint?.isActive = true
-                        
-                        // Update the table content inset and offset to account for the dissapearance of
-                        // the messageRequestsView
-                        if messageRequestViewWasVisible {
-                            let messageRequestsOffset: CGFloat = ((self?.messageRequestView.bounds.height ?? 0) + 16)
-                            let oldContentInset: UIEdgeInsets = (self?.messagesTableView.contentInset ?? UIEdgeInsets.zero)
-                            self?.messagesTableView.contentInset = UIEdgeInsets(
-                                top: 0,
-                                leading: 0,
-                                bottom: max(oldContentInset.bottom - messageRequestsOffset, 0),
-                                trailing: 0
-                            )
-                        }
-                    }
-                    // Update UI
-                    self?.updateNavBarButtons()
-                    if let viewControllers: [UIViewController] = self?.navigationController?.viewControllers,
-                       let messageRequestsIndex = viewControllers.firstIndex(where: { $0 is MessageRequestsViewController }),
-                       messageRequestsIndex > 0 {
-                        var newViewControllers = viewControllers
-                        newViewControllers.remove(at: messageRequestsIndex)
-                        self?.navigationController?.setViewControllers(newViewControllers, animated: false)
-                    }
-                }
-            }
-    }
-    
 }

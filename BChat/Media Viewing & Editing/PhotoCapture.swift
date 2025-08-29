@@ -394,9 +394,9 @@ extension PhotoCapture: CaptureOutputDelegate {
             return
         }
 
-        let dataSource = DataSourceValue.dataSource(with: photoData, utiType: kUTTypeJPEG as String)
+        let dataSource = DataSourceValue.dataSource(with: photoData, utiType: UTType.jpeg.identifier)
 
-        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: kUTTypeJPEG as String, imageQuality: .medium)
+        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: UTType.jpeg.identifier, imageQuality: .medium)
         delegate?.photoCapture(self, didFinishProcessingAttachment: attachment)
     }
 
@@ -421,7 +421,7 @@ extension PhotoCapture: CaptureOutputDelegate {
 
         let dataSource = DataSourcePath.dataSource(with: outputFileURL, shouldDeleteOnDeallocation: true)
 
-        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: kUTTypeMPEG4 as String)
+        let attachment = SignalAttachment.attachment(dataSource: dataSource, dataUTI: UTType.mpeg4Movie.identifier)
         delegate?.photoCapture(self, didFinishProcessingAttachment: attachment)
     }
     

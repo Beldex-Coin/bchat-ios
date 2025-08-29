@@ -32,21 +32,14 @@ public class ModalActivityIndicatorViewController: OWSViewController {
         theImageView.set(.height, to: 100)
         theImageView.layer.masksToBounds = true
         theImageView.widthAnchor.constraint(equalToConstant: 180).isActive = true
-        if isLightMode {
-            do {
-                let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
-                theImageView.image = UIImage.gif(data: imageData)
-            } catch {
-                print(error)
-            }
-        }else {
-            do {
-                let imageData = try Data(contentsOf: Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif")!)
-                theImageView.image = UIImage.gif(data: imageData)
-            } catch {
-                print(error)
-            }
+        guard let bundleURL = Bundle.main.url(forResource: "bchatlogo_animation", withExtension: "gif") else {
+                return theImageView
         }
+        guard let imageData = try? Data(contentsOf: bundleURL) else {
+            return theImageView
+        }
+        
+        theImageView.image = UIImage.gif(data: imageData)
         theImageView.translatesAutoresizingMaskIntoConstraints = false
         return theImageView
     }()

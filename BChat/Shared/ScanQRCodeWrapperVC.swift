@@ -1,9 +1,9 @@
 
 final class ScanQRCodeWrapperVC : BaseVC {
-    var delegate: (UIViewController & OWSQRScannerDelegate)? = nil
+    var delegate: (UIViewController & QRScannerDelegate)? = nil
     var isPresentedModally = false
     private let message: String
-    private let scanQRCodeVC = OWSQRCodeScanningViewController()
+    private let scanQRCodeVC = QRCodeScanningViewController()
     
     // MARK: Settings
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask { return .portrait }

@@ -97,7 +97,7 @@ class AttachmentCaptionToolbar: UIView, UITextViewDelegate {
         lengthLimitLabel.textAlignment = .center
 
         // Add shadow in case overlayed on white content
-        lengthLimitLabel.layer.shadowColor = UIColor.black.cgColor
+        lengthLimitLabel.layer.shadowColor = Colors.text.cgColor
         lengthLimitLabel.layer.shadowOffset = .zero
         lengthLimitLabel.layer.shadowOpacity = 0.8
         lengthLimitLabel.layer.shadowRadius = 2.0

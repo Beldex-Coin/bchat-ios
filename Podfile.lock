@@ -28,7 +28,6 @@ PODS:
   - DifferenceKit/Core (1.3.0)
   - DifferenceKit/UIKitExtension (1.3.0):
     - DifferenceKit/Core
-  - FSCalendar (2.8.4)
   - GRDB.swift/SQLCipher (6.24.1):
     - SQLCipher (>= 3.4.2)
   - Mantle (2.1.0):
@@ -61,8 +60,6 @@ PODS:
   - SQLCipher/common (4.6.1)
   - SQLCipher/standard (4.6.1):
     - SQLCipher/common
-  - SVGKit (3.0.0):
-    - CocoaLumberjack (~> 3.0)
   - SwiftProtobuf (1.5.0)
   - SwiftyRSA (1.7.0):
     - SwiftyRSA/ObjC (= 1.7.0)
@@ -133,9 +130,6 @@ PODS:
   - YYImage (1.0.4):
     - YYImage/Core (= 1.0.4)
   - YYImage/Core (1.0.4)
-  - ZXingObjC (3.6.9):
-    - ZXingObjC/All (= 3.6.9)
-  - ZXingObjC/All (3.6.9)
 
 DEPENDENCIES:
   - AFNetworking
@@ -143,7 +137,6 @@ DEPENDENCIES:
   - CryptoSwift
   - Curve25519Kit (from `https://github.com/signalapp/Curve25519Kit.git`)
   - DifferenceKit
-  - FSCalendar
   - GRDB.swift/SQLCipher
   - Mantle (from `https://github.com/signalapp/Mantle`, branch `signal-master`)
   - NVActivityIndicatorView
@@ -155,13 +148,11 @@ DEPENDENCIES:
   - SignalCoreKit (from `https://github.com/oxen-io/session-ios-core-kit`, branch `session-version`)
   - SocketRocket (~> 0.5.1)
   - Sodium (~> 0.9.1)
-  - SVGKit
   - SwiftProtobuf (~> 1.5.0)
   - SwiftyRSA
   - WebRTC-lib
   - YapDatabase/SQLCipher (from `https://github.com/oxen-io/session-ios-yap-database.git`, branch `signal-release`)
   - YYImage (from `https://github.com/signalapp/YYImage`)
-  - ZXingObjC
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -170,7 +161,6 @@ SPEC REPOS:
     - CocoaLumberjack
     - CryptoSwift
     - DifferenceKit
-    - FSCalendar
     - GRDB.swift
     - NVActivityIndicatorView
     - OpenSSL-Universal
@@ -182,11 +172,9 @@ SPEC REPOS:
     - SocketRocket
     - Sodium
     - SQLCipher
-    - SVGKit
     - SwiftProtobuf
     - SwiftyRSA
     - WebRTC-lib
-    - ZXingObjC
 
 EXTERNAL SOURCES:
   Curve25519Kit:
@@ -227,7 +215,6 @@ SPEC CHECKSUMS:
   CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
   Curve25519Kit: e63f9859ede02438ae3defc5e1a87e09d1ec7ee6
   DifferenceKit: ab185c4d7f9cef8af3fcf593e5b387fb81e999ca
-  FSCalendar: 2d1d0d9398f12d439f55c1fe0f01525b151b8260
   GRDB.swift: 136dcb5d8dddca50aae3ba7d77475f79e7232cd8
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   NVActivityIndicatorView: fe52a6a68664c2df8991d7d9e3d86d8d19453c53
@@ -241,14 +228,12 @@ SPEC CHECKSUMS:
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
-  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
   WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
   YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
-  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: d31a1ac9377d23eaa73716b649da104c0ad7de19
+PODFILE CHECKSUM: 923430f55dc6d3d7f743bf348bdf31f2bdedcafd
 
 COCOAPODS: 1.15.2

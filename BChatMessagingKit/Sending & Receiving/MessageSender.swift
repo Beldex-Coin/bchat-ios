@@ -164,10 +164,10 @@ public final class MessageSender : NSObject {
             handleFailure(with: error, using: transaction)
             return promise
         }
-        guard UserDefaults.standard.string(forKey: "WalletpublicAddress") != nil
-        else {
-            return Promise(error: Error.noUserX25519KeyPair)
-        }
+//        guard UserDefaults.standard.string(forKey: "WalletpublicAddress") != nil
+//        else {
+//            return Promise(error: Error.noUserX25519KeyPair)
+//        }
         // Encrypt the serialized protobuf
         let ciphertext: Data
         do {

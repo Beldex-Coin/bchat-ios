@@ -69,11 +69,11 @@ extension GiphyError: LocalizedError {
     public var utiType: String {
         switch format {
         case .gif:
-            return kUTTypeGIF as String
+            return UTType.gif.identifier
         case .mp4:
-            return kUTTypeMPEG4 as String
+            return UTType.mpeg2Video.identifier
         case .jpg:
-            return kUTTypeJPEG as String
+            return UTType.jpeg.identifier
         }
     }
 

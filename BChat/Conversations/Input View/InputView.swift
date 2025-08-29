@@ -143,25 +143,30 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     private func setUpViewHierarchy() {
+        
         autoresizingMask = .flexibleHeight
+        
         // Background & blur
         let backgroundView = UIView()
         backgroundView.backgroundColor = Colors.mainBackGroundColor2
         addSubview(backgroundView)
         backgroundView.pin(to: self)
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+        
+        let blurView = UIVisualEffectView() //effect: UIBlurEffect(style: .regular))
         addSubview(blurView)
         blurView.pin(to: self)
+        
         // Separator
         let separator = UIView()
         separator.backgroundColor = .clear
         separator.set(.height, to: 1 / UIScreen.main.scale)
         addSubview(separator)
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
+        
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, container(for: payAsChatButton)])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, payAsChatButton ])
         bottomStackView.axis = .horizontal
-        bottomStackView.spacing = Values.smallSpacing
+        bottomStackView.spacing = Values.borderThickness
         bottomStackView.backgroundColor = Colors.incomingMessageColor
         bottomStackView.layer.cornerRadius = 24
         bottomStackView.alignment = .center
@@ -169,9 +174,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         
         let bottomStackView2 = UIStackView(arrangedSubviews: [ bottomStackView, container(for: sendButton) ])
         bottomStackView2.axis = .horizontal
-        bottomStackView2.spacing = 4
         bottomStackView2.backgroundColor = .clear
         bottomStackView2.layer.cornerRadius = 24
+        bottomStackView2.spacing = 4
         bottomStackView2.alignment = .center
         self.finalBottomStack = bottomStackView2
         
@@ -181,7 +186,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mainStackView.backgroundColor = Colors.mainBackGroundColor2
         mainStackView.isLayoutMarginsRelativeArrangement = true
         let adjustment = (InputViewButton.expandedSize - InputViewButton.size) / 2
-        mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment)
+        mainStackView.layoutMargins = UIEdgeInsets(top: 2, leading: Values.mediumSpacing - adjustment, bottom: 2, trailing: Values.mediumSpacing - adjustment - 5)
         addSubview(mainStackView)
         mainStackView.pin(.top, to: .bottom, of: separator)
         mainStackView.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: self)
@@ -201,6 +206,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mentionsViewContainer.addSubview(mentionsView)
         mentionsView.pin(to: mentionsViewContainer)
         mentionsViewHeightConstraint.isActive = true
+        
         // Voice message button
         addSubview(voiceMessageButtonContainer)
         voiceMessageButtonContainer.center(in: sendButton)
@@ -304,9 +310,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         quoteView.pin(.right, to: .right, of: additionalContentContainerOuterView, withInset: -10)
         quoteView.pin(.bottom, to: .bottom, of: additionalContentContainerOuterView, withInset: -20)
         
-        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0)
+        additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0.5)
         additionalContentContainerOuterView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -51)
+        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -52.5)
         additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
     
