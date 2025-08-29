@@ -26,6 +26,12 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
         SetCurrentAppContext(appContext)
 
         AppModeManager.configure(delegate: self)
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
 
         Logger.info("")
 
@@ -69,6 +75,12 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
             name: .OWSApplicationDidEnterBackground,
             object: nil
         )
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Note: The share extension doesn't have a proper window so we need to manually update
     }
 
     @objc
@@ -177,8 +189,7 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
     private func showLockScreenOrMainContent() {
         if OWSScreenLock.shared.isScreenLockEnabled() {
             showLockScreen()
-        }
-        else {
+        } else {
             showMainContent()
         }
     }

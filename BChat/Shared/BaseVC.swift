@@ -77,15 +77,24 @@ class BaseVC : UIViewController {
     }
 
     internal func setUpNavBarStyle() {
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         guard let navigationBar = navigationController?.navigationBar else { return }
         
         if #available(iOS 15.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.cancelButtonBackgroundColor//Colors.navigationBarBackground
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor
             appearance.shadowColor = .clear
+            navigationBar.tintColor = Colors.text
             navigationBar.standardAppearance = appearance;
             navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+            (navigationBar as? OWSNavigationBar)?.respectsTheme = true
         } else {
             navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
             navigationBar.shadowImage = UIImage()
@@ -94,9 +103,9 @@ class BaseVC : UIViewController {
         }
         
         // Back button (to appear on pushed screen)
-            let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-            backButton.tintColor = Colors.text
-            navigationItem.backBarButtonItem = backButton
+        let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        backButton.tintColor = Colors.text
+        navigationItem.backBarButtonItem = backButton
     }
 
     internal func setNavBarTitle(_ title: String, customFontSize: CGFloat? = nil) {
@@ -174,12 +183,11 @@ class BaseVC : UIViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
         if #available(iOS 13.0, *) {
             SNLog("Current trait collection: \(UITraitCollection.current), previous trait collection: \(previousTraitCollection)")
         }
-//        if LKAppModeUtilities.isSystemDefault {
-//             NotificationCenter.default.post(name: .appModeChanged, object: nil)
-//        }
     }
 
     @objc internal func handleAppModeChangedNotification(_ notification: Notification) {
@@ -205,9 +213,9 @@ extension BaseVC {
             requestMicrophonePermissionIfNeeded { }
             guard let call = AppEnvironment.shared.callManager.currentCall else { return }
             guard MiniCallView.current == nil else { return }
-            if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
+            if let callVC = CurrentAppContext().frontmostViewController() as? CallVC, callVC.bChatCall == call { return }
             guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
-            let callVC = NewIncomingCallVC(for: call)
+            let callVC = CallVC(for: call)
             if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
                 callVC.conversationVC = conversationVC
                 if let viewController = callVC.conversationVC {
@@ -218,16 +226,58 @@ extension BaseVC {
                 callVC.setupStateChangeCallbacks()
             }
         } else {
-            let vc = CallPermissionRequestModalNewVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            showCallPermissionModal {
+                Logger.debug("On Confirmed")
+            } onAfterClosed: {
+                Logger.debug("On After Closed")
+            } onModalPresented: {
+                Logger.debug("On Modal Presented")
+            }
         }
+    }
+    
+    func showCallPermissionModal(
+        onConfirmed: (() -> Void)? = nil,
+        onAfterClosed: (() -> Void)? = nil,
+        onModalPresented: (() -> Void)? = nil) {
+        
+        let title = NSLocalizedString("modal_call_permission_request_title", comment: "")
+        let description = callPermisionDescription()
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .callPermission,
+                title: title,
+                body: .attributedText(description),
+                showCondition: .disabled,
+                confirmTitle: "Settings",
+                onConfirm: { _ in
+                    onConfirmed?()
+                }, afterClosed: {
+                    onAfterClosed?()
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion:  {
+            onModalPresented?()
+        })
     }
     
     func hideInputAccessoryView(_ view: UIView?) {
         guard let aView = view else { return }
         aView.isHidden = true
         aView.alpha = 0
+    }
+    
+    func callPermisionDescription() -> NSAttributedString {
+        let string = "You can enable the ‘Voice and video calls’ permission in the Privacy Settings."
+        let attributedString = NSMutableAttributedString(string: string)
+        // Apply bold font to "Voice and video calls"
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Voice and video calls"))
+        // Apply bold font to "Privacy Settings"
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Privacy Settings"))
+        // The attributed string
+        return attributedString
     }
 }

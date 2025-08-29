@@ -5,18 +5,18 @@ import Foundation
 struct Document: Codable {
     var contentType: String
     var originalFilePath: String
-    var originalMediaURL: URL
+    var originalMediaUrl: String
     var createdTimeStamp: Date
     var documentId: String
     
     init(contentType: String, 
          originalFilePath: String,
-         originalMediaURL: URL,
+         originalMediaURL: String,
          createdTimeStamp: Date,
          documentId: String) {
         self.contentType = contentType
         self.originalFilePath = originalFilePath
-        self.originalMediaURL = originalMediaURL
+        self.originalMediaUrl = originalMediaURL
         self.createdTimeStamp = createdTimeStamp
         self.documentId = documentId
     }

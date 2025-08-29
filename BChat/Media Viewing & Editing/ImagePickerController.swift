@@ -59,7 +59,7 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
         // ensure images at the end of the list can be scrolled above the bottom buttons
         let bottomButtonInset = -1 * SendMediaNavigationController.bottomButtonsCenterOffset + SendMediaNavigationController.bottomButtonWidth / 2 + 16
         collectionView.contentInset.bottom = bottomButtonInset + 16
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.navigationBarBackground
 
         // The PhotoCaptureVC needs a shadow behind it's cancel button, so we use a custom icon.
         // This VC has a visible navbar so doesn't need the shadow, but because the user can
@@ -69,7 +69,7 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
         let cancelImage = UIImage(imageLiteralResourceName: "X")
         let cancelButton = UIBarButtonItem(image: cancelImage, style: .plain, target: self, action: #selector(didPressCancel))
 
-        cancelButton.tintColor = .black
+        cancelButton.tintColor = Colors.text
         navigationItem.leftBarButtonItem = cancelButton
 
         let titleView = TitleView()
@@ -86,7 +86,7 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
         navigationItem.titleView = titleView
         self.titleView = titleView
 
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = Colors.navigationBarBackground
 
         let selectionPanGesture = DirectionalPanGestureRecognizer(direction: [.horizontal], target: self, action: #selector(didPanSelection))
         selectionPanGesture.delegate = self
@@ -97,7 +97,7 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
             if PHPhotoLibrary.authorizationStatus(for: .readWrite) == .limited {
                 let addSeletedPhotoButton = UIBarButtonItem.init(barButtonSystemItem: .add, target: self, action: #selector(addSelectedPhoto))
                 self.navigationItem.rightBarButtonItem = addSeletedPhotoButton
-                self.navigationItem.rightBarButtonItem?.tintColor = .black
+                self.navigationItem.rightBarButtonItem?.tintColor = Colors.text
             }
         }
     }
@@ -200,17 +200,29 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
     var hasEverAppeared: Bool = false
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // Beldex: Set navigation bar background color
-        let navigationBar = navigationController!.navigationBar
-        navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = false
-        navigationBar.barTintColor = .white
-        (navigationBar as! OWSNavigationBar).respectsTheme = false
-        navigationBar.backgroundColor = .white
-        let backgroundImage = UIImage(color: .white)
-        navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        
+        if #available(iOS 15.0, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.shadowColor = .clear
+            appearance.backgroundColor = Colors.cancelButtonBackgroundColor
+            navigationBar.tintColor = Colors.text
+            navigationBar.standardAppearance = appearance;
+            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
+        } else {
+            // Beldex: Set navigation bar background color
+            let navigationBar = navigationController!.navigationBar
+            navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+            navigationBar.shadowImage = UIImage()
+            navigationBar.isTranslucent = false
+            navigationBar.barTintColor = .white
+            (navigationBar as! OWSNavigationBar).respectsTheme = false
+            navigationBar.backgroundColor = .white
+            let backgroundImage = UIImage(color: .white)
+            navigationBar.setBackgroundImage(backgroundImage, for: .default)
+        }
         
         // Determine the size of the thumbnails to request
         let scale = UIScreen.main.scale
@@ -458,7 +470,7 @@ class ImagePickerGridController: UICollectionViewController, PhotoLibraryDelegat
         collectionPickerView.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .top)
         collectionPickerView.autoPinEdge(toSuperviewSafeArea: .top)
         collectionPickerView.layoutIfNeeded()
-        collectionPickerView.backgroundColor = .white
+        collectionPickerView.backgroundColor = Colors.navigationBarBackground
 
         // Initially position offscreen, we'll animate it in.
         collectionPickerView.frame = collectionPickerView.frame.offsetBy(dx: 0, dy: collectionPickerView.frame.height)
@@ -616,10 +628,10 @@ class TitleView: UIView {
         addSubview(stackView)
         stackView.autoPinEdgesToSuperviewEdges()
 
-        label.textColor = .black
+        label.textColor = Colors.text
         label.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
 
-        iconView.tintColor = .black
+        iconView.tintColor = Colors.text
         iconView.image = UIImage(named: "navbar_disclosure_down")?.withRenderingMode(.alwaysTemplate)
 
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(titleTapped)))

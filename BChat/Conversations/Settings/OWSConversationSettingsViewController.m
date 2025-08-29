@@ -288,21 +288,6 @@ CGFloat kIconViewLength = 24;
 
     section.customHeaderView = [self mainSectionHeader];
     section.customHeaderHeight = @(UITableViewAutomaticDimension);
-
-    // Copy BChat ID
-//    if ([self.thread isKindOfClass:TSContactThread.class]) {
-//        [section addItem:[OWSTableItem itemWithCustomCellBlock:^{
-//            return [weakSelf
-//                disclosureCellWithName:NSLocalizedString(@"vc_conversation_settings_copy_bchat_id_button_title", "")
-//                              iconName:@"ic_copy"
-//               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"copy_bchat_id")];
-//        }
-//        actionBlock:^{
-//            [weakSelf copyBChatID];
-//        }]];
-//    }
-    
-
     
     if ([self.thread isKindOfClass:TSContactThread.class]) {
         [section addItem:[OWSTableItem itemWithCustomCellBlock:^{
@@ -322,9 +307,7 @@ CGFloat kIconViewLength = 24;
             rowLabel.textColor = LKColors.titleColor;
             rowLabel.font = [LKFonts OpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-            //        rowLabel.lineBreakMode = NSLineBreakByCharWrapping;
             rowLabel.numberOfLines = 2;
-            //        subtitleView.textAlignment = NSTextAlignmentCenter;
             
             UIStackView *contentRow =
             [[UIStackView alloc] initWithArrangedSubviews:@[ iconView, rowLabel ]];
@@ -345,12 +328,10 @@ CGFloat kIconViewLength = 24;
         
     }
         
-
     // All media
     [section addItem:[OWSTableItem itemWithCustomCellBlock:^{
         return [weakSelf
             disclosureCellWithName:MediaStrings.allMedia
-//                          iconName:@"actionsheet_camera_roll_black"
                 iconName:@"ic_allmedia"
            accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"all_media")];
     } actionBlock:^{
@@ -376,7 +357,6 @@ CGFloat kIconViewLength = 24;
             @"conversation with 'search mode' activated");
         return [weakSelf
             disclosureCellWithName:title
-//                          iconName:@"conversation_settings_search"
                 iconName:@"ic_search_setting"
            accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(OWSConversationSettingsViewController, @"search")];
     } actionBlock:^{
@@ -400,8 +380,6 @@ CGFloat kIconViewLength = 24;
             UILabel *rowLabel = [UILabel new];
             rowLabel.text = NSLocalizedString(
                 @"DISAPPEARING_MESSAGES", @"table cell label in conversation settings");
-//            rowLabel.textColor = LKColors.text;
-//            rowLabel.font = [UIFont systemFontOfSize:LKValues.mediumFontSize];
             rowLabel.textColor = LKColors.titleColor;
             rowLabel.font = [LKFonts OpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -427,8 +405,6 @@ CGFloat kIconViewLength = 24;
                 displayName = [[LKStorage.shared getContactWithBChatID:thread.contactBChatID] displayNameFor:SNContactContextRegular] ?: @"anonymous";
             }
             subtitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"When enabled, messages between you and %@ will disappear after they have been seen.", ""), displayName];
-//            subtitleLabel.textColor = LKColors.text;
-//            subtitleLabel.font = [UIFont systemFontOfSize:LKValues.smallFontSize];
             subtitleLabel.textColor = LKColors.chatSettingsGrayColor;
             subtitleLabel.font = [LKFonts semiOpenSansOfSize:12];
             subtitleLabel.numberOfLines = 0;
@@ -459,8 +435,6 @@ CGFloat kIconViewLength = 24;
 
                 UILabel *rowLabel = strongSelf.disappearingMessagesDurationLabel;
                 [strongSelf updateDisappearingMessagesDurationLabel];
-//                rowLabel.textColor = LKColors.text;
-//                rowLabel.font = [UIFont systemFontOfSize:LKValues.mediumFontSize];
                 rowLabel.textColor = LKColors.titleColor;
                 rowLabel.font = [LKFonts OpenSansOfSize:16];
                 // don't truncate useful duration info which is in the tail
@@ -545,8 +519,6 @@ CGFloat kIconViewLength = 24;
             UILabel *rowLabel = [UILabel new];
             rowLabel.text = NSLocalizedString(@"SETTINGS_ITEM_NOTIFICATION_SOUND",
                 @"Label for settings view that allows user to change the notification sound.");
-//            rowLabel.textColor = LKColors.text;
-//            rowLabel.font = [UIFont systemFontOfSize:LKValues.mediumFontSize];
             rowLabel.textColor = LKColors.titleColor;
             rowLabel.font = [LKFonts OpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -587,8 +559,6 @@ CGFloat kIconViewLength = 24;
 
                 UILabel *rowLabel = [UILabel new];
                 rowLabel.text = NSLocalizedString(@"vc_conversation_settings_notify_for_mentions_only_title", @"");
-//                rowLabel.textColor = LKColors.text;
-//                rowLabel.font = [UIFont systemFontOfSize:LKValues.mediumFontSize];
                 rowLabel.textColor = LKColors.titleColor;
                 rowLabel.font = [LKFonts OpenSansOfSize:16];
                 rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -705,7 +675,6 @@ CGFloat kIconViewLength = 24;
                           handler:^(UIAlertAction * action) {
                             //Handle no, thanks button
                           }];
-            // NSLocalizedString(@"This user will be reported to BChat Team.", @"");
             //Add your buttons to alert controller
             [alert addAction:yesButton];
             [alert addAction:noButton];
@@ -737,8 +706,6 @@ CGFloat kIconViewLength = 24;
 
     UILabel *rowLabel = [UILabel new];
     rowLabel.text = name;
-//    rowLabel.textColor = LKColors.text;
-//    rowLabel.font = [UIFont systemFontOfSize:LKValues.mediumFontSize];
     rowLabel.textColor = LKColors.titleColor;
     rowLabel.font = [LKFonts OpenSansOfSize:16];
     rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -810,17 +777,6 @@ CGFloat kIconViewLength = 24;
     CGFloat horizontalSpacing = isSmallScreen ? LKValues.largeSpacing : LKValues.veryLargeSpacing;
     stackView.layoutMargins = UIEdgeInsetsMake(LKValues.mediumSpacing, horizontalSpacing, LKValues.mediumSpacing, horizontalSpacing);
     [stackView setLayoutMarginsRelativeArrangement:YES];
-
-//    if (!self.isGroupThread) {
-//        SRCopyableLabel *subtitleView = [SRCopyableLabel new];
-//        subtitleView.textColor = LKColors.text;
-//        subtitleView.font = [LKFonts OpenSansOfSize:LKValues.smallFontSize];
-//        subtitleView.lineBreakMode = NSLineBreakByCharWrapping;
-//        subtitleView.numberOfLines = 2;
-//        subtitleView.text = ((TSContactThread *)self.thread).contactBChatID;
-//        subtitleView.textAlignment = NSTextAlignmentCenter;
-//        [stackView addArrangedSubview:subtitleView];
-//    }
     
     [profilePictureView updateForThread:self.thread];
     
@@ -988,9 +944,6 @@ CGFloat kIconViewLength = 24;
         [BlockListUIUtils showBlockThreadActionSheet:contactThread
                                                 from:self
                                      completionBlock:^(BOOL isBlocked) {
-                                         // Update switch state if user cancels action.
-//                                         blockConversationSwitch.on = isBlocked;
-            
                                          // If we successfully blocked then force a config sync
                                          if (isBlocked) {
                                              [SNMessageSender forceSyncConfigurationNow];
@@ -1007,9 +960,6 @@ CGFloat kIconViewLength = 24;
         [BlockListUIUtils showUnblockThreadActionSheet:contactThread
                                                   from:self
                                        completionBlock:^(BOOL isBlocked) {
-                                           // Update switch state if user cancels action.
-//                                           blockConversationSwitch.on = isBlocked;
-            
                                            // If we successfully unblocked then force a config sync
                                            if (!isBlocked) {
                                                [SNMessageSender forceSyncConfigurationNow];
@@ -1056,7 +1006,6 @@ CGFloat kIconViewLength = 24;
 - (void)copyBChatID
 {
     UIPasteboard.generalPasteboard.string = ((TSContactThread *)self.thread).contactBChatID;
-//    NSString *message = @"Your BChat ID copied to clipboard";
         UIAlertController *toast =[UIAlertController alertControllerWithTitle:nil message:NSLocalizedString(@"Your BChat ID copied to clipboard", comment: "") preferredStyle:UIAlertControllerStyleAlert];
         [self presentViewController:toast animated:YES completion:nil];
         int duration = 1.0; // in seconds
@@ -1093,15 +1042,6 @@ CGFloat kIconViewLength = 24;
 - (void)showMediaGallery
 {
     OWSLogDebug(@"");
-
-//    MediaGallery *mediaGallery = [[MediaGallery alloc] initWithThread:self.thread
-//                                                              options:MediaGalleryOptionSliderEnabled
-//                                                   isFromChatSettings:YES];
-//
-//    self.mediaGallery = mediaGallery;
-//
-//    OWSAssertDebug([self.navigationController isKindOfClass:[OWSNavigationController class]]);
-//    [mediaGallery pushTileViewFromNavController:(OWSNavigationController *)self.navigationController];
 }
 
 - (void)tappedConversationSearch
@@ -1178,11 +1118,6 @@ CGFloat kIconViewLength = 24;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.rightBarButtonItem = nil;
-//        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(showEditNameUI)];
-//        editButton.tintColor = LKColors.text;
-//        editButton.accessibilityLabel = @"Done button";
-//        editButton.isAccessibilityElement = YES;
-//        self.navigationItem.rightBarButtonItem = editButton;
     }
 }
 

@@ -51,17 +51,17 @@ public enum OnionRequestAPI {
 
         public var errorDescription: String? {
             switch self {
-            case .httpRequestFailedAtDestination(let statusCode, _, let destination):
-                if statusCode == 429 {
-                    return "Rate limited."
-                } else {
-                    return "HTTP request failed at destination (\(destination)) with status code: \(statusCode)."
-                }
-            case .insufficientSnodes: return "Couldn't find enough Master Nodes to build a path."
-            case .invalidURL: return "Invalid URL"
-            case .missingSnodeVersion: return "Missing Master Node version."
-            case .snodePublicKeySetMissing: return "Missing Master Node public key set."
-            case .unsupportedSnodeVersion(let version): return "Unsupported Master Node version: \(version)."
+                case .httpRequestFailedAtDestination(let statusCode, _, let destination):
+                    if statusCode == 429 {
+                        return "Rate limited."
+                    } else {
+                        return "HTTP request failed at destination (\(destination)) with status code: \(statusCode)."
+                    }
+                case .insufficientSnodes: return "Couldn't find enough Master Nodes to build a path."
+                case .invalidURL: return "Invalid URL"
+                case .missingSnodeVersion: return "Missing Master Node version."
+                case .snodePublicKeySetMissing: return "Missing Master Node public key set."
+                case .unsupportedSnodeVersion(let version): return "Unsupported Master Node version: \(version)."
             }
         }
     }

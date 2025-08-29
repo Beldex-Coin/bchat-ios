@@ -581,7 +581,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true, completion: nil)
-        
+
     }
     
     func hasLeftGroup() -> Bool {
@@ -838,7 +838,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                             guard let filePath = stream.originalFilePath, let mediaUrl = stream.originalMediaURL else { return }
                             let theDocument = Document(contentType: stream.contentType,
                                                        originalFilePath: filePath,
-                                                       originalMediaURL: mediaUrl,
+                                                       originalMediaURL: mediaUrl.absoluteString,
                                                        createdTimeStamp: stream.creationTimestamp,
                                                        documentId: attachmentID)
                             documents.append(theDocument) //appending only documents
@@ -847,10 +847,11 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 }
             }
         }
+        
         if !documents.isEmpty {
             let encoder = JSONEncoder()
-            if let encoded = try? encoder.encode(documents) {
-                UserDefaults.standard.set(encoded, forKey: Constants.attachedDocuments)
+            if let encodedData = try? encoder.encode(documents) {
+                UserDefaults.standard.set(encodedData, forKey: Constants.attachedDocuments)
             }
         }
     }
@@ -1239,6 +1240,8 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 
             }
             
+            let rightIconImage = UIImage(named: "chatSetting_rightArrow")?.withRenderingMode(.alwaysTemplate)
+            cell.rightIconImageView.tintColor = isLightMode ? UIColor(hex: 0x333333) :UIColor(hex: 0xEBEBEB)
             
             // Note to self
             if self.thread!.isNoteToSelf() {
@@ -1259,13 +1262,13 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Search Conversation" {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 
                 if indexPath.row == 3 {
@@ -1347,13 +1350,13 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Search Conversation" {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Message Sound" {
                     cell.rightTitleLabel.isHidden = false
@@ -1479,13 +1482,13 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Search Conversation" {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Message Sound" {
                     cell.rightTitleLabel.isHidden = false
@@ -1501,7 +1504,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightIconImageView.isHidden = false
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
-                    cell.rightIconImageView.image = UIImage(named: "chatSetting_rightArrow")
+                    cell.rightIconImageView.image = rightIconImage
                 }
                 if cell.titleLabel.text == "Leave Group" {
                     cell.rightIconImageView.isHidden = true

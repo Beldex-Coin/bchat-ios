@@ -123,8 +123,7 @@ extension MessageSender {
                 }.catch { _ in
                     seal.fulfill(()) // Fulfill even if this failed; the configuration in the swarm should be at most 2 days old
                 }.retainUntilComplete()
-            }
-            else {
+            } else {
                 let job = MessageSendJob(message: configurationMessage, destination: destination)
                 JobQueue.shared.add(job, using: transaction)
                 seal.fulfill(())

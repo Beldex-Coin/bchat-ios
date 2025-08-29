@@ -21,13 +21,13 @@ extension UIView {
                         draggedView.center.x = draggedView.width() / 2
                     }, completion: nil)
                 }
-                let topMargin = UIApplication.shared.keyWindow!.safeAreaInsets.top + Values.veryLargeSpacing
+                let topMargin = (UIWindow.keyWindow?.safeAreaInsets.top ?? 0) + Values.veryLargeSpacing
                 if draggedView.frame.minY <= topMargin {
                     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                         draggedView.center.y = topMargin + draggedView.height() / 2
                     }, completion: nil)
                 }
-                let bottomMargin = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+                let bottomMargin = UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0
                 if draggedView.frame.maxY >= self.superview!.layer.frame.height {
                     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                         draggedView.center.y = self.superview!.layer.frame.height - draggedView.height() / 2 - bottomMargin

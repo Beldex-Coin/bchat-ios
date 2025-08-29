@@ -10,6 +10,7 @@ import BChatUIKit
 
 @objc
 protocol GifPickerViewControllerDelegate: class {
+    func didCancelGifPicker()
     func gifPickerDidSelect(attachment: SignalAttachment)
 }
 
@@ -112,7 +113,7 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                 target: self,
-                                                                action: #selector(donePressed))
+                                                                action: #selector(CancelTapped))
         
         // Beldex: Customize title
         let titleLabel = UILabel()
@@ -216,7 +217,7 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         searchErrorView.isUserInteractionEnabled = true
         searchErrorView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(retryTapped)))
 
-        let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        let activityIndicator = UIActivityIndicatorView(style: .large)
         self.activityIndicator = activityIndicator
         self.view.addSubview(activityIndicator)
         activityIndicator.autoHCenterInSuperview()
@@ -343,23 +344,24 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         }
         self.hasSelectedCell = true
 
+        //FIXME: black color overlay appeared, If select any gif in Light mode
         // Fade out all cells except the selected one.
-        let maskingView = OWSBezierPathView()
+//        let maskingView = OWSBezierPathView()
 
         // Selecting cell behind searchbar masks part of search bar.
         // So we insert mask *behind* the searchbar.
-        self.view.insertSubview(maskingView, belowSubview: searchBar)
-        let cellRect = self.collectionView.convert(cell.frame, to: self.view)
-        maskingView.configureShapeLayerBlock = { layer, bounds in
-            let path = UIBezierPath(rect: bounds)
-            path.append(UIBezierPath(rect: cellRect))
-
-            layer.path = path.cgPath
-            layer.fillRule = .evenOdd
-            layer.fillColor = UIColor.black.cgColor
-            layer.opacity = 0.7
-        }
-        maskingView.autoPinEdgesToSuperviewEdges()
+//        self.view.insertSubview(maskingView, belowSubview: searchBar)
+//        let cellRect = self.collectionView.convert(cell.frame, to: self.view)
+//        maskingView.configureShapeLayerBlock = { layer, bounds in
+//            let path = UIBezierPath(rect: bounds)
+//            path.append(UIBezierPath(rect: cellRect))
+//
+//            layer.path = path.cgPath
+//            layer.fillRule = .evenOdd
+//            layer.fillColor = UIColor.black.cgColor
+//            layer.opacity = 0.7
+//        }
+//        maskingView.autoPinEdgesToSuperviewEdges()
 
         cell.isCellSelected = true
         self.collectionView.isUserInteractionEnabled = false
@@ -433,7 +435,8 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
 
     // MARK: - Event Handlers
 
-    @objc func donePressed(sender: UIButton) {
+    @objc func CancelTapped(sender: UIButton) {
+        delegate?.didCancelGifPicker()
         dismiss(animated: true, completion: nil)
     }
 
@@ -444,7 +447,6 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         if viewMode == .error || viewMode == .noResults {
             viewMode = .idle
         }
-
         // Do progressive search after a delay.
         progressiveSearchTimer?.invalidate()
         progressiveSearchTimer = nil
@@ -453,7 +455,6 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
             guard let strongSelf = self else {
                 return
             }
-
             strongSelf.tryToSearch()
         }
     }
@@ -478,6 +479,11 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
 
         if (viewMode == .searching || viewMode == .results) && lastQuery == query {
             Logger.info("ignoring duplicate search: \(query)")
+            return
+        }
+        
+        guard !query.isEmpty else {
+            loadTrending()
             return
         }
 

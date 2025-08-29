@@ -77,6 +77,19 @@ public class SSKPreferences: NSObject {
             return true
         }
     }
+    
+    //Gif first time permission enabled
+    private static let areGifPermissionEnabledKey = "areGifPermissionEnabled"
+
+    @objc
+    public static var isGifPermissionEnabled: Bool {
+        get {
+            return getBool(key: areGifPermissionEnabledKey, defaultValue: false)
+        }
+        set {
+            setBool(newValue, key: areGifPermissionEnabledKey)
+        }
+    }
 
     // MARK: -
 

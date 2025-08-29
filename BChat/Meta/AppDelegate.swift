@@ -15,9 +15,9 @@ extension AppDelegate {
     @objc func handleAppActivatedWithOngoingCallIfNeeded() {
         guard let call = AppEnvironment.shared.callManager.currentCall else { return }
         guard MiniCallView.current == nil else { return }
-        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC, callVC.bChatCall == call { return }
+        if let callVC = CurrentAppContext().frontmostViewController() as? CallVC, callVC.bChatCall == call { return }
         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
-        let callVC = NewIncomingCallVC(for: call)
+        let callVC = CallVC(for: call)
         if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
             callVC.conversationVC = conversationVC
             conversationVC.inputAccessoryView?.isHidden = true
@@ -28,7 +28,7 @@ extension AppDelegate {
     
     private func dismissAllCallUI() {
         if let currentBanner = IncomingCallBanner.current { currentBanner.dismiss() }
-        if let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC { callVC.handleEndCallMessage() }
+        if let callVC = CurrentAppContext().frontmostViewController() as? CallVC { callVC.handleEndCallMessage() }
         if let miniCallView = MiniCallView.current { miniCallView.dismiss() }
     }
     
@@ -41,7 +41,7 @@ extension AppDelegate {
                     if CurrentAppContext().isMainAppAndActive {
                         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() } // FIXME: Handle more gracefully
                         if let conversationVC = presentingVC as? ConversationVC, let contactThread = conversationVC.thread as? TSContactThread, contactThread.contactBChatID() == call.bchatID {
-                            let callVC = NewIncomingCallVC(for: call)
+                            let callVC = CallVC(for: call)
                             callVC.conversationVC = conversationVC
                             conversationVC.inputAccessoryView?.isHidden = true
                             conversationVC.inputAccessoryView?.alpha = 0
@@ -144,7 +144,7 @@ extension AppDelegate {
                     call.hasStartedConnecting = true
                     let sdp = RTCSessionDescription(type: .answer, sdp: message.sdps![0])
                     call.didReceiveRemoteSDP(sdp: sdp)
-                    guard let callVC = CurrentAppContext().frontmostViewController() as? NewIncomingCallVC else { return }
+                    guard let callVC = CurrentAppContext().frontmostViewController() as? CallVC else { return }
                     callVC.handleAnswerMessage(message)
                 }
             }
@@ -194,15 +194,15 @@ extension AppDelegate {
     @objc
     func verifyBnsName() {
         guard NetworkReachabilityStatus.isConnectedToNetworkSignal() else { return }
-        guard let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) else { return }
+        let bnsName = UserDefaults.standard.string(forKey: Constants.bnsUserName) ?? ""
         SnodeAPI.getBChatID(for: bnsName.lowercased()).done { bChatID in
             self.updateBnsUserContact(getUserHexEncodedPublicKey() == bChatID, bChatID: bChatID)
         }.catch { error in
-            self.verifyBnsName()
+            self.updateBnsUserContact(false, bChatID: getUserHexEncodedPublicKey())
         }
     }
     
-    func updateBnsUserContact(_ isBnsUser: Bool, bChatID: String = "") {
+    func updateBnsUserContact(_ isBnsUser: Bool, bChatID: String) {
         UserDefaults.standard.set(isBnsUser, forKey: Constants.isBnsVerifiedUser)
         NotificationCenter.default.post(name: Notification.Name(kNSNotificationName_LocalProfileDidChange), object: nil)
         Storage.read { transaction in
@@ -213,6 +213,20 @@ extension AppDelegate {
                     Storage.shared.setContact(contact, using: transaction)
                 }
             }
+        }
+    }
+}
+
+extension UIWindow {
+    static var keyWindow: UIWindow? {
+        if #available(iOS 13, *) {
+            return UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .compactMap({$0 as? UIWindowScene})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+        } else {
+            return UIApplication.shared.keyWindow
         }
     }
 }

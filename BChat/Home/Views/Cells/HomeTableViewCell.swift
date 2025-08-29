@@ -13,6 +13,18 @@ class HomeTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        if selected {
+            let originalTransform = self.contentView.transform
+            // Shrink animation
+            UIView.animate(withDuration: 0.1, animations: {
+                self.contentView.transform = CGAffineTransform(scaleX: 0.95, y: 1.0)
+            }) { _ in
+                // Expand back animation
+                UIView.animate(withDuration: 0.2) {
+                    self.contentView.transform = originalTransform
+                }
+            }
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

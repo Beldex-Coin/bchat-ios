@@ -223,44 +223,41 @@ public class GalleryRailView: UIView, GalleryRailCellViewDelegate {
     }
     var scrollFocusMode: ScrollFocusMode = .keepCentered
     func updateFocusedItem(_ focusedItem: GalleryRailItem?) {
-        var selectedCellView: GalleryRailCellView?
-        cellViews.forEach { cellView in
-            if cellView.item === focusedItem {
-                assert(selectedCellView == nil)
-                selectedCellView = cellView
-                cellView.setIsSelected(true)
-            } else {
-                cellView.setIsSelected(false)
-            }
-        }
+        let selectedCellView: GalleryRailCellView? = cellViews.first(where: { cellView -> Bool in
+            cellView.item === focusedItem
+        })
+        
+        cellViews.forEach { $0.setIsSelected(false) }
+        selectedCellView?.setIsSelected(true)
 
         self.layoutIfNeeded()
+        
         switch scrollFocusMode {
-        case .keepCentered:
-            guard let selectedCell = selectedCellView else {
-                owsFailDebug("selectedCell was unexpectedly nil")
-                return
-            }
+            case .keepCentered:
+                guard
+                    let selectedCell: UIView = selectedCellView,
+                    let selectedCellSuperview: UIView = selectedCell.superview
+                else { return }
 
-            let cellViewCenter = selectedCell.superview!.convert(selectedCell.center, to: scrollView)
-            let additionalInset = scrollView.center.x - cellViewCenter.x
+                let cellViewCenter: CGPoint = selectedCellSuperview.convert(selectedCell.center, to: scrollView)
+                let additionalInset: CGFloat = ((scrollView.frame.width / 2) - cellViewCenter.x)
+                
+                var inset: UIEdgeInsets = scrollView.contentInset
+                inset.left = additionalInset
+                scrollView.contentInset = inset
 
-            var inset = scrollView.contentInset
-            inset.left = additionalInset
-            scrollView.contentInset = inset
+                var offset: CGPoint = scrollView.contentOffset
+                offset.x = -additionalInset
+                scrollView.contentOffset = offset
+                
+            case .keepWithinBounds:
+                guard
+                    let selectedCell: UIView = selectedCellView,
+                    let selectedCellSuperview: UIView = selectedCell.superview
+                else { return }
 
-            var offset = scrollView.contentOffset
-            offset.x = -additionalInset
-            scrollView.contentOffset = offset
-        case .keepWithinBounds:
-            guard let selectedCell = selectedCellView else {
-                owsFailDebug("selectedCell was unexpectedly nil")
-                return
-            }
-
-            let cellFrame = selectedCell.superview!.convert(selectedCell.frame, to: scrollView)
-
-            scrollView.scrollRectToVisible(cellFrame, animated: true)
+                let cellFrame: CGRect = selectedCellSuperview.convert(selectedCell.frame, to: scrollView)
+                scrollView.scrollRectToVisible(cellFrame, animated: true)
         }
     }
 }

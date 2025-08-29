@@ -788,6 +788,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_OversizeTextDownloading:
             OWSFailDebug(@"Can't copy not-yet-downloaded attachment");
             return;
+        case OWSMessageCellType_DeletedMessage:
+            break;
     }
 }
 

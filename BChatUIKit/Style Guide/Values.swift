@@ -23,6 +23,7 @@ public final class Values : NSObject {
     @objc public static let smallButtonHeight = isIPhone5OrSmaller ? CGFloat(24) : CGFloat(27)
     @objc public static let mediumButtonHeight = isIPhone5OrSmaller ? CGFloat(30) : CGFloat(34)
     @objc public static let largeButtonHeight = isIPhone5OrSmaller ? CGFloat(40) : CGFloat(45)
+    @objc public static let alertButtonHeight = isIPhone5OrSmaller ? CGFloat(47) : CGFloat(52)
     
     @objc public static let accentLineThickness = CGFloat(4)
     

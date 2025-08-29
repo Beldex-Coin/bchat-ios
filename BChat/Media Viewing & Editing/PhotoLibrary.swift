@@ -197,7 +197,7 @@ class PhotoCollectionContents {
                         return
                     }
 
-                    resolver.fulfill((dataSource: dataSource, dataUTI: kUTTypeMPEG4 as String))
+                    resolver.fulfill((dataSource: dataSource, dataUTI: UTType.mpeg4Movie.identifier))
                 }
             }
         }

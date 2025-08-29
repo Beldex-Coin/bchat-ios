@@ -124,6 +124,11 @@ static NSTimeInterval launchStartedAt;
     [self stopOpenGroupPollers];
 }
 
+- (void)applicationWillEnterForeground:(UIApplication *)application {
+    
+    [self verifyBnsName];
+}
+
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
     OWSLogInfo(@"applicationDidReceiveMemoryWarning");
@@ -801,11 +806,6 @@ static NSTimeInterval launchStartedAt;
             break;
         }
     }
-//    if (LKAppModeUtilities.isSystemDefault) {
-//        if (@available(iOS 13.0, *)) {
-//            window.overrideUserInterfaceStyle = UIUserInterfaceStyleUnspecified;
-//        }
-//    }
     [NSNotificationCenter.defaultCenter postNotificationName:NSNotification.appModeChanged object:nil];
 }
 

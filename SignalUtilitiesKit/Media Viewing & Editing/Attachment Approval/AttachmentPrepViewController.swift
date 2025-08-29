@@ -149,8 +149,14 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        let isAppThemeLight = CurrentAppContext().appUserDefaults().bool(forKey: appThemeIsLight)
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = isAppThemeLight ? .light : .dark
+        } else {
+            // Fallback on earlier versions
+        }
+        
         view.backgroundColor = Colors.navigationBarBackground
-
         view.addSubview(contentContainerView)
         
         contentContainerView.addSubview(scrollView)

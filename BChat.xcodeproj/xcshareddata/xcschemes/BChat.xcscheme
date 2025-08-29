@@ -20,6 +20,20 @@
                ReferencedContainer = "container:BChat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "453518671FC635DD00210559"
+               BuildableName = "BChatShareExtension.appex"
+               BlueprintName = "BChatShareExtension"
+               ReferencedContainer = "container:BChat.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

@@ -34,8 +34,8 @@ class PhotoCollectionPickerController: OWSTableViewController, PhotoLibraryDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
-        tableView.backgroundColor = .white
+        view.backgroundColor = Colors.navigationBarBackground
+        tableView.backgroundColor = Colors.navigationBarBackground
         tableView.separatorColor = .clear
 
         library.add(delegate: self)
@@ -69,7 +69,7 @@ class PhotoCollectionPickerController: OWSTableViewController, PhotoLibraryDeleg
         let cell = OWSTableItem.newCell()
 
         cell.backgroundColor = .white
-        cell.contentView.backgroundColor = .white
+        cell.contentView.backgroundColor = Colors.navigationBarBackground
         cell.selectedBackgroundView?.backgroundColor = UIColor(white: 0.2, alpha: 1)
 
         let contents = collection.contents()
@@ -77,12 +77,12 @@ class PhotoCollectionPickerController: OWSTableViewController, PhotoLibraryDeleg
         let titleLabel = UILabel()
         titleLabel.text = collection.localizedTitle()
         titleLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
-        titleLabel.textColor = .black
+        titleLabel.textColor = Colors.text
 
         let countLabel = UILabel()
         countLabel.text = numberFormatter.string(for: contents.assetCount)
         countLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
-        countLabel.textColor = .black
+        countLabel.textColor = Colors.text
 
         let textStack = UIStackView(arrangedSubviews: [titleLabel, countLabel])
         textStack.axis = .vertical

@@ -11,6 +11,7 @@
 #import <SignalCoreKit/OWSLogs.h>
 #import <BChatMessagingKit/Environment.h>
 #import <BChatMessagingKit/OWSPreferences.h>
+#import <SignalUtilitiesKit/OWSNavigationController.h>
 #import <SignalUtilitiesKit/UIColor+OWS.h>
 #import <SignalUtilitiesKit/UIFont+OWS.h>
 #import <BChatUtilitiesKit/UIView+OWS.h>
