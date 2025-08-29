@@ -338,14 +338,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.section == 0 {
-//            return UITableView.automaticDimension
-//        } else if indexPath.section == 1 {
-//            return UITableView.automaticDimension
-//        } else {
-//            return UITableView.automaticDimension
-//        }
-        
         UITableView.automaticDimension
     }
     
@@ -414,11 +406,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                         viewController.isVerifyWalletPassword = true
                     }
                     self.navigationController!.pushViewController(viewController, animated: true)
-                    // Don't Delete
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingHome = true
-//                    vc.isVerifyPassword = true
-//                    self.navigationController!.pushViewController(vc, animated: true)
                 }
             )
             alertController.addAction(yesAction)

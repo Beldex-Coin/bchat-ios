@@ -156,63 +156,15 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         cell.acceptCallback = {
             self.tappedIndex = indexPath.row
-            
-            // show confirmation modal
-            let confirmationModal: ConfirmationModal = ConfirmationModal(
-                info: ConfirmationModal.Info(
-                    modalType: .acceptMsgRequest,
-                    title: "Message Request",
-                    body: .text("Are you sure you want to accept this request?"),
-                    showCondition: .disabled,
-                    confirmTitle: "Yes",
-                    onConfirm: { _ in
-                        self.acceptMessageRequest()
-                    }, afterClosed: {
-                        debugPrint("accept message request popup closed")
-                    }
-                )
-            )
-            self.present(confirmationModal, animated: true, completion: nil)
+            self.showConfirmationModal(.acceptMsgRequest)
         }
         cell.deleteCallback = {
             self.tappedIndex = indexPath.row
-            
-            // show confirmation modal
-            let confirmationModal: ConfirmationModal = ConfirmationModal(
-                info: ConfirmationModal.Info(
-                    modalType: .deleteMsgRequest,
-                    title: "Message Request",
-                    body: .text("Are you sure you want to delete this request?"),
-                    showCondition: .disabled,
-                    confirmTitle: "Yes",
-                    onConfirm: { _ in
-                        self.deleteMessageRequest()
-                    }, afterClosed: {
-                        debugPrint("delete message request popup closed")
-                    }
-                )
-            )
-            self.present(confirmationModal, animated: true, completion: nil)
+            self.showConfirmationModal(.deleteMsgRequest)
         }
         cell.blockCallback = {
             self.tappedIndex = indexPath.row
-            
-            // show confirmation modal
-            let confirmationModal: ConfirmationModal = ConfirmationModal(
-                info: ConfirmationModal.Info(
-                    modalType: .blockUserRequest,
-                    title: "Message Request",
-                    body: .text("Are you sure you want to Block this user?"),
-                    showCondition: .disabled,
-                    confirmTitle: "Yes",
-                    onConfirm: { _ in
-                        self.blockMessageRequest()
-                    }, afterClosed: {
-                        debugPrint("block message request popup closed")
-                    }
-                )
-            )
-            self.present(confirmationModal, animated: true, completion: nil)
+            self.showConfirmationModal(.blockUserRequest)
         }
         
         return cell
@@ -223,6 +175,36 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         guard let thread = self.thread(at: indexPath.row) else { return }
         let conversationVC = ConversationVC(thread: thread)
         self.navigationController?.pushViewController(conversationVC, animated: true)
+    }
+    
+    func showConfirmationModal(_ modalType: ConfirmationModalType) {
+        let action = modalType == .acceptMsgRequest ? "accept this request?" :
+                        modalType == .deleteMsgRequest ? "delete this request?" : "block this user?"
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: modalType,
+                title: "Message Request",
+                body: .text("Are you sure you want to %@ \(action)"),
+                showCondition: .disabled,
+                confirmTitle: "Yes",
+                onConfirm: { _ in
+                    switch modalType {
+                        case .acceptMsgRequest:
+                            self.acceptMessageRequest()
+                        case .deleteMsgRequest:
+                            self.deleteMessageRequest()
+                        case .blockUserRequest:
+                            self.blockMessageRequest()
+                        default:
+                            break
+                    }
+                }, afterClosed: {
+                    debugPrint("message request popup closed")
+                }
+            )
+        )
+        self.present(confirmationModal, animated: true, completion: nil)
     }
     
     func acceptMessageRequest() {

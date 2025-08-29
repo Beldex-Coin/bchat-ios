@@ -24,7 +24,7 @@ public enum ConfirmationModalType: Int {
     case changePwdSuccess
     case linkBnsSuccess
     case walletSync
-    case transactionIntiate
+    case transactionInitiate
     case transactionSuccess
     case none
     
@@ -47,20 +47,11 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .walletSync:
                 name = ""
-            case .transactionIntiate:
+            case .transactionInitiate:
                 name = ""
             case .transactionSuccess:
                 name = ""
-            case .gifEnable,
-                .payAsYouChat,
-                .leaveGroup,
-                .shareContact,
-                .acceptMsgRequest,
-                .deleteMsgRequest,
-                .blockUserRequest,
-                .blockContact,
-                .unblockContact,
-                .none:
+            default:
                 name = ""
         }
         
@@ -71,17 +62,6 @@ public enum ConfirmationModalType: Int {
         let isShow: Bool
         
         switch self {
-            case .gifEnable,
-                .payAsYouChat,
-                .leaveGroup,
-                .shareContact,
-                .acceptMsgRequest,
-                .deleteMsgRequest,
-                .blockUserRequest,
-                .blockContact,
-                .unblockContact,
-                .none:
-                    isShow = false
             case .cameraPermission,
                 .callPermission,
                 .clearChat,
@@ -90,9 +70,11 @@ public enum ConfirmationModalType: Int {
                 .changePwdSuccess,
                 .linkBnsSuccess,
                 .walletSync,
-                .transactionIntiate,
+                .transactionInitiate,
                 .transactionSuccess:
                     isShow = true
+            default:
+                isShow = false
         }
         
         return isShow
@@ -102,62 +84,15 @@ public enum ConfirmationModalType: Int {
         var color: UIColor
         
         switch self {
-            case .gifEnable,
-                .payAsYouChat,
-                .shareContact,
-                .callPermission,
-                .acceptMsgRequest,
-                .blockContact,
-                .unblockContact,
-            
-                .cameraPermission,
-                .missedCall,
-                .setPwdSuccess,
-                .changePwdSuccess,
-                .linkBnsSuccess,
-                .walletSync,
-                .transactionIntiate,
-                .transactionSuccess,
-                .none:
-                color = Colors.bothGreenColor
-            case  .leaveGroup,
+            case .leaveGroup,
                 .deleteMsgRequest,
                 .blockUserRequest,
                 .clearChat:
                 color = Colors.bothRedColor
+            default:
+                color = Colors.bothGreenColor
         }
         
         return color
     }
-    
-//    var cancelButtonBgColor: UIColor {
-//        var color: UIColor
-//        
-//        switch self {
-//            case .gifEnable,
-//                .payAsYouChat,
-//                .shareContact,
-//                .callPermission,
-//                .acceptMsgRequest,
-//                .blockContact,
-//                .unblockContact,
-//                .cameraPermission,
-//                .setPwdSuccess,
-//                .changePwdSuccess,
-//                .linkBnsSuccess,
-//                .walletSync,
-//                .transactionIntiate,
-//                .transactionSuccess,
-//                .leaveGroup,
-//                .deleteMsgRequest,
-//                .blockUserRequest,
-//                .clearChat,
-//                .none:
-//                color = Colors.bothGreenWithAlpha10
-//            case .missedCall:
-//                    color = Colors.bothGreenColor
-//        }
-//        
-//        return color
-//    }
 }

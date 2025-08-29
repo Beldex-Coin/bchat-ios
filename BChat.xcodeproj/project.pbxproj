@@ -300,7 +300,6 @@
 		811498132BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */; };
 		81179E592BDA0A8E00B5C820 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81179E582BDA0A8E00B5C820 /* SideMenuViewController.swift */; };
 		812233382B4419E600ADED16 /* NewRestoreSeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */; };
-		8122EE532BC8F5D70083AD6B /* MissedCallPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */; };
 		8122EE552BC904A60083AD6B /* CallPermissionPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */; };
 		8123B6A02B3EA43C00CDAF50 /* NewPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */; };
 		8129ABEB2B579EA800417EE2 /* PINSuccessPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */; };
@@ -1484,7 +1483,6 @@
 		811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		81179E582BDA0A8E00B5C820 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		812233372B4419E600ADED16 /* NewRestoreSeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRestoreSeedVC.swift; sourceTree = "<group>"; };
-		8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissedCallPopUp.swift; sourceTree = "<group>"; };
 		8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallPermissionPopUp.swift; sourceTree = "<group>"; };
 		8123B69F2B3EA43C00CDAF50 /* NewPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPasswordVC.swift; sourceTree = "<group>"; };
 		8129ABEA2B579EA800417EE2 /* PINSuccessPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PINSuccessPopUp.swift; sourceTree = "<group>"; };
@@ -2883,7 +2881,6 @@
 				81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */,
 				81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */,
 				8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */,
-				8122EE522BC8F5D70083AD6B /* MissedCallPopUp.swift */,
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
 				8131662C2C32B1CC0001DF1B /* OwnSeedWarningPopUp.swift */,
 				810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */,
@@ -5792,7 +5789,6 @@
 				3430FE181F7751D4000EC51B /* GiphyAPI.swift in Sources */,
 				81134CFB2B61053300070127 /* NewMessageRequestTableViewCell.swift in Sources */,
 				340FC8AA204DAC8D007AEB0F /* NotificationSettingsViewController.m in Sources */,
-				8122EE532BC8F5D70083AD6B /* MissedCallPopUp.swift in Sources */,
 				6049BEF52B592BA4003DD410 /* WalletReceiveNewVC.swift in Sources */,
 				819CA2282CB7C5D8001D388B /* NewChatPopUpVC.swift in Sources */,
 				7BAF54CE27ACCEEC003D12F8 /* Storage+RecentSearchResults.swift in Sources */,
