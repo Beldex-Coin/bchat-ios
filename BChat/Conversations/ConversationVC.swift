@@ -1168,7 +1168,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             CustomSlideView.isFromExpandAttachment = false
         }
         hideAttachmentExpandedButtons()
-        handleQuoteViewCancelButtonTapped()
+        bottomConstraintOfAttachmentButton = 4
+        resetAttachmentOptions()
+        view.layoutIfNeeded()
         hideOpenURLView()
     }
     

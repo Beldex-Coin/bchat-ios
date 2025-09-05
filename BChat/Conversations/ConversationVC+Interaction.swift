@@ -479,6 +479,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let message = VisibleMessage()
         message.sentTimestamp = sentTimestamp
         message.text = replaceMentions(in: text)
+        message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
         
         // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
         // use it to determine if the user is creating a new thread and update the 'isApproved'

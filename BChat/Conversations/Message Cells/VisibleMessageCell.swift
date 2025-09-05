@@ -624,6 +624,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     let stackView = UIStackView(arrangedSubviews: [])
                     stackView.axis = .vertical
                     stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        let inset: CGFloat = 12
+                        let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil, contactName: message.sharedContactMessage?.name ?? "")
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
                     // Album view
                     let maxMessageWidth = VisibleMessageCell.getMaxWidth(for: viewItem)
                     let albumView = MediaAlbumView(mediaCache: cache, items: viewItem.mediaAlbumItems!, isOutgoing: isOutgoing, maxMessageWidth: maxMessageWidth)
@@ -674,12 +686,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     showMediaPlaceholder()
                 } else {
-                    let inset: CGFloat = 12
+                    var inset: CGFloat = 12
                     let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])
                     stackView.axis = .vertical
                     stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        inset = 4
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil, contactName: message.sharedContactMessage?.name ?? "")
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
                     // Document view
                     let documentView = DocumentView(viewItem: viewItem, textColor: bodyLabelTextColor)
                     stackView.addArrangedSubview(documentView)
