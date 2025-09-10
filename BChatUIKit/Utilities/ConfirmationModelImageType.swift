@@ -3,7 +3,7 @@
 import Foundation
 import UIKit
 
-// Top level confirmation modal image type for popup
+// Top level confirmation modal image type, color for popup
 public enum ConfirmationModalType: Int {
     
     case gifEnable
@@ -20,6 +20,7 @@ public enum ConfirmationModalType: Int {
     case callPermission
     case clearChat
     case missedCall
+    case ownSeedWarning
     case setPwdSuccess
     case changePwdSuccess
     case linkBnsSuccess
@@ -41,6 +42,8 @@ public enum ConfirmationModalType: Int {
                 name = "ic_clearChatPopUp"
             case .missedCall:
                 name = "ic_missedCall"
+            case .ownSeedWarning:
+                name = "ic_warningSeed"
             case .setPwdSuccess, .changePwdSuccess:
                     name = ""
             case .linkBnsSuccess:
@@ -66,6 +69,7 @@ public enum ConfirmationModalType: Int {
                 .callPermission,
                 .clearChat,
                 .missedCall,
+                .ownSeedWarning,
                 .setPwdSuccess,
                 .changePwdSuccess,
                 .linkBnsSuccess,
