@@ -420,6 +420,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
                         
                         message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                    } else {
+                        message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                    }
+                    if address != nil {
+                        message.sharedContact = VisibleMessage.SharedContact(address: address, name: name)
                     }
                 }
                 

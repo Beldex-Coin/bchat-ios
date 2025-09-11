@@ -17,7 +17,7 @@ public extension TSIncomingMessage {
             messageBody: visibleMessage.text,
             attachmentIds: visibleMessage.attachmentIDs,
             expiresInSeconds: !isOpenGroupMessage ? expiration : 0, // Ensure we don't ever expire open group messages
-            quotedMessage: quotedMessage,
+            quotedMessage: TSQuotedMessage.from(visibleMessage.quote),
             linkPreview: linkPreview,
             wasReceivedByUD: true,
             openGroupInvitationName: visibleMessage.openGroupInvitation?.name,
