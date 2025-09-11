@@ -210,6 +210,12 @@ public class ConfirmationModal: ModalView {
         cancelButton.setTitleColor(Colors.titleColor3, for: .normal)
         cancelButton.isEnabled = info.cancelEnabled.isValid(with: info)
         
+        if info.modalType == .missedCall {
+            cancelButton.layer.borderWidth = 0
+            cancelButton.layer.borderColor = UIColor.clear.cgColor
+            cancelButton.backgroundColor = Colors.bothGreenColor
+        }
+        
         titleLabel.isAccessibilityElement = true
         titleLabel.accessibilityIdentifier = "Modal heading"
         titleLabel.accessibilityLabel = titleLabel.text

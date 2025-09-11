@@ -131,11 +131,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     func showBlockedModalIfNeeded() -> Bool {
         guard let thread = thread as? TSContactThread, thread.isBlocked() else { return false }
-        let vc = BlockContactPopUpVC()
-        vc.isBlocked = true
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
+        showBlockedNUnblockedPopup(true)
         return true
     }
 
@@ -372,17 +368,27 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
             hideInputAccessoryView()
-            let modal = OwnSeedWarningPopUp()
-            modal.modalPresentationStyle = .overFullScreen
-            modal.modalTransitionStyle = .crossDissolve
-            modal.proceed = {
-                self.showInputAccessoryView()
-                self.sendMessage(hasPermissionToSendSeed: true)
-            }
-            modal.cancel = {
-                self.showInputAccessoryView()
-            }
-            return present(modal, animated: true, completion: nil)
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .ownSeedWarning,
+                    title: "Warning",
+                    body: .text("This is your recovery phrase. If you send it to someone they will have full access to your account."),
+                    showCondition: .disabled,
+                    confirmTitle: "Send",
+                    onConfirm: { _ in
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                        self.sendMessage(hasPermissionToSendSeed: true)
+                    }, afterClosed: {
+                        self.isInputViewShow = true
+                        self.showInputAccessoryView()
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion:  {
+                self.isInputViewShow = false
+            })
         }
         
         //john Developed.
@@ -784,10 +790,25 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
-            let vc = MissedCallPopUp(caller: caller)
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            present(vc, animated: true, completion: nil)
+            let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
+            
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .missedCall,
+                    title: "Call Missed!",
+                    body: .text(message),
+                    showCondition: .disabled,
+                    confirmEnabled: false,
+                    cancelTitle: "OK",
+                    cancelEnabled: true,
+                    onConfirm: { _ in
+                    }, afterClosed: {
+                        debugPrint("missed call popup closed")
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion: nil)
         } else if let message = viewItem.interaction as? TSOutgoingMessage, message.messageState == .failed {
             // Show the failed message sheet
             showFailedMessageSheet(for: message)

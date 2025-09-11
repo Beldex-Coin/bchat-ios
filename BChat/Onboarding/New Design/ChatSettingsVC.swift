@@ -1740,19 +1740,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 if indexPath.row == 6 { // Block and UnBlock Contact Index Cell
                     if let contactThread = self.thread as? TSContactThread {
-                        let isCurrentlyBlocked = contactThread.isBlocked()
-                        if !isCurrentlyBlocked {
-                            let vc = BlockContactPopUpVC()
-                            vc.modalPresentationStyle = .overFullScreen
-                            vc.modalTransitionStyle = .crossDissolve
-                            self.present(vc, animated: true, completion: nil)
-                        } else {
-                            let vc = BlockContactPopUpVC()
-                            vc.isBlocked = true
-                            vc.modalPresentationStyle = .overFullScreen
-                            vc.modalTransitionStyle = .crossDissolve
-                            self.present(vc, animated: true, completion: nil)
-                        }
+                        showBlockedNUnblockedPopup(contactThread.isBlocked())
                     }
                 }
                 
@@ -1825,5 +1813,4 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
 }

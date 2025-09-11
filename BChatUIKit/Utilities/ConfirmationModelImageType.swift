@@ -3,21 +3,29 @@
 import Foundation
 import UIKit
 
-// Top level confirmation modal image type for popup
+// Top level confirmation modal image type, color for popup
 public enum ConfirmationModalType: Int {
     
     case gifEnable
     case payAsYouChat
     case leaveGroup
     case shareContact
+    case acceptMsgRequest
+    case deleteMsgRequest
+    case blockUserRequest
+    case blockContact
+    case unblockContact
     
     case cameraPermission
     case callPermission
+    case clearChat
+    case missedCall
+    case ownSeedWarning
     case setPwdSuccess
     case changePwdSuccess
     case linkBnsSuccess
     case walletSync
-    case transactionIntiate
+    case transactionInitiate
     case transactionSuccess
     case none
     
@@ -30,17 +38,23 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .callPermission:
                 name = "ic_settings_call_permission"
+            case .clearChat:
+                name = "ic_clearChatPopUp"
+            case .missedCall:
+                name = "ic_missedCall"
+            case .ownSeedWarning:
+                name = "ic_warningSeed"
             case .setPwdSuccess, .changePwdSuccess:
                     name = ""
             case .linkBnsSuccess:
                 name = ""
             case .walletSync:
                 name = ""
-            case .transactionIntiate:
+            case .transactionInitiate:
                 name = ""
             case .transactionSuccess:
                 name = ""
-            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
+            default:
                 name = ""
         }
         
@@ -51,17 +65,20 @@ public enum ConfirmationModalType: Int {
         let isShow: Bool
         
         switch self {
-            case .gifEnable, .payAsYouChat, .leaveGroup, .shareContact, .none:
-                    isShow = false
             case .cameraPermission,
                 .callPermission,
+                .clearChat,
+                .missedCall,
+                .ownSeedWarning,
                 .setPwdSuccess,
                 .changePwdSuccess,
                 .linkBnsSuccess,
                 .walletSync,
-                .transactionIntiate,
+                .transactionInitiate,
                 .transactionSuccess:
                     isShow = true
+            default:
+                isShow = false
         }
         
         return isShow
@@ -71,19 +88,13 @@ public enum ConfirmationModalType: Int {
         var color: UIColor
         
         switch self {
-            case .gifEnable, .payAsYouChat, .shareContact, .callPermission, .none:
-                color = Colors.bothGreenColor
-            case  .leaveGroup:
+            case .leaveGroup,
+                .deleteMsgRequest,
+                .blockUserRequest,
+                .clearChat:
                 color = Colors.bothRedColor
-            case .cameraPermission,
-                    .setPwdSuccess,
-                    .changePwdSuccess,
-                    .linkBnsSuccess,
-                    .walletSync,
-                    .transactionIntiate,
-                    .transactionSuccess:
-            // TODO: Set color
-                color = .clear
+            default:
+                color = Colors.bothGreenColor
         }
         
         return color
