@@ -14,8 +14,6 @@ extension Notification.Name {
     static var selectedDecimalNameKeyNotification = Notification.Name(rawValue: Constants.selectedDecimalDisplay)
     static var feePriorityNameKeyNotification = Notification.Name(rawValue: Constants.feePeriority)
     static var selectedCurrencyNameKeyNotification = Notification.Name(rawValue: Constants.selectedCurrency)
-    static var refreshNodePopUpNotification = Notification.Name(rawValue: Constants.refreshNodePopup)
-    static var switchNodePopUpNotification = Notification.Name(rawValue: Constants.switchNodePopup)
     static var reloadSettingScreenTableNotification = Notification.Name(rawValue: Constants.reloadSettingScreen)
     static var attachmentHiddenNotification = Notification.Name(rawValue: Constants.hideAttachment)
     static var blockContactNotification = Notification.Name(rawValue: Constants.blockContact)

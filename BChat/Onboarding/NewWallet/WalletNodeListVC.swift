@@ -114,9 +114,6 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: .refreshNodePopUpNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: .switchNodePopUpNotification, object: nil)
     }
     
     /// View will appear
@@ -272,10 +269,22 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             } else {
                 selectedIndex = indexPath.row
                 selectedValue = self.nodeArrayDynamic![indexPath.row]
-                let vc = SwitchNodePopUpVC()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                self.present(vc, animated: true, completion: nil)
+                
+                // show confirmation modal
+                let confirmationModal: ConfirmationModal = ConfirmationModal(
+                    info: ConfirmationModal.Info(
+                        modalType: .switchNode,
+                        title: "Switch Node",
+                        body: .text("Are you sure you want to switch to another node?"),
+                        showCondition: .disabled,
+                        confirmTitle: "Yes",
+                        onConfirm: { _ in
+                            self.switchNode()
+                        }, afterClosed: {
+                        }
+                    )
+                )
+                present(confirmationModal, animated: true, completion: nil)
             }
         }
     }
@@ -291,13 +300,24 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func refreshButtonAction(_ sender: UIButton){
-        let vc = RefreshNodePopUpVC()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .refreshNodes,
+                title: "Refresh Nodes",
+                body: .text("Are you sure you want to refresh the nodes?"),
+                showCondition: .disabled,
+                confirmTitle: "Yes",
+                onConfirm: { _ in
+                    self.refreshNodes()
+                }, afterClosed: {
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
-    @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
+    func refreshNodes() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             SaveUserDefaultsData.SaveLocalNodelist = []
             if self.nodeArrayDynamic!.count > 0 {
@@ -325,8 +345,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableView.reloadData();
         }
     }
-    
-    @objc func switchNodePopUpOkeyAction(_ notification: Notification) {
+        
+    func switchNode() {
         SaveUserDefaultsData.SwitchNode = true
         SaveUserDefaultsData.SelectedNode = selectedValue
         if self.navigationController != nil{

@@ -15,12 +15,15 @@ public enum ConfirmationModalType: Int {
     case blockUserRequest
     case blockContact
     case unblockContact
+    case switchNode
+    case refreshNodes
     
     case cameraPermission
     case callPermission
     case clearChat
     case missedCall
     case ownSeedWarning
+    case mediaDownload
     case setPwdSuccess
     case changePwdSuccess
     case linkBnsSuccess
@@ -44,6 +47,8 @@ public enum ConfirmationModalType: Int {
                 name = "ic_missedCall"
             case .ownSeedWarning:
                 name = "ic_warningSeed"
+            case .mediaDownload:
+                name = isLightMode ? "ic_download_white" : "ic_download_dark"
             case .setPwdSuccess, .changePwdSuccess:
                     name = ""
             case .linkBnsSuccess:
@@ -70,6 +75,7 @@ public enum ConfirmationModalType: Int {
                 .clearChat,
                 .missedCall,
                 .ownSeedWarning,
+                .mediaDownload,
                 .setPwdSuccess,
                 .changePwdSuccess,
                 .linkBnsSuccess,

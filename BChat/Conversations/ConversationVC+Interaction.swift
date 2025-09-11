@@ -794,11 +794,40 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func confirmDownload(_ viewItem: ConversationViewItem) {
-        snInputView.isHidden = true
-        let vc = DownloadAttachmentPopUpViewController(viewItem: viewItem)
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        guard let publicKey = (viewItem.interaction as? TSIncomingMessage)?.authorId else { return }
+        let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .mediaDownload,
+                title: "Trust \(name)?",
+                body: .attributedText(mediaDownloadDescription(name)),
+                showCondition: .disabled,
+                confirmTitle: "Download",
+                onConfirm: { _ in
+                    self.isInputViewShow = true
+                    self.showInputAccessoryView()
+                    
+                    guard let message = viewItem.interaction as? TSIncomingMessage else { return }
+                    let contact = Storage.shared.getContact(with: publicKey) ?? Contact(bchatID: publicKey)
+                    contact.isTrusted = true
+                    Storage.write(with: { transaction in
+                        Storage.shared.setContact(contact, using: transaction)
+                        MessageInvalidator.invalidate(message, with: transaction)
+                    }, completion: {
+                        Storage.shared.resumeAttachmentDownloadJobsIfNeeded(for: message.uniqueThreadId)
+                    })
+                }, afterClosed: {
+                    self.isInputViewShow = true
+                    self.showInputAccessoryView()
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion:  {
+            self.isInputViewShow = false
+            self.hideInputAccessoryView()
+        })
     }
 
     func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
@@ -1365,14 +1394,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func payAsYouChatLongPress() {
         if !SSKPreferences.arePayAsYouChatEnabled {
             snInputView.isHidden = true
-            let title = "Pay as you chat"
-            let description = payAsYouChatDescription()
             
             let confirmationModal: ConfirmationModal = ConfirmationModal(
                 info: ConfirmationModal.Info(
                     modalType: .payAsYouChat,
-                    title: title,
-                    body: .attributedText(description),
+                    title: "Pay as you chat",
+                    body: .attributedText(payAsYouChatDescription()),
                     showCondition: .disabled,
                     confirmTitle: "OK",
                     onConfirm: { _ in
@@ -1964,6 +1991,16 @@ extension ConversationVC {
         // Apply bold font to "Settings -> Pay as you Chat"
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Settings -> Pay as you Chat"))
+        // The attributed string
+        return attributedString
+    }
+    
+    func mediaDownloadDescription(_ name: String) -> NSAttributedString {
+        let string = "Are you sure you want to download media sent by \(name)?"
+        let attributedString = NSMutableAttributedString(string: string)
+        // Apply bold font to "Name" for Media download
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "\(name)"))
         // The attributed string
         return attributedString
     }
