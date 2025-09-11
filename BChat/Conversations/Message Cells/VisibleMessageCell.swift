@@ -529,7 +529,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if viewItem.quotedReply != nil {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil, contactName: message.sharedContactMessage?.name ?? "")
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
@@ -630,7 +630,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil, contactName: message.sharedContactMessage?.name ?? "")
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
@@ -697,7 +697,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         inset = 4
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil, contactName: message.sharedContactMessage?.name ?? "")
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
@@ -726,9 +726,43 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 bubbleViewBottomConstraint.isActive = false
                 bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                 guard let sharedContactMessage = viewItem.sharedContactMessage else { return }
+            var inset: CGFloat = 8
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+            // Stack view
+            let stackView = UIStackView(arrangedSubviews: [])
+            stackView.axis = .vertical
+            stackView.spacing = Values.smallSpacing
+            // Quote View
+            if viewItem.quotedReply != nil {
+                inset = 4
+                let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                let hInset: CGFloat = 2
+                
+                var isSharedContact: Bool = false
+                let jsonString = viewItem.quotedReply?.body ?? ""
+                if let jsonData = jsonString.data(using: .utf8) {
+                    do {
+                        let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                        if contact.kind.type == "SharedContact" {
+                            isSharedContact = true
+                        } else {
+                            isSharedContact = false
+                        }
+                    } catch {
+                        print("Failed to decode JSON: \(error)")
+                    }
+                }
+                
+                let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
+                let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                quoteView.layer.cornerRadius = 8
+                stackView.addArrangedSubview(quoteViewContainer)
+            }
                 let contactView = ContactView(bChatID: sharedContactMessage.address ?? "", isOutgoing: isOutgoing, contactName: sharedContactMessage.name ?? "", searchString: lastSearchedText ?? "")
-                snContentView.addSubview(contactView)
-                contactView.pin(to: snContentView)
+                stackView.addArrangedSubview(contactView)
+                snContentView.addSubview(stackView)
+                stackView.pin(to: snContentView)
             default: return
         }
     }
@@ -1094,9 +1128,21 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             .foregroundColor : textColor,
             .font : Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))
         ]
-        let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: message.body ?? "", isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
+        var text = message.body ?? ""
+        let jsonString = message.body ?? ""
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                if contact.kind.type == "SharedContact" {
+                    text = contact.kind.name
+                }
+            } catch {
+                print("Failed to decode JSON: \(error)")
+            }
+        }
+        let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: text, isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
         
-        let range = NSString(string: message.body ?? "").range(of: lastString ?? "", options: .caseInsensitive)
+        let range = NSString(string: text).range(of: lastString ?? "", options: .caseInsensitive)
         let highlightColor = UIColor.systemOrange
         let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
         attributedText.addAttributes(highlightedAttributes, range: range)
@@ -1183,3 +1229,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
 }
+
+
+
+
+struct ContactWrapper: Decodable {
+    let kind: SharedContactKind
+}
+
+struct SharedContactKind: Decodable {
+    let type: String
+    let address: String
+    let name: String
+
+    private enum CodingKeys: String, CodingKey {
+        case type = "@type"
+        case address
+        case name
+    }
+}
+

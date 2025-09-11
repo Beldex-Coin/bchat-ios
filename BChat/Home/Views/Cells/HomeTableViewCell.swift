@@ -429,7 +429,20 @@ class HomeTableViewCell: UITableViewCell {
             result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         }
         
-        guard let lastMessageText = threadViewModel.lastMessageText else { return result }
+        guard var lastMessageText = threadViewModel.lastMessageText else { return result }
+        
+        // Removing JSON String if available and getting contact name
+        var text = lastMessageText
+        if let jsonData = text.data(using: .utf8) {
+            do {
+                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                if contact.kind.type == "SharedContact" {
+                    lastMessageText = contact.kind.name
+                }
+            } catch {
+                print("Failed to decode JSON: \(error)")
+            }
+        }
         
         // Text message
         let snippet = MentionUtilities.highlightMentions(in: lastMessageText, threadID: threadViewModel.threadRecord.uniqueId!)

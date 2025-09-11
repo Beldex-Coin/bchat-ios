@@ -8,7 +8,6 @@ final class QuoteView : UIView {
     private let delegate: QuoteViewDelegate?
     var viewitem : ConversationViewItem? = nil
     var isSharedContact: Bool
-    var contactName: String
 
     private var maxBodyLabelHeight: CGFloat {
         switch mode {
@@ -98,7 +97,7 @@ final class QuoteView : UIView {
     static let cancelBackgroundSize: CGFloat = 15
 
     // MARK: Lifecycle
-    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, isSharedContact: Bool, contactName: String) {
+    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, isSharedContact: Bool) {
         self.mode = .regular(viewItem)
         self.thread = thread ?? TSThread.fetch(uniqueId: viewItem.interaction.uniqueThreadId)!
         self.maxWidth = maxWidth
@@ -107,12 +106,11 @@ final class QuoteView : UIView {
         self.delegate = nil
         self.viewitem = viewItem
         self.isSharedContact = isSharedContact
-        self.contactName = contactName
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
 
-    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool, contactName: String) {
+    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool) {
         self.mode = .draft(model)
         self.thread = TSThread.fetch(uniqueId: model.threadId)!
         self.maxWidth = maxWidth
@@ -120,7 +118,6 @@ final class QuoteView : UIView {
         self.hInset = hInset
         self.delegate = delegate
         self.isSharedContact = isSharedContact
-        self.contactName = contactName
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         
@@ -205,6 +202,18 @@ final class QuoteView : UIView {
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.regularOpenSans(ofSize: 11)
+        var text = body ?? ""
+        let jsonString = body ?? ""
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                if contact.kind.type == "SharedContact" {
+                    text = contact.kind.name
+                }
+            } catch {
+                print("Failed to decode JSON: \(error)")
+            }
+        }
         if isSharedContact {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(named: "ic_contact")
@@ -214,14 +223,10 @@ final class QuoteView : UIView {
             let fullString = NSMutableAttributedString(string: "")
             fullString.append(attachmentString)
             fullString.append(NSAttributedString(string: " "))
-            if case .draft = mode {
-                fullString.append(NSAttributedString(string: body ?? ""))
-            } else {
-                fullString.append(NSAttributedString(string: contactName))
-            }
+            fullString.append(NSAttributedString(string: text))
             bodyLabel.attributedText = fullString
         } else {
-            bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+            bodyLabel.attributedText = given(text) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
         }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)

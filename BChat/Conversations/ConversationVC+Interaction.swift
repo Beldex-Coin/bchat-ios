@@ -410,12 +410,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 if let contactAddress = address, let contactName = name {
                     message.text = contactName
                     message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
-                    message.quote?.text = ""
+                    if snInputView.viewItem?.sharedContactMessage?.address != nil || message.quote != nil {
+                        message.text = getJSONStrigForSharedContact(address: contactAddress, name: contactName)
+                    }
                 }
                 
                 if snInputView.quoteDraftInfo?.isSharedContact == true {
-                    message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
-                    message.quote?.text = ""
+                    if address == nil {
+                        message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
+                        
+                        message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                    }
                 }
                 
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
@@ -470,6 +475,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             }
         }
     }
+    
+    func getJSONStrigForSharedContact(address: String, name: String) -> String {
+        let jsonObject: [String: Any] = [
+            "kind": [
+                "@type": "SharedContact",
+                "address": address,
+                "name": name
+            ]
+        ]
+        guard JSONSerialization.isValidJSONObject(jsonObject),
+              let data = try? JSONSerialization.data(withJSONObject: jsonObject, options: []),
+              let jsonString = String(data: data, encoding: .utf8) else { return "" }
+        return jsonString
+    }
+    
 
     func sendAttachments(_ attachments: [SignalAttachment], with text: String, onComplete: (() -> ())? = nil) {
         guard !showBlockedModalIfNeeded() else { return }

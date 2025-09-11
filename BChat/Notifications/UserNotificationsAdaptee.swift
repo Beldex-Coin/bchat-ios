@@ -120,7 +120,19 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
             if let displayableTitle = title?.filterForDisplay {
                 content.title = displayableTitle
             }
-            if let displayableBody = body.filterForDisplay {
+            
+            var text = body
+            if let jsonData = text.data(using: .utf8) {
+                do {
+                    let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                    if contact.kind.type == "SharedContact" {
+                        text = contact.kind.name
+                    }
+                } catch {
+                    print("Failed to decode JSON: \(error)")
+                }
+            }
+            if let displayableBody = text.filterForDisplay {
                 content.body = displayableBody
             }
         } else {

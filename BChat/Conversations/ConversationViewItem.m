@@ -607,7 +607,31 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
     if (message.sharedContactMessage && message.quotedMessage == nil) {
         self.sharedContactMessage = message.sharedContactMessage;
         self.messageCellType = OWSMessageCellType_SharedContact;
+        return;
     }
+    
+    if (message.sharedContactMessage) {
+        self.sharedContactMessage = message.sharedContactMessage;
+        
+        NSString *jsonString = message.body ?: @"";
+        NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        if (jsonData) {
+            NSError *error = nil;
+            NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+            if (!error && [jsonDict isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *kind = jsonDict[@"kind"];
+                if ([kind isKindOfClass:[NSDictionary class]]) {
+                    NSString *type = kind[@"@type"];
+                    if ([type isEqualToString:@"SharedContact"]) {
+                        self.messageCellType = OWSMessageCellType_SharedContact;
+                    }
+                }
+            } else {
+                NSLog(@"Failed to decode JSON: %@", error.localizedDescription);
+            }
+        }
+    }
+    
 }
 
 - (NSArray<ConversationMediaAlbumItem *> *)albumItemsForMediaAttachments:(NSArray<TSAttachment *> *)attachments
