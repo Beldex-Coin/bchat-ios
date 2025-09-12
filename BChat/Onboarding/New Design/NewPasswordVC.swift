@@ -864,11 +864,7 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingHome == true {
-                let vc = PINSuccessPopUp()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                vc.titleLabelContent = "Your password has been set up successfully!"
-                self.present(vc, animated: true, completion: nil)
+                showConfirmationModal("Your password has been set up successfully!")
                 
                 UserDefaults.standard[.isUsingFullAPNs] = true
                 TSAccountManager.sharedInstance().didRegister()
@@ -880,23 +876,14 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingNewRestoreSeedVC == true {
-                let viewController = PINSuccessPopUp()
-                viewController.modalPresentationStyle = .overFullScreen
-                viewController.modalTransitionStyle = .crossDissolve
-                viewController.titleLabelContent = "Your password has been set up successfully!"
-                self.present(viewController, animated: true, completion: nil)
+                showConfirmationModal("Your password has been set up successfully!")
                 
                 let vc = NewRestoreSeedVC()
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             
             if self.isGoingPopUp == true {
-                let vc = PINSuccessPopUp()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                vc.titleLabelContent = "Your PIN has been set up successfully!"
-                self.present(vc, animated: true, completion: nil)
-                self.navigationController?.popViewController(animated: true)
+                showConfirmationModal("Your PIN has been set up successfully!")
             }
             
             if self.isGoingWallet == true {
@@ -935,16 +922,8 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingBack == true {
-                let vc = PINSuccessPopUp()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                if isWalletPassword && isChangeWalletPassword {
-                    vc.titleLabelContent = "Your PIN has been changed successfully!"
-                } else {
-                    vc.titleLabelContent = "Your password has been changed successfully!"
-                }
-                self.present(vc, animated: true, completion: nil)
-                self.navigationController?.popViewController(animated: true)
+                let message = isWalletPassword && isChangeWalletPassword ? "Your PIN has been changed successfully!" : "Your password has been changed successfully!"
+                showConfirmationModal(message)
             }
             
             if self.isGoingNewRecoverySeed == true {
@@ -1502,4 +1481,29 @@ class NewPasswordVC: BaseVC {
         }
     }
 
+}
+
+extension NewPasswordVC {
+    
+    func showConfirmationModal(_ title: String) {
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .pwdUpdateSuccess,
+                title: title,
+                body: .text(""),
+                showCondition: .disabled,
+                confirmEnabled: false,
+                cancelTitle: "OK",
+                cancelEnabled: true,
+                onConfirm: { _ in
+                }, afterClosed: {
+                    if self.isGoingBack || self.isGoingPopUp {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
+    }
 }

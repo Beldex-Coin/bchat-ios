@@ -24,8 +24,7 @@ public enum ConfirmationModalType: Int {
     case missedCall
     case ownSeedWarning
     case mediaDownload
-    case setPwdSuccess
-    case changePwdSuccess
+    case pwdUpdateSuccess
     case linkBnsSuccess
     case walletSync
     case transactionInitiate
@@ -49,8 +48,8 @@ public enum ConfirmationModalType: Int {
                 name = "ic_warningSeed"
             case .mediaDownload:
                 name = isLightMode ? "ic_download_white" : "ic_download_dark"
-            case .setPwdSuccess, .changePwdSuccess:
-                    name = ""
+            case .pwdUpdateSuccess:
+                    name = "ic_pinSuccess"
             case .linkBnsSuccess:
                 name = ""
             case .walletSync:
@@ -76,8 +75,7 @@ public enum ConfirmationModalType: Int {
                 .missedCall,
                 .ownSeedWarning,
                 .mediaDownload,
-                .setPwdSuccess,
-                .changePwdSuccess,
+                .pwdUpdateSuccess,
                 .linkBnsSuccess,
                 .walletSync,
                 .transactionInitiate,

@@ -211,7 +211,6 @@ class RescanNewVC: BaseVC {
                 formatter.timeZone = TimeZone(identifier: "UTC")
                 self.restoreDateHeightTextField.text = formatter.string(from: dt)
                 let dateString = formatter.string(from: dt)
-                print("selected date---------String Formate--------------------->: ",dateString)
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
@@ -229,7 +228,6 @@ class RescanNewVC: BaseVC {
     
     /// image View Tapped
     @objc func imageViewTapped() {
-        print("Image View tapped")
         datePickerTapped()
     }
     

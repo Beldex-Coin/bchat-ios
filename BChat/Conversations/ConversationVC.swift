@@ -1317,7 +1317,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Handle cancel button tap
         navigationController?.navigationBar.isHidden = false
         snInputView.isUserInteractionEnabled = true
-        print("Cancel button tapped!")
         hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
         initiatingTransactionPopView.isHidden = true
@@ -1325,7 +1324,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc private func inChatPaymentOkButtonTapped() {
         // Handle ok button tap
-        print("OK button tapped!")
         self.dismiss(animated: true)
         hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true

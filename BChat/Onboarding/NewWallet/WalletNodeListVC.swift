@@ -107,7 +107,6 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         myGroup.notify(queue: .main) {
-            print("Finished all requests.")
             if self.nodeArrayDynamic!.count > 0 {
                 for i in 0 ..< self.nodeArrayDynamic!.count {
                     self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])

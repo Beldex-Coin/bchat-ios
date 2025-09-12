@@ -220,7 +220,6 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
             let ciImage: CIImage = CIImage(image:qrcodeImg),
             let features = detector.features(in: ciImage) as? [CIQRCodeFeature]
         else {
-            print("Something went wrong")
             return
         }
         var qrCodeLink = ""
