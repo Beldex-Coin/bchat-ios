@@ -650,7 +650,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     // MARK: Mentions
     func updateMentions(for newText: String) {
         if newText.count < oldText.count {
-            if !newText.hasPrefix("@") {
+            if !newText.hasPrefix("@") && !newText.hasSuffix("@") {
                 currentMentionStartIndex = nil
                 
                 snInputView.hideMentionsUI()
@@ -661,12 +661,15 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let lastCharacterIndex = newText.index(before: newText.endIndex)
             let lastCharacter = newText[lastCharacterIndex]
             // Check if there is whitespace before the '@' or the '@' is the first character
-            let isCharacterBeforeLastWhiteSpaceOrStartOfLine: Bool
+            var isCharacterBeforeLastWhiteSpaceOrStartOfLine: Bool
             if newText.count == 1 {
                 isCharacterBeforeLastWhiteSpaceOrStartOfLine = true // Start of line
             } else {
                 let characterBeforeLast = newText[newText.index(before: lastCharacterIndex)]
                 isCharacterBeforeLastWhiteSpaceOrStartOfLine = characterBeforeLast.isWhitespace
+                if lastCharacter == "@" {
+                    isCharacterBeforeLastWhiteSpaceOrStartOfLine = true
+                }
             }
             if lastCharacter == "@" && isCharacterBeforeLastWhiteSpaceOrStartOfLine {
                 let candidates = MentionsManager.getMentionCandidates(for: "", in: thread.uniqueId!)
