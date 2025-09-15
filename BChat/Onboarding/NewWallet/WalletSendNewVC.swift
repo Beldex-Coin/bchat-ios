@@ -959,7 +959,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     }
     
     @objc func flashButtonTapped(_ sender: UIButton) {
-        feePriorityButtonsStackView.isHidden = false
+        feePriorityButtonsStackView.isHidden = !feePriorityButtonsStackView.isHidden
     }
     
     @objc func flashButtonInsideStackViewTapped(_ sender: UIButton) {

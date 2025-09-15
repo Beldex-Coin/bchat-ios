@@ -1498,7 +1498,7 @@ extension NewPasswordVC {
                 cancelEnabled: true,
                 onConfirm: { _ in
                 }, afterClosed: {
-                    if self.isGoingBack || self.isGoingPopUp {
+                    if self.isGoingBack {
                         self.navigationController?.popViewController(animated: true)
                     }
                 }
