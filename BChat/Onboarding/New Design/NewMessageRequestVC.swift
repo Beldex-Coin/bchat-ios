@@ -185,7 +185,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             info: ConfirmationModal.Info(
                 modalType: modalType,
                 title: "Message Request",
-                body: .text("Are you sure you want to %@ \(action)"),
+                body: .text("Are you sure you want to \(action)"),
                 showCondition: .disabled,
                 confirmTitle: "Yes",
                 onConfirm: { _ in

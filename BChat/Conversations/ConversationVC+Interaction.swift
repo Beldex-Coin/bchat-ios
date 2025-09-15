@@ -383,10 +383,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     }, afterClosed: {
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
+                        return
                     }
                 )
             )
-            present(confirmationModal, animated: true, completion:  {
+            return present(confirmationModal, animated: true, completion:  {
                 self.isInputViewShow = false
             })
         }
@@ -1239,8 +1240,32 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func save(_ viewItem: ConversationViewItem) {
         guard viewItem.canSaveMedia() else { return }
-        viewItem.saveMediaAction()
-        sendMediaSavedNotificationIfNeeded(for: viewItem)
+        
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .mediaDownload,
+                title: "Save to Gallery?",
+                body: .text("Saving this media to your gallery will allow any other apps on your device to access it."),
+                showCondition: .disabled,
+                confirmTitle: "Yes",
+                cancelTitle: "No",
+                onConfirm: { _ in
+                    self.isInputViewShow = true
+                    self.showInputAccessoryView()
+                    
+                    viewItem.saveMediaAction()
+                    self.sendMediaSavedNotificationIfNeeded(for: viewItem)
+                }, afterClosed: {
+                    self.isInputViewShow = true
+                    self.showInputAccessoryView()
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion:  {
+            self.isInputViewShow = false
+            self.hideInputAccessoryView()
+        })
     }
     
     func messageDetail(_ viewItem: ConversationViewItem) {
