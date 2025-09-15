@@ -513,6 +513,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         message.text = replaceMentions(in: text)
         message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
         
+        if snInputView.quoteDraftInfo?.isSharedContact == true {
+            message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
+            message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+        }
+        
         // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
         // use it to determine if the user is creating a new thread and update the 'isApproved'
         // flags appropriately
@@ -839,7 +844,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         })
     }
 
-    func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer) {
+    func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer, location: CGPoint) {
         
         if snInputView.attachmentsButton.isExpanded {
             snInputView.attachmentsButton.isExpanded = false
@@ -871,6 +876,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             // Show the failed message sheet
             showFailedMessageSheet(for: message)
         } else {
+            if let reply = viewItem.quotedReply {
+                if location.y < 65 || (viewItem.messageCellType == .mediaMessage && location.y < 80) {
+                    guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
+                    messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                    return
+                }
+            }
             switch viewItem.messageCellType {
                 case .audio:
                     if viewItem.interaction is TSIncomingMessage,
@@ -888,6 +900,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         playOrPauseAudio(for: viewItem)
                     }
                 case .mediaMessage:
+                let message = viewItem.interaction as? TSMessage
+                    if let reply = viewItem.quotedReply {
+                        if (location.y < 125 && viewItem.mediaAlbumItems?.first?.attachment.contentType == "image/gif") || (location.y < 125 && message?.sharedContactMessage != nil) {
+                            guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
+                            messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                            return
+                        }
+                    }
                     guard let index = viewItems.firstIndex(where: { $0 === viewItem }),
                         let cell = messagesTableView.cellForRow(at: IndexPath(row: index, section: 0)) as? VisibleMessageCell else { return }
                     if viewItem.interaction is TSIncomingMessage,

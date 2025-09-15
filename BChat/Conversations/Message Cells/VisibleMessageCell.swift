@@ -901,7 +901,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 }
             }
         } else {
-            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
+            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer, location: location)
         }
     }
 
