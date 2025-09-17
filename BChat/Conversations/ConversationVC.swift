@@ -1220,8 +1220,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if snInputView.quoteDraftInfo != nil {
             let msg: VisibleMessage = VisibleMessage()
             msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-            guard let quoteText = msg.quote?.text else { return }
-            constraintValue += quoteText.count >= 100 ? 78 : 68
+            if let quoteText = msg.quote?.text {
+                constraintValue += quoteText.count >= 100 ? 78 : 68
+            } else {
+                constraintValue += 68
+            }
         }
 
         DispatchQueue.main.async {

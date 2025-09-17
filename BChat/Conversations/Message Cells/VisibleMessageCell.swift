@@ -671,12 +671,29 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     showMediaPlaceholder()
                     bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
                 } else {
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                    let stackView = UIStackView(arrangedSubviews: [])
+                    stackView.axis = .vertical
+                    stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        let inset: CGFloat = 12
+                        let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
+                    
                     let voiceMessageView = VoiceMessageView(viewItem: viewItem)
-                    snContentView.addSubview(voiceMessageView)
-                    voiceMessageView.pin(to: snContentView)
+                    stackView.addArrangedSubview(voiceMessageView)
+                    snContentView.addSubview(stackView)
                     voiceMessageView.layer.mask = bubbleViewMaskLayer
                     viewItem.lastAudioMessageView = voiceMessageView
-                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                    stackView.pin(to: snContentView)
                 }
             case .genericAttachment:
                 bubbleViewBottomConstraint.isActive = false

@@ -333,6 +333,17 @@ final class QuoteView : UIView {
             }
         }
         contentView.set(.height, to: contentViewHeight)
+        if let attachment = viewitem?.attachmentStream ?? viewitem?.attachmentPointer {
+            let documentTextLabel = UILabel()
+            documentTextLabel.numberOfLines = 0
+            documentTextLabel.lineBreakMode = .byTruncatingTail
+            documentTextLabel.font = Fonts.regularOpenSans(ofSize: 11)
+            documentTextLabel.text = attachment.sourceFilename
+            let documentSizeLabel = documentTextLabel.systemLayoutSizeFitting(availableSpace)
+            if bodyLabelSize.width < (documentSizeLabel.width + 80) {
+                contentView.set(.width, to: documentSizeLabel.width + 80)
+            }
+        }
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
             addSubview(cancelBackgroundView)
