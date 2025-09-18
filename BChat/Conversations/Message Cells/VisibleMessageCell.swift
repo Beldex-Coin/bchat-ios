@@ -462,9 +462,44 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateContentView(for viewItem: ConversationViewItem, message: TSMessage) {
         snContentView.subviews.forEach { $0.removeFromSuperview() }
         func showMediaPlaceholder() {
+            
+            let inset: CGFloat = 8
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+            // Stack view
+            let stackView = UIStackView(arrangedSubviews: [])
+            stackView.axis = .vertical
+            stackView.spacing = Values.smallSpacing
+            // Quote View
+            if viewItem.quotedReply != nil {
+                let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                let hInset: CGFloat = 2
+                
+                var isSharedContact: Bool = false
+                let jsonString = viewItem.quotedReply?.body ?? ""
+                if let jsonData = jsonString.data(using: .utf8) {
+                    do {
+                        let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                        if contact.kind.type == "SharedContact" {
+                            isSharedContact = true
+                        } else {
+                            isSharedContact = false
+                        }
+                    } catch {
+                        print("Failed to decode JSON: \(error)")
+                    }
+                }
+                
+                let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
+                let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                quoteView.layer.cornerRadius = 8
+                stackView.addArrangedSubview(quoteViewContainer)
+            }
+            
             let mediaPlaceholderView = MediaPlaceholderView(viewItem: viewItem, textColor: bodyLabelTextColor)
-            snContentView.addSubview(mediaPlaceholderView)
-            mediaPlaceholderView.pin(to: snContentView)
+            stackView.addArrangedSubview(mediaPlaceholderView)
+            snContentView.addSubview(stackView)
+            stackView.pin(to: snContentView)
         }
         albumView = nil
         bodyTextView = nil
