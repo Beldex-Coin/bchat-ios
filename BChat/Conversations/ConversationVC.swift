@@ -1703,7 +1703,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 confirmTitle: "Delete",
                 onConfirm: { _ in
                     self.clearChat()
-                }, afterClosed: {
+                }, dismissHandler: {
                     debugPrint("clear chat popup closed")
                 }
             )

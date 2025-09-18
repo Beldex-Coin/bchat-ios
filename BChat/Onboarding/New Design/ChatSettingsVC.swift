@@ -584,7 +584,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 confirmTitle: "Leave",
                 onConfirm: { _ in
                     self.leaveGroup()
-                }, afterClosed: {
+                }, dismissHandler: {
                     debugPrint("leaveGroup popup closed")
                 }
             )

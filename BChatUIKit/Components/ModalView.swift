@@ -12,7 +12,7 @@ open class ModalView: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private let dismissType: DismissType
-    private let afterClosed: (() -> ())?
+    private let dismissHandler: (() -> ())?
     
     // MARK: - Components
     
@@ -53,16 +53,16 @@ open class ModalView: UIViewController, UIGestureRecognizerDelegate {
     public init(
         targetView: UIView? = nil,
         dismissType: DismissType = .recursive,
-        afterClosed: (() -> ())? = nil
+        dismissHandler: (() -> ())? = nil
     ) {
         self.dismissType = dismissType
-        self.afterClosed = afterClosed
+        self.dismissHandler = dismissHandler
         
         super.init(nibName: nil, bundle: nil)
     }
     
     required public init?(coder: NSCoder) {
-        fatalError("Use init(targetView:afterClosed:) instead")
+        fatalError("Use init(targetView:dismissHandler:) instead")
     }
     
     public override func viewDidLoad() {
@@ -109,7 +109,7 @@ open class ModalView: UIViewController, UIGestureRecognizerDelegate {
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        afterClosed?()
+        dismissHandler?()
     }
     
     /// To be overridden by subclasses.

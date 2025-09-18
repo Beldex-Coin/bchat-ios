@@ -178,16 +178,16 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func showConfirmationModal(_ modalType: ConfirmationModalType) {
-        let action = modalType == .acceptMsgRequest ? "accept this request?" :
-                        modalType == .deleteMsgRequest ? "delete this request?" : "block this user?"
+        let actionType = modalType == .acceptMsgRequest ? "accept" :
+                        modalType == .deleteMsgRequest ? "delete" : "block"
         // show confirmation modal
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
                 modalType: modalType,
                 title: "Message Request",
-                body: .text("Are you sure you want to \(action)"),
+                body: .text("Are you sure you want to \(actionType) this request?"),
                 showCondition: .disabled,
-                confirmTitle: "Yes",
+                confirmTitle: actionType.capitalized,
                 onConfirm: { _ in
                     switch modalType {
                         case .acceptMsgRequest:
@@ -199,7 +199,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                         default:
                             break
                     }
-                }, afterClosed: {
+                }, dismissHandler: {
                     debugPrint("message request popup closed")
                 }
             )

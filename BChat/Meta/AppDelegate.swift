@@ -88,7 +88,7 @@ extension AppDelegate {
                 cancelTitle: "OK",
                 cancelEnabled: true,
                 onConfirm: { _ in
-                }, afterClosed: {
+                }, dismissHandler: {
                     debugPrint("missed call popup closed")
                 }
             )

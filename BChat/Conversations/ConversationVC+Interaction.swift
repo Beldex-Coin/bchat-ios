@@ -248,7 +248,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         self.isInputViewShow = true
                         SSKPreferences.isGifPermissionEnabled = true
                         self.handleGIFButtonTapped()
-                    }, afterClosed: {
+                    }, dismissHandler: {
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
                     }
@@ -380,7 +380,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
                         self.sendMessage(hasPermissionToSendSeed: true)
-                    }, afterClosed: {
+                    }, dismissHandler: {
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
                         return
@@ -832,7 +832,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     }, completion: {
                         Storage.shared.resumeAttachmentDownloadJobsIfNeeded(for: message.uniqueThreadId)
                     })
-                }, afterClosed: {
+                }, dismissHandler: {
                     self.isInputViewShow = true
                     self.showInputAccessoryView()
                 }
@@ -866,7 +866,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     cancelTitle: "OK",
                     cancelEnabled: true,
                     onConfirm: { _ in
-                    }, afterClosed: {
+                    }, dismissHandler: {
                         debugPrint("missed call popup closed")
                     }
                 )
@@ -1007,7 +1007,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                         self.navigationController?.setViewControllers(viewControllers!, animated: true)
                                     }
                                     CATransaction.commit()
-                                }, afterClosed: {
+                                }, dismissHandler: {
                                     self.isInputViewShow = true
                                     self.showInputAccessoryView()
                                 }
@@ -1276,7 +1276,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     
                     viewItem.saveMediaAction()
                     self.sendMediaSavedNotificationIfNeeded(for: viewItem)
-                }, afterClosed: {
+                }, dismissHandler: {
                     self.isInputViewShow = true
                     self.showInputAccessoryView()
                 }
@@ -1459,7 +1459,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
                         self.gotoSettingsScreen()
-                    }, afterClosed: {
+                    }, dismissHandler: {
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
                     }

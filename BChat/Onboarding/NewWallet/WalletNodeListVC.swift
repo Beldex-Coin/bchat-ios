@@ -279,7 +279,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                         confirmTitle: "Yes",
                         onConfirm: { _ in
                             self.switchNode()
-                        }, afterClosed: {
+                        }, dismissHandler: {
                         }
                     )
                 )
@@ -309,7 +309,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 confirmTitle: "Yes",
                 onConfirm: { _ in
                     self.refreshNodes()
-                }, afterClosed: {
+                }, dismissHandler: {
                 }
             )
         )

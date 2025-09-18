@@ -223,7 +223,7 @@ class BaseVC : UIViewController {
                     } else {
                         NotificationCenter.default.post(name: .blockContactNotification, object: nil)
                     }
-                }, afterClosed: {
+                }, dismissHandler: {
                     debugPrint("block/unblock popup closed")
                 }
             )
@@ -280,7 +280,7 @@ extension BaseVC {
                 confirmTitle: "Settings",
                 onConfirm: { _ in
                     onConfirmed?()
-                }, afterClosed: {
+                }, dismissHandler: {
                     onAfterClosed?()
                 }
             )

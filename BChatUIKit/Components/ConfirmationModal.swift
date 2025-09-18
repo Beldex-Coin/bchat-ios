@@ -124,7 +124,7 @@ public class ConfirmationModal: ModalView {
     public init(targetView: UIView? = nil, info: Info, modalImageType: ConfirmationModalType = .none) {
         self.info = info
         
-        super.init(targetView: targetView, dismissType: info.dismissType, afterClosed: info.afterClosed)
+        super.init(targetView: targetView, dismissType: info.dismissType, dismissHandler: info.dismissHandler)
         
         self.modalPresentationStyle = .overFullScreen
         self.modalTransitionStyle = .crossDissolve
@@ -267,7 +267,7 @@ public extension ConfirmationModal {
         let dismissType: ModalView.DismissType
         public let onConfirm: ((ConfirmationModal) -> ())?
         let onCancel: ((ConfirmationModal) -> ())?
-        let afterClosed: (() -> ())?
+        let dismissHandler: (() -> ())?
         
         // MARK: - Initialization
         
@@ -285,7 +285,7 @@ public extension ConfirmationModal {
             dismissType: DismissType = .recursive,
             onConfirm: ((ConfirmationModal) -> ())? = nil,
             onCancel: ((ConfirmationModal) -> ())? = nil,
-            afterClosed: (() -> ())? = nil
+            dismissHandler: (() -> ())? = nil
             
         ) {
             self.modalType = modalType
@@ -301,7 +301,7 @@ public extension ConfirmationModal {
             self.dismissType = dismissType
             self.onConfirm = onConfirm
             self.onCancel = onCancel
-            self.afterClosed = afterClosed
+            self.dismissHandler = dismissHandler
         }
         
         // MARK: - Mutation
@@ -310,7 +310,7 @@ public extension ConfirmationModal {
             body: Body? = nil,
             onConfirm: ((ConfirmationModal) -> ())? = nil,
             onCancel: ((ConfirmationModal) -> ())? = nil,
-            afterClosed: (() -> ())? = nil
+            dismissHandler: (() -> ())? = nil
         ) -> Info {
             return Info(
                 modalType: self.modalType,
@@ -326,7 +326,7 @@ public extension ConfirmationModal {
                 dismissType: self.dismissType,
                 onConfirm: (onConfirm ?? self.onConfirm),
                 onCancel: (onCancel ?? self.onCancel),
-                afterClosed: (afterClosed ?? self.afterClosed)
+                dismissHandler: (dismissHandler ?? self.dismissHandler)
             )
         }
         
