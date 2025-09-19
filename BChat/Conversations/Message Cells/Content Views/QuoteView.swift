@@ -8,6 +8,8 @@ final class QuoteView : UIView {
     private let delegate: QuoteViewDelegate?
     var viewitem : ConversationViewItem? = nil
     var isSharedContact: Bool
+    
+    var showContactIcon: Bool = false
 
     private var maxBodyLabelHeight: CGFloat {
         switch mode {
@@ -209,12 +211,16 @@ final class QuoteView : UIView {
                 let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                 if contact.kind.type == "SharedContact" {
                     text = contact.kind.name
+                    showContactIcon = true
                 }
             } catch {
+                if case .draft = mode {
+                    showContactIcon = isSharedContact
+                }
                 print("Failed to decode JSON: \(error)")
             }
         }
-        if isSharedContact {
+        if showContactIcon {
             let imageAttachment = NSTextAttachment()
             imageAttachment.image = UIImage(named: "ic_contact")
             let imageOffsetY: CGFloat = -4.0
@@ -322,7 +328,7 @@ final class QuoteView : UIView {
         }
         let bodyLabelHeight = bodyLabelSize.height.clamp(0, maxBodyLabelHeight)
         let contentViewHeight: CGFloat
-        if hasAttachments || isSharedContact {
+        if hasAttachments || showContactIcon {
             contentViewHeight = thumbnailSize + 8 // Add a small amount of spacing above and below the thumbnail
             bodyLabel.set(.height, to: 18) // Experimentally determined
         } else {

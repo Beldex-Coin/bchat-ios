@@ -417,12 +417,29 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
                 
                 if snInputView.quoteDraftInfo?.isSharedContact == true {
-                    if address == nil {
-                        message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
-                        
-                        message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
-                    } else {
-                        message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                    
+                    let jsonString = message.quote?.text ?? ""
+                    if let jsonData = jsonString.data(using: .utf8) {
+                        do {
+                            let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                            if contact.kind.type == "SharedContact" {
+                                if address == nil {
+                                    message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
+                                    
+                                    message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                                } else {
+                                    message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                                }
+                            }
+                        } catch {
+                            if address == nil {
+                                message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                            }
+                            if snInputView.viewItem?.sharedContactMessage?.address != nil {
+                                message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+                            }
+                            print("Failed to decode JSON: \(error)")
+                        }
                     }
                     if address != nil {
                         message.sharedContact = VisibleMessage.SharedContact(address: address, name: name)
