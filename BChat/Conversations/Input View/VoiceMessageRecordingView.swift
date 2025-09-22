@@ -511,9 +511,11 @@ final class VoiceMessageRecordingView : UIView {
             }
         }
         
-        let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / timerSecond)
-        let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
-        progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
+        if timerSecond > 0 {
+            let percentageFinished = ((timerSecondForConstraintOfProgressView * Int(audioWavesImageView.width())) / timerSecond)
+            let finalConstraintOfProgressView = Int(audioWavesImageView.width()) - percentageFinished
+            progressViewRightConstraint.constant = CGFloat(-finalConstraintOfProgressView)
+        }
     }
     
     private func handleCountDownTimer() {
