@@ -423,19 +423,15 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         do {
                             let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                             if contact.kind.type == "SharedContact" {
-                                if address == nil {
-                                    message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
-                                    
-                                    message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
-                                } else {
+                                if address != nil {
                                     message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
                                 }
                             }
                         } catch {
-                            if address == nil {
+                            if address == nil && message.sharedContact != nil {
                                 message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
                             }
-                            if snInputView.viewItem?.sharedContactMessage?.address != nil {
+                            if snInputView.viewItem?.sharedContactMessage?.address != nil && message.sharedContact != nil {
                                 message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
                             }
                             print("Failed to decode JSON: \(error)")
@@ -657,6 +653,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             customizeSlideToOpen.isHidden = true
             CustomSlideView.isFromExpandAttachment = false
         }
+        if !thread.isGroupThread() { return }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
     }
