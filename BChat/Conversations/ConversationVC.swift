@@ -1176,6 +1176,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
+        isAudioRecording = false
         let text = snInputView.text
         Storage.write { transaction in
             self.thread.setDraft(text, transaction: transaction)

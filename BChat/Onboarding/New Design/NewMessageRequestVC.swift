@@ -225,18 +225,18 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func blockMessageRequest() {
-        guard let thread = self.thread(at: self.tappedIndex) else { return }
-        let thread2 = thread as? TSContactThread
-        let publicKey = thread2!.contactBChatID()
-        if let contact: Contact = Storage.shared.getContact(with: publicKey) {
+        guard let thread = self.thread(at: self.tappedIndex), let contactThread = thread as? TSContactThread else { return }
+        if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()) {
             Storage.shared.write(
                 with: { transaction in
                     guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
                     contact.isBlocked = true
+                    contact.isApproved = false
                     Storage.shared.setContact(contact, using: transaction)
                 },
                 completion: {
                     MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                    self.reload()
                 }
             )
         }
