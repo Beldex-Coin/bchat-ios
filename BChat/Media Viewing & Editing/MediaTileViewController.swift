@@ -1010,7 +1010,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
     public func autoLoadMoreIfNecessary() {
         let kEdgeThreshold: CGFloat = 800
         
-        if (self.isUserScrolling) {
+        if (self.isUserScrolling || isInBatchSelectMode) {
             return
         }
         

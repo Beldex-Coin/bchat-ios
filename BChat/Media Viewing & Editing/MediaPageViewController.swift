@@ -847,9 +847,11 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
                                                                     animated: isAnimated,
                                                                     completion: completion)
         } else {
-            mediaGalleryDataSource.dismissMediaDetailViewController(self, animated: isAnimated) {
-                UIDevice.current.ows_setOrientation(.portrait)
-                completion?()
+            if self.navigationController != nil {
+                mediaGalleryDataSource.dismissMediaDetailViewController(self, animated: isAnimated) {
+                    UIDevice.current.ows_setOrientation(.portrait)
+                    completion?()
+                }
             }
         }
     }

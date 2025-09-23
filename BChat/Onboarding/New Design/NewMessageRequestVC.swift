@@ -144,13 +144,13 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         cell.threadViewModel = threadViewModel(at: indexPath.row)
         cell.verifiedImageView.isHidden = true
         if let thread = threadViewModel(at: indexPath.row)?.threadRecord {
-            let contactThread = thread as! TSContactThread
-            let publicKey = contactThread.contactBChatID()
-            let contact: Contact? = Storage.shared.getContact(with: publicKey)
-            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
-                cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-                cell.verifiedImageView.isHidden = isBnsUser ? false : true
+            if let contactThread = thread as? TSContactThread {
+                let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
+                if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                    cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                    cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                    cell.verifiedImageView.isHidden = isBnsUser ? false : true
+                }
             }
         }        
         
@@ -231,7 +231,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 with: { transaction in
                     guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
                     contact.isBlocked = true
-                    contact.isApproved = false
                     Storage.shared.setContact(contact, using: transaction)
                 },
                 completion: {
