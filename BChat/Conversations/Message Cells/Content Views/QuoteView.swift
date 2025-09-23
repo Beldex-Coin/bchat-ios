@@ -350,6 +350,13 @@ final class QuoteView : UIView {
                 contentView.set(.width, to: documentSizeLabel.width + 80)
             }
         }
+        if viewitem?.interaction is TSIncomingMessage,
+            let thread = thread as? TSContactThread,
+            Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+            if bodyLabelSize.width < (150) {
+                contentView.set(.width, to: 150)
+            }
+        }
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
             addSubview(cancelBackgroundView)

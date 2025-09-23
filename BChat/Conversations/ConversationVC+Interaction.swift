@@ -431,7 +431,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                             if address == nil && message.sharedContact != nil {
                                 message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
                             }
-                            if snInputView.viewItem?.sharedContactMessage?.address != nil && message.sharedContact != nil {
+                            if snInputView.viewItem?.sharedContactMessage?.address != nil {
                                 message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
                             }
                             print("Failed to decode JSON: \(error)")
