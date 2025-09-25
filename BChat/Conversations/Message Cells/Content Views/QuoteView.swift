@@ -204,6 +204,11 @@ final class QuoteView : UIView {
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.regularOpenSans(ofSize: 11)
+        if case .draft = mode {
+            if body == "" {
+                body = NSLocalizedString("view_open_group_invitation_description", comment: "")
+            }
+        }
         var text = body ?? ""
         let jsonString = body ?? ""
         if let jsonData = jsonString.data(using: .utf8) {

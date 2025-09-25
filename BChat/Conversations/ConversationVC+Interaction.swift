@@ -442,6 +442,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     }
                 }
                 
+                if ((snInputView.viewItem?.interaction as? TSMessage)?.openGroupInvitationURL != nil) {
+                    message.quote?.text = NSLocalizedString("view_open_group_invitation_description", comment: "")
+                }
+                
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'
                 // flags appropriately

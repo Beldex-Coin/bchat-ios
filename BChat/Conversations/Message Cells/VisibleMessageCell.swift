@@ -970,7 +970,9 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
         if quoteDraft.body == "" && quoteDraft.attachmentStream == nil && viewItem.sharedContactMessage == nil {
-            return
+            if (viewItem.interaction as? TSMessage)?.openGroupInvitationURL == nil && (viewItem.interaction as? TSMessage)?.paymentTxnid == nil {
+                return
+            }
         }
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)

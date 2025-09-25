@@ -89,18 +89,7 @@ extension ContextMenuVC {
                 var result: [Action] = []
               //  if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
                 if isReplyingAllowed() {
-                    // Payment Card View and openGroupInvitation Both "Replay" Option is disabled
-                    if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid {
-                        if txnid.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
-                        if txnid.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                        if openGroupInvitationURL.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                        if openGroupInvitationURL.isEmpty { }
-                    } else {
-                        result.append(Action.reply(viewItem, delegate))
-                    }
+                    result.append(Action.reply(viewItem, delegate))
                 }
                 // Copy Code
                 result.append(Action.copy(viewItem, delegate))
