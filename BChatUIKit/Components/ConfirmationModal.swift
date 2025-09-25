@@ -221,6 +221,11 @@ public class ConfirmationModal: ModalView {
             }
         }
         
+        if info.modalType == .initiateTransaction {
+            buttonStackView.isHidden = true
+            animateImageView()
+        }
+        
         titleLabel.isAccessibilityElement = true
         titleLabel.accessibilityIdentifier = "Modal heading"
         titleLabel.accessibilityLabel = titleLabel.text
@@ -360,6 +365,14 @@ public extension ConfirmationModal {
             hasCloseButton.hash(into: &hasher)
             dismissOnConfirm.hash(into: &hasher)
             dismissType.hash(into: &hasher)
+        }
+    }
+    
+    func animateImageView() {
+        UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear], animations: {
+            self.imageView.transform = self.imageView.transform.rotated(by: .pi)
+        }) { _ in
+            self.animateImageView()
         }
     }
 }
