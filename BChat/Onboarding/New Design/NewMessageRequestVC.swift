@@ -231,10 +231,14 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 with: { transaction in
                     guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
                     contact.isBlocked = true
+                    contact.didApproveMe = true
+                    contact.isApproved = false
                     Storage.shared.setContact(contact, using: transaction)
                 },
                 completion: {
                     MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                    contactThread.shouldBeVisible = true
+                    contactThread.save()
                     self.reload()
                 }
             )
