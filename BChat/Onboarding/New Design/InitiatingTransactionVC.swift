@@ -37,7 +37,7 @@ class InitiatingTransactionVC: BaseVC {
         result.text = "Initiating Transaction.."
         return result
     }()
-    private lazy var discriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
         result.font = Fonts.regularOpenSans(ofSize: 14)
@@ -58,7 +58,7 @@ class InitiatingTransactionVC: BaseVC {
         blurView.frame = view.bounds
         view.addSubview(blurView)
         view.addSubview(backGroundView)
-        backGroundView.addSubViews(circleView, titleLabel, discriptionLabel)
+        backGroundView.addSubViews(circleView, titleLabel, descriptionLabel)
         circleView.addSubview(iconView)
         
         NSLayoutConstraint.activate([
@@ -73,10 +73,10 @@ class InitiatingTransactionVC: BaseVC {
             iconView.centerYAnchor.constraint(equalTo: circleView.centerYAnchor),
             titleLabel.topAnchor.constraint(equalTo: circleView.bottomAnchor, constant: 14),
             titleLabel.centerXAnchor.constraint(equalTo: backGroundView.centerXAnchor),
-            discriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            discriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 45),
-            discriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -45),
-            discriptionLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -26),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: backGroundView.leadingAnchor, constant: 45),
+            descriptionLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -45),
+            descriptionLabel.bottomAnchor.constraint(equalTo: backGroundView.bottomAnchor, constant: -26),
         ])
         
         rotateIconView()
@@ -84,12 +84,15 @@ class InitiatingTransactionVC: BaseVC {
     }
     // iconView animation
     func rotateIconView() {
-        UIView.animate(withDuration: 1.0, delay: 0, options: [.repeat, .curveLinear], animations: {
-            self.iconView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-        }, completion: nil)
+        UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear], animations: {
+            self.iconView.transform = self.iconView.transform.rotated(by: .pi)
+        }) { _ in
+            self.rotateIconView()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         NotificationCenter.default.post(name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
     }
     

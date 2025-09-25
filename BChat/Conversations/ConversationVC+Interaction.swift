@@ -243,7 +243,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     title: "Search GIF's",
                     body: .text("You will not have full metadata protection when sending GIF's"),
                     showCondition: .disabled,
-                    confirmTitle: "Ok",
+                    confirmTitle: "OK",
                     onConfirm: { _ in
                         self.isInputViewShow = true
                         SSKPreferences.isGifPermissionEnabled = true

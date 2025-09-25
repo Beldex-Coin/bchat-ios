@@ -27,7 +27,7 @@ public enum ConfirmationModalType: Int {
     case pwdUpdateSuccess
     case linkBnsSuccess
     case walletSync
-    case transactionInitiate
+    case initiateTransaction
     case transactionSuccess
     case none
     
@@ -54,8 +54,8 @@ public enum ConfirmationModalType: Int {
                 name = ""
             case .walletSync:
                 name = ""
-            case .transactionInitiate:
-                name = ""
+            case .initiateTransaction:
+                name = "ic_initiating_transaction"
             case .transactionSuccess:
                 name = ""
             default:
@@ -78,7 +78,7 @@ public enum ConfirmationModalType: Int {
                 .pwdUpdateSuccess,
                 .linkBnsSuccess,
                 .walletSync,
-                .transactionInitiate,
+                .initiateTransaction,
                 .transactionSuccess:
                     isShow = true
             default:

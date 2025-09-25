@@ -2652,6 +2652,7 @@
 				8A6908602DD481EA00E1ABAB /* ScrollableLabel.swift */,
 				8A6908622DD4861B00E1ABAB /* ModalView.swift */,
 				8A6908532DD1C03800E1ABAB /* ConfirmationModal.swift */,
+				8AE2EE2A2DE7FD3A0061754E /* ConfirmationModelImageType.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2677,7 +2678,6 @@
 				60BE18A629FA3CCB00048350 /* UIImage+Tinting.swift */,
 				60BE18A529FA3CC900048350 /* UIView+Constraints.swift */,
 				60BE18A329FA3CC500048350 /* UIView+Rendering.swift */,
-				8AE2EE2A2DE7FD3A0061754E /* ConfirmationModelImageType.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
