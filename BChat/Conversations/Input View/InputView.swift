@@ -20,7 +20,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     let thread: TSThread
     private weak var delegate: InputViewDelegate?
-    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool, isSharedContact: Bool)? { didSet { handleQuoteDraftChanged() } }
+    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool, isSharedContact: Bool, viewItem: ConversationViewItem?)? { didSet { handleQuoteDraftChanged() } }
     var viewItem: ConversationViewItem?
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
     private var voiceMessageRecordingView: VoiceMessageRecordingView?
@@ -296,7 +296,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
         let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
-        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self, isSharedContact: quoteDraftInfo.isSharedContact)
+        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self, isSharedContact: quoteDraftInfo.isSharedContact, viewItem: quoteDraftInfo.viewItem)
         additionalContentContainerOuterView.addSubview(quoteView)
         additionalContentContainer.addSubview(additionalContentContainerOuterView)
         quoteView.backgroundColor = Colors.mainBackGroundColor2

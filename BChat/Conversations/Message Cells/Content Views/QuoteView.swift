@@ -112,7 +112,7 @@ final class QuoteView : UIView {
         setUpViewHierarchy()
     }
 
-    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool) {
+    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool, viewItem: ConversationViewItem?) {
         self.mode = .draft(model)
         self.thread = TSThread.fetch(uniqueId: model.threadId)!
         self.maxWidth = maxWidth
@@ -120,6 +120,7 @@ final class QuoteView : UIView {
         self.hInset = hInset
         self.delegate = delegate
         self.isSharedContact = isSharedContact
+        self.viewitem = viewItem
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         
@@ -205,8 +206,16 @@ final class QuoteView : UIView {
         let isOutgoing = (direction == .outgoing)
         bodyLabel.font = Fonts.regularOpenSans(ofSize: 11)
         if case .draft = mode {
-            if body == "" {
+            if (viewitem?.interaction as? TSMessage)?.openGroupInvitationURL != nil {
                 body = NSLocalizedString("view_open_group_invitation_description", comment: "")
+            }
+            if (viewitem?.interaction as? TSMessage)?.paymentAmount != nil {
+                let amount = (viewitem?.interaction as? TSMessage)?.paymentAmount ?? "0"
+                if isOutgoing {
+                    body = "Payment Sent : \(amount) BDX"
+                } else {
+                    body = "Payment Received : \(amount) BDX"
+                }
             }
         }
         var text = body ?? ""

@@ -446,6 +446,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     message.quote?.text = NSLocalizedString("view_open_group_invitation_description", comment: "")
                 }
                 
+                if ((snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount != nil) {
+                    let isOutgoing = (snInputView.viewItem?.interaction.interactionType() == .outgoingMessage)
+                    let amount = (snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount ?? "0"
+                    if isOutgoing {
+                        message.quote?.text = "Payment Sent : \(amount) BDX"
+                    } else {
+                        message.quote?.text = "Payment Received : \(amount) BDX"
+                    }
+                }
+                
                 // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
                 // use it to determine if the user is creating a new thread and update the 'isApproved'
                 // flags appropriately
@@ -1116,7 +1126,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let quoteDraft = quoteDraftOrNil else { return }
         resetAttachmentOptions()
         let isOutgoing = (viewItem.interaction.interactionType() == .outgoingMessage)
-        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing, isSharedContact: viewItem.sharedContactMessage != nil)
+        snInputView.quoteDraftInfo = (model: quoteDraft, isOutgoing: isOutgoing, isSharedContact: viewItem.sharedContactMessage != nil, viewItem: viewItem)
         snInputView.viewItem = viewItem
         snInputView.becomeFirstResponder()
         view.layoutIfNeeded()
