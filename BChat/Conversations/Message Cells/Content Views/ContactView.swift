@@ -54,7 +54,7 @@ final class ContactView : UIView {
         profileImageView.set(.height, to: profilePictureViewSize)
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
-        profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: bChatID)
+        profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: getUserHexEncodedPublicKey())
         
         lazy var verifiedImageView: UIImageView = {
             let result = UIImageView()

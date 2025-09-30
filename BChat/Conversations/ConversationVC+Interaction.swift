@@ -1017,40 +1017,24 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                 case .sharedContact:
-                    guard let sharedContact = viewItem.sharedContactMessage,
-                            let bchatId = viewItem.sharedContactMessage?.address else { return }
-                    let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
-                    if thread.uniqueId != self.thread.uniqueId {
-                        // show confirmation modal
-                        let confirmationModal: ConfirmationModal = ConfirmationModal(
-                            info: ConfirmationModal.Info(
-                                modalType: .shareContact,
-                                title: (sharedContact.name ?? sharedContact.address?.truncateMiddle()) ?? "",
-                                body: .text("Do you want to chat with this contact now?"),
-                                showCondition: .disabled,
-                                confirmTitle: "Chat",
-                                onConfirm: { _ in
-                                    self.isInputViewShow = true
-                                    CATransaction.begin()
-                                    CATransaction.setCompletionBlock {
-                                        let conversationVC = ConversationVC(thread: thread)
-                                        var viewControllers = self.navigationController?.viewControllers
-                                        if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
-                                        viewControllers?.append(conversationVC)
-                                        self.navigationController?.setViewControllers(viewControllers!, animated: true)
-                                    }
-                                    CATransaction.commit()
-                                }, dismissHandler: {
-                                    self.isInputViewShow = true
-                                    self.showInputAccessoryView()
-                                }
-                            )
-                        )
-                        present(confirmationModal, animated: true, completion:  {
-                            self.isInputViewShow = false
-                            self.hideInputAccessoryView()
-                        })
+                    self.isInputViewShow = true
+                    self.hideInputAccessoryView()
+                    let shareContactViewController = ShareContactViewController(state: .fromChat)
+                    shareContactViewController.delegate = self
+                    let address = viewItem.sharedContactMessage?.address
+                    let names = viewItem.sharedContactMessage?.name
+                    if let dataOfAddress = address?.data(using: .utf8), let dataOfNames = names?.data(using: .utf8)  {
+                        do {
+                            if let arrayOfAddress = try JSONSerialization.jsonObject(with: dataOfAddress, options: []) as? [String], let arrayOfNames = try JSONSerialization.jsonObject(with: dataOfNames, options: []) as? [String] {
+                                let sharedContacts = Dictionary(uniqueKeysWithValues: zip(arrayOfAddress, arrayOfNames))
+                                shareContactViewController.filterDict = sharedContacts
+                            }
+                        } catch {
+                            print("Failed to parse JSON: \(error)")
+                        }
                     }
+                    self.navigationController?.pushViewController(shareContactViewController, animated: true)
+                    self.showInputAccessoryView()
                 default: break
             }
         }

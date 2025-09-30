@@ -154,7 +154,7 @@ final class ShareContactTableViewCell: UITableViewCell {
         
         checkboxButton.isHidden = state == .fromChat
         chatButton.isHidden = state == .fromAttachment
-        removeContactButton.isHidden = state == .fromAttachment
+        removeContactButton.isHidden = true//state == .fromAttachment
         
         profileImageView.publicKey = publicKey
         profileImageView.update()

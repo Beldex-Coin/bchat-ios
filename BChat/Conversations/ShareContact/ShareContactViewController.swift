@@ -64,7 +64,12 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         setupTableView()
         setupSendButton()
         setupNoResultsView()
-        loadContacts()
+        if state == .fromAttachment {
+            loadContacts()
+        } else {
+            sendButton.isHidden = true
+        }
+        
     }
     
     // MARK: - Setup UI
@@ -72,9 +77,11 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     private func setupNavigation() {
         setUpNavBarStyle()
         navigationItem.title = state == .fromAttachment ? "Send Contact" : "View Contact"
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                                target: self,
-                                                                action: #selector(cancelTapped))
+        if state == .fromAttachment {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                                                    target: self,
+                                                                    action: #selector(cancelTapped))
+        }
     }
 
     private func setupSearchTextFeild() {
@@ -243,8 +250,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         for i in 0...(publicKey.count - 1) {
             nameArray.append(Storage.shared.getContact(with: publicKeyArray[i])?.displayName(for: .regular) ?? publicKeyArray[i])
         }
-//        let contact: Contact? = Storage.shared.getContact(with: publicKey)
-//        let name = contact?.displayName(for: .regular) ?? publicKey
         delegate?.sendSharedContact(with: Array(publicKey), name: nameArray)
         cancelTapped()
     }
@@ -286,7 +291,21 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     // MARK: - TableView Delegate
         
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        updateSelectedContacts(with: indexPath)
+        if state == .fromAttachment {
+            updateSelectedContacts(with: indexPath)
+        } else {
+            let thread = TSContactThread.getOrCreateThread(contactBChatID: Array(filterDict.keys)[indexPath.row])
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                let conversationVC = ConversationVC(thread: thread)
+                var viewControllers = self.navigationController?.viewControllers
+                if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
+                viewControllers?.append(conversationVC)
+                self.navigationController?.setViewControllers(viewControllers!, animated: true)
+            }
+            CATransaction.commit()
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -325,7 +344,6 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         guard !filterDict.isEmpty else { return }
         let publicKey = Array(filterDict.keys)[indexPath.row]
         if !selectedContacts.contains(publicKey) {
-//            selectedContacts.removeAll()
             selectedContacts.insert(publicKey)
         } else {
             selectedContacts.remove(publicKey)
