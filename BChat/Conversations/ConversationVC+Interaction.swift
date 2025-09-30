@@ -349,7 +349,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Contact Sending
     
-    func sendSharedContact(with address: String, name: String) {
+    func sendSharedContact(with address: [String], name: [String]) {
         sendMessage(address: address, name: name)
     }
 
@@ -359,7 +359,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         sendMessage()
     }
     
-    func sendMessage(hasPermissionToSendSeed: Bool = false, address: String? = nil, name: String? = nil) {
+    func sendMessage(hasPermissionToSendSeed: Bool = false, address: [String]? = nil, name: [String]? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
         let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
         let thread = self.thread
@@ -409,10 +409,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 message.text = text
                 message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
                 if let contactAddress = address, let contactName = name {
-                    message.text = contactName
-                    message.sharedContact = VisibleMessage.SharedContact(address: contactAddress, name: contactName)
+                    let contactNameString = try? String(data: JSONEncoder().encode(contactName), encoding: .utf8)
+                    let contactAddressString = try? String(data: JSONEncoder().encode(contactAddress), encoding: .utf8)
+                    let stringOfNamesForMessageText = contactName.joined(separator: ", ")
+                    message.text = stringOfNamesForMessageText
+                    message.sharedContact = VisibleMessage.SharedContact(address: contactAddressString, name: contactNameString)
                     if snInputView.viewItem?.sharedContactMessage?.address != nil || message.quote != nil {
-                        message.text = getJSONStrigForSharedContact(address: contactAddress, name: contactName)
+                        message.text = getJSONStrigForSharedContact(address: contactAddressString ?? "", name: contactNameString ?? "")
                     }
                 }
                 
@@ -438,7 +441,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                     if address != nil {
-                        message.sharedContact = VisibleMessage.SharedContact(address: address, name: name)
+                        let contactNameString = try? String(data: JSONEncoder().encode(name), encoding: .utf8)
+                        let contactAddressString = try? String(data: JSONEncoder().encode(address), encoding: .utf8)
+                        message.sharedContact = VisibleMessage.SharedContact(address: contactAddressString, name: contactNameString)
                     }
                 }
                 

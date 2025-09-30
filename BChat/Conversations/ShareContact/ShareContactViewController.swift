@@ -13,7 +13,7 @@ enum SharedContactState: Int, CaseIterable {
 
 @objc
 protocol ShareContactDelegate: AnyObject {
-    func sendSharedContact(with address: String, name: String)
+    func sendSharedContact(with address: [String], name: [String])
 }
 
 final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableViewDelegate, UISearchTextFieldDelegate {
@@ -237,10 +237,15 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     
     @objc private func sendButtonTapped() {
         guard !selectedContacts.isEmpty else { return }
-        let publicKey: String = selectedContacts.first ?? ""
-        let contact: Contact? = Storage.shared.getContact(with: publicKey)
-        let name = contact?.displayName(for: .regular) ?? publicKey
-        delegate?.sendSharedContact(with: publicKey, name: name)
+        let publicKey = selectedContacts
+        var publicKeyArray: [String] = Array(publicKey)
+        var nameArray: [String] = []
+        for i in 0...(publicKey.count - 1) {
+            nameArray.append(Storage.shared.getContact(with: publicKeyArray[i])?.displayName(for: .regular) ?? publicKeyArray[i])
+        }
+//        let contact: Contact? = Storage.shared.getContact(with: publicKey)
+//        let name = contact?.displayName(for: .regular) ?? publicKey
+        delegate?.sendSharedContact(with: Array(publicKey), name: nameArray)
         cancelTapped()
     }
 
@@ -320,7 +325,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         guard !filterDict.isEmpty else { return }
         let publicKey = Array(filterDict.keys)[indexPath.row]
         if !selectedContacts.contains(publicKey) {
-            selectedContacts.removeAll()
+//            selectedContacts.removeAll()
             selectedContacts.insert(publicKey)
         } else {
             selectedContacts.remove(publicKey)
