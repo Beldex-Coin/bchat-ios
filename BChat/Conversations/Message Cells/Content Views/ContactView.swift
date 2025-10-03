@@ -54,7 +54,7 @@ final class ContactView : UIView {
         profileImageView.set(.height, to: profilePictureViewSize)
         profileImageView.layer.masksToBounds = true
         profileImageView.layer.cornerRadius = 20
-        profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: getUserHexEncodedPublicKey())
+        profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: bChatID)
         
         lazy var verifiedImageView: UIImageView = {
             let result = UIImageView()
@@ -69,7 +69,7 @@ final class ContactView : UIView {
         backGroundView.pin(.right, to: .right, of: self, withInset: -6)
         backGroundView.pin(.top, to: .top, of: self, withInset: 6)
         backGroundView.pin(.left, to: .left, of: self, withInset: 6)
-        backGroundView.pin(.bottom, to: .bottom, of: self, withInset: -15)
+        backGroundView.pin(.bottom, to: .bottom, of: self, withInset: 0)
         backGroundView.set(.width, to: (UIScreen.main.bounds.width / 2) + 70 )
         
         let contactIconImageView = UIImageView(image: #imageLiteral(resourceName: "ic_contact"))

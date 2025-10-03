@@ -811,11 +811,54 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 quoteView.layer.cornerRadius = 8
                 stackView.addArrangedSubview(quoteViewContainer)
             }
-                let contactView = ContactView(bChatID: sharedContactMessage.address ?? "", isOutgoing: isOutgoing, contactName: sharedContactMessage.name ?? "", searchString: lastSearchedText ?? "")
+            
+            var countOfNames = 0
+            countOfNames = getArrayOfNames(sharedContactMessage.name ?? "")?.count ?? 0
+            
+            var stringToShowAsName = ""
+            if countOfNames <= 1 {
+                stringToShowAsName = convertJSONStringToCommaSeparatedString(sharedContactMessage.name ?? "") ?? ""
+            } else {
+                let firstName = getArrayOfNames(sharedContactMessage.name ?? "")?.first ?? ""
+                stringToShowAsName = "\(firstName) + \(countOfNames - 1) others"
+            }
+            
+            let contactView = ContactView(bChatID: getArrayOfNames(sharedContactMessage.address ?? "")?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName, searchString: lastSearchedText ?? "")
                 stackView.addArrangedSubview(contactView)
+            
+                let bottomDiscriptionLabel = UILabel()
+                bottomDiscriptionLabel.font = Fonts.regularOpenSans(ofSize: 15)
+                bottomDiscriptionLabel.textColor = bodyLabelTextColor
+                bottomDiscriptionLabel.textAlignment = .left
+                if countOfNames <= 1 {
+                    bottomDiscriptionLabel.text = "  Message >"
+                } else {
+                    bottomDiscriptionLabel.text = "  View all >"
+                }
+                stackView.addArrangedSubview(bottomDiscriptionLabel)
+            
                 snContentView.addSubview(stackView)
                 stackView.pin(to: snContentView)
             default: return
+        }
+    }
+    
+    func getArrayOfNames(_ jsonString: String) -> [String]? {
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Error: Unable to convert string to Data")
+            return nil
+        }
+
+        do {
+            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
+                return array
+            } else {
+                print("Error: JSON is not a [String] array")
+                return nil
+            }
+        } catch {
+            print("JSON parsing error: \(error)")
+            return nil
         }
     }
     

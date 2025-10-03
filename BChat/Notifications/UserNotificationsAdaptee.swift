@@ -126,7 +126,7 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
                 do {
                     let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                     if contact.kind.type == "SharedContact" {
-                        text = contact.kind.name
+                        text = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
                     }
                 } catch {
                     print("Failed to decode JSON: \(error)")
@@ -167,6 +167,20 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
         notifications[notificationIdentifier] = request
     }
 
+    func convertJSONStringToCommaSeparatedString(_ jsonString: String) -> String? {
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Invalid string encoding")
+            return nil
+        }
+        do {
+            let array = try JSONDecoder().decode([String].self, from: data)
+            return array.joined(separator: ", ")
+        } catch {
+            print("JSON decoding error: \(error)")
+            return nil
+        }
+    }
+    
     func cancelNotification(identifier: String) {
         AssertIsOnMainThread()
         notifications.removeValue(forKey: identifier)

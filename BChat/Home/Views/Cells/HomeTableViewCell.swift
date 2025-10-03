@@ -437,7 +437,7 @@ class HomeTableViewCell: UITableViewCell {
             do {
                 let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                 if contact.kind.type == "SharedContact" {
-                    lastMessageText = contact.kind.name
+                    lastMessageText = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
                 }
             } catch {
                 print("Failed to decode JSON: \(error)")

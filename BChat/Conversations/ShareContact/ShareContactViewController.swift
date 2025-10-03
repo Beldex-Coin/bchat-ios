@@ -76,7 +76,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
 
     private func setupNavigation() {
         setUpNavBarStyle()
-        navigationItem.title = state == .fromAttachment ? "Send Contact" : "View Contact"
+        navigationItem.title = state == .fromAttachment ? "Send Contact" : "View Contacts"
         if state == .fromAttachment {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                     target: self,
@@ -271,6 +271,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         cell.checkboxButton.isSelected = selectedContacts.contains(publicKey)
         cell.state = state
         cell.update()
+        
+        if state == .fromChat {
+            cell.nameLabel.text = Array(filterDict.values)[indexPath.row]
+        }
 
         cell.checkboxToggleSelection = { [weak self] in
             guard let self = self else { return }
@@ -295,15 +299,32 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
             updateSelectedContacts(with: indexPath)
         } else {
             let thread = TSContactThread.getOrCreateThread(contactBChatID: Array(filterDict.keys)[indexPath.row])
-            CATransaction.begin()
-            CATransaction.setCompletionBlock {
-                let conversationVC = ConversationVC(thread: thread)
-                var viewControllers = self.navigationController?.viewControllers
-                if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
-                viewControllers?.append(conversationVC)
-                self.navigationController?.setViewControllers(viewControllers!, animated: true)
-            }
-            CATransaction.commit()
+            
+            // show confirmation modal
+            let confirmationModal: ConfirmationModal = ConfirmationModal(
+                info: ConfirmationModal.Info(
+                    modalType: .shareContact,
+                    title: (Array(filterDict.values)[indexPath.row]),
+                    body: .text("Do you want to chat with this contact now?"),
+                    showCondition: .disabled,
+                    confirmTitle: "Chat",
+                    onConfirm: { _ in
+                        CATransaction.begin()
+                        CATransaction.setCompletionBlock {
+                            let conversationVC = ConversationVC(thread: thread)
+                            var viewControllers = self.navigationController?.viewControllers
+                            if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
+                            viewControllers?.append(conversationVC)
+                            self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                        }
+                        CATransaction.commit()
+                    }, dismissHandler: {
+                    }
+                )
+            )
+            present(confirmationModal, animated: true, completion:  {
+            })
+            
         }
         
     }

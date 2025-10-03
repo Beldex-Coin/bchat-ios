@@ -1017,6 +1017,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                 case .sharedContact:
+                var counOfNames = 0
+                if let counOfNamesString = viewItem.sharedContactMessage?.name?.data(using: .utf8)  {
+                    do {
+                        if let arrayOfNames = try JSONSerialization.jsonObject(with: counOfNamesString, options: []) as? [String] {
+                            counOfNames = arrayOfNames.count
+                        }
+                    } catch {
+                        print("Failed to parse JSON: \(error)")
+                    }
+                }
+                
+                if counOfNames > 1 {
                     self.isInputViewShow = true
                     self.hideInputAccessoryView()
                     let shareContactViewController = ShareContactViewController(state: .fromChat)
@@ -1035,8 +1047,64 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     }
                     self.navigationController?.pushViewController(shareContactViewController, animated: true)
                     self.showInputAccessoryView()
+                } else {
+                    guard let sharedContact = viewItem.sharedContactMessage,
+                          let bchatId = getArrayFromJSONString(viewItem.sharedContactMessage?.address ?? "")?.first else { return }
+                    let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
+                    if thread.uniqueId != self.thread.uniqueId {
+                        // show confirmation modal
+                        let confirmationModal: ConfirmationModal = ConfirmationModal(
+                            info: ConfirmationModal.Info(
+                                modalType: .shareContact,
+                                title: (getArrayFromJSONString(sharedContact.name ?? "")?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
+                                body: .text("Do you want to chat with this contact now?"),
+                                showCondition: .disabled,
+                                confirmTitle: "Chat",
+                                onConfirm: { _ in
+                                    self.isInputViewShow = true
+                                    CATransaction.begin()
+                                    CATransaction.setCompletionBlock {
+                                        let conversationVC = ConversationVC(thread: thread)
+                                        var viewControllers = self.navigationController?.viewControllers
+                                        if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
+                                        viewControllers?.append(conversationVC)
+                                        self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                                    }
+                                    CATransaction.commit()
+                                }, dismissHandler: {
+                                    self.isInputViewShow = true
+                                    self.showInputAccessoryView()
+                                }
+                            )
+                        )
+                        present(confirmationModal, animated: true, completion:  {
+                            self.isInputViewShow = false
+                            self.hideInputAccessoryView()
+                        })
+                    }
+                }
+                
                 default: break
             }
+        }
+    }
+    
+    func getArrayFromJSONString(_ jsonString: String) -> [String]? {
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Error: Unable to convert string to Data")
+            return nil
+        }
+
+        do {
+            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
+                return array
+            } else {
+                print("Error: JSON is not a [String] array")
+                return nil
+            }
+        } catch {
+            print("JSON parsing error: \(error)")
+            return nil
         }
     }
     

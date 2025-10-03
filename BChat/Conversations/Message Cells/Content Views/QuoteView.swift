@@ -224,7 +224,7 @@ final class QuoteView : UIView {
             do {
                 let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                 if contact.kind.type == "SharedContact" {
-                    text = contact.kind.name
+                    text = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
                     showContactIcon = true
                 }
             } catch {

@@ -264,3 +264,21 @@ extension UIView {
     }
 }
 
+
+extension UIView {
+    
+    func convertJSONStringToCommaSeparatedString(_ jsonString: String) -> String? {
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Invalid string encoding")
+            return nil
+        }
+        do {
+            let array = try JSONDecoder().decode([String].self, from: data)
+            return array.joined(separator: ", ")
+        } catch {
+            print("JSON decoding error: \(error)")
+            return nil
+        }
+    }
+    
+}
