@@ -282,3 +282,18 @@ extension UIView {
     }
     
 }
+
+extension UIView {
+    func screenShotPrevention() {
+        let preventedView = UITextField()
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        preventedView.isSecureTextEntry = true
+        self.addSubview(preventedView)
+        preventedView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        preventedView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.layer.superlayer?.addSublayer(preventedView.layer)
+        preventedView.layer.sublayers?.last?.addSublayer(self.layer)
+        preventedView.leftView = view
+        preventedView.leftViewMode = .always
+    }
+}
