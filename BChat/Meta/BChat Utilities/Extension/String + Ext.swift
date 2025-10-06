@@ -135,3 +135,25 @@ extension String {
         return "\(start)........\(end)"
     }
 }
+
+extension String {
+    
+    func toStringArrayFromJSON() -> [String]? {
+        guard let data = self.data(using: .utf8) else {
+            print("Error: Unable to convert string to Data")
+            return nil
+        }
+
+        do {
+            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
+                return array
+            } else {
+                print("Error: JSON is not a [String] array")
+                return nil
+            }
+        } catch {
+            print("JSON parsing error: \(error)")
+            return nil
+        }
+    }
+}

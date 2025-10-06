@@ -124,22 +124,12 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
             var text = body
             if body.contains("👤") {
                 var processedText = body.replacingOccurrences(of: "👤", with: "")
-                if let range = processedText.range(of: #"\[.*\]"#, options: .regularExpression) {
-                        let jsonArrayString = String(processedText[range])
-                        if let data = jsonArrayString.data(using: .utf8) {
-                            do {
-                                let array = try JSONDecoder().decode([String].self, from: data)
-                                
-                                if array.count <= 1 {
-                                    processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
-                                } else {
-                                    processedText = "\(array.first ?? "") + \(array.count - 1) others"
-                                }
-                            } catch {
-                                print("Failed to decode JSON array: \(error)")
-                            }
-                        }
-                    }
+                let namesArray = processedText.toStringArrayFromJSON()
+                if namesArray?.count ?? 0 <= 1 {
+                    processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
+                } else {
+                    processedText = "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others"
+                }
                     text = "👤 \(processedText)"
             }
             if let displayableBody = text.filterForDisplay {

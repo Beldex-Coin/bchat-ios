@@ -444,25 +444,13 @@ class HomeTableViewCell: UITableViewCell {
             
             var textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
             
-            if let range = textAttrString.string.range(of: #"\[.*\]"#, options: .regularExpression) {
-                let jsonArrayString = String(textAttrString.string[range])
-                if let data = jsonArrayString.data(using: .utf8) {
-                    do {
-                        let array = try JSONDecoder().decode([String].self, from: data)
-                        
-                        if array.count <= 1 {
-                            textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
-                        } else {
-                            textAttrString = NSAttributedString(string: "\(array.first ?? "") + \(array.count - 1) others")
-                        }
-                        
-                    } catch {
-                        print("Failed to decode JSON array: \(error)")
-                    }
-                }
+            let namesArray = textAttrString.string.toStringArrayFromJSON()
+            if namesArray?.count ?? 0 <= 1 {
+                textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
             } else {
-                print("No JSON array found in input.")
+                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others")
             }
+            
             let finalString = NSMutableAttributedString()
             finalString.append(imageAttrString)
             finalString.append(NSAttributedString(string: " "))
