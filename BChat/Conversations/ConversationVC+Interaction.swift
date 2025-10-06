@@ -98,8 +98,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func gotoSettingsScreen() {
         if let navController = UIWindow.keyWindow?.rootViewController as? UINavigationController {
-            let bChatSettingsNewVC = BChatSettingsNewVC()
-            navController.pushViewController(bChatSettingsNewVC, animated: true)
+            let settingsViewController = SettingsViewController()
+            navController.pushViewController(settingsViewController, animated: true)
         }
     }
 
@@ -1735,14 +1735,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
-        /*
         guard thread is TSContactThread else { return }
         let message = DataExtractionNotification()
         message.kind = .screenshot
         Storage.write { transaction in
             MessageSender.send(message, in: self.thread, using: transaction)
         }
-         */
     }
     
     func sendMediaSavedNotificationIfNeeded(for viewItem: ConversationViewItem) {

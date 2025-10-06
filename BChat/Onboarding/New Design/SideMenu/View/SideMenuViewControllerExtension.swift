@@ -91,7 +91,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             switch viewModel.menuTitles[indexPath.row] {
                 case .settings:
-                    let viewController = BChatSettingsNewVC()
+                    let viewController = SettingsViewController()
                     navigationController?.pushViewController(viewController, animated: true)
                 case .notification:
                     let viewController = NotificationsNewVC()
