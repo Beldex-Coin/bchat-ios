@@ -364,6 +364,9 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
             return [[attachmentDescription stringByAppendingString:@": "] stringByAppendingString:bodyDescription];
         }
     } else if (bodyDescription.length > 0) {
+        if (self.sharedContactMessage != nil) {
+            return [NSString stringWithFormat:@"👤 %@", self.sharedContactMessage.name];
+        }
         return bodyDescription;
     } else if (attachmentDescription.length > 0) {
         return attachmentDescription;

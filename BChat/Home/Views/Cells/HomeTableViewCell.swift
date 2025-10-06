@@ -431,19 +431,6 @@ class HomeTableViewCell: UITableViewCell {
         
         guard var lastMessageText = threadViewModel.lastMessageText else { return result }
         
-        // Removing JSON String if available and getting contact name
-        var text = lastMessageText
-        if let jsonData = text.data(using: .utf8) {
-            do {
-                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                if contact.kind.type == "SharedContact" {
-                    lastMessageText = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
-                }
-            } catch {
-                print("Failed to decode JSON: \(error)")
-            }
-        }
-        
         // Text message
         let snippet = MentionUtilities.highlightMentions(in: lastMessageText, threadID: threadViewModel.threadRecord.uniqueId!)
         result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
@@ -455,10 +442,30 @@ class HomeTableViewCell: UITableViewCell {
             attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
             let imageAttrString = NSAttributedString(attachment: attachment)
             
-            let textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
-
+            var textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
+            
+            if let range = textAttrString.string.range(of: #"\[.*\]"#, options: .regularExpression) {
+                let jsonArrayString = String(textAttrString.string[range])
+                if let data = jsonArrayString.data(using: .utf8) {
+                    do {
+                        let array = try JSONDecoder().decode([String].self, from: data)
+                        
+                        if array.count <= 1 {
+                            textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
+                        } else {
+                            textAttrString = NSAttributedString(string: "\(array.first ?? "") + \(array.count - 1) others")
+                        }
+                        
+                    } catch {
+                        print("Failed to decode JSON array: \(error)")
+                    }
+                }
+            } else {
+                print("No JSON array found in input.")
+            }
             let finalString = NSMutableAttributedString()
             finalString.append(imageAttrString)
+            finalString.append(NSAttributedString(string: " "))
             finalString.append(textAttrString)
             return finalString
         }

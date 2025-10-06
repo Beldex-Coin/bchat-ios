@@ -122,15 +122,25 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
             }
             
             var text = body
-            if let jsonData = text.data(using: .utf8) {
-                do {
-                    let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                    if contact.kind.type == "SharedContact" {
-                        text = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
+            if body.contains("👤") {
+                var processedText = body.replacingOccurrences(of: "👤", with: "")
+                if let range = processedText.range(of: #"\[.*\]"#, options: .regularExpression) {
+                        let jsonArrayString = String(processedText[range])
+                        if let data = jsonArrayString.data(using: .utf8) {
+                            do {
+                                let array = try JSONDecoder().decode([String].self, from: data)
+                                
+                                if array.count <= 1 {
+                                    processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
+                                } else {
+                                    processedText = "\(array.first ?? "") + \(array.count - 1) others"
+                                }
+                            } catch {
+                                print("Failed to decode JSON array: \(error)")
+                            }
+                        }
                     }
-                } catch {
-                    print("Failed to decode JSON: \(error)")
-                }
+                    text = "👤 \(processedText)"
             }
             if let displayableBody = text.filterForDisplay {
                 content.body = displayableBody
