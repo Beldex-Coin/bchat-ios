@@ -927,7 +927,7 @@ class NewPasswordVC: BaseVC {
             }
             
             if self.isGoingNewRecoverySeed == true {
-                let vc = NewRecoverySeedVC()
+                let vc = RecoverySeedViewController()
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

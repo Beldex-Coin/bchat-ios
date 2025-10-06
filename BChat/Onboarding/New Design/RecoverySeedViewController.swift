@@ -2,7 +2,9 @@
 
 import UIKit
 
-class NewRecoverySeedVC: BaseVC {
+class RecoverySeedViewController: BaseVC {
+    
+    private var blurView: UIVisualEffectView?
     
     lazy var iconImageView: UIImageView = {
         let result = UIImageView()
@@ -120,12 +122,36 @@ class NewRecoverySeedVC: BaseVC {
             copyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             copyButton.heightAnchor.constraint(equalToConstant: 58)
             ])
+        
+        // Observe screenshot
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(screenCapturedChanged),
+            name: UIApplication.userDidTakeScreenshotNotification,
+            object: nil
+        )
+        
+        // Observe screen capture (Live recording)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(screenCapturedChanged),
+            name: UIScreen.capturedDidChangeNotification,
+            object: nil
+        )
+        
+        checkScreenCapture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        view.screenShotPrevention()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -136,6 +162,22 @@ class NewRecoverySeedVC: BaseVC {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func screenCapturedChanged() {
+        checkScreenCapture()
+    }
+        
+    func checkScreenCapture() {
+        if UIScreen.main.isCaptured {
+            addBlur()
+        } else {
+            removeBlur()
+        }
     }
     
     @objc private func copyButtonTapped(_ sender: UIButton) {
@@ -154,4 +196,17 @@ class NewRecoverySeedVC: BaseVC {
         }, completion: nil)
     }
     
+    private func addBlur() {
+        guard blurView == nil else { return }
+        let blurEffect = UIBlurEffect(style: .light)
+        blurView = UIVisualEffectView(effect: blurEffect)
+        blurView?.frame = view.bounds
+        blurView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurView!)
+    }
+    
+    private func removeBlur() {
+        blurView?.removeFromSuperview()
+        blurView = nil
+    }
 }

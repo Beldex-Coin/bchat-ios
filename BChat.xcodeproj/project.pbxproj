@@ -291,7 +291,7 @@
 		81134CF92B60D16000070127 /* NewMessageRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CF82B60D16000070127 /* NewMessageRequestVC.swift */; };
 		81134CFB2B61053300070127 /* NewMessageRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */; };
 		81134CFD2B610AD300070127 /* NewAlertRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */; };
-		81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */; };
+		81134CFF2B61126F00070127 /* RecoverySeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81134CFE2B61126F00070127 /* RecoverySeedViewController.swift */; };
 		811391B62C18249D005C7BC8 /* CustomSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811391B52C18249D005C7BC8 /* CustomSwitch.swift */; };
 		8113C4902B9AAD5C00C9A7C5 /* AddNodeListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */; };
 		811498132BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */; };
@@ -1472,7 +1472,7 @@
 		81134CF82B60D16000070127 /* NewMessageRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestVC.swift; sourceTree = "<group>"; };
 		81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageRequestTableViewCell.swift; sourceTree = "<group>"; };
 		81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAlertRecoverySeedVC.swift; sourceTree = "<group>"; };
-		81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewRecoverySeedVC.swift; sourceTree = "<group>"; };
+		81134CFE2B61126F00070127 /* RecoverySeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverySeedViewController.swift; sourceTree = "<group>"; };
 		811391B52C18249D005C7BC8 /* CustomSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSwitch.swift; sourceTree = "<group>"; };
 		8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNodeListVC.swift; sourceTree = "<group>"; };
 		811498122BFB457700CCEEFD /* CustomChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
@@ -2871,7 +2871,7 @@
 				81134CF82B60D16000070127 /* NewMessageRequestVC.swift */,
 				81134CFA2B61053300070127 /* NewMessageRequestTableViewCell.swift */,
 				81134CFC2B610AD300070127 /* NewAlertRecoverySeedVC.swift */,
-				81134CFE2B61126F00070127 /* NewRecoverySeedVC.swift */,
+				81134CFE2B61126F00070127 /* RecoverySeedViewController.swift */,
 				8113C48F2B9AAD5C00C9A7C5 /* AddNodeListVC.swift */,
 				8122EE542BC904A60083AD6B /* CallPermissionPopUp.swift */,
 				810EA2D32BF3228C00642ED6 /* LinkBNSVC.swift */,
@@ -5811,7 +5811,7 @@
 				8AA342EF2E939295006A4E76 /* SettingsViewController.swift in Sources */,
 				B84A89BC25DE328A0040017D /* ProfilePictureVC.swift in Sources */,
 				810C96AB2C492E0F0006114E /* CallView.swift in Sources */,
-				81134CFF2B61126F00070127 /* NewRecoverySeedVC.swift in Sources */,
+				81134CFF2B61126F00070127 /* RecoverySeedViewController.swift in Sources */,
 				34386A54207D271D009F5D9C /* NeverClearView.swift in Sources */,
 				451166C01FD86B98000739BA /* AccountManager.swift in Sources */,
 				8A76580F2E2680CA00803F49 /* ShareContactTableViewCell.swift in Sources */,
