@@ -550,6 +550,20 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
         }
         
+        if ((snInputView.viewItem?.interaction as? TSMessage)?.openGroupInvitationURL != nil) {
+            message.quote?.text = NSLocalizedString("view_open_group_invitation_description", comment: "")
+        }
+        
+        if ((snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount != nil) {
+            let isOutgoing = (snInputView.viewItem?.interaction.interactionType() == .outgoingMessage)
+            let amount = (snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount ?? "0"
+            if isOutgoing {
+                message.quote?.text = "Payment Sent : \(amount) BDX"
+            } else {
+                message.quote?.text = "Payment Received : \(amount) BDX"
+            }
+        }
+        
         // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
         // use it to determine if the user is creating a new thread and update the 'isApproved'
         // flags appropriately
