@@ -1739,13 +1739,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let message = DataExtractionNotification()
         message.kind = .screenshot
         
-        if let contactThread: TSContactThread = thread as? TSContactThread {
-            if contactThread.contactBChatID() != getUserHexEncodedPublicKey() {
-                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-                Storage.writeSync { transaction in
-                    let infoMessage = TSInfoMessage(timestamp: sentTimestamp - 1, in: self.thread, messageType: .screenshotNotification, customMessage: "You took a screenshot")
-                    infoMessage.save(with: transaction)
-                }
+        if let contactThread: TSContactThread = thread as? TSContactThread,
+            contactThread.contactBChatID() != getUserHexEncodedPublicKey() {
+            let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
+            Storage.writeSync { transaction in
+                let infoMessage = TSInfoMessage(timestamp: sentTimestamp - 1, in: self.thread, messageType: .screenshotNotification, customMessage: "You took a screenshot")
+                infoMessage.save(with: transaction)
             }
         }
         

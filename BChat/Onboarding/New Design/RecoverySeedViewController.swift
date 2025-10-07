@@ -123,14 +123,6 @@ class RecoverySeedViewController: BaseVC {
             copyButton.heightAnchor.constraint(equalToConstant: 58)
             ])
         
-        // Observe screenshot
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(screenCapturedChanged),
-            name: UIApplication.userDidTakeScreenshotNotification,
-            object: nil
-        )
-        
         // Observe screen capture (Live recording)
         NotificationCenter.default.addObserver(
             self,
@@ -138,8 +130,6 @@ class RecoverySeedViewController: BaseVC {
             name: UIScreen.capturedDidChangeNotification,
             object: nil
         )
-        
-        checkScreenCapture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -151,13 +141,17 @@ class RecoverySeedViewController: BaseVC {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        view.screenShotPrevention()
+        let views = [iconImageView, infoLabel, seedView, copyButton]
+        views.forEach { view in
+            view.screenShotPrevention()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
        super.viewWillDisappear(animated)
         
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        NotificationCenter.default.removeObserver(self, name: UIScreen.capturedDidChangeNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -168,11 +162,8 @@ class RecoverySeedViewController: BaseVC {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func screenCapturedChanged() {
-        checkScreenCapture()
-    }
-        
-    func checkScreenCapture() {
+    @objc   
+    func screenCapturedChanged() {
         if UIScreen.main.isCaptured {
             addBlur()
         } else {
