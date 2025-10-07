@@ -11,7 +11,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode1", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode1.der")
             return nil
         }
         return cert
@@ -32,7 +32,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode3", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode3.der")
             return nil
         }
         return cert
@@ -42,7 +42,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode4", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode4.der")
             return nil
         }
         return cert
@@ -52,7 +52,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode5", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode5.der")
             return nil
         }
         return cert
@@ -79,7 +79,7 @@ public enum HTTP {
                 return completionHandler(.cancelAuthenticationChallenge, nil)
             }
             switch result {
-            case .proceed, .unspecified:
+            case .proceed, .unspecified, .recoverableTrustFailure:
                 // Unspecified indicates that evaluation reached an (implicitly trusted) anchor certificate without
                 // any evaluation failures, but never encountered any explicitly stated user-trust preference. This
                 // is the most common return value. The Keychain Access utility refers to this value as the "Use System
