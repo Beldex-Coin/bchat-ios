@@ -3,6 +3,8 @@ final class JoinOpenGroupModal : Modal {
     private let name: String
     private let url: String
     
+    var onDismiss: (() -> Void)?
+    
     // MARK: Lifecycle
     init(name: String, url: String) {
         self.name = name
@@ -16,6 +18,11 @@ final class JoinOpenGroupModal : Modal {
     
     required init?(coder: NSCoder) {
         preconditionFailure("Use init(name:url:) instead.")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        onDismiss?()
     }
     
     override func populateContentView() {

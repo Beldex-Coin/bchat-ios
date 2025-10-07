@@ -1017,10 +1017,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
+                        hideInputAccessoryView()
                         joinOpenGroup(name: name, url: url)
                     } else if let message = viewItem.interaction as? TSOutgoingMessage, let name = message.openGroupInvitationName,
                               let url = message.openGroupInvitationURL {
-                              joinOpenGroup(name: name, url: url)
+                        hideInputAccessoryView()
+                        joinOpenGroup(name: name, url: url)
                     } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
                     } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
@@ -1043,7 +1045,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
                 
                 if counOfNames > 1 {
-                    self.isInputViewShow = true
                     self.hideInputAccessoryView()
                     let shareContactViewController = ShareContactViewController(state: .fromChat)
                     shareContactViewController.delegate = self
@@ -1060,7 +1061,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                     self.navigationController?.pushViewController(shareContactViewController, animated: true)
-                    self.showInputAccessoryView()
                 } else {
                     guard let sharedContact = viewItem.sharedContactMessage,
                           let bchatId = getArrayFromJSONString(viewItem.sharedContactMessage?.address ?? "")?.first else { return }
@@ -1473,6 +1473,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let joinOpenGroupModal = JoinOpenGroupModal(name: name, url: url)
         joinOpenGroupModal.modalPresentationStyle = .overFullScreen
         joinOpenGroupModal.modalTransitionStyle = .crossDissolve
+        joinOpenGroupModal.onDismiss = {
+            self.showInputAccessoryView()
+        }
         present(joinOpenGroupModal, animated: true, completion: nil)
     }
     
