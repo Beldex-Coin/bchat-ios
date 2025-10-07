@@ -5,7 +5,6 @@ import Foundation
 final class SettingsTableViewCell: UITableViewCell {
     static let identifier = "SettingsTableViewCell"
     
-//    private let containerView = UIView()
     private let iconView = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
@@ -21,15 +20,10 @@ final class SettingsTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
     private func setupUI() {
-        backgroundColor = .clear
+        backgroundColor = Colors.settingsCellBackgroundColor
         selectionStyle = .none
         
-//        containerView.backgroundColor = .clear
-        //Colors.settingsCellBackgroundColor
-//        containerView.layer.cornerRadius = 16
-//        containerView.layer.masksToBounds = true
-//        containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-//        [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        layer.cornerRadius = 16
         
         iconView.tintColor = isLightMode ? .black : .white
         iconView.contentMode = .scaleAspectFit
@@ -49,22 +43,15 @@ final class SettingsTableViewCell: UITableViewCell {
         stack.axis = .vertical
         stack.spacing = 5
         
-//        contentView.addSubview(containerView)
         contentView.addSubview(iconView)
         contentView.addSubview(stack)
         contentView.addSubview(toggleSwitch)
         
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
         iconView.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
-//            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-//            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-//            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
-//            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             
             iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

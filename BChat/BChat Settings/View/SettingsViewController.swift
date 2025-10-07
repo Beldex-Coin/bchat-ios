@@ -4,7 +4,7 @@ import Foundation
 
 final class SettingsViewController: BaseVC {
     
-    private let tableView = UITableView() //frame: .zero, style: .grouped)
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let viewModel = SettingsViewModel()
     
     override func viewDidLoad() {
@@ -44,14 +44,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         return viewModel.settings[sectionType]?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        SettingsSection.allCases[section].rawValue
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = Colors.bothGreenColor
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCell.identifier, for: indexPath) as? SettingsTableViewCell else {
@@ -65,31 +57,31 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
                 tableView.reloadRows(at: [indexPath], with: .none)
             }
         }
+        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = Colors.settingsCellBackgroundColor
-        cell.layer.cornerRadius = 16
-        cell.layer.masksToBounds = true
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        50
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = Colors.viewBackgroundColorNew
         
-        // Add spacing between sections
-        let sectionCount = tableView.numberOfRows(inSection: indexPath.section)
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.text = SettingsSection.allCases[section].rawValue
+        titleLabel.font = Fonts.semiOpenSans(ofSize: 16)
+        titleLabel.textColor = Colors.bothGreenColor
         
-        // Top corners
-        if indexPath.row == 0 {
-            cell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
-        // Bottom corners
-        else if indexPath.row == sectionCount - 1 {
-            cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        } else {
-            cell.layer.cornerRadius = 0
-        }
+        headerView.addSubview(titleLabel)
         
-        // Add vertical spacing between section groups
-        tableView.sectionHeaderTopPadding = 8
-        tableView.sectionFooterHeight = 8
-        tableView.contentInset = UIEdgeInsets(top: 8, left: 16, bottom: 16, right: 16)
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
+            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -14)
+        ])
+        
+        return headerView
     }
 }
