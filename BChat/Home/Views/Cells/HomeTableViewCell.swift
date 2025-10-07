@@ -431,19 +431,6 @@ class HomeTableViewCell: UITableViewCell {
         
         guard var lastMessageText = threadViewModel.lastMessageText else { return result }
         
-        // Removing JSON String if available and getting contact name
-        var text = lastMessageText
-        if let jsonData = text.data(using: .utf8) {
-            do {
-                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                if contact.kind.type == "SharedContact" {
-                    lastMessageText = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
-                }
-            } catch {
-                print("Failed to decode JSON: \(error)")
-            }
-        }
-        
         // Text message
         let snippet = MentionUtilities.highlightMentions(in: lastMessageText, threadID: threadViewModel.threadRecord.uniqueId!)
         result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
@@ -455,10 +442,18 @@ class HomeTableViewCell: UITableViewCell {
             attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
             let imageAttrString = NSAttributedString(attachment: attachment)
             
-            let textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
-
+            var textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
+            
+            let namesArray = textAttrString.string.toStringArrayFromJSON()
+            if namesArray?.count ?? 0 <= 1 {
+                textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
+            } else {
+                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others")
+            }
+            
             let finalString = NSMutableAttributedString()
             finalString.append(imageAttrString)
+            finalString.append(NSAttributedString(string: " "))
             finalString.append(textAttrString)
             return finalString
         }
