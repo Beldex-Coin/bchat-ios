@@ -128,7 +128,7 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
                 if namesArray?.count ?? 0 <= 1 {
                     processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
                 } else {
-                    processedText = "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others"
+                    processedText = "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) others"
                 }
                     text = "👤 \(processedText)"
             }

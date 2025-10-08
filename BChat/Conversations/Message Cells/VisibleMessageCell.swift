@@ -822,7 +822,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stringToShowAsName = convertJSONStringToCommaSeparatedString(sharedContactMessage.name ?? "") ?? ""
             } else {
                 let firstName = getArrayOfNames(sharedContactMessage.name ?? "")?.first ?? ""
-                stringToShowAsName = "\(firstName) + \(countOfNames - 1) others"
+                stringToShowAsName = "\(firstName) and \(countOfNames - 1) others"
             }
             
             let contactView = ContactView(bChatID: getArrayOfNames(sharedContactMessage.address ?? "")?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "")

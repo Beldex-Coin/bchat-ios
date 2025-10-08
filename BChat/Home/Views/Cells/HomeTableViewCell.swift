@@ -448,7 +448,7 @@ class HomeTableViewCell: UITableViewCell {
             if namesArray?.count ?? 0 <= 1 {
                 textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
             } else {
-                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others")
+                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) others")
             }
             
             let finalString = NSMutableAttributedString()
