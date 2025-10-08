@@ -1066,6 +1066,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                           let bchatId = getArrayFromJSONString(viewItem.sharedContactMessage?.address ?? "")?.first else { return }
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
                     if thread.uniqueId != self.thread.uniqueId {
+                        self.hideInputAccessoryView()
                         // show confirmation modal
                         let confirmationModal: ConfirmationModal = ConfirmationModal(
                             info: ConfirmationModal.Info(
@@ -1075,7 +1076,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                 showCondition: .disabled,
                                 confirmTitle: "Chat",
                                 onConfirm: { _ in
-                                    self.isInputViewShow = true
                                     CATransaction.begin()
                                     CATransaction.setCompletionBlock {
                                         let conversationVC = ConversationVC(thread: thread)
@@ -1086,15 +1086,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                     }
                                     CATransaction.commit()
                                 }, dismissHandler: {
-                                    self.isInputViewShow = true
                                     self.showInputAccessoryView()
                                 }
                             )
                         )
-                        present(confirmationModal, animated: true, completion:  {
-                            self.isInputViewShow = false
-                            self.hideInputAccessoryView()
-                        })
+                        present(confirmationModal, animated: true, completion: nil)
                     }
                 }
                 

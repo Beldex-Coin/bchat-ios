@@ -1144,7 +1144,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         markAllAsRead()
         recoverInputView()
         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
-        
+        inputAccessoryView?.becomeFirstResponder()
         if backAPI == true {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true

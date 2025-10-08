@@ -541,6 +541,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     openGroupInvitationView.pin(to: snContentView)
                     openGroupInvitationView.layer.mask = bubbleViewMaskLayer
                 } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                    bubbleViewBottomConstraint.isActive = false
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0)
                     let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing, viewItem: viewItem)
                     paymentView.layer.cornerRadius = 18
                     snContentView.addSubview(paymentView)
@@ -823,7 +825,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stringToShowAsName = "\(firstName) + \(countOfNames - 1) others"
             }
             
-            let contactView = ContactView(bChatID: getArrayOfNames(sharedContactMessage.address ?? "")?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName, searchString: lastSearchedText ?? "")
+            let contactView = ContactView(bChatID: getArrayOfNames(sharedContactMessage.address ?? "")?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "")
                 stackView.addArrangedSubview(contactView)
             
                 let bottomDiscriptionLabel = UILabel()

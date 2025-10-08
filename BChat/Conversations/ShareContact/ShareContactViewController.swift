@@ -270,10 +270,11 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         cell.publicKey = publicKey
         cell.checkboxButton.isSelected = selectedContacts.contains(publicKey)
         cell.state = state
+        cell.name = Array(filterDict.values)[indexPath.row]
         cell.update()
         
         if state == .fromChat {
-            cell.nameLabel.text = Array(filterDict.values)[indexPath.row]
+            cell.nameLabel.text = Array(filterDict.values)[indexPath.row].firstCharacterUpperCase()
         }
 
         cell.checkboxToggleSelection = { [weak self] in
