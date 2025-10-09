@@ -20,6 +20,7 @@ final class SettingsViewController: BaseVC {
         tableView.delegate = self
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         
         view.addSubview(tableView)
@@ -55,6 +56,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             cell.switchChanged = { [weak self] in
                 self?.viewModel.toggleSwitch(for: indexPath)
                 tableView.reloadRows(at: [indexPath], with: .none)
+                self?.viewModel.switchValueChanged(rowAt: indexPath)
             }
         }
         

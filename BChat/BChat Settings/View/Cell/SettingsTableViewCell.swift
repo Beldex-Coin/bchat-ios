@@ -23,8 +23,6 @@ final class SettingsTableViewCell: UITableViewCell {
         backgroundColor = Colors.settingsCellBackgroundColor
         selectionStyle = .none
         
-        layer.cornerRadius = 16
-        
         iconView.tintColor = isLightMode ? .black : .white
         iconView.contentMode = .scaleAspectFit
         
@@ -75,7 +73,8 @@ final class SettingsTableViewCell: UITableViewCell {
     func configure(with item: SettingItem) {
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
-        iconView.image = UIImage(systemName: item.iconName)
+        iconView.image = UIImage(named: item.iconName)?.withRenderingMode(.alwaysOriginal)
+        
         toggleSwitch.isOn = item.isOn
         toggleSwitch.onTintColor = Colors.switchBackgroundColor
         toggleSwitch.thumbTintColor = item.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
