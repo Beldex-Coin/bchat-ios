@@ -152,7 +152,7 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
         case TSInfoMessageTypeGroupCurrentUserRemoved:
             return NSLocalizedString(@"YOU_WERE_REMOVED", @"");
         case TSInfoMessageTypeScreenshotNotification:
-            return NSLocalizedString((@"YOU_TOOK_A_SCREENSHOT"), @"");
+            return [NSString stringWithFormat:NSLocalizedString(@"screenshot_taken", @""), @"You"];
         default:
             break;
     }
