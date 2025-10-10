@@ -157,3 +157,24 @@ extension String {
         }
     }
 }
+
+extension String {
+    func sharedContactNameIfAvailable() -> String? {
+        guard let jsonData = self.data(using: .utf8) else {
+            return nil
+        }
+        do {
+            let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+            return contact.kind.type == "SharedContact" ? contact.kind.name : nil
+        } catch {
+            return nil
+        }
+    }
+}
+
+extension String {
+    var isSharedContactType: Bool {
+        return sharedContactNameIfAvailable() != nil
+    }
+}
+

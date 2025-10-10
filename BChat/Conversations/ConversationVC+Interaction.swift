@@ -546,7 +546,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
         
         if snInputView.quoteDraftInfo?.isSharedContact == true {
-            message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
             message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
         }
         
@@ -1063,7 +1062,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     self.navigationController?.pushViewController(shareContactViewController, animated: true)
                 } else {
                     guard let sharedContact = viewItem.sharedContactMessage,
-                          let bchatId = getArrayFromJSONString(viewItem.sharedContactMessage?.address ?? "")?.first else { return }
+                          let bchatId = viewItem.sharedContactMessage?.address?.toStringArrayFromJSON()?.first else { return }
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
                     if thread.uniqueId != self.thread.uniqueId {
                         self.hideInputAccessoryView()
@@ -1071,7 +1070,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         let confirmationModal: ConfirmationModal = ConfirmationModal(
                             info: ConfirmationModal.Info(
                                 modalType: .shareContact,
-                                title: (getArrayFromJSONString(sharedContact.name ?? "")?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
+                                title: (sharedContact.name?.toStringArrayFromJSON()?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
                                 body: .text("Do you want to chat with this contact now?"),
                                 showCondition: .disabled,
                                 confirmTitle: "Chat",
@@ -1096,25 +1095,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 
                 default: break
             }
-        }
-    }
-    
-    func getArrayFromJSONString(_ jsonString: String) -> [String]? {
-        guard let data = jsonString.data(using: .utf8) else {
-            print("Error: Unable to convert string to Data")
-            return nil
-        }
-
-        do {
-            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
-                return array
-            } else {
-                print("Error: JSON is not a [String] array")
-                return nil
-            }
-        } catch {
-            print("JSON parsing error: \(error)")
-            return nil
         }
     }
     

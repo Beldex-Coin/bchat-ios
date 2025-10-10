@@ -224,12 +224,21 @@ final class QuoteView : UIView {
             do {
                 let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
                 if contact.kind.type == "SharedContact" {
-                    text = convertJSONStringToCommaSeparatedString(contact.kind.name) ?? ""
+                    let names = contact.kind.name.toStringArrayFromJSON() ?? []
+                    let other = names.count == 2 ? "other" : "others"
+                    text = names.count <= 1
+                        ? (convertJSONStringToCommaSeparatedString(contact.kind.name) ?? "")
+                        : "\(names.first ?? "") and \(names.count - 1) \(other)"
                     showContactIcon = true
                 }
             } catch {
                 if case .draft = mode {
                     showContactIcon = isSharedContact
+                    let names = viewitem?.sharedContactMessage?.name?.toStringArrayFromJSON() ?? []
+                    let other = names.count == 2 ? "other" : "others"
+                    text = names.count <= 1
+                        ? (convertJSONStringToCommaSeparatedString(viewitem?.sharedContactMessage?.name ?? "") ?? body ?? "")
+                        : "\(names.first ?? "") and \(names.count - 1) \(other)"
                 }
                 print("Failed to decode JSON: \(error)")
             }

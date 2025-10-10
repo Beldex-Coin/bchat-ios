@@ -125,10 +125,11 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
             if body.contains("👤") {
                 var processedText = body.replacingOccurrences(of: "👤", with: "")
                 let namesArray = processedText.toStringArrayFromJSON()
+                let other = namesArray?.count == 2 ? "other" : "others"
                 if namesArray?.count ?? 0 <= 1 {
                     processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
                 } else {
-                    processedText = "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) others"
+                    processedText = "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) \(other)"
                 }
                     text = "👤 \(processedText)"
             }
