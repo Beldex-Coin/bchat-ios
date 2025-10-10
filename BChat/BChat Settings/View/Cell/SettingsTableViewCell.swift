@@ -58,7 +58,7 @@ final class SettingsTableViewCell: UITableViewCell {
             
             stack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
             stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
             stack.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor, constant: -8),
             
             toggleSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -76,7 +76,6 @@ final class SettingsTableViewCell: UITableViewCell {
         iconView.image = UIImage(named: item.iconName)?.withRenderingMode(.alwaysOriginal)
         
         toggleSwitch.isOn = item.isOn
-        toggleSwitch.onTintColor = Colors.switchBackgroundColor
         toggleSwitch.thumbTintColor = item.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
     }
 }

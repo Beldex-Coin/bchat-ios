@@ -10,6 +10,7 @@ final class SettingsViewController: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setObserver()
     }
     
     private func setupUI() {
@@ -33,6 +34,14 @@ final class SettingsViewController: BaseVC {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+    private func setObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: .reloadSettingScreenTableNotification, object: nil)
+    }
+    
+    @objc func handleCallPermissionCancelTapped(notification: NSNotification) {
+        tableView.reloadData()
+    }
 }
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -54,9 +63,10 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         if let item = viewModel.settings[section]?[indexPath.row] {
             cell.configure(with: item)
             cell.switchChanged = { [weak self] in
-                self?.viewModel.toggleSwitch(for: indexPath)
-                tableView.reloadRows(at: [indexPath], with: .none)
-                self?.viewModel.switchValueChanged(rowAt: indexPath)
+                self?.viewModel.toggleSwitch(for: indexPath) {
+                    tableView.reloadRows(at: [indexPath], with: .none)
+                    self?.viewModel.switchValueChanged(rowAt: indexPath)
+                }
             }
         }
         
@@ -85,5 +95,84 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         ])
         
         return headerView
+    }
+}
+
+extension SettingsViewController {
+    
+    private func payAsYouChat(_ isEnabled: Bool)  {
+        if let myString = UserDefaults.standard.string(forKey: "WalletPassword"), !myString.isEmpty {
+            print("toggled to: \(isEnabled ? "true" : "false")")
+            SSKPreferences.arePayAsYouChatEnabled = isEnabled
+        } else {
+            let alertController = UIAlertController(
+                title: NSLocalizedString("Setup Pin", comment: "Alert title"),
+                message: NSLocalizedString("Please set up wallet pin to enable pay as you chat feature.", comment: "Alert message"),
+                preferredStyle: .alert
+            )
+            let cancelAction = UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "Cancel button title"),
+                style: .cancel,
+                handler: { action in
+                    print("User tapped Cancel")
+                }
+            )
+            alertController.addAction(cancelAction)
+            let yesAction = UIAlertAction(
+                title: NSLocalizedString("Setup", comment: "Setup button title"),
+                style: .default,
+                handler: { action in
+                    let viewController = NewPasswordVC()
+                    viewController.isGoingWallet = true
+                    if SaveUserDefaultsData.WalletPassword.isEmpty {
+                        viewController.isGoingPopUp = true
+                        viewController.isCreateWalletPassword = true
+                    } else {
+                        viewController.isVerifyWalletPassword = true
+                    }
+                    self.navigationController!.pushViewController(viewController, animated: true)
+                }
+            )
+            alertController.addAction(yesAction)
+            // Present the alert
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    private func voiceAndVideoCall(_ isEnabled: Bool) {
+        let userDefaults = UserDefaults.standard
+        if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
+            userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
+            let modal = CallPermissionPopUp { [weak self] in
+                guard let self = self else { return }
+                print("toggled to: \(isEnabled ? "true" : "OFF")")
+                let audioSession = AVAudioSession.sharedInstance()
+                if audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:))) {
+                    audioSession.requestRecordPermission({ granted in
+                        if granted {
+                            // Microphone access granted, you can now use the microphone.
+                            print("Microphone access granted")
+                            // Perform any additional actions you want here.
+                            // Check if the view controller is still presented
+                            if let presentingViewController = self.presentingViewController {
+                                DispatchQueue.main.async {
+                                    // Dismiss the presented view controller
+                                    presentingViewController.dismiss(animated: true, completion: {
+                                        // This block is optional and can be used to perform any tasks after the view controller is dismissed
+                                    })
+                                }
+                            }
+                        } else {
+                            // Microphone access denied. Handle this case accordingly.
+                            print("Microphone access denied")
+                        }
+                    })
+                }
+            }
+            present(modal, animated: true, completion: nil)
+        } else {
+            print("toggled to: \(isEnabled ? "true" : "false")")
+            SSKPreferences.areCallsEnabled = isEnabled
+        }
     }
 }
