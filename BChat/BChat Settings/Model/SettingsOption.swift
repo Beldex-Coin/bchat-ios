@@ -22,10 +22,10 @@ struct SettingItem {
 enum SettingInfo {
     
     /// Indicated Screen security
-    case screenSecurity
+    case screenLock
     
     /// Indicated Incognito keyboard
-    case incognitoKeyboard
+    case disablePreview
     
     /// Indicated Start wallet
     case startWallet
@@ -52,79 +52,79 @@ enum SettingInfo {
     
     /// title
     var title: String {
-        let aKey: String
+        let title: String
         switch self {
-        case .screenSecurity:
-            aKey = "Screen Security"
-        case .incognitoKeyboard:
-            aKey = "Incognito Keyboard"
+        case .screenLock:
+            title = "Screen Lock"
+        case .disablePreview:
+            title = "Disable Preview in app switcher"
         case .startWallet:
-            aKey = "Start Wallet"
+            title = "Start Wallet"
         case .payAsYouChat:
-            aKey = "Pay as you chat"
+            title = "Pay as you chat"
         case .readReceipts:
-            aKey = "Read receipts"
+            title = "Read receipts"
         case .typeIndicators:
-            aKey = "Type indicators"
+            title = "Type indicators"
         case .sendLinkPreviews:
-            aKey = "Send link previews"
+            title = "Send link previews"
         case .voiceAndVideoCalls:
-            aKey = "Voice and video calls"
+            title = "Voice and video calls"
         case .clearConversationHistory:
-            aKey = "Clear conversation History"
+            title = "Clear conversation History"
         }
-        return aKey
+        return title
     }
     
     /// sub title
     var subTitle: String {
-        let aKey: String
+        let subTitle: String
         switch self {
-        case .screenSecurity:
-            aKey = "Block Screenshots in the recents list and inside the app"
-        case .incognitoKeyboard:
-            aKey = "Request keyboard to disable personalized learning"
-        case .startWallet:
-            aKey = "Enabling wallet will allow you to send and receive BDX"
-        case .payAsYouChat:
-            aKey = "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"
-        case .readReceipts:
-            aKey = "If read receipts are disabled, you won’t be able to see read receipts from others"
-        case .typeIndicators:
-            aKey = "If typing indicators are disabled, you won’t be able to see typing indicators from others"
-        case .sendLinkPreviews:
-            aKey = "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links"
-        case .voiceAndVideoCalls:
-            aKey = "Allow access to accept voice and video calls from other users"
-        case .clearConversationHistory:
-            aKey = ""
+            case .screenLock:
+                subTitle = "Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when screen lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications."
+            case .disablePreview:
+                subTitle = "Prevent BChat previews from appearing in the app switcher."
+            case .startWallet:
+                subTitle = "Enabling wallet will allow you to send and receive BDX."
+            case .payAsYouChat:
+                subTitle = "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window."
+            case .readReceipts:
+                subTitle = "If read receipts are disabled, you won’t be able to see read receipts from others."
+            case .typeIndicators:
+                subTitle = "If typing indicators are disabled, you won’t be able to see typing indicators from others."
+            case .sendLinkPreviews:
+                subTitle = "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links."
+            case .voiceAndVideoCalls:
+                subTitle = "Allow access to accept voice and video calls from other users."
+            case .clearConversationHistory:
+                subTitle = ""
         }
-        return aKey
+        return subTitle
     }
     
     /// image name
     var imageName: String {
-        let aKey: String
+        let imageName: String
         switch self {
-            case .screenSecurity:
-                aKey = "ic_security"
-            case .incognitoKeyboard:
-                aKey = "ic_keyboard"
+            case .screenLock:
+                imageName = "ic_security"
+            case .disablePreview:
+                imageName = "ic_keyboard"
             case .startWallet:
-                aKey = "ic_startWallet_white"
+                imageName = "ic_startWallet_white"
             case .payAsYouChat:
-                aKey = "ic_pay_as_you_chat"
+                imageName = "ic_pay_as_you_chat"
             case .readReceipts:
-                aKey = "ic_Read_receipetNew"
+                imageName = "ic_Read_receipetNew"
             case .typeIndicators:
-                aKey = "ic_Type_indicaterNew"
+                imageName = "ic_Type_indicaterNew"
             case .sendLinkPreviews:
-                aKey = "ic_send_linkNew"
+                imageName = "ic_send_linkNew"
             case .voiceAndVideoCalls:
-                aKey = "ic_video_callNew"
+                imageName = "ic_video_callNew"
             case .clearConversationHistory:
-                aKey = "ic_clear_imgaes"
+                imageName = "ic_clear_imgaes"
         }
-        return aKey
+        return imageName
     }
 }

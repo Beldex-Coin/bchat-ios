@@ -5,6 +5,7 @@ import Foundation
 final class SettingsTableViewCell: UITableViewCell {
     static let identifier = "SettingsTableViewCell"
     
+    private let containerView = UIView()
     private let iconView = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
@@ -41,28 +42,35 @@ final class SettingsTableViewCell: UITableViewCell {
         stack.axis = .vertical
         stack.spacing = 5
         
-        contentView.addSubview(iconView)
-        contentView.addSubview(stack)
-        contentView.addSubview(toggleSwitch)
+        contentView.addSubview(containerView)
+        containerView.addSubview(iconView)
+        containerView.addSubview(stack)
+        containerView.addSubview(toggleSwitch)
         
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         iconView.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false
         toggleSwitch.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            iconView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            iconView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            
+            iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 18),
             iconView.heightAnchor.constraint(equalToConstant: 18),
             
             stack.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
+            stack.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
+            stack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
             stack.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor, constant: -8),
             
-            toggleSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            toggleSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            toggleSwitch.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            toggleSwitch.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16)
         ])
     }
     
@@ -83,10 +91,23 @@ final class SettingsTableViewCell: UITableViewCell {
             toggleSwitch.isEnabled = SSKPreferences.areWalletEnabled
         }
         
-        toggleSwitch.thumbTintColor = toggleSwitch.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
-        
-        iconView.tintColor = !item.isToggleSwitch ? .red : isLightMode ? .black : .white
         toggleSwitch.isHidden = !item.isToggleSwitch
         subtitleLabel.isHidden = !item.isToggleSwitch
+        iconView.tintColor = !item.isToggleSwitch ? .red : isLightMode ? .black : .white
+        toggleSwitch.thumbTintColor = toggleSwitch.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+    }
+    
+    func updateContainerView(with indexPath: IndexPath, item: SettingItem) {
+        if item.title == SettingInfo.screenLock.title ||
+            item.title == SettingInfo.startWallet.title ||
+            item.title == SettingInfo.readReceipts.title {
+            containerView.layer.cornerRadius = 16
+            containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        } else if item.title == SettingInfo.disablePreview.title ||
+            item.title == SettingInfo.payAsYouChat.title ||
+            item.title == SettingInfo.clearConversationHistory.title {
+            containerView.layer.cornerRadius = 16
+            containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        }
     }
 }

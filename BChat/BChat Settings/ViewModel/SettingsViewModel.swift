@@ -29,8 +29,8 @@ final class SettingsViewModel {
     private func loadData() {
         settings = [
             .appAccess: [
-                SettingItem(title: SettingInfo.screenSecurity.title, subtitle: SettingInfo.screenSecurity.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.screenSecurity.imageName),
-                SettingItem(title: SettingInfo.incognitoKeyboard.title, subtitle: SettingInfo.incognitoKeyboard.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.incognitoKeyboard.imageName)
+                SettingItem(title: SettingInfo.screenLock.title, subtitle: SettingInfo.screenLock.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.screenLock.imageName),
+                SettingItem(title: SettingInfo.disablePreview.title, subtitle: SettingInfo.disablePreview.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.disablePreview.imageName)
             ],
             .wallet: [
                 SettingItem(title: SettingInfo.startWallet.title, subtitle: SettingInfo.startWallet.subTitle, isOn: SSKPreferences.areWalletEnabled, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.startWallet.imageName),
@@ -58,8 +58,8 @@ final class SettingsViewModel {
         let section = SettingsSection.allCases[indexPath.section]
         guard let items = settings[section] else { return }
         let isEnabled = items[indexPath.row].isOn
-        if items[indexPath.row].title == SettingInfo.screenSecurity.title {
-        } else if items[indexPath.row].title == SettingInfo.incognitoKeyboard.title {
+        if items[indexPath.row].title == SettingInfo.screenLock.title {
+        } else if items[indexPath.row].title == SettingInfo.disablePreview.title {
         } else if items[indexPath.row].title == SettingInfo.startWallet.title {
             SSKPreferences.areWalletEnabled = isEnabled
             delegate?.reloadPayAsYouChatRow(indexPath)
