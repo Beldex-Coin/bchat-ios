@@ -55,9 +55,9 @@ final class SettingsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             
             containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
             containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -0),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -0),
             
             iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
