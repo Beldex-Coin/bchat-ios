@@ -212,7 +212,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(readReceiptsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 1 {
-                let logoImage = isLightMode ? "ic_Type_indicater_dark" : "ic_Type_indicaterNew"
+                let logoImage = isLightMode ? "ic_Type_indicater_dark" : "ic_Type_indicatorNew"
                 cell.logoImage.image = UIImage(named: logoImage)
                 // Type Indicators
                 let areTypingIndicatorsEnabled = SSKEnvironment.shared.typingIndicators.areTypingIndicatorsEnabled()

@@ -27,6 +27,7 @@ final class SettingsViewController: BaseVC {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.sectionFooterHeight = 0
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         
         view.addSubview(tableView)
@@ -119,7 +120,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
-            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -14)
+            titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10)
         ])
         
         return headerView

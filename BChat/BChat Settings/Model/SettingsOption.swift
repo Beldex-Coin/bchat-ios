@@ -76,7 +76,7 @@ enum SettingInfo {
         return title
     }
     
-    /// sub title
+    /// subTitle
     var subTitle: String {
         let subTitle: String
         switch self {
@@ -107,9 +107,9 @@ enum SettingInfo {
         let imageName: String
         switch self {
             case .screenLock:
-                imageName = "ic_security"
+                imageName = "ic_Screen_securityNew"
             case .disablePreview:
-                imageName = "ic_keyboard"
+                imageName = "ic_Disable_preview_white"
             case .startWallet:
                 imageName = "ic_startWallet_white"
             case .payAsYouChat:
@@ -117,7 +117,7 @@ enum SettingInfo {
             case .readReceipts:
                 imageName = "ic_Read_receipetNew"
             case .typeIndicators:
-                imageName = "ic_Type_indicaterNew"
+                imageName = "ic_Type_indicatorNew"
             case .sendLinkPreviews:
                 imageName = "ic_send_linkNew"
             case .voiceAndVideoCalls:
