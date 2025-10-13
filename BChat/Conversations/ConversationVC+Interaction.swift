@@ -98,7 +98,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func gotoSettingsScreen() {
         if let navController = UIWindow.keyWindow?.rootViewController as? UINavigationController {
-            let settingsViewController = SettingsViewController()
+            let settingsViewController = BChatSettingsNewVC()
             navController.pushViewController(settingsViewController, animated: true)
         }
     }
