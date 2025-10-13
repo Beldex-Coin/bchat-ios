@@ -9,8 +9,13 @@ final class SettingsViewController: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        initializeView()
         setupUI()
         setObserver()
+    }
+    
+    private func initializeView() {
+        viewModel.delegate = self
     }
     
     private func setupUI() {
@@ -39,8 +44,31 @@ final class SettingsViewController: BaseVC {
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: .reloadSettingScreenTableNotification, object: nil)
     }
     
+    private func deleteThreadsAndMessages() {
+        ThreadUtil.deleteAllContent()
+    }
+    
     @objc func handleCallPermissionCancelTapped(notification: NSNotification) {
         tableView.reloadData()
+    }
+    
+    private func clearConversations() {
+        let alert = UIAlertController(
+            title: nil,
+            message: NSLocalizedString("Are you sure? This cannot be undone.", comment: "Alert message before user confirms clearing history"),
+            preferredStyle: .alert
+        )
+        alert.addAction(OWSAlerts.cancelAction)
+        let deleteAction = UIAlertAction(
+            title: NSLocalizedString("SETTINGS_DELETE_HISTORYLOG_CONFIRMATION_BUTTON", comment: "Confirmation text for button which deletes all messages, calls, attachments, etc."),
+            style: .destructive,
+            handler: { [weak self] action in
+                guard let self = self else { return }
+                self.deleteThreadsAndMessages()
+            }
+        )
+        alert.addAction(deleteAction)
+        presentAlert(alert)
     }
 }
 
@@ -96,11 +124,20 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         return headerView
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let section = SettingsSection.allCases[indexPath.section]
+        if let item = viewModel.settings[section]?[indexPath.row] {
+            if item.title == SettingInfo.clearConversationHistory.title {
+                clearConversations()
+            }
+        }
+    }
 }
 
-extension SettingsViewController {
+extension SettingsViewController: SettingsViewModelDelegate {
     
-    private func payAsYouChat(_ isEnabled: Bool)  {
+    internal func payAsYouChat(_ isEnabled: Bool)  {
         if let myString = UserDefaults.standard.string(forKey: "WalletPassword"), !myString.isEmpty {
             print("toggled to: \(isEnabled ? "true" : "false")")
             SSKPreferences.arePayAsYouChatEnabled = isEnabled
@@ -139,10 +176,9 @@ extension SettingsViewController {
         }
     }
     
-    private func voiceAndVideoCall(_ isEnabled: Bool) {
+    internal func voiceAndVideoCall(_ isEnabled: Bool) {
         let userDefaults = UserDefaults.standard
         if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
-            userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
             let modal = CallPermissionPopUp { [weak self] in
                 guard let self = self else { return }
                 print("toggled to: \(isEnabled ? "true" : "OFF")")
@@ -152,6 +188,7 @@ extension SettingsViewController {
                         if granted {
                             // Microphone access granted, you can now use the microphone.
                             print("Microphone access granted")
+                            userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
                             // Perform any additional actions you want here.
                             // Check if the view controller is still presented
                             if let presentingViewController = self.presentingViewController {
@@ -174,5 +211,10 @@ extension SettingsViewController {
             print("toggled to: \(isEnabled ? "true" : "false")")
             SSKPreferences.areCallsEnabled = isEnabled
         }
+    }
+    
+    internal func reloadPayAsYouChatRow(_ indexPath: IndexPath) {
+        let updatedIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+        tableView.reloadRows(at: [updatedIndexPath], with: .none)
     }
 }

@@ -73,9 +73,20 @@ final class SettingsTableViewCell: UITableViewCell {
     func configure(with item: SettingItem) {
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
-        iconView.image = UIImage(named: item.iconName)?.withRenderingMode(.alwaysOriginal)
+        iconView.image = UIImage(named: item.iconName)?.withRenderingMode(.alwaysTemplate)
         
         toggleSwitch.isOn = item.isOn
-        toggleSwitch.thumbTintColor = item.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        toggleSwitch.isEnabled = item.isEnabled
+        
+        if item.title == SettingInfo.payAsYouChat.title {
+            toggleSwitch.isOn = item.isOn && SSKPreferences.areWalletEnabled
+            toggleSwitch.isEnabled = SSKPreferences.areWalletEnabled
+        }
+        
+        toggleSwitch.thumbTintColor = toggleSwitch.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        
+        iconView.tintColor = !item.isToggleSwitch ? .red : isLightMode ? .black : .white
+        toggleSwitch.isHidden = !item.isToggleSwitch
+        subtitleLabel.isHidden = !item.isToggleSwitch
     }
 }

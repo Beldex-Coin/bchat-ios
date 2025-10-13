@@ -5,6 +5,7 @@ import Foundation
 protocol SettingsViewModelDelegate: AnyObject {
     func payAsYouChat(_ isEnabled: Bool)
     func voiceAndVideoCall(_ isEnabled: Bool)
+    func reloadPayAsYouChatRow(_ indexPath: IndexPath)
 }
 
 @MainActor
@@ -28,18 +29,19 @@ final class SettingsViewModel {
     private func loadData() {
         settings = [
             .appAccess: [
-                SettingItem(title: "Screen Security", subtitle: "Block Screenshots in the recents list and inside the app", isOn: false, iconName: "ic_security"),
-                SettingItem(title: "Incognito Keyboard", subtitle: "Request keyboard to disable personalized learning", isOn: false, iconName: "ic_keyboard")
+                SettingItem(title: SettingInfo.screenSecurity.title, subtitle: SettingInfo.screenSecurity.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.screenSecurity.imageName),
+                SettingItem(title: SettingInfo.incognitoKeyboard.title, subtitle: SettingInfo.incognitoKeyboard.subTitle, isOn: false, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.incognitoKeyboard.imageName)
             ],
             .wallet: [
-                SettingItem(title: "Start Wallet", subtitle: "Enabling wallet will allow you to send and receive BDX", isOn: SSKPreferences.areWalletEnabled, iconName: "ic_startWallet_white"),
-                SettingItem(title: "Pay as you chat", subtitle: "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window", isOn: isPayAsYouChatEnabled, iconName: "ic_pay_as_you_chat")
+                SettingItem(title: SettingInfo.startWallet.title, subtitle: SettingInfo.startWallet.subTitle, isOn: SSKPreferences.areWalletEnabled, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.startWallet.imageName),
+                SettingItem(title: SettingInfo.payAsYouChat.title, subtitle: SettingInfo.payAsYouChat.subTitle, isOn: isPayAsYouChatEnabled, isEnabled: SSKPreferences.areWalletEnabled, isToggleSwitch: true, iconName: SettingInfo.payAsYouChat.imageName)
             ],
             .communication: [
-                SettingItem(title: "Read receipts", subtitle: "If read receipts are disabled, you won’t be able to see read receipts from others", isOn: OWSReadReceiptManager.shared().areReadReceiptsEnabled(), iconName: "ic_Read_receipetNew"),
-                SettingItem(title: "Type indicators", subtitle: "If typing indicators are disabled, you won’t be able to see typing indicators from others", isOn: SSKEnvironment.shared.typingIndicators.areTypingIndicatorsEnabled(), iconName: "ic_Type_indicaterNew"),
-                SettingItem(title: "Send link previews", subtitle: "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links", isOn: SSKPreferences.areLinkPreviewsEnabled, iconName: "ic_send_linkNew"),
-                SettingItem(title: "Voice and video calls", subtitle: "Allow access to accept voice and video calls from other users", isOn: SSKPreferences.areCallsEnabled, iconName: "ic_video_callNew")
+                SettingItem(title: SettingInfo.readReceipts.title, subtitle: SettingInfo.readReceipts.subTitle, isOn: OWSReadReceiptManager.shared().areReadReceiptsEnabled(), isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.readReceipts.imageName),
+                SettingItem(title: SettingInfo.typeIndicators.title, subtitle: SettingInfo.typeIndicators.subTitle, isOn: SSKEnvironment.shared.typingIndicators.areTypingIndicatorsEnabled(), isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.typeIndicators.imageName),
+                SettingItem(title: SettingInfo.sendLinkPreviews.title, subtitle: SettingInfo.sendLinkPreviews.subTitle, isOn: SSKPreferences.areLinkPreviewsEnabled, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.sendLinkPreviews.imageName),
+                SettingItem(title: SettingInfo.voiceAndVideoCalls.title, subtitle: SettingInfo.voiceAndVideoCalls.subTitle, isOn: SSKPreferences.areCallsEnabled, isEnabled: true, isToggleSwitch: true, iconName: SettingInfo.voiceAndVideoCalls.imageName),
+                SettingItem(title: SettingInfo.clearConversationHistory.title, subtitle: SettingInfo.clearConversationHistory.subTitle, isOn: false, isEnabled: true, isToggleSwitch: false, iconName: SettingInfo.clearConversationHistory.imageName)
             ]
         ]
     }
@@ -56,19 +58,20 @@ final class SettingsViewModel {
         let section = SettingsSection.allCases[indexPath.section]
         guard let items = settings[section] else { return }
         let isEnabled = items[indexPath.row].isOn
-        if items[indexPath.row].title == "Screen Security" {
-        } else if items[indexPath.row].title == "Incognito Keyboard" {
-        } else if items[indexPath.row].title == "Start Wallet" {
+        if items[indexPath.row].title == SettingInfo.screenSecurity.title {
+        } else if items[indexPath.row].title == SettingInfo.incognitoKeyboard.title {
+        } else if items[indexPath.row].title == SettingInfo.startWallet.title {
             SSKPreferences.areWalletEnabled = isEnabled
-        } else if items[indexPath.row].title == "Pay as you chat" {
+            delegate?.reloadPayAsYouChatRow(indexPath)
+        } else if items[indexPath.row].title == SettingInfo.payAsYouChat.title {
             delegate?.payAsYouChat(isEnabled)
-        } else if items[indexPath.row].title == "Read receipts" {
+        } else if items[indexPath.row].title == SettingInfo.readReceipts.title {
             OWSReadReceiptManager.shared().setAreReadReceiptsEnabled(isEnabled)
-        } else if items[indexPath.row].title == "Type indicators" {
+        } else if items[indexPath.row].title == SettingInfo.typeIndicators.title {
             SSKEnvironment.shared.typingIndicators.setTypingIndicatorsEnabled(value: isEnabled)
-        } else if items[indexPath.row].title == "Send link previews" {
+        } else if items[indexPath.row].title == SettingInfo.sendLinkPreviews.title {
             SSKPreferences.areLinkPreviewsEnabled = isEnabled
-        } else if items[indexPath.row].title == "Voice and video calls" {
+        } else if items[indexPath.row].title == SettingInfo.voiceAndVideoCalls.title {
             delegate?.voiceAndVideoCall(isEnabled)
         }
     }
