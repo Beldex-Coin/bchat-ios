@@ -52,79 +52,79 @@ enum SettingInfo {
     
     /// title
     var title: String {
-        let aKey: String
+        let title: String
         switch self {
         case .screenSecurity:
-            aKey = "Screen Security"
+            title = "Screen Security"
         case .incognitoKeyboard:
-            aKey = "Incognito Keyboard"
+            title = "Incognito Keyboard"
         case .startWallet:
-            aKey = "Start Wallet"
+            title = "Start Wallet"
         case .payAsYouChat:
-            aKey = "Pay as you chat"
+            title = "Pay as you chat"
         case .readReceipts:
-            aKey = "Read receipts"
+            title = "Read receipts"
         case .typeIndicators:
-            aKey = "Type indicators"
+            title = "Type indicators"
         case .sendLinkPreviews:
-            aKey = "Send link previews"
+            title = "Send link previews"
         case .voiceAndVideoCalls:
-            aKey = "Voice and video calls"
+            title = "Voice and video calls"
         case .clearConversationHistory:
-            aKey = "Clear conversation History"
+            title = "Clear conversation History"
         }
-        return aKey
+        return title
     }
     
     /// sub title
     var subTitle: String {
-        let aKey: String
+        let subTitle: String
         switch self {
         case .screenSecurity:
-            aKey = "Block Screenshots in the recents list and inside the app"
+            subTitle = "Block Screenshots in the recents list and inside the app"
         case .incognitoKeyboard:
-            aKey = "Request keyboard to disable personalized learning"
+            subTitle = "Request keyboard to disable personalized learning"
         case .startWallet:
-            aKey = "Enabling wallet will allow you to send and receive BDX"
+            subTitle = "Enabling wallet will allow you to send and receive BDX"
         case .payAsYouChat:
-            aKey = "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"
+            subTitle = "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"
         case .readReceipts:
-            aKey = "If read receipts are disabled, you won’t be able to see read receipts from others"
+            subTitle = "If read receipts are disabled, you won’t be able to see read receipts from others"
         case .typeIndicators:
-            aKey = "If typing indicators are disabled, you won’t be able to see typing indicators from others"
+            subTitle = "If typing indicators are disabled, you won’t be able to see typing indicators from others"
         case .sendLinkPreviews:
-            aKey = "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links"
+            subTitle = "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links"
         case .voiceAndVideoCalls:
-            aKey = "Allow access to accept voice and video calls from other users"
+            subTitle = "Allow access to accept voice and video calls from other users"
         case .clearConversationHistory:
-            aKey = ""
+            subTitle = ""
         }
-        return aKey
+        return subTitle
     }
     
     /// image name
     var imageName: String {
-        let aKey: String
+        let imageName: String
         switch self {
             case .screenSecurity:
-                aKey = "ic_security"
+                imageName = "ic_security"
             case .incognitoKeyboard:
-                aKey = "ic_keyboard"
+                imageName = "ic_keyboard"
             case .startWallet:
-                aKey = "ic_startWallet_white"
+                imageName = "ic_startWallet_white"
             case .payAsYouChat:
-                aKey = "ic_pay_as_you_chat"
+                imageName = "ic_pay_as_you_chat"
             case .readReceipts:
-                aKey = "ic_Read_receipetNew"
+                imageName = "ic_Read_receipetNew"
             case .typeIndicators:
-                aKey = "ic_Type_indicaterNew"
+                imageName = "ic_Type_indicaterNew"
             case .sendLinkPreviews:
-                aKey = "ic_send_linkNew"
+                imageName = "ic_send_linkNew"
             case .voiceAndVideoCalls:
-                aKey = "ic_video_callNew"
+                imageName = "ic_video_callNew"
             case .clearConversationHistory:
-                aKey = "ic_clear_imgaes"
+                imageName = "ic_clear_imgaes"
         }
-        return aKey
+        return imageName
     }
 }

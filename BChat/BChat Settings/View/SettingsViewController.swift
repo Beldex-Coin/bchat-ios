@@ -1,6 +1,9 @@
 // Copyright © 2025 Beldex International Limited OU. All rights reserved.
 
 import Foundation
+import BChatUIKit
+import SignalUtilitiesKit
+import AVFAudio
 
 final class SettingsViewController: BaseVC {
     
@@ -44,10 +47,6 @@ final class SettingsViewController: BaseVC {
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: .reloadSettingScreenTableNotification, object: nil)
     }
     
-    private func deleteThreadsAndMessages() {
-        ThreadUtil.deleteAllContent()
-    }
-    
     @objc func handleCallPermissionCancelTapped(notification: NSNotification) {
         tableView.reloadData()
     }
@@ -64,7 +63,7 @@ final class SettingsViewController: BaseVC {
             style: .destructive,
             handler: { [weak self] action in
                 guard let self = self else { return }
-                self.deleteThreadsAndMessages()
+                ThreadUtil.deleteAllContent()
             }
         )
         alert.addAction(deleteAction)
@@ -139,7 +138,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
     
     internal func payAsYouChat(_ isEnabled: Bool)  {
         if let myString = UserDefaults.standard.string(forKey: "WalletPassword"), !myString.isEmpty {
-            print("toggled to: \(isEnabled ? "true" : "false")")
             SSKPreferences.arePayAsYouChatEnabled = isEnabled
         } else {
             let alertController = UIAlertController(
@@ -150,9 +148,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
             let cancelAction = UIAlertAction(
                 title: NSLocalizedString("Cancel", comment: "Cancel button title"),
                 style: .cancel,
-                handler: { action in
-                    print("User tapped Cancel")
-                }
+                handler: nil
             )
             alertController.addAction(cancelAction)
             let yesAction = UIAlertAction(
@@ -171,7 +167,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
                 }
             )
             alertController.addAction(yesAction)
-            // Present the alert
             self.present(alertController, animated: true, completion: nil)
         }
     }
@@ -181,34 +176,24 @@ extension SettingsViewController: SettingsViewModelDelegate {
         if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
             let modal = CallPermissionPopUp { [weak self] in
                 guard let self = self else { return }
-                print("toggled to: \(isEnabled ? "true" : "OFF")")
                 let audioSession = AVAudioSession.sharedInstance()
                 if audioSession.responds(to: #selector(AVAudioSession.requestRecordPermission(_:))) {
                     audioSession.requestRecordPermission({ granted in
                         if granted {
-                            // Microphone access granted, you can now use the microphone.
-                            print("Microphone access granted")
                             userDefaults.set(true, forKey: "hasSeenCallIPExposureWarning")
-                            // Perform any additional actions you want here.
-                            // Check if the view controller is still presented
                             if let presentingViewController = self.presentingViewController {
                                 DispatchQueue.main.async {
-                                    // Dismiss the presented view controller
-                                    presentingViewController.dismiss(animated: true, completion: {
-                                        // This block is optional and can be used to perform any tasks after the view controller is dismissed
-                                    })
+                                    presentingViewController.dismiss(animated: true, completion: nil)
                                 }
                             }
                         } else {
-                            // Microphone access denied. Handle this case accordingly.
-                            print("Microphone access denied")
+                            debugPrint("Microphone access denied")
                         }
                     })
                 }
             }
             present(modal, animated: true, completion: nil)
         } else {
-            print("toggled to: \(isEnabled ? "true" : "false")")
             SSKPreferences.areCallsEnabled = isEnabled
         }
     }
