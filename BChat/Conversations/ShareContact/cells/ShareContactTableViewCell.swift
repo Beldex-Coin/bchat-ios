@@ -26,6 +26,7 @@ final class ShareContactTableViewCell: UITableViewCell {
     var threadViewModel: ThreadViewModel! { didSet { update() } }
     var state: SharedContactState?
     var publicKey = ""
+    var name = ""
     
     // MARK: - Initialize
     
@@ -159,8 +160,15 @@ final class ShareContactTableViewCell: UITableViewCell {
         profileImageView.publicKey = publicKey
         profileImageView.update()
         
+        if state == .fromChat {
+            profileImageView.publicKey = publicKey
+            profileImageView.nameString = name
+            profileImageView.showImageFromName = true
+            profileImageView.update()
+        }
+        
         let contact: Contact? = Storage.shared.getContact(with: publicKey)
-        nameLabel.text = contact?.displayName(for: .regular) ?? publicKey
+        nameLabel.text = contact?.displayName(for: .regular)?.firstCharacterUpperCase() ?? publicKey
         addressLabel.text = publicKey.truncateMiddle()
         
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {

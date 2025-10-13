@@ -11,7 +11,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode1", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode1.der")
             return nil
         }
         return cert
@@ -32,7 +32,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode3", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode3.der")
             return nil
         }
         return cert
@@ -42,7 +42,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode4", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode4.der")
             return nil
         }
         return cert
@@ -52,7 +52,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode5", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode5.der")
             return nil
         }
         return cert
@@ -65,27 +65,22 @@ public enum HTTP {
     private final class SeedNodeURLSessionDelegateImplementation : NSObject, URLSessionDelegate {
 
         func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-            guard let trust = challenge.protectionSpace.serverTrust else {
-                return completionHandler(.cancelAuthenticationChallenge, nil)
+            guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+                  let serverTrust = challenge.protectionSpace.serverTrust else {
+                completionHandler(.performDefaultHandling, nil)
+                return
             }
-            // Mark the seed node certificates as trusted
+            
             let certificates = [ storageSeed1Cert, storageSeed3Cert, publicBeldexFoundationCert, publicBeldexFoundationCert4, publicBeldexFoundationCert5 ]
-            guard SecTrustSetAnchorCertificates(trust, certificates as CFArray) == errSecSuccess else {
+            
+            SecTrustSetAnchorCertificates(serverTrust, certificates as CFArray)
+            SecTrustSetAnchorCertificatesOnly(serverTrust, false)
+            
+            if SecTrustEvaluateWithError(serverTrust, nil) {
+                let credential = URLCredential(trust: serverTrust)
+                return completionHandler(.useCredential, credential)
+            } else {
                 return completionHandler(.cancelAuthenticationChallenge, nil)
-            }
-            // Check that the presented certificate is one of the seed node certificates
-            var result: SecTrustResultType = .invalid
-            guard SecTrustEvaluate(trust, &result) == errSecSuccess else {
-                return completionHandler(.cancelAuthenticationChallenge, nil)
-            }
-            switch result {
-            case .proceed, .unspecified:
-                // Unspecified indicates that evaluation reached an (implicitly trusted) anchor certificate without
-                // any evaluation failures, but never encountered any explicitly stated user-trust preference. This
-                // is the most common return value. The Keychain Access utility refers to this value as the "Use System
-                // Policy," which is the default user setting.
-                return completionHandler(.useCredential, URLCredential(trust: trust))
-            default: return completionHandler(.cancelAuthenticationChallenge, nil)
             }
         }
     }

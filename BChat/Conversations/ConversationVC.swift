@@ -1050,7 +1050,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleAudioDidFinishPlayingNotification(_:)), name: .SNAudioDidFinishPlaying, object: nil)
         notificationCenter.addObserver(self, selector: #selector(addOrRemoveBlockedBanner), name: .contactBlockedStateChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        //notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleMessageSentStatusChanged), name: .messageSentStatusDidChange, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
@@ -1126,6 +1126,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             callView.isHidden = false
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1142,7 +1144,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         markAllAsRead()
         recoverInputView()
         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
-        
         if backAPI == true {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
@@ -1171,6 +1172,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         resetAttachmentOptions()
         view.layoutIfNeeded()
         hideOpenURLView()
+        NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

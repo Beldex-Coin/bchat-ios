@@ -445,10 +445,11 @@ class HomeTableViewCell: UITableViewCell {
             var textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
             
             let namesArray = textAttrString.string.toStringArrayFromJSON()
+            let other = namesArray?.count == 2 ? "other" : "others"
             if namesArray?.count ?? 0 <= 1 {
                 textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
             } else {
-                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") + \((namesArray?.count ?? 0) - 1) others")
+                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) \(other)")
             }
             
             let finalString = NSMutableAttributedString()

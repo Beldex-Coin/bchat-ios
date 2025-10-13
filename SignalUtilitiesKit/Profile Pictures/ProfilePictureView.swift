@@ -10,6 +10,8 @@ public final class ProfilePictureView : UIView {
     @objc public var openGroupProfilePicture: UIImage?
     @objc public var isNoteToSelfImage = false
     @objc public var groupThreadForGroupImage: TSGroupThread?
+    @objc public var showImageFromName: Bool = false
+    @objc public var nameString: String?
     // Constraints
     private var imageViewWidthConstraint: NSLayoutConstraint!
     private var imageViewHeightConstraint: NSLayoutConstraint!
@@ -98,6 +100,9 @@ public final class ProfilePictureView : UIView {
                 return profilePicture
             } else {
                 hasTappableProfilePicture = false
+                if showImageFromName {
+                    return Identicon.generatePlaceholderIcon(seed: publicKey, text: nameString ?? "", size: size)
+                }
                 // TODO: Pass in context?
                 let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
                 return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)

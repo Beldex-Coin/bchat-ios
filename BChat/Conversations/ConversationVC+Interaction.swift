@@ -546,8 +546,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         message.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
         
         if snInputView.quoteDraftInfo?.isSharedContact == true {
-            message.sharedContact = VisibleMessage.SharedContact(address: snInputView.viewItem?.sharedContactMessage?.address, name: snInputView.viewItem?.sharedContactMessage?.name)
             message.quote?.text = getJSONStrigForSharedContact(address: snInputView.viewItem?.sharedContactMessage?.address ?? "", name: snInputView.viewItem?.sharedContactMessage?.name ?? "")
+        }
+        
+        if ((snInputView.viewItem?.interaction as? TSMessage)?.openGroupInvitationURL != nil) {
+            message.quote?.text = NSLocalizedString("view_open_group_invitation_description", comment: "")
+        }
+        
+        if ((snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount != nil) {
+            let isOutgoing = (snInputView.viewItem?.interaction.interactionType() == .outgoingMessage)
+            let amount = (snInputView.viewItem?.interaction as? TSMessage)?.paymentAmount ?? "0"
+            if isOutgoing {
+                message.quote?.text = "Payment Sent : \(amount) BDX"
+            } else {
+                message.quote?.text = "Payment Received : \(amount) BDX"
+            }
         }
         
         // Note: 'shouldBeVisible' is set to true the first time a thread is saved so we can
@@ -1003,10 +1016,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
+                        hideInputAccessoryView()
                         joinOpenGroup(name: name, url: url)
                     } else if let message = viewItem.interaction as? TSOutgoingMessage, let name = message.openGroupInvitationName,
                               let url = message.openGroupInvitationURL {
-                              joinOpenGroup(name: name, url: url)
+                        hideInputAccessoryView()
+                        joinOpenGroup(name: name, url: url)
                     } else if let payment = viewItem.interaction as? TSIncomingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
                         joinBeldexExplorer(id: id, amount: amount)
                     } else if let payment = viewItem.interaction as? TSOutgoingMessage, let id = payment.paymentTxnid, let amount = payment.paymentAmount {
@@ -1029,7 +1044,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
                 
                 if counOfNames > 1 {
-                    self.isInputViewShow = true
                     self.hideInputAccessoryView()
                     let shareContactViewController = ShareContactViewController(state: .fromChat)
                     shareContactViewController.delegate = self
@@ -1046,22 +1060,21 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         }
                     }
                     self.navigationController?.pushViewController(shareContactViewController, animated: true)
-                    self.showInputAccessoryView()
                 } else {
                     guard let sharedContact = viewItem.sharedContactMessage,
-                          let bchatId = getArrayFromJSONString(viewItem.sharedContactMessage?.address ?? "")?.first else { return }
+                          let bchatId = viewItem.sharedContactMessage?.address?.toStringArrayFromJSON()?.first else { return }
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
                     if thread.uniqueId != self.thread.uniqueId {
+                        self.hideInputAccessoryView()
                         // show confirmation modal
                         let confirmationModal: ConfirmationModal = ConfirmationModal(
                             info: ConfirmationModal.Info(
                                 modalType: .shareContact,
-                                title: (getArrayFromJSONString(sharedContact.name ?? "")?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
+                                title: (sharedContact.name?.toStringArrayFromJSON()?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
                                 body: .text("Do you want to chat with this contact now?"),
                                 showCondition: .disabled,
                                 confirmTitle: "Chat",
                                 onConfirm: { _ in
-                                    self.isInputViewShow = true
                                     CATransaction.begin()
                                     CATransaction.setCompletionBlock {
                                         let conversationVC = ConversationVC(thread: thread)
@@ -1072,39 +1085,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                                     }
                                     CATransaction.commit()
                                 }, dismissHandler: {
-                                    self.isInputViewShow = true
                                     self.showInputAccessoryView()
                                 }
                             )
                         )
-                        present(confirmationModal, animated: true, completion:  {
-                            self.isInputViewShow = false
-                            self.hideInputAccessoryView()
-                        })
+                        present(confirmationModal, animated: true, completion: nil)
                     }
                 }
                 
                 default: break
             }
-        }
-    }
-    
-    func getArrayFromJSONString(_ jsonString: String) -> [String]? {
-        guard let data = jsonString.data(using: .utf8) else {
-            print("Error: Unable to convert string to Data")
-            return nil
-        }
-
-        do {
-            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
-                return array
-            } else {
-                print("Error: JSON is not a [String] array")
-                return nil
-            }
-        } catch {
-            print("JSON parsing error: \(error)")
-            return nil
         }
     }
     
@@ -1459,6 +1449,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let joinOpenGroupModal = JoinOpenGroupModal(name: name, url: url)
         joinOpenGroupModal.modalPresentationStyle = .overFullScreen
         joinOpenGroupModal.modalTransitionStyle = .crossDissolve
+        joinOpenGroupModal.onDismiss = {
+            self.showInputAccessoryView()
+        }
         present(joinOpenGroupModal, animated: true, completion: nil)
     }
     
@@ -1735,23 +1728,18 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     // MARK: - Data Extraction Notifications
     @objc func sendScreenshotNotificationIfNeeded() {
-        guard thread is TSContactThread else { return }
-        let message = DataExtractionNotification()
-        message.kind = .screenshot
-        
-        if let contactThread: TSContactThread = thread as? TSContactThread {
-            if contactThread.contactBChatID() != getUserHexEncodedPublicKey() {
-                let sentTimestamp: UInt64 = NSDate.millisecondTimestamp()
-                Storage.writeSync { transaction in
-                    let infoMessage = TSInfoMessage(timestamp: sentTimestamp - 1, in: self.thread, messageType: .screenshotNotification, customMessage: "You took a screenshot")
-                    infoMessage.save(with: transaction)
-                }
+        guard let thread = thread as? TSContactThread else { return }
+            if thread.isNoteToSelf() { return }
+            let publicKey = thread.contactBChatID()
+            let contact: Contact = Storage.shared.getContact(with: publicKey)!
+            if contact.isBlocked { return }
+            Storage.write { transaction in
+              let messageToSend = DataExtractionNotificationInfoMessage(type: .ownScreenshotNotification, sentTimestamp: NSDate.millisecondTimestamp(), thread: self.thread, referencedAttachmentTimestamp: nil)
+              messageToSend.save(with: transaction)
+              let message = DataExtractionNotification()
+              message.kind = .screenshot
+              MessageSender.send(message, in: self.thread, using: transaction)
             }
-        }
-        
-        Storage.write { transaction in
-            MessageSender.send(message, in: self.thread, using: transaction)
-        }
     }
     
     func sendMediaSavedNotificationIfNeeded(for viewItem: ConversationViewItem) {

@@ -96,7 +96,7 @@
 		</dict>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Signal needs to use Apple Music to play media attachments.</string>
+	<string>BChat needs to use Apple Music to play media attachments.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>BChat needs camera access to take pictures and scan QR codes.</string>
 	<key>NSContactsUsageDescription</key>

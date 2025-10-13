@@ -476,18 +476,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 
                 var isSharedContact: Bool = false
                 let jsonString = viewItem.quotedReply?.body ?? ""
-                if let jsonData = jsonString.data(using: .utf8) {
-                    do {
-                        let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                        if contact.kind.type == "SharedContact" {
-                            isSharedContact = true
-                        } else {
-                            isSharedContact = false
-                        }
-                    } catch {
-                        print("Failed to decode JSON: \(error)")
-                    }
-                }
+                isSharedContact = jsonString.isSharedContactType
                 
                 let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
                 let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
@@ -541,6 +530,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     openGroupInvitationView.pin(to: snContentView)
                     openGroupInvitationView.layer.mask = bubbleViewMaskLayer
                 } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                    bubbleViewBottomConstraint.isActive = false
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0)
                     let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing, viewItem: viewItem)
                     paymentView.layer.cornerRadius = 18
                     snContentView.addSubview(paymentView)
@@ -792,18 +783,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 
                 var isSharedContact: Bool = false
                 let jsonString = viewItem.quotedReply?.body ?? ""
-                if let jsonData = jsonString.data(using: .utf8) {
-                    do {
-                        let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                        if contact.kind.type == "SharedContact" {
-                            isSharedContact = true
-                        } else {
-                            isSharedContact = false
-                        }
-                    } catch {
-                        print("Failed to decode JSON: \(error)")
-                    }
-                }
+                isSharedContact = jsonString.isSharedContactType
                 
                 let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
                 let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
@@ -813,17 +793,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             }
             
             var countOfNames = 0
-            countOfNames = getArrayOfNames(sharedContactMessage.name ?? "")?.count ?? 0
+            countOfNames = sharedContactMessage.name?.toStringArrayFromJSON()?.count ?? 0
             
             var stringToShowAsName = ""
+            let other = countOfNames == 2 ? "other" : "others"
             if countOfNames <= 1 {
                 stringToShowAsName = convertJSONStringToCommaSeparatedString(sharedContactMessage.name ?? "") ?? ""
             } else {
-                let firstName = getArrayOfNames(sharedContactMessage.name ?? "")?.first ?? ""
-                stringToShowAsName = "\(firstName) + \(countOfNames - 1) others"
+                let firstName = sharedContactMessage.name?.toStringArrayFromJSON()?.first ?? ""
+                stringToShowAsName = "\(firstName) and \(countOfNames - 1) \(other)"
             }
             
-            let contactView = ContactView(bChatID: getArrayOfNames(sharedContactMessage.address ?? "")?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName, searchString: lastSearchedText ?? "")
+            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "")
                 stackView.addArrangedSubview(contactView)
             
                 let bottomDiscriptionLabel = UILabel()
@@ -840,25 +821,6 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 snContentView.addSubview(stackView)
                 stackView.pin(to: snContentView)
             default: return
-        }
-    }
-    
-    func getArrayOfNames(_ jsonString: String) -> [String]? {
-        guard let data = jsonString.data(using: .utf8) else {
-            print("Error: Unable to convert string to Data")
-            return nil
-        }
-
-        do {
-            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
-                return array
-            } else {
-                print("Error: JSON is not a [String] array")
-                return nil
-            }
-        } catch {
-            print("JSON parsing error: \(error)")
-            return nil
         }
     }
     
@@ -1227,15 +1189,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         ]
         var text = message.body ?? ""
         let jsonString = message.body ?? ""
-        if let jsonData = jsonString.data(using: .utf8) {
-            do {
-                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
-                if contact.kind.type == "SharedContact" {
-                    text = contact.kind.name
-                }
-            } catch {
-                print("Failed to decode JSON: \(error)")
-            }
+        if let name = jsonString.sharedContactNameIfAvailable() {
+            text = name
         }
         let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: text, isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
         
