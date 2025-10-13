@@ -30,6 +30,7 @@ final class SettingsViewController: BaseVC {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.sectionFooterHeight = 0
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: SettingsTableViewCell.identifier)
         
         view.addSubview(tableView)
@@ -88,6 +89,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         let section = SettingsSection.allCases[indexPath.section]
         if let item = viewModel.settings[section]?[indexPath.row] {
+            cell.updateContainerView(with: indexPath, item: item)
             cell.configure(with: item)
             cell.switchChanged = { [weak self] in
                 self?.viewModel.toggleSwitch(for: indexPath) {
