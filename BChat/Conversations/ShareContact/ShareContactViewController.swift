@@ -271,6 +271,8 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         cell.checkboxButton.isSelected = selectedContacts.contains(publicKey)
         cell.state = state
         cell.name = Array(filterDict.values)[indexPath.row]
+        cell.chatButton.tag = indexPath.row
+        cell.removeContactButton.tag = indexPath.row
         cell.update()
         
         if state == .fromChat {
@@ -284,6 +286,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         
         cell.chatToggle = { [weak self] in
             guard let self = self else { return }
+            self.chatSelectedContact(cell.chatButton.tag)
         }
         
         cell.removeContactToggle = { [weak self] in
@@ -299,39 +302,43 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         if state == .fromAttachment {
             updateSelectedContacts(with: indexPath)
         } else {
-            let thread = TSContactThread.getOrCreateThread(contactBChatID: Array(filterDict.keys)[indexPath.row])
-            
-            // show confirmation modal
-            let confirmationModal: ConfirmationModal = ConfirmationModal(
-                info: ConfirmationModal.Info(
-                    modalType: .shareContact,
-                    title: (Array(filterDict.values)[indexPath.row]),
-                    body: .text("Do you want to chat with this contact now?"),
-                    showCondition: .disabled,
-                    confirmTitle: "Chat",
-                    onConfirm: { _ in
-                        CATransaction.begin()
-                        CATransaction.setCompletionBlock {
-                            let conversationVC = ConversationVC(thread: thread)
-                            var viewControllers = self.navigationController?.viewControllers
-                            if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
-                            viewControllers?.append(conversationVC)
-                            self.navigationController?.setViewControllers(viewControllers!, animated: true)
-                        }
-                        CATransaction.commit()
-                    }, dismissHandler: {
-                    }
-                )
-            )
-            present(confirmationModal, animated: true, completion:  {
-            })
-            
+            chatSelectedContact(indexPath.row)
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         68
+    }
+    
+    // MARK: -
+    
+    private func chatSelectedContact(_ index: Int) {
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: Array(filterDict.keys)[index])
+        
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .shareContact,
+                title: (Array(filterDict.values)[index]),
+                body: .text("Do you want to chat with this contact now?"),
+                showCondition: .disabled,
+                confirmTitle: "Chat",
+                onConfirm: { _ in
+                    CATransaction.begin()
+                    CATransaction.setCompletionBlock {
+                        let conversationVC = ConversationVC(thread: thread)
+                        var viewControllers = self.navigationController?.viewControllers
+                        if let index = viewControllers?.firstIndex(of: self) { viewControllers?.remove(at: index) }
+                        viewControllers?.append(conversationVC)
+                        self.navigationController?.setViewControllers(viewControllers!, animated: true)
+                    }
+                    CATransaction.commit()
+                }, dismissHandler: {
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion:  {
+        })
     }
     
     // MARK: - UITextField
