@@ -22,7 +22,7 @@ public final class DataExtractionNotificationInfoMessage : TSInfoMessage {
         case .ownScreenshotNotification: 
             return String(format: NSLocalizedString("screenshot_taken", comment: ""), "You")
         case .screenshotNotification:
-            return String(format: NSLocalizedString("screenshot_taken", comment: ""), displayName)
+            return String(format: NSLocalizedString("screenshot_taken", comment: ""), displayName.capitalized)
         case .mediaSavedNotification:
             // TODO: Use referencedAttachmentTimestamp to tell the user * which * media was saved
             return String(format: NSLocalizedString("meida_saved", comment: ""), displayName)

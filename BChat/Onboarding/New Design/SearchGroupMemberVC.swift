@@ -298,4 +298,17 @@ extension SearchGroupMemberVC : UITableViewDelegate, UITableViewDataSource {
         cell.adminButton.isHidden = (isCurrentUserAdmin ?? false) ? false : true
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let publicKey = filteredUsers[indexPath.row]
+        if publicKey == getUserHexEncodedPublicKey() { return }
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
+        let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        let vc = UserInfoPopUp()
+        vc.thread = thread
+        vc.name = name
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
+    }
 }

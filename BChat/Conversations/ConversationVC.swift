@@ -2374,6 +2374,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func hideSearchUI(_ sender: Any? = nil) {
         isShowingSearchUI = false
+        searchController.uiSearchController.searchBar.searchTextField.text = ""
         navigationItem.titleView = titleView
         updateNavBarButtons()
         if navigationController!.navigationBar as? OWSNavigationBar != nil {

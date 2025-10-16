@@ -799,6 +799,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
+        hideSearchUI()
         // if message is not sent then no need long press
         guard let message = viewItem.interaction as? TSMessage else { return }
         if let messageOutgoing = message as? TSOutgoingMessage {
@@ -1066,14 +1067,15 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: bchatId)
                     if thread.uniqueId != self.thread.uniqueId {
                         self.hideInputAccessoryView()
+                        let title = (sharedContact.name?.toStringArrayFromJSON()?.first ?? sharedContact.address?.truncateMiddle()) ?? ""
                         // show confirmation modal
                         let confirmationModal: ConfirmationModal = ConfirmationModal(
                             info: ConfirmationModal.Info(
                                 modalType: .shareContact,
-                                title: (sharedContact.name?.toStringArrayFromJSON()?.first ?? sharedContact.address?.truncateMiddle()) ?? "",
+                                title: title.capitalized,
                                 body: .text("Do you want to chat with this contact now?"),
                                 showCondition: .disabled,
-                                confirmTitle: "Chat",
+                                confirmTitle: "Message",
                                 onConfirm: { _ in
                                     CATransaction.begin()
                                     CATransaction.setCompletionBlock {

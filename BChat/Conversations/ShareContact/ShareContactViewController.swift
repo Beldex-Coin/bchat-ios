@@ -319,10 +319,10 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
                 modalType: .shareContact,
-                title: (Array(filterDict.values)[index]),
+                title: (Array(filterDict.values)[index].capitalized),
                 body: .text("Do you want to chat with this contact now?"),
                 showCondition: .disabled,
-                confirmTitle: "Chat",
+                confirmTitle: "Message",
                 onConfirm: { _ in
                     CATransaction.begin()
                     CATransaction.setCompletionBlock {

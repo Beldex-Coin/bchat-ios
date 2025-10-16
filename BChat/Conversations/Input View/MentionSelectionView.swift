@@ -16,7 +16,7 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
         let result = UITableView()
         result.dataSource = self
         result.delegate = self
-        result.register(Cell.self, forCellReuseIdentifier: "Cell")
+        result.register(MentionsCell.self, forCellReuseIdentifier: MentionsCell.identifier)
         result.separatorStyle = .none
         result.backgroundColor = .clear
         result.showsVerticalScrollIndicator = false
@@ -62,7 +62,7 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! Cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: MentionsCell.identifier) as! MentionsCell
         let mentionCandidate = candidates[indexPath.row]
         cell.mentionCandidate = mentionCandidate
         cell.openGroupServer = openGroupServer
@@ -77,11 +77,140 @@ final class MentionSelectionView : UIView, UITableViewDataSource, UITableViewDel
         let mentionCandidate = candidates[indexPath.row]
         delegate?.handleMentionSelected(mentionCandidate, from: self)
     }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50
+    }
 }
 
 // MARK: - Cell
 
 private extension MentionSelectionView {
+    
+    
+    final class MentionsCell: UITableViewCell {
+
+        static let identifier = "MentionsCell"
+        
+        // MARK: - UI Elements
+        
+        let profileImageView = ProfilePictureView()
+        let verifiedImageView = UIImageView()
+        
+        private lazy var moderatorIconImageView = UIImageView(image: #imageLiteral(resourceName: "Crown"))
+        
+        private lazy var nameLabel: UILabel = {
+            let result = UILabel()
+            result.textColor = Colors.text
+            result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
+            result.lineBreakMode = .byTruncatingTail
+            return result
+        }()
+        
+        lazy var separator: UIView = {
+            let result = UIView()
+            result.backgroundColor = Colors.separator
+            result.set(.height, to: Values.separatorThickness)
+            return result
+        }()
+        
+        // MARK: - Properties
+        
+        var mentionCandidate = Mention(publicKey: "", displayName: "") { didSet { update() } }
+        var openGroupServer: String?
+        var openGroupChannel: UInt64?
+        var openGroupRoom: String?
+        
+        
+        // MARK: - Initialize
+        
+        override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+            super.init(style: style, reuseIdentifier: reuseIdentifier)
+            setupCell()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        // MARK: - Setup Cell
+
+        private func setupCell() {
+            backgroundColor = .clear
+            
+            let selectedBackgroundView = UIView()
+            selectedBackgroundView.backgroundColor = .clear
+            self.selectedBackgroundView = selectedBackgroundView
+            
+            let profilePictureViewSize = CGFloat(36)
+            profileImageView.set(.width, to: profilePictureViewSize)
+            profileImageView.set(.height, to: profilePictureViewSize)
+            profileImageView.size = profilePictureViewSize
+            profileImageView.layer.masksToBounds = true
+            profileImageView.layer.cornerRadius = 18
+            
+            verifiedImageView.set(.width, to: 18)
+            verifiedImageView.set(.height, to: 18)
+            verifiedImageView.contentMode = .center
+            verifiedImageView.image = UIImage(named: "ic_verified_image")
+            
+            contentView.addSubViews(profileImageView, verifiedImageView)
+            
+            nameLabel.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(nameLabel)
+            
+            NSLayoutConstraint.activate([
+                profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 14),
+                profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+                
+                nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+                nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            ])
+            
+            verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
+            verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
+            
+            // Moderator icon image view
+            moderatorIconImageView.set(.width, to: 20)
+            moderatorIconImageView.set(.height, to: 20)
+            contentView.addSubview(moderatorIconImageView)
+            moderatorIconImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 1)
+            moderatorIconImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 4.5)
+            
+            // Separator
+            contentView.addSubview(separator)
+            separator.pin(.leading, to: .leading, of: self)
+            separator.pin(.trailing, to: .trailing, of: self)
+            separator.pin(.bottom, to: .bottom, of: self)
+        }
+        
+        // MARK: - Update Cell Items
+        
+        func update() {
+            AssertIsOnMainThread()
+            
+            nameLabel.text = mentionCandidate.displayName
+            profileImageView.publicKey = mentionCandidate.publicKey
+            profileImageView.update()
+            
+            let contact: Contact? = Storage.shared.getContact(with: mentionCandidate.publicKey)
+            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                verifiedImageView.isHidden = isBnsUser ? false : true
+            } else {
+                verifiedImageView.isHidden = true
+            }
+            
+            if let server = openGroupServer, let room = openGroupRoom {
+                let isUserModerator = OpenGroupAPIV2.isUserModerator(mentionCandidate.publicKey, for: room, on: server)
+                moderatorIconImageView.isHidden = !isUserModerator
+            } else {
+                moderatorIconImageView.isHidden = true
+            }
+        }
+    }
+    
     
     final class Cell : UITableViewCell {
         var mentionCandidate = Mention(publicKey: "", displayName: "") { didSet { update() } }
