@@ -922,8 +922,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             // Show the failed message sheet
             showFailedMessageSheet(for: message)
         } else {
+            var isTrusted = true
+            if viewItem.interaction is TSIncomingMessage,
+                let thread = self.thread as? TSContactThread,
+                Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+                isTrusted = false
+            }
             if let reply = viewItem.quotedReply {
-                if location.y < 65 || (viewItem.messageCellType == .mediaMessage && location.y < 80) {
+                if location.y < 65 || (viewItem.messageCellType == .mediaMessage && location.y < 80 && isTrusted) {
                     guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                     messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
                     return
