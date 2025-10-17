@@ -1648,7 +1648,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.searchCallback = {
                     let vc = SearchGroupMemberVC()
                     vc.thread = self.thread
-                    self.present(vc, animated: true, completion: nil)
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
                 
                 return cell
