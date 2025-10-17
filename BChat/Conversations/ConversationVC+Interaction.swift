@@ -411,12 +411,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 if let contactAddress = address, let contactName = name {
                     let contactNameString = try? String(data: JSONEncoder().encode(contactName), encoding: .utf8)
                     let contactAddressString = try? String(data: JSONEncoder().encode(contactAddress), encoding: .utf8)
-                    let stringOfNamesForMessageText = contactName.joined(separator: ", ")
-                    message.text = stringOfNamesForMessageText
                     message.sharedContact = VisibleMessage.SharedContact(address: contactAddressString, name: contactNameString)
-                    if snInputView.viewItem?.sharedContactMessage?.address != nil || message.quote != nil {
-                        message.text = getJSONStrigForSharedContact(address: contactAddressString ?? "", name: contactNameString ?? "")
-                    }
                 }
                 
                 if snInputView.quoteDraftInfo?.isSharedContact == true {
