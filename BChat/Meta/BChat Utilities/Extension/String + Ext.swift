@@ -125,9 +125,7 @@ extension String {
 }
 
 extension String {
-    func truncateMiddle() -> String {
-        let prefixLength = 19
-        let suffixLength = 7
+    func truncateMiddle(with prefixLength: Int = 19, suffixLength: Int = 7) -> String {
         guard self.count > prefixLength + suffixLength else { return self }
 
         let start = self.prefix(prefixLength)

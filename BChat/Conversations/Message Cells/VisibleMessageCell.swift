@@ -800,12 +800,27 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             if countOfNames <= 1 {
                 stringToShowAsName = convertJSONStringToCommaSeparatedString(sharedContactMessage.name ?? "") ?? ""
             } else {
-                let firstName = sharedContactMessage.name?.toStringArrayFromJSON()?.first ?? ""
+                var firstName = sharedContactMessage.name?.toStringArrayFromJSON()?.first ?? ""
+                if firstName.count == 66 {
+                    firstName = firstName.truncateMiddle(with: 4, suffixLength: 3)
+                }
                 stringToShowAsName = "\(firstName) and \(countOfNames - 1) \(other)"
             }
             
             let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames)
                 stackView.addArrangedSubview(contactView)
+            
+                let spacerView = UIView.spacer(withHeight: 10)
+                spacerView.backgroundColor = .clear
+                stackView.addArrangedSubview(spacerView)
+            
+                let separatorView = UIView.spacer(withHeight: 0.5)
+                separatorView.backgroundColor = UIColor(hex: isOutgoing ? 0x2FA62F : isLightMode ? 0xA7A7BA : 0x4B4B64)
+                stackView.addArrangedSubview(separatorView)
+            
+                if countOfNames != 0 {
+                    messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -45)
+                }
             
                 let bottomDiscriptionLabel = UILabel()
                 bottomDiscriptionLabel.font = Fonts.regularOpenSans(ofSize: 15)
