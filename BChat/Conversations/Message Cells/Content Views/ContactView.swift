@@ -5,6 +5,7 @@ final class ContactView : UIView {
     private let contactName: String
     private let isOutgoing: Bool
     private let searchString: String
+    private let contactCount: Int
         
     private lazy var backGroundView: UIView = {
         let result = UIView()
@@ -16,11 +17,12 @@ final class ContactView : UIView {
     
     
     // MARK: Lifecycle
-    init(bChatID: String, isOutgoing: Bool, contactName: String, searchString: String) {
+    init(bChatID: String, isOutgoing: Bool, contactName: String, searchString: String, contactCount: Int) {
         self.bChatID = bChatID
         self.contactName = contactName
         self.isOutgoing = isOutgoing
         self.searchString = searchString
+        self.contactCount = contactCount
         super.init(frame: .zero)
         setUpViewHierarchy()
     }
@@ -39,6 +41,7 @@ final class ContactView : UIView {
         addressLabel.text = bChatID.truncateMiddle()
         addressLabel.textColor = isOutgoing ? Colors.noDataLabelColor : Colors.textFieldPlaceHolderColor
         addressLabel.font = Fonts.regularOpenSans(ofSize: 10)
+        addressLabel.isHidden = contactCount >= 2
         
         // contactNameLabel
         let contactNameLabel = UILabel()
@@ -46,6 +49,7 @@ final class ContactView : UIView {
         contactNameLabel.textColor = isOutgoing ? Colors.callCellTitle : Colors.titleColor
         contactNameLabel.font = Fonts.semiOpenSans(ofSize: 12)
         contactNameLabel.attributedText = highlight(text: contactName, search: searchString)
+        contactNameLabel.numberOfLines = 0
 
         // profileImageView
         let profileImageView = UIImageView()
@@ -70,7 +74,7 @@ final class ContactView : UIView {
         backGroundView.pin(.top, to: .top, of: self, withInset: 6)
         backGroundView.pin(.left, to: .left, of: self, withInset: 6)
         backGroundView.pin(.bottom, to: .bottom, of: self, withInset: 0)
-        backGroundView.set(.width, to: (UIScreen.main.bounds.width / 2) + 70 )
+        backGroundView.set(.width, to: (UIScreen.main.bounds.width / 2) + 50 )
         
         let contactIconImageView = UIImageView(image: #imageLiteral(resourceName: "ic_contact"))
         contactIconImageView.contentMode = .scaleAspectFit
@@ -83,13 +87,14 @@ final class ContactView : UIView {
         profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -7)
         
         contactNameLabel.pin(.top, to: .top, of: backGroundView, withInset: 11)
-        contactNameLabel.pin(.left, to: .left, of: backGroundView, withInset: 14)
+        contactNameLabel.pin(.left, to: .left, of: contactIconImageView, withInset: 16)
         contactNameLabel.pin(.right, to: .left, of: profileImageView, withInset: -16)
-        
-        contactIconImageView.pin(.top, to: .bottom, of: contactNameLabel, withInset: 6)
+    
+        contactIconImageView.pin(.top, to: .top, of: contactNameLabel, withInset: 3)
         contactIconImageView.pin(.left, to: .left, of: backGroundView, withInset: 13)
         
         addressLabel.pin(.top, to: .bottom, of: contactNameLabel, withInset: 4)
+        addressLabel.pin(.left, to: .left, of: backGroundView, withInset: 13)
         addressLabel.pin(.left, to: .right, of: contactIconImageView, withInset: 4)
         addressLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
         addressLabel.pin(.right, to: .left, of: profileImageView, withInset: -16)
@@ -97,6 +102,11 @@ final class ContactView : UIView {
         verifiedImageView.pin(.trailing, to: .trailing, of: profileImageView, withInset: 2)
         verifiedImageView.pin(.bottom, to: .bottom, of: profileImageView, withInset: 3)
         
+        if contactCount != 1 {
+            contactIconImageView.pin([ VerticalEdge.top, VerticalEdge.bottom ], to: backGroundView)
+            contactNameLabel.pin([ VerticalEdge.top, VerticalEdge.bottom ], to: backGroundView)
+            contactNameLabel.pin(.bottom, to: .bottom, of: backGroundView, withInset: -2)
+        }
         
         let contact: Contact? = Storage.shared.getContact(with: bChatID)
         if let _ = contact, let isBnsUser = contact?.isBnsHolder {

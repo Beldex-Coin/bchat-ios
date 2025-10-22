@@ -804,17 +804,17 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stringToShowAsName = "\(firstName) and \(countOfNames - 1) \(other)"
             }
             
-            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "")
+            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames)
                 stackView.addArrangedSubview(contactView)
             
                 let bottomDiscriptionLabel = UILabel()
                 bottomDiscriptionLabel.font = Fonts.regularOpenSans(ofSize: 15)
                 bottomDiscriptionLabel.textColor = bodyLabelTextColor
-                bottomDiscriptionLabel.textAlignment = .left
+                bottomDiscriptionLabel.textAlignment = .center
                 if countOfNames <= 1 {
-                    bottomDiscriptionLabel.text = "  Message >"
+                    bottomDiscriptionLabel.text = "Message"
                 } else {
-                    bottomDiscriptionLabel.text = "  View all >"
+                    bottomDiscriptionLabel.text = "View all"
                 }
                 stackView.addArrangedSubview(bottomDiscriptionLabel)
             

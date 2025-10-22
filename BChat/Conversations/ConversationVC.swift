@@ -1333,7 +1333,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         self.dismiss(animated: true)
         hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
-        var txid = WalletSharedData.sharedInstance.wallet!.txid()
+        let txid = WalletSharedData.sharedInstance.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
