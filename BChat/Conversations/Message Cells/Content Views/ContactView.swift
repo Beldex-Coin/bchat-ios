@@ -62,6 +62,7 @@ final class ContactView : UIView {
         profileImageView.layer.cornerRadius = 20
         profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: bChatID)
         
+        // 2nd contact imageView
         let contactImageView = UIImageView()
         let contactPictureViewSize = CGFloat(34)
         contactImageView.set(.width, to: contactPictureViewSize)
@@ -70,7 +71,18 @@ final class ContactView : UIView {
         contactImageView.layer.cornerRadius = 17
         contactImageView.isHidden = contactCount == 1
                 
+        // BNS verified user tag
         lazy var verifiedImageView: UIImageView = {
+            let result = UIImageView()
+            result.set(.width, to: 18)
+            result.set(.height, to: 18)
+            result.contentMode = .center
+            result.image = UIImage(named: "ic_verified_image")
+            return result
+        }()
+        
+        // BNS verified 2nd user tag
+        lazy var contactVerifiedImageView: UIImageView = {
             let result = UIImageView()
             result.set(.width, to: 18)
             result.set(.height, to: 18)
@@ -91,7 +103,7 @@ final class ContactView : UIView {
         contactIconImageView.set(.width, to: 10)
         contactIconImageView.set(.height, to: 10)
         
-        backGroundView.addSubViews([contactImageView, profileImageView, verifiedImageView, contactNameLabel, contactIconImageView, addressLabel])
+        backGroundView.addSubViews([contactImageView, contactVerifiedImageView, profileImageView, verifiedImageView, contactNameLabel, contactIconImageView, addressLabel])
         profileImageView.pin(.top, to: .top, of: backGroundView, withInset: 10)
         profileImageView.pin(.right, to: .right, of: backGroundView, withInset: -10)
         profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
@@ -131,9 +143,20 @@ final class ContactView : UIView {
         }
         
         if contactCount >= 2 {
-            contactImageView.image = getProfilePicture(of: contactPictureViewSize, for: bChatIDs[1])
-            profileImageView.layer.borderWidth = 3
+            let contactImage: Contact? = Storage.shared.getContact(with: bChatIDs[1])
+            let isBnsUser = contactImage?.isBnsHolder ?? false
+            
+            profileImageView.layer.borderWidth =  Values.borderThickness
             profileImageView.layer.borderColor = isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
+            verifiedImageView.isHidden = !(contact?.isBnsHolder ?? false)
+            
+            contactImageView.image = getProfilePicture(of: contactPictureViewSize, for: bChatIDs[1])
+            contactImageView.layer.borderWidth = Values.borderThickness
+            contactImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
+            contactVerifiedImageView.isHidden = isBnsUser ? false : true
+            
+            contactVerifiedImageView.pin(.trailing, to: .trailing, of: contactImageView, withInset: 2)
+            contactVerifiedImageView.pin(.bottom, to: .bottom, of: contactImageView, withInset: 3)
         }
     }
     
