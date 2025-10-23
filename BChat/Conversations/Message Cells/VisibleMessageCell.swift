@@ -807,7 +807,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 stringToShowAsName = "\(firstName) and \(countOfNames - 1) \(other)"
             }
             
-            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames)
+            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames, bChatIDs: sharedContactMessage.address?.toStringArrayFromJSON() ?? [String]())
                 stackView.addArrangedSubview(contactView)
             
                 messageTimeBottomLabel.isHidden = true

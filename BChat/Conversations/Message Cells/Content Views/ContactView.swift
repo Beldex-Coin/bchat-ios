@@ -6,6 +6,7 @@ final class ContactView : UIView {
     private let isOutgoing: Bool
     private let searchString: String
     private let contactCount: Int
+    private let bChatIDs: [String]
         
     private lazy var backGroundView: UIView = {
         let result = UIView()
@@ -17,12 +18,13 @@ final class ContactView : UIView {
     
     
     // MARK: Lifecycle
-    init(bChatID: String, isOutgoing: Bool, contactName: String, searchString: String, contactCount: Int) {
+    init(bChatID: String, isOutgoing: Bool, contactName: String, searchString: String, contactCount: Int, bChatIDs: [String]) {
         self.bChatID = bChatID
         self.contactName = contactName
         self.isOutgoing = isOutgoing
         self.searchString = searchString
         self.contactCount = contactCount
+        self.bChatIDs = bChatIDs
         super.init(frame: .zero)
         setUpViewHierarchy()
     }
@@ -60,6 +62,14 @@ final class ContactView : UIView {
         profileImageView.layer.cornerRadius = 20
         profileImageView.image = getProfilePicture(of: profilePictureViewSize, for: bChatID)
         
+        let contactImageView = UIImageView()
+        let contactPictureViewSize = CGFloat(34)
+        contactImageView.set(.width, to: contactPictureViewSize)
+        contactImageView.set(.height, to: contactPictureViewSize)
+        contactImageView.layer.masksToBounds = true
+        contactImageView.layer.cornerRadius = 17
+        contactImageView.isHidden = contactCount == 1
+                
         lazy var verifiedImageView: UIImageView = {
             let result = UIImageView()
             result.set(.width, to: 18)
@@ -81,10 +91,13 @@ final class ContactView : UIView {
         contactIconImageView.set(.width, to: 10)
         contactIconImageView.set(.height, to: 10)
         
-        backGroundView.addSubViews([profileImageView, verifiedImageView, contactNameLabel, contactIconImageView, addressLabel])
-        profileImageView.pin(.top, to: .top, of: backGroundView, withInset: 7)
-        profileImageView.pin(.right, to: .right, of: backGroundView, withInset: -7)
-        profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -7)
+        backGroundView.addSubViews([contactImageView, profileImageView, verifiedImageView, contactNameLabel, contactIconImageView, addressLabel])
+        profileImageView.pin(.top, to: .top, of: backGroundView, withInset: 10)
+        profileImageView.pin(.right, to: .right, of: backGroundView, withInset: -10)
+        profileImageView.pin(.bottom, to: .bottom, of: backGroundView, withInset: -10)
+        
+        contactImageView.pin(.top, to: .top, of: backGroundView, withInset: 8)
+        contactImageView.pin(.right, to: .right, of: backGroundView, withInset: -5)
         
         contactNameLabel.pin(.top, to: .top, of: backGroundView, withInset: 11)
         contactNameLabel.pin(.left, to: .left, of: contactIconImageView, withInset: 16)
@@ -115,6 +128,12 @@ final class ContactView : UIView {
             verifiedImageView.isHidden = isBnsUser ? false : true
         } else {
             verifiedImageView.isHidden = true
+        }
+        
+        if contactCount >= 2 {
+            contactImageView.image = getProfilePicture(of: contactPictureViewSize, for: bChatIDs[1])
+            profileImageView.layer.borderWidth = 3
+            profileImageView.layer.borderColor = isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
         }
     }
     
