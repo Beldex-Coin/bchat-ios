@@ -76,7 +76,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
 
     private func setupNavigation() {
         setUpNavBarStyle()
-        navigationItem.title = state == .fromAttachment ? "Send Contact" : "View Contacts"
+        navigationItem.title = state == .fromAttachment ? "Share Contacts" : "View Contacts"
         if state == .fromAttachment {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                     target: self,

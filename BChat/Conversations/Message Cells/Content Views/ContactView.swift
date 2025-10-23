@@ -88,6 +88,7 @@ final class ContactView : UIView {
             result.set(.height, to: 18)
             result.contentMode = .center
             result.image = UIImage(named: "ic_verified_image")
+            result.isHidden = true
             return result
         }()
         
@@ -143,13 +144,13 @@ final class ContactView : UIView {
         }
         
         if contactCount >= 2 {
+            let contactIsBnsUser = contact?.isBnsHolder ?? false
+            profileImageView.layer.borderWidth =  Values.borderThickness
+            profileImageView.layer.borderColor = contactIsBnsUser ? Colors.bothGreenColor.cgColor : isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
+            verifiedImageView.isHidden = !contactIsBnsUser
+            
             let contactImage: Contact? = Storage.shared.getContact(with: bChatIDs[1])
             let isBnsUser = contactImage?.isBnsHolder ?? false
-            
-            profileImageView.layer.borderWidth =  Values.borderThickness
-            profileImageView.layer.borderColor = isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
-            verifiedImageView.isHidden = !(contact?.isBnsHolder ?? false)
-            
             contactImageView.image = getProfilePicture(of: contactPictureViewSize, for: bChatIDs[1])
             contactImageView.layer.borderWidth = Values.borderThickness
             contactImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : isOutgoing ? UIColor(hex: 0x136515).cgColor : Colors.mainBackGroundColor2.cgColor
