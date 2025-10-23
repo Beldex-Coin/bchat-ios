@@ -810,17 +810,17 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames)
                 stackView.addArrangedSubview(contactView)
             
-                let spacerView = UIView.spacer(withHeight: 10)
-                spacerView.backgroundColor = .clear
-                stackView.addArrangedSubview(spacerView)
+                messageTimeBottomLabel.isHidden = true
+                let timeLabel = UILabel()
+                timeLabel.font = Fonts.regularOpenSans(ofSize: 9)
+                timeLabel.textColor = isLightMode ? Colors.noDataLabelColor : UIColor(hex: 0xEBEBEB)
+                timeLabel.text = description
+                timeLabel.textAlignment = .right
+                stackView.addArrangedSubview(timeLabel)
             
                 let separatorView = UIView.spacer(withHeight: 0.5)
                 separatorView.backgroundColor = UIColor(hex: isOutgoing ? 0x2FA62F : isLightMode ? 0xA7A7BA : 0x4B4B64)
                 stackView.addArrangedSubview(separatorView)
-            
-                if countOfNames != 0 {
-                    messageTimeBottomLabel.pin(.bottom, to: .bottom, of: bubbleView, withInset: -45)
-                }
             
                 let bottomDiscriptionLabel = UILabel()
                 bottomDiscriptionLabel.font = Fonts.regularOpenSans(ofSize: 15)
