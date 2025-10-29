@@ -26,7 +26,7 @@ class NewClearDataVC: BaseVC {
     private lazy var clearDataLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("CLEAR_DATA_FROM_DEVICE", comment: "")
         return result
@@ -35,7 +35,7 @@ class NewClearDataVC: BaseVC {
     private lazy var clearDataDiscriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.smallTitleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete data on this device"
         return result
@@ -44,7 +44,7 @@ class NewClearDataVC: BaseVC {
     private lazy var deleteLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor2
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete Entire Account"
         return result
@@ -53,7 +53,7 @@ class NewClearDataVC: BaseVC {
     private lazy var deleteDiscriptionLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.smallTitleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Delete data from the network"
         return result
@@ -87,7 +87,7 @@ class NewClearDataVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -101,7 +101,7 @@ class NewClearDataVC: BaseVC {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button

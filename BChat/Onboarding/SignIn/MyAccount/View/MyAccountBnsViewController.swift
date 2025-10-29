@@ -336,7 +336,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         let result = UILabel()
         result.text = NSLocalizedString("Read more about BNS", comment: "")
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -405,7 +405,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -428,7 +428,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     private lazy var bchatIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -618,7 +618,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: .normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: .touchUpInside)
         result.layer.borderWidth = 0.5
         result.layer.borderColor = Colors.bothGreenColor.cgColor
@@ -631,7 +631,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     private lazy var saveButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: .normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(saveButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor

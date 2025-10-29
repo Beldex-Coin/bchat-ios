@@ -391,7 +391,7 @@ public class AttachmentApprovalViewController: UIPageViewController, UIPageViewC
             }
             cancelButton.setTitleColor(Colors.text, for: .normal)
             if let titleLabel = cancelButton.titleLabel {
-                titleLabel.font = Fonts.OpenSans(ofSize: 17.0)
+                titleLabel.font = Fonts.regularOpenSans(ofSize: 17.0)
             } else {
                 owsFailDebug("Missing titleLabel.")
             }

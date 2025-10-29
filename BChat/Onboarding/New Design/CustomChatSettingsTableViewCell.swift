@@ -22,7 +22,7 @@ class CustomChatSettingsTableViewCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -39,7 +39,7 @@ class CustomChatSettingsTableViewCell: UITableViewCell {
     lazy var rightTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.chatSettingsGrayColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -123,7 +123,7 @@ class NotifyChatSettingsTableViewCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -206,7 +206,7 @@ class DisappearingChatSettingsTableViewCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -268,7 +268,7 @@ class DisappearingChatSettingsTableViewCell: UITableViewCell {
     lazy var titleLabelForSlider: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -278,7 +278,7 @@ class DisappearingChatSettingsTableViewCell: UITableViewCell {
     lazy var rightTitleLabelForSlider: UILabel = {
         let result = UILabel()
         result.textColor = Colors.chatSettingsGrayColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

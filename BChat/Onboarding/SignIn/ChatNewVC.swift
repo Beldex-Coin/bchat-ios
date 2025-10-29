@@ -71,7 +71,7 @@ class ChatNewVC: BaseVC  {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = 16
         result.backgroundColor = .clear
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         return result
     }()
     

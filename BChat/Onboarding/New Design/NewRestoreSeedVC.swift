@@ -38,7 +38,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var seedLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         result.lineBreakMode = .byWordWrapping
@@ -64,7 +64,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -81,7 +81,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(copyButtonTapped), for: .touchUpInside)
         return button
     }()    
@@ -89,7 +89,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -101,7 +101,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         return button
     }()

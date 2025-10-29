@@ -80,7 +80,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var timestampLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         result.alpha = Values.lowOpacity
@@ -89,7 +89,7 @@ final class ConversationCell : UITableViewCell {
     
     private lazy var snippetLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.textColor = Colors.text
         result.lineBreakMode = .byTruncatingTail
         return result
@@ -451,7 +451,7 @@ final class ConversationCell : UITableViewCell {
             result.append(imageString)
             result.append(NSAttributedString(string: "  ", attributes: [ .font : UIFont.ows_elegantIconsFont(10), .foregroundColor : Colors.unimportant ]))
         }
-        let font = threadViewModel.hasUnreadMessages ? Fonts.OpenSans(ofSize: Values.smallFontSize) : Fonts.OpenSans(ofSize: Values.smallFontSize)
+        let font = threadViewModel.hasUnreadMessages ? Fonts.regularOpenSans(ofSize: Values.smallFontSize) : Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
             result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.text ]))
         }

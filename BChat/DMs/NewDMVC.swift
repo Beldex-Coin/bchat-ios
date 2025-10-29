@@ -195,7 +195,7 @@ private final class EnterPublicKeyVC : UIViewController {
     private lazy var userPublicKeyLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byCharWrapping
@@ -230,7 +230,7 @@ private final class EnterPublicKeyVC : UIViewController {
         // Explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         explanationLabel.text = NSLocalizedString("vc_enter_public_key_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center
@@ -357,7 +357,7 @@ private final class ScanQRCodePlaceholderVC : UIViewController {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("vc_scan_qr_code_camera_access_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .center

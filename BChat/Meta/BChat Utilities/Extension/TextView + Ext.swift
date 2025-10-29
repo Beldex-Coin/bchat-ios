@@ -6,7 +6,7 @@ extension UITextView{
     func setPlaceholderChatNew() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = NSLocalizedString("ENTER_CHAT_ID_NEW", comment: "")
-        placeholderLabel.font = Fonts.OpenSans(ofSize: 14)
+        placeholderLabel.font = Fonts.regularOpenSans(ofSize: 14)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: 8)
@@ -24,7 +24,7 @@ extension UITextView{
     func setPlaceholder() {
         let placeholderLabel = UILabel()
         placeholderLabel.text = "Enter BChat ID"
-        placeholderLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        placeholderLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         placeholderLabel.sizeToFit()
         placeholderLabel.tag = 222
         placeholderLabel.frame.origin = CGPoint(x: 5, y: (self.font?.pointSize)! / 0.7)

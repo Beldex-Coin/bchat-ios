@@ -28,7 +28,7 @@ final class PermissionMissingModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = "BChat needs \(permission) access to continue. You can enable access in the iOS settings."
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: permission))
@@ -43,7 +43,7 @@ final class PermissionMissingModal : Modal {
         settingsButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
         settingsButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         // settingsButton.backgroundColor = Colors.buttonBackground
-        settingsButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        settingsButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         settingsButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         settingsButton.setTitle("Settings", for: UIControl.State.normal)
         settingsButton.addTarget(self, action: #selector(goToSettings), for: .touchUpInside)

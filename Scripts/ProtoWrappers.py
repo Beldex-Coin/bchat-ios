@@ -552,7 +552,7 @@ public func serializedData() throws -> Data {
             # if self.can_field_be_optional(field):
                 writer.add('guard proto.%s else {' % field.has_accessor_name() )
                 writer.push_indent()
-                writer.add('throw %s.invalidProtobuf(description: "\(logTag) missing required field: %s")' % ( writer.invalid_protobuf_error_name, field.name_swift, ) )   
+                writer.add('throw %s.invalidProtobuf(description: "\\(logTag) missing required field: %s")' % ( writer.invalid_protobuf_error_name, field.name_swift, ) )
                 writer.pop_indent()
                 writer.add('}')
             
@@ -628,7 +628,7 @@ public func serializedData() throws -> Data {
         # description
         writer.add('@objc public override var debugDescription: String {')
         writer.push_indent()
-        writer.add('return "\(proto)"')
+        writer.add('return "\\(proto)"')
         writer.pop_indent()
         writer.add('}')
         writer.newline()
@@ -822,7 +822,7 @@ public func serializedData() throws -> Data {
             writer.push_indent()
             writer.add('var fields = [String]()')
             for field in self.fields():
-                writer.add('fields.append("%s: \(proto.%s)")' % ( field.name_swift, field.name_swift, ) )
+                writer.add('fields.append("%s: \\(proto.%s)")' % ( field.name_swift, field.name_swift, ) )
             writer.add('return "[" + fields.joined(separator: ", ") + "]"')
             writer.pop_indent()
             writer.add('}')

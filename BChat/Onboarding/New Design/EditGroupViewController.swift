@@ -23,7 +23,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         let result = UITextField()
         let attributes = [
             NSAttributedString.Key.foregroundColor: Colors.titleColor,
-            NSAttributedString.Key.font: Fonts.OpenSans(ofSize: 16)
+            NSAttributedString.Key.font: Fonts.regularOpenSans(ofSize: 16)
         ]
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter a group name", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
         button.setTitleColor(UIColor(hex: 0x6E6E7C), for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.addTarget(self, action: #selector(applyChangesButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -118,7 +118,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         bottomButtonView.addSubview(applyChangesButton)
         
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
-            .font: Fonts.OpenSans(ofSize: 16),
+            .font: Fonts.regularOpenSans(ofSize: 16),
             .foregroundColor: Colors.titleColor
         ]
         let attributedPlaceholder = NSAttributedString(string: "Enter a group name", attributes: placeholderAttributes)

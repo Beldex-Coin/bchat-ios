@@ -35,7 +35,7 @@ final class UserDetailsSheet : Sheet {
         // BChat ID label
         let bchatIDLabel = UILabel()
         bchatIDLabel.textColor = Colors.text
-        bchatIDLabel.font = Fonts.OpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : 20)
+        bchatIDLabel.font = Fonts.regularOpenSans(ofSize: isIPhone5OrSmaller ? Values.mediumFontSize : 20)
         bchatIDLabel.numberOfLines = 0
         bchatIDLabel.lineBreakMode = .byCharWrapping
         bchatIDLabel.accessibilityLabel = "BChat ID label"

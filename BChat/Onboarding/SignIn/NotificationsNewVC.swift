@@ -231,7 +231,7 @@ class NotificationTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -247,7 +247,7 @@ class NotificationTableCell: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -319,7 +319,7 @@ class NotificationTableCell2: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -327,7 +327,7 @@ class NotificationTableCell2: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

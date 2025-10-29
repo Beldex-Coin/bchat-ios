@@ -191,7 +191,7 @@ class CurrentNodeTableCell: UITableViewCell {
     lazy var currentNodeTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("CURRENT_NODE_TITLE_NEW", comment: "")
@@ -202,7 +202,7 @@ class CurrentNodeTableCell: UITableViewCell {
     lazy var nodeNameLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -282,7 +282,7 @@ class PersonalSettingsTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("ADDRESS_BOOK_TITLE_NEW", comment: "")
@@ -602,7 +602,7 @@ class WalletSettingsSubTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -612,7 +612,7 @@ class WalletSettingsSubTableCell: UITableViewCell {
     lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletSettingsSubTitleLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -696,7 +696,7 @@ class WalletSettingsSubTableCell33: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -793,7 +793,7 @@ class WalletSettingsSubTableCell2: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

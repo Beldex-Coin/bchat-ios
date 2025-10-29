@@ -1,7 +1,7 @@
 
 PROTOC=protoc \
 		--proto_path='./'
-WRAPPER_SCRIPT=../../Scripts/ProtoWrappers.py \
+WRAPPER_SCRIPT=python3 ../../Scripts/ProtoWrappers.py \
 		--proto-dir='./' --verbose
 
 all: session_protos websocket_protos

@@ -42,7 +42,7 @@ public class ConfirmationModal: ModalView {
     private lazy var explanationLabel: ScrollableLabel = {
         let result: ScrollableLabel = ScrollableLabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -56,7 +56,7 @@ public class ConfirmationModal: ModalView {
         result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = Colors.bothGreenWithAlpha10
-        result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel?.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.setTitleColor(Colors.titleColor3, for: .normal)
@@ -71,7 +71,7 @@ public class ConfirmationModal: ModalView {
         result.setTitle("Ok", for: .normal)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
         result.addTarget(self, action: #selector(confirmationPressed), for: .touchUpInside)
         result.set(.height, to: Values.alertButtonHeight)
@@ -124,7 +124,7 @@ public class ConfirmationModal: ModalView {
     public init(targetView: UIView? = nil, info: Info, modalImageType: ConfirmationModalType = .none) {
         self.info = info
         
-        super.init(targetView: targetView, dismissType: info.dismissType, afterClosed: info.afterClosed)
+        super.init(targetView: targetView, dismissType: info.dismissType, dismissHandler: info.dismissHandler)
         
         self.modalPresentationStyle = .overFullScreen
         self.modalTransitionStyle = .crossDissolve
@@ -198,6 +198,7 @@ public class ConfirmationModal: ModalView {
         
         confirmButton.accessibilityIdentifier = info.confirmTitle
         confirmButton.isAccessibilityElement = true
+        confirmButton.backgroundColor = info.modalType.confirmationButtonBgColor
         confirmButton.setTitle(info.confirmTitle, for: .normal)
         confirmButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         confirmButton.isHidden = (info.confirmTitle == nil)
@@ -208,6 +209,22 @@ public class ConfirmationModal: ModalView {
         cancelButton.setTitle(info.cancelTitle, for: .normal)
         cancelButton.setTitleColor(Colors.titleColor3, for: .normal)
         cancelButton.isEnabled = info.cancelEnabled.isValid(with: info)
+        
+        if info.modalType == .missedCall || info.modalType == .pwdUpdateSuccess {
+            cancelButton.layer.borderWidth = 0
+            cancelButton.layer.borderColor = UIColor.clear.cgColor
+            cancelButton.backgroundColor = Colors.bothGreenColor
+            cancelButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
+            
+            if info.modalType == .pwdUpdateSuccess {
+                titleLabel.textColor = Colors.bothGreenColor
+            }
+        }
+        
+        if info.modalType == .initiateTransaction {
+            buttonStackView.isHidden = true
+            animateImageView()
+        }
         
         titleLabel.isAccessibilityElement = true
         titleLabel.accessibilityIdentifier = "Modal heading"
@@ -255,7 +272,7 @@ public extension ConfirmationModal {
         let dismissType: ModalView.DismissType
         public let onConfirm: ((ConfirmationModal) -> ())?
         let onCancel: ((ConfirmationModal) -> ())?
-        let afterClosed: (() -> ())?
+        let dismissHandler: (() -> ())?
         
         // MARK: - Initialization
         
@@ -273,7 +290,7 @@ public extension ConfirmationModal {
             dismissType: DismissType = .recursive,
             onConfirm: ((ConfirmationModal) -> ())? = nil,
             onCancel: ((ConfirmationModal) -> ())? = nil,
-            afterClosed: (() -> ())? = nil
+            dismissHandler: (() -> ())? = nil
             
         ) {
             self.modalType = modalType
@@ -289,7 +306,7 @@ public extension ConfirmationModal {
             self.dismissType = dismissType
             self.onConfirm = onConfirm
             self.onCancel = onCancel
-            self.afterClosed = afterClosed
+            self.dismissHandler = dismissHandler
         }
         
         // MARK: - Mutation
@@ -298,7 +315,7 @@ public extension ConfirmationModal {
             body: Body? = nil,
             onConfirm: ((ConfirmationModal) -> ())? = nil,
             onCancel: ((ConfirmationModal) -> ())? = nil,
-            afterClosed: (() -> ())? = nil
+            dismissHandler: (() -> ())? = nil
         ) -> Info {
             return Info(
                 modalType: self.modalType,
@@ -314,7 +331,7 @@ public extension ConfirmationModal {
                 dismissType: self.dismissType,
                 onConfirm: (onConfirm ?? self.onConfirm),
                 onCancel: (onCancel ?? self.onCancel),
-                afterClosed: (afterClosed ?? self.afterClosed)
+                dismissHandler: (dismissHandler ?? self.dismissHandler)
             )
         }
         
@@ -348,6 +365,14 @@ public extension ConfirmationModal {
             hasCloseButton.hash(into: &hasher)
             dismissOnConfirm.hash(into: &hasher)
             dismissType.hash(into: &hasher)
+        }
+    }
+    
+    func animateImageView() {
+        UIView.animate(withDuration: 1.0, delay: 0, options: [.curveLinear], animations: {
+            self.imageView.transform = self.imageView.transform.rotated(by: .pi)
+        }) { _ in
+            self.animateImageView()
         }
     }
 }

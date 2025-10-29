@@ -120,7 +120,20 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
             if let displayableTitle = title?.filterForDisplay {
                 content.title = displayableTitle
             }
-            if let displayableBody = body.filterForDisplay {
+            
+            var text = body
+            if body.contains("👤") {
+                var processedText = body.replacingOccurrences(of: "👤", with: "")
+                let namesArray = processedText.toStringArrayFromJSON()
+                let other = namesArray?.count == 2 ? "other" : "others"
+                if namesArray?.count ?? 0 <= 1 {
+                    processedText = convertJSONStringToCommaSeparatedString(processedText) ?? ""
+                } else {
+                    processedText = "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) \(other)"
+                }
+                    text = "👤 \(processedText)"
+            }
+            if let displayableBody = text.filterForDisplay {
                 content.body = displayableBody
             }
         } else {
@@ -155,6 +168,20 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
         notifications[notificationIdentifier] = request
     }
 
+    func convertJSONStringToCommaSeparatedString(_ jsonString: String) -> String? {
+        guard let data = jsonString.data(using: .utf8) else {
+            print("Invalid string encoding")
+            return nil
+        }
+        do {
+            let array = try JSONDecoder().decode([String].self, from: data)
+            return array.joined(separator: ", ")
+        } catch {
+            print("JSON decoding error: \(error)")
+            return nil
+        }
+    }
+    
     func cancelNotification(identifier: String) {
         AssertIsOnMainThread()
         notifications.removeValue(forKey: identifier)

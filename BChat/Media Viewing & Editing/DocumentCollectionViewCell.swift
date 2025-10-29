@@ -17,7 +17,7 @@ class DocumentCollectionViewCell: UICollectionViewCell {
     lazy var sizeLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.regularOpenSans(ofSize: 13)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -25,7 +25,7 @@ class DocumentCollectionViewCell: UICollectionViewCell {
     lazy var dateLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.regularOpenSans(ofSize: 13)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()

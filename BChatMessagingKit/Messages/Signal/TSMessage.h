@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, TSMessageDirection) {
 @class TSAttachmentStream;
 @class TSQuotedMessage;
 @class SNReactMessage;
+@class BCSharedContactMessage;
 @class YapDatabaseReadWriteTransaction;
 
 extern const NSUInteger kOversizeTextMessageSizeThreshold;
@@ -45,6 +46,7 @@ extern const NSUInteger kOversizeTextMessageSizeThreshold;
 @property (nonatomic) BOOL isDeleted;
 @property (nonatomic) BOOL isCallMessage;
 @property (nonatomic, readonly) NSMutableArray<SNReactMessage *> *reactions;
+@property (nonatomic, readonly, nullable) BCSharedContactMessage *sharedContactMessage;
 
 - (instancetype)initInteractionWithTimestamp:(uint64_t)timestamp inThread:(TSThread *)thread NS_UNAVAILABLE;
 
@@ -60,7 +62,8 @@ extern const NSUInteger kOversizeTextMessageSizeThreshold;
                   openGroupInvitationURL:(nullable NSString *)openGroupInvitationURL
                               serverHash:(nullable NSString *)serverHash
                             paymentTxnid:(nullable NSString *)paymentTxnid
-                           paymentAmount:(nullable NSString *)paymentAmount NS_DESIGNATED_INITIALIZER;
+                           paymentAmount:(nullable NSString *)paymentAmount
+                           sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 

@@ -95,6 +95,7 @@ public final class Poller : NSObject {
         return SnodeAPI.getRawMessages(from: snode, associatedWith: userPublicKey).then(on: Threading.pollerQueue) { [weak self] rawResponse -> Promise<Void> in
             guard let strongSelf = self, strongSelf.isPolling else { return Promise { $0.fulfill(()) } }
             let (messages, lastRawMessage) = SnodeAPI.parseRawMessagesResponse(rawResponse, from: snode, associatedWith: userPublicKey)
+            debugPrint("Messages ***** \(messages)")
             if !messages.isEmpty {
                 SNLog("Received \(messages.count) new message(s).")
             }

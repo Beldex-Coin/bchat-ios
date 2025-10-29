@@ -37,13 +37,16 @@ public enum SNProtoError: Error {
 
     // MARK: - SNProtoEnvelopeBuilder
 
-    @objc public class func builder(type: SNProtoEnvelopeType, timestamp: UInt64, isBnsHolder: Bool) -> SNProtoEnvelopeBuilder {
-        return SNProtoEnvelopeBuilder(type: type, timestamp: timestamp, isBnsHolder: isBnsHolder)
+    @objc public class func builder(type: SNProtoEnvelopeType) -> SNProtoEnvelopeBuilder {
+        return SNProtoEnvelopeBuilder(type: type)
     }
 
     // asBuilder() constructs a builder that reflects the proto's contents.
     @objc public func asBuilder() -> SNProtoEnvelopeBuilder {
-        let builder = SNProtoEnvelopeBuilder(type: type, timestamp: timestamp, isBnsHolder: isBnsHolder)
+        let builder = SNProtoEnvelopeBuilder(type: type)
+        if hasTimestamp {
+            builder.setTimestamp(timestamp)
+        }
         if let _value = source {
             builder.setSource(_value)
         }
@@ -53,11 +56,11 @@ public enum SNProtoError: Error {
         if let _value = content {
             builder.setContent(_value)
         }
+        if hasIsBnsHolder {
+            builder.setIsBnsHolder(isBnsHolder)
+        }
         if hasServerTimestamp {
             builder.setServerTimestamp(serverTimestamp)
-        }
-        if isBnsHolder {
-            builder.setBnsHolder(isBnsHolder)
         }
         return builder
     }
@@ -68,16 +71,18 @@ public enum SNProtoError: Error {
 
         @objc fileprivate override init() {}
 
-        @objc fileprivate init(type: SNProtoEnvelopeType, timestamp: UInt64, isBnsHolder: Bool) {
+        @objc fileprivate init(type: SNProtoEnvelopeType) {
             super.init()
 
             setType(type)
-            setTimestamp(timestamp)
-            setBnsHolder(isBnsHolder)
         }
 
         @objc public func setType(_ valueParam: SNProtoEnvelopeType) {
             proto.type = SNProtoEnvelopeTypeUnwrap(valueParam)
+        }
+
+        @objc public func setTimestamp(_ valueParam: UInt64) {
+            proto.timestamp = valueParam
         }
 
         @objc public func setSource(_ valueParam: String) {
@@ -88,15 +93,11 @@ public enum SNProtoError: Error {
             proto.sourceDevice = valueParam
         }
 
-        @objc public func setTimestamp(_ valueParam: UInt64) {
-            proto.timestamp = valueParam
-        }
-
         @objc public func setContent(_ valueParam: Data) {
             proto.content = valueParam
         }
-        
-        @objc public func setBnsHolder(_ valueParam: Bool) {
+
+        @objc public func setIsBnsHolder(_ valueParam: Bool) {
             proto.isBnsHolder = valueParam
         }
 
@@ -117,7 +118,13 @@ public enum SNProtoError: Error {
 
     @objc public let type: SNProtoEnvelopeType
 
-    @objc public let timestamp: UInt64
+    @objc public var timestamp: UInt64 {
+        return proto.timestamp
+    }
+    
+    @objc public var hasTimestamp: Bool {
+        return proto.hasTimestamp
+    }
 
     @objc public var source: String? {
         guard proto.hasSource else {
@@ -145,9 +152,14 @@ public enum SNProtoError: Error {
     @objc public var hasContent: Bool {
         return proto.hasContent
     }
+
     @objc public var isBnsHolder: Bool {
         return proto.isBnsHolder
     }
+    @objc public var hasIsBnsHolder: Bool {
+        return proto.hasIsBnsHolder
+    }
+
     @objc public var serverTimestamp: UInt64 {
         return proto.serverTimestamp
     }
@@ -156,11 +168,9 @@ public enum SNProtoError: Error {
     }
 
     private init(proto: SessionProtos_Envelope,
-                 type: SNProtoEnvelopeType,
-                 timestamp: UInt64) {
+                 type: SNProtoEnvelopeType) {
         self.proto = proto
         self.type = type
-        self.timestamp = timestamp
     }
 
     @objc
@@ -189,8 +199,7 @@ public enum SNProtoError: Error {
         // MARK: - End Validation Logic for SNProtoEnvelope -
 
         let result = SNProtoEnvelope(proto: proto,
-                                     type: type,
-                                     timestamp: timestamp)
+                                     type: type)
         return result
     }
 
@@ -1656,15 +1665,15 @@ extension SNProtoDataMessagePreview.SNProtoDataMessagePreviewBuilder {
 
     private class func SNProtoDataMessageReactionActionWrap(_ value: SessionProtos_DataMessage.Reaction.Action) -> SNProtoDataMessageReactionAction {
         switch value {
-            case .react: return .react
-            case .remove: return .remove
+        case .react: return .react
+        case .remove: return .remove
         }
     }
 
     private class func SNProtoDataMessageReactionActionUnwrap(_ value: SNProtoDataMessageReactionAction) -> SessionProtos_DataMessage.Reaction.Action {
         switch value {
-            case .react: return .react
-            case .remove: return .remove
+        case .react: return .react
+        case .remove: return .remove
         }
     }
 
@@ -1762,17 +1771,17 @@ extension SNProtoDataMessagePreview.SNProtoDataMessagePreviewBuilder {
 
     fileprivate class func parseProto(_ proto: SessionProtos_DataMessage.Reaction) throws -> SNProtoDataMessageReaction {
         guard proto.hasID else {
-            throw SNProtoError.invalidProtobuf(description: "\(String(describing: logTag)) missing required field: id")
+            throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: id")
         }
         let id = proto.id
 
         guard proto.hasAuthor else {
-            throw SNProtoError.invalidProtobuf(description: "\(String(describing: logTag)) missing required field: author")
+            throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: author")
         }
         let author = proto.author
 
         guard proto.hasAction else {
-            throw SNProtoError.invalidProtobuf(description: "\(String(describing: logTag)) missing required field: action")
+            throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: action")
         }
         let action = SNProtoDataMessageReactionActionWrap(proto.action)
 
@@ -2037,13 +2046,13 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
 
     // MARK: - SNProtoDataMessagePaymentBuilder
 
-    @objc public class func builder(amount: String, txnId: String) -> SNProtoDataMessagePaymentBuilder {
-        return SNProtoDataMessagePaymentBuilder(amount: amount, txnId: txnId)
+    @objc public class func builder(amount: String, txnID: String) -> SNProtoDataMessagePaymentBuilder {
+        return SNProtoDataMessagePaymentBuilder(amount: amount, txnID: txnID)
     }
 
     // asBuilder() constructs a builder that reflects the proto's contents.
     @objc public func asBuilder() -> SNProtoDataMessagePaymentBuilder {
-        let builder = SNProtoDataMessagePaymentBuilder(amount: amount, txnId: txnId)
+        let builder = SNProtoDataMessagePaymentBuilder(amount: amount, txnID: txnID)
         return builder
     }
 
@@ -2053,18 +2062,18 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
 
         @objc fileprivate override init() {}
 
-        @objc fileprivate init(amount: String, txnId: String) {
+        @objc fileprivate init(amount: String, txnID: String) {
             super.init()
 
             setAmount(amount)
-            setTxnid(txnId)
+            setTxnID(txnID)
         }
 
         @objc public func setAmount(_ valueParam: String) {
             proto.amount = valueParam
         }
 
-        @objc public func setTxnid(_ valueParam: String) {
+        @objc public func setTxnID(_ valueParam: String) {
             proto.txnID = valueParam
         }
 
@@ -2081,14 +2090,14 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
 
     @objc public let amount: String
 
-    @objc public let txnId: String
+    @objc public let txnID: String
 
     private init(proto: SessionProtos_DataMessage.Payment,
                  amount: String,
-                 txnId: String) {
+                 txnID: String) {
         self.proto = proto
         self.amount = amount
-        self.txnId = txnId
+        self.txnID = txnID
     }
 
     @objc
@@ -2108,9 +2117,9 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
         let amount = proto.amount
 
         guard proto.hasTxnID else {
-            throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: txnId")
+            throw SNProtoError.invalidProtobuf(description: "\(logTag) missing required field: txnID")
         }
-        let txnId = proto.txnID
+        let txnID = proto.txnID
 
         // MARK: - Begin Validation Logic for SNProtoDataMessagePayment -
 
@@ -2118,7 +2127,7 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
 
         let result = SNProtoDataMessagePayment(proto: proto,
                                                amount: amount,
-                                               txnId: txnId)
+                                               txnID: txnID)
         return result
     }
 
@@ -2126,7 +2135,6 @@ extension SNProtoDataMessageOpenGroupInvitation.SNProtoDataMessageOpenGroupInvit
         return "\(proto)"
     }
 }
-
 
 #if DEBUG
 
@@ -2142,10 +2150,7 @@ extension SNProtoDataMessagePayment.SNProtoDataMessagePaymentBuilder {
     }
 }
 
-
-
 #endif
-
 
 // MARK: - SNProtoDataMessageClosedGroupControlMessageKeyPairWrapper
 
@@ -2506,6 +2511,105 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
 
 #endif
 
+// MARK: - SNProtoDataMessageSharedContact
+
+@objc public class SNProtoDataMessageSharedContact: NSObject {
+
+    // MARK: - SNProtoDataMessageSharedContactBuilder
+
+    @objc public class func builder() -> SNProtoDataMessageSharedContactBuilder {
+        return SNProtoDataMessageSharedContactBuilder()
+    }
+
+    // asBuilder() constructs a builder that reflects the proto's contents.
+    @objc public func asBuilder() -> SNProtoDataMessageSharedContactBuilder {
+        let builder = SNProtoDataMessageSharedContactBuilder()
+        if let _value = address {
+            builder.setAddress(_value)
+        }
+        if let _value = name {
+            builder.setName(_value)
+        }
+        return builder
+    }
+
+    @objc public class SNProtoDataMessageSharedContactBuilder: NSObject {
+
+        private var proto = SessionProtos_DataMessage.SharedContact()
+
+        @objc fileprivate override init() {}
+
+        @objc public func setAddress(_ valueParam: String) {
+            proto.address = valueParam
+        }
+
+        @objc public func setName(_ valueParam: String) {
+            proto.name = valueParam
+        }
+
+        @objc public func build() throws -> SNProtoDataMessageSharedContact {
+            return try SNProtoDataMessageSharedContact.parseProto(proto)
+        }
+
+        @objc public func buildSerializedData() throws -> Data {
+            return try SNProtoDataMessageSharedContact.parseProto(proto).serializedData()
+        }
+    }
+
+    fileprivate let proto: SessionProtos_DataMessage.SharedContact
+
+    @objc public var address: String? {
+        return proto.address
+    }
+
+    @objc public var name: String? {
+        return proto.name
+    }
+
+    private init(proto: SessionProtos_DataMessage.SharedContact) {
+        self.proto = proto
+    }
+
+    @objc
+    public func serializedData() throws -> Data {
+        return try self.proto.serializedData()
+    }
+
+    @objc public class func parseData(_ serializedData: Data) throws -> SNProtoDataMessageSharedContact {
+        let proto = try SessionProtos_DataMessage.SharedContact(serializedData: serializedData)
+        return try parseProto(proto)
+    }
+
+    fileprivate class func parseProto(_ proto: SessionProtos_DataMessage.SharedContact) throws -> SNProtoDataMessageSharedContact {
+        // MARK: - Begin Validation Logic for SNProtoDataMessageSharedContact -
+
+        // MARK: - End Validation Logic for SNProtoDataMessageSharedContact -
+
+        let result = SNProtoDataMessageSharedContact(proto: proto)
+        return result
+    }
+
+    @objc public override var debugDescription: String {
+        return "\(proto)"
+    }
+}
+
+#if DEBUG
+
+extension SNProtoDataMessageSharedContact {
+    @objc public func serializedDataIgnoringErrors() -> Data? {
+        return try! self.serializedData()
+    }
+}
+
+extension SNProtoDataMessageSharedContact.SNProtoDataMessageSharedContactBuilder {
+    @objc public func buildIgnoringErrors() -> SNProtoDataMessageSharedContact? {
+        return try! self.build()
+    }
+}
+
+#endif
+
 // MARK: - SNProtoDataMessage
 
 @objc public class SNProtoDataMessage: NSObject {
@@ -2569,14 +2673,17 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         if let _value = openGroupInvitation {
             builder.setOpenGroupInvitation(_value)
         }
-        if let _value = payment {
-            builder.setPayment(_value)
-        }
         if let _value = closedGroupControlMessage {
             builder.setClosedGroupControlMessage(_value)
         }
         if let _value = syncTarget {
             builder.setSyncTarget(_value)
+        }
+        if let _value = payment {
+            builder.setPayment(_value)
+        }
+        if let _value = sharedContact {
+            builder.setSharedContact(_value)
         }
         return builder
     }
@@ -2634,7 +2741,7 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         @objc public func setPreview(_ wrappedItems: [SNProtoDataMessagePreview]) {
             proto.preview = wrappedItems.map { $0.proto }
         }
-        
+
         @objc public func setReaction(_ valueParam: SNProtoDataMessageReaction) {
             proto.reaction = valueParam.proto
         }
@@ -2646,10 +2753,6 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         @objc public func setOpenGroupInvitation(_ valueParam: SNProtoDataMessageOpenGroupInvitation) {
             proto.openGroupInvitation = valueParam.proto
         }
-        
-        @objc public func setPayment(_ valueParam: SNProtoDataMessagePayment) {
-            proto.payment = valueParam.proto
-        }
 
         @objc public func setClosedGroupControlMessage(_ valueParam: SNProtoDataMessageClosedGroupControlMessage) {
             proto.closedGroupControlMessage = valueParam.proto
@@ -2657,6 +2760,14 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
 
         @objc public func setSyncTarget(_ valueParam: String) {
             proto.syncTarget = valueParam
+        }
+
+        @objc public func setPayment(_ valueParam: SNProtoDataMessagePayment) {
+            proto.payment = valueParam.proto
+        }
+
+        @objc public func setSharedContact(_ valueParam: SNProtoDataMessageSharedContact) {
+            proto.sharedContact = valueParam.proto
         }
 
         @objc public func build() throws -> SNProtoDataMessage {
@@ -2677,16 +2788,18 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
     @objc public let quote: SNProtoDataMessageQuote?
 
     @objc public let preview: [SNProtoDataMessagePreview]
-    
+
     @objc public let reaction: SNProtoDataMessageReaction?
 
     @objc public let profile: SNProtoDataMessageBeldexProfile?
 
     @objc public let openGroupInvitation: SNProtoDataMessageOpenGroupInvitation?
-    
-    @objc public let payment: SNProtoDataMessagePayment?
 
     @objc public let closedGroupControlMessage: SNProtoDataMessageClosedGroupControlMessage?
+
+    @objc public let payment: SNProtoDataMessagePayment?
+
+    @objc public let sharedContact: SNProtoDataMessageSharedContact?
 
     @objc public var body: String? {
         guard proto.hasBody else {
@@ -2747,8 +2860,9 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
                  reaction: SNProtoDataMessageReaction?,
                  profile: SNProtoDataMessageBeldexProfile?,
                  openGroupInvitation: SNProtoDataMessageOpenGroupInvitation?,
+                 closedGroupControlMessage: SNProtoDataMessageClosedGroupControlMessage?,
                  payment: SNProtoDataMessagePayment?,
-                 closedGroupControlMessage: SNProtoDataMessageClosedGroupControlMessage?) {
+                 sharedContact: SNProtoDataMessageSharedContact?) {
         self.proto = proto
         self.attachments = attachments
         self.group = group
@@ -2757,8 +2871,9 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         self.reaction = reaction
         self.profile = profile
         self.openGroupInvitation = openGroupInvitation
-        self.payment = payment
         self.closedGroupControlMessage = closedGroupControlMessage
+        self.payment = payment
+        self.sharedContact = sharedContact
     }
 
     @objc
@@ -2787,7 +2902,7 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
 
         var preview: [SNProtoDataMessagePreview] = []
         preview = try proto.preview.map { try SNProtoDataMessagePreview.parseProto($0) }
-        
+
         var reaction: SNProtoDataMessageReaction? = nil
         if proto.hasReaction {
             reaction = try SNProtoDataMessageReaction.parseProto(proto.reaction)
@@ -2802,15 +2917,20 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
         if proto.hasOpenGroupInvitation {
             openGroupInvitation = try SNProtoDataMessageOpenGroupInvitation.parseProto(proto.openGroupInvitation)
         }
-        
+
+        var closedGroupControlMessage: SNProtoDataMessageClosedGroupControlMessage? = nil
+        if proto.hasClosedGroupControlMessage {
+            closedGroupControlMessage = try SNProtoDataMessageClosedGroupControlMessage.parseProto(proto.closedGroupControlMessage)
+        }
+
         var payment: SNProtoDataMessagePayment? = nil
         if proto.hasPayment {
             payment = try SNProtoDataMessagePayment.parseProto(proto.payment)
         }
 
-        var closedGroupControlMessage: SNProtoDataMessageClosedGroupControlMessage? = nil
-        if proto.hasClosedGroupControlMessage {
-            closedGroupControlMessage = try SNProtoDataMessageClosedGroupControlMessage.parseProto(proto.closedGroupControlMessage)
+        var sharedContact: SNProtoDataMessageSharedContact? = nil
+        if proto.hasSharedContact {
+            sharedContact = try SNProtoDataMessageSharedContact.parseProto(proto.sharedContact)
         }
 
         // MARK: - Begin Validation Logic for SNProtoDataMessage -
@@ -2825,8 +2945,9 @@ extension SNProtoDataMessageClosedGroupControlMessage.SNProtoDataMessageClosedGr
                                         reaction: reaction,
                                         profile: profile,
                                         openGroupInvitation: openGroupInvitation,
+                                        closedGroupControlMessage: closedGroupControlMessage,
                                         payment: payment,
-                                        closedGroupControlMessage: closedGroupControlMessage)
+                                        sharedContact: sharedContact)
         return result
     }
 

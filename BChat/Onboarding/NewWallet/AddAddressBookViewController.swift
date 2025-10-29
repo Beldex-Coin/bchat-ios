@@ -34,7 +34,7 @@ class AddAddressBookViewController: BaseVC {
         let textField = UITextField()
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = Fonts.OpenSans(ofSize: 16)
+        textField.font = Fonts.regularOpenSans(ofSize: 16)
         textField.layer.borderColor = Colors.borderColor.cgColor
         textField.backgroundColor = Colors.cellGroundColor2
         textField.layer.cornerRadius = 16
@@ -71,7 +71,7 @@ class AddAddressBookViewController: BaseVC {
         let textField = UITextField()
         textField.delegate = self
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.font = Fonts.OpenSans(ofSize: 16)
+        textField.font = Fonts.regularOpenSans(ofSize: 16)
         textField.backgroundColor = .clear
         textField.layer.cornerRadius = 16
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: textField.frame.size.height))

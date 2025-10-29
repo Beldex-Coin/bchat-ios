@@ -48,7 +48,7 @@ final class ScanQRCodeWrapperVC : BaseVC {
         let explanationLabel = UILabel()
         explanationLabel.text = message
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center

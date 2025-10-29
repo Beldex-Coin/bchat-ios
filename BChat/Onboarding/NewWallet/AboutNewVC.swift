@@ -21,7 +21,7 @@ class AboutNewVC: BaseVC {
         attributes: [.paragraphStyle: paragraphStyle])
         result.attributedText = attributedString
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = .clear

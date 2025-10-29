@@ -50,7 +50,7 @@ final class OpenGroupInvitationView : UIView {
         titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.text = name
         titleLabel.textColor = isOutgoing ? Colors.noDataLabelColor : Colors.titleColor5
-        titleLabel.font = Fonts.OpenSans(ofSize: 10)
+        titleLabel.font = Fonts.regularOpenSans(ofSize: 10)
         // Subtitle
         let subtitleLabel = UILabel()
         subtitleLabel.lineBreakMode = .byTruncatingTail
@@ -63,7 +63,7 @@ final class OpenGroupInvitationView : UIView {
         urlLabel.text = url
         urlLabel.textColor = isOutgoing ? Colors.bothWhiteColor : Colors.titleColor3
         urlLabel.numberOfLines = 0
-        urlLabel.font = Fonts.OpenSans(ofSize: 11)
+        urlLabel.font = Fonts.regularOpenSans(ofSize: 11)
 
         // Icon
         let iconSize = OpenGroupInvitationView.iconSize

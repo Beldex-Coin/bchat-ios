@@ -20,7 +20,7 @@ class AboutBNSViewController: BaseVC {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.tabStops = [NSTextTab(textAlignment: .left, location: 20, options: [:])]
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = .clear
@@ -62,7 +62,7 @@ class AboutBNSViewController: BaseVC {
         ]
         
         let normalAttributes: [NSAttributedString.Key: Any] = [
-            .font: Fonts.OpenSans(ofSize: 16),
+            .font: Fonts.regularOpenSans(ofSize: 16),
             .foregroundColor: Colors.titleColor3
         ]
         

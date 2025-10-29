@@ -109,7 +109,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
         // Members label
         let membersLabel = UILabel()
         membersLabel.textColor = Colors.text
-        membersLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        membersLabel.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         membersLabel.text = "Members"
         // Add members button
         let hasContactsToAdd = !Set(ContactUtilities.getAllContacts()).subtracting(self.membersAndZombies).isEmpty

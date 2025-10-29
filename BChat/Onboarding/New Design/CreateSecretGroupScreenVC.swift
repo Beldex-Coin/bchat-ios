@@ -9,7 +9,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     private lazy var groupNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor3
@@ -35,7 +35,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
             string: "Search Contact",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.translatesAutoresizingMaskIntoConstraints = false

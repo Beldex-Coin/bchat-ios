@@ -32,7 +32,7 @@ class NewChatTableViewCellForTitle: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
         button.setTitleColor(Colors.noDataLabelColor, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.isUserInteractionEnabled = false
         return button
     }()

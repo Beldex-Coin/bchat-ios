@@ -77,7 +77,7 @@ class NewSettingsTableViewCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

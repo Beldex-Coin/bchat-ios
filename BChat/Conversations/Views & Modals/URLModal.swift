@@ -26,7 +26,7 @@ final class URLModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), url.absoluteString)
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: url.absoluteString))
@@ -39,7 +39,7 @@ final class URLModal : Modal {
         openButton.set(.height, to: Values.mediumButtonHeight)
         openButton.layer.cornerRadius = Modal.buttonCornerRadius
         openButton.backgroundColor = Colors.buttonBackground
-        openButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        openButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         openButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         openButton.setTitle(NSLocalizedString("modal_open_url_button_title", comment: ""), for: .normal)
         openButton.addTarget(self, action: #selector(openURL), for: .touchUpInside)

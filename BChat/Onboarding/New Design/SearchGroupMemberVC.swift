@@ -4,37 +4,13 @@ import UIKit
 
 class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
     
-    
-    lazy var titleLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.titleColor3
-        result.font = Fonts.semiOpenSans(ofSize: 20)
-        result.textAlignment = .left
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.numberOfLines = 0
-        result.text = "Search members"
-        return result
-    }()
-    
-    lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
-        let image = UIImage(named: "ic_closeSearchMember")
-        button.setImage(image, for: UIControl.State.normal)
-        button.set(.width, to: 28)
-        button.set(.height, to: 28)
-        return button
-    }()
-    
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(
             string: "Search people",
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.backgroundColor = Colors.unlockButtonBackgroundColor
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -102,16 +78,18 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // NavigationBar Title
+        title = "Search Members"
+        
+        // Remove Back Button Title
+        navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         view.backgroundColor = Colors.mainBackGroundColor2
-        view.addSubViews(titleLabel, closeButton, searchTextField, tableView)
+        view.addSubViews(searchTextField, tableView)
         
         searchTextField.delegate = self
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 21),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 22),
-            closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
-            searchTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 17),
+            searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 17),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             searchTextField.heightAnchor.constraint(equalToConstant: 48),
@@ -160,13 +138,12 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
                 filteredUsers.insert(adminId, at: 0)
             }
         }
-        
     }
     
-    
-    @objc private func closeButtonTapped(_ sender: UIButton) {
-        self.searchTextField.resignFirstResponder()
-        self.dismiss(animated: true)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        searchTextField.resignFirstResponder()
     }
     
     private func handleMembersChanged() {
@@ -297,5 +274,18 @@ extension SearchGroupMemberVC : UITableViewDelegate, UITableViewDataSource {
         let isCurrentUserAdmin = groupThread?.groupModel.groupAdminIds.contains(publicKey)
         cell.adminButton.isHidden = (isCurrentUserAdmin ?? false) ? false : true
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let publicKey = filteredUsers[indexPath.row]
+        if publicKey == getUserHexEncodedPublicKey() { return }
+        let thread = TSContactThread.getOrCreateThread(contactBChatID: publicKey)
+        let name = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        let vc = UserInfoPopUp()
+        vc.thread = thread
+        vc.name = name
+        vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        present(vc, animated: true, completion: nil)
     }
 }

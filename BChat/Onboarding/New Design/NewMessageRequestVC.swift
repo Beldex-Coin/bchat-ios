@@ -73,10 +73,6 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.addSubview(tableView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(blockMessageRequestTapped(_:)), name: .blockMessageRequestTappedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(acceptMessageRequestTapped(_:)), name: .acceptMessageRequestTappedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteMessageRequestTapped(_:)), name: .deleteMessageRequestTappedNotification, object: nil)
-        
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 14.0).isActive = true
         tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 22.0).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -14.0).isActive = true
@@ -148,36 +144,27 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         cell.threadViewModel = threadViewModel(at: indexPath.row)
         cell.verifiedImageView.isHidden = true
         if let thread = threadViewModel(at: indexPath.row)?.threadRecord {
-            let contactThread = thread as! TSContactThread
-            let publicKey = contactThread.contactBChatID()
-            let contact: Contact? = Storage.shared.getContact(with: publicKey)
-            if let _ = contact, let isBnsUser = contact?.isBnsHolder {
-                cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
-                cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
-                cell.verifiedImageView.isHidden = isBnsUser ? false : true
+            if let contactThread = thread as? TSContactThread {
+                let contact: Contact? = Storage.shared.getContact(with: contactThread.contactBChatID())
+                if let _ = contact, let isBnsUser = contact?.isBnsHolder {
+                    cell.profileImageView.layer.borderWidth = isBnsUser ? Values.borderThickness : 0
+                    cell.profileImageView.layer.borderColor = isBnsUser ? Colors.bothGreenColor.cgColor : UIColor.clear.cgColor
+                    cell.verifiedImageView.isHidden = isBnsUser ? false : true
+                }
             }
         }        
         
         cell.acceptCallback = {
             self.tappedIndex = indexPath.row
-            let vc = AcceptMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            self.showConfirmationModal(.acceptMsgRequest)
         }
         cell.deleteCallback = {
             self.tappedIndex = indexPath.row
-            let vc = DeleteMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            self.showConfirmationModal(.deleteMsgRequest)
         }
         cell.blockCallback = {
             self.tappedIndex = indexPath.row
-            let vc = BlockMessageRequestPopUp()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
+            self.showConfirmationModal(.blockUserRequest)
         }
         
         return cell
@@ -190,7 +177,37 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.pushViewController(conversationVC, animated: true)
     }
     
-    @objc func acceptMessageRequestTapped(_ notification: Notification) {
+    func showConfirmationModal(_ modalType: ConfirmationModalType) {
+        let actionType = modalType == .acceptMsgRequest ? "accept" :
+                        modalType == .deleteMsgRequest ? "delete" : "block"
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: modalType,
+                title: "Message Request",
+                body: .text("Are you sure you want to \(actionType) this request?"),
+                showCondition: .disabled,
+                confirmTitle: actionType.capitalized,
+                onConfirm: { _ in
+                    switch modalType {
+                        case .acceptMsgRequest:
+                            self.acceptMessageRequest()
+                        case .deleteMsgRequest:
+                            self.deleteMessageRequest()
+                        case .blockUserRequest:
+                            self.blockMessageRequest()
+                        default:
+                            break
+                    }
+                }, dismissHandler: {
+                    debugPrint("message request popup closed")
+                }
+            )
+        )
+        self.present(confirmationModal, animated: true, completion: nil)
+    }
+    
+    func acceptMessageRequest() {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
             for: thread,
@@ -207,26 +224,29 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
-    @objc func blockMessageRequestTapped(_ notification: Notification) {
-        guard let thread = self.thread(at: self.tappedIndex) else { return }
-        let thread2 = thread as? TSContactThread
-        let publicKey = thread2!.contactBChatID()
-        if let contact: Contact = Storage.shared.getContact(with: publicKey) {
+    func blockMessageRequest() {
+        guard let thread = self.thread(at: self.tappedIndex), let contactThread = thread as? TSContactThread else { return }
+        if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()) {
             Storage.shared.write(
                 with: { transaction in
                     guard let transaction = transaction as? YapDatabaseReadWriteTransaction else { return }
                     contact.isBlocked = true
+                    contact.didApproveMe = true
+                    contact.isApproved = false
                     Storage.shared.setContact(contact, using: transaction)
                 },
                 completion: {
                     MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
+                    contactThread.shouldBeVisible = true
+                    contactThread.save()
+                    self.reload()
                 }
             )
         }
         self.tableView.reloadData()
     }
     
-    @objc func deleteMessageRequestTapped(_ notification: Notification) {
+    func deleteMessageRequest() {
         guard let thread = self.thread(at: self.tappedIndex) else { return }
         self.delete(thread)
         self.tableView.reloadData()

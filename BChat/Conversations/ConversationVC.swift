@@ -209,7 +209,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private let messageRequestDescriptionLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
         result.textColor = Colors.titleColor
         result.textAlignment = .center
@@ -438,7 +438,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             label.backgroundColor = UIColor.lightGray
         }
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -453,7 +453,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let label = UILabel()
         label.text = "Address :"
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -463,7 +463,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     private lazy var inChatPaymentFeelabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -479,7 +479,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             button.backgroundColor = UIColor.lightGray
         }
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -491,7 +491,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(inChatPaymentOkButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -531,7 +531,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         button.addTarget(self, action: #selector(isSuccessPopTappedButton), for: .touchUpInside)
         return button
     }()
@@ -559,7 +559,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let label = UILabel()
         label.text = "Please don't close this window or attend calls or navigate to another app until the transaction gets initiated."
         label.textColor = Colors.bchatLabelNameColor
-        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -641,7 +641,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     lazy var blockedBannerLabel: UILabel = {
         let result = PaddingLabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.incomingMessageColor
         result.paddingTop = 6
@@ -728,7 +728,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     lazy var openURLViewSubTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""))
         result.numberOfLines = 0
@@ -1050,7 +1050,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(handleAudioDidFinishPlayingNotification(_:)), name: .SNAudioDidFinishPlaying, object: nil)
         notificationCenter.addObserver(self, selector: #selector(addOrRemoveBlockedBanner), name: .contactBlockedStateChanged, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleGroupUpdatedNotification), name: .groupThreadUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        //notificationCenter.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleMessageSentStatusChanged), name: .messageSentStatusDidChange, object: nil)
         notificationCenter.addObserver(self, selector: #selector(handleInitiatingTransactionTapped), name: Notification.Name("initiatingTransactionForWalletConnect"), object: nil)
         
@@ -1061,7 +1061,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         notificationCenter.addObserver(self, selector: #selector(connectingCallHideViewTapped), name: .connectingCallHideViewNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(connectingCallTapToReturnToTheCall), name: .callConnectingTapNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(unblock), name: .unblockContactNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(clearChat), name: .clearChatHistoryNotification, object: nil)
                 
         // Mentions
         MentionsManager.populateUserPublicKeyCacheIfNeeded(for: thread.uniqueId!)
@@ -1119,6 +1118,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         snInputView.isHidden = false
         recoverInputView()
         self.showInputAccessoryView()
+        self.isInputViewShow = true
         hideInputViewForBlockedContact()
         
         if AppEnvironment.shared.callManager.currentCall == nil {
@@ -1126,6 +1126,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         } else {
             callView.isHidden = false
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sendScreenshotNotificationIfNeeded), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1142,7 +1144,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         markAllAsRead()
         recoverInputView()
         NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
-        
         if backAPI == true {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
                 self.customizeSlideToOpen.isHidden = true
@@ -1167,13 +1168,17 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             CustomSlideView.isFromExpandAttachment = false
         }
         hideAttachmentExpandedButtons()
-        handleQuoteViewCancelButtonTapped()
+        bottomConstraintOfAttachmentButton = 4
+        resetAttachmentOptions()
+        view.layoutIfNeeded()
         hideOpenURLView()
+        NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
+        isAudioRecording = false
         let text = snInputView.text
         Storage.write { transaction in
             self.thread.setDraft(text, transaction: transaction)
@@ -1208,7 +1213,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
         }
         
-        debugPrint("quote ----")
         var constraintValue: CGFloat = 4
         let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
         if inputTextViewLines >= 2 {
@@ -1219,8 +1223,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if snInputView.quoteDraftInfo != nil {
             let msg: VisibleMessage = VisibleMessage()
             msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-            guard let quoteText = msg.quote?.text else { return }
-            constraintValue += quoteText.count >= 100 ? 78 : 68
+            if let quoteText = msg.quote?.text {
+                constraintValue += quoteText.count >= 100 ? 78 : 68
+            } else {
+                constraintValue += 68
+            }
         }
 
         DispatchQueue.main.async {
@@ -1232,7 +1239,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     override func appDidBecomeActive(_ notification: Notification) {
         
-        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow {
+        if AppEnvironment.shared.callManager.currentCall == nil && isInputViewShow && !thread.isBlocked() {
             recoverInputView()
             snInputView.isHidden = false
         } else {
@@ -1316,7 +1323,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // Handle cancel button tap
         navigationController?.navigationBar.isHidden = false
         snInputView.isUserInteractionEnabled = true
-        print("Cancel button tapped!")
         hiddenView.isHidden = true
         isSuccessPopView.isHidden = true
         initiatingTransactionPopView.isHidden = true
@@ -1324,11 +1330,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc private func inChatPaymentOkButtonTapped() {
         // Handle ok button tap
-        print("OK button tapped!")
         self.dismiss(animated: true)
         hiddenView.isHidden = true
         initiatingTransactionPopView.isHidden = true
-        var txid = WalletSharedData.sharedInstance.wallet!.txid()
+        let txid = WalletSharedData.sharedInstance.wallet!.txid()
         let commitPendingTransaction = WalletSharedData.sharedInstance.wallet!.commitPendingTransaction()
         if commitPendingTransaction == true {
             //Save Receipent Address fun developed In Local
@@ -1691,18 +1696,26 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     
     @objc func clearChatButtonTapped() {
-        let vc = ClearChatPopUp()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .clearChat,
+                title: "Delete Chat",
+                body: .text("Are you sure you want to delete this chat from this contact?"),
+                showCondition: .disabled,
+                confirmTitle: "Delete",
+                onConfirm: { _ in
+                    self.clearChat()
+                }, dismissHandler: {
+                    debugPrint("clear chat popup closed")
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
     @objc func unblockButtonTapped() {
-        let vc = BlockContactPopUpVC()
-        vc.isBlocked = true
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
+        showBlockedNUnblockedPopup(true)
     }
     
     /// Delete Chat
@@ -1966,14 +1979,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 // Don't show the settings button for message requests
                 if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe {
                     
-                   // Don't Delete this is for three dots menu
-//                    let setting = UIButton(type: .custom)
-//                    setting.frame = CGRect(x: 0.0, y: 0.0, width: 28, height: 28)
-//                    setting.setImage(UIImage(named:"ic_menu_new"), for: .normal)
-//                    setting.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-//                      let settingBarItem = UIBarButtonItem(customView: setting)
-//                    rightBarButtonItems.append(settingBarItem)
-                    
                     let shouldShowCallButton = BChatCall.isEnabled && !thread.isNoteToSelf() && !thread.isMessageRequest()
                     if shouldShowCallButton {
                         let callBtn = UIButton(type: .custom)
@@ -2011,12 +2016,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
                 }
-                
-                // Don't Delete this is for three dots menu
-//                let settingsButton = UIBarButtonItem(image: UIImage(named: "ic_menu_new"), style: .plain, target: self, action: #selector(openSettings))
-//                settingsButton.accessibilityLabel = "Settings button"
-//                settingsButton.isAccessibilityElement = true
-//                rightBarButtonItems.append(settingsButton)
             }
             navigationItem.rightBarButtonItems = rightBarButtonItems
         }
@@ -2375,6 +2374,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     @objc func hideSearchUI(_ sender: Any? = nil) {
         isShowingSearchUI = false
+        searchController.uiSearchController.searchBar.searchTextField.text = ""
         navigationItem.titleView = titleView
         updateNavBarButtons()
         if navigationController!.navigationBar as? OWSNavigationBar != nil {
@@ -2391,7 +2391,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     func conversationSearchController(_ conversationSearchController: ConversationSearchController, didUpdateSearchResults resultSet: ConversationScreenSearchResultSet?) {
         lastSearchedText = resultSet?.searchText
-        messagesTableView.reloadRows(at: messagesTableView.indexPathsForVisibleRows ?? [], with: UITableView.RowAnimation.none)
+        messagesTableView.reloadData()
     }
     
     func conversationSearchController(_ conversationSearchController: ConversationSearchController, didSelectMessageId interactionID: String) {

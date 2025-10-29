@@ -62,7 +62,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         let result = UITextField()
         let attributes = [
             NSAttributedString.Key.foregroundColor: Colors.titleColor,
-            NSAttributedString.Key.font: Fonts.OpenSans(ofSize: 18)
+            NSAttributedString.Key.font: Fonts.regularOpenSans(ofSize: 18)
         ]
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -183,7 +183,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
-            .font: Fonts.OpenSans(ofSize: 16),
+            .font: Fonts.regularOpenSans(ofSize: 16),
             .foregroundColor: Colors.titleColor
         ]
         let attributedPlaceholder = NSAttributedString(string: "Display name", attributes: placeholderAttributes)
@@ -300,8 +300,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         if self.isClosedGroup() {
             secretGroupImageView.isHidden = false
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(leaveGroupTapped), name: .LeaveGroupNotification, object: nil)
         
         zombies = Storage.shared.getZombieMembers(for: groupPublicKey)
         guard let groupThread = self.thread as? TSGroupThread else { return }
@@ -576,12 +574,22 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
             message = NSLocalizedString("CONFIRM_LEAVE_GROUP_DESCRIPTION", comment: "Alert body")
         }
         
-        let vc = LeaveGroupPopUp()
-        vc.message = message
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        present(vc, animated: true, completion: nil)
-
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .leaveGroup,
+                title: "Leave Group?",
+                body: .text(message),
+                showCondition: .disabled,
+                confirmTitle: "Leave",
+                onConfirm: { _ in
+                    self.leaveGroup()
+                }, dismissHandler: {
+                    debugPrint("leaveGroup popup closed")
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
     func hasLeftGroup() -> Bool {
@@ -732,11 +740,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         self.doneButton.isHidden = true
         self.editIconImage.isHidden = false
     }
-    
-    @objc func leaveGroupTapped() {
-        leaveGroup()
-    }
-    
     
     // MARK: - Notification Observers -
     
@@ -1254,9 +1257,9 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
                     cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 12)
                 } else {
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 16)
                 }
                 if cell.titleLabel.text == "All Media" {
                     cell.rightIconImageView.isHidden = false
@@ -1342,9 +1345,9 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     cell.rightTitleLabel.isHidden = true
                     cell.rightSwitch.isHidden = true
                     cell.rightIconImageView.image = UIImage(named: "chat_setting_copy")
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 12)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 12)
                 } else {
-                    cell.titleLabel.font = Fonts.OpenSans(ofSize: 16)
+                    cell.titleLabel.font = Fonts.regularOpenSans(ofSize: 16)
                 }
                 if cell.titleLabel.text == "All Media" {
                     cell.rightIconImageView.isHidden = false
@@ -1645,7 +1648,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.searchCallback = {
                     let vc = SearchGroupMemberVC()
                     vc.thread = self.thread
-                    self.present(vc, animated: true, completion: nil)
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
                 
                 return cell
@@ -1737,19 +1740,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 }
                 if indexPath.row == 6 { // Block and UnBlock Contact Index Cell
                     if let contactThread = self.thread as? TSContactThread {
-                        let isCurrentlyBlocked = contactThread.isBlocked()
-                        if !isCurrentlyBlocked {
-                            let vc = BlockContactPopUpVC()
-                            vc.modalPresentationStyle = .overFullScreen
-                            vc.modalTransitionStyle = .crossDissolve
-                            self.present(vc, animated: true, completion: nil)
-                        } else {
-                            let vc = BlockContactPopUpVC()
-                            vc.isBlocked = true
-                            vc.modalPresentationStyle = .overFullScreen
-                            vc.modalTransitionStyle = .crossDissolve
-                            self.present(vc, animated: true, completion: nil)
-                        }
+                        showBlockedNUnblockedPopup(contactThread.isBlocked())
                     }
                 }
                 
@@ -1822,5 +1813,4 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
 }

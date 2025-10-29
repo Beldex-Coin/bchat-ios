@@ -338,14 +338,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if indexPath.section == 0 {
-//            return UITableView.automaticDimension
-//        } else if indexPath.section == 1 {
-//            return UITableView.automaticDimension
-//        } else {
-//            return UITableView.automaticDimension
-//        }
-        
         UITableView.automaticDimension
     }
     
@@ -414,11 +406,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                         viewController.isVerifyWalletPassword = true
                     }
                     self.navigationController!.pushViewController(viewController, animated: true)
-                    // Don't Delete
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingHome = true
-//                    vc.isVerifyPassword = true
-//                    self.navigationController!.pushViewController(vc, animated: true)
                 }
             )
             alertController.addAction(yesAction)
@@ -638,7 +625,7 @@ class BChatSettingsTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -727,7 +714,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -735,7 +722,7 @@ class BChatSettingsTableCell2: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -825,7 +812,7 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.text = "Screen Lock Timeout"
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -834,7 +821,7 @@ class ScreenLockTableCell: UITableViewCell {
     lazy var resultTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.settingsResultTitleCellLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

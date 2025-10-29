@@ -44,7 +44,7 @@ extension ContextMenuVC {
             if action.title == "Save" {
                 iconImageView.tintColor = isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
             }
-            titleLabel.font = Fonts.OpenSans(ofSize: 12)
+            titleLabel.font = Fonts.regularOpenSans(ofSize: 12)
             // Stack view
             let stackView = UIStackView(arrangedSubviews: [ iconImageView, titleLabel ])
             stackView.axis = .horizontal

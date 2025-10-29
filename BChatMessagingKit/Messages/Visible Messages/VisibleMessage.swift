@@ -18,6 +18,7 @@ public final class VisibleMessage : Message {
     @objc public var isBnsHolder: Bool = false
     
     @objc public var reaction: Reaction?
+    @objc public var sharedContact: SharedContact?
 
     public override var isSelfSendValid: Bool { true }
     
@@ -31,6 +32,7 @@ public final class VisibleMessage : Message {
         if openGroupInvitation != nil { return true }
         if payment != nil { return true }
         if reaction != nil { return true }
+        if sharedContact != nil { return true }
         if let text = text?.trimmingCharacters(in: .whitespacesAndNewlines), !text.isEmpty { return true }
         return false
     }
@@ -51,6 +53,7 @@ public final class VisibleMessage : Message {
         if let isBnsHolder = coder.decodeBool(forKey: "isBnsHolder") as Bool? { self.isBnsHolder = isBnsHolder }
         
         if let reaction = coder.decodeObject(forKey: "reaction") as! Reaction? { self.reaction = reaction }
+        if let sharedContact = coder.decodeObject(forKey: "sharedContact") as! SharedContact? { self.sharedContact = sharedContact }
     }
 
     public override func encode(with coder: NSCoder) {
@@ -68,6 +71,7 @@ public final class VisibleMessage : Message {
         coder.encode(isBnsHolder,forKey: "isBnsHolder")
         
         coder.encode(reaction, forKey: "reaction")
+        coder.encode(sharedContact, forKey: "sharedContact")
     }
 
     // MARK: Proto Conversion
@@ -92,6 +96,10 @@ public final class VisibleMessage : Message {
             result.reaction = reaction
         }
         
+        if let shareContact = SharedContact.fromProto(dataMessage) {
+            result.sharedContact = shareContact
+        }
+            
         result.syncTarget = dataMessage.syncTarget
         return result
     }
@@ -99,7 +107,7 @@ public final class VisibleMessage : Message {
     public override func toProto(using transaction: YapDatabaseReadWriteTransaction) -> SNProtoContent? {
         let proto = SNProtoContent.builder()
         var attachmentIDs = self.attachmentIDs
-        let dataMessage: SNProtoDataMessage.SNProtoDataMessageBuilder
+        var dataMessage: SNProtoDataMessage.SNProtoDataMessageBuilder
         // Profile
         if let profile = profile, let profileProto = profile.toProto() {
             dataMessage = profileProto.asBuilder()
@@ -138,6 +146,11 @@ public final class VisibleMessage : Message {
             dataMessage.setReaction(reactionProto)
         }
         
+        // Share Contact
+        if let shareContact = sharedContact, let shareContactProto = shareContact.toProto() {
+            dataMessage.setSharedContact(shareContactProto)
+        }
+        
         // Group context
         do {
             try setGroupContextIfNeeded(on: dataMessage, using: transaction)
@@ -171,7 +184,8 @@ public final class VisibleMessage : Message {
             profile: \(profile?.description ?? "null"),
             reaction: \(reaction?.description ?? "null"),
             "openGroupInvitation": \(openGroupInvitation?.description ?? "null"),
-            "payment": \(payment?.description ?? "null")
+            "payment": \(payment?.description ?? "null"),
+            "sharedContact": \(sharedContact?.description ?? "null"),
         )
         """
     }

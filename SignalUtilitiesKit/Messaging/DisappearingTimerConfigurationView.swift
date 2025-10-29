@@ -42,7 +42,7 @@ public class DisappearingTimerConfigurationView: UIView {
 
         self.label = UILabel()
         label.text = NSString.formatDurationSeconds(durationSeconds, useShortFormat: true)
-        label.font = Fonts.OpenSans(ofSize: 10)
+        label.font = Fonts.regularOpenSans(ofSize: 10)
         label.textAlignment = .center
         label.minimumScaleFactor = 0.5
 

@@ -44,7 +44,7 @@ class LandingNewVC: BaseVC {
         result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS_NEW", comment: ""), for: .normal)
         result.setTitleColor(Colors.textFieldPlaceHolderColor, for: .normal)
         result.contentHorizontalAlignment = .center
-        result.titleLabel?.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel?.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(termsAndConditionsButtonActionTapped), for: .touchUpInside)
         return result
     }()

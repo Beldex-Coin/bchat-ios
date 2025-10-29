@@ -29,7 +29,7 @@ class NewChatPopUpVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = .clear
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         return result
     }()
     
@@ -60,7 +60,7 @@ class NewChatPopUpVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(letsBChatButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -73,7 +73,7 @@ class NewChatPopUpVC: BaseVC {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.newCancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button

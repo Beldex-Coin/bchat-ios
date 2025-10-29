@@ -31,7 +31,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -44,7 +44,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -75,7 +75,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var nodeAddressTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
@@ -93,7 +93,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var nodePortTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cellGroundColor2
@@ -111,7 +111,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var nodeNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColorNew.cgColor
         result.textAlignment = .left
@@ -129,7 +129,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var userNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColorNew.cgColor
@@ -147,7 +147,7 @@ class AddNodeListVC: BaseVC, UITextFieldDelegate {
     private lazy var passwordTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.layer.borderWidth = 1
         result.layer.borderColor = Colors.borderColorNew.cgColor

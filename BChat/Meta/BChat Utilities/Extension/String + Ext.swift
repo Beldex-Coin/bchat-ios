@@ -98,7 +98,7 @@ extension String {
 
 extension String {
     func withBoldText(text: String, font: UIFont? = nil) -> NSAttributedString {
-        let _font = font ?? Fonts.OpenSans(ofSize: 14)
+        let _font = font ?? Fonts.regularOpenSans(ofSize: 14)
         let fullString = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.font: _font])
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
         let range = (self as NSString).range(of: text)
@@ -123,3 +123,56 @@ extension String {
         return size.width
     }
 }
+
+extension String {
+    func truncateMiddle(with prefixLength: Int = 19, suffixLength: Int = 7) -> String {
+        guard self.count > prefixLength + suffixLength else { return self }
+
+        let start = self.prefix(prefixLength)
+        let end = self.suffix(suffixLength)
+        return "\(start)........\(end)"
+    }
+}
+
+extension String {
+    
+    func toStringArrayFromJSON() -> [String]? {
+        guard let data = self.data(using: .utf8) else {
+            print("Error: Unable to convert string to Data")
+            return nil
+        }
+
+        do {
+            if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [String] {
+                return array
+            } else {
+                print("Error: JSON is not a [String] array")
+                return nil
+            }
+        } catch {
+            print("JSON parsing error: \(error)")
+            return nil
+        }
+    }
+}
+
+extension String {
+    func sharedContactNameIfAvailable() -> String? {
+        guard let jsonData = self.data(using: .utf8) else {
+            return nil
+        }
+        do {
+            let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+            return contact.kind.type == "SharedContact" ? contact.kind.name : nil
+        } catch {
+            return nil
+        }
+    }
+}
+
+extension String {
+    var isSharedContactType: Bool {
+        return sharedContactNameIfAvailable() != nil
+    }
+}
+

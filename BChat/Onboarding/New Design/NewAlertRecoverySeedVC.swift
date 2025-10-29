@@ -48,7 +48,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     private lazy var label2: UILabel = {
         let result = UILabel()
         result.textColor = Colors.cancelButtonTitleColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION", comment: "")
         result.adjustsFontSizeToFitWidth = true
@@ -77,7 +77,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button

@@ -55,7 +55,7 @@ class CreateSecretGroupTableViewCell: UITableViewCell {
     lazy var nameLabel: UILabel = {
        let result = UILabel()
         result.textColor = Colors.titleColor3
-       result.font = Fonts.OpenSans(ofSize: 16)
+       result.font = Fonts.regularOpenSans(ofSize: 16)
        result.textAlignment = .left
        result.translatesAutoresizingMaskIntoConstraints = false
        return result

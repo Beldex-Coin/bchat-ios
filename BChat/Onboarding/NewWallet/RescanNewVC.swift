@@ -22,7 +22,7 @@ class RescanNewVC: BaseVC {
         let result = UILabel()
         result.text = NSLocalizedString("CURRENT_BLOCK_HEIGHT_NEW", comment: "")
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -43,7 +43,7 @@ class RescanNewVC: BaseVC {
         let result = UILabel()
         result.text = NSLocalizedString("WALLET_DATE_ENTER_LABEL_NEW", comment: "")
         result.textColor = Colors.cancelButtonTitleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class RescanNewVC: BaseVC {
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("RESTORE_DATE_TITLE_NEW", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = Values.buttonRadius
         
@@ -88,7 +88,7 @@ class RescanNewVC: BaseVC {
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("RESTORE_FROM_BLOCKHEIGHT", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = Values.buttonRadius
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 21, height: result.frame.size.height))
@@ -105,7 +105,7 @@ class RescanNewVC: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(rescanButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -211,7 +211,6 @@ class RescanNewVC: BaseVC {
                 formatter.timeZone = TimeZone(identifier: "UTC")
                 self.restoreDateHeightTextField.text = formatter.string(from: dt)
                 let dateString = formatter.string(from: dt)
-                print("selected date---------String Formate--------------------->: ",dateString)
                 let formatter2 = DateFormatter()
                 formatter2.dateFormat = "yyyy-MM"
                 let finalDate = formatter2.string(from: dt)
@@ -229,7 +228,6 @@ class RescanNewVC: BaseVC {
     
     /// image View Tapped
     @objc func imageViewTapped() {
-        print("Image View tapped")
         datePickerTapped()
     }
     

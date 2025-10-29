@@ -27,7 +27,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "You can Send and Receive BDX with the BChat integrated wallet."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -45,7 +45,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "The 'Pay as you Chat' feature is an easy-pay feature. You can send BDX to your friends right from the chat window."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -63,7 +63,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "The BChat wallet is beta. Constant updates are released in newer versions of the app to enhance the integrated wallet functionality."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -81,7 +81,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "You can enable or disable the wallet using the Start wallet feature under Settings > Wallet settings."
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -102,7 +102,7 @@ class EnableWalletVC: BaseVC {
         let result = UILabel()
         result.text = "Yes, I Understand"
         result.textColor = Colors.titleColor4
-        result.font = Fonts.OpenSans(ofSize: 15)
+        result.font = Fonts.regularOpenSans(ofSize: 15)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -137,7 +137,7 @@ class EnableWalletVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.setTitleColor(Colors.bothWhiteColor, for: .selected)
         button.addTarget(self, action: #selector(enableButtonTapped), for: .touchUpInside)

@@ -6,6 +6,10 @@ final class QuoteView : UIView {
     private let hInset: CGFloat
     private let maxWidth: CGFloat
     private let delegate: QuoteViewDelegate?
+    var viewitem : ConversationViewItem? = nil
+    var isSharedContact: Bool
+    
+    var showContactIcon: Bool = false
 
     private var maxBodyLabelHeight: CGFloat {
         switch mode {
@@ -95,24 +99,28 @@ final class QuoteView : UIView {
     static let cancelBackgroundSize: CGFloat = 15
 
     // MARK: Lifecycle
-    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat) {
+    init(for viewItem: ConversationViewItem, in thread: TSThread?, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, isSharedContact: Bool) {
         self.mode = .regular(viewItem)
         self.thread = thread ?? TSThread.fetch(uniqueId: viewItem.interaction.uniqueThreadId)!
         self.maxWidth = maxWidth
         self.direction = direction
         self.hInset = hInset
         self.delegate = nil
+        self.viewitem = viewItem
+        self.isSharedContact = isSharedContact
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
     }
 
-    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate) {
+    init(for model: OWSQuotedReplyModel, direction: Direction, hInset: CGFloat, maxWidth: CGFloat, delegate: QuoteViewDelegate, isSharedContact: Bool, viewItem: ConversationViewItem?) {
         self.mode = .draft(model)
         self.thread = TSThread.fetch(uniqueId: model.threadId)!
         self.maxWidth = maxWidth
         self.direction = direction
         self.hInset = hInset
         self.delegate = delegate
+        self.isSharedContact = isSharedContact
+        self.viewitem = viewItem
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         
@@ -179,7 +187,7 @@ final class QuoteView : UIView {
         let lineView = UIView()
         lineView.backgroundColor = .clear
         lineView.set(.width, to: Values.accentLineThickness)
-        if !hasAttachments {
+        if !hasAttachments || isSharedContact {
             mainStackView.addArrangedSubview(lineView)
             mainStackView.spacing = 0
         } else {
@@ -196,8 +204,59 @@ final class QuoteView : UIView {
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .byTruncatingTail
         let isOutgoing = (direction == .outgoing)
-        bodyLabel.font = Fonts.OpenSans(ofSize: 11)
-        bodyLabel.attributedText = given(body) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+        bodyLabel.font = Fonts.regularOpenSans(ofSize: 11)
+        if case .draft = mode {
+            if (viewitem?.interaction as? TSMessage)?.openGroupInvitationURL != nil {
+                body = NSLocalizedString("view_open_group_invitation_description", comment: "")
+            }
+            if (viewitem?.interaction as? TSMessage)?.paymentAmount != nil {
+                let amount = (viewitem?.interaction as? TSMessage)?.paymentAmount ?? "0"
+                if isOutgoing {
+                    body = "Payment Sent : \(amount) BDX"
+                } else {
+                    body = "Payment Received : \(amount) BDX"
+                }
+            }
+        }
+        var text = body ?? ""
+        let jsonString = body ?? ""
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                let contact = try JSONDecoder().decode(ContactWrapper.self, from: jsonData)
+                if contact.kind.type == "SharedContact" {
+                    let names = contact.kind.name.toStringArrayFromJSON() ?? []
+                    let other = names.count == 2 ? "other" : "others"
+                    text = names.count <= 1
+                        ? (convertJSONStringToCommaSeparatedString(contact.kind.name) ?? "")
+                        : "\(names.first ?? "") and \(names.count - 1) \(other)"
+                    showContactIcon = true
+                }
+            } catch {
+                if case .draft = mode {
+                    showContactIcon = isSharedContact
+                    let names = viewitem?.sharedContactMessage?.name?.toStringArrayFromJSON() ?? []
+                    let other = names.count == 2 ? "other" : "others"
+                    text = names.count <= 1
+                        ? (convertJSONStringToCommaSeparatedString(viewitem?.sharedContactMessage?.name ?? "") ?? body ?? "")
+                        : "\(names.first ?? "") and \(names.count - 1) \(other)"
+                }
+                print("Failed to decode JSON: \(error)")
+            }
+        }
+        if showContactIcon {
+            let imageAttachment = NSTextAttachment()
+            imageAttachment.image = UIImage(named: "ic_contact")
+            let imageOffsetY: CGFloat = -4.0
+            imageAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: 16, height: 16)
+            let attachmentString = NSAttributedString(attachment: imageAttachment)
+            let fullString = NSMutableAttributedString(string: "")
+            fullString.append(attachmentString)
+            fullString.append(NSAttributedString(string: " "))
+            fullString.append(NSAttributedString(string: text))
+            bodyLabel.attributedText = fullString
+        } else {
+            bodyLabel.attributedText = given(text) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+        }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
         // Label stack view
@@ -206,7 +265,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = groupThread.isOpenGroup ? .openGroup : .regular
-            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
@@ -224,7 +283,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = .regular
-            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context) ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
@@ -292,7 +351,7 @@ final class QuoteView : UIView {
         }
         let bodyLabelHeight = bodyLabelSize.height.clamp(0, maxBodyLabelHeight)
         let contentViewHeight: CGFloat
-        if hasAttachments {
+        if hasAttachments || showContactIcon {
             contentViewHeight = thumbnailSize + 8 // Add a small amount of spacing above and below the thumbnail
             bodyLabel.set(.height, to: 18) // Experimentally determined
         } else {
@@ -303,6 +362,24 @@ final class QuoteView : UIView {
             }
         }
         contentView.set(.height, to: contentViewHeight)
+        if let attachment = viewitem?.attachmentStream ?? viewitem?.attachmentPointer {
+            let documentTextLabel = UILabel()
+            documentTextLabel.numberOfLines = 0
+            documentTextLabel.lineBreakMode = .byTruncatingTail
+            documentTextLabel.font = Fonts.regularOpenSans(ofSize: 11)
+            documentTextLabel.text = attachment.sourceFilename
+            let documentSizeLabel = documentTextLabel.systemLayoutSizeFitting(availableSpace)
+            if bodyLabelSize.width < (documentSizeLabel.width + 80) {
+                contentView.set(.width, to: documentSizeLabel.width + 80)
+            }
+        }
+        if viewitem?.interaction is TSIncomingMessage,
+            let thread = thread as? TSContactThread,
+            Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
+            if bodyLabelSize.width < (150) {
+                contentView.set(.width, to: 150)
+            }
+        }
         lineView.set(.height, to: contentViewHeight - 8) // Add a small amount of spacing above and below the line
         if case .draft = mode {
             addSubview(cancelBackgroundView)

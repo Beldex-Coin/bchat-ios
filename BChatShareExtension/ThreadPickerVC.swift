@@ -171,7 +171,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
     
     private func reload() {
         AssertIsOnMainThread()
-        dbConnection.beginLongLivedReadTransaction() // Jump to the latest commit
+        dbConnection.beginLongLivedReadTransaction()
         dbConnection.read { transaction in
             self.threads.update(with: transaction)
         }
