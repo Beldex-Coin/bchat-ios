@@ -7447,7 +7447,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.1;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";
@@ -7533,7 +7533,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.1;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				OTHER_LDFLAGS = "$(inherited)";

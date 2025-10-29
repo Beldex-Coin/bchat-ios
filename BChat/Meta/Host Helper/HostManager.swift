@@ -19,7 +19,7 @@ final class HostManager: NSObject {
         #if MAINNET
             return ["publicnode1.rpcnode.stream:29095", "publicnode2.rpcnode.stream:29095", "publicnode3.rpcnode.stream:29095", "publicnode4.rpcnode.stream:29095", "publicnode5.rpcnode.stream:29095"]
         #else
-            return ["149.102.156.174:19095"]
+            return ["209.126.86.93:29091"]
         #endif
     }
     
