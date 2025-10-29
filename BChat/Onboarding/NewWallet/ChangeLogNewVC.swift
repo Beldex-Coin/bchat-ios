@@ -18,12 +18,13 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         return result
     }()
     
-    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5", "1.5.0", "1.6.0", "1.6.1", "1.6.2"]
+    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5", "1.5.0", "1.6.0", "1.6.1", "1.6.2", "1.7.0"]
     var descArray = ["\u{2022} Initial release\n\u{2022} Added changelog",
                      "\u{2022} Message request implementation\n\u{2022} Link Preview will be turn on by default\n\u{2022} Add the images for SwipeActionsConfiguration",
                      "\u{2022} Call Feature Added\n\u{2022} Blocked Contact list added\n\u{2022} Minor Bug Fixes",
                      "\u{2022} Introduced Report issue feature\n\u{2022} Added support for inchat payment card\n\u{2022} Added font size customization for Chat\n\u{2022} BChat Font changed to standard font 'Open Sans' across all platforms\n\u{2022} User won't be allowed to call blocked contacts\n\u{2022} Fixed the block pop-up in the conversation screen for unblocked user\n\u{2022} Updated validation of seed for restore process\n\u{2022} Minor Bug Fixes",
-                     "\u{2022} Wallet Integration Beta release\n\u{2022} Introduced Address book of contacts in Wallet\n\u{2022} Improved UI and Content\n\u{2022} Minor Bug fixes","\u{2022} Feature Pay as you chat\n\u{2022} Fix Crash issues in wallet\n\u{2022} Minor Bug fixes",
+                     "\u{2022} Wallet Integration Beta release\n\u{2022} Introduced Address book of contacts in Wallet\n\u{2022} Improved UI and Content\n\u{2022} Minor Bug fixes",
+                     "\u{2022} Feature Pay as you chat\n\u{2022} Fix Crash issues in wallet\n\u{2022} Minor Bug fixes",
                      "\u{2022} Update for Hardfork 18\n\u{2022} Minor bug fixes",
                      "\u{2022} Minor bug fixes",
                      "\u{2022} Fixed message delay issue\n\u{2022} Introduced BNS feature for starting new chat and sending funds\n\u{2022} Fixed missing payment ID details for integrated address transaction\n\u{2022} Updated Node list\n\u{2022} Minor Bug fixes",
@@ -34,8 +35,9 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
                      "\u{2022} Revamped User experience \n\u{2022} User can link their BNS name and get verified badge \n\u{2022} Improved node connectivity for better synchronization \n\u{2022} Improved overall performance of the app \n\u{2022} Improved search functionality in home screen \n\u{2022} User can block a user on message request \n\u{2022} Minor bug fixes",
                      "\u{2022} Introducing emoji reaction feature \n\u{2022} Added message archive - unarchive functionality \n\u{2022} Updated secret group info \n\u{2022} User can swap the videos in video calls \n\u{2022} Fixes crash in calls \n\u{2022} Minor bug fixes",
                      "\u{2022} Users can now share Media from any apps to BChat \n\u{2022} Introduced GIF Feature \n\u{2022} Fixed bugs in message request flow \n\u{2022} Fixed issues in chat screen \n\u{2022} Minor bug fixes",
-                     "\u{2022} Minor bug fixes",]
-    var expandedRowArray = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+                     "\u{2022} Minor bug fixes",
+                     "\u{2022} Introduced share contact feature \n\u{2022} Introduced screenshot notify feature \n\u{2022} Minor bug fixes",]
+    var expandedRowArray = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
     
     
     override func viewDidLoad() {
@@ -230,7 +232,7 @@ class ChangeLogTableCell2: UITableViewCell {
     let subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0

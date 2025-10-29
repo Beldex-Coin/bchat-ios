@@ -25,7 +25,7 @@ final class SeedModal : Modal {
         // Set up mnemonic label
         let mnemonicLabel = UILabel()
         mnemonicLabel.textColor = Colors.text
-        mnemonicLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        mnemonicLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         mnemonicLabel.text = mnemonic
         mnemonicLabel.numberOfLines = 0
         mnemonicLabel.lineBreakMode = .byWordWrapping
@@ -40,7 +40,7 @@ final class SeedModal : Modal {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel.text = NSLocalizedString("modal_seed_explanation", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
@@ -50,7 +50,7 @@ final class SeedModal : Modal {
         copyButton.set(.height, to: Values.mediumButtonHeight)
         copyButton.layer.cornerRadius = Modal.buttonCornerRadius
         copyButton.backgroundColor = Colors.buttonBackground
-        copyButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        copyButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         copyButton.setTitleColor(Colors.text, for: UIControl.State.normal)
         copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: .normal)
         copyButton.addTarget(self, action: #selector(copySeed), for: .touchUpInside)

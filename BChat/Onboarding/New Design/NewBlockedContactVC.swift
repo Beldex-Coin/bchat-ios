@@ -35,7 +35,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         let result = UILabel()
         result.text = "No blocked contact found"
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         result.isHidden = true

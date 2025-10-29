@@ -7,7 +7,7 @@ class ArchiveChatsVC: BaseVC {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping

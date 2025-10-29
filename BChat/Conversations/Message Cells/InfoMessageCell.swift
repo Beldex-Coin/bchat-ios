@@ -10,7 +10,7 @@ final class InfoMessageCell : MessageCell {
         let result = UILabel()
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textColor = Colors.messageTimeLabelColor
         result.textAlignment = .center
         return result

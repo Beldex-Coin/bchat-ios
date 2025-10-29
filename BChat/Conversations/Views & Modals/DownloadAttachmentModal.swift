@@ -29,7 +29,7 @@ final class DownloadAttachmentModal : Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_download_attachment_explanation", comment: ""), name)
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
@@ -41,7 +41,7 @@ final class DownloadAttachmentModal : Modal {
         let downloadButton = UIButton()
         downloadButton.set(.height, to: Values.mediumButtonHeight)
         downloadButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
-        downloadButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        downloadButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         downloadButton.setTitleColor(Colors.text, for: .normal)
         downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: .normal)
         if isDarkMode {

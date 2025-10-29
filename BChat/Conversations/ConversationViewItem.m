@@ -34,6 +34,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
             return @"OWSMessageCellType_OversizeTextDownloading";
         case OWSMessageCellType_DeletedMessage:
             return @"OWSMessageCellType_DeletedMessage";
+        case OWSMessageCellType_SharedContact:
+            return @"OWSMessageCellType_SharedContact";
     }
 }
 
@@ -101,6 +103,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
 @property (nonatomic, nullable) NSString *systemMessageText;
 @property (nonatomic, nullable) TSThread *incomingMessageAuthorThread;
 @property (nonatomic, nullable) NSString *authorConversationColorName;
+@property (nonatomic, nullable) BCSharedContactMessage *sharedContactMessage;
 
 @end
 
@@ -600,6 +603,13 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         self.messageCellType = OWSMessageCellType_TextOnlyMessage;
         self.displayableBodyText = [[DisplayableText alloc] initWithFullText:@"" displayText:@"" isTextTruncated:NO];
     }
+    
+    if (message.sharedContactMessage) {
+        self.sharedContactMessage = message.sharedContactMessage;
+        self.messageCellType = OWSMessageCellType_SharedContact;
+        return;
+    }
+    
 }
 
 - (NSArray<ConversationMediaAlbumItem *> *)albumItemsForMediaAttachments:(NSArray<TSAttachment *> *)attachments
@@ -834,6 +844,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         }
         case OWSMessageCellType_OversizeTextDownloading:
             return NO;
+        case OWSMessageCellType_SharedContact:
+            return NO;
     }
 }
 
@@ -873,6 +885,8 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         }
         case OWSMessageCellType_OversizeTextDownloading:
             return NO;
+        case OWSMessageCellType_SharedContact:
+            return NO;
     }
 }
 
@@ -886,6 +900,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_Unknown:
         case OWSMessageCellType_TextOnlyMessage:
         case OWSMessageCellType_Audio:
+        case OWSMessageCellType_SharedContact:
             OWSFailDebug(@"Cannot save media data.");
             break;
         case OWSMessageCellType_GenericAttachment:
@@ -1068,6 +1083,7 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_TextOnlyMessage:
         case OWSMessageCellType_Audio:
         case OWSMessageCellType_GenericAttachment:
+        case OWSMessageCellType_SharedContact:
             return self.attachmentStream != nil;
         case OWSMessageCellType_MediaMessage:
             return self.firstValidAlbumAttachment != nil;

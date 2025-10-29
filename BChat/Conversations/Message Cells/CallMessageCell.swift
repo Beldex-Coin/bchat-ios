@@ -136,7 +136,8 @@ final class CallMessageCell : MessageCell {
         guard let viewItem = viewItem, let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call else { return }
         let shouldBeTappable = message.callState == .permissionDenied && !SSKPreferences.areCallsEnabled
         if shouldBeTappable {
-            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
+            let location = gestureRecognizer.location(in: self)
+            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer, location: location)
         }
     }
 }

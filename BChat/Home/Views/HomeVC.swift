@@ -75,14 +75,14 @@ final class HomeVC : BaseVC {
     private lazy var emptyStateView: UIView = {
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.bchatPlaceholderColor
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center
         explanationLabel.text = NSLocalizedString("Much empty.Such wow.", comment: "")
         let explanationLabel2 = UILabel()
         explanationLabel2.textColor = Colors.bchatPlaceholderColor
-        explanationLabel2.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        explanationLabel2.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel2.numberOfLines = 0
         explanationLabel2.lineBreakMode = .byWordWrapping
         explanationLabel2.textAlignment = .center
@@ -321,7 +321,7 @@ final class HomeVC : BaseVC {
     private lazy var noInternetLabel: UILabel = {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.text = "You are not connected to the Hop. Check your internet connection or Restart the app!"
         result.textColor = Colors.noInternetTitleColor
         result.textAlignment = .left
@@ -988,7 +988,7 @@ final class HomeVC : BaseVC {
         plusButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
         plusButton.setImage(UIImage(named:"ic_homePlusButton"), for: .normal)
-        plusButton.addTarget(self, action: #selector(showWallet), for: .touchUpInside)
+        plusButton.addTarget(self, action: #selector(showNewChatView), for: .touchUpInside)
         let plusButtonBarItem = UIBarButtonItem(customView: plusButton)
         rightBarButtonItems.append(plusButtonBarItem)
         
@@ -1109,37 +1109,9 @@ final class HomeVC : BaseVC {
         self.navigationController?.setViewControllers([ self, searchController ], animated: true)
     }
     
-    @objc private func showWallet() {
-//        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-//            // MARK: - Old flow (without wallet)
-//            if SaveUserDefaultsData.israndomUUIDPassword == "" {
-//                let vc = EnableWalletVC()
-//                navigationController!.pushViewController(vc, animated: true)
-//                return
-//            }
-//            // MARK: - New flow (with wallet)
-//            if SSKPreferences.areWalletEnabled {
-//                if SaveUserDefaultsData.WalletPassword.isEmpty {
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingWallet = true
-//                    vc.isVerifyPassword = true
-//                    navigationController!.pushViewController(vc, animated: true)
-//                } else {
-//                    let vc = NewPasswordVC()
-//                    vc.isGoingWallet = true
-//                    vc.isVerifyPassword = true
-//                    navigationController!.pushViewController(vc, animated: true)
-//                }
-//            } else {
-//                let vc = EnableWalletVC()
-//                navigationController!.pushViewController(vc, animated: true)
-//            }
-//        } else {
-//            self.showToast(message: "Please check your internet connection", seconds: 1.0)
-//        }
-
+    @objc private func showNewChatView() {
         let vc = NewChatVC()
-        navigationController!.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc(createNewDMFromDeepLink:)

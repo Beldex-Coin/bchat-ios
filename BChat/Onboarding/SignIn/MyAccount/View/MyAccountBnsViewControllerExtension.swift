@@ -61,7 +61,7 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
 
         switch viewModel.menuTitles[indexPath.row] {
             case .hops:
-                let vc = NewHopsVC()
+                let vc = HopsViewController()
                 navigationController?.pushViewController(vc, animated: true)
             case .changePassword:
                 let vc = NewPasswordVC()

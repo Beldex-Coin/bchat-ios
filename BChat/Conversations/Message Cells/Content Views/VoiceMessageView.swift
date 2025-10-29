@@ -55,7 +55,7 @@ public final class VoiceMessageView : UIView {
             let tint = Colors.titleColor
             result.textColor = tint
         }
-        result.font = Fonts.OpenSans(ofSize: 11)
+        result.font = Fonts.regularOpenSans(ofSize: 11)
         result.text = "0:00"
         return result
     }()
@@ -63,7 +63,7 @@ public final class VoiceMessageView : UIView {
     private lazy var speedUpLabel: UILabel = {
         let result = UILabel()
         result.textColor = .black
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.alpha = 0
         result.text = "1.5x"
         result.textAlignment = .center

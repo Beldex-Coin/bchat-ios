@@ -99,7 +99,7 @@ public class ModalActivityIndicatorViewController: OWSViewController {
         if let message = message {
             let messageLabel = UILabel()
             messageLabel.text = message
-            messageLabel.font = Fonts.OpenSans(ofSize: Values.mediumFontSize)
+            messageLabel.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
             messageLabel.textColor = UIColor.white
             messageLabel.numberOfLines = 0
             messageLabel.textAlignment = .center

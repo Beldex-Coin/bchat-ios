@@ -68,7 +68,7 @@ class NewBlockContactTableViewCell: UITableViewCell {
     lazy var unblockButton: UIButton = {
         let button = UIButton()
         button.setTitle("Unblock", for: .normal)
-        button.titleLabel?.font = Fonts.OpenSans(ofSize: 12)
+        button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 12)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor2
         button.addTarget(self, action: #selector(unblockButtonTapped), for: .touchUpInside)

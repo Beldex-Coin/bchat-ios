@@ -19,7 +19,7 @@ final class ConversationTitleView : UIView {
     private lazy var subtitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.regularOpenSans(ofSize: 13)
         result.lineBreakMode = .byTruncatingTail
         return result
     }()

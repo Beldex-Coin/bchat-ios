@@ -194,7 +194,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UILabel()
         result.text = NSLocalizedString("PLEASE_WAIT_WHILE_WALLET_SYNCING", comment: "")
         result.textColor = Colors.noDataLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -233,7 +233,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         let result = UILabel()
         result.text = NSLocalizedString("AFTER_YOUR_FIRST_TRANSATION_VIEW", comment: "")
         result.textColor = Colors.noDataLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
         result.numberOfLines = 0
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -428,7 +428,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     lazy var dateForDetailsPageLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
@@ -448,7 +448,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     lazy var transationDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -719,7 +719,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     lazy var recipientAddressDetailsIDLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.numberOfLines = 0
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -819,7 +819,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var fromDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("From Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
@@ -847,7 +847,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     private lazy var toDateTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("To Date", comment: ""), attributes: [NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.layer.borderWidth = 1
         result.backgroundColor = Colors.cellGroundColor2
@@ -3133,7 +3133,7 @@ class TransationHistoryTableCell: UITableViewCell {
     lazy var dateLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.walletHomeFilterLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

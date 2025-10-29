@@ -305,7 +305,7 @@ CGFloat kIconViewLength = 24;
             rowLabel.text = ((TSContactThread *)self.thread).contactBChatID;//NSLocalizedString(@"SETTINGS_ITEM_NOTIFICATION_SOUND",
             //@"Label for settings view that allows user to change the notification sound.");
             rowLabel.textColor = LKColors.titleColor;
-            rowLabel.font = [LKFonts OpenSansOfSize:16];
+            rowLabel.font = [LKFonts regularOpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
             rowLabel.numberOfLines = 2;
             
@@ -381,7 +381,7 @@ CGFloat kIconViewLength = 24;
             rowLabel.text = NSLocalizedString(
                 @"DISAPPEARING_MESSAGES", @"table cell label in conversation settings");
             rowLabel.textColor = LKColors.titleColor;
-            rowLabel.font = [LKFonts OpenSansOfSize:16];
+            rowLabel.font = [LKFonts regularOpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
             UISwitch *switchView = [UISwitch new];
@@ -436,7 +436,7 @@ CGFloat kIconViewLength = 24;
                 UILabel *rowLabel = strongSelf.disappearingMessagesDurationLabel;
                 [strongSelf updateDisappearingMessagesDurationLabel];
                 rowLabel.textColor = LKColors.titleColor;
-                rowLabel.font = [LKFonts OpenSansOfSize:16];
+                rowLabel.font = [LKFonts regularOpenSansOfSize:16];
                 // don't truncate useful duration info which is in the tail
                 rowLabel.lineBreakMode = NSLineBreakByTruncatingHead;
 
@@ -520,7 +520,7 @@ CGFloat kIconViewLength = 24;
             rowLabel.text = NSLocalizedString(@"SETTINGS_ITEM_NOTIFICATION_SOUND",
                 @"Label for settings view that allows user to change the notification sound.");
             rowLabel.textColor = LKColors.titleColor;
-            rowLabel.font = [LKFonts OpenSansOfSize:16];
+            rowLabel.font = [LKFonts regularOpenSansOfSize:16];
             rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
             UIStackView *contentRow =
@@ -560,7 +560,7 @@ CGFloat kIconViewLength = 24;
                 UILabel *rowLabel = [UILabel new];
                 rowLabel.text = NSLocalizedString(@"vc_conversation_settings_notify_for_mentions_only_title", @"");
                 rowLabel.textColor = LKColors.titleColor;
-                rowLabel.font = [LKFonts OpenSansOfSize:16];
+                rowLabel.font = [LKFonts regularOpenSansOfSize:16];
                 rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
                 UISwitch *switchView = [UISwitch new];
@@ -707,7 +707,7 @@ CGFloat kIconViewLength = 24;
     UILabel *rowLabel = [UILabel new];
     rowLabel.text = name;
     rowLabel.textColor = LKColors.titleColor;
-    rowLabel.font = [LKFonts OpenSansOfSize:16];
+    rowLabel.font = [LKFonts regularOpenSansOfSize:16];
     rowLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 
     UIStackView *contentRow = [[UIStackView alloc] initWithArrangedSubviews:@[ iconView, rowLabel ]];

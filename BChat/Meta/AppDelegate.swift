@@ -75,12 +75,25 @@ extension AppDelegate {
         let userDefaults = UserDefaults.standard
         guard !userDefaults[.hasSeenCallMissedTips] else { return }
         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() }
-//        let callMissedTipsModal = CallMissedTipsModal(caller: caller)
-//        presentingVC.present(callMissedTipsModal, animated: true, completion: nil)
-        let vc = MissedCallPopUp(caller: caller)
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        presentingVC.present(vc, animated: true, completion: nil)
+        let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
+        
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .missedCall,
+                title: "Call Missed!",
+                body: .text(message),
+                showCondition: .disabled,
+                confirmEnabled: false,
+                cancelTitle: "OK",
+                cancelEnabled: true,
+                onConfirm: { _ in
+                }, dismissHandler: {
+                    debugPrint("missed call popup closed")
+                }
+            )
+        )
+        presentingVC.present(confirmationModal, animated: true, completion: nil)
         userDefaults[.hasSeenCallMissedTips] = true
     }
     

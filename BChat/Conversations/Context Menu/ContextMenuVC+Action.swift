@@ -89,18 +89,7 @@ extension ContextMenuVC {
                 var result: [Action] = []
               //  if isReplyingAllowed() { result.append(Action.reply(viewItem, delegate)) }
                 if isReplyingAllowed() {
-                    // Payment Card View and openGroupInvitation Both "Replay" Option is disabled
-                    if let payment = viewItem.interaction as? TSIncomingMessage, let txnid = payment.paymentTxnid {
-                        if txnid.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let txnid = payment.paymentTxnid {
-                        if txnid.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSOutgoingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                        if openGroupInvitationURL.isEmpty { }
-                    } else if let payment = viewItem.interaction as? TSIncomingMessage, let openGroupInvitationURL = payment.openGroupInvitationURL {
-                        if openGroupInvitationURL.isEmpty { }
-                    } else {
-                        result.append(Action.reply(viewItem, delegate))
-                    }
+                    result.append(Action.reply(viewItem, delegate))
                 }
                 // Copy Code
                 result.append(Action.copy(viewItem, delegate))
@@ -123,7 +112,7 @@ extension ContextMenuVC {
                     result.append(Action.banAndDeleteAllMessages(viewItem, delegate))
                 }
                 return result
-            case .mediaMessage, .audio, .genericAttachment:
+        case .mediaMessage, .audio, .genericAttachment, .sharedContact:
                 var result: [Action] = []
                 if isReplyingAllowed() {
                     var quoteDraftOrNil: OWSQuotedReplyModel?
@@ -131,7 +120,11 @@ extension ContextMenuVC {
                         quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
                     }
                     if let quoteDraft = quoteDraftOrNil {
-                        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil { } else {
+                        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
+                            if viewItem.messageCellType == .sharedContact {
+                                result.append(Action.reply(viewItem, delegate))
+                            }
+                        } else {
                             result.append(Action.reply(viewItem, delegate))
                         }
                     }

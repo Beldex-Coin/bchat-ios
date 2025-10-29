@@ -20,7 +20,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     let thread: TSThread
     private weak var delegate: InputViewDelegate?
-    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool)? { didSet { handleQuoteDraftChanged() } }
+    var quoteDraftInfo: (model: OWSQuotedReplyModel, isOutgoing: Bool, isSharedContact: Bool, viewItem: ConversationViewItem?)? { didSet { handleQuoteDraftChanged() } }
+    var viewItem: ConversationViewItem?
     var linkPreviewInfo: (url: String, draft: OWSLinkPreviewDraft?)?
     private var voiceMessageRecordingView: VoiceMessageRecordingView?
     private lazy var mentionsViewHeightConstraint = mentionsView.set(.height, to: 0)
@@ -112,7 +113,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var disabledInputLabel: UILabel = {
         let label: UILabel = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        label.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         label.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         label.textAlignment = .center
         label.alpha = 0
@@ -295,7 +296,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         let direction: QuoteView.Direction = quoteDraftInfo.isOutgoing ? .outgoing : .incoming
         let hInset: CGFloat = 4 // Slight visual adjustment
         let maxWidth = additionalContentContainer.bounds.width
-        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self)
+        let quoteView = QuoteView(for: quoteDraftInfo.model, direction: direction, hInset: hInset, maxWidth: maxWidth, delegate: self, isSharedContact: quoteDraftInfo.isSharedContact, viewItem: quoteDraftInfo.viewItem)
         additionalContentContainerOuterView.addSubview(quoteView)
         additionalContentContainer.addSubview(additionalContentContainerOuterView)
         quoteView.backgroundColor = Colors.mainBackGroundColor2
@@ -396,7 +397,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         // Needed so that the user can tap the buttons when the expanding attachments button is expanded
         if attachmentsButton.isExpanded {
             let buttonContainers = [ attachmentsButton.mainButton, attachmentsButton.cameraButton,
-                                     attachmentsButton.libraryButton, attachmentsButton.documentButton, attachmentsButton.gifButton ]
+                                     attachmentsButton.libraryButton, attachmentsButton.documentButton, attachmentsButton.gifButton, attachmentsButton.shareContactButton ]
             let buttonContainer = buttonContainers.first { $0.superview!.convert($0.frame, to: self).contains(point) }
             if let buttonContainer = buttonContainer {
                 return buttonContainer
@@ -411,7 +412,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         
         if attachmentsButton.isExpanded || self.mentionsViewContainer.alpha == 1 {
-            let buttonContainers = [ attachmentsButton.gifButtonContainer, attachmentsButton.documentButtonContainer,
+            let buttonContainers = [ attachmentsButton.shareContactButton, attachmentsButton.gifButtonContainer, attachmentsButton.documentButtonContainer,
                                      attachmentsButton.libraryButtonContainer, attachmentsButton.cameraButtonContainer, attachmentsButton.mainButtonContainer ]
             let isPointInsideAttachmentsButton = buttonContainers.contains { $0.superview!.convert($0.frame, to: self).contains(point) }
             if isPointInsideAttachmentsButton {

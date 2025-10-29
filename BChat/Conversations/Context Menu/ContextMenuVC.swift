@@ -97,13 +97,21 @@ final class ContextMenuVC : UIViewController {
         snapshot.layer.shadowOpacity = 0.4
         snapshot.layer.shadowRadius = 4
         view.addSubview(snapshot)
-        if snapshot.height() > (UIScreen.main.bounds.height / 2 - 150) {
+        if snapshot.height() > (UIScreen.main.bounds.height / 2 - 160) {
             snapshot.centerWithInset(.vertical, in: view, inset: -40)
         } else {
-            if UIScreen.main.bounds.height - frame.origin.y < 120 {
-                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 100)
+            if viewItem.messageCellType == .sharedContact {
+                if frame.origin.y < 170 {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 80)
+                } else {
+                    snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y - 70)
+                }
             } else {
-                snapshot.pin(.top, to: .top, of: view, withInset: frame.origin.y + 20)
+                let actionViews = ContextMenuVC.actions(for: viewItem, delegate: delegate).map { ActionView(for: $0, dismiss: snDismiss) }
+                let menuHeight = CGFloat(actionViews.count) * ContextMenuVC.actionViewHeight
+                let spacing: CGFloat = Values.smallSpacing
+                let targetFrame = calculateFrame(menuHeight: menuHeight, spacing: spacing)
+                self.snapshot.pin(.top, to: .top, of: view, withInset: targetFrame.origin.y)
             }
         }
         if snapshot.height > 440 {
@@ -149,8 +157,13 @@ final class ContextMenuVC : UIViewController {
         menuView.set(.height, to: CGFloat(actionViews.count) * 33)
         let margin = max(UIWindow.keyWindow?.safeAreaInsets.bottom  ?? 0, Values.mediumSpacing)
         if frame.maxY + spacing + menuHeight > UIScreen.main.bounds.height - margin && snapshot.height < 440 {
-            menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
-            emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+            if frame.height > 350 {
+                menuView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+                emojiBarView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
+            } else {
+                menuView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
+                emojiBarView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
+            }
         } else {
             menuView.pin(.top, to: .bottom, of: snapshot, withInset: spacing)
             emojiBarView.pin(.bottom, to: .top, of: snapshot, withInset: -spacing)
@@ -241,4 +254,32 @@ final class ContextMenuVC : UIViewController {
         snDismiss()
         delegate?.showFullEmojiKeyboard(viewItem)
     }
+    
+    func calculateFrame(menuHeight: CGFloat, spacing: CGFloat) -> CGRect {
+        var finalFrame: CGRect = frame
+        let ratio: CGFloat = (frame.width / frame.height)
+        
+        let topMargin = max((UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0), Values.mediumSpacing)
+        let bottomMargin = max((UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0), Values.mediumSpacing)
+        let diffY = finalFrame.height + menuHeight + Self.actionViewHeight + 2 * spacing + topMargin + bottomMargin - UIScreen.main.bounds.height
+        
+        if diffY > 0 {
+            finalFrame.size.height -= diffY
+            let newWidth = ratio * finalFrame.size.height
+            if viewItem.interaction.interactionType() == .outgoingMessage {
+                finalFrame.origin.x += finalFrame.size.width - newWidth
+            }
+            finalFrame.size.width = newWidth
+            finalFrame.origin.y = UIScreen.main.bounds.height - finalFrame.size.height - menuHeight - bottomMargin - spacing
+        } else {
+            if finalFrame.origin.y - Self.actionViewHeight - spacing < topMargin {
+                finalFrame.origin.y = topMargin + Self.actionViewHeight + spacing
+            }
+            if finalFrame.origin.y + finalFrame.size.height + spacing + menuHeight + bottomMargin > UIScreen.main.bounds.height {
+                finalFrame.origin.y = UIScreen.main.bounds.height - bottomMargin - menuHeight - spacing - finalFrame.size.height
+            }
+        }
+        return finalFrame
+    }
+    
 }

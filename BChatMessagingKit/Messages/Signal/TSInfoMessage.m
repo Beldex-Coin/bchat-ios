@@ -61,7 +61,8 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
                     openGroupInvitationURL:nil
                                 serverHash:nil
                               paymentTxnid:nil
-                             paymentAmount:nil];
+                             paymentAmount:nil
+                              sharedContactMessage:nil];
 
     if (!self) {
         return self;
@@ -150,6 +151,8 @@ NSUInteger TSInfoMessageSchemaVersion = 1;
             return NSLocalizedString(@"MESSAGE_REQUESTS_ACCEPTED_BY_YOU", @"");
         case TSInfoMessageTypeGroupCurrentUserRemoved:
             return NSLocalizedString(@"YOU_WERE_REMOVED", @"");
+        case TSInfoMessageTypeScreenshotNotification:
+            return [NSString stringWithFormat:NSLocalizedString(@"screenshot_taken", @""), @"You"];
         default:
             break;
     }

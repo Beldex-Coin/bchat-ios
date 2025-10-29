@@ -31,7 +31,7 @@ class RestoreSeedNewVC: BaseVC {
         let result = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textColor = UIColor(hex: 0xA7A7BA)
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.text = NSLocalizedString("0/25", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -46,7 +46,7 @@ class RestoreSeedNewVC: BaseVC {
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = .clear
         result.textColor = UIColor(hex: 0xEBEBEB)
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         return result
     }()
     
@@ -61,7 +61,7 @@ class RestoreSeedNewVC: BaseVC {
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor(hex: 0xA7A7BA), for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.addTarget(self, action: #selector(clearButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -71,7 +71,7 @@ class RestoreSeedNewVC: BaseVC {
         let result = UIButton(type: .custom)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreActionTapped), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = UIColor(hex: 0x1C1C26)
@@ -84,7 +84,7 @@ class RestoreSeedNewVC: BaseVC {
         let result = UILabel()
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.text = NSLocalizedString("PASTE_THE_SEED_NEW", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
@@ -179,7 +179,7 @@ class RestoreSeedNewVC: BaseVC {
         placeholderLabel = UILabel()
         placeholderLabel.text = NSLocalizedString("ENTER_YOUR_SEED_NEW", comment: "")
         placeholderLabel.numberOfLines = 0
-        placeholderLabel.font = Fonts.OpenSans(ofSize: (mnemonicTextView.font?.pointSize)!)
+        placeholderLabel.font = Fonts.regularOpenSans(ofSize: (mnemonicTextView.font?.pointSize)!)
         placeholderLabel.sizeToFit()
         mnemonicTextView.addSubview(placeholderLabel)
         placeholderLabel.frame.origin = CGPoint(x: 2, y: 8)

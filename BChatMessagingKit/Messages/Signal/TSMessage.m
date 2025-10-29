@@ -68,7 +68,8 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
                   openGroupInvitationURL:(nullable NSString *)openGroupInvitationURL
                               serverHash:(nullable NSString *)serverHash
                             paymentTxnid:(nullable NSString *)paymentTxnid
-                             paymentAmount:(nullable NSString *)paymentAmount
+                           paymentAmount:(nullable NSString *)paymentAmount
+                    sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage
 {
     self = [super initInteractionWithTimestamp:timestamp inThread:thread];
 
@@ -94,6 +95,7 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
     _isDeleted = false;
     _isCallMessage = false;
     _reactions = [NSMutableArray new];
+    _sharedContactMessage = sharedContactMessage;
 
     return self;
 }
@@ -362,6 +364,9 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
             return [[attachmentDescription stringByAppendingString:@": "] stringByAppendingString:bodyDescription];
         }
     } else if (bodyDescription.length > 0) {
+        if (self.sharedContactMessage != nil) {
+            return [NSString stringWithFormat:@"👤 %@", self.sharedContactMessage.name];
+        }
         return bodyDescription;
     } else if (attachmentDescription.length > 0) {
         return attachmentDescription;
@@ -375,6 +380,8 @@ const NSUInteger kOversizeTextMessageSizeThreshold = 2 * 1024;
         } else {
             return @"Payment";
         }
+    } else if (self.sharedContactMessage != nil) {
+        return [NSString stringWithFormat:@"👤 %@", self.sharedContactMessage.name];
     } else {
         // TODO: We should do better here.
         return @"";

@@ -98,14 +98,14 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     lazy var messageTimeLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 10)
+        result.font = Fonts.regularOpenSans(ofSize: 10)
         result.textColor = Colors.messageTimeLabelColor
         return result
     }()
     
     lazy var messageTimeBottomLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 9)
+        result.font = Fonts.regularOpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.textAlignment = .right
         return result
@@ -113,7 +113,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     
     lazy var messageTimeRightLabel: UILabel = {
         let result = UILabel()
-        result.font = Fonts.OpenSans(ofSize: 9)
+        result.font = Fonts.regularOpenSans(ofSize: 9)
         result.textColor = UIColor(hex: 0xEBEBEB)
         result.textAlignment = .right
         return result
@@ -442,7 +442,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateHeader(for viewItem: ConversationViewItem) {
         guard viewItem.shouldShowDate else { return }
         let dateBreakLabel = UILabel()
-        dateBreakLabel.font = Fonts.OpenSans(ofSize: 12)
+        dateBreakLabel.font = Fonts.regularOpenSans(ofSize: 12)
         dateBreakLabel.textColor = Colors.messageTimeLabelColor
         dateBreakLabel.textAlignment = .center
         let date = viewItem.interaction.dateForUI()
@@ -462,9 +462,33 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     private func populateContentView(for viewItem: ConversationViewItem, message: TSMessage) {
         snContentView.subviews.forEach { $0.removeFromSuperview() }
         func showMediaPlaceholder() {
+            
+            let inset: CGFloat = 8
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+            // Stack view
+            let stackView = UIStackView(arrangedSubviews: [])
+            stackView.axis = .vertical
+            stackView.spacing = Values.smallSpacing
+            // Quote View
+            if viewItem.quotedReply != nil {
+                let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                let hInset: CGFloat = 2
+                
+                var isSharedContact: Bool = false
+                let jsonString = viewItem.quotedReply?.body ?? ""
+                isSharedContact = jsonString.isSharedContactType
+                
+                let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
+                let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                quoteView.layer.cornerRadius = 8
+                stackView.addArrangedSubview(quoteViewContainer)
+            }
+            
             let mediaPlaceholderView = MediaPlaceholderView(viewItem: viewItem, textColor: bodyLabelTextColor)
-            snContentView.addSubview(mediaPlaceholderView)
-            mediaPlaceholderView.pin(to: snContentView)
+            stackView.addArrangedSubview(mediaPlaceholderView)
+            snContentView.addSubview(stackView)
+            stackView.pin(to: snContentView)
         }
         albumView = nil
         bodyTextView = nil
@@ -506,6 +530,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     openGroupInvitationView.pin(to: snContentView)
                     openGroupInvitationView.layer.mask = bubbleViewMaskLayer
                 } else if let paymentTxnid = message.paymentTxnid, let paymentAmount = message.paymentAmount {
+                    bubbleViewBottomConstraint.isActive = false
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0)
                     let paymentView = PaymentView(txnid: paymentTxnid, rawAmount: paymentAmount, textColor: bodyLabelTextColor, isOutgoing: isOutgoing, viewItem: viewItem)
                     paymentView.layer.cornerRadius = 18
                     snContentView.addSubview(paymentView)
@@ -529,7 +555,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     if viewItem.quotedReply != nil {
                         let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
                         let hInset: CGFloat = 2
-                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth)
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
                         let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
                         quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
                         quoteView.layer.cornerRadius = 8
@@ -604,7 +630,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                         stackView.pin(.top, to: .top, of: snContentView, withInset: 2)
                         stackView.pin(.left, to: .left, of: snContentView, withInset: 0)
                         stackView.pin(.right, to: .right, of: snContentView, withInset: -2)
-                        if message.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
+                        if message.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: VisibleMessageCell.getFontSize(for: viewItem))) ?? 0 > 100 {
                             stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -12)
                         } else {
                             stackView.pin(.bottom, to: .bottom, of: snContentView, withInset: -6)
@@ -624,6 +650,18 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     let stackView = UIStackView(arrangedSubviews: [])
                     stackView.axis = .vertical
                     stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        let inset: CGFloat = 12
+                        let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
                     // Album view
                     let maxMessageWidth = VisibleMessageCell.getMaxWidth(for: viewItem)
                     let albumView = MediaAlbumView(mediaCache: cache, items: viewItem.mediaAlbumItems!, isOutgoing: isOutgoing, maxMessageWidth: maxMessageWidth)
@@ -659,12 +697,29 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     showMediaPlaceholder()
                     bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -20)
                 } else {
+                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                    let stackView = UIStackView(arrangedSubviews: [])
+                    stackView.axis = .vertical
+                    stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        let inset: CGFloat = 12
+                        let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
+                    
                     let voiceMessageView = VoiceMessageView(viewItem: viewItem)
-                    snContentView.addSubview(voiceMessageView)
-                    voiceMessageView.pin(to: snContentView)
+                    stackView.addArrangedSubview(voiceMessageView)
+                    snContentView.addSubview(stackView)
                     voiceMessageView.layer.mask = bubbleViewMaskLayer
                     viewItem.lastAudioMessageView = voiceMessageView
-                    bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                    stackView.pin(to: snContentView)
                 }
             case .genericAttachment:
                 bubbleViewBottomConstraint.isActive = false
@@ -674,12 +729,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     Storage.shared.getContact(with: thread.contactBChatID())?.isTrusted != true {
                     showMediaPlaceholder()
                 } else {
-                    let inset: CGFloat = 12
+                    var inset: CGFloat = 12
                     let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
                     // Stack view
                     let stackView = UIStackView(arrangedSubviews: [])
                     stackView.axis = .vertical
                     stackView.spacing = Values.smallSpacing
+                    // Quote View
+                    if viewItem.quotedReply != nil {
+                        inset = 4
+                        let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                        let hInset: CGFloat = 2
+                        let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: message.sharedContactMessage != nil)
+                        let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                        quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                        quoteView.layer.cornerRadius = 8
+                        stackView.addArrangedSubview(quoteViewContainer)
+                    }
                     // Document view
                     let documentView = DocumentView(viewItem: viewItem, textColor: bodyLabelTextColor)
                     stackView.addArrangedSubview(documentView)
@@ -699,6 +765,76 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 let deletedMessageView = DeletedMessageView(viewItem: viewItem, textColor: bodyLabelTextColor)
                 snContentView.addSubview(deletedMessageView)
                 deletedMessageView.pin(to: snContentView)
+            case .sharedContact:
+                bubbleViewBottomConstraint.isActive = false
+                bubbleViewBottomConstraint = snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
+                guard let sharedContactMessage = viewItem.sharedContactMessage else { return }
+            var inset: CGFloat = 8
+            let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * inset
+            // Stack view
+            let stackView = UIStackView(arrangedSubviews: [])
+            stackView.axis = .vertical
+            stackView.spacing = Values.smallSpacing
+            // Quote View
+            if viewItem.quotedReply != nil {
+                inset = 4
+                let direction: QuoteView.Direction = isOutgoing ? .outgoing : .incoming
+                let hInset: CGFloat = 2
+                
+                var isSharedContact: Bool = false
+                let jsonString = viewItem.quotedReply?.body ?? ""
+                isSharedContact = jsonString.isSharedContactType
+                
+                let quoteView = QuoteView(for: viewItem, in: thread, direction: direction, hInset: hInset, maxWidth: maxWidth, isSharedContact: isSharedContact)
+                let quoteViewContainer = UIView(wrapping: quoteView, withInsets: UIEdgeInsets(top: 0, leading: hInset, bottom: 0, trailing: 0))
+                quoteView.backgroundColor = isOutgoing ? UIColor(hex: 0x136515) : Colors.mainBackGroundColor2
+                quoteView.layer.cornerRadius = 8
+                stackView.addArrangedSubview(quoteViewContainer)
+            }
+            
+            var countOfNames = 0
+            countOfNames = sharedContactMessage.name?.toStringArrayFromJSON()?.count ?? 0
+            
+            var stringToShowAsName = ""
+            let other = countOfNames == 2 ? "other" : "others"
+            if countOfNames <= 1 {
+                stringToShowAsName = convertJSONStringToCommaSeparatedString(sharedContactMessage.name ?? "") ?? ""
+            } else {
+                var firstName = sharedContactMessage.name?.toStringArrayFromJSON()?.first ?? ""
+                if firstName.count == 66 {
+                    firstName = firstName.truncateMiddle(with: 4, suffixLength: 3)
+                }
+                stringToShowAsName = "\(firstName) and \(countOfNames - 1) \(other)"
+            }
+            
+            let contactView = ContactView(bChatID: sharedContactMessage.address?.toStringArrayFromJSON()?.first ?? "", isOutgoing: isOutgoing, contactName: stringToShowAsName.firstCharacterUpperCase() ?? "", searchString: lastSearchedText ?? "", contactCount: countOfNames, bChatIDs: sharedContactMessage.address?.toStringArrayFromJSON() ?? [String]())
+                stackView.addArrangedSubview(contactView)
+            
+                messageTimeBottomLabel.isHidden = true
+                let timeLabel = UILabel()
+                timeLabel.font = Fonts.regularOpenSans(ofSize: 9)
+                timeLabel.textColor = isLightMode ? Colors.noDataLabelColor : UIColor(hex: 0xEBEBEB)
+                timeLabel.text = description
+                timeLabel.textAlignment = .right
+                stackView.addArrangedSubview(timeLabel)
+            
+                let separatorView = UIView.spacer(withHeight: 0.5)
+                separatorView.backgroundColor = UIColor(hex: isOutgoing ? 0x2FA62F : isLightMode ? 0xA7A7BA : 0x4B4B64)
+                stackView.addArrangedSubview(separatorView)
+            
+                let bottomDiscriptionLabel = UILabel()
+                bottomDiscriptionLabel.font = Fonts.regularOpenSans(ofSize: 15)
+                bottomDiscriptionLabel.textColor = bodyLabelTextColor
+                bottomDiscriptionLabel.textAlignment = .center
+                if countOfNames <= 1 {
+                    bottomDiscriptionLabel.text = "Message"
+                } else {
+                    bottomDiscriptionLabel.text = "View all"
+                }
+                stackView.addArrangedSubview(bottomDiscriptionLabel)
+            
+                snContentView.addSubview(stackView)
+                stackView.pin(to: snContentView)
             default: return
         }
     }
@@ -837,7 +973,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                 }
             }
         } else {
-            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer)
+            delegate?.handleViewItemTapped(viewItem, gestureRecognizer: gestureRecognizer, location: location)
         }
     }
 
@@ -853,8 +989,10 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             quoteDraftOrNil = OWSQuotedReplyModel.quotedReplyForSending(with: viewItem, threadId: viewItem.interaction.uniqueThreadId, transaction: transaction)
         }
         guard let quoteDraft = quoteDraftOrNil else { return }
-        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil {
-            return
+        if quoteDraft.body == "" && quoteDraft.attachmentStream == nil && viewItem.sharedContactMessage == nil {
+            if (viewItem.interaction as? TSMessage)?.openGroupInvitationURL == nil && (viewItem.interaction as? TSMessage)?.paymentTxnid == nil {
+                return
+            }
         }
         let viewsToMove = [ bubbleView, profilePictureView, replyButton, timerView, messageStatusImageViewNew, verifiedImageView, messageTailRightView, messageTailLeftView, reactionContainerView ]
         let translationX = gestureRecognizer.translation(in: self).x.clamp(0, CGFloat.greatestFiniteMagnitude)
@@ -1062,11 +1200,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.isEditable = false
         let attributes: [NSAttributedString.Key:Any] = [
             .foregroundColor : textColor,
-            .font : Fonts.OpenSans(ofSize: getFontSize(for: viewItem))
+            .font : Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))
         ]
-        let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: message.body ?? "", isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
+        var text = message.body ?? ""
+        let jsonString = message.body ?? ""
+        if let name = jsonString.sharedContactNameIfAvailable() {
+            text = name
+        }
+        let attributedText = NSMutableAttributedString(attributedString: MentionUtilities.highlightMentions(in: text, isOutgoingMessage: isOutgoing, threadID: viewItem.interaction.uniqueThreadId, attributes: attributes))
         
-        let range = NSString(string: message.body ?? "").range(of: lastString ?? "", options: .caseInsensitive)
+        let range = NSString(string: text).range(of: lastString ?? "", options: .caseInsensitive)
         let highlightColor = UIColor.systemOrange
         let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
         attributedText.addAttributes(highlightedAttributes, range: range)
@@ -1087,7 +1230,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
         if viewItem.quotedReply != nil && attachments.isEmpty {
-            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.OpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
+            let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
             if width > maxWidth {
                 result.set(.width, to: size.width > maxWidth ? size.width : maxWidth)
@@ -1153,3 +1296,23 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
 }
+
+
+
+
+struct ContactWrapper: Decodable {
+    let kind: SharedContactKind
+}
+
+struct SharedContactKind: Decodable {
+    let type: String
+    let address: String
+    let name: String
+
+    private enum CodingKeys: String, CodingKey {
+        case type = "@type"
+        case address
+        case name
+    }
+}
+

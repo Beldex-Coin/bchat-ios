@@ -7,7 +7,7 @@ public final class Separator : UIView {
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
-        result.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.textAlignment = .center
         return result
     }()

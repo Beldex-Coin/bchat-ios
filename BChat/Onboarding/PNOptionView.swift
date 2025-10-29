@@ -48,7 +48,7 @@ final class OptionView : UIView {
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.textColor = Colors.text
-        explanationLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        explanationLabel.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         explanationLabel.text = explanation
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping

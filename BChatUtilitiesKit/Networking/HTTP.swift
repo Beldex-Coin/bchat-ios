@@ -11,7 +11,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode1", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode1.der")
             return nil
         }
         return cert
@@ -32,7 +32,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode3", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode3.der")
             return nil
         }
         return cert
@@ -42,7 +42,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode4", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode4.der")
             return nil
         }
         return cert
@@ -52,7 +52,7 @@ public enum HTTP {
         guard let path = Bundle.main.path(forResource: "publicnode5", ofType: "der"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
               let cert = SecCertificateCreateWithData(nil, data as CFData) else {
-            print("Failed to load certificate from publicnode2.der")
+            print("Failed to load certificate from publicnode5.der")
             return nil
         }
         return cert

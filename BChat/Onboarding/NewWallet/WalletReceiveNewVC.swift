@@ -17,7 +17,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 18)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 18)
         button.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -44,7 +44,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
     private lazy var beldexAddressIdLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
-        result.font = Fonts.OpenSans(ofSize: 13)
+        result.font = Fonts.regularOpenSans(ofSize: 13)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.numberOfLines = 0
@@ -79,7 +79,7 @@ class WalletReceiveNewVC: BaseVC,UITextFieldDelegate {
         result.delegate = self
         result.translatesAutoresizingMaskIntoConstraints = false
         result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("0.00000", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
-        result.font = Fonts.OpenSans(ofSize: 16)
+        result.font = Fonts.regularOpenSans(ofSize: 16)
         result.layer.borderColor = Colors.borderColor.cgColor
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = Values.buttonRadius

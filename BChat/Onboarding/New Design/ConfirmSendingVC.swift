@@ -70,7 +70,7 @@ class ConfirmSendingVC: BaseVC {
     private lazy var addressLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.text = "Address :"
         return result
@@ -93,7 +93,7 @@ class ConfirmSendingVC: BaseVC {
     private lazy var feeLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.aboutContentLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
         return result
     }()
@@ -103,7 +103,7 @@ class ConfirmSendingVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.addTarget(self, action: #selector(okButtonTapped), for: .touchUpInside)
         return button
@@ -116,7 +116,7 @@ class ConfirmSendingVC: BaseVC {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button

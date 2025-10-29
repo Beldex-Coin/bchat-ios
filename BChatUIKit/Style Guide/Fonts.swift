@@ -3,7 +3,7 @@ import UIKit
 @objc(LKFonts)
 public final class Fonts: NSObject {
     
-    @objc public static func OpenSans(ofSize size: CGFloat) -> UIFont {
+    @objc public static func regularOpenSans(ofSize size: CGFloat) -> UIFont {
         return UIFont(name: "OpenSans-Regular", size: size) ?? .systemFont(ofSize: size, weight: .regular)
     }
     @objc public static func boldOpenSans(ofSize size: CGFloat) -> UIFont {

@@ -28,7 +28,7 @@ public extension VisibleMessage {
 
         public static func fromProto(_ proto: SNProtoDataMessagePayment) -> Payment? {
             let amount = proto.amount
-            let txnId = proto.txnId
+            let txnId = proto.txnID
             return Payment(txnId: txnId, amount: amount)
         }
 
@@ -37,7 +37,7 @@ public extension VisibleMessage {
                 SNLog("Couldn't construct payment proto from: \(self).")
                 return nil
             }
-            let paymentProto = SNProtoDataMessagePayment.builder(amount: amount, txnId: txnId)
+            let paymentProto = SNProtoDataMessagePayment.builder(amount: amount, txnID: txnId)
             do {
                 return try paymentProto.build()
             } catch {

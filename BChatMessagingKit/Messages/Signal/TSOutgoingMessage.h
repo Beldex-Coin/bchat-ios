@@ -97,7 +97,8 @@ typedef NS_ENUM(NSInteger, TSGroupMetaMessage) {
                           openGroupInvitationURL:(nullable NSString *)openGroupInvitationURL
                                       serverHash:(nullable NSString *)serverHash
                                     paymentTxnid:(nullable NSString *)paymentTxnid
-                                   paymentAmount:(nullable NSString *)paymentAmount NS_DESIGNATED_INITIALIZER;
+                                   paymentAmount:(nullable NSString *)paymentAmount
+                                   sharedContactMessage:(nullable BCSharedContactMessage *)sharedContactMessage NS_DESIGNATED_INITIALIZER;
 
 - (nullable instancetype)initWithCoder:(NSCoder *)coder NS_DESIGNATED_INITIALIZER;
 

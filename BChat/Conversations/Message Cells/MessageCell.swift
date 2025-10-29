@@ -80,7 +80,7 @@ protocol MessageCellDelegate : ReactionDelegate {
     
     func getMediaCache() -> NSCache<NSString, AnyObject>
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem)
-    func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer)
+    func handleViewItemTapped(_ viewItem: ConversationViewItem, gestureRecognizer: UITapGestureRecognizer, location: CGPoint)
     func handleViewItemDoubleTapped(_ viewItem: ConversationViewItem)
     func handleViewItemSwiped(_ viewItem: ConversationViewItem, state: SwipeState)
     func showFullText(_ viewItem: ConversationViewItem)

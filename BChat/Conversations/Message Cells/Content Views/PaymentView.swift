@@ -96,7 +96,7 @@ final class PaymentView : UIView {
         let subtitleLabel = UILabel()
         subtitleLabel.lineBreakMode = .byTruncatingTail
         subtitleLabel.textColor = UIColor.white
-        subtitleLabel.font = Fonts.OpenSans(ofSize: 10)
+        subtitleLabel.font = Fonts.regularOpenSans(ofSize: 10)
         
         if direction == "send" {
             subtitleLabel.text = NSLocalizedString("Send Successfully", comment: "")
@@ -111,7 +111,7 @@ final class PaymentView : UIView {
         // Bottom time label
         let timeLabel = UILabel()
         timeLabel.lineBreakMode = .byTruncatingTail
-        timeLabel.font = Fonts.OpenSans(ofSize: 9)
+        timeLabel.font = Fonts.regularOpenSans(ofSize: 9)
         let date = viewItem.interaction.dateForUI()
         let description = DateUtil.formatDate(forDisplay2: date)
         timeLabel.text = description
@@ -158,7 +158,7 @@ final class PaymentView : UIView {
         urlLabel.text = txnid
         urlLabel.textColor = textColor
         urlLabel.numberOfLines = 0
-        urlLabel.font = Fonts.OpenSans(ofSize: Values.verySmallFontSize)
+        urlLabel.font = Fonts.regularOpenSans(ofSize: Values.verySmallFontSize)
         
         // Icon
         let iconSize = PaymentView.iconSize

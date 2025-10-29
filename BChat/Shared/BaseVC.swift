@@ -203,6 +203,33 @@ class BaseVC : UIViewController {
               navigationController?.popToViewController(viewController, animated: true)
         }
     }
+    
+    func showBlockedNUnblockedPopup(_ isBlocked: Bool) {
+        let title = isBlocked ? "Unblock Contact" : "Block Contact"
+        let message = isBlocked ? "Are you sure you want to Unblock this contact?" : "Are you sure you want to Block this contact?"
+        let buttonTitle = isBlocked ? "Unblock" : "Block"
+        let modalType: ConfirmationModalType = isBlocked ? .unblockContact : .blockContact
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: modalType,
+                title: title,
+                body: .text(message),
+                showCondition: .disabled,
+                confirmTitle: buttonTitle,
+                onConfirm: { _ in
+                    if isBlocked {
+                        NotificationCenter.default.post(name: .unblockContactNotification, object: nil)
+                    } else {
+                        NotificationCenter.default.post(name: .blockContactNotification, object: nil)
+                    }
+                }, dismissHandler: {
+                    debugPrint("block/unblock popup closed")
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
+    }
 }
 
 
@@ -253,7 +280,7 @@ extension BaseVC {
                 confirmTitle: "Settings",
                 onConfirm: { _ in
                     onConfirmed?()
-                }, afterClosed: {
+                }, dismissHandler: {
                     onAfterClosed?()
                 }
             )

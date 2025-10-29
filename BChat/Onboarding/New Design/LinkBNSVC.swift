@@ -41,7 +41,7 @@ class LinkBNSVC: BaseVC {
     private lazy var bchatIdLabel: UILabel = {
         let result = PaddingLabel()
         result.textColor = Colors.titleColor
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.paddingTop = 13
@@ -66,7 +66,7 @@ class LinkBNSVC: BaseVC {
     private lazy var bnsNameTextField: UITextField = {
         let result = UITextField()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 14)
+        result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         result.placeholder = "Enter BNS name"
@@ -84,7 +84,7 @@ class LinkBNSVC: BaseVC {
         button.layer.borderWidth = 0.5
         button.layer.borderColor = Colors.bothGreenColor.cgColor
         button.backgroundColor = Colors.bothGreenWithAlpha10
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor1, for: .normal)
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         return button
@@ -96,7 +96,7 @@ class LinkBNSVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         button.setTitleColor(Colors.cancelButtonTitleColor, for: .normal)
         button.addTarget(self, action: #selector(verifyButtonTapped), for: .touchUpInside)
         return button
@@ -108,7 +108,7 @@ class LinkBNSVC: BaseVC {
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
-        button.titleLabel!.font = Fonts.OpenSans(ofSize: 16)
+        button.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         button.setTitleColor(Colors.buttonDisableColor, for: .normal)
         button.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
         return button

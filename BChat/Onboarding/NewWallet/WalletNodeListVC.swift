@@ -24,7 +24,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var refreshButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("REFRESH_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(refreshButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.backgroundViewColor
         result.setTitleColor(Colors.addressBookNoContactLabelColor, for: .normal)
@@ -36,7 +36,7 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     private lazy var addNodeButton: UIButton = {
         let result = UIButton()
         result.setTitle(NSLocalizedString(NSLocalizedString("ADD_NODE_BUTTON_NEW", comment: ""), comment: ""), for: UIControl.State.normal)
-        result.titleLabel!.font = Fonts.OpenSans(ofSize: 14)
+        result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(addNodeButtonAction), for: .touchUpInside)
         result.backgroundColor = Colors.bothGreenColor
         result.setTitleColor(UIColor.white, for: .normal)
@@ -107,16 +107,12 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         }
         
         myGroup.notify(queue: .main) {
-            print("Finished all requests.")
             if self.nodeArrayDynamic!.count > 0 {
                 for i in 0 ..< self.nodeArrayDynamic!.count {
                     self.forVerifyAllNodeURI(host_port: self.nodeArrayDynamic![i])
                 }
             }
         }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshNodePopUpOkeyAction(_:)), name: .refreshNodePopUpNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(switchNodePopUpOkeyAction(_:)), name: .switchNodePopUpNotification, object: nil)
     }
     
     /// View will appear
@@ -272,10 +268,22 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             } else {
                 selectedIndex = indexPath.row
                 selectedValue = self.nodeArrayDynamic![indexPath.row]
-                let vc = SwitchNodePopUpVC()
-                vc.modalPresentationStyle = .overFullScreen
-                vc.modalTransitionStyle = .crossDissolve
-                self.present(vc, animated: true, completion: nil)
+                
+                // show confirmation modal
+                let confirmationModal: ConfirmationModal = ConfirmationModal(
+                    info: ConfirmationModal.Info(
+                        modalType: .switchNode,
+                        title: "Switch Node",
+                        body: .text("Are you sure you want to switch to another node?"),
+                        showCondition: .disabled,
+                        confirmTitle: "Yes",
+                        onConfirm: { _ in
+                            self.switchNode()
+                        }, dismissHandler: {
+                        }
+                    )
+                )
+                present(confirmationModal, animated: true, completion: nil)
             }
         }
     }
@@ -291,13 +299,24 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func refreshButtonAction(_ sender: UIButton){
-        let vc = RefreshNodePopUpVC()
-        vc.modalPresentationStyle = .overFullScreen
-        vc.modalTransitionStyle = .crossDissolve
-        self.present(vc, animated: true, completion: nil)
+        // show confirmation modal
+        let confirmationModal: ConfirmationModal = ConfirmationModal(
+            info: ConfirmationModal.Info(
+                modalType: .refreshNodes,
+                title: "Refresh Nodes",
+                body: .text("Are you sure you want to refresh the nodes?"),
+                showCondition: .disabled,
+                confirmTitle: "Yes",
+                onConfirm: { _ in
+                    self.refreshNodes()
+                }, dismissHandler: {
+                }
+            )
+        )
+        present(confirmationModal, animated: true, completion: nil)
     }
     
-    @objc func refreshNodePopUpOkeyAction(_ notification: Notification) {
+    func refreshNodes() {
         if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
             SaveUserDefaultsData.SaveLocalNodelist = []
             if self.nodeArrayDynamic!.count > 0 {
@@ -325,8 +344,8 @@ class WalletNodeListVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             tableView.reloadData();
         }
     }
-    
-    @objc func switchNodePopUpOkeyAction(_ notification: Notification) {
+        
+    func switchNode() {
         SaveUserDefaultsData.SwitchNode = true
         SaveUserDefaultsData.SelectedNode = selectedValue
         if self.navigationController != nil{
@@ -380,7 +399,7 @@ class NodeListTableCell: UITableViewCell {
     lazy var nodeIPLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.cellIpLabelColor
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

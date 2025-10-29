@@ -50,7 +50,7 @@ class SideMenuProfileTableViewCell: UITableViewCell {
     lazy var subTitleLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.titleColor3
-        result.font = Fonts.OpenSans(ofSize: 12)
+        result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
         return result

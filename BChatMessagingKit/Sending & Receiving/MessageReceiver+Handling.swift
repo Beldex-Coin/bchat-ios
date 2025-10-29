@@ -378,6 +378,11 @@ extension MessageReceiver {
         // Get or create thread
         guard let threadID = storage.getOrCreateThread(for: message.syncTarget ?? message.sender!, groupPublicKey: message.groupPublicKey, openGroupID: openGroupID, using: transaction) else { throw Error.noThread }
         
+        // Shared contact
+        if let sharedContact = message.sharedContact, proto.dataMessage?.sharedContact != nil, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
+            debugPrint("Shared contact **** \(sharedContact) \n↵Thread **** \(thread)")
+        }
+        
         // Handle emoji reacts first
         if let reaction = message.reaction, proto.dataMessage?.reaction != nil, var author = reaction.publicKey, let timestamp = reaction.timestamp, let thread = TSThread.fetch(uniqueId: threadID, transaction: transaction) {
             var tsMessage: TSMessage?

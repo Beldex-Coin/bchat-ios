@@ -203,7 +203,7 @@ public class SwiftAlertView: UIView {
     
     public func addTextField(configurationHandler: ((UITextField) -> Void)? = nil) {
         let textField = UITextField(frame: CGRect(x: textFieldSideMargin, y: 0, width: viewWidth - textFieldSideMargin * 2, height: textFieldHeight))
-        textField.font = Fonts.OpenSans(ofSize: 14)
+        textField.font = Fonts.regularOpenSans(ofSize: 14)
         textField.borderStyle = .roundedRect
         textField.delegate = self
         textField.tag = textFields.count
@@ -466,7 +466,7 @@ extension SwiftAlertView {
             messageLabel.numberOfLines = 0
             messageLabel.lineBreakMode = .byWordWrapping
             messageLabel.textColor = .black
-            messageLabel.font = Fonts.OpenSans(ofSize: 13)
+            messageLabel.font = Fonts.regularOpenSans(ofSize: 13)
             if title == nil {
                 messageLabel.font = Fonts.boldOpenSans(ofSize: 17)
             }
@@ -478,7 +478,7 @@ extension SwiftAlertView {
         validationLabel.numberOfLines = 0
         validationLabel.lineBreakMode = .byWordWrapping
         validationLabel.textColor = .red
-        validationLabel.font = Fonts.OpenSans(ofSize: 13)
+        validationLabel.font = Fonts.regularOpenSans(ofSize: 13)
         validationLabel.textAlignment = .left
         
         var i = 0
@@ -490,7 +490,7 @@ extension SwiftAlertView {
             if button.tag == cancelButtonIndex {
                 button.titleLabel?.font = Fonts.boldOpenSans(ofSize: 17)
             } else {
-                button.titleLabel?.font = Fonts.OpenSans(ofSize: 17)
+                button.titleLabel?.font = Fonts.regularOpenSans(ofSize: 17)
             }
         }
     }
@@ -584,7 +584,7 @@ extension SwiftAlertView {
             if i == cancelButtonIndex {
                 button.titleLabel?.font = Fonts.boldOpenSans(ofSize: button.titleLabel?.font.pointSize ?? 17)
             } else {
-                button.titleLabel?.font = Fonts.OpenSans(ofSize: button.titleLabel?.font.pointSize ?? 17)
+                button.titleLabel?.font = Fonts.regularOpenSans(ofSize: button.titleLabel?.font.pointSize ?? 17)
             }
         }
     }

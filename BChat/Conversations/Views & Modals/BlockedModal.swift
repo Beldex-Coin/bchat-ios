@@ -29,7 +29,7 @@ final class BlockedModal: Modal {
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
-        messageLabel.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         let message = String(format: NSLocalizedString("modal_blocked_explanation", comment: ""), name)
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
@@ -48,7 +48,7 @@ final class BlockedModal: Modal {
             unblockButton.backgroundColor = Colors.bchatJoinOpenGpBackgroundGreen
             unblockButton.setTitleColor(UIColor.white, for: UIControl.State.normal)
         }
-        unblockButton.titleLabel!.font = Fonts.OpenSans(ofSize: Values.smallFontSize)
+        unblockButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         unblockButton.setTitle(NSLocalizedString("modal_blocked_button_title", comment: ""), for: UIControl.State.normal)
         unblockButton.addTarget(self, action: #selector(unblock), for: .touchUpInside)
         // Button stack view
