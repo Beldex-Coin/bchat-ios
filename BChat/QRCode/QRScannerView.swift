@@ -18,6 +18,8 @@ class QRScannerView: UIView {
     /// capture settion which allows us to start and stop scanning.
     var captureSession: AVCaptureSession?
     
+    let sessionQueue = DispatchQueue(label: "camera.session.queue")
+    
     // Init methods..
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -43,12 +45,18 @@ extension QRScannerView {
     }
     
     func startScanning() {
-       captureSession?.startRunning()
+        // Start session in background
+        sessionQueue.async {
+            self.captureSession?.startRunning()
+        }
     }
     
     func stopScanning() {
-        captureSession?.stopRunning()
-        delegate?.qrScanningDidStop()
+        // Stop session in background
+        sessionQueue.async {
+            self.captureSession?.stopRunning()
+            self.delegate?.qrScanningDidStop()
+        }
     }
     
     /// Does the initial setup for captureSession
@@ -87,7 +95,7 @@ extension QRScannerView {
         self.layer.session = captureSession
         self.layer.videoGravity = .resizeAspectFill
         
-        captureSession?.startRunning()
+        startScanning()
     }
     func scanningDidFail() {
         delegate?.qrScanningDidFail()

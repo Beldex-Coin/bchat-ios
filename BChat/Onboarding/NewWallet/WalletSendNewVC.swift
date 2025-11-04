@@ -534,6 +534,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     
     /// View did appear
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if backAPI == true{
             let vc = InitiatingTransactionVC()
             vc.modalPresentationStyle = .overFullScreen
@@ -565,6 +566,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     
     /// View will disappear
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         self.backAPI = false
     }
     
@@ -898,7 +900,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                     vc.wallet = self.wallet
                     vc.finalWalletAddress = self.finalWalletAddress
                     vc.finalWalletAmount = self.finalWalletAmount
-                    navigationController!.pushViewController(vc, animated: true)
+                    navigationController?.pushViewController(vc, animated: true)
                 } else {
                     self.showToast(message: "Please check your internet connection", seconds: 1.0)
                 }

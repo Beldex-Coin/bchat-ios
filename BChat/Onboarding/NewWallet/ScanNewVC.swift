@@ -328,7 +328,7 @@ extension ScanNewVC: QRScannerViewDelegate {
                 vc.walletAmount = ""
             }
             vc.mainBalance = mainBalanceForScan
-            navigationController!.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         } else { // new Chat QR Code Scanning
             self.qrData = QRData(codeString: str)
             startNewDMIfPossible(with: str!)

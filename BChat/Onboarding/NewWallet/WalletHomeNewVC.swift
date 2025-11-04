@@ -1481,15 +1481,17 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
         myGroup.notify(queue: .main) {
             print("Finished all requests.")
             // randomElement node And Selected Node
-            if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
+            if !SaveUserDefaultsData.SelectedNode.isEmpty, let nodeArray = self.nodeArrayDynamic {
+                if nodeArray.contains(SaveUserDefaultsData.SelectedNode) {
                     self.randomNodeValue = SaveUserDefaultsData.SelectedNode
                 } else {
                     self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
                     SaveUserDefaultsData.SelectedNode = self.randomNodeValue
                 }
             } else {
-                self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
+                if let nodeArray = self.nodeArrayDynamic {
+                    self.randomNodeValue = nodeArray.randomElement()!
+                }
                 SaveUserDefaultsData.SelectedNode = self.randomNodeValue
             }
             SaveUserDefaultsData.FinalWallet_node = self.randomNodeValue
@@ -1671,6 +1673,7 @@ class WalletHomeNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate,UIText
     }
     
     func connect(wallet: BDXWallet) {
+        SaveUserDefaultsData.FinalWallet_node = Features.isTestNet ? nodeArray.randomElement() ?? "" : SaveUserDefaultsData.FinalWallet_node
         if !connecting {
             self.syncedflag = false
             self.conncetingState.value = true
