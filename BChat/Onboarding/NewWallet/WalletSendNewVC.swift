@@ -497,6 +497,7 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         if walletAddress != nil {
             placeholderLabel?.isHidden = true
             self.beldexAddressTextview.text = "\(walletAddress!)"
+            UserDefaults.standard.set(walletAddress!, forKey: "SendWalletAddress")
             updateSendButtonStates()
         }
         if walletAmount != nil {
@@ -540,8 +541,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             vc.modalPresentationStyle = .overFullScreen
             vc.modalTransitionStyle = .crossDissolve
             self.present(vc, animated: true, completion: nil)
-            self.beldexAmountTextField.text = ""
-            self.beldexAddressTextview.text = ""
         }
     }
     
@@ -550,8 +549,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
         super.viewWillAppear(animated)
         self.saveReceipeinetAddressOnAndOff()
         if backAPI == true {
-            self.beldexAmountTextField.text = ""
-            self.beldexAddressTextview.text = ""
             placeholderLabel?.isHidden = !beldexAddressTextview.text.isEmpty
             if !SaveUserDefaultsData.SelectedCurrency.isEmpty {
                 self.currencyName = SaveUserDefaultsData.SelectedCurrency
@@ -576,7 +573,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
             feePriorityButtonsStackView.isHidden = true
         }
     }
-    
     
     // transation FeePriority values
     func flashPriorityValue(){
@@ -818,6 +814,9 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                 }
             }
         }
+        
+        finalWalletAddress = UserDefaults.standard.value(forKey: "SendWalletAddress") as? String ?? ""
+        finalWalletAmount = UserDefaults.standard.value(forKey: "SendWalletAmount") as? String ?? ""
         let createPendingTransaction = wallet.createPendingTransaction(self.finalWalletAddress, paymentId: "", amount: self.finalWalletAmount)
         if createPendingTransaction == true {
             let fee = wallet.feevalue()
@@ -833,7 +832,9 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                 vc.finalWalletAddress = self.finalWalletAddress
                 vc.finalWalletAmount = self.finalWalletAmount
                 vc.feeValue = self.feeValue
-                self.present(vc, animated: true, completion: nil)
+                self.present(vc, animated: true) {
+                    self.clearFields()
+                }
             }
         } else {
             self.dismiss(animated: true)
@@ -847,6 +848,14 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                 self.present(alert, animated: true, completion: nil)
             }
         }
+    }
+    
+    private func clearFields() {
+        self.beldexAmountTextField.text = ""
+        self.beldexAddressTextview.text = ""
+        
+        UserDefaults.standard.removeObject(forKey: "SendWalletAddress")
+        UserDefaults.standard.removeObject(forKey: "SendWalletAmount")
     }
     
     // MARK: - Navigation
@@ -894,6 +903,8 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
                 if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
                     self.finalWalletAddress = self.beldexAddressTextview.text!
                     self.finalWalletAmount = self.beldexAmountTextField.text!
+                    UserDefaults.standard.set(finalWalletAddress, forKey: "SendWalletAddress")
+                    UserDefaults.standard.set(finalWalletAmount, forKey: "SendWalletAmount")
                     let vc = NewPasswordVC()
                     vc.isGoingSendBDX = true
                     vc.isVerifyWalletPassword = true
@@ -946,8 +957,6 @@ class WalletSendNewVC: BaseVC, UITextFieldDelegate, UITextViewDelegate, MyDataSe
     }
     
     @objc func handleInitiatingTransactionTapped(notification: NSNotification) {
-        self.beldexAmountTextField.text = ""
-        self.beldexAddressTextview.text = ""
         connect(wallet: self.wallet!)
         paymentIdImage.isHidden = true
         paymentIDTitleLabel.isHidden = true

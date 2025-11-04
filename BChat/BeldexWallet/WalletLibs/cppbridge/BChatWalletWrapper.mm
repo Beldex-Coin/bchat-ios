@@ -388,7 +388,9 @@ struct WalletListenerImpl: Wallet::WalletListener
     string errorStr = "";
     if (beldex_pendingTransaction) {
         std::vector<std::string> all = beldex_pendingTransaction->txid();
-        return objc_str_dup(all.front().c_str());
+        if (!all.empty()) {
+            return objc_str_dup(all.front().c_str());
+        }
     }
     return objc_str_dup(errorStr);
 }

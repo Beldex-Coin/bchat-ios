@@ -224,7 +224,7 @@ SPEC CHECKSUMS:
   Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
-  SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
+  SignalCoreKit: edfbd2eebe768b9633ce3bd321eb35c8e0e54b86
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
