@@ -481,13 +481,14 @@ extension NewMessageRequestVC {
         // shouldn't cause weird behaviours)
         let bchatId: String = contactThread.contactBChatID()
         let contact: Contact = (Storage.shared.getContact(with: bchatId) ?? Contact(bchatID: bchatId))
-        guard !contact.isApproved else { return Promise.value(())
-                .map{ _ in
-                    if self.presentedViewController is ModalActivityIndicatorViewController {
-                        self.dismiss(animated: true, completion: nil) // Dismiss the loader
-                        let conversationVC = ConversationVC(thread: thread!)
-                        self.navigationController?.pushViewController(conversationVC, animated: true)
-                    } else {
+
+        if contact.isApproved {
+            return Promise.value(())
+                .map { _ in
+                    DispatchQueue.main.async {
+                        if self.presentedViewController is ModalActivityIndicatorViewController {
+                            self.dismiss(animated: true, completion: nil)
+                        }
                         let conversationVC = ConversationVC(thread: thread!)
                         self.navigationController?.pushViewController(conversationVC, animated: true)
                     }
@@ -498,60 +499,59 @@ extension NewMessageRequestVC {
             .then { [weak self] _ -> Promise<Void> in
                 guard !isNewThread else { return Promise.value(()) }
                 guard let strongSelf = self else { return Promise(error: MessageSender.Error.noThread) }
-                
-                // If we aren't creating a new thread (ie. sending a message request) then send a
-                // messageRequestResponse back to the sender (this allows the sender to know that
-                // they have been approved and can now use this contact in closed groups)
-                let (promise, seal) = Promise<Void>.pending()
-                let messageRequestResponse: MessageRequestResponse = MessageRequestResponse(
-                    isApproved: true
-                )
+
+                let messageRequestResponse = MessageRequestResponse(isApproved: true)
                 messageRequestResponse.sentTimestamp = timestamp
-                self?.tableView.reloadData()
-                // Show a loading indicator
+
+                strongSelf.tableView.reloadData()
+
+                let (promise, seal) = Promise<Void>.pending()
+                
                 ModalActivityIndicatorViewController.present(fromViewController: strongSelf, canCancel: false) { _ in
                     seal.fulfill(())
                 }
-                
-                return promise
-                    .then { _ -> Promise<Void> in
-                        let (promise, seal) = Promise<Void>.pending()
-                        Storage.writeSync { transaction in
-                            MessageSender.sendNonDurably(messageRequestResponse, in: contactThread, using: transaction)
-                                .done { seal.fulfill(()) }
-                                .catch { _ in seal.fulfill(()) } // Fulfill even if this failed; the configuration in the swarm should be at most 2 days old
-                                .retainUntilComplete()
-                        }
-                        
-                        return promise
+                DispatchQueue.global(qos: .userInitiated).async {
+                    Storage.writeSync { transaction in
+                        MessageSender.sendNonDurably(messageRequestResponse, in: contactThread, using: transaction)
+                            .done { seal.fulfill(()) }
+                            .catch { _ in seal.fulfill(()) }
+                            .retainUntilComplete()
                     }
+                }
+
+                return promise
                     .map { _ in
                         DispatchQueue.main.async {
-                            if self?.presentedViewController is ModalActivityIndicatorViewController {
-                                self?.dismiss(animated: true) {
+                            if strongSelf.presentedViewController is ModalActivityIndicatorViewController {
+                                strongSelf.dismiss(animated: true) {
                                     let conversationVC = ConversationVC(thread: thread!)
-                                    self?.navigationController?.pushViewController(conversationVC, animated: true)
+                                    strongSelf.navigationController?.pushViewController(conversationVC, animated: true)
                                 }
                             } else {
                                 let conversationVC = ConversationVC(thread: thread!)
-                                self?.navigationController?.pushViewController(conversationVC, animated: true)
+                                strongSelf.navigationController?.pushViewController(conversationVC, animated: true)
                             }
+
                             Storage.writeSync { transaction in
-                                let infoMessage = TSInfoMessage(timestamp: timestamp - 1, in: thread!, messageType: .messageRequestAcceptedByYou, customMessage: "You have accepted the message request")
+                                let infoMessage = TSInfoMessage(
+                                    timestamp: timestamp - 1,
+                                    in: thread!,
+                                    messageType: .messageRequestAcceptedByYou,
+                                    customMessage: "You have accepted the message request"
+                                )
                                 infoMessage.save(with: transaction)
                             }
                         }
                     }
             }
             .map { _ in
-                // Default 'didApproveMe' to true for the person approving the message request
+                
                 Storage.write { transaction in
                     contact.isApproved = true
                     contact.didApproveMe = (contact.didApproveMe || !isNewThread)
                     Storage.shared.setContact(contact, using: transaction)
                 }
-                
-                // Send a sync message with the details of the contact
+
                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
             }
     }
