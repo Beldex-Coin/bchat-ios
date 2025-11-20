@@ -176,3 +176,159 @@ extension String {
     }
 }
 
+extension NSMutableAttributedString {
+    
+    func addAttributesPreservingColor() {
+        // Bold
+        applyPatternPreservingColor("\\*(.*?)\\*") { range in
+            let currentFont = font(at: range.location)
+            let boldFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitBold) ?? currentFont.fontDescriptor,
+                                  size: currentFont.pointSize)
+            self.addAttribute(.font, value: boldFont, range: range)
+        }
+        
+        // Italic
+        applyPatternPreservingColor("_(.*?)_") { range in
+            let currentFont = font(at: range.location)
+            let italicFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitItalic) ?? currentFont.fontDescriptor,
+                                    size: currentFont.pointSize)
+            self.addAttribute(.font, value: italicFont, range: range)
+        }
+        
+        // Strikethrough
+        applyPatternPreservingColor("~(.*?)~") { range in
+            self.addAttribute(.strikethroughStyle, value: 1, range: range)
+        }
+        
+        // Monospace  ```code```
+        applyPatternPreservingColor("```(.*?)```") { range in
+            let monoFont = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize,
+                                                       weight: .regular)
+            self.addAttribute(.font, value: monoFont, range: range)
+        }
+        
+        // Inline code: `code`
+        applyPatternPreservingColor("`([^`]+?)`") { range in
+            let new = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize, weight: .regular)
+            self.addAttribute(.font, value: new, range: range)
+            self.addAttribute(.backgroundColor, value: UIColor.systemGray5, range: range)
+            self.addAttribute(.foregroundColor, value: UIColor.systemRed, range: range)
+        }
+        
+        // Bulleted List
+        applyBulletedList()
+        // Numbered List
+        applyNumberedList()
+        // Quotes
+        applyQuotes()
+    }
+    
+    // MARK: - Pattern Processor (Preserves Color + Attributes)
+    private func applyPatternPreservingColor(_ pattern: String,
+                                             apply: (NSRange) -> Void) {
+        let regex = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
+        
+        let matches = regex.matches(in: self.string,
+                                    range: NSRange(location: 0, length: self.length))
+        
+        for match in matches.reversed() {
+            let full = match.range(at: 0)   // with markers
+            var inner = match.range(at: 1)  // inside markers
+            
+            // Apply attributes BEFORE removing markers
+            apply(inner)
+            
+            // Remove right marker(s)
+            let trailingCount = pattern.contains("```") ? 3 : 1
+            self.deleteCharacters(in: NSRange(location: inner.location + inner.length, length: trailingCount))
+            
+            // Remove left marker(s)
+            let leadingCount = pattern.contains("```") ? 3 : 1
+            self.deleteCharacters(in: NSRange(location: inner.location - leadingCount, length: leadingCount))
+        }
+    }
+    
+    // MARK: - Bulleted List (- item / • item)
+    private func applyBulletedList() {
+        let fullString = self.string as NSString
+        let lines = fullString.components(separatedBy: "\n")
+        
+        var location = 0
+        
+        for line in lines {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            
+            // Only format if line starts with "-" or "•" or "*"
+            if trimmed.hasPrefix("- ") || trimmed.hasPrefix("• ") || trimmed.hasPrefix("* ") {
+                
+                // remove existing markers
+                var cleanText = trimmed
+                cleanText.removeFirst(2)
+                
+                // replace the original line with bullet "•  "
+                let bulletLine = "• \(cleanText)"
+                
+                let nsRange = NSRange(location: location, length: (line as NSString).length)
+                self.replaceCharacters(in: nsRange, with: bulletLine)
+            }
+            
+            // increase location index
+            location += (line as NSString).length + 1
+        }
+    }
+    
+    // MARK: - Numbered List (1. Item)
+    private func applyNumberedList() {
+        let ns = self.string as NSString
+        let lines = ns.components(separatedBy: "\n")
+        var offset = 0
+        
+        let regex = try! NSRegularExpression(pattern: "^[0-9]+\\. ")
+        
+        for line in lines {
+            let range = NSRange(location: 0, length: (line as NSString).length)
+            let matches = regex.matches(in: line, range: range)
+            
+            if matches.count > 0 {
+                let clean = regex.stringByReplacingMatches(in: line, range: range, withTemplate: "")
+                let replaced = "• \(clean)"
+                
+                let r = NSRange(location: offset, length: (line as NSString).length)
+                self.replaceCharacters(in: r, with: replaced)
+            }
+            
+            offset += (line as NSString).length + 1
+        }
+    }
+    
+    // MARK: - Quotes (> text)
+    private func applyQuotes() {
+        let ns = self.string as NSString
+        let lines = ns.components(separatedBy: "\n")
+        var offset = 0
+        
+        for line in lines {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            
+            if trimmed.hasPrefix(">") {
+                let clean = trimmed.dropFirst().trimmingCharacters(in: .whitespaces)
+                let quoteLine = "│  \(clean)"   // visual quote bar
+                
+                let r = NSRange(location: offset, length: (line as NSString).length)
+                self.replaceCharacters(in: r, with: quoteLine)
+                
+                // apply gray color on entire quote line
+//                let newRange = NSRange(location: offset, length: (quoteLine as NSString).length)
+//                self.addAttribute(.foregroundColor, value: UIColor.systemGray, range: newRange)
+            }
+            
+            offset += (line as NSString).length + 1
+        }
+    }
+    
+    // MARK: - Extract Current Font Safely
+    private func font(at location: Int) -> UIFont {
+        let attrs = attributes(at: location, effectiveRange: nil)
+        return attrs[.font] as? UIFont ?? UIFont.systemFont(ofSize: 17)
+    }
+}

@@ -1213,6 +1213,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let highlightColor = UIColor.systemOrange
         let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
         attributedText.addAttributes(highlightedAttributes, range: range)
+        attributedText.addAttributesPreservingColor()
         
         result.attributedText = attributedText
         result.dataDetectorTypes = .link
