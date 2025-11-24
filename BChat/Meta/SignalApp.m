@@ -150,10 +150,16 @@ NS_ASSUME_NONNULL_BEGIN
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:@"Yes" forKey:@"isDataCleared"];
     if (onReset != nil) { onReset(); }
+    UIWindow *window = [UIWindow keyWindow];
+    window.backgroundColor = [UIColor blackColor];
     [UIView animateWithDuration:0.8 animations:^{
     } completion:^(BOOL finished) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_MSEC)),
                        dispatch_get_main_queue(), ^{
+            window.alpha = 0.0; // fade out...
+            // ... while pinching to a point
+            window.transform = CGAffineTransformScale(
+                                                      CGAffineTransformMakeTranslation( 0, 0 ), 0.1, 0.1 );
             exit(0);
         });
     }];

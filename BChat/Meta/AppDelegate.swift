@@ -230,6 +230,7 @@ extension AppDelegate {
     }
 }
 
+@objc
 extension UIWindow {
     static var keyWindow: UIWindow? {
         if #available(iOS 13, *) {
