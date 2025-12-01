@@ -236,7 +236,7 @@ static NSTimeInterval launchStartedAt;
     NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     // You need to replace "your_app_id" with your actual App Store ID
     [self getAppStoreVersionWithCompletion:^(NSString *appStoreVersion) {
-        if (appStoreVersion && [currentVersion compare:appStoreVersion options:NSNumericSearch] == NSOrderedDescending) {
+        if (appStoreVersion && [currentVersion compare:appStoreVersion options:NSNumericSearch] == NSOrderedAscending) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self promptForUpdate];
             });
@@ -331,7 +331,7 @@ static NSTimeInterval launchStartedAt;
     ClearOldTemporaryDirectories();
     
     // This Code will App Update Version
-//    [self forceUpdateIsNeeded];
+    [self forceUpdateIsNeeded];
     
     [self verifyBnsName];
 }
