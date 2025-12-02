@@ -80,6 +80,27 @@ class RestoreHeight {
         blockheight["2024-01-01"] = 2894560
         blockheight["2024-02-01"] = 2986700
         blockheight["2024-03-01"] = 3049909
+        blockheight["2024-04-01"] = 3130730
+        blockheight["2024-05-01"] = 3187670
+        blockheight["2024-06-01"] = 3317020
+        blockheight["2024-07-01"] = 3429750
+        blockheight["2024-08-01"] = 3479700
+        blockheight["2024-09-01"] = 3536850
+        blockheight["2024-10-01"] = 3668050
+        blockheight["2024-11-01"] = 3784050
+        blockheight["2024-12-01"] = 3870400
+        blockheight["2025-01-01"] = 3959700
+        blockheight["2025-02-01"] = 4048980
+        blockheight["2025-03-01"] = 4129600
+        blockheight["2025-04-01"] = 4218870
+        blockheight["2025-05-01"] = 4305270
+        blockheight["2025-06-01"] = 4394570
+        blockheight["2025-07-01"] = 4480990
+        blockheight["2025-08-01"] = 4570250
+        blockheight["2025-09-01"] = 4659510
+        blockheight["2025-10-01"] = 4745910
+        blockheight["2025-11-01"] = 4835190
+        blockheight["2025-12-01"] = 4924200
     }
     
     func getHeight(_ date: String) -> Int64 {

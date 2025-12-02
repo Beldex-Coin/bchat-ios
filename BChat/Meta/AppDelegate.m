@@ -333,6 +333,7 @@ static NSTimeInterval launchStartedAt;
     // This Code will App Update Version
     [self forceUpdateIsNeeded];
     
+    // Verify BNS name
     [self verifyBnsName];
 }
 

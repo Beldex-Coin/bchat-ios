@@ -514,12 +514,14 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: date)
-        if Int64(restoreHeightTextField.text!) ?? 0 > RestoreHeight.getInstance().getHeight(dateString) {
+        
+        guard let restoreHeight = restoreHeightTextField.text else { return }
+        if Int64(restoreHeight) ?? 0 > RestoreHeight.getInstance().getHeight(dateString) {
             showError(title: "Enter blockheight less than current blockheight.")
             return
         }
         
-        if restoreHeightTextField.text!.isEmpty && restoreDateHeightTextField.text != nil {
+        if restoreHeight.isEmpty && restoreDateHeightTextField.text != nil {
             if !dateHeight.isEmpty {
                 SaveUserDefaultsData.WalletRestoreHeight = dateHeight
             } else {
@@ -537,13 +539,13 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             showError(title: NSLocalizedString(NSLocalizedString("ENTER_DATE_OR_HEIGHT_TXT_NEW", comment: ""), comment: ""))
         }
         if displayNameTextField.text != "" && restoreHeightTextField.text != nil && dateText == "" {
-            SaveUserDefaultsData.WalletRestoreHeight = restoreHeightTextField.text!
+            SaveUserDefaultsData.WalletRestoreHeight = restoreHeight
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
             let vc = NewPasswordVC()
             vc.isGoingHome = true
             vc.isCreatePassword = true
-            navigationController!.pushViewController(vc, animated: true)
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
