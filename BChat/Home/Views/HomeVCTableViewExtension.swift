@@ -24,15 +24,6 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         collectionViewTopConstraint.isActive = false
         collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
         
-        if !messageRequestLabel.isHidden {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ?  tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16 + 69)
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: 0 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 16 + 69)
-        }
-        self.messageCollectionView.isHidden = true
-        
         switch section {
             case 0: return threadCountForArchivedChats > 0 ? 1 : 0
             case 1: return Int(threadCount)
