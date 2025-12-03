@@ -30,6 +30,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
+        result.autocorrectionType = .no
         
         return result
     }()
