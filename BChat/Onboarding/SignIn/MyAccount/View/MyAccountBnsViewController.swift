@@ -676,6 +676,15 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         return stackView
     }()
     
+    lazy var beldexInfoView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.isUserInteractionEnabled = true
+        view.isHidden = true
+        return view
+    }()
+    
     // MARK: - Properties
     
     let viewModel = MyAccountBNSViewModel()
@@ -710,6 +719,10 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
         self.title = "Account Settings"
+        
+        let containerViewtapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        beldexInfoView.isUserInteractionEnabled = true
+        beldexInfoView.addGestureRecognizer(containerViewtapGesture)
         
         shareButton.addRightIcon(image: UIImage(named: "ic_black_share")!.withRenderingMode(.alwaysTemplate))
         shareButton.tintColor = .white
@@ -787,9 +800,10 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         view.addSubview(bottomBackGroundView)
         bottomBackGroundView.addSubview(tableView)
         
-        view.addSubview(beldexAddressExpandView)
-        view.addSubview(bchatIDExpandView)
-        view.addSubview(showQRExpandView)
+        view.addSubview(beldexInfoView)
+        beldexInfoView.addSubview(beldexAddressExpandView)
+        beldexInfoView.addSubview(bchatIDExpandView)
+        beldexInfoView.addSubview(showQRExpandView)
         
         beldexAddressExpandView.addSubview(beldexAddressNameTitleLabel)
         beldexAddressExpandView.addSubview(beldexAddressIdLabel)
@@ -807,6 +821,11 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         updateBNSDetails()
         
         NSLayoutConstraint.activate([
+            beldexInfoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            beldexInfoView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            beldexInfoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            beldexInfoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
             topBackGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             topBackGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
@@ -1160,6 +1179,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             showQRExpandView.isHidden = true
             beldexAddressExpandView.isHidden = true
             bchatIDExpandView.isHidden = true
+            beldexInfoView.isHidden = true
         }
     }
     
@@ -1358,6 +1378,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         beldexAddressExpandView.isHidden = true
         bchatIDExpandView.isHidden = true
         showQRExpandView.isHidden = true
+        beldexInfoView.isHidden = true
         
         if isBnsUser {
             stackViewForFinalLinkBNS.isHidden = false
@@ -1400,22 +1421,29 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         showToast(message: NSLocalizedString("BCHAT_ID_COPIED_NEW", comment: ""), seconds: 1.0)
     }
     
+    @objc func handleTap() {
+        beldexInfoView.isHidden = true
+    }
+    
     @objc func beldexAddressButtonTapped(_ sender: UIButton){
         beldexAddressExpandView.isHidden = false
         bchatIDExpandView.isHidden = true
         showQRExpandView.isHidden = true
+        beldexInfoView.isHidden = false
     }
     
     @objc func bchatIdButtonTapped(_ sender: UIButton){
         bchatIDExpandView.isHidden = false
         beldexAddressExpandView.isHidden = true
         showQRExpandView.isHidden = true
+        beldexInfoView.isHidden = false
     }
     
     @objc func showQrButtonTapped(_ sender: UIButton){
         showQRExpandView.isHidden = false
         beldexAddressExpandView.isHidden = true
         bchatIDExpandView.isHidden = true
+        beldexInfoView.isHidden = false
     }
     
     @objc func linkYourBNSButtonTapped(_ sender: UIButton){
