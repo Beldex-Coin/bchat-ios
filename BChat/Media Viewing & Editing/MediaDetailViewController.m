@@ -248,6 +248,7 @@ AVPlayerLayer *_playerLayer;
     // the root view so that interacting with the video player
     // progres bar doesn't trigger any of these gestures.
     [self addGestureRecognizersToView:self.mediaView];
+    [self addGestureRecognizersToView:self.scrollView];
 
     [scrollView addSubview:self.mediaView];
     self.mediaViewLeadingConstraint = [self.mediaView autoPinEdgeToSuperviewEdge:ALEdgeLeading];
