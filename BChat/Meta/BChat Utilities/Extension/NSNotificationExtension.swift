@@ -6,7 +6,6 @@ extension Notification.Name {
     static var callConnectingTapNotification = Notification.Name(rawValue: Constants.callTapBackToReturn)
     static var connectingCallShowViewNotification = Notification.Name(rawValue: Constants.callConnectingShowView)
     static var connectingCallHideViewNotification = Notification.Name(rawValue: Constants.callConnectionHideView)
-    static var showPayAsYouChatNotification = Notification.Name(rawValue: Constants.showPayAsYouChat)
     static var showInputViewNotification = Notification.Name(rawValue: Constants.showInputView)
     static var reScaneButtonActionNotification = Notification.Name(rawValue: Constants.rescanAction)
     static var reconnectButtonActionNotification = Notification.Name(rawValue: Constants.reconnect)

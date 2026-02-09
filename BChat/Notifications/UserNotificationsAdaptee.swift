@@ -92,9 +92,6 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
 
     func notify(category: AppNotificationCategory, title: String?, body: String, userInfo: [AnyHashable: Any], sound: OWSSound?, replacingIdentifier: String?) {
         AssertIsOnMainThread()
-        if WalletSharedData.sharedInstance.isCleardataStarting {
-            return
-        }
         
         let content = UNMutableNotificationContent()
         content.categoryIdentifier = category.identifier
@@ -217,9 +214,6 @@ extension UserNotificationPresenterAdaptee: NotificationPresenterAdaptee {
 
     func shouldPresentNotification(category: AppNotificationCategory, userInfo: [AnyHashable: Any]) -> Bool {
         AssertIsOnMainThread()
-        if WalletSharedData.sharedInstance.isCleardataStarting {
-            return false
-        }
         guard UIApplication.shared.applicationState == .active else {
             return true
         }

@@ -94,7 +94,6 @@ class LandingNewVC: BaseVC {
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         self.navigationItem.title = ""
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        WalletSharedData.sharedInstance.isCleardataStarting = false
         AppModeManager.shared.setCurrentAppMode(to: .dark)
         
         guard let navigationBar = navigationController?.navigationBar else { return }
