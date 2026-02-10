@@ -4,7 +4,6 @@ import Foundation
 
 enum SettingsSection: String, CaseIterable {
     case appAccess = "App Access"
-    case wallet = "Wallet"
     case communication = "Communication"
 }
 
@@ -26,12 +25,6 @@ enum SettingInfo {
     
     /// Indicated Incognito keyboard
     case incognitoKeyboard
-    
-    /// Indicated Start wallet
-    case startWallet
-    
-    /// Indicated Pay as you chat
-    case payAsYouChat
     
     /// Indicated Read receipts
     case readReceipts
@@ -58,10 +51,6 @@ enum SettingInfo {
             title = "Screen Security"
         case .incognitoKeyboard:
             title = "Incognito Keyboard"
-        case .startWallet:
-            title = "Start Wallet"
-        case .payAsYouChat:
-            title = "Pay as you chat"
         case .readReceipts:
             title = "Read receipts"
         case .typeIndicators:
@@ -84,10 +73,6 @@ enum SettingInfo {
             subTitle = "Block Screenshots in the recents list and inside the app"
         case .incognitoKeyboard:
             subTitle = "Request keyboard to disable personalized learning"
-        case .startWallet:
-            subTitle = "Enabling wallet will allow you to send and receive BDX"
-        case .payAsYouChat:
-            subTitle = "Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"
         case .readReceipts:
             subTitle = "If read receipts are disabled, you won’t be able to see read receipts from others"
         case .typeIndicators:
@@ -110,10 +95,6 @@ enum SettingInfo {
                 imageName = "ic_security"
             case .incognitoKeyboard:
                 imageName = "ic_keyboard"
-            case .startWallet:
-                imageName = "ic_startWallet_white"
-            case .payAsYouChat:
-                imageName = "ic_pay_as_you_chat"
             case .readReceipts:
                 imageName = "ic_Read_receipetNew"
             case .typeIndicators:

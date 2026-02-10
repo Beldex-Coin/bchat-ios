@@ -18,9 +18,6 @@ enum SideMenuItem {
     /// Indicated Side menu - Recovery Seed
     case recoverySeed
     
-    /// Indicated Side menu - Wallet
-    case wallet
-    
     /// Indicated Side menu - Report Issue
     case reportIssue
     
@@ -50,8 +47,6 @@ enum SideMenuItem {
                 aKey = "Message Requests"
             case .recoverySeed:
                 aKey = "Recovery Seed"
-            case .wallet:
-                aKey = "Wallet"
             case .reportIssue:
                 aKey = "Report Issue"
             case .help:
@@ -76,8 +71,6 @@ enum SideMenuItem {
                 aKey = "ic_menu_msg_rqst"
             case .recoverySeed:
                 aKey = "ic_menu_recovery_seed_settings"
-            case .wallet:
-                aKey = "ic_menu_wallet"
             case .reportIssue:
                 aKey = "ic_menu_report_issue"
             case .help:
@@ -96,7 +89,7 @@ enum SideMenuItem {
 final class SideMenuViewModel: NSObject {
     
     /// menuTitles
-    var menuTitles: [SideMenuItem] = [.settings, .notification, .messageRequests, .recoverySeed, .wallet, .reportIssue, .help, .invite, .about]
+    var menuTitles: [SideMenuItem] = [.settings, .notification, .messageRequests, .recoverySeed, .reportIssue, .help, .invite, .about]
     
     /// hasTappableProfilePictureOSideMenuV
     var hasTappableProfilePicture: Bool = false

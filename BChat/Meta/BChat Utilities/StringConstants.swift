@@ -26,7 +26,6 @@ struct Constants: Equatable {
     static let callTapBackToReturn = "connectingCallTapToReturnToTheCall"
     static let callConnectingShowView = "connectingCallShowView"
     static let callConnectionHideView = "connectingCallHideView"
-    static let showPayAsYouChat = "showPayAsYouChat"
     static let showInputView = "showInputView"
     static let bdxSlidingView = "bdxAmountPassingSliderView"
     static let rescanAction = "reScaneButtonAction"

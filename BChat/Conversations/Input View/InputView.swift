@@ -5,7 +5,6 @@ protocol InputViewDelegate : AnyObject, ExpandingAttachmentsButtonDelegate, Voic
     
     func showLinkPreviewSuggestionModal()
     func handleSendButtonTapped()
-    func handlePaySendButtonTapped()
     func handleQuoteViewCancelButtonTapped()
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView)
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView)
@@ -57,20 +56,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         result.accessibilityHint = NSLocalizedString("VOICE_MESSAGE_TOO_SHORT_ALERT_MESSAGE", comment: "")
         return result
     }()
-    
-    private lazy var payAsChatButton: InputViewButton = {
-        let result = InputViewButton(icon: #imageLiteral(resourceName: "pay_as_you_chat_new"), delegate: self, isPayButton: true)
-        result.accessibilityLabel = NSLocalizedString("", comment: "")
-        result.accessibilityHint = NSLocalizedString("", comment: "")
-        // Create and add the circular progress view
-        let progressView = CircularProgressView(frame: CGRect(x: 7.5, y: 7.5, width: InputViewButton.circularSize, height: InputViewButton.circularSize))
-        result.addSubview(progressView)
-        return result
-    }()
-    
-    private var progressView: CircularProgressView? {
-        return payAsChatButton.subviews.compactMap { $0 as? CircularProgressView }.first
-    }
     
     private lazy var sendButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendMessage_new"), isSendButton: true, delegate: self)
@@ -165,7 +150,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         separator.pin([ UIView.HorizontalEdge.leading, UIView.VerticalEdge.top, UIView.HorizontalEdge.trailing ], to: self)
         
         // Bottom stack view
-        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView, payAsChatButton ])
+        let bottomStackView = UIStackView(arrangedSubviews: [ attachmentsButton, inputTextView ])
         bottomStackView.axis = .horizontal
         bottomStackView.spacing = Values.borderThickness
         bottomStackView.backgroundColor = Colors.incomingMessageColor
@@ -214,57 +199,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageButtonContainer.backgroundColor = Colors.bothGreenColor
         voiceMessageButtonContainer.layer.cornerRadius = 24
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showPayAsYouChatButton(_:)), name: .showPayAsYouChatNotification, object: nil)
-        self.hideOrShowPayAsYouChatButton()
-    }
-    
-    
-    func hideOrShowPayAsYouChatButton() {
-        if SSKPreferences.areWalletEnabled {
-            if let contactThread: TSContactThread = thread as? TSContactThread {
-                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
-                    if contact.beldexAddress != nil {
-                        if SSKPreferences.arePayAsYouChatEnabled {
-                            payAsChatButton.isHidden = isAudioRecording ? true : false
-                            progressView?.isHidden = isAudioRecording ? true : false
-                            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
-                                let (current, total) = (WalletSharedData.sharedInstance.wallet?.blockChainHeight, WalletSharedData.sharedInstance.wallet?.daemonBlockChainHeight)
-                                guard let current = current, let total = total else { return }
-                                // Calculate the percentage completion
-                                let percentage = CGFloat(current * 100) / CGFloat(total)
-                                // Set the progress bar
-                                let progress = (percentage / 100)
-                                let progress8 = progress * 0.8
-                                self.progressView?.setProgress(min(progress8, 1.0))
-                                if progress >= 1.0 {
-                                    timer.invalidate()
-                                    self.progressView?.isHidden = false
-                                }
-                            }
-                        } else {
-                                //payAsChatButton.isHidden = true
-                                progressView?.isHidden = true
-                        }
-                    } else {
-                        payAsChatButton.isHidden = true
-                        progressView?.isHidden = true
-                    }
-                } else{
-                    payAsChatButton.isHidden = true
-                    progressView?.isHidden = true
-                }
-            } else {
-                payAsChatButton.isHidden = true
-                progressView?.isHidden = true
-            }
-        } else {
-            payAsChatButton.isHidden = true
-            progressView?.isHidden = true
-        }
-    }
-    
-    @objc func showPayAsYouChatButton(_ notification: Notification) {
-        self.hideOrShowPayAsYouChatButton()
     }
     
     // MARK: Updating
@@ -432,15 +366,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     func handleInputViewButtonTapped(_ inputViewButton: InputViewButton) {
         if inputViewButton == sendButton {
             delegate?.handleSendButtonTapped()
-        } else if inputViewButton == payAsChatButton {
-            delegate?.handlePaySendButtonTapped()
         }
     }
     
     func handleInputViewButtonLongPressBegan(_ inputViewButton: InputViewButton) {
-        if inputViewButton == payAsChatButton {
-            delegate?.payAsYouChatLongPress()
-        }
         guard inputViewButton == voiceMessageButton else { return }
         // if call is connected need to restrict audio recording
         if AppEnvironment.shared.callManager.currentCall != nil {
@@ -481,8 +410,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     @objc private func showVoiceMessageUI() {
         isAudioRecording = true
-        payAsChatButton.isHidden = true
-        progressView?.isHidden = true
         voiceMessageRecordingView?.removeFromSuperview()
         let voiceMessageButtonFrame = voiceMessageButton.superview!.convert(voiceMessageButton.frame, to: self)
         let voiceMessageRecordingView = VoiceMessageRecordingView(voiceMessageButtonFrame: voiceMessageButtonFrame, delegate: delegate)
@@ -506,7 +433,6 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }, completion: { _ in
             self.voiceMessageRecordingView?.removeFromSuperview()
             self.voiceMessageRecordingView = nil
-            NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
         })
     }
     

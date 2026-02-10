@@ -109,32 +109,11 @@ final class HomeVC : BaseVC {
     private var connecting: Bool { return conncetingState.value}
     private var currentBlockChainHeight: UInt64 = 0
     private var daemonBlockChainHeight: UInt64 = 0
-    private var needSynchronized = false {
-        didSet {
-            guard needSynchronized, !oldValue,
-                  let wallet = self.wallet else { return }
-            wallet.saveOnTerminate()
-        }
-    }
-    private lazy var taskQueue = DispatchQueue(label: "beldex.wallet.task")
     lazy var progressState = { return Observable<CGFloat>(0) }()
     // MARK: - Properties (Private)
-    private var wallet: BDXWallet?
-    private var listening = false
-    private var isSyncingUI = false {
-        didSet {
-            guard oldValue != isSyncingUI else { return }
-            if isSyncingUI {
-                //                RunLoop.main.add(timer, forMode: .common)
-            } else {
-                //                timer.invalidate()
-            }
-        }
-    }
     public lazy var loadingState = { Postable<Bool>() }()
     private var SelectedDecimal = ""
     private var SelectedBalance = ""
-    var mainbalance = ""
     private var CurrencyValue: Double!
     private var refreshDuration: TimeInterval = 60
     private var marketsDataRequest: DataRequest?
@@ -555,45 +534,10 @@ final class HomeVC : BaseVC {
             messageRequestLabelTopConstraint = messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16)
             collectionViewTopConstraint = messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8)
         }
-        WalletSync.isInsideWallet = false
         self.isManualyCloseMessageRequest = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
-        if SSKPreferences.areWalletEnabled {
-            //Dynamic node array
-            self.getDynamicNodesFromAPI()
-            
-            if UserDefaults.standard.domainSchemas.isEmpty {} else {
-                hashArray2 = UserDefaults.standard.domainSchemas
-            }
-            myGroup.notify(queue: .main) {
-                if !SaveUserDefaultsData.SelectedNode.isEmpty {
-                    if self.nodeArrayDynamic!.contains(SaveUserDefaultsData.SelectedNode) {
-                        self.randomNodeValue = SaveUserDefaultsData.SelectedNode
-                    } else {
-                        self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
-                        SaveUserDefaultsData.SelectedNode = self.randomNodeValue
-                    }
-                } else {
-                    self.randomNodeValue = self.nodeArrayDynamic!.randomElement()!
-                    SaveUserDefaultsData.SelectedNode = self.randomNodeValue
-                }
-                SaveUserDefaultsData.FinalWallet_node = self.randomNodeValue
-                if WalletSharedData.sharedInstance.wallet != nil {
-                    if self.wallet == nil {
-                        self.isSyncingUI = true
-                        self.syncingIsFromDelegateMethod = false
-                    }
-                } else {
-                    self.init_syncing_wallet()
-                }
-            }
-        } else {
-            WalletSharedData.sharedInstance.wallet = nil
-            closeWallet()
-        }
-        
         if AppEnvironment.shared.callManager.currentCall == nil {
             callView.isHidden = true
         } else {
@@ -743,123 +687,6 @@ final class HomeVC : BaseVC {
             
             return threadViewModel
         }
-    }
-    
-    func getDynamicNodesFromAPI() {
-        let url = globalDynamicNodeUrl
-        // Create a custom URLRequest with cache policy
-        var request = URLRequest(url: URL(string: url)!)
-        request.cachePolicy = .reloadIgnoringLocalCacheData
-        myGroup.enter()
-        AF.request(request).responseDecodable(of: [NodeResponceModel].self) { response in
-            switch response.result {
-            case .success(let nodes):
-                let uriArray = nodes.map { $0.uri }
-                // Use the 'uriArray' here
-                print(uriArray)
-                self.nodeArrayDynamic = uriArray
-                globalDynamicNodeArray = uriArray
-                self.myGroup.leave()
-            case .failure(let error):
-                print("Error fetching data: \(error)")
-                self.nodeArrayDynamic = self.nodeArray
-                globalDynamicNodeArray = self.nodeArray
-                self.myGroup.leave()
-            }
-        }
-    }
-    
-    //MARK:- Wallet func Connect Deamon
-    func init_syncing_wallet() {
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            conncetingState.value = true
-            let username = SaveUserDefaultsData.NameForWallet
-            let pwd = SaveUserDefaultsData.israndomUUIDPassword
-            WalletService.shared.openWallet(username, password: pwd) { [weak self] (result) in
-                guard let strongSelf = self else { return }
-                switch result {
-                    case .success(let wallet):
-                        strongSelf.wallet = wallet
-                        WalletSharedData.sharedInstance.wallet = wallet
-                        strongSelf.connect(wallet: wallet)
-                        strongSelf.syncedflag = true
-                    case .failure(_):
-                    WalletSharedData.sharedInstance.wallet = nil
-                        DispatchQueue.main.async {
-                            strongSelf.refreshState.value = true
-                            strongSelf.conncetingState.value = false
-                            strongSelf.syncedflag = false
-                        }
-                }
-            }
-        }
-    }
-    
-    func connect(wallet: BDXWallet) {
-        if !connecting {
-            self.syncedflag = false
-            self.conncetingState.value = true
-        }
-        wallet.connectToDaemon(address: SaveUserDefaultsData.FinalWallet_node, delegate: self) { [weak self] (isConnected) in
-            guard let `self` = self else { return }
-            if isConnected {
-                if let wallet = self.wallet {
-                    if SaveUserDefaultsData.WalletRestoreHeight == "" {
-                        let lastElementHeight = DateHeight.getBlockHeight.last
-                        let height = lastElementHeight!.components(separatedBy: ":")
-                        SaveUserDefaultsData.WalletRestoreHeight = "\(height[1])"
-                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
-                    } else {
-                        wallet.restoreHeight = UInt64(SaveUserDefaultsData.WalletRestoreHeight)!
-                    }
-                    wallet.start()
-                }
-                self.listening = true
-            } else {
-                DispatchQueue.main.async {
-                    self.refreshState.value = true
-                    self.conncetingState.value = false
-                    self.listening = false
-                }
-            }
-        }
-    }
-    
-    private func synchronizedUI() {
-        syncedflag = true
-    }
-    
-    // MARK: - Refresh Func
-    func refresh() {
-        refreshState.value = false
-        if let wallet = self.wallet {
-            if listening {
-                wallet.pasue()
-                wallet.start()
-            } else {
-                connect(wallet: wallet)
-            }
-        } else {
-            init_syncing_wallet()
-        }
-    }
-    
-    // MARK: - Close Wallet Func
-    private func closeWallet() {
-        guard let wallet = self.wallet else {
-            return
-        }
-        self.wallet = nil
-        if listening {
-            listening = false
-            wallet.pasue()
-        }
-        wallet.close()
-    }
-    deinit {
-        isSyncingUI = false
-        closeWallet()
-        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -1180,49 +1007,7 @@ final class HomeVC : BaseVC {
     }
 }
 
-extension HomeVC: BeldexWalletDelegate {
-    func beldexWalletRefreshed(_ wallet: BChatWalletWrapper) {
-        print("Refreshed--->blockChainHeight-->\(wallet.blockChainHeight)---->daemonBlockChainHeight-->, \(wallet.daemonBlockChainHeight)")
-        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
-        isdaemonHeight = Int64(wallet.blockChainHeight)
-        if NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            if wallet.isSynchronized == true {
-                self.isSyncingUI = false
-            }
-        }
-        if self.needSynchronized {
-            self.needSynchronized = !wallet.save()
-        }
-        taskQueue.async {
-            guard let wallet = self.wallet else { return }
-            let (balance, history) = (wallet.balance, wallet.history)
-            self.postData(balance: balance, history: history)
-        }
-        if daemonBlockChainHeight != 0 {
-            let difference = wallet.daemonBlockChainHeight.subtractingReportingOverflow(daemonBlockChainHeight)
-            guard !difference.overflow else { return }
-        }
-        DispatchQueue.main.async {
-            if self.conncetingState.value {
-                self.conncetingState.value = false
-            }
-            if wallet.isSynchronized {
-                self.synchronizedUI()
-            }
-        }
-    }
-    func beldexWalletNewBlock(_ wallet: BChatWalletWrapper, currentHeight: UInt64) {
-        self.currentBlockChainHeight = currentHeight
-        self.daemonBlockChainHeight = wallet.daemonBlockChainHeight
-        isdaemonHeight = Int64(wallet.daemonBlockChainHeight)
-        self.needSynchronized = true
-        self.isSyncingUI = true
-    }
-    
-    private func postData(balance: String, history: TransactionHistory) {
-        let balance_modify = Helper.displayDigitsAmount(balance)
-        self.mainbalance = balance_modify
-    }
+extension HomeVC {
     
     func updateTableViewCell(_ indexPath: IndexPath) {
         tableView.beginUpdates()
@@ -1238,15 +1023,5 @@ extension HomeVC: BeldexWalletDelegate {
         collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
         tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: inset) : tableView.pin(.top, to: .top, of: view, withInset: inset + 69)
         setUpNavBarSessionHeading()
-    }
-}
-
-struct NodeResponceModel: Codable {
-    let uri: String
-    let isDefault: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case uri
-        case isDefault = "is_default"
     }
 }

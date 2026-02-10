@@ -19,13 +19,10 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    let sectionNames = ["App Access", "Wallet", "Communication"]
+    let sectionNames = ["App Access", "Communication"]
     
     var appAccessTitleArray = ["Screen Lock","Disable Preview in app switcher"]
     var appAccessDescArray = ["Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications.","Prevent BChat previews from appearing in the app switcher."]
-    
-    var walletTitleArray = ["Start Wallet","Pay as you chat"]
-    var walletDescArray = ["Enabling wallet will allow you to send and receive BDX","Enabling ‘Pay as you chat’ will allow you to send receive BDX right from the chat window"]
     
     var communicationTitleArray = ["Read receipts","Type indicators","Send link previews","Voice and video calls","Clear conversation History"]
     var communicationDescArray = ["if read receipts are disabled, you won’t be able to see read receipts from others","if typing indicators are disabled, you won’t be able to see typing indicators from others.","Previews are supported for imgur, instagram, pinterest, Reddit, and Youtube links.","Allow access to accept voice and video calls from other users.",""]
@@ -64,7 +61,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,8 +71,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }else {
                 return 2 // Exclude ScreenLockTableCell
             }
-        }else if section == 1{
-            return walletTitleArray.count
         }else {
             return communicationTitleArray.count
         }
@@ -140,53 +135,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(disablePreviewInAppSwitcherSwitchValueChanged(_:)), for: .valueChanged)
                 return cell
             }
-        } else if indexPath.section == 1 {
-            let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
-            cell.backgroundColor = .clear
-            cell.selectionStyle = .none
-            cell.titleLabel.text = walletTitleArray[indexPath.row]
-            cell.titleDescriptionLabel.text = walletDescArray[indexPath.row]
-            
-            if indexPath.row == 0 {
-                cell.backGroundView.layer.cornerRadius = 16
-                cell.backGroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                let logoImage = isLightMode ? "ic_startWallet_dark" : "ic_startWallet_white"
-                cell.logoImage.image = UIImage(named: logoImage)
-                // Start Wallet
-                let areWalletEnabled = SSKPreferences.areWalletEnabled
-                if areWalletEnabled{
-                    cell.toggleSwitch.isOn = true
-                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                } else {
-                    cell.toggleSwitch.isOn = false
-                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                }
-                cell.toggleSwitch.tag = indexPath.row
-                cell.toggleSwitch.addTarget(self, action: #selector(startWalletSwitchValueChanged(_:)), for: .valueChanged)
-            } else {
-                cell.backGroundView.layer.cornerRadius = 16
-                cell.backGroundView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-                let logoImage = isLightMode ? "ic_payAsUChat_dark" : "ic_payAsUChat_white"
-                cell.logoImage.image = UIImage(named: logoImage)
-                // Pay As You Chat
-                let areWalletEnabled = SSKPreferences.areWalletEnabled
-                if areWalletEnabled {
-                    cell.toggleSwitch.isEnabled = true
-                    let isPayAsYouChatEnabled = SSKPreferences.arePayAsYouChatEnabled
-                    if isPayAsYouChatEnabled{
-                        cell.toggleSwitch.isOn = true
-                        cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
-                    } else {
-                        cell.toggleSwitch.isOn = false
-                        cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
-                    }
-                    cell.toggleSwitch.tag = indexPath.row
-                    cell.toggleSwitch.addTarget(self, action: #selector(payAsYouChatSwitchValueChanged(_:)), for: .valueChanged)
-                } else {
-                    cell.toggleSwitch.isEnabled = false
-                }
-            }
-            return cell
         } else {
             let cell = BChatSettingsTableCell(style: .default, reuseIdentifier: "BChatSettingsTableCell")
             cell.backgroundColor = .clear
@@ -362,57 +310,6 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         Environment.shared.preferences.setScreenSecurity(isSwitchOn)
     }
     
-    // Start Wallet
-    @objc func startWalletSwitchValueChanged(_ sender: UISwitch) {
-        let isSwitchOn = sender.isOn
-        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
-        print("toggled to: \(isSwitchOn ? "true" : "false")")
-        SSKPreferences.areWalletEnabled = isSwitchOn
-        tableView.reloadData()
-    }
-    
-    // Pay As You Chat
-    @objc func payAsYouChatSwitchValueChanged(_ sender: UISwitch) {
-        sender.thumbTintColor = sender.isOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
-        let prefs = UserDefaults.standard
-        if let myString = prefs.string(forKey: "WalletPassword"), !myString.isEmpty {
-            let isEnabled = sender.isOn
-            print("toggled to: \(isEnabled ? "true" : "false")")
-            SSKPreferences.arePayAsYouChatEnabled = isEnabled
-        } else {
-            let alertController = UIAlertController(
-                title: NSLocalizedString("Setup Pin", comment: "Alert title"),
-                message: NSLocalizedString("Please set up wallet pin to enable pay as you chat feature.", comment: "Alert message"),
-                preferredStyle: .alert
-            )
-            let cancelAction = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "Cancel button title"),
-                style: .cancel,
-                handler: { action in
-                    print("User tapped Cancel")
-                }
-            )
-            alertController.addAction(cancelAction)
-            let yesAction = UIAlertAction(
-                title: NSLocalizedString("Setup", comment: "Setup button title"),
-                style: .default,
-                handler: { action in
-                    let viewController = NewPasswordVC()
-                    viewController.isGoingWallet = true
-                    if SaveUserDefaultsData.WalletPassword.isEmpty {
-                        viewController.isGoingPopUp = true
-                        viewController.isCreateWalletPassword = true
-                    } else {
-                        viewController.isVerifyWalletPassword = true
-                    }
-                    self.navigationController!.pushViewController(viewController, animated: true)
-                }
-            )
-            alertController.addAction(yesAction)
-            // Present the alert
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
     // Read Receipts
     @objc func readReceiptsSwitchValueChanged(_ sender: UISwitch) {
         let isSwitchOn = sender.isOn

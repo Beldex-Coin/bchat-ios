@@ -167,9 +167,6 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         // to check if this is the only message request thread (group threads can't be message requests
         // so just ignore those and if the user has hidden message requests then we want to show the
         // notification regardless of how many message requests there are)
-        if WalletSharedData.sharedInstance.isCleardataStarting {
-            return
-        }
         if !thread.isGroupThread() && isMessageRequest && !CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] {
             let threads = transaction.ext(TSThreadDatabaseViewExtensionName) as! YapDatabaseViewTransaction
             let numMessageRequests = threads.numberOfItems(inGroup: TSMessageRequestGroup)

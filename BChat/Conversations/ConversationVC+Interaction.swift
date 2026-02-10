@@ -7,7 +7,8 @@ import BChatUtilitiesKit
 import SignalUtilitiesKit
 
 extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuActionDelegate, ScrollToBottomButtonDelegate,
-    SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate, ShareContactDelegate {
+                           SendMediaNavDelegate, UIDocumentPickerDelegate, AttachmentApprovalViewControllerDelegate, GifPickerViewControllerDelegate, ConversationTitleViewDelegate, ShareContactDelegate {
+    
     
     func needsLayout() {
         UIView.setAnimationsEnabled(false)
@@ -641,45 +642,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
         inputTextView.textColor = Colors.text
-        if newText != "" && newText.isNumeric == true && newText.filter({ $0 == "." }).count <= 1 {
-            if WalletSharedData.sharedInstance.wallet != nil {
-                if SSKPreferences.areWalletEnabled {
-                    let blockChainHeight = WalletSharedData.sharedInstance.wallet!.blockChainHeight
-                    let daemonBlockChainHeight = WalletSharedData.sharedInstance.wallet!.daemonBlockChainHeight
-                    if blockChainHeight == daemonBlockChainHeight {
-                        if SSKPreferences.areWalletEnabled {
-                            if let contactThread: TSContactThread = thread as? TSContactThread {
-                                if let contact: Contact = Storage.shared.getContact(with: contactThread.contactBChatID()), contact.isApproved, contact.didApproveMe, !thread.isNoteToSelf(), !thread.isMessageRequest(), !contact.isBlocked {
-                                    if contact.beldexAddress != nil {
-                                        if SSKPreferences.arePayAsYouChatEnabled {
-                                            if self.audioRecorder == nil && snInputView.quoteDraftInfo == nil {
-                                                customizeSlideToOpen.isHidden = false
-                                                inputTextView.textColor = Colors.bothGreenColor
-                                                CustomSlideView.isFromExpandAttachment = true
-                                                NotificationCenter.default.post(name: .attachmentHiddenNotification, object: nil)
-                                            } else {
-                                                customizeSlideToOpen.isHidden = true
-                                                CustomSlideView.isFromExpandAttachment = false
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    customizeSlideToOpen.isHidden = true
-                                    CustomSlideView.isFromExpandAttachment = false
-                                }
-                            }
-                        }
-                    } else {
-                        customizeSlideToOpen.isHidden = true
-                        CustomSlideView.isFromExpandAttachment = false
-                    }
-                    print("Height-->",blockChainHeight,daemonBlockChainHeight)
-                }
-            }
-        } else {
-            customizeSlideToOpen.isHidden = true
-            CustomSlideView.isFromExpandAttachment = false
-        }
         if !thread.isGroupThread() { return }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
@@ -1167,7 +1129,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if isShowingSearchUI {
             hideSearchUI()
         }
-        customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
         var quoteDraftOrNil: OWSQuotedReplyModel?
         Storage.read { transaction in
@@ -1525,33 +1486,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         viewItem.lastAudioMessageView?.showSpeedUpLabel()
     }
     
-    func payAsYouChatLongPress() {
-        if !SSKPreferences.arePayAsYouChatEnabled {
-            snInputView.isHidden = true
-            
-            let confirmationModal: ConfirmationModal = ConfirmationModal(
-                info: ConfirmationModal.Info(
-                    modalType: .payAsYouChat,
-                    title: "Pay as you chat",
-                    body: .attributedText(payAsYouChatDescription()),
-                    showCondition: .disabled,
-                    confirmTitle: "OK",
-                    onConfirm: { _ in
-                        self.isInputViewShow = true
-                        self.showInputAccessoryView()
-                        self.gotoSettingsScreen()
-                    }, dismissHandler: {
-                        self.isInputViewShow = true
-                        self.showInputAccessoryView()
-                    }
-                )
-            )
-            present(confirmationModal, animated: true, completion:  {
-                self.isInputViewShow = false
-            })
-        }
-    }
-    
     func updateInputView() {
         if snInputView.inputTextView.isFirstResponder {
             snInputView.inputTextView.resignFirstResponder()
@@ -1571,7 +1505,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         updateInputView()
         
         // Request permission if needed
-        self.customizeSlideToOpen.isHidden = true
         CustomSlideView.isFromExpandAttachment = false
         requestMicrophonePermissionIfNeeded() { [weak self] in
             self?.cancelVoiceMessageRecording()
@@ -1726,7 +1659,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         isAudioRecording = false
         deleteAudioView.isHidden = true
         cancelVoiceMessageRecording()
-        NotificationCenter.default.post(name: .showPayAsYouChatNotification, object: nil)
     }
     
     // MARK: - Data Extraction Notifications
@@ -2121,16 +2053,6 @@ extension ConversationVC {
             self.inputAccessoryView?.isHidden = true
             self.inputAccessoryView?.alpha = 0
         })
-    }
-    
-    func payAsYouChatDescription() -> NSAttributedString {
-        let string = NSLocalizedString("PAY_AS_YOU_CHAT_DISCRIPTION_LABEL", comment: "")
-        let attributedString = NSMutableAttributedString(string: string)
-        // Apply bold font to "Settings -> Pay as you Chat"
-        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
-        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Settings -> Pay as you Chat"))
-        // The attributed string
-        return attributedString
     }
     
     func mediaDownloadDescription(_ name: String) -> NSAttributedString {

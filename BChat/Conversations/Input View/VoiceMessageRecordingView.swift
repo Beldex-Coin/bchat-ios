@@ -637,7 +637,6 @@ protocol VoiceMessageRecordingViewDelegate : class {
     func startVoiceMessageRecording()
     func endVoiceMessageRecording()
     func cancelVoiceMessageRecording()
-    func payAsYouChatLongPress()
     func pauseRecording()
     func playRecording()
     func showDeleteAudioView()

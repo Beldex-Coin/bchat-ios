@@ -141,7 +141,6 @@ final class DeleteAccountModel : Modal {
     
     @objc private func clearEntireAccount() {
         UIApplication.shared.applicationIconBadgeNumber = 0
-        WalletSharedData.sharedInstance.isCleardataStarting = true
         ModalActivityIndicatorViewController.present(fromViewController: self, canCancel: false) { [weak self] _ in
             SnodeAPI.clearAllData().done(on: DispatchQueue.main) { confirmations in
                 self?.dismiss(animated: true, completion: nil) // Dismiss the loader
