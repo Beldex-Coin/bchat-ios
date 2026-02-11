@@ -1239,84 +1239,45 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     @objc func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
-        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
-        // needed for proper calculations, so force an initial layout if it doesn't have a size)
-        var hasDoneLayout: Bool = true
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame =
+                userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
-        if messageRequestView.bounds.height <= CGFloat.leastNonzeroMagnitude {
-            hasDoneLayout = false
-            
-            UIView.performWithoutAnimation {
-                self.view.layoutIfNeeded()
-            }
-        }
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 7
+        let options = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
         
-        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
-        if keyboardTop <= 100 {
-            messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
-            self.isKeyboardPresented = false
+        var keyboardHeight: CGFloat
+        if keyboardFrameInView.intersects(view.bounds) {
+            keyboardHeight = max(0, view.bounds.maxY - keyboardFrameInView.minY)
         } else {
-            self.isKeyboardPresented = true
-        }
-        let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
-        let oldContentInset: UIEdgeInsets = messagesTableView.contentInset
-        let newContentInset: UIEdgeInsets = UIEdgeInsets(
-            top: 0,
-            leading: 0,
-            bottom: (Values.mediumSpacing + keyboardTop + messageRequestsOffset),
-            trailing: 0
-        )
-        let newContentOffsetY: CGFloat = (messagesTableView.contentOffset.y + (newContentInset.bottom - oldContentInset.bottom))
-        let changes = { [weak self] in
-            self?.scrollButtonBottomConstraint?.constant = -(keyboardTop + 16)
-            self?.messageRequestsViewBotomConstraint?.constant = -(keyboardTop + 16)
-            self?.messagesTableView.contentInset = newContentInset
-            self?.messagesTableView.contentOffset.y = newContentOffsetY
-            
-            let scrollButtonOpacity: CGFloat = (self?.getScrollButtonOpacity() ?? 0)
-            self?.scrollButton.alpha = scrollButtonOpacity
-            
-            self?.view.setNeedsLayout()
-            self?.view.layoutIfNeeded()
+            keyboardHeight = 0
         }
         
-        // Perform the changes (don't animate if the initial layout hasn't been completed)
-        guard hasDoneLayout else {
-            UIView.performWithoutAnimation {
-                changes()
-            }
-            return
-        }
+        self.isKeyboardPresented = keyboardHeight > 0
         
-        UIView.animate(
-            withDuration: duration,
-            delay: 0,
-            options: options,
-            animations: changes,
-            completion: nil
-        )
+        let safeBottom = view.safeAreaInsets.bottom
+        let insetBottom = max(70, keyboardHeight - safeBottom)
+        let offset = insetBottom > 0 ? insetBottom + Values.veryLargeSpacing : Values.mediumSpacing
+        
+        UIView.animate(withDuration: duration, delay: 0, options: options) {
+            self.messageRequestsViewBotomConstraint?.constant = -offset
+            self.scrollButtonBottomConstraint?.constant = -offset
+            self.messagesTableView.contentInset.bottom = offset + Values.mediumSpacing
+            
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc func handleKeyboardWillHideNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         
-        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
-        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        guard let userInfo = notification.userInfo else { return }
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 7
+        let options = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        
         self.isKeyboardPresented = false
         
         UIView.animate(
@@ -1324,17 +1285,21 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             delay: 0,
             options: options,
             animations: { [weak self] in
-                self?.scrollButtonBottomConstraint?.constant = -(keyboardTop + 16)
-                self?.messageRequestsViewBotomConstraint?.constant = -(keyboardTop + 16)
+                guard let self else { return }
                 
-                let scrollButtonOpacity: CGFloat = (self?.getScrollButtonOpacity() ?? 0)
-                self?.scrollButton.alpha = scrollButtonOpacity
-                self?.unreadCountView.alpha = scrollButtonOpacity
+                // keyboard is hidden → height = 0
+                self.scrollButtonBottomConstraint?.constant = -Values.mediumSpacing
+                self.messageRequestsViewBotomConstraint?.constant = -Values.mediumSpacing
+                self.messagesTableView.contentInset.bottom = Values.mediumSpacing
                 
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
+                let scrollButtonOpacity = self.getScrollButtonOpacity()
+                self.scrollButton.alpha = scrollButtonOpacity
+                self.unreadCountView.alpha = scrollButtonOpacity
+                
+                self.view.layoutIfNeeded()
             },
-            completion: nil         )
+            completion: nil
+        )
     }
     
     func conversationViewModelWillUpdate() {
