@@ -9,10 +9,8 @@ public final class PushNotificationAPI: NSObject {
     /// Specifies the Server for the Push Notification
     public static var server: String {
         #if MAINNET
-            //return "http://notification.rpcnode.stream"
-            return "http://pushnotificationv1.rpcnode.stream"
+            return "http://pushnotificationv2.rpcnode.stream"
         #else
-//           return "http://194.233.68.227:1900"
             return "http://13.235.134.218:5000"
         #endif
     }
@@ -20,10 +18,8 @@ public final class PushNotificationAPI: NSObject {
     /// Specifies the Server Public key for the Push Notification
     public static var serverPublicKey: String {
         #if MAINNET
-            //return "54e8ce6a688f6decd414350408cae373ab6070d91d4512e17454d2470c7cf911"
-            return "589f8d0d376933e6a48266423235f323dfa4eb4179903314cf5dfb30d6cf794a"
+            return "d6caced35a04f65022468b2854fbe61aa86f415c4832876353dc774a2848b30c"
         #else
-//            return "aea4fcf485fb267fa98c5f24b1848a6a865ea8769c2823ac385de051723b5954"
             return "589f8d0d376933e6a48266423235f323dfa4eb4179903314cf5dfb30d6cf794a"
         #endif
     }

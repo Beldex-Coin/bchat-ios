@@ -16,6 +16,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         messageRequestCountLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
+        messageCollectionView.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         
         setUpNavBarSessionHeading()
         noInternetView.isHidden = NetworkReachabilityStatus.isConnectedToNetworkSignal()
@@ -23,15 +24,6 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         messageRequestLabelTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16) : messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16 + 69)
         collectionViewTopConstraint.isActive = false
         collectionViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8) : messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8 + 69)
-        
-        if !messageRequestLabel.isHidden {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ?  tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 38 + 16 + 69)
-        } else {
-            tableViewTopConstraint.isActive = false
-            tableViewTopConstraint = NetworkReachabilityStatus.isConnectedToNetworkSignal() ? tableView.pin(.top, to: .top, of: view, withInset: 0 + 16) : tableView.pin(.top, to: .top, of: view, withInset: 0 + 16 + 69)
-        }
-        self.messageCollectionView.isHidden = true
         
         switch section {
             case 0: return threadCountForArchivedChats > 0 ? 1 : 0
@@ -105,7 +97,9 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                         guard let strongSelf = self else { return }
                         strongSelf.deleteThread(thread)
                     })
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in })
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
+                        tableView.reloadData()
+                    })
                     self.presentAlert(alert)
                 })
                 delete.backgroundColor = Colors.mainBackGroundColor2
@@ -115,7 +109,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = true
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [indexPath], with: .fade)
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
                 })
                 pin.backgroundColor = Colors.mainBackGroundColor2
                 pin.image = UIImage(named: "ic_pinNew_Home")
@@ -124,7 +118,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = false
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [indexPath], with: .fade)
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
                 })
                 unpin.backgroundColor = Colors.mainBackGroundColor2
                 unpin.image = UIImage(named: "ic_unPinNew_Home")
@@ -135,7 +129,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 thread.isArchived = true
                 thread.save()
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                tableView.reloadRows(at: [indexPath], with: .fade)
+                tableView.reloadRows(at: [indexPath], with: .automatic)
             })
             archive.backgroundColor = Colors.mainBackGroundColor2
             archive.image = UIImage(named: "ic_archive")

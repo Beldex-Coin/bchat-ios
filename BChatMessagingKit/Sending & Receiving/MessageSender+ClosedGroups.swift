@@ -39,7 +39,8 @@ extension MessageSender {
         // Store the key pair
         Storage.shared.addClosedGroupEncryptionKeyPair(encryptionKeyPair, for: groupPublicKey, using: transaction)
         // Notify the PN server
-        promises.append(PushNotificationAPI.performOperation(.subscribe, for: groupPublicKey, publicKey: userPublicKey))
+        //promises.append(PushNotificationAPI.performOperation(.subscribe, for: groupPublicKey, publicKey: userPublicKey))
+        PushNotificationAPI.performOperation(.subscribe, for: groupPublicKey, publicKey: userPublicKey)
         // Notify the user
         let infoMessage = TSInfoMessage(timestamp: NSDate.ows_millisecondTimeStamp(), in: thread, messageType: .groupCreated)
         infoMessage.save(with: transaction)

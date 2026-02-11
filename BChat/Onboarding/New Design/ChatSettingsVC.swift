@@ -165,7 +165,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     var filterDict: [String: String] = [:]
     var namesArray: [String] = []
     var isSearchEnable = false
-    
+    var shouldUnderline = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -279,6 +279,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
+        nameTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         
         if let groupThread = self.thread as? TSGroupThread {
             if !groupThread.isCurrentUserMemberInGroup() {
@@ -514,10 +515,21 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     @objc func nameTextfieldTapped(textField: UITextField) {
+        shouldUnderline = true
         self.doneButton.isHidden = false
         self.editIconImage.isHidden = true
-        // While edit name for clear text
-//        self.nameTextField.text = ""
+    }
+    
+    @objc func textChanged(_ textField: UITextField) {
+        guard shouldUnderline else { return }
+        let text = textField.text ?? ""
+        let attributed = NSMutableAttributedString(string: text)
+        attributed.addAttribute(
+            .underlineStyle,
+            value: NSUnderlineStyle.thick.rawValue,
+            range: NSRange(location: 0, length: attributed.length)
+        )
+        textField.attributedText = attributed
     }
     
     @objc func notifyforMentionsOnlySwitchValueDidChange(_ sender: UISwitch) {
@@ -710,6 +722,14 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     @objc private func doneButtonTapped(_ sender: UIButton) {
         self.saveName()
+        shouldUnderline = false
+        let text = nameTextField.text ?? ""
+        nameTextField.attributedText = NSAttributedString(string: text)
+        nameTextField.defaultTextAttributes = [
+            .font: Fonts.boldOpenSans(ofSize: 18),
+            .foregroundColor: Colors.titleColor
+        ]
+        nameTextField.textAlignment = .center
     }
     
     func saveName() {
@@ -735,6 +755,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 Storage.shared.setContact(contact, using: transaction)
             }
         }
+        profilePictureImageView.update(for: self.thread!)
         self.displayNameLabel.text = text.isEmpty ? contact?.name : text
         self.nameTextField.text = text.isEmpty ? contact?.name : text
         self.doneButton.isHidden = true
@@ -890,17 +911,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     func getDisplayName(for publicKey: String) -> String {
         return Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-    }
-   
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
     }
     
     func reloadTableView() {

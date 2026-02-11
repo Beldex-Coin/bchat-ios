@@ -33,10 +33,27 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
         result.set(.height, to: 18)
         result.contentMode = .scaleAspectFit
         result.image = UIImage(named: "ic_verified_image")
+        result.isHidden = true
         return result
     }()
     
     var removeCallback: (() -> Void)?
+    
+    var threadViewModel: ThreadViewModel! {
+        didSet {
+            update()
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        nameLabel.text = nil
+        verifiedImageView.isHidden = true
+        removeButton.isHidden = true
+        profileImageView.layer.borderWidth = 0
+        profileImageView.layer.borderColor = UIColor.clear.cgColor
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,5 +92,20 @@ class MessageRequestCollectionViewCell: UICollectionViewCell {
     
     @objc private func removeButtonTapped(_ sender: UIButton) {
         removeCallback?()
+    }
+    
+    private func update() {
+        AssertIsOnMainThread()
+        guard let thread = threadViewModel?.threadRecord else { return }
+        profileImageView.update(for: thread)
+        nameLabel.text = getDisplayName()
+        removeButton.isHidden = false
+    }
+    
+    private func getDisplayName() -> String {
+        let hexEncodedPublicKey: String = threadViewModel.contactBChatID!
+        let displayName: String = (Storage.shared.getContact(with: hexEncodedPublicKey)?.displayName(for: .regular) ?? hexEncodedPublicKey)
+        let middleTruncatedHexKey: String = "\(hexEncodedPublicKey.prefix(4))...\(hexEncodedPublicKey.suffix(4))"
+        return (displayName == hexEncodedPublicKey ? middleTruncatedHexKey : displayName)
     }
 }

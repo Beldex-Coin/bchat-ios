@@ -29,6 +29,8 @@ typedef NS_OPTIONS(NSInteger, MediaGalleryOption) {
 
 - (void)mediaDetailViewControllerHidePopup:(MediaDetailViewController *)mediaDetailViewController;
 
+- (void)showToolbar;
+
 @end
 
 @interface MediaDetailViewController : OWSViewController

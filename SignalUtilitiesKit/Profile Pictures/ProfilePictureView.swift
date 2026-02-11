@@ -104,7 +104,7 @@ public final class ProfilePictureView : UIView {
                     return Identicon.generatePlaceholderIcon(seed: publicKey, text: nameString ?? "", size: size)
                 }
                 // TODO: Pass in context?
-                let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
+                let displayName = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
                 return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
             }
         }

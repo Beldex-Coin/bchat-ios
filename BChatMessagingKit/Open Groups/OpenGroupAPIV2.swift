@@ -463,7 +463,7 @@ public final class OpenGroupAPIV2 : NSObject {
         Storage.shared.write(with: { transaction in
             Storage.shared.setOpenGroupPublicKey(for: defaultServer, to: defaultServerPublicKey, using: transaction)
         }, completion: {
-            let internalPromise: Promise<[OpenGroupAPIV2.Info]> = attempt(maxRetryCount: 8, recoveringOn: DispatchQueue.main) {
+            let internalPromise: Promise<[OpenGroupAPIV2.Info]> = attempt(maxRetryCount: 4, recoveringOn: DispatchQueue.main) {
                 OpenGroupAPIV2.getAllRooms(from: defaultServer)
             }
             

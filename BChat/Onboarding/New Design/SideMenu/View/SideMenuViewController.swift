@@ -152,20 +152,6 @@ class SideMenuViewController: BaseVC {
     
     // MARK: - Private methods
     
-    /// Get profile picture
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            viewModel.hasTappableProfilePicture = true
-            return profilePicture
-        } else {
-            viewModel.hasTappableProfilePicture = false
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
-    
     /// darkLightModeValueChanged
     @objc func darkLightModeValueChanged(_ sender: UISwitch) {
         AppModeManager.shared.setCurrentAppMode(to: darkLightModeSwitch.isOn ? .dark : .light)

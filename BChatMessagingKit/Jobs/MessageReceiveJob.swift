@@ -13,7 +13,7 @@ public final class MessageReceiveJob : NSObject, Job, NSCoding { // NSObject/NSC
 
     // MARK: Settings
     public class var collection: String { return "MessageReceiveJobCollection" }
-    public static let maxFailureCount: UInt = 10
+    public static let maxFailureCount: UInt = 4
 
     // MARK: Initialization
     public init(data: Data, serverHash: String? = nil, openGroupMessageServerID: UInt64? = nil, openGroupID: String? = nil, isBackgroundPoll: Bool) {

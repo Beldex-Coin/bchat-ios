@@ -76,7 +76,16 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
         return button
     }()
     
-    
+    let noResultLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No result found"
+        label.textAlignment = .center
+        label.textColor = UIColor(hex: 0x6E6E7C)
+        label.font = Fonts.regularOpenSans(ofSize: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
+    }()
     
     private let usersToExclude: Set<String>
     private let completion: (Set<String>) -> Void
@@ -117,6 +126,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
         view.addSubViews(searchTextField, bottomButtonView)
         bottomButtonView.addSubview(addButton)
         view.addSubview(tableView)
+        view.addSubview(noResultLabel)
         
         searchTextField.delegate = self
         
@@ -150,6 +160,11 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
             addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
             addButton.heightAnchor.constraint(equalToConstant: 58),
+            
+            noResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noResultLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 16),
+            noResultLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16)
         ])
         
         if users.count > 0 {
@@ -230,6 +245,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
             let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
             filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
         }
+        noResultLabel.isHidden = !filterDict.isEmpty
         tableView.reloadData()
     }
     
@@ -256,17 +272,6 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
     @objc private func addButtonTapped() {
         completion(selectedUsers)
         navigationController!.popViewController(animated: true)
-    }
-
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

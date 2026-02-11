@@ -10,7 +10,7 @@ public final class NotifyPNServerJob : NSObject, Job, NSCoding { // NSObject/NSC
 
     // MARK: Settings
     public class var collection: String { return "NotifyPNServerJobCollection" }
-    public static let maxFailureCount: UInt = 20
+    public static let maxFailureCount: UInt = 4
 
     // MARK: Initialization
     init(message: SnodeMessage) {

@@ -422,10 +422,6 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
                 }
                 promise.catch(on: DispatchQueue.main) { error in
                     self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                    if error.localizedDescription == "HTTP request failed with status code: 0." {
-                        self?.navigationController?.popViewController(animated: true)
-                        return
-                    }
                     let title = "Couldn't Create Group"
                     let message = "Please check your internet connection and try again."
                     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

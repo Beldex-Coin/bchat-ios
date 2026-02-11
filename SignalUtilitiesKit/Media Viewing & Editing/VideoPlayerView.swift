@@ -171,8 +171,8 @@ public class PlayerProgressBar: UIView {
         // For FullScreen uncomment this
 //        addSubview(fullScreenButton)
         
-        let buttonWidth: CGFloat = 14
-        let buttonHeight: CGFloat = 14
+        let buttonWidth: CGFloat = 24
+        let buttonHeight: CGFloat = 24
         
         passAndPaly.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
         passAndPaly.autoPinEdge(toSuperviewMargin: .leading)

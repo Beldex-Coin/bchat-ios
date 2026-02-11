@@ -258,19 +258,21 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
         
         ModalActivityIndicatorViewController.present(fromViewController: shareVC!, canCancel: false, message: "vc_share_sending_message".localized()) { activityIndicator in
             DispatchQueue.global(qos: .userInitiated).async {
-                MessageSender.sendNonDurably(message, with: finalAttachments, in: self.selectedThread!)
-                    .done { [weak self] _ in
-                        DispatchQueue.main.async {
-                            activityIndicator.dismiss { }
-                            self?.shareVC?.shareViewWasCompleted()
-                        }
+                Storage.write(with: { transaction in
+                    MessageSender.send(message, with: finalAttachments, in: self.selectedThread!, using: transaction)
+                })
+                .done { [weak self] _ in
+                    DispatchQueue.main.async {
+                        activityIndicator.dismiss { }
+                        self?.shareVC?.shareViewWasCompleted()
                     }
-                    .catch { [weak self] error in
-                        DispatchQueue.main.async {
-                            activityIndicator.dismiss { }
-                            self?.shareVC?.shareViewFailed(error: error)
-                        }
+                }
+                .catch { [weak self] error in
+                    DispatchQueue.main.async {
+                        activityIndicator.dismiss { }
+                        self?.shareVC?.shareViewFailed(error: error)
                     }
+                }
             }
         }
     }

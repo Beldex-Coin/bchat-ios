@@ -52,6 +52,9 @@ final class HomeVC : BaseVC {
         threadsForMessageRequest.numberOfItems(inGroup: TSMessageRequestGroup)
     }
     
+    private var reloadTableItem: DispatchWorkItem?
+    private let reloadQueue = DispatchQueue(label: "com.app.reload.queue", qos: .userInitiated)
+    
     // MARK: UI Components
     private lazy var tableView: UITableView = {
         let result = UITableView()
@@ -534,7 +537,6 @@ final class HomeVC : BaseVC {
             messageRequestLabelTopConstraint = messageRequestLabel.pin(.top, to: .top, of: view, withInset: 16)
             collectionViewTopConstraint = messageCollectionView.pin(.top, to: .top, of: view, withInset: 38 + 8)
         }
-        self.isManualyCloseMessageRequest = false
         NotificationCenter.default.addObserver(self, selector: #selector(self.notificationReceived(_:)), name: .doodleChangeNotification, object: nil)
         reload()
         updateNavBarButtons()
@@ -551,8 +553,8 @@ final class HomeVC : BaseVC {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         self.showOrHideMessageRequestCollectionViewButton.isSelected = false
-        self.isManualyCloseMessageRequest = false
         mainButtonPopUpView.isHidden = true
         mainButton.setImage(UIImage(named: "ic_HomeVCLogo"), for: .normal)
     }
@@ -599,7 +601,6 @@ final class HomeVC : BaseVC {
             self.threadsForMessageRequest.update(with: transaction)
         }
         threadViewModelCacheForMessageRequest.removeAll()
-        messageCollectionView.reloadData()
     }
     
     private func updateContactAndThread(thread: TSThread, with transaction: YapDatabaseReadWriteTransaction, onComplete: ((Bool) -> ())? = nil) {
@@ -705,19 +706,51 @@ final class HomeVC : BaseVC {
         
         dbConnection.beginLongLivedReadTransaction() // Jump to the latest commit
         dbConnection.read { transaction in
-            self.threadsForArchivedChats.update(with: transaction)
+            self.reloadQueue.async { [weak self] in
+                guard let self = self else { return }
+                self.dbConnection.beginLongLivedReadTransaction()
+                self.dbConnection.read { transaction in
+                    self.threads.update(with: transaction)
+                }
+                
+                self.threadViewModelCache.removeAll()
+                
+                self.dbConnection.beginLongLivedReadTransaction()
+                self.dbConnection.read { transaction in
+                    self.threadsForArchivedChats.update(with: transaction)
+                }
+                
+                DispatchQueue.main.async {
+                    self.tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
+                    self.tableView.reloadData()
+                    self.messageCollectionView.reloadData()
+                    self.emptyStateView.isHidden = (self.threadCount != 0)
+                    self.isReloading = false
+                }
+            }
         }
-        tableView.contentInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0)
-        tableView.reloadData()
-        emptyStateView.isHidden = (threadCount != 0)
-        isReloading = false
+    }
+    
+    private func reloadModified(delay: TimeInterval = 0.5) {
+        reloadQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.reloadTableItem?.cancel()
+            
+            let workItem = DispatchWorkItem { [weak self] in
+                DispatchQueue.main.async {
+                    self?.reload()
+                }
+            }
+            
+            self.reloadTableItem = workItem
+            self.reloadQueue.asyncAfter(deadline: .now() + delay, execute: workItem)
+        }
     }
     
     @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
-        // NOTE: This code is very finicky and crashes easily. Modify with care.
-        AssertIsOnMainThread()
         reloadForMessageRequest()
-        reload()
+        reloadModified()
     }
     
     @objc private func handleProfileDidChangeNotification(_ notification: Notification) {
@@ -726,7 +759,6 @@ final class HomeVC : BaseVC {
     
     @objc private func handleLocalProfileDidChangeNotification(_ notification: Notification) {
         updateNavBarButtons()
-        reload()
     }
     
     @objc private func handleSeedViewedNotification(_ notification: Notification) {
@@ -828,18 +860,6 @@ final class HomeVC : BaseVC {
         navigationItem.rightBarButtonItems = rightBarButtonItems
         setUpNavBarSessionHeading()
     }
-    
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
-    
     
     @objc override internal func handleAppModeChangedNotification(_ notification: Notification) {
         super.handleAppModeChangedNotification(notification)
