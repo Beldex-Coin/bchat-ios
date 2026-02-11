@@ -673,12 +673,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if backAPI == true {
-            let vc = InitiatingTransactionVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
         highlightFocusedMessageIfNeeded()
         didFinishInitialLayout = true
         markAllAsRead()

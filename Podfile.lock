@@ -213,7 +213,7 @@ SPEC CHECKSUMS:
   Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
   CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
-  Curve25519Kit: e63f9859ede02438ae3defc5e1a87e09d1ec7ee6
+  Curve25519Kit: 85cc4a9bf1d8e24f42ff14d16df7523abe37a6dc
   DifferenceKit: ab185c4d7f9cef8af3fcf593e5b387fb81e999ca
   GRDB.swift: 136dcb5d8dddca50aae3ba7d77475f79e7232cd8
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
@@ -224,15 +224,15 @@ SPEC CHECKSUMS:
   Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
-  SignalCoreKit: 1fbd8732163ef76de16cd1107d1fa3684b607e5d
+  SignalCoreKit: edfbd2eebe768b9633ce3bd321eb35c8e0e54b86
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   SQLCipher: 77fbe633cd84db04b07876dd50766b4924b57d61
   SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
   SwiftyRSA: 8c6dd1ea7db1b8dc4fb517a202f88bb1354bc2c6
   WebRTC-lib: 73de4fee6337c39be0ab9ddd516dc64bb73cefc5
-  YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
-  YYImage: f1ddd15ac032a58b78bbed1e012b50302d318331
+  YapDatabase: aa940b69c1923d3810f4dd671d3193705044e82f
+  YYImage: 3887e29d0418f57e031ae6b795d9d0a77592afbd
 
 PODFILE CHECKSUM: 923430f55dc6d3d7f743bf348bdf31f2bdedcafd
 
