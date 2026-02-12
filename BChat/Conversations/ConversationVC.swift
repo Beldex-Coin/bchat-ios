@@ -1215,7 +1215,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         handleTitleViewTapped()
     }
     
-    private func highlightFocusedMessageIfNeeded() {
+    internal func highlightFocusedMessageIfNeeded() {
         if let indexPath = focusedMessageIndexPath, let cell = messagesTableView.cellForRow(at: indexPath) as? VisibleMessageCell {
             cell.highlight()
             focusedMessageIndexPath = nil

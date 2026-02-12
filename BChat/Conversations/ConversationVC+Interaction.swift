@@ -890,6 +890,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 if location.y < 65 || (viewItem.messageCellType == .mediaMessage && location.y < 80 && isTrusted) {
                     guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                     messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                    focusedMessageIndexPath = indexPath
+                    highlightFocusedMessageIfNeeded()
                     return
                 }
             }
@@ -915,6 +917,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         if (location.y < 125 && viewItem.mediaAlbumItems?.first?.attachment.contentType == "image/gif") || (location.y < 125 && message?.sharedContactMessage != nil) {
                             guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                             messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                            focusedMessageIndexPath = indexPath
+                            highlightFocusedMessageIfNeeded()
                             return
                         }
                     }
@@ -978,6 +982,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         // Scroll to the source of the reply
                         guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                         messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                        focusedMessageIndexPath = indexPath
+                        highlightFocusedMessageIfNeeded()
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
                         hideInputAccessoryView()
