@@ -231,7 +231,7 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
             messageText
         )
 
-        let tsMessage = TSOutgoingMessage.from(message, associatedWith: selectedThread!)
+        let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: selectedThread!)
         Storage.write(
             with: { transaction in
                 if isSharingUrl {

@@ -1027,7 +1027,7 @@ CGFloat kIconViewLength = 24;
             message.sentTimestamp = [NSDate millisecondTimestamp];
             message.openGroupInvitation = [[SNOpenGroupInvitation alloc] initWithName:openGroup.name url:url];
             TSContactThread *thread = [TSContactThread getOrCreateThreadWithContactBChatID:user];
-            TSOutgoingMessage *tsMessage = [TSOutgoingMessage from:message associatedWith:thread];
+            TSOutgoingMessage *tsMessage = [TSOutgoingMessage from:message quotedMessage:nil associatedWith:thread];
             [LKStorage writeWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
                 [tsMessage saveWithTransaction:transaction];
             }];

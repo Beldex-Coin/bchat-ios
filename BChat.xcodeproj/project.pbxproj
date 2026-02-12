@@ -321,6 +321,7 @@
 		84879D0F2F30A50300F4D96C /* ScanNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84879D0E2F30A50300F4D96C /* ScanNewVC.swift */; };
 		84879D112F30A5FF00F4D96C /* ChangeLogNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84879D102F30A5FF00F4D96C /* ChangeLogNewVC.swift */; };
 		84879D132F30A63400F4D96C /* AboutNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84879D122F30A63400F4D96C /* AboutNewVC.swift */; };
+		848AD76C2F3DE02700DF6F25 /* TSMessageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848AD76B2F3DE02700DF6F25 /* TSMessageExtension.swift */; };
 		84A0E9F92D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */; };
 		84A204EB2E28E89E0002266D /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A204EA2E28E8990002266D /* ContactView.swift */; };
 		84A4A4572D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4A4562D1EA4CC003E5735 /* ChatSettingsTableViewCell.swift */; };
@@ -1475,6 +1476,7 @@
 		84879D0E2F30A50300F4D96C /* ScanNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNewVC.swift; sourceTree = "<group>"; };
 		84879D102F30A5FF00F4D96C /* ChangeLogNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLogNewVC.swift; sourceTree = "<group>"; };
 		84879D122F30A63400F4D96C /* AboutNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutNewVC.swift; sourceTree = "<group>"; };
+		848AD76B2F3DE02700DF6F25 /* TSMessageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSMessageExtension.swift; sourceTree = "<group>"; };
 		848B0C04B8211741A916EE49 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-SessionMessagingKit.debug.xcconfig"; sourceTree = "<group>"; };
 		84A0E9F82D2FC3BB00C4B0CE /* SearchGroupMemberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchGroupMemberVC.swift; sourceTree = "<group>"; };
 		84A204EA2E28E8990002266D /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
@@ -3601,6 +3603,7 @@
 				C33FDBE9255A581A00E217F9 /* TSInteraction.m */,
 				C33FDA70255A57FA00E217F9 /* TSMessage.h */,
 				C33FDB60255A580E00E217F9 /* TSMessage.m */,
+				848AD76B2F3DE02700DF6F25 /* TSMessageExtension.swift */,
 				C33FDB48255A580C00E217F9 /* TSOutgoingMessage.h */,
 				C33FDB56255A580D00E217F9 /* TSOutgoingMessage.m */,
 				B84072952565E9F50037CB17 /* TSOutgoingMessage+Conversion.swift */,
@@ -5537,6 +5540,7 @@
 				B8B558FF26C4E05E00693325 /* WebRTCBChat+MessageHandling.swift in Sources */,
 				C3C2A74D2553A39700C340D1 /* VisibleMessage.swift in Sources */,
 				C32C5AAD256DBE8F003C73A2 /* TSInfoMessage.m in Sources */,
+				848AD76C2F3DE02700DF6F25 /* TSMessageExtension.swift in Sources */,
 				C32C5A13256DB7A5003C73A2 /* PushNotificationAPI.swift in Sources */,
 				8AA00BF32E2F72AA002B320C /* VisibleMessage+ShareContact.swift in Sources */,
 				7BFD1A8C2747150E00FB91B9 /* TurnServerInfo.swift in Sources */,

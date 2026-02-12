@@ -2,12 +2,21 @@ import BChatUtilitiesKit
 
 @objc public extension TSOutgoingMessage {
     
-    @objc(from:associatedWith:)
-    static func from(_ visibleMessage: VisibleMessage, associatedWith thread: TSThread) -> TSOutgoingMessage {
-        return from(visibleMessage, associatedWith: thread, using: nil)
+    @objc(from:quotedMessage:associatedWith:)
+    static func from(_ visibleMessage: VisibleMessage, quotedMessage: TSQuotedMessage?, associatedWith thread: TSThread) -> TSOutgoingMessage {
+        return from(visibleMessage, quotedMessage: quotedMessage, associatedWith: thread, using: nil)
     }
     
-    static func from(_ visibleMessage: VisibleMessage, associatedWith thread: TSThread, using transaction: YapDatabaseReadWriteTransaction? = nil) -> TSOutgoingMessage {
+    static func from(_ visibleMessage: VisibleMessage, quotedMessage: TSQuotedMessage?, associatedWith thread: TSThread, using transaction: YapDatabaseReadWriteTransaction? = nil) -> TSOutgoingMessage {
+        
+        let quotedMessageFromReceiver = quotedMessage
+        let quotedMessageFromVisibleMessage = TSQuotedMessage.from(visibleMessage.quote)
+        
+        let countOfQuotedMessageFromReceiver = valueCountForTSQuotedMessage(for: quotedMessageFromReceiver)
+        let countOfQuotedMessageFromVisibleMessage = valueCountForTSQuotedMessage(for: quotedMessageFromVisibleMessage)
+        
+        
+        
         var expiration: UInt32 = 0
         let disappearingMessagesConfigurationOrNil: OWSDisappearingMessagesConfiguration?
         if let transaction = transaction {
@@ -27,7 +36,7 @@ import BChatUtilitiesKit
             expireStartedAt: 0,
             isVoiceMessage: false,
             groupMetaMessage: .unspecified,
-            quotedMessage: TSQuotedMessage.from(visibleMessage.quote),
+            quotedMessage: countOfQuotedMessageFromReceiver > countOfQuotedMessageFromVisibleMessage ? quotedMessageFromReceiver : quotedMessageFromVisibleMessage,
             linkPreview: OWSLinkPreview.from(visibleMessage.linkPreview),
             openGroupInvitationName: visibleMessage.openGroupInvitation?.name,
             openGroupInvitationURL: visibleMessage.openGroupInvitation?.url,

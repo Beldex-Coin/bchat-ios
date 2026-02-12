@@ -462,7 +462,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 // flags appropriately
                 let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
                 let linkPreviewDraft = snInputView.linkPreviewInfo?.draft
-                let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+                let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
                 
                 let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
                     for: self.thread,
@@ -563,7 +563,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // use it to determine if the user is creating a new thread and update the 'isApproved'
         // flags appropriately
         let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
-        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+        let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
         
         let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
             for: self.thread,

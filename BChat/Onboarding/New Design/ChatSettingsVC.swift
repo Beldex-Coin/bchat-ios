@@ -489,7 +489,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 message.openGroupInvitation = invitation
                 
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: user)
-                let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+                let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
                 Storage.write { transaction in
                     tsMessage.save(with: transaction)
                 }
