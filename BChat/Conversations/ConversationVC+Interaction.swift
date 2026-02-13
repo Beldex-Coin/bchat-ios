@@ -761,7 +761,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let message = viewItem.interaction as? TSMessage else { return }
         if let messageOutgoing = message as? TSOutgoingMessage {
             let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
-            if status == .sent || status == .delivered || status == .skipped {} else { return }
+            if status == .sent || status == .delivered || status == .skipped || status == .uploading || status == .sending {} else { return }
         }
         
         // Show the context menu if applicable
