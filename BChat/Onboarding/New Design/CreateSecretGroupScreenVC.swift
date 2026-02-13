@@ -366,18 +366,27 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
                 }
                 
             } else {
-                
                 // Update the filteredCurrencyArray based on the search text
                 let predicate = NSPredicate(format: "SELF BEGINSWITH[c] %@", searchText)
                 filterDict = mainDict.filter { predicate.evaluate(with: $0.value) }
-                
             }
+            
+            DispatchQueue.main.async {
+                // Reload the table view with the filtered or unfiltered data
+                self.tableView.reloadData()
+            }
+            
+            return true
         }
-        DispatchQueue.main.async {
-            // Reload the table view with the filtered or unfiltered data
-            self.tableView.reloadData()
-        }
-        return true
+        
+        // Allow backspace
+        if string.isEmpty { return true }
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics
+        let typedCharacterSet = CharacterSet(charactersIn: string)
+         
+        return allowedCharacterSet.isSuperset(of: typedCharacterSet)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

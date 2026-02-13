@@ -1236,6 +1236,20 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         lineView.isHidden = false
     }
     
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        
+        // Allow backspace
+        if string.isEmpty { return true }
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics
+        let typedCharacterSet = CharacterSet(charactersIn: string)
+        
+        return allowedCharacterSet.isSuperset(of: typedCharacterSet)
+    }
+    
     private func handleIsEditingDisplayNameChanged() {
 
     }
