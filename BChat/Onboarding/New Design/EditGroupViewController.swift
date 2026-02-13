@@ -248,7 +248,12 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         }
         let currentString: NSString = textField.text! as NSString
         let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-        return newString.length <= 26
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics
+        let typedCharacterSet = CharacterSet(charactersIn: newString as String)
+        
+        return newString.length <= 26 && allowedCharacterSet.isSuperset(of: typedCharacterSet)
     }
     
     @objc func nameTextfieldTapped(textField: UITextField) {

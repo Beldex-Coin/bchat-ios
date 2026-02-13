@@ -25,7 +25,7 @@ protocol OWSConversationSettingsViewDelegate: AnyObject {
 }
 
 
-class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
+class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     
     
     private lazy var profilePictureImageView = ProfilePictureView()
@@ -69,6 +69,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
+        result.delegate = self
         
         return result
     }()
@@ -531,6 +532,20 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         )
         textField.attributedText = attributed
     }
+    
+    func textField(_ textField: UITextField,
+                       shouldChangeCharactersIn range: NSRange,
+                       replacementString string: String) -> Bool {
+            
+            // Allow backspace
+            if string.isEmpty { return true }
+            
+            // Allow only alphanumeric
+            let allowedCharacterSet = CharacterSet.alphanumerics
+            let typedCharacterSet = CharacterSet(charactersIn: string)
+            
+            return allowedCharacterSet.isSuperset(of: typedCharacterSet)
+        }
     
     @objc func notifyforMentionsOnlySwitchValueDidChange(_ sender: UISwitch) {
         let uiSwitch = sender
