@@ -1443,6 +1443,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func showUserDetails(for bchatID: String) {
+        hideInputAccessoryView()
         let userDetailsSheet = UserDetailsSheet(for: bchatID)
         userDetailsSheet.modalPresentationStyle = .overFullScreen
         userDetailsSheet.modalTransitionStyle = .crossDissolve

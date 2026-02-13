@@ -64,6 +64,8 @@ final class UserDetailsSheet : Sheet {
     
     @objc private func copyBChatID() {
         UIPasteboard.general.string = bchatID
-        presentingViewController?.dismiss(animated: true, completion: nil)
+        presentingViewController?.dismiss(animated: true) {
+            NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
+        }
     }
 }

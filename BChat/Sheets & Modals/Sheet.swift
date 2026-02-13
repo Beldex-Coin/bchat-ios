@@ -60,6 +60,8 @@ class Sheet : BaseVC {
     }
 
     @objc func close() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) {
+            NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
+        }
     }
 }
