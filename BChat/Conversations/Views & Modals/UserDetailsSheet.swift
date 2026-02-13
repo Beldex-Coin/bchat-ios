@@ -64,6 +64,7 @@ final class UserDetailsSheet : Sheet {
     
     @objc private func copyBChatID() {
         UIPasteboard.general.string = bchatID
+        showToast(message: "Copied to clipboard", seconds: 1.0)
         presentingViewController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
         }

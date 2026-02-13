@@ -999,6 +999,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc func openURLViewCopyButtonTapped() {
         hideOpenURLView()
         UIPasteboard.general.string = urlToOpen!.absoluteString
+        showToast(message: "Copied to clipboard", seconds: 1.0)
     }
     
     
