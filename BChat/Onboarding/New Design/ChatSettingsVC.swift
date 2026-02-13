@@ -402,7 +402,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
         var threadName = self.thread?.name()
         if self.thread is TSContactThread {
             let thread = self.thread as? TSContactThread
-            return Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            let bchatID = thread?.contactBChatID()
+            let contactName = Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            return contactName == bchatID ? bchatID?.truncateMiddle(with: 4, suffixLength: 4) : contactName
         } else if threadName!.count == 0 && isGroupThread() {
             threadName = MessageStrings.newGroupDefaultTitle
         }
@@ -1491,14 +1493,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 
                 if indexPath.row == 7 {
                     let thread = self.thread as? TSContactThread
-                    cell.titleLabel.text = "Report \(Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous")"
+                    let bchatID = thread?.contactBChatID()
+                    let contactName = Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+                    let displayName = contactName == bchatID ? bchatID?.truncateMiddle(with: 4, suffixLength: 4) : contactName
+                    cell.titleLabel.text = "Report" + " \(displayName ?? "")"
                 }
-                
-                
-                
             }
-            
-            
             
             // Close Group
             if self.isClosedGroup() {
