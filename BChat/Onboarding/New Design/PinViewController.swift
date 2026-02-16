@@ -89,7 +89,6 @@ class PinViewController: BaseVC {
         view.addSubview(keypadView)
         view.addSubview(nextButton)
         
-        nextButton.isHidden = flowStep == .createPin
         enableNextButton(false)
         
         NSLayoutConstraint.activate([
@@ -204,7 +203,6 @@ class PinViewController: BaseVC {
             flowStep = .createPin
             title = "Create Password"
             pinLabel.text = "Enter your PIN"
-            nextButton.isHidden = true
             
         case .enterNewPin:
             flowStep = .enterOldPin
@@ -252,7 +250,7 @@ class PinViewController: BaseVC {
         pinLabels[index].layer.borderColor = Colors.bothGreenColor.cgColor
 
         if currentPin.count == pinLength {
-            handlePinCompletion()
+            enableNextButton(true)
         }
     }
 
@@ -279,7 +277,7 @@ class PinViewController: BaseVC {
         case .enterNewPin:
             firstPinEntry = currentPin
             flowStep = .confirmNewPin
-            pinLabel.text = "Re-Enter your PIN"
+            pinLabel.text = "Re-enter your PIN"
             resetPinUI()
             
         case .confirmNewPin:
@@ -288,8 +286,7 @@ class PinViewController: BaseVC {
         case .createPin:
             firstPinEntry = currentPin
             flowStep = .confirmCreatePin
-            pinLabel.text = "Re-Enter your PIN"
-            nextButton.isHidden = false
+            pinLabel.text = "Re-enter your PIN"
             resetPinUI()
             
         case .confirmCreatePin:
@@ -345,7 +342,7 @@ class PinViewController: BaseVC {
             SaveUserDefaultsData.BChatPassword = currentPin
             showConfirmationModal("Your password has been changed successfully!")
         } else {
-            showErrorMessage("PIN does not match.")
+            showErrorMessage("PIN do not match.")
             flowStep = .enterNewPin
             pinLabel.text = "Enter New PIN"
             resetPinUI()
@@ -366,7 +363,7 @@ class PinViewController: BaseVC {
                 gotoHome()
             }
         } else {
-            showErrorMessage("PIN does not match.")
+            showErrorMessage("PIN do not match.")
             flowStep = .createPin
             pinLabel.text = "Enter your PIN"
             resetPinUI()
