@@ -88,11 +88,6 @@ final class SettingsTableViewCell: UITableViewCell {
         toggleSwitch.isOn = item.isOn
         toggleSwitch.isEnabled = item.isEnabled
         
-        if item.title == SettingInfo.payAsYouChat.title {
-            toggleSwitch.isOn = item.isOn && SSKPreferences.areWalletEnabled
-            toggleSwitch.isEnabled = SSKPreferences.areWalletEnabled
-        }
-        
         subtitleLabel.isHidden = !item.isToggleSwitch
         toggleSwitch.isHidden = !item.isToggleSwitch
         iconView.tintColor = !item.isToggleSwitch ? .red : isLightMode ? .black : .white
@@ -101,12 +96,10 @@ final class SettingsTableViewCell: UITableViewCell {
     
     func updateContainerView(with indexPath: IndexPath, item: SettingItem) {
         if item.title == SettingInfo.screenSecurity.title ||
-            item.title == SettingInfo.startWallet.title ||
             item.title == SettingInfo.readReceipts.title {
             containerView.layer.cornerRadius = 16
             containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         } else if item.title == SettingInfo.incognitoKeyboard.title ||
-            item.title == SettingInfo.payAsYouChat.title ||
             item.title == SettingInfo.clearConversationHistory.title {
             containerView.layer.cornerRadius = 16
             containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]

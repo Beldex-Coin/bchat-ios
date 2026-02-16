@@ -7,7 +7,6 @@ import UIKit
 public enum ConfirmationModalType: Int {
     
     case gifEnable
-    case payAsYouChat
     case leaveGroup
     case shareContact
     case acceptMsgRequest

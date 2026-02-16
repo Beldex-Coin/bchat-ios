@@ -138,41 +138,6 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SettingsViewController: SettingsViewModelDelegate {
     
-    internal func payAsYouChat(_ isEnabled: Bool)  {
-        if let myString = UserDefaults.standard.string(forKey: "WalletPassword"), !myString.isEmpty {
-            SSKPreferences.arePayAsYouChatEnabled = isEnabled
-        } else {
-            let alertController = UIAlertController(
-                title: NSLocalizedString("Setup Pin", comment: "Alert title"),
-                message: NSLocalizedString("Please set up wallet pin to enable pay as you chat feature.", comment: "Alert message"),
-                preferredStyle: .alert
-            )
-            let cancelAction = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: "Cancel button title"),
-                style: .cancel,
-                handler: nil
-            )
-            alertController.addAction(cancelAction)
-            let yesAction = UIAlertAction(
-                title: NSLocalizedString("Setup", comment: "Setup button title"),
-                style: .default,
-                handler: { action in
-                    let viewController = NewPasswordVC()
-                    viewController.isGoingWallet = true
-                    if SaveUserDefaultsData.WalletPassword.isEmpty {
-                        viewController.isGoingPopUp = true
-                        viewController.isCreateWalletPassword = true
-                    } else {
-                        viewController.isVerifyWalletPassword = true
-                    }
-                    self.navigationController!.pushViewController(viewController, animated: true)
-                }
-            )
-            alertController.addAction(yesAction)
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
     internal func voiceAndVideoCall(_ isEnabled: Bool) {
         let userDefaults = UserDefaults.standard
         if isEnabled && !userDefaults.bool(forKey: "hasSeenCallIPExposureWarning") {
@@ -198,10 +163,5 @@ extension SettingsViewController: SettingsViewModelDelegate {
         } else {
             SSKPreferences.areCallsEnabled = isEnabled
         }
-    }
-    
-    internal func reloadPayAsYouChatRow(_ indexPath: IndexPath) {
-        let updatedIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
-        tableView.reloadRows(at: [updatedIndexPath], with: .none)
     }
 }
