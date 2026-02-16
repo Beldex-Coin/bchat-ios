@@ -178,9 +178,8 @@ class RegisterVC: BaseVC {
 
     // MARK: Button Actions :-
     @objc private func continueButtonTapped() {
-        let vc = NewPasswordVC()
-        vc.isGoingNewRestoreSeedVC = true
-        vc.isCreatePassword = true
-        navigationController!.pushViewController(vc, animated: true)
+        let vc = PinViewController()
+        vc.flowStep = .createPin
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

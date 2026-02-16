@@ -310,10 +310,9 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         if displayNameTextField.text != "" {
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
-            let vc = NewPasswordVC()
-            vc.isGoingHome = true
-            vc.isCreatePassword = true
-            navigationController!.pushViewController(vc, animated: true)
+            let vc = PinViewController()
+            vc.flowStep = .createPin
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
