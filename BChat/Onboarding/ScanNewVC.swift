@@ -102,6 +102,19 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
     /// View will appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        startScannerIfPermitted()
+    }
+    
+    /// View will disappear
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if !scannerView.isRunning {
+            scannerView.stopScanning()
+        }
+    }
+    
+    // checking camera permission and starting scanning
+    func startScannerIfPermitted() {
         let hasCameraAccess = (AVCaptureDevice.authorizationStatus(for: .video) == .authorized)
         if hasCameraAccess {
             if !scannerView.isRunning {
@@ -112,13 +125,6 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         }
     }
     
-    /// View will disappear
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if !scannerView.isRunning {
-            scannerView.stopScanning()
-        }
-    }
     // MARK: DIRECT SCAN for ONE to ONE
     fileprivate func startNewDMIfPossible(with bnsNameOrPublicKey: String) {
         if ECKeyPair.isValidHexEncodedPublicKey(candidate: bnsNameOrPublicKey) {
@@ -141,6 +147,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
                         }
                         let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
                         _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                            self?.startScannerIfPermitted()
                         })
                     }
                 }
@@ -163,7 +170,9 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         } else {
             let title = NSLocalizedString("invalid_url", comment: "")
             let message = NSLocalizedString("VALID_URL_CHECKING", comment: "")
-            showError(title: title, message: message)
+            showError(title: title, message: message) { [weak self] in
+                self?.startScannerIfPermitted()
+            }
         }
     }
     
@@ -188,9 +197,12 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         }
     }
     // MARK: Convenience
-    private func showError(title: String, message: String = "") {
+    private func showError(title: String, message: String = "", onOk: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        let okAction = UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default) { _ in
+            onOk?()
+        }
+        alert.addAction(okAction)
         presentAlert(alert)
     }
     
