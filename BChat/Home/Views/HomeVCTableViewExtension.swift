@@ -111,7 +111,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
                     success(true)
                     DispatchQueue.main.async {
-                        tableView.reloadRows(at: [indexPath], with: .fade)
+                        tableView.reloadData()
                     }
                 })
                 pin.backgroundColor = Colors.mainBackGroundColor2
@@ -123,7 +123,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
                     success(true)
                     DispatchQueue.main.async {
-                        tableView.reloadRows(at: [indexPath], with: .fade)
+                        tableView.reloadData()
                     }
                 })
                 unpin.backgroundColor = Colors.mainBackGroundColor2
@@ -137,7 +137,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
                 success(true)
                 DispatchQueue.main.async {
-                    tableView.reloadRows(at: [indexPath], with: .fade)
+                    tableView.reloadData()
                 }
             })
             archive.backgroundColor = Colors.mainBackGroundColor2
@@ -181,7 +181,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
                                 success(true)
                                 DispatchQueue.main.async {
-                                    tableView.reloadRows(at: [indexPath], with: .fade)
+                                    tableView.reloadData()
                                 }
                             }
                         )
