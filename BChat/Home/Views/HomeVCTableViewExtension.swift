@@ -109,7 +109,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = true
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                    success(true)
+                    DispatchQueue.main.async {
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }
                 })
                 pin.backgroundColor = Colors.mainBackGroundColor2
                 pin.image = UIImage(named: "ic_pinNew_Home")
@@ -118,7 +121,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     thread.isPinned = false
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                    success(true)
+                    DispatchQueue.main.async {
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }
                 })
                 unpin.backgroundColor = Colors.mainBackGroundColor2
                 unpin.image = UIImage(named: "ic_unPinNew_Home")
@@ -129,7 +135,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 thread.isArchived = true
                 thread.save()
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
-                tableView.reloadRows(at: [indexPath], with: .automatic)
+                success(true)
+                DispatchQueue.main.async {
+                    tableView.reloadRows(at: [indexPath], with: .fade)
+                }
             })
             archive.backgroundColor = Colors.mainBackGroundColor2
             archive.image = UIImage(named: "ic_archive")
@@ -170,9 +179,9 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                             },
                             completion: {
                                 MessageSender.syncConfiguration(forceSyncNow: true).retainUntilComplete()
-                                
+                                success(true)
                                 DispatchQueue.main.async {
-                                    tableView.reloadRows(at: [ indexPath ], with: .fade)
+                                    tableView.reloadRows(at: [indexPath], with: .fade)
                                 }
                             }
                         )
