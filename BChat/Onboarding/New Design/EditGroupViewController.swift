@@ -250,7 +250,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
         
         // Allow only alphanumeric
-        let allowedCharacterSet = CharacterSet.alphanumerics
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
         let typedCharacterSet = CharacterSet(charactersIn: newString as String)
         
         return newString.length <= 26 && allowedCharacterSet.isSuperset(of: typedCharacterSet)

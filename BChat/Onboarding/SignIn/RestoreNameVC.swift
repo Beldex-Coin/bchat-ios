@@ -220,7 +220,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         if string.isEmpty { return true }
         
         // Allow only alphanumeric
-        let allowedCharacterSet = CharacterSet.alphanumerics
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
         let typedCharacterSet = CharacterSet(charactersIn: string)
         
         return allowedCharacterSet.isSuperset(of: typedCharacterSet)
