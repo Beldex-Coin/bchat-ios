@@ -34,6 +34,9 @@ public protocol PlayerProgressBarDelegate {
     func playerProgressBarDidStartScrubbing(_ playerProgressBar: PlayerProgressBar)
     func playerProgressBar(_ playerProgressBar: PlayerProgressBar, scrubbedToTime time: CMTime)
     func playerProgressBar(_ playerProgressBar: PlayerProgressBar, didFinishScrubbingAtTime time: CMTime, shouldResumePlayback: Bool)
+    
+    func playVideo()
+    func pauseVideo()
 }
 
 // Allows the user to tap anywhere on the slider to set it's position,
@@ -71,7 +74,7 @@ public class PlayerProgressBar: UIView {
     // MARK: Subviews
     private let positionLabel = UILabel()
     private let remainingLabel = UILabel()
-    private let passAndPaly = UIButton()
+    private let playAndPause = UIButton()
     private let speakerOptionButton = UIButton()
     private let slider = TrackingSlider()
     private let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
@@ -131,8 +134,8 @@ public class PlayerProgressBar: UIView {
         remainingLabel.font = kLabelFont
 
         // Configure passAndpaly button
-        passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
-        passAndPaly.addTarget(self, action: #selector(passAndPalyButtonTapped), for: .touchUpInside)
+        playAndPause.setImage(UIImage(named: "ic_play_image"), for: .normal)
+        playAndPause.addTarget(self, action: #selector(playAndPauseButtonTapped), for: .touchUpInside)
         
         // Configure speakerOptionButton
         speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
@@ -161,7 +164,7 @@ public class PlayerProgressBar: UIView {
 
         // Layout Subviews
 
-        addSubview(passAndPaly)
+        addSubview(playAndPause)
         addSubview(positionLabel)
         addSubview(remainingLabel)
         addSubview(speakerOptionButton)
@@ -174,11 +177,11 @@ public class PlayerProgressBar: UIView {
         let buttonWidth: CGFloat = 24
         let buttonHeight: CGFloat = 24
         
-        passAndPaly.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
-        passAndPaly.autoPinEdge(toSuperviewMargin: .leading)
-        passAndPaly.autoVCenterInSuperview()
+        playAndPause.autoSetDimensions(to: CGSize(width: buttonWidth, height: buttonHeight))
+        playAndPause.autoPinEdge(toSuperviewMargin: .leading)
+        playAndPause.autoVCenterInSuperview()
 
-        positionLabel.autoPinEdge(.leading, to: .trailing, of: passAndPaly, withOffset: 8)
+        positionLabel.autoPinEdge(.leading, to: .trailing, of: playAndPause, withOffset: 8)
         positionLabel.autoVCenterInSuperview()
 
         let kSliderMargin: CGFloat = 8
@@ -204,6 +207,24 @@ public class PlayerProgressBar: UIView {
 //        // Notifications
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(isFromPassActionTapped), name: Notification.Name("isFromPassAction"), object: nil)
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+            try AVAudioSession.sharedInstance().setActive(true)
+            player?.volume = 1.0
+        } catch {
+            print("Failed to play audio: \(error)")
+        }
+        
+        notificationCenter.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player)
+        
+        notificationCenter.addObserver(self, selector: #selector(playAction), name: Notification.Name("playAction"), object: nil)
+        notificationCenter.addObserver(self, selector: #selector(pauseAction), name: Notification.Name("pauseAction"), object: nil)
+    }
+    
+    @objc func playerDidFinishPlaying() {
+        playAndPause.isSelected = false
+        playAndPause.setImage(UIImage(named: "ic_play_image"), for: .normal)
     }
 
     // MARK: Gesture handling
@@ -211,18 +232,28 @@ public class PlayerProgressBar: UIView {
     var wasPlayingWhenScrubbingStarted: Bool = false
     
     @objc func isFromPassActionTapped(notification: NSNotification) {
-        passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
+        playAndPause.setImage(UIImage(named: "ic_pause_image"), for: .normal)
+    }
+    
+    @objc func playAction(notification: NSNotification) {
+        playAndPause.isSelected = true
+        playAndPause.setImage(UIImage(named: "ic_pause_image"), for: .normal)
+    }
+    
+    @objc func pauseAction(notification: NSNotification) {
+        playAndPause.isSelected = false
+        playAndPause.setImage(UIImage(named: "ic_play_image"), for: .normal)
     }
     
     ///Small Buton Pass and Paly Button
-    @objc private func passAndPalyButtonTapped() {
-        passAndPaly.isSelected.toggle()
-        if passAndPaly.isSelected {
-            passAndPaly.setImage(UIImage(named: "ic_pass_image"), for: .normal)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPassSmallButton"), object: nil)
+    @objc private func playAndPauseButtonTapped() {
+        playAndPause.isSelected.toggle()
+        if playAndPause.isSelected {
+            playAndPause.setImage(UIImage(named: "ic_pause_image"), for: .normal)
+            delegate?.playVideo()
         } else {
-            passAndPaly.setImage(UIImage(named: "ic_Play_image"), for: .normal)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "isFromPlaySmallButton"), object: nil)
+            playAndPause.setImage(UIImage(named: "ic_play_image"), for: .normal)
+            delegate?.pauseVideo()
         }
     }
     
@@ -230,23 +261,11 @@ public class PlayerProgressBar: UIView {
     @objc private func speakerButtonTapped() {
         speakerOptionButton.isSelected.toggle()
         if speakerOptionButton.isSelected {
-            speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
-                try AVAudioSession.sharedInstance().setActive(true)
-                print("Speaker enabled")
-            } catch {
-                print("Failed to enable speaker: \(error)")
-            }
-        }else {
             speakerOptionButton.setImage(UIImage(named: "ic_speaker_mute"), for: .normal)
-            do {
-                try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
-                try AVAudioSession.sharedInstance().setActive(true)
-                print("Speaker disabled")
-            } catch {
-                print("Failed to disable speaker: \(error)")
-            }
+            player?.volume = 0.0
+        } else {
+            speakerOptionButton.setImage(UIImage(named: "ic_speaker_image"), for: .normal)
+            player?.volume = 1.0
         }
     }
     
