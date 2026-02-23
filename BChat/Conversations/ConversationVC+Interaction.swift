@@ -272,6 +272,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleDocumentButtonTapped() {
+        snInputView.resignFirstResponder()
         // UIDocumentPickerModeImport copies to a temp file within our container.
         // It uses more memory than "open" but lets us avoid working with security scoped URLs.
         let documentPickerVC = UIDocumentPickerViewController(forOpeningContentTypes: [.item],
