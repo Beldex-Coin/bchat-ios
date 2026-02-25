@@ -5,7 +5,7 @@ enum KeyPairUtilities {
     static func generate(from seed: Data) -> (ed25519KeyPair: Sign.KeyPair, x25519KeyPair: ECKeyPair) {
         assert(seed.count == 32)
         let padding = Data(repeating: 0, count: 0)
-        let ed25519KeyPair = Sodium().sign.keyPair(seed: (seed + padding).bytes)!
+        let ed25519KeyPair = Sodium().sign.keyPair(seed: Array(seed + padding))!
         let x25519PublicKey = Sodium().sign.toX25519(ed25519PublicKey: ed25519KeyPair.publicKey)!
         let x25519SecretKey = Sodium().sign.toX25519(ed25519SecretKey: ed25519KeyPair.secretKey)!
         let x25519KeyPair = try! ECKeyPair(publicKeyData: Data(x25519PublicKey), privateKeyData: Data(x25519SecretKey))

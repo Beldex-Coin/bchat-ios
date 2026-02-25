@@ -246,6 +246,8 @@ import LocalAuthentication
             case .notInteractive:
                 owsFailDebug("context not interactive.")
                 return .unexpectedFailure(error:defaultErrorDescription)
+            case .companionNotAvailable:
+                break
             }
         }
         return .failure(error:defaultErrorDescription)
