@@ -685,6 +685,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             navigationController?.navigationBar.isHidden = false
             snInputView.isUserInteractionEnabled = true
         }
+        
+        if #available(iOS 26.0, *) {
+            navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = false
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
