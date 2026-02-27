@@ -643,6 +643,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
         inputTextView.textColor = Colors.text
+        updateAttachmentButtonLayout()
         if !thread.isGroupThread() { return }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
@@ -1400,6 +1401,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         bottomConstraintOfAttachmentButton = 4
         resetAttachmentOptions()
         snInputView.quoteDraftInfo = nil
+        updateFrame(false)
         view.layoutIfNeeded()
     }
     
@@ -1433,6 +1435,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
         reply(viewItem)
+        updateFrame(true)
     }
     
     func resetAttachmentOptions() {
@@ -2071,6 +2074,39 @@ extension ConversationVC {
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "\(name)"))
         // The attributed string
         return attributedString
+    }
+    
+    func updateAttachmentButtonLayout() {
+        var constraintValue: CGFloat = 4
+        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
+        if inputTextViewLines >= 2 {
+            constraintValue = inputTextViewLines == 3 ? 16 :
+            inputTextViewLines >= 4 ? 28 : constraintValue
+        }
+        
+        if snInputView.quoteDraftInfo != nil {
+            let msg: VisibleMessage = VisibleMessage()
+            msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
+            if let quoteText = msg.quote?.text {
+                constraintValue += quoteText.count >= 100 ? 78 : 68
+            } else {
+                constraintValue += 68
+            }
+        }
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                bottomConstraintOfAttachmentButton = constraintValue
+            }
+        }
+    }
+    
+    func updateFrame(_ isUpdate: Bool) {
+        UIView.animate(withDuration: 0.25) {
+            self.messageRequestsViewBotomConstraint?.constant = isUpdate ? -170 : -105
+            self.scrollButtonBottomConstraint?.constant = isUpdate ? -170 : -105
+            self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
+        }
     }
 }
 

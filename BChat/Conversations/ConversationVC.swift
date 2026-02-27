@@ -745,29 +745,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.scrollButton.alpha = self.getScrollButtonOpacity()
             }
         }
-        
-        var constraintValue: CGFloat = 4
-        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
-        if inputTextViewLines >= 2 {
-            constraintValue = inputTextViewLines == 3 ? 16 :
-                                inputTextViewLines >= 4 ? 28 : constraintValue
-        }
-        
-        if snInputView.quoteDraftInfo != nil {
-            let msg: VisibleMessage = VisibleMessage()
-            msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-            if let quoteText = msg.quote?.text {
-                constraintValue += quoteText.count >= 100 ? 78 : 68
-            } else {
-                constraintValue += 68
-            }
-        }
-
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.25) {
-                bottomConstraintOfAttachmentButton = constraintValue
-            }
-        }
+        updateAttachmentButtonLayout()
     }
     
     override func appDidBecomeActive(_ notification: Notification) {
