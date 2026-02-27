@@ -372,11 +372,11 @@ NSString *const TSLazyRestoreAttachmentsGroup = @"TSLazyRestoreAttachmentsGroup"
             }
             TSInteraction *_Nullable lastInteractionForInbox1 =
                 [thread1 lastInteractionForInboxWithTransaction:transaction];
-            NSDate *lastInteractionForInboxDate1 = lastInteractionForInbox1 ? lastInteractionForInbox1.receivedAtDate : thread1.creationDate;
+            NSDate *lastInteractionForInboxDate1 = lastInteractionForInbox1 ? lastInteractionForInbox1.dateForUI : thread1.creationDate;
 
             TSInteraction *_Nullable lastInteractionForInbox2 =
                 [thread2 lastInteractionForInboxWithTransaction:transaction];
-            NSDate *lastInteractionForInboxDate2 = lastInteractionForInbox2 ? lastInteractionForInbox2.receivedAtDate : thread2.creationDate;
+            NSDate *lastInteractionForInboxDate2 = lastInteractionForInbox2 ? lastInteractionForInbox2.dateForUI : thread2.creationDate;
 
 
             NSDate *date1 = thread1.lastInteractionDate ?: lastInteractionForInboxDate1 ?: thread1.creationDate;
