@@ -135,10 +135,8 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 thread.isArchived = true
                 thread.save()
                 self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
+                tableView.reloadData()
                 success(true)
-                DispatchQueue.main.async {
-                    tableView.reloadData()
-                }
             })
             archive.backgroundColor = Colors.mainBackGroundColor2
             archive.image = UIImage(named: "ic_archive")
