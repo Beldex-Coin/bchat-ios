@@ -578,7 +578,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         deleteAudioView.addSubViews(deleteAudioImageView, deleteAudioLabel)
         deleteAudioView.addSubview(deleteAudioButton)
         deleteAudioView.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 2).isActive = true
         deleteAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         NSLayoutConstraint.activate([
             deleteAudioImageView.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),

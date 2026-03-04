@@ -41,7 +41,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let settingsVC = ChatSettingsVC()
         settingsVC.configure(with: thread, viewItems: viewItems, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
-        navigationController!.pushViewController(settingsVC, animated: true, completion: nil)
+        navigationController!.pushViewController(settingsVC, animated: true) {
+            self.cancelVoiceMessageRecording()
+        }
     }
 
     func handleScrollToBottomButtonTapped() {
