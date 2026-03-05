@@ -152,7 +152,9 @@ extension MessageReceiver {
         let message = OWSDisappearingConfigurationUpdateInfoMessage(timestamp: messageSentTimestamp, thread: thread,
             configuration: configuration, createdByRemoteName: senderDisplayName, createdInExistingGroup: false)
         message.save(with: transaction)
-        SSKEnvironment.shared.disappearingMessagesJob.startIfNecessary()
+        transaction.addCompletionQueue(nil) {
+            SSKEnvironment.shared.disappearingMessagesJob.startIfNecessary()
+        }
     }
 
     public static func disableExpirationTimer(for senderPublicKey: String, syncTarget: String?, groupPublicKey: String?, messageSentTimestamp: UInt64, using transaction: Any) {
@@ -175,7 +177,9 @@ extension MessageReceiver {
         let message = OWSDisappearingConfigurationUpdateInfoMessage(timestamp: messageSentTimestamp, thread: thread,
             configuration: configuration, createdByRemoteName: senderDisplayName, createdInExistingGroup: false)
         message.save(with: transaction)
-        SSKEnvironment.shared.disappearingMessagesJob.startIfNecessary()
+        transaction.addCompletionQueue(nil) {
+            SSKEnvironment.shared.disappearingMessagesJob.startIfNecessary()
+        }
     }
     
     

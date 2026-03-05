@@ -340,6 +340,11 @@ NSString *NSStringForOutgoingMessageRecipientState(OWSOutgoingMessageRecipientSt
         // Should we find a need to save this in the future, we need to exclude any non-serializable properties.
         return;
     }
+    
+    uint64_t now = [NSDate ows_millisecondTimeStamp];
+    if (self.isExpiringMessage && self.expiresAt > 0 && self.expiresAt <= now) {
+        return;
+    }
 
     [super saveWithTransaction:transaction];
 }

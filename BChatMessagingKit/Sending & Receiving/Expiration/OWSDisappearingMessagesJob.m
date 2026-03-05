@@ -65,7 +65,7 @@ void AssertIsOnDisappearingMessagesQueue()
     _disappearingMessagesFinder = [OWSDisappearingMessagesFinder new];
 
     // suspenders in case a deletion schedule is missed.
-    NSTimeInterval kFallBackTimerInterval = 5 * kMinuteInterval;
+    NSTimeInterval kFallBackTimerInterval = 60;
     [AppReadiness runNowOrWhenAppDidBecomeReady:^{
         if (CurrentAppContext().isMainApp) {
             self.fallbackTimer = [NSTimer weakScheduledTimerWithTimeInterval:kFallBackTimerInterval
@@ -117,7 +117,7 @@ void AssertIsOnDisappearingMessagesQueue()
     [LKStorage writeSyncWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
         [self.disappearingMessagesFinder enumerateExpiredMessagesWithBlock:^(TSMessage *message) {
             // sanity check
-            if (message.expiresAt > now) {
+            if (!message.isExpiringMessage || message.expiresAt == 0 || message.expiresAt > now) {
                 return;
             }
 
@@ -164,7 +164,7 @@ void AssertIsOnDisappearingMessagesQueue()
     }
 
     // Don't clobber if multiple actions simultaneously triggered expiration.
-    if (message.expireStartedAt == 0 || message.expireStartedAt > expirationStartedAt) {
+    if (message.expireStartedAt == 0) {
         [message updateWithExpireStartedAt:expirationStartedAt transaction:transaction];
     }
 
@@ -232,7 +232,7 @@ void AssertIsOnDisappearingMessagesQueue()
         }
         self.hasStarted = YES;
 
-        dispatch_async(OWSDisappearingMessagesJob.serialQueue, ^{
+        dispatch_sync(OWSDisappearingMessagesJob.serialQueue, ^{
             // Theoretically this shouldn't be necessary, but there was a race condition when receiving a backlog
             // of messages across timer changes which could cause a disappearing message's timer to never be started.
             [LKStorage writeSyncWithBlock:^(YapDatabaseReadWriteTransaction *_Nonnull transaction) {
@@ -270,7 +270,8 @@ void AssertIsOnDisappearingMessagesQueue()
         const NSTimeInterval kMinDelaySeconds = 1.0;
         NSTimeInterval delaySeconds = MAX(kMinDelaySeconds, date.timeIntervalSinceNow);
         NSDate *newTimerScheduleDate = [NSDate dateWithTimeIntervalSinceNow:delaySeconds];
-        if (self.nextDisappearanceDate && [self.nextDisappearanceDate isBeforeDate:newTimerScheduleDate]) {
+        if (self.nextDisappearanceDate &&
+            fabs(self.nextDisappearanceDate.timeIntervalSinceNow) < delaySeconds) {
             return;
         }
 
@@ -288,7 +289,7 @@ void AssertIsOnDisappearingMessagesQueue()
 - (void)disappearanceTimerDidFire
 {
     if (!CurrentAppContext().isMainAppAndActive) {
-        // Don't schedule run when inactive or not in main app.
+        [self resetNextDisappearanceTimer];
         return;
     }
 
@@ -356,7 +357,7 @@ void AssertIsOnDisappearingMessagesQueue()
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
     [AppReadiness runNowOrWhenAppDidBecomeReady:^{
-        dispatch_async(OWSDisappearingMessagesJob.serialQueue, ^{
+        dispatch_sync(OWSDisappearingMessagesJob.serialQueue, ^{
             [self runLoop];
         });
     }];
