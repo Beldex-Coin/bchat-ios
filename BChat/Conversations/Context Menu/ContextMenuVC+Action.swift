@@ -129,7 +129,7 @@ extension ContextMenuVC {
                         }
                     }
                 }
-                if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
+//                if viewItem.canCopyMedia() { result.append(Action.copy(viewItem, delegate)) }
                 if viewItem.canSaveMedia() { result.append(Action.save(viewItem, delegate)) }
                 
                 // Message Detail For OutgoingMessage

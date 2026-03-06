@@ -204,6 +204,11 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
             return
         }
         
+        if thread.isBlocked() {
+            showError(title: "This contact is blocked, If you want to send message, please unblock them.")
+            return
+        }
+        
         self.selectedThread = thread
         
         let approvalVC = AttachmentApprovalViewController.wrappedInNavController(attachments: attachments, approvalDelegate: self)
@@ -309,5 +314,11 @@ final class ThreadPickerVC: UIViewController, UITableViewDataSource, UITableView
             threadViewModelCache[thread.uniqueId!] = threadViewModel
             return threadViewModel
         }
+    }
+    
+    func showError(title: String, message: String = "") {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        presentAlert(alert)
     }
 }

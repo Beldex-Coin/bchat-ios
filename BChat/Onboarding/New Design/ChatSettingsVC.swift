@@ -336,6 +336,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         getAllDcouments()
+        guard let thread = self.thread as? TSContactThread else { return }
+        if thread.isBlocked() {
+            disappearingMessagesConfiguration?.isEnabled = false
+        }
         self.tableView.reloadData()
     }
     
@@ -559,6 +563,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     }
     
     @objc func disAppearSwitchValueDidChange(_ sender: UISwitch) {
+        guard let thread = self.thread as? TSContactThread else { return }
+        if thread.isBlocked() {
+            showError(title: "This contact is blocked, If you want to change this, please unblock them.")
+            toggleDisappearingMessages(false)
+            return
+        }
         let disappearingMessagesSwitch = sender
         self.toggleDisappearingMessages(disappearingMessagesSwitch.isOn)
         self.tableView.reloadData()
@@ -1484,6 +1494,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     let thread = self.thread as? TSContactThread
                     if thread!.isBlocked() {
                         cell.titleLabel.text = "UnBlock This User"
+                        self.disappearingMessagesConfiguration?.isEnabled = false
                     } else {
                         cell.titleLabel.text = "Block This User"
                     }
