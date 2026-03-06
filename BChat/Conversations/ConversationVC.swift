@@ -16,12 +16,13 @@ var isAudioRecording = false
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
-        showSearchUI()
+//        showSearchUI()
         popAllConversationSettingsViews {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
+                self.showSearchUI()
                 self.searchController.uiSearchController.searchBar.becomeFirstResponder()
                 self.searchController.uiSearchController.searchBar.showsCancelButton = true
-            }
+//            }
         }
     }
     
@@ -1458,13 +1459,42 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
-    func popAllConversationSettingsViews(completion completionBlock: (() -> Void)? = nil) {
+//    func popAllConversationSettingsViews(completion completionBlock: (() -> Void)? = nil) {
+//        if presentedViewController != nil {
+//            dismiss(animated: true) {
+//                self.navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+//            }
+//        } else {
+//            navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+//        }
+//    }
+    func popAllConversationSettingsViews(completion: (() -> Void)? = nil) {
+
+        guard let nav = navigationController else {
+            completion?()
+            return
+        }
+
+        let performPop = {
+            nav.popToViewController(self, animated: true)
+
+            if let coordinator = nav.transitionCoordinator {
+                coordinator.animate(alongsideTransition: nil) { _ in
+                    completion?()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion?()
+                }
+            }
+        }
+
         if presentedViewController != nil {
             dismiss(animated: true) {
-                self.navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+                performPop()
             }
         } else {
-            navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+            performPop()
         }
     }
     
@@ -1483,9 +1513,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         searchBarContainer.addSubview(searchBar)
         navigationItem.titleView = searchBarContainer
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
             searchBar.becomeFirstResponder()
-        }
+//        }
         
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
@@ -1504,12 +1534,18 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
         
         // Nav bar buttons
-        updateNavBarButtons()
+//        updateNavBarButtons()
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItems = []
         
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = self
         }
+//            searchBar.becomeFirstResponder()
+//            searchBar.showsCancelButton = true
+        
     }
     
     @objc func hideSearchUI(_ sender: Any? = nil) {
