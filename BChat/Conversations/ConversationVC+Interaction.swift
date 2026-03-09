@@ -122,6 +122,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     },
                     completion: {
                         self.snInputView.isHidden = false
+                        self.showInputAccessoryView()
                         if let clearChatButtonStackView = self.view.viewWithTag(111) {
                             clearChatButtonStackView.removeFromSuperview()
                         }
