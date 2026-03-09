@@ -16,13 +16,8 @@ var isAudioRecording = false
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
-//        showSearchUI()
         popAllConversationSettingsViews {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
                 self.showSearchUI()
-                self.searchController.uiSearchController.searchBar.becomeFirstResponder()
-                self.searchController.uiSearchController.searchBar.showsCancelButton = true
-//            }
         }
     }
     
@@ -1459,15 +1454,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
-//    func popAllConversationSettingsViews(completion completionBlock: (() -> Void)? = nil) {
-//        if presentedViewController != nil {
-//            dismiss(animated: true) {
-//                self.navigationController!.popToViewController(self, animated: true, completion: completionBlock)
-//            }
-//        } else {
-//            navigationController!.popToViewController(self, animated: true, completion: completionBlock)
-//        }
-//    }
     func popAllConversationSettingsViews(completion: (() -> Void)? = nil) {
 
         guard let nav = navigationController else {
@@ -1512,10 +1498,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         searchBarContainer.set(.width, to: UIScreen.main.bounds.width - 32)
         searchBarContainer.addSubview(searchBar)
         navigationItem.titleView = searchBarContainer
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-            searchBar.becomeFirstResponder()
-//        }
+        searchBar.showsCancelButton = true
         
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
@@ -1533,8 +1516,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             searchBar.autoPinEdgesToSuperviewMargins()
         }
         
-        // Nav bar buttons
-//        updateNavBarButtons()
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = nil
         navigationItem.rightBarButtonItems = []
@@ -1543,8 +1524,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = self
         }
-//            searchBar.becomeFirstResponder()
-//            searchBar.showsCancelButton = true
+        searchBar.becomeFirstResponder()
         
     }
     
