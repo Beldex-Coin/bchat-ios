@@ -2108,7 +2108,6 @@ extension ConversationVC {
         UIView.animate(withDuration: 0.25) {
             self.messageRequestsViewBotomConstraint?.constant = isUpdate ? -170 : -105
             self.scrollButtonBottomConstraint?.constant = isUpdate ? -170 : -105
-            self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
         }
     }
 }
