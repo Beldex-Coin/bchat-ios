@@ -53,7 +53,7 @@ public class ConversationSearchController : NSObject {
             uiSearchController.dimsBackgroundDuringPresentation = false
         }
         if #available(iOS 26, *) {
-            resultsBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
+            resultsBar.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0) + 44)
             uiSearchController.searchBar.inputAccessoryView = resultsBar
         } else {
             uiSearchController.searchBar.inputAccessoryView = resultsBar
@@ -174,7 +174,7 @@ public final class SearchResultsBar : UIView {
     }()
     
     override init(frame: CGRect) {
-        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44))
+        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: (UIWindow.keyWindow?.safeAreaInsets.bottom ?? 0) + 44))
         setUpViewHierarchy()
     }
     
