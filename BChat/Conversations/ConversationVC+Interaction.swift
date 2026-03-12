@@ -2105,10 +2105,11 @@ extension ConversationVC {
     }
     
     func updateFrame(_ isUpdate: Bool) {
-        UIView.animate(withDuration: 0.25) {
-            self.messageRequestsViewBotomConstraint?.constant = isUpdate ? -170 : -105
-            self.scrollButtonBottomConstraint?.constant = isUpdate ? -170 : -105
-            self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
+        if !isKeyboardPresented {
+            UIView.animate(withDuration: 0.25) {
+                self.messageRequestsViewBotomConstraint?.constant = isUpdate ? -170 : -105
+                self.scrollButtonBottomConstraint?.constant = isUpdate ? -170 : -105
+                self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121}
         }
     }
 }
