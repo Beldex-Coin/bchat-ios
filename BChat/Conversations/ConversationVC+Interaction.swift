@@ -1135,7 +1135,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
-        if isAudioRecording { return }
         
         if isShowingSearchUI {
             hideSearchUI()
@@ -1623,23 +1622,22 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         stopVoiceMessageRecording()
         audioRecorder = nil
         audioPlayer = nil
-        deleteAudioView.isHidden = true
         hideAttachmentExpandedButtons()
         isAudioRecording = false
     }
     
     func pauseRecording() {
-        deleteAudioView.isHidden = false
         audioRecorder?.stop()
-    }
-    
-    func showDeleteAudioView() {
-        deleteAudioView.isHidden = false
     }
     
     func resumeAudioRecording() {
         // For Resume Audio Don't Delete
 //        audioRecorder?.record()
+    }
+    
+    func deleteRecording() {
+        isAudioRecording = false
+        cancelVoiceMessageRecording()
     }
     
     func showAlertForAudioRecordingIsOn() {
@@ -1666,13 +1664,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func stopVoiceMessageRecording() {
         audioRecorder?.stop()
         audioSession.endAudioActivity(recordVoiceMessageActivity)
-        deleteAudioView.isHidden = true
-    }
-    
-    @objc func deleteAudioButtonTapped() {
-        isAudioRecording = false
-        deleteAudioView.isHidden = true
-        cancelVoiceMessageRecording()
     }
     
     // MARK: - Data Extraction Notifications
