@@ -2,10 +2,8 @@
 final class ConversationTitleView : UIView {
     private let thread: TSThread
     weak var delegate: ConversationTitleViewDelegate?
-
-    override var intrinsicContentSize: CGSize {
-        return UIView.layoutFittingExpandedSize
-    }
+    
+    override var intrinsicContentSize: CGSize { CGSize.zero }
 
     // MARK: UI Components
     private lazy var titleLabel: UILabel = {

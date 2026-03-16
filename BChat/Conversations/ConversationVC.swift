@@ -1038,12 +1038,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if let contactThread: TSContactThread = (thread as? TSContactThread) {
             let publicKey = contactThread.contactBChatID()
             let button: UIButton = UIButton(type: .custom)
-            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
-            button.frame = CGRectMake(0, 0, 42, 42)
-            button.layer.cornerRadius = 21
-            button.layer.masksToBounds = true            
+            button.widthAnchor.constraint(equalToConstant: 36).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 36).isActive = true
+            button.setImage(getProfilePicture(of: 36, for: publicKey), for: .normal)
+            button.frame = CGRectMake(0, 0, 36, 36)
+            button.layer.cornerRadius = 18
+            button.layer.masksToBounds = true
             button.layer.borderColor = Colors.bothGreenColor.cgColor
 
             lazy var verifiedImageView: UIImageView = {
@@ -1059,8 +1059,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let View = UIView()
                 View.translatesAutoresizingMaskIntoConstraints = false
                 View.backgroundColor = .clear
-                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
-                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                View.widthAnchor.constraint(equalToConstant: 36).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 36).isActive = true
                 return View
             }()
             outerView.addSubViews(button, verifiedImageView)
@@ -1088,12 +1088,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             iconImageView.set(.height, to: profilePictureViewSize)
             iconImageView.size = profilePictureViewSize
             iconImageView.layer.masksToBounds = true
-            iconImageView.layer.cornerRadius = 21
+            iconImageView.layer.cornerRadius = 18
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
-            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.frame = CGRectMake(0, 0, 42, 42)
-            button.layer.cornerRadius = 21
+            button.widthAnchor.constraint(equalToConstant: 36).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 36).isActive = true
+            button.frame = CGRectMake(0, 0, 36, 36)
+            button.layer.cornerRadius = 18
             button.layer.masksToBounds = true
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
@@ -1107,8 +1107,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let View = UIView()
                 View.translatesAutoresizingMaskIntoConstraints = false
                 View.backgroundColor = .clear
-                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
-                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                View.widthAnchor.constraint(equalToConstant: 36).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 36).isActive = true
                 return View
             }()
             
