@@ -51,6 +51,14 @@ final class VoiceMessageRecordingView : UIView {
         result.alpha = 0.5
         return result
     }()
+    
+    private lazy var rightAccessoryBackgroundView: UIView = {
+        let result = UIView()
+        result.backgroundColor = Colors.homeScreenFloatingbackgroundColor
+        result.layer.cornerRadius = VoiceMessageRecordingView.rightAccessoryBackgroundWidth / 2
+        result.clipsToBounds = true
+        return result
+    }()
 
     private lazy var slideToCancelStackView: UIStackView = {
         let result = UIStackView()
@@ -251,6 +259,7 @@ final class VoiceMessageRecordingView : UIView {
     private static let chevronSize: CGFloat = 16
     private static let dotSize: CGFloat = 16
     private static let lockViewHitMargin: CGFloat = 40
+    private static let rightAccessoryBackgroundWidth: CGFloat = 56
     
     private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: audioWavesImageView, withInset: -audioWavesImageView.width)
 
@@ -295,6 +304,10 @@ final class VoiceMessageRecordingView : UIView {
         // Pulse
         insertSubview(pulseView, at: 0)
         pulseView.center(in: circleView)
+        // Background behind lock + mic
+        insertSubview(rightAccessoryBackgroundView, belowSubview: pulseView)
+        rightAccessoryBackgroundView.set(.width, to: VoiceMessageRecordingView.rightAccessoryBackgroundWidth)
+        rightAccessoryBackgroundView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor, constant: 2).isActive = true
         // Slide to cancel stack view
         slideToCancelStackView.addArrangedSubview(chevronImageView)
         slideToCancelStackView.addArrangedSubview(slideToCancelLabel)
@@ -315,6 +328,8 @@ final class VoiceMessageRecordingView : UIView {
         addSubview(lockView)
         lockView.centerXAnchor.constraint(equalTo: iconImageView.centerXAnchor, constant: 2).isActive = true
         lockViewBottomConstraint.isActive = true
+        rightAccessoryBackgroundView.pin(.top, to: .top, of: lockView, withInset: -Values.smallSpacing)
+        rightAccessoryBackgroundView.pin(.bottom, to: .bottom, of: circleView, withInset: Values.smallSpacing)
         
         addSubview(pauseButton)
         pauseButton.pin(.left, to: .right, of: durationStackView, withInset: 8)
@@ -610,6 +625,7 @@ final class VoiceMessageRecordingView : UIView {
         onLocked?()
         
         let recordingViews: [UIView] = [
+            rightAccessoryBackgroundView,
             lockView,
             slideToCancelStackView,
             circleView,
@@ -677,23 +693,10 @@ extension VoiceMessageRecordingView {
 
         private func setUpViewHierarchy() {
             let iconTint: UIColor = isLightMode ? .black : .white
-            // Background & blur
-            let backgroundView = UIView()
-            backgroundView.backgroundColor = isLightMode ? .white : .black
-            backgroundView.alpha = Values.lowOpacity
-            addSubview(backgroundView)
-            backgroundView.pin(to: self)
-            let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-            addSubview(blurView)
-            blurView.pin(to: self)
             // Size & shape
             widthConstraint.isActive = true
             layer.cornerRadius = LockView.width / 2
             layer.masksToBounds = true
-            // Border
-            layer.borderWidth = 1
-            let borderColor = (isLightMode ? UIColor.black : UIColor.white).withAlphaComponent(Values.veryLowOpacity)
-            layer.borderColor = borderColor.cgColor
             // Lock icon
             let lockIconImageView = UIImageView(image: UIImage(named: "ic_lock_voice_recording")!.withTint(iconTint))
             let lockIconSize = LockView.lockIconSize
