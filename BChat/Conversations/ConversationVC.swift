@@ -1500,6 +1500,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         navigationItem.titleView = searchBarContainer
         searchBar.showsCancelButton = true
         
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            searchBar.becomeFirstResponder()
+        }
+        
         // On iPad, the cancel button won't show
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
         if UIDevice.current.isIPad {
@@ -1524,8 +1528,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             let navBar = navigationController!.navigationBar as! OWSNavigationBar
             navBar.stubbedNextResponder = self
         }
-        searchBar.becomeFirstResponder()
-        
     }
     
     @objc func hideSearchUI(_ sender: Any? = nil) {

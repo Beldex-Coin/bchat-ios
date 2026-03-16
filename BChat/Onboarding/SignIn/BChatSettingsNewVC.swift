@@ -241,7 +241,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
-        if indexPath.section == 2 {
+        if indexPath.section == 1 {
             if indexPath.row == 4 { // Clear Conversation History
                 let alert = UIAlertController(
                     title: nil,
