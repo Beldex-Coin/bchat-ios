@@ -253,6 +253,8 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         quoteViewRightConstraint.isActive = true
         if isAudioRecording {
             quoteViewRightConstraint.constant = -0.5
+        } else {
+            quoteViewRightConstraint.constant = -52.5
         }
         additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
@@ -383,6 +385,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
+        if quoteDraftInfo != nil {
+            quoteViewRightConstraint.constant = -45.5
+        }
     }
     
     func handleInputViewButtonLongPressMoved(_ inputViewButton: InputViewButton, with touch: UITouch) {
@@ -415,14 +420,21 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     @objc private func showVoiceMessageUI() {
-        if quoteDraftInfo != nil {
-            quoteViewRightConstraint.constant = -0.5
-        }
         isAudioRecording = true
         voiceMessageRecordingView?.removeFromSuperview()
         removeVoiceMessageRecordingViewIfNeeded()
         let voiceMessageButtonFrame = voiceMessageButton.superview!.convert(voiceMessageButton.frame, to: self)
-        let voiceMessageRecordingView = VoiceMessageRecordingView(voiceMessageButtonFrame: voiceMessageButtonFrame, delegate: delegate)
+        let voiceMessageRecordingView = VoiceMessageRecordingView(
+            voiceMessageButtonFrame: voiceMessageButtonFrame,
+            delegate: delegate,
+            onLocked: { [weak self] in
+                guard let self = self else { return }
+                guard self.quoteDraftInfo != nil else { return }
+                guard self.additionalContentContainerOuterView.isDescendant(of: self) else { return }
+                self.quoteViewRightConstraint.constant = -0.5
+                self.layoutIfNeeded()
+            }
+        )
         voiceMessageRecordingView.alpha = 0
         if let mainStackView = mainStackView {
             let insertIndex = min(1, mainStackView.arrangedSubviews.count)
@@ -448,7 +460,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     func hideVoiceMessageUI() {
-        quoteViewRightConstraint.constant = -52.5
+        if quoteDraftInfo != nil {
+            quoteViewRightConstraint.constant = -52.5
+        }
         isAudioRecording = false
         finalBottomStack?.isHidden = false
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]

@@ -5,13 +5,14 @@ final class VoiceMessageRecordingView : UIView {
     
     private let voiceMessageButtonFrame: CGRect
     private weak var delegate: VoiceMessageRecordingViewDelegate?
+    private let onLocked: (() -> Void)?
     private var isLocked = false
     private lazy var heightConstraint = set(.height, to: VoiceMessageRecordingView.recordingHeight)
     private lazy var slideToCancelStackViewRightConstraint = slideToCancelStackView.pin(.right, to: .right, of: self)
-    private lazy var slideToCancelLabelCenterHorizontalConstraint = slideToCancelLabel.center(.horizontal, in: self)
+    private lazy var slideToCancelLabelCenterHorizontalConstraint = slideToCancelLabel.centerWithInset(.horizontal, in: self, inset: 60)
     private lazy var pulseViewWidthConstraint = pulseView.set(.width, to: VoiceMessageRecordingView.circleSize)
     private lazy var pulseViewHeightConstraint = pulseView.set(.height, to: VoiceMessageRecordingView.circleSize)
-    private lazy var lockViewBottomConstraint = lockView.pin(.bottom, to: .top, of: self, withInset: Values.mediumSpacing)
+    private lazy var lockViewBottomConstraint = lockView.pin(.bottom, to: .top, of: circleView, withInset: 0)
     private let recordingStartDate = Date()
     private var recordingTimer: Timer?
     private var iconLeftConstraint: NSLayoutConstraint?
@@ -55,7 +56,7 @@ final class VoiceMessageRecordingView : UIView {
         let result = UIStackView()
         result.axis = .horizontal
         result.spacing = Values.smallSpacing
-        result.alignment = .center
+        result.alignment = .trailing
         return result
     }()
 
@@ -209,14 +210,13 @@ final class VoiceMessageRecordingView : UIView {
         return result
     }()
 
-    private lazy var dotView: UIView = {
-        let result = UIView()
-        result.backgroundColor = Colors.destructive
+    private lazy var dotView: UIImageView = {
+        let tintColor = Colors.destructive
+        var result = UIImageView(image: UIImage(named: "ic_reddot_voice_recording")?.withTint(tintColor))
         let dotSize = VoiceMessageRecordingView.dotSize
         result.set(.width, to: dotSize)
         result.set(.height, to: dotSize)
-        result.layer.cornerRadius = dotSize / 2
-        result.layer.masksToBounds = true
+        result.contentMode = .scaleToFill
         return result
     }()
 
@@ -255,9 +255,10 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var progressViewRightConstraint = progressView.pin(.right, to: .right, of: audioWavesImageView, withInset: -audioWavesImageView.width)
 
     // MARK: Lifecycle
-    init(voiceMessageButtonFrame: CGRect, delegate: VoiceMessageRecordingViewDelegate?) {
+    init(voiceMessageButtonFrame: CGRect, delegate: VoiceMessageRecordingViewDelegate?, onLocked: (() -> Void)? = nil) {
         self.voiceMessageButtonFrame = voiceMessageButtonFrame
         self.delegate = delegate
+        self.onLocked = onLocked
         super.init(frame: CGRect.zero)
         setUpViewHierarchy()
         recordingTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
@@ -383,7 +384,7 @@ final class VoiceMessageRecordingView : UIView {
         layoutIfNeeded()
         slideToCancelStackViewRightConstraint.isActive = false
         slideToCancelLabelCenterHorizontalConstraint.isActive = true
-        lockViewBottomConstraint.constant = -Values.mediumSpacing
+        lockViewBottomConstraint.constant = 0
         UIView.animate(withDuration: 0.25, animations: { [weak self] in
             guard let self = self else { return }
             self.alpha = 1
@@ -453,14 +454,14 @@ final class VoiceMessageRecordingView : UIView {
         if isValidLockViewLocation(location) {
             if !lockView.isExpanded {
                 UIView.animate(withDuration: 0.25) {
-                    self.lockViewBottomConstraint.constant = -Values.mediumSpacing + LockView.expansionMargin
+                    self.lockViewBottomConstraint.constant = 0
                 }
             }
             lockView.expandIfNeeded()
         } else {
             if lockView.isExpanded {
                 UIView.animate(withDuration: 0.25) {
-                    self.lockViewBottomConstraint.constant = -Values.mediumSpacing
+                    self.lockViewBottomConstraint.constant = 0
                 }
             }
             lockView.collapseIfNeeded()
@@ -509,7 +510,8 @@ final class VoiceMessageRecordingView : UIView {
                     recordingTimer?.invalidate()
                     recordingTimer = nil
                 }
-                countDownTimerSecond = timerSecond
+                countDownTimerSecond = 0
+                audioDurationLabel.text = OWSFormat.formatDurationSeconds(countDownTimerSecond)
                 delegate?.pauseRecording()
                 isAudioRecordingStop = true
             } else {
@@ -581,14 +583,14 @@ final class VoiceMessageRecordingView : UIView {
     }
     
     private func handleCountDownTimer() {
-        countDownTimerSecond -= 1
-        if countDownTimerSecond < 0 {
+        countDownTimerSecond += 1
+        if countDownTimerSecond > timerSecond {
             countDownTimerSecond = 0
             // For stop count down timer
             if countDownTimer != nil {
                 countDownTimer?.invalidate()
                 countDownTimer = nil
-                countDownTimerSecond = timerSecond
+                countDownTimerSecond = 0
             }
         }
         audioDurationLabel.text = OWSFormat.formatDurationSeconds(countDownTimerSecond)
@@ -605,6 +607,7 @@ final class VoiceMessageRecordingView : UIView {
     private func transitionToLockedUI() {
         isLocked = true
         heightConstraint.constant = VoiceMessageRecordingView.lockedHeight
+        onLocked?()
         
         let recordingViews: [UIView] = [
             lockView,
@@ -657,7 +660,7 @@ extension VoiceMessageRecordingView {
             return result
         }()
 
-        private static let width: CGFloat = 44
+        private static let width: CGFloat = 48
         static let expansionMargin: CGFloat = 3
         private static let lockIconSize: CGFloat = 20
         private static let chevronIconSize: CGFloat = 20
@@ -692,13 +695,13 @@ extension VoiceMessageRecordingView {
             let borderColor = (isLightMode ? UIColor.black : UIColor.white).withAlphaComponent(Values.veryLowOpacity)
             layer.borderColor = borderColor.cgColor
             // Lock icon
-            let lockIconImageView = UIImageView(image: UIImage(named: "ic_lock_outline")!.withTint(iconTint))
+            let lockIconImageView = UIImageView(image: UIImage(named: "ic_lock_voice_recording")!.withTint(iconTint))
             let lockIconSize = LockView.lockIconSize
             lockIconImageView.set(.width, to: lockIconSize)
             lockIconImageView.set(.height, to: lockIconSize)
             stackView.addArrangedSubview(lockIconImageView)
             // Chevron icon
-            let chevronIconImageView = UIImageView(image: UIImage(named: "ic_chevron_up")!.withTint(iconTint))
+            let chevronIconImageView = UIImageView(image: UIImage(named: "ic_uparrow_voice_recording")!.withTint(iconTint))
             let chevronIconSize = LockView.chevronIconSize
             chevronIconImageView.set(.width, to: chevronIconSize)
             chevronIconImageView.set(.height, to: chevronIconSize)
