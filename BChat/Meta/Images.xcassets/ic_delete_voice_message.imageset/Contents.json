@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Trash Can 1.png",
+      "filename" : "Trash Can 2.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Trash Can 1@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Trash Can 1@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

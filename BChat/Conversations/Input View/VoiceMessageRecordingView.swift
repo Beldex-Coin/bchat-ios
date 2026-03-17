@@ -123,7 +123,7 @@ final class VoiceMessageRecordingView : UIView {
         let result = UIButton()
         result.addTarget(self, action: #selector(handleDeleteButtonTapped), for: .touchUpInside)
         result.alpha = 0
-        let image = UIImage(named: "ic_delete_record")
+        let image = UIImage(named: "ic_delete_voice_message")
         result.setImage(image, for: .normal)
         result.clipsToBounds = true
         result.isSelected = true
@@ -511,6 +511,7 @@ final class VoiceMessageRecordingView : UIView {
     }
     
     @objc private func handlePlayButtonTapped(_ sender: UIButton) {
+        self.totalDurationLabel.alpha = 1
         if sender.isSelected {
             if TimerForConstraintOfProgressView != nil {
                 TimerForConstraintOfProgressView?.invalidate()
@@ -644,7 +645,6 @@ final class VoiceMessageRecordingView : UIView {
             self.playPauseButton.alpha = 1
             self.sendButton.alpha = 1
             self.audioDurationLabel.alpha = 1
-            self.totalDurationLabel.alpha = 1
             self.audioWavesImageView.alpha = 1
             self.progressView.alpha = 1
             self.layoutIfNeeded()
