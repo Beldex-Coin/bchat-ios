@@ -312,6 +312,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             self.mnemonicSeedconnect()
             let vc = PinViewController()
             vc.flowStep = .createPin
+            vc.createPinDestination = .home
             navigationController?.pushViewController(vc, animated: true)
         }
     }
