@@ -7,11 +7,14 @@ class ArchiveChatsVC: BaseVC {
     private lazy var infoLabel: UILabel = {
         let result = UILabel()
         result.textColor = Colors.textFieldPlaceHolderColor
-        result.font = Fonts.regularOpenSans(ofSize: 12)
-        result.textAlignment = .left
+        result.font = Fonts.regularOpenSans(ofSize: 13)
+        result.textAlignment = .center
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.translatesAutoresizingMaskIntoConstraints = false
+        result.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(bchatSettingsVC))
+        result.addGestureRecognizer(tapGesture)
         return result
     }()
     
@@ -44,7 +47,6 @@ class ArchiveChatsVC: BaseVC {
         self.title = "Archived Chats"
         setUpTopCornerRadius()
         view.addSubview(infoLabel)
-        infoLabel.text = "Chats will automatically Unarchived when new messages are received."
         NSLayoutConstraint.activate([
             infoLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 19),
@@ -61,6 +63,18 @@ class ArchiveChatsVC: BaseVC {
         tableView.pin(.trailing, to: .trailing, of: view)
         tableView.pin(.bottom, to: .bottom, of: view)
         
+        // Add Setting Button In Navigationbar
+        var rightBarButtonItems: [UIBarButtonItem] = []
+        let settingButton = UIButton(type: .custom)
+        settingButton.frame = CGRect(x: 0.0, y: 0.0, width: 24, height: 24)
+        settingButton.widthAnchor.constraint(equalToConstant: 24).isActive = true
+        settingButton.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        settingButton.setImage(UIImage(named:"ic_setting_archive"), for: .normal)
+        settingButton.addTarget(self, action: #selector(showSettingScreen), for: .touchUpInside)
+        let settingButtonBarItem = UIBarButtonItem(customView: settingButton)
+        rightBarButtonItems.append(settingButtonBarItem)
+        navigationItem.rightBarButtonItems = rightBarButtonItems
+        
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(handleYapDatabaseModifiedNotification(_:)), name: .YapDatabaseModified, object: OWSPrimaryStorage.shared().dbNotificationObject)
         
@@ -74,6 +88,8 @@ class ArchiveChatsVC: BaseVC {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        let status = SSKPreferences.keepChatArchive ? "archived" : "unarchived"
+        infoLabel.text = "These chats stay \(status) when new messages are received. Tap to change"
         reload()
     }
     
@@ -98,6 +114,13 @@ class ArchiveChatsVC: BaseVC {
             }
             threadViewModelCache[thread.uniqueId!] = threadViewModel
             return threadViewModel
+        }
+    }
+    
+    @objc private func bchatSettingsVC() {
+        if let navController = UIWindow.keyWindow?.rootViewController as? UINavigationController {
+            let settingsViewController = BChatSettingsNewVC()
+            navController.pushViewController(settingsViewController, animated: true)
         }
     }
     
@@ -135,6 +158,11 @@ class ArchiveChatsVC: BaseVC {
     @objc private func handleYapDatabaseModifiedNotification(_ yapDatabase: YapDatabase) {
         AssertIsOnMainThread()
         reload()
+    }
+    
+    @objc private func showSettingScreen() {
+        let vc = ArchiveChatsSettingVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
