@@ -3,7 +3,7 @@ final class ConversationTitleView : UIView {
     private let thread: TSThread
     weak var delegate: ConversationTitleViewDelegate?
     
-    override var intrinsicContentSize: CGSize { CGSize.zero }
+    override var intrinsicContentSize: CGSize { CGSize(width: .greatestFiniteMagnitude, height: UIView.noIntrinsicMetric) }
 
     // MARK: UI Components
     private lazy var titleLabel: UILabel = {
