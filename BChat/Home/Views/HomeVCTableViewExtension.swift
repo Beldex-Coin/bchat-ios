@@ -17,7 +17,9 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
         messageRequestLabel.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         showOrHideMessageRequestCollectionViewButton.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
         messageCollectionView.isHidden = (Int(messageRequestCountForMessageRequest) <= 0)
-        
+        if isManualyCloseMessageRequest {
+            messageCollectionView.isHidden = true
+        }
         setUpNavBarSessionHeading()
         noInternetView.isHidden = NetworkReachabilityStatus.isConnectedToNetworkSignal()
         messageRequestLabelTopConstraint.isActive = false

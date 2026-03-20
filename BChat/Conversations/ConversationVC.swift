@@ -1169,12 +1169,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
                 }
-                else {
-                    // Note: Adding 2 empty buttons because without it the title alignment is busted (Note: The size was
-                    // taken from the layout inspector for the back button in Xcode
-                    rightBarButtonItems.append(UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: Values.verySmallProfilePictureSize, height: 44))))
-                    rightBarButtonItems.append(UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))))
-                }
             }
             else {
                 

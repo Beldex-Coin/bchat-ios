@@ -14,6 +14,11 @@ public enum PinFlowStep {
     case verifyPin
 }
 
+public enum CreatePinDestination {
+    case restoreSeed
+    case home
+}
+
 class PinViewController: BaseVC {
     
     // MARK: - UI elements
@@ -66,6 +71,7 @@ class PinViewController: BaseVC {
     private var currentPin = ""
     private var firstPinEntry: String?
     public var flowStep: PinFlowStep = .verifyPin
+    public var createPinDestination: CreatePinDestination = .restoreSeed
 
     // MARK: - View life cycle
     
@@ -357,9 +363,10 @@ class PinViewController: BaseVC {
             SaveUserDefaultsData.BChatPassword = currentPin
             showConfirmationModal("Your password has been set up successfully!")
 
-            if flowStep == .confirmCreatePin {
+            switch createPinDestination {
+            case .restoreSeed:
                 gotoRestoreSeedView()
-            } else {
+            case .home:
                 gotoHome()
             }
         } else {
