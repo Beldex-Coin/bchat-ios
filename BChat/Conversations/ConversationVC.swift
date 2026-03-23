@@ -1082,13 +1082,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
         } else {
             let iconImageView = ProfilePictureView()
-            iconImageView.update(for: self.thread)
-            let profilePictureViewSize = CGFloat(42)
+            let profilePictureViewSize = CGFloat(36)
             iconImageView.set(.width, to: profilePictureViewSize)
             iconImageView.set(.height, to: profilePictureViewSize)
             iconImageView.size = profilePictureViewSize
             iconImageView.layer.masksToBounds = true
             iconImageView.layer.cornerRadius = 18
+            iconImageView.update(for: self.thread)
+            
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 36).isActive = true
             button.heightAnchor.constraint(equalToConstant: 36).isActive = true
@@ -1098,6 +1099,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)
+                    iconImageView.pin(to: button)
                 } else {
                     button.setImage(iconImageView.getProfilePicture(), for: .normal)
                 }
