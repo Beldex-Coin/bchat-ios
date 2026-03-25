@@ -1317,7 +1317,14 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
                             isMaxFileSizeExceeded = (error == .maxFileSizeExceeded)
                         }
                         let title = isMaxFileSizeExceeded ? "Maximum File Size Exceeded" : "Couldn't Update Profile"
-                        let message = isMaxFileSizeExceeded ? "Please select a smaller photo and try again" : "Please check your internet connection and try again"
+                        let fallbackMessage = "Please check your internet connection and try again"
+                        let message: String
+                        if isMaxFileSizeExceeded {
+                            message = "Please select a smaller photo and try again"
+                        } else {
+                            let localizedMessage = (error as NSError).localizedDescription.trimmingCharacters(in: .whitespacesAndNewlines)
+                            message = localizedMessage.isEmpty ? fallbackMessage : localizedMessage
+                        }
                         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                         alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
                         self?.present(alert, animated: true, completion: nil)
