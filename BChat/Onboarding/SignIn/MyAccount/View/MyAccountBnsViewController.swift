@@ -1511,6 +1511,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             }
             isEditingDisplayName = false
             displayNameToBeUploaded = displayName
+            userNameIdLabel.text = displayName
             updateProfile(isUpdatingDisplayName: true, isUpdatingProfilePicture: false)
         }
         nameTextField.isHidden = true
