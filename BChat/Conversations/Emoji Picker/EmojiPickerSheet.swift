@@ -207,4 +207,8 @@ extension EmojiPickerSheet: UISearchBarDelegate {
         searchBar.resignFirstResponder()
         close()
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }

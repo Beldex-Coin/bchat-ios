@@ -3,6 +3,7 @@ var isEmojiSheetPresented = false
 
 class BaseVC : UIViewController {
     private var hasGradient = false
+    private var keyboardObserverTokens: [NSObjectProtocol] = []
 
     override var preferredStatusBarStyle: UIStatusBarStyle { return isLightMode ? .default : .lightContent }
 
@@ -122,6 +123,105 @@ class BaseVC : UIViewController {
         crossfadeLabel.pin(to: container)
         navigationItem.titleView = container
     }
+
+    // MARK: - Keyboard Avoidance
+    struct KeyboardAnimation {
+        let duration: TimeInterval
+        let options: UIView.AnimationOptions
+    }
+
+    internal func startKeyboardAvoidingForCenteredView(_ containerView: UIView, centerYConstraint: NSLayoutConstraint, minimumBottomPadding: CGFloat = 12) {
+        startKeyboardAvoiding(onChange: { [weak self, weak containerView] height, animation in
+            guard let self = self, let containerView = containerView else { return }
+            self.view.layoutIfNeeded()
+            let keyboardTop = self.view.bounds.maxY - height
+            let overlap = containerView.frame.maxY + minimumBottomPadding - keyboardTop
+            let shift = max(0, overlap)
+            centerYConstraint.constant = -shift
+            self.animateKeyboard(animation) {
+                self.view.layoutIfNeeded()
+            }
+        }, onHide: { [weak self] animation in
+            guard let self = self else { return }
+            centerYConstraint.constant = 0
+            self.animateKeyboard(animation) {
+                self.view.layoutIfNeeded()
+            }
+        })
+    }
+
+    internal func startKeyboardAvoidingForBottomConstraint(_ bottomConstraint: NSLayoutConstraint, additionalPadding: CGFloat = 12) {
+        startKeyboardAvoiding(onChange: { [weak self] height, animation in
+            guard let self = self else { return }
+            let safeBottom = self.view.safeAreaInsets.bottom
+            let overlap = max(0, height - safeBottom)
+            let shift = overlap > 0 ? overlap + additionalPadding : 0
+            bottomConstraint.constant = -shift
+            self.animateKeyboard(animation) {
+                self.view.layoutIfNeeded()
+            }
+        }, onHide: { [weak self] animation in
+            guard let self = self else { return }
+            bottomConstraint.constant = 0
+            self.animateKeyboard(animation) {
+                self.view.layoutIfNeeded()
+            }
+        })
+    }
+
+    internal func stopKeyboardAvoiding() {
+        if keyboardObserverTokens.isEmpty { return }
+        let notificationCenter = NotificationCenter.default
+        keyboardObserverTokens.forEach { notificationCenter.removeObserver($0) }
+        keyboardObserverTokens.removeAll()
+    }
+
+    internal func animateKeyboard(_ animation: KeyboardAnimation, animations: @escaping () -> Void) {
+        UIView.animate(withDuration: animation.duration, delay: 0, options: animation.options, animations: animations)
+    }
+
+    private func startKeyboardAvoiding(onChange: @escaping (CGFloat, KeyboardAnimation) -> Void, onHide: @escaping (KeyboardAnimation) -> Void) {
+        stopKeyboardAvoiding()
+        let notificationCenter = NotificationCenter.default
+        let changeToken = notificationCenter.addObserver(
+            forName: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let self = self else { return }
+            let animation = self.keyboardAnimation(from: notification)
+            let height = self.keyboardHeight(from: notification)
+            onChange(height, animation)
+        }
+        let hideToken = notificationCenter.addObserver(
+            forName: UIResponder.keyboardWillHideNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let self = self else { return }
+            let animation = self.keyboardAnimation(from: notification)
+            onHide(animation)
+        }
+        keyboardObserverTokens = [changeToken, hideToken]
+    }
+
+    private func keyboardAnimation(from notification: Notification) -> KeyboardAnimation {
+        let userInfo = notification.userInfo ?? [:]
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 7
+        let options = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        return KeyboardAnimation(duration: duration, options: options)
+    }
+
+    private func keyboardHeight(from notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo ?? [:]
+        let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? .zero
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+        if keyboardFrameInView.intersects(view.bounds) {
+            return max(0, view.bounds.maxY - keyboardFrameInView.minY)
+        }
+        return 0
+    }
     
     internal func setUpNavBarSessionHeading() {
         let headingImageView = UIImageView()
@@ -169,6 +269,7 @@ class BaseVC : UIViewController {
     }
 
     deinit {
+        stopKeyboardAvoiding()
         NotificationCenter.default.removeObserver(self)
     }
     

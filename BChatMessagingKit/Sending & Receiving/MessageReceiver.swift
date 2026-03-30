@@ -114,8 +114,10 @@ public enum MessageReceiver {
         }
         
         // Don't process the envelope any further if the sender is blocked
-        guard Storage.shared.getContact(with: sender, using: transaction)?.isBlocked != true else {
-            throw Error.senderBlocked
+        if envelope.type != .closedGroupMessage {
+            guard Storage.shared.getContact(with: sender, using: transaction)?.isBlocked != true else {
+                throw Error.senderBlocked
+            }
         }
         
         // Parse the proto
