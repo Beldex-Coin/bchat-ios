@@ -107,7 +107,6 @@
 		60376BE72B4E694B004A602F /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60376BE62B4E694B004A602F /* OpenSans-Semibold.ttf */; };
 		60376BE82B4E697D004A602F /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BE189A29FA3C9F00048350 /* Fonts.swift */; };
 		60376BEA2B4E9590004A602F /* NotificationsNewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60376BE92B4E9590004A602F /* NotificationsNewVC.swift */; };
-		60376BF22B513344004A602F /* CustomGalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60376BF12B513344004A602F /* CustomGalleryVC.swift */; };
 		6040692928B4BD790094E74D /* DeleteAccountModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6040692828B4BD790094E74D /* DeleteAccountModel.swift */; };
 		60408DCA2B8DA479002EE7F8 /* TextView + Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60408DC92B8DA479002EE7F8 /* TextView + Ext.swift */; };
 		6042B0E729EE46D3005FC06B /* MediaPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042B0E629EE46D3005FC06B /* MediaPageViewController.swift */; };
@@ -1230,7 +1229,6 @@
 		60376BE12B4E626D004A602F /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		60376BE62B4E694B004A602F /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		60376BE92B4E9590004A602F /* NotificationsNewVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsNewVC.swift; sourceTree = "<group>"; };
-		60376BF12B513344004A602F /* CustomGalleryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGalleryVC.swift; sourceTree = "<group>"; };
 		603864C52A5FAF28002CDAF3 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Medium.ttf"; sourceTree = "<group>"; };
 		6040692828B4BD790094E74D /* DeleteAccountModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteAccountModel.swift; sourceTree = "<group>"; };
 		60408DC92B8DA479002EE7F8 /* TextView + Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView + Ext.swift"; sourceTree = "<group>"; };
@@ -2522,7 +2520,6 @@
 				6052A3882B4828C9007C99E4 /* SocialGroupCell.swift */,
 				60376BE92B4E9590004A602F /* NotificationsNewVC.swift */,
 				6049BF062B6544EB003DD410 /* BChatSettingsNewVC.swift */,
-				60376BF12B513344004A602F /* CustomGalleryVC.swift */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -5094,9 +5091,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5793,7 +5794,6 @@
 				6098CA742A1DCC9C005A5502 /* InteropConverter.swift in Sources */,
 				B8D84ECF25E3108A005A043E /* ExpandingAttachmentsButton.swift in Sources */,
 				813B392D2BF896EC0037FD0F /* ChatSettingsVC.swift in Sources */,
-				60376BF22B513344004A602F /* CustomGalleryVC.swift in Sources */,
 				7B7CB190270FB2150079FF93 /* MiniCallView.swift in Sources */,
 				8A76580C2E26803A00803F49 /* ShareContactViewController.swift in Sources */,
 				B875885A264503A6000E60D0 /* JoinOpenGroupModal.swift in Sources */,
