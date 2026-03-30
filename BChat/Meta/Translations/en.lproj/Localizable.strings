@@ -568,7 +568,7 @@
 "copied" = "Copied";
 "vc_conversation_settings_copy_bchat_id_button_title" = "Copy BChat ID";
 "vc_conversation_input_prompt" = "Message";
-"vc_conversation_voice_message_cancel_message" = "Slide to Cancel";
+"vc_conversation_voice_message_cancel_message" = "Slide to cancel";
 "modal_download_attachment_title" = "Trust %@?";
 "modal_download_attachment_explanation" = "Are you sure you want to download media sent by %@?";
 "modal_download_button_title" = "Download";
