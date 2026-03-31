@@ -176,3 +176,107 @@ extension String {
     }
 }
 
+extension NSMutableAttributedString {
+    
+    func addAttributesPreservingColor(clearText: Bool) {
+        
+        // Italic
+        applyPatternPreservingColor("_(.*?)_", clearText: clearText) { range in
+            let currentFont = font(at: range.location)
+            let italicFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitItalic) ?? currentFont.fontDescriptor,
+                                    size: currentFont.pointSize)
+            self.addAttribute(.font, value: italicFont, range: range)
+        }
+        
+        // Bold
+        applyPatternPreservingColor("\\*(.*?)\\*", clearText: clearText) { range in
+            let currentFont = font(at: range.location)
+            let boldFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitBold) ?? currentFont.fontDescriptor,
+                                  size: currentFont.pointSize)
+            self.addAttribute(.font, value: boldFont, range: range)
+        }
+        
+        // Strikethrough
+        applyPatternPreservingColor("~(.*?)~", clearText: clearText) { range in
+            self.addAttribute(.strikethroughStyle, value: 1, range: range)
+        }
+        
+        // Monospace  ```code```
+        applyPatternPreservingColor("```(.*?)```", clearText: clearText) { range in
+            let monoFont = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize,
+                                                       weight: .regular)
+            self.addAttribute(.font, value: monoFont, range: range)
+        }
+        
+        // Quotes
+        applyQuotes()
+        
+        // Inline code: `code`
+        applyPatternPreservingColor("`([^`]+?)`", clearText: clearText) { range in
+            let new = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize, weight: .regular)
+            self.addAttribute(.font, value: new, range: range)
+            self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
+        }
+        
+        
+        
+    }
+    
+    // MARK: - Pattern Processor (Preserves Color + Attributes)
+    private func applyPatternPreservingColor(_ pattern: String, clearText: Bool,
+                                             apply: (NSRange) -> Void) {
+        let regex = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
+        
+        let matches = regex.matches(in: self.string,
+                                    range: NSRange(location: 0, length: self.length))
+        
+        for match in matches.reversed() {
+            let full = match.range(at: 0)   // with markers
+            var inner = match.range(at: 1)  // inside markers
+            
+            // Apply attributes BEFORE removing markers
+            apply(inner)
+            
+            if clearText {
+                // Remove right marker(s)
+                let trailingCount = pattern.contains("```") ? 3 : 1
+                self.deleteCharacters(in: NSRange(location: inner.location + inner.length, length: trailingCount))
+                
+                // Remove left marker(s)
+                let leadingCount = pattern.contains("```") ? 3 : 1
+                self.deleteCharacters(in: NSRange(location: inner.location - leadingCount, length: leadingCount))
+            }
+        }
+    }
+    
+    // MARK: - Quotes (> text)
+    private func applyQuotes() {
+        let ns = self.string as NSString
+        let lines = ns.components(separatedBy: "\n")
+        var offset = 0
+        
+        for line in lines {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            
+            if trimmed.hasPrefix(">") {
+                let clean = trimmed.dropFirst().trimmingCharacters(in: .whitespaces)
+                let quoteLine = "│  \(clean)"   // visual quote bar
+                
+                let r = NSRange(location: offset, length: (line as NSString).length)
+                self.replaceCharacters(in: r, with: quoteLine)
+                
+                // apply gray color on entire quote line
+//                let newRange = NSRange(location: offset, length: (quoteLine as NSString).length)
+//                self.addAttribute(.foregroundColor, value: UIColor.systemGray, range: newRange)
+            }
+            
+            offset += (line as NSString).length + 1
+        }
+    }
+    
+    // MARK: - Extract Current Font Safely
+    private func font(at location: Int) -> UIFont {
+        let attrs = attributes(at: location, effectiveRange: nil)
+        return attrs[.font] as? UIFont ?? UIFont.systemFont(ofSize: 17)
+    }
+}

@@ -259,6 +259,14 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
             notificationBody = MentionUtilities.highlightMentions(in: notificationBody!, threadID: thread.uniqueId!)
             let sound = self.requestSound(thread: thread)
             
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+                .foregroundColor: Colors.text
+            ]
+            let attributedString = NSMutableAttributedString(string: notificationBody!, attributes: attributes)
+            attributedString.addAttributesPreservingColor(clearText: true)
+            notificationBody = attributedString.string
+            
             self.adaptee.notify(
                 category: category,
                 title: notificationTitle,

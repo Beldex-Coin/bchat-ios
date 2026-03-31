@@ -122,6 +122,7 @@
 		<string>OpenSans-Semibold.ttf</string>
 		<string>OpenSans-Light.ttf</string>
 		<string>OpenSans-Medium.ttf</string>
+		<string>OpenSans-Italic.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
