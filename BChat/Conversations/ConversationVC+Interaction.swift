@@ -625,6 +625,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 ),
                 message: nil
             )
+            
+            if !SSKPreferences.keepChatArchive {
+                if thread.isArchived {
+                    thread.isArchived = false
+                    thread.save()
+                }
+            }
         }
         
         self.markAllAsRead()
