@@ -761,7 +761,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
-        hideSearchUI()
         // if message is not sent then no need long press
         guard let message = viewItem.interaction as? TSMessage else { return }
         if let messageOutgoing = message as? TSOutgoingMessage {

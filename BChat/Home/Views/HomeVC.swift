@@ -323,7 +323,7 @@ final class HomeVC : BaseVC {
     var messageCollectionView: UICollectionView!
     let myGroup = DispatchGroup()
     var nodeArrayDynamic : [String]?
-    var isManualyCloseMessageRequest = false
+    var isManualyCloseMessageRequest = true
     var duration: Int = 0
     
     // MARK: Lifecycle
