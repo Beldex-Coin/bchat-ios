@@ -181,7 +181,7 @@ extension NSMutableAttributedString {
     func addAttributesPreservingColor(clearText: Bool) {
         
         // Italic
-        applyPatternPreservingColor("_(.*?)_", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)_([^\\s_].*[^\\s_])_(?!\\w)", clearText: clearText) { range in
             let currentFont = font(at: range.location)
             let italicFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitItalic) ?? currentFont.fontDescriptor,
                                     size: currentFont.pointSize)
@@ -189,7 +189,7 @@ extension NSMutableAttributedString {
         }
         
         // Bold
-        applyPatternPreservingColor("\\*(.*?)\\*", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*].*[^\\s*])\\*(?!\\w)", clearText: clearText) { range in
             let currentFont = font(at: range.location)
             let boldFont = UIFont(descriptor: currentFont.fontDescriptor.withSymbolicTraits(.traitBold) ?? currentFont.fontDescriptor,
                                   size: currentFont.pointSize)
@@ -197,12 +197,12 @@ extension NSMutableAttributedString {
         }
         
         // Strikethrough
-        applyPatternPreservingColor("~(.*?)~", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)~([^\\s~].*[^\\s~])~(?!\\w)", clearText: clearText) { range in
             self.addAttribute(.strikethroughStyle, value: 1, range: range)
         }
         
         // Monospace  ```code```
-        applyPatternPreservingColor("```(.*?)```", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)```([^\\s][\\s\\S]*[^\\s])```(?!\\w)", clearText: clearText) { range in
             let monoFont = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize,
                                                        weight: .regular)
             self.addAttribute(.font, value: monoFont, range: range)
@@ -212,7 +212,7 @@ extension NSMutableAttributedString {
         applyQuotes()
         
         // Inline code: `code`
-        applyPatternPreservingColor("`([^`]+?)`", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)`([^\\s`].*[^\\s`])`(?!\\w)", clearText: clearText) { range in
             let new = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize, weight: .regular)
             self.addAttribute(.font, value: new, range: range)
             self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
