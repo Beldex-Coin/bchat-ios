@@ -133,12 +133,12 @@ final class VoiceMessageRecordingView : UIView {
     private lazy var sendButton: UIButton = {
         let result = UIButton()
         result.backgroundColor = Colors.bothGreenColor
-        result.layer.cornerRadius = 22
+        result.layer.cornerRadius = 20
         result.addTarget(self, action: #selector(handleSendButtonTapped), for: .touchUpInside)
         let image = UIImage(named: "ic_sendMessage_new")?.withTint(.white)
         result.setImage(image, for: .normal)
-        result.set(.width, to: 44)
-        result.set(.height, to: 44)
+        result.set(.width, to: 40)
+        result.set(.height, to: 40)
         result.alpha = 0
         return result
     }()

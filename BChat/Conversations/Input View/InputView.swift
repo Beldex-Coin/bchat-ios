@@ -467,11 +467,11 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         finalBottomStack?.isHidden = false
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25, animations: {
-            allOtherViews.forEach { $0.alpha = 1 }
             self.voiceMessageButtonContainer.isHidden = false
             self.voiceMessageRecordingView?.alpha = 0
-        }, completion: { _ in
             self.removeVoiceMessageRecordingViewIfNeeded()
+        }, completion: { _ in
+            allOtherViews.forEach { $0.alpha = 1 }
         })
     }
     
