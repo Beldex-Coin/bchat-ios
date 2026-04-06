@@ -257,7 +257,16 @@ final class QuoteView : UIView {
             fullString.append(NSAttributedString(string: text))
             bodyLabel.attributedText = fullString
         } else {
-            bodyLabel.attributedText = given(text) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+            let baseAttributes: [NSAttributedString.Key: Any] = [ .font: bodyLabel.font as Any ]
+            let attributedText = NSMutableAttributedString(
+                attributedString: given(text) {
+                    MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: baseAttributes)
+                } ?? given(attachments.first?.contentType) {
+                    NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document", attributes: baseAttributes)
+                } ?? NSAttributedString(string: "Document", attributes: baseAttributes)
+            )
+            attributedText.addAttributesPreservingColor(clearText: true)
+            bodyLabel.attributedText = attributedText
         }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
