@@ -7,6 +7,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
+    private var bulletMarkerByLineStart: [Int: String] = [:]
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -149,6 +150,12 @@ public final class InputTextView : UITextView, UITextViewDelegate {
            }
        }
        
+       if text.isEmpty {
+           if handleBulletSpaceRemoval(textView, range: range) {
+               return false
+           }
+       }
+       
        return true
    }
     
@@ -163,7 +170,33 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         if prefix == "*" || prefix == "-" {
             if cursorPosition != 1 { return false }
+            bulletMarkerByLineStart[lineRange.location] = prefix
             replaceCurrentLinePrefix(textView, lineRange: lineRange, prefixLength: 1)
+            return true
+        }
+        
+        return false
+    }
+    
+    private func handleBulletSpaceRemoval(_ textView: UITextView, range: NSRange) -> Bool {
+        guard range.length == 1 else { return false }
+        
+        let nsText = textView.text as NSString
+        let lineRange = nsText.lineRange(for: range)
+        guard lineRange.location + 1 < nsText.length else { return false }
+        
+        let bulletPrefixRange = NSRange(location: lineRange.location, length: 2)
+        let bulletPrefix = nsText.substring(with: bulletPrefixRange)
+        guard bulletPrefix == "• " else { return false }
+        
+        // Backspace target is the space in "• "
+        guard range.location == lineRange.location + 1 else { return false }
+        
+        let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+        if let replaceRange = Range(bulletPrefixRange, in: textView.text) {
+            textView.text.replaceSubrange(replaceRange, with: marker)
+            textView.selectedRange = NSRange(location: lineRange.location + marker.count, length: 0)
+            bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
             return true
         }
         
@@ -212,8 +245,18 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // MARK: Bullet List (- * •)
         if currentLine.hasPrefix("- ") || currentLine.hasPrefix("* ") || currentLine.hasPrefix("• ") {
+            let marker: String
+            if currentLine.hasPrefix("* ") {
+                marker = "*"
+            } else if currentLine.hasPrefix("- ") {
+                marker = "-"
+            } else {
+                marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+            }
+            
             let newText = "\n• "
             insertText(newText, textView: textView, range: range)
+            bulletMarkerByLineStart[range.location + 1] = marker
             return
         }
         
