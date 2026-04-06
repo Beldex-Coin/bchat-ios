@@ -362,6 +362,13 @@ class HomeTableViewCell: UITableViewCell {
             lastMessageLabel.text = ""
         } else {
             lastMessageLabel.attributedText = getSnippet()
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+                .foregroundColor: Colors.text
+            ]
+            let attributedString = NSMutableAttributedString(string: lastMessageLabel.text ?? "", attributes: attributes)
+            attributedString.addAttributesPreservingColor(clearText: true)
+            lastMessageLabel.attributedText = attributedString
         }
     }
     

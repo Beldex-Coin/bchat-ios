@@ -7,6 +7,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
+    private var bulletMarkerByLineStart: [Int: String] = [:]
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -114,7 +115,17 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // Restore caret and scroll range to visible (no flicker)
         let selectedRange = textView.selectedRange
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+            .foregroundColor: Colors.text
+        ]
+        let attributedString = NSMutableAttributedString(string: textView.text, attributes: attributes)
         
+        // Apply your markdown-style formatting
+        attributedString.addAttributesPreservingColor(clearText: false)
+        
+        // Assign back to textView
+        textView.attributedText = attributedString
         UIView.performWithoutAnimation {
             textView.scrollRangeToVisible(selectedRange)
             textView.selectedRange = selectedRange
@@ -122,6 +133,144 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         handleTextChanged()
     }
+    
+   public func textView(_ textView: UITextView,
+                  shouldChangeTextIn range: NSRange,
+                        replacementText text: String) -> Bool {
+       
+       // Handle ENTER (already done before)
+       if text == "\n" {
+           handleListContinuation(textView, range: range)
+           return false
+       }
+       
+       if text == " " {
+           if handleBulletStart(textView, range: range) {
+               return false
+           }
+       }
+       
+       if text.isEmpty {
+           if handleBulletSpaceRemoval(textView, range: range) {
+               return false
+           }
+       }
+       
+       return true
+   }
+    
+    private func handleBulletStart(_ textView: UITextView, range: NSRange) -> Bool {
+        let nsText = textView.text as NSString
+        let lineRange = nsText.lineRange(for: range)
+        
+        let cursorPosition = range.location - lineRange.location
+        
+        // Get text before cursor
+        let prefix = nsText.substring(with: NSRange(location: lineRange.location, length: cursorPosition))
+        
+        if prefix == "*" || prefix == "-" {
+            if cursorPosition != 1 { return false }
+            bulletMarkerByLineStart[lineRange.location] = prefix
+            replaceCurrentLinePrefix(textView, lineRange: lineRange, prefixLength: 1)
+            return true
+        }
+        
+        return false
+    }
+    
+    private func handleBulletSpaceRemoval(_ textView: UITextView, range: NSRange) -> Bool {
+        guard range.length == 1 else { return false }
+        
+        let nsText = textView.text as NSString
+        let lineRange = nsText.lineRange(for: range)
+        guard lineRange.location + 1 < nsText.length else { return false }
+        
+        let bulletPrefixRange = NSRange(location: lineRange.location, length: 2)
+        let bulletPrefix = nsText.substring(with: bulletPrefixRange)
+        guard bulletPrefix == "• " else { return false }
+        
+        // Backspace target is the space in "• "
+        guard range.location == lineRange.location + 1 else { return false }
+        
+        let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+        if let replaceRange = Range(bulletPrefixRange, in: textView.text) {
+            textView.text.replaceSubrange(replaceRange, with: marker)
+            textView.selectedRange = NSRange(location: lineRange.location + marker.count, length: 0)
+            bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
+            return true
+        }
+        
+        return false
+    }
+    
+    private func replaceCurrentLinePrefix(_ textView: UITextView,
+                                          lineRange: NSRange,
+                                          prefixLength: Int) {
+        
+        let nsText = textView.text as NSString
+        let lineText = nsText.substring(with: lineRange)
+        
+        // Remove "-"/"*"
+        let clean = (lineText as NSString).substring(from: prefixLength).trimmingCharacters(in: .whitespaces)
+        
+        let newLine = "• \(clean)"
+        
+        if let textRange = Range(lineRange, in: textView.text) {
+            textView.text.replaceSubrange(textRange, with: newLine)
+            
+            // Move cursor after bullet
+            let newCursor = lineRange.location + 2
+            textView.selectedRange = NSRange(location: newCursor, length: 0)
+        }
+    }
+    
+    private func handleListContinuation(_ textView: UITextView, range: NSRange) {
+        let nsText = textView.text as NSString
+        
+        // Get current line
+        let lineRange = nsText.lineRange(for: range)
+        let currentLine = nsText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // MARK: Numbered List (1. 2. 3.)
+        if let match = currentLine.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
+            let numberString = String(currentLine[match]).replacingOccurrences(of: ". ", with: "")
+            
+            if let number = Int(numberString) {
+                let nextNumber = number + 1
+                let newText = "\n\(nextNumber). "
+                insertText(newText, textView: textView, range: range)
+                return
+            }
+        }
+        
+        // MARK: Bullet List (- * •)
+        if currentLine.hasPrefix("- ") || currentLine.hasPrefix("* ") || currentLine.hasPrefix("• ") {
+            let marker: String
+            if currentLine.hasPrefix("* ") {
+                marker = "*"
+            } else if currentLine.hasPrefix("- ") {
+                marker = "-"
+            } else {
+                marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+            }
+            
+            let newText = "\n• "
+            insertText(newText, textView: textView, range: range)
+            bulletMarkerByLineStart[range.location + 1] = marker
+            return
+        }
+        
+        // Default newline
+        insertText("\n", textView: textView, range: range)
+    }
+    
+    private func insertText(_ newText: String, textView: UITextView, range: NSRange) {
+        if let textRange = Range(range, in: textView.text) {
+            textView.text.replaceSubrange(textRange, with: newText)
+            textView.selectedRange = NSRange(location: range.location + newText.count, length: 0)
+        }
+    }
+    
     
     private func handleTextChanged() {
         defer { snDelegate?.inputTextViewDidChangeContent(self) }
