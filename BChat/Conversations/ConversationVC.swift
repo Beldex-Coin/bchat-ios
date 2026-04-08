@@ -647,6 +647,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.layoutIfNeeded()
         hideOpenURLView()
         NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        
+        // end voice recording
+        if isAudioRecording {
+            endVoiceMessageRecording()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
