@@ -79,6 +79,11 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         isScrollEnabled = intrinsicContentSize.height >= maxHeight
     }
     
+    public override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        drawBlockQuoteBars()
+    }
+    
     var numberOfVisibleLines: Int {
         let lineHeight = InputTextView.defaultFont.lineHeight
         return Int(textSize.height / lineHeight)
@@ -130,6 +135,10 @@ public final class InputTextView : UITextView, UITextViewDelegate {
             textView.scrollRangeToVisible(selectedRange)
             textView.selectedRange = selectedRange
         }
+        
+        // Force quote stripe redraw for the just-typed state (e.g. exactly "> ").
+        textView.layoutManager.ensureLayout(for: textView.textContainer)
+        textView.setNeedsDisplay()
         
         handleTextChanged()
     }
@@ -275,6 +284,28 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private func handleTextChanged() {
         defer { snDelegate?.inputTextViewDidChangeContent(self) }
         placeholderLabel.isHidden = !text.isEmpty
+        self.layoutManager.ensureLayout(for: self.textContainer)
+        self.setNeedsDisplay()
+    }
+    
+    private func drawBlockQuoteBars() {
+        guard let attributed = attributedText, attributed.length > 0 else { return }
+        let fullRange = NSRange(location: 0, length: attributed.length)
+        
+        attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
+            guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+            
+            let glyphRange = self.layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
+            self.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in
+                let barX = self.textContainerInset.left + self.textContainer.lineFragmentPadding - self.contentOffset.x + 2
+                let barY = usedRect.minY + self.textContainerInset.top - self.contentOffset.y + 1
+                let barHeight = max(usedRect.height + 1, 5)
+                let barRect = CGRect(x: barX, y: barY, width: 3, height: barHeight)
+                let path = UIBezierPath(roundedRect: barRect, cornerRadius: 1.5)
+                UIColor.systemGray.setFill()
+                path.fill()
+            }
+        }
     }
 }
 

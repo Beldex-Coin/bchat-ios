@@ -645,7 +645,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
-        inputTextView.textColor = Colors.text
         updateAttachmentButtonLayout()
         if !thread.isGroupThread() { return }
         updateMentions(for: newText)

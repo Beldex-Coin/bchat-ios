@@ -265,6 +265,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
             ]
             let attributedString = NSMutableAttributedString(string: notificationBody!, attributes: attributes)
             attributedString.addAttributesPreservingColor(clearText: true)
+            self.applyQuoteFallbackForNotificationBody(attributedString)
             notificationBody = attributedString.string
             
             self.adaptee.notify(
@@ -410,6 +411,26 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         }
 
         return OWSSounds.notificationSound(for: thread)
+    }
+    
+    private func applyQuoteFallbackForNotificationBody(_ attributedString: NSMutableAttributedString) {
+        let lines = attributedString.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            if line.hasPrefix("> "), lineLength >= 2 {
+                let quotedText = String(line.dropFirst(2))
+                let replacement = "│ \(quotedText)"
+                let range = NSRange(location: offset, length: lineLength)
+                attributedString.replaceCharacters(in: range, with: replacement)
+                offset += (replacement as NSString).length
+            } else {
+                offset += lineLength
+            }
+            
+            if index < lines.count - 1 { offset += 1 }
+        }
     }
 
     private func checkIfShouldPlaySound() -> Bool {

@@ -4,6 +4,10 @@
 
 import UIKit
 
+extension NSAttributedString.Key {
+    static let snBlockQuote = NSAttributedString.Key("snBlockQuote")
+}
+
 // MARK: - String <-> Decimal
 
 extension String {
@@ -203,10 +207,10 @@ extension NSMutableAttributedString {
         }
         
         // Quotes
-        applyQuotes()
+        applyQuotes(clearText: clearText)
         
         // Inline code: `code`
-        applyPatternPreservingColor("(?<!\\w)`([^\\s`].*[^\\s`])`(?!\\w)", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<![`\\w])`([^\\s`\\n](?:[^`\\n]*[^\\s`\\n])?)`(?![`\\w])", clearText: clearText) { range in
             let new = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize, weight: .regular)
             self.addAttribute(.font, value: new, range: range)
             self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
@@ -244,30 +248,41 @@ extension NSMutableAttributedString {
     }
     
     // MARK: - Quotes (> text)
-    private func applyQuotes() {
+    private func applyQuotes(clearText: Bool) {
+        _ = clearText
+        
+        let fullRange = NSRange(location: 0, length: self.length)
+        self.removeAttribute(.snBlockQuote, range: fullRange)
+        
         let ns = self.string as NSString
         let lines = ns.components(separatedBy: "\n")
         var offset = 0
         
         for (index, line) in lines.enumerated() {
-            var renderedLine = line
-            
-            // Match WhatsApp-style quote trigger only after typing "> " at line start.
-            if line.hasPrefix("> ") {
-                let clean = String(line.dropFirst(2))
-                let quoteLine = "│  \(clean)"   // visual quote bar
-                
-                let r = NSRange(location: offset, length: (line as NSString).length)
-                self.replaceCharacters(in: r, with: quoteLine)
-                renderedLine = quoteLine
-                
-                // apply gray color on entire quote line
-                let newRange = NSRange(location: offset, length: (quoteLine as NSString).length)
-                self.addAttribute(.foregroundColor, value: UIColor.systemGray, range: newRange)
+            let lineLength = (line as NSString).length
+            defer {
+                offset += lineLength
+                if index < lines.count - 1 { offset += 1 }
             }
             
-            offset += (renderedLine as NSString).length
-            if index < lines.count - 1 { offset += 1 }
+            guard line.hasPrefix("> "), lineLength >= 2 else { continue }
+            
+            let lineRange = NSRange(location: offset, length: lineLength)
+            let markerRange = NSRange(location: offset, length: 2)
+            let contentRange = NSRange(location: offset + 2, length: max(0, lineLength - 2))
+            
+            self.addAttribute(.foregroundColor, value: UIColor.clear, range: markerRange)
+            self.addAttribute(.snBlockQuote, value: true, range: lineRange)
+            
+            // Quote text color.
+            if contentRange.length > 0 {
+                self.addAttribute(.foregroundColor, value: UIColor.lightGray, range: contentRange)
+            }
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.firstLineHeadIndent = 0
+            paragraph.headIndent = 12
+            self.addAttribute(.paragraphStyle, value: paragraph, range: lineRange)
         }
     }
     
