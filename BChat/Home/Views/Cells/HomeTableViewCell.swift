@@ -361,13 +361,14 @@ class HomeTableViewCell: UITableViewCell {
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {
             lastMessageLabel.text = ""
         } else {
-            lastMessageLabel.attributedText = getSnippet()
+            let snippetText = getSnippet().string
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
                 .foregroundColor: Colors.text
             ]
-            let attributedString = NSMutableAttributedString(string: lastMessageLabel.text ?? "", attributes: attributes)
+            let attributedString = NSMutableAttributedString(string: snippetText, attributes: attributes)
             attributedString.addAttributesPreservingColor(clearText: true)
+            applyQuoteFallbackForPreview(attributedString)
             lastMessageLabel.attributedText = attributedString
         }
     }
@@ -472,6 +473,32 @@ class HomeTableViewCell: UITableViewCell {
         }
         
         return result
+    }
+    
+    private func applyQuoteFallbackForPreview(_ attributedString: NSMutableAttributedString) {
+        let lines = attributedString.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            if line.hasPrefix("> "), lineLength >= 2 {
+                let quotedText = String(line.dropFirst(2))
+                let replacement = "│ \(quotedText)"
+                let lineRange = NSRange(location: offset, length: lineLength)
+                attributedString.replaceCharacters(in: lineRange, with: replacement)
+                let newRange = NSRange(location: offset, length: (replacement as NSString).length)
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: Colors.textFieldPlaceHolderColor,
+                    range: newRange
+                )
+                offset += (replacement as NSString).length
+            } else {
+                offset += lineLength
+            }
+            
+            if index < lines.count - 1 { offset += 1 }
+        }
     }
 
 }
