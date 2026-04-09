@@ -709,27 +709,42 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func applyColorToMentionedUsers(text : String) {
+        guard !text.isEmpty else { return }
+        guard text.contains("@") || !mentions.isEmpty else { return }
+        
         let attributes: [NSAttributedString.Key: Any] = [
             .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
             .foregroundColor: Colors.text
         ]
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
-        let words = text.split(separator: " ")
+        attributedString.addAttributesPreservingColor(clearText: false)
+        
         let mentionColor = Colors.bothGreenColor
-        for word in words {
-            if word.hasPrefix("@") {
-                if let range = text.range(of: String(word)) {
-                    let nsRange = NSRange(range, in: text)
-                    attributedString.addAttribute(.foregroundColor, value: mentionColor, range: nsRange)
-                }
-                
-                UIView.performWithoutAnimation {
-                    let selectedRange = snInputView.inputTextView.selectedRange
-                    snInputView.inputTextView.attributedText = attributedString
-                    snInputView.inputTextView.selectedRange = selectedRange
-                }
+        let fullRange = NSRange(location: 0, length: (text as NSString).length)
+        
+        for mention in mentions {
+            let token = "@\(mention.displayName)"
+            let escaped = NSRegularExpression.escapedPattern(for: token)
+            let regex = try? NSRegularExpression(pattern: escaped, options: [])
+            regex?.enumerateMatches(in: text, options: [], range: fullRange) { match, _, _ in
+                guard let range = match?.range, range.location != NSNotFound else { return }
+                attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
             }
         }
+        
+        if let typingRegex = try? NSRegularExpression(pattern: "(?<!\\S)@[^\\s]+", options: []) {
+            typingRegex.enumerateMatches(in: text, options: [], range: fullRange) { match, _, _ in
+                guard let range = match?.range, range.location != NSNotFound else { return }
+                attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
+            }
+        }
+        
+        UIView.performWithoutAnimation {
+            let selectedRange = snInputView.inputTextView.selectedRange
+            snInputView.inputTextView.attributedText = attributedString
+            snInputView.inputTextView.selectedRange = selectedRange
+        }
+        snInputView.inputTextView.setNeedsDisplay()
     }
 
     func resetMentions() {
