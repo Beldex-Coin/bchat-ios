@@ -206,6 +206,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
             textView.text.replaceSubrange(replaceRange, with: marker)
             textView.selectedRange = NSRange(location: lineRange.location + marker.count, length: 0)
             bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
+            textViewDidChange(textView)
             return true
         }
         
@@ -230,6 +231,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
             // Move cursor after bullet
             let newCursor = lineRange.location + 2
             textView.selectedRange = NSRange(location: newCursor, length: 0)
+            textViewDidChange(textView)
         }
     }
     
@@ -277,6 +279,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         if let textRange = Range(range, in: textView.text) {
             textView.text.replaceSubrange(textRange, with: newText)
             textView.selectedRange = NSRange(location: range.location + newText.count, length: 0)
+            textViewDidChange(textView)
         }
     }
     
