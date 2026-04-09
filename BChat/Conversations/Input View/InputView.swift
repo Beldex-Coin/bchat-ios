@@ -32,7 +32,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     var text: String {
         get { inputTextView.text }
-        set { inputTextView.text = newValue }
+        set {
+            inputTextView.text = newValue
+            inputTextView.applyCurrentTextFormatting()
+        }
     }
     
     var enabledMessageTypes: MessageTypes = .all {
