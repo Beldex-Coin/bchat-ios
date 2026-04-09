@@ -117,6 +117,15 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     public func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
+        applyCurrentTextFormatting()
+        handleTextChanged()
+    }
+    
+    public func applyCurrentTextFormatting() {
+        applyFormatting(to: self)
+    }
+    
+    private func applyFormatting(to textView: UITextView) {
         
         // Restore caret and scroll range to visible (no flicker)
         let selectedRange = textView.selectedRange
@@ -139,8 +148,6 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         // Force quote stripe redraw for the just-typed state (e.g. exactly "> ").
         textView.layoutManager.ensureLayout(for: textView.textContainer)
         textView.setNeedsDisplay()
-        
-        handleTextChanged()
     }
     
    public func textView(_ textView: UITextView,
