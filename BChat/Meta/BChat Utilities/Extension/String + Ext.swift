@@ -184,41 +184,91 @@ extension NSMutableAttributedString {
     
     func addAttributesPreservingColor(clearText: Bool) {
         
-        // Italic
-        applyPatternPreservingColor("(?<!\\w)_([^\\s_].*[^\\s_])_(?!\\w)", clearText: clearText) { range in
-            self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
+        // MARK: - Code block
+        applyPatternPreservingColor("```([\\s\\S]+?)```", clearText: clearText) { range in
+            let mono = UIFont.monospacedSystemFont(
+                ofSize: font(at: range.location).pointSize,
+                weight: .regular
+            )
+            self.addAttribute(.font, value: mono, range: range)
         }
         
-        // Bold
-        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*].*[^\\s*])\\*(?!\\w)", clearText: clearText) { range in
-            self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
-        }
-        
-        // Strikethrough
-        applyPatternPreservingColor("(?<!\\w)~([^\\s~].*[^\\s~])~(?!\\w)", clearText: clearText) { range in
-            self.addAttribute(.strikethroughStyle, value: 1, range: range)
-        }
-        
-        // Monospace  ```code```
-        applyPatternPreservingColor("(?<!\\w)```([^\\s][\\s\\S]*[^\\s])```(?!\\w)", clearText: clearText) { range in
-            let monoFont = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize,
-                                                       weight: .regular)
-            self.addAttribute(.font, value: monoFont, range: range)
-        }
-        
-        // Quotes
-        applyQuotes(clearText: clearText)
-        
-        // Inline code: `code`
-        applyPatternPreservingColor("(?<![`\\w])`([^\\s`\\n](?:[^`\\n]*[^\\s`\\n])?)`(?![`\\w])", clearText: clearText) { range in
-            let new = UIFont.monospacedSystemFont(ofSize: font(at: range.location).pointSize, weight: .regular)
-            self.addAttribute(.font, value: new, range: range)
+        // MARK: - Inline code
+        applyPatternPreservingColor("`([^\\s`][^`]*?)`", clearText: clearText) { range in
+            let mono = UIFont.monospacedSystemFont(
+                ofSize: font(at: range.location).pointSize,
+                weight: .regular
+            )
+            self.addAttribute(.font, value: mono, range: range)
             self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
         }
         
+        // MARK: - Bold, Italic, Strikethrough
+        applyPatternPreservingColor("\\*(\\S(?:.*?\\S)?)\\*", clearText: clearText) { range in
+            self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
+        }
         
+        applyPatternPreservingColor("_(\\S(?:.*?\\S)?)_", clearText: clearText) { range in
+            self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
+        }
         
+        applyPatternPreservingColor("~(\\S(?:.*?\\S)?)~", clearText: clearText) { range in
+            self.addAttribute(.strikethroughStyle, value: 1, range: range)
+        }
+        
+        // MARK: - Quotes
+        applyQuotes(clearText: clearText)
+        
+        // MARK: - ONLY SEND FIX (greedy override)
+        if clearText {
+            applyGreedyOverride(marker: "*", clearText: clearText) { range in
+                self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
+            }
+            
+            applyGreedyOverride(marker: "_", clearText: clearText) { range in
+                self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
+            }
+            
+            applyGreedyOverride(marker: "~", clearText: clearText) { range in
+                self.addAttribute(.strikethroughStyle, value: 1, range: range)
+            }
+        }
     }
+    
+    private func applyGreedyOverride(
+        marker: Character,
+        clearText: Bool,
+        apply: (NSRange) -> Void
+    ) {
+        let text = self.string
+        let chars = Array(text)
+        
+        var positions: [Int] = []
+        
+        for (i, c) in chars.enumerated() {
+            if c == marker {
+                positions.append(i)
+            }
+        }
+        
+        guard positions.count >= 2 else { return }
+        
+        let start = positions.first!
+        let end = positions.last!
+        
+        guard end > start else { return }
+        
+        let range = NSRange(location: start + 1,
+                            length: end - start - 1)
+        
+        apply(range)
+        
+        if clearText {
+            self.deleteCharacters(in: NSRange(location: end, length: 1))
+            self.deleteCharacters(in: NSRange(location: start, length: 1))
+        }
+    }
+    
     
     // MARK: - Pattern Processor (Preserves Color + Attributes)
     private func applyPatternPreservingColor(_ pattern: String, clearText: Bool,
