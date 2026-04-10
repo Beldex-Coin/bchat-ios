@@ -159,6 +159,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
 
     public func notifyUser(for incomingMessage: TSIncomingMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard let threadId = thread.uniqueId else { return }
         let isMessageRequest = thread.isMessageRequest(using: transaction)
@@ -280,6 +281,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
     
     public func notifyUser(forIncomingCall callInfoMessage: TSInfoMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard !thread.isGroupThread() else { return } // Calls shouldn't happen in groups
         guard let threadId = thread.uniqueId else { return }
@@ -313,6 +315,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
     
     public func notifyUser(forReaction reactMessage: ReactMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard !thread.isGroupThread() else { return } // We do NOT notify emoji reacts in groups
         guard !thread.isMessageRequest(using: transaction) else { return }

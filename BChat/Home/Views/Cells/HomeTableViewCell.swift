@@ -426,6 +426,11 @@ class HomeTableViewCell: UITableViewCell {
             muteImageView.isHidden = false
         }
         
+        // Mute icon hide for archived
+        if threadViewModel.isArchived {
+            muteImageView.isHidden = true
+        }
+        
         // Mentioned message
         if threadViewModel.isOnlyNotifyingForMentions {
             notifyMentionImageView.isHidden = false

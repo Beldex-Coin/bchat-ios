@@ -647,6 +647,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.layoutIfNeeded()
         hideOpenURLView()
         NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        
+        // end voice recording
+        if isAudioRecording {
+            endVoiceMessageRecording()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1334,8 +1339,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func recoverInputView() {
         // This is a workaround for an issue where the textview is not scrollable
         // after the app goes into background and goes back in foreground.
-        DispatchQueue.main.async {
-            self.snInputView.text = self.snInputView.text
+        if !isAudioRecording {
+            DispatchQueue.main.async {
+                self.snInputView.text = self.snInputView.text
+            }
         }
     }
     
