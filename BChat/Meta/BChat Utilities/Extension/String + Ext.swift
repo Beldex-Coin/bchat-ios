@@ -185,12 +185,12 @@ extension NSMutableAttributedString {
     func addAttributesPreservingColor(clearText: Bool) {
         
         // Italic
-        applyPatternPreservingColor("(?<!\\w)_([^\\s_].*[^\\s_])_(?!\\w)", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)_([^\\s_][^_]*[^\\s_])_(?!\\w)", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
         }
         
         // Bold
-        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*].*[^\\s*])\\*(?!\\w)", clearText: clearText) { range in
+        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*][^*]*[^\\s*])\\*(?!\\w)", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
         }
         
