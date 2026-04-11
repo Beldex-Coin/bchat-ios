@@ -731,13 +731,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
             }
         }
-        
-        if let typingRegex = try? NSRegularExpression(pattern: "(?<!\\S)@[^\\s]+", options: []) {
+      // Don't Remove this lines
+        /*if let typingRegex = try? NSRegularExpression(pattern: "(?<!\\S)@[^\\s]+", options: []) {
             typingRegex.enumerateMatches(in: text, options: [], range: fullRange) { match, _, _ in
                 guard let range = match?.range, range.location != NSNotFound else { return }
                 attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
             }
-        }
+        }*/
         
         UIView.performWithoutAnimation {
             let selectedRange = snInputView.inputTextView.selectedRange
