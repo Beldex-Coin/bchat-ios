@@ -184,27 +184,13 @@ extension NSMutableAttributedString {
     
     func addAttributesPreservingColor(clearText: Bool) {
         
-        // MARK: - Monospace
-        applyPatternPreservingColor("(?<!\\w)```([^\\s][\\s\\S]*[^\\s])```(?!\\w)", clearText: clearText) { range in
-            let mono = UIFont.monospacedSystemFont(
-                ofSize: font(at: range.location).pointSize,
-                weight: .regular
-            )
-            self.addAttribute(.font, value: mono, range: range)
+        // Italic
+        applyPatternPreservingColor("(?<!\\w)_([^\\s_][^_]*[^\\s_])_(?!\\w)", clearText: clearText) { range in
+            self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
         }
         
-        // MARK: - Inline code
-        applyPatternPreservingColor("(?<![`\\w])`([^\\s`\\n](?:[^`\\n]*[^\\s`\\n])?)`(?![`\\w])", clearText: clearText) { range in
-            let mono = UIFont.monospacedSystemFont(
-                ofSize: font(at: range.location).pointSize,
-                weight: .regular
-            )
-            self.addAttribute(.font, value: mono, range: range)
-            self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
-        }
-        
-        // MARK: - Bold, Italic, Strikethrough
-        applyPatternPreservingColor("\\*(\\S(?:[^\\n]*?\\S)?)\\*", clearText: clearText) { range in
+        // Bold
+        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*][^*]*[^\\s*])\\*(?!\\w)", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
         }
         
