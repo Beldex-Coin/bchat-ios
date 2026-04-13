@@ -194,31 +194,16 @@ extension NSMutableAttributedString {
             self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
         }
         
-        applyPatternPreservingColor("_(\\S(?:.*?\\S)?)_", clearText: clearText) { range in
+        applyPatternPreservingColor("_(\\S(?:[^\\n]*?\\S)?)_", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
         }
         
-        applyPatternPreservingColor("~(\\S(?:.*?\\S)?)~", clearText: clearText) { range in
+        applyPatternPreservingColor("~(\\S(?:[^\\n]*?\\S)?)~", clearText: clearText) { range in
             self.addAttribute(.strikethroughStyle, value: 1, range: range)
         }
         
         // MARK: - Quotes
         applyQuotes(clearText: clearText)
-        
-        // MARK: - ONLY SEND FIX (greedy override)
-        if clearText {
-            applyGreedyOverride(marker: "*", clearText: clearText) { range in
-                self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
-            }
-            
-            applyGreedyOverride(marker: "_", clearText: clearText) { range in
-                self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
-            }
-            
-            applyGreedyOverride(marker: "~", clearText: clearText) { range in
-                self.addAttribute(.strikethroughStyle, value: 1, range: range)
-            }
-        }
     }
     
     private func applyGreedyOverride(

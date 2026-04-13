@@ -34,7 +34,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         get { inputTextView.text }
         set {
             inputTextView.text = newValue
-            inputTextView.applyCurrentTextFormatting()
+            inputTextView.textViewDidChange(inputTextView)
         }
     }
     

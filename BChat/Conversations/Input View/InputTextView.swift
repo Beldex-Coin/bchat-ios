@@ -117,15 +117,6 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     public func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
-        applyCurrentTextFormatting()
-        handleTextChanged()
-    }
-    
-    public func applyCurrentTextFormatting() {
-        applyFormatting(to: self)
-    }
-    
-    private func applyFormatting(to textView: UITextView) {
         
         // Restore caret and scroll range to visible (no flicker)
         let selectedRange = textView.selectedRange
@@ -148,6 +139,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         // Force quote stripe redraw for the just-typed state (e.g. exactly "> ").
         textView.layoutManager.ensureLayout(for: textView.textContainer)
         textView.setNeedsDisplay()
+        handleTextChanged()
     }
     
    public func textView(_ textView: UITextView,
@@ -300,7 +292,10 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private func drawBlockQuoteBars() {
         guard let attributed = attributedText, attributed.length > 0 else { return }
+        self.layoutManager.ensureLayout(for: self.textContainer)
         let fullRange = NSRange(location: 0, length: attributed.length)
+        layoutIfNeeded()
+        let heightOfText = contentSize.height
         
         attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
             guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
@@ -309,7 +304,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
             self.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in
                 let barX = self.textContainerInset.left + self.textContainer.lineFragmentPadding - self.contentOffset.x + 2
                 let barY = usedRect.minY + self.textContainerInset.top - self.contentOffset.y + 1
-                let barHeight = max(usedRect.height + 1, 5)
+                let barHeight = max(heightOfText + 1, 5)
                 let barRect = CGRect(x: barX, y: barY, width: 3, height: barHeight)
                 let path = UIBezierPath(roundedRect: barRect, cornerRadius: 1.5)
                 UIColor.systemGray.setFill()
