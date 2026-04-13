@@ -145,10 +145,43 @@ public final class InputTextView : UITextView, UITextViewDelegate {
    public func textView(_ textView: UITextView,
                   shouldChangeTextIn range: NSRange,
                         replacementText text: String) -> Bool {
-       
        // Handle ENTER (already done before)
        if text == "\n" {
-           handleListContinuation(textView, range: range)
+           let nsText = textView.text as NSString
+           let cursorLocation = range.location
+           
+           let lineRange = nsText.lineRange(for: NSRange(location: cursorLocation, length: 0))
+           let lineText = nsText.substring(with: lineRange)
+           
+           let trimmed = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
+           
+           let bulletPrefixes = ["•", "-", "*"]
+           
+           // Check empty bullet line
+           let isOnlyBullet = bulletPrefixes.contains { prefix in
+               trimmed == prefix
+           }
+           
+           if isOnlyBullet {
+               // Remove bullet and STAY in same line
+               textView.text = nsText.replacingCharacters(in: lineRange, with: "")
+               // Keep cursor at same position
+               textView.selectedRange = NSRange(location: lineRange.location, length: 0)
+               return false
+           } else {
+               handleListContinuation(textView, range: range)
+           }
+           
+           // Continue bullet if valid text exists
+           for prefix in bulletPrefixes {
+               if trimmed.hasPrefix(prefix + " ") {
+                   let insertion = "\n\(prefix) "
+                   textView.text = nsText.replacingCharacters(in: range, with: insertion)
+                   textView.selectedRange = NSRange(location: range.location + insertion.count, length: 0)
+                   return false
+               }
+           }
+           
            return false
        }
        
