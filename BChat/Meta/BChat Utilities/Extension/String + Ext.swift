@@ -229,8 +229,8 @@ extension NSMutableAttributedString {
                                     range: NSRange(location: 0, length: self.length))
         
         for match in matches.reversed() {
-            let full = match.range(at: 0)   // with markers
-            var inner = match.range(at: 1)  // inside markers
+            let _ = match.range(at: 0)   // with markers
+            let inner = match.range(at: 1)  // inside markers
             
             // Apply attributes BEFORE removing markers
             apply(inner)
@@ -265,7 +265,7 @@ extension NSMutableAttributedString {
                 if index < lines.count - 1 { offset += 1 }
             }
             
-            guard line.hasPrefix("> "), lineLength >= 2 else { continue }
+            guard line.hasPrefix("> "), lineLength >= 3 else { continue }
             
             let lineRange = NSRange(location: offset, length: lineLength)
             let markerRange = NSRange(location: offset, length: 2)
