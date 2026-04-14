@@ -366,10 +366,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func sendMessage(hasPermissionToSendSeed: Bool = false, address: [String]? = nil, name: [String]? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
-        let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
+        var text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
         let thread = self.thread
         guard !text.isEmpty || address != nil else { return }
-        
+        text = getSanitizedMessage(from: text)
+
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
             hideInputAccessoryView()
@@ -2123,6 +2124,42 @@ extension ConversationVC {
                 self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
             }
         }
+    }
+    
+    // MARK: - Sanitized Message
+    
+    func getSanitizedMessage(from text: String) -> String {
+        let lines = text.components(separatedBy: "\n")
+        
+        let cleanedLines = lines.compactMap { line -> String? in
+            let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            // Case 1: Bullet (•)
+            if trimmed == "•" {
+                // Convert back to original trigger ("-" or "*")
+                return snInputView.inputTextView.lastBulletSymbol
+            }
+            
+            if trimmed.hasPrefix("•") {
+                let content = trimmed.dropFirst().trimmingCharacters(in: .whitespaces)
+                
+                // Empty bullet → convert to "-" or "*"
+                if content.isEmpty {
+                    return snInputView.inputTextView.lastBulletSymbol
+                }
+                
+                return "• \(content)"
+            }
+            
+            // Case 2: Raw symbols (* or -) without formatting
+            if trimmed == "*" || trimmed == "-" {
+                return trimmed
+            }
+            
+            return line
+        }
+        
+        return cleanedLines.joined(separator: "\n")
     }
 }
 

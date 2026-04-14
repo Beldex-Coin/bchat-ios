@@ -8,6 +8,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
     private var bulletMarkerByLineStart: [Int: String] = [:]
+    public var lastBulletSymbol: String = "-"
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -186,6 +187,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
        }
        
        if text == " " {
+           lastBulletSymbol = textView.text
            if handleBulletStart(textView, range: range) {
                return false
            }
