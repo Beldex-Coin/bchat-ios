@@ -758,6 +758,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         oldText = ""
         currentMentionStartIndex = nil
         mentions = []
+        snInputView.hideMentionsUI()
     }
 
     func replaceMentions(in text: String) -> String {

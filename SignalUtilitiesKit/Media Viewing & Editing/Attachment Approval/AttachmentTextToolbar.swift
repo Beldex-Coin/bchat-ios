@@ -429,15 +429,15 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
 
 private extension NSMutableAttributedString {
     func applyAttachmentToolbarFormatting() {
-        applyPatternPreservingColor("(?<!\\w)_([^\\s_].*[^\\s_])_(?!\\w)") { range in
+        applyPatternPreservingColor("_(\\S(?:[^\\n]*?\\S)?)_") { range in
             self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
         }
         
-        applyPatternPreservingColor("(?<!\\w)\\*([^\\s*].*[^\\s*])\\*(?!\\w)") { range in
+        applyPatternPreservingColor("\\*(\\S(?:[^\\n]*?\\S)?)\\*") { range in
             self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
         }
         
-        applyPatternPreservingColor("(?<!\\w)~([^\\s~].*[^\\s~])~(?!\\w)") { range in
+        applyPatternPreservingColor("~(\\S(?:[^\\n]*?\\S)?)~") { range in
             self.addAttribute(.strikethroughStyle, value: 1, range: range)
         }
         

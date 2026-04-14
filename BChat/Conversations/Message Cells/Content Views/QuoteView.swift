@@ -141,6 +141,23 @@ final class QuoteView : UIView {
         preconditionFailure("Use init(for:maxMessageWidth:) instead.")
     }
 
+    
+    private let textStorage = NSTextStorage()
+    private let layoutManager = NSLayoutManager()
+    private let textContainer = NSTextContainer(size: .zero)
+    private weak var bodyLabelRef: UILabel?
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        drawBlockQuoteBars()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupTextKit()
+        setNeedsDisplay()
+    }
+    
     private func setUpViewHierarchy() {
         // There's quite a bit of calculation going on here. It's a bit complex so don't make changes
         // if you don't need to. If you do then test:
@@ -266,7 +283,9 @@ final class QuoteView : UIView {
                 } ?? NSAttributedString(string: "Document", attributes: baseAttributes)
             )
             attributedText.addAttributesPreservingColor(clearText: true)
+            applyBlockQuoteStyling(attributedText)
             bodyLabel.attributedText = attributedText
+            self.bodyLabelRef = bodyLabel
         }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
@@ -412,6 +431,95 @@ final class QuoteView : UIView {
     @objc private func cancel() {
         delegate?.handleQuoteViewCancelButtonTapped()
     }
+    
+    private func applyBlockQuoteStyling(_ attributed: NSMutableAttributedString) {
+        let fullRange = NSRange(location: 0, length: attributed.length)
+        attributed.removeAttribute(.snBlockQuote, range: fullRange)
+        
+        let lines = attributed.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            var renderedLength = lineLength
+            
+            if line.hasPrefix(">") {
+                let removeLength = line.hasPrefix("> ") ? 2 : 1
+                if removeLength <= lineLength {
+                    attributed.replaceCharacters(
+                        in: NSRange(location: offset, length: removeLength),
+                        with: ""
+                    )
+                    renderedLength = lineLength - removeLength
+                }
+                
+                if renderedLength > 0 {
+                    let quoteRange = NSRange(location: offset, length: renderedLength)
+                    attributed.addAttribute(.snBlockQuote, value: true, range: quoteRange)
+                    
+                    let paragraphStyle = NSMutableParagraphStyle()
+                    paragraphStyle.firstLineHeadIndent = 10
+                    paragraphStyle.headIndent = 10
+                    attributed.addAttribute(.paragraphStyle, value: paragraphStyle, range: quoteRange)
+                }
+            }
+            
+            offset += renderedLength
+            if index < lines.count - 1 {
+                offset += 1
+            }
+        }
+    }
+    
+    private func drawBlockQuoteBars() {
+        guard let label = bodyLabelRef,
+              let attributed = label.attributedText,
+              attributed.length > 0 else { return }
+        
+        setupTextKit()
+        layoutManager.ensureLayout(for: textContainer)
+
+        let fullRange = NSRange(location: 0, length: attributed.length)
+
+        attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
+            guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+
+            let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
+
+            layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in
+
+                let barX = label.frame.minX + 2
+                let barY = label.frame.minY + usedRect.minY + 1
+
+                let barHeight = max(usedRect.height + 1, 5)
+
+                let barRect = CGRect(x: barX + 10, y: barY, width: 3, height: barHeight)
+
+                let path = UIBezierPath(roundedRect: barRect, cornerRadius: 1.5)
+                UIColor.systemGray.setFill()
+                path.fill()
+            }
+        }
+    }
+    
+    private func setupTextKit() {
+        guard let label = bodyLabelRef,
+              let attributedText = label.attributedText else { return }
+
+        textStorage.setAttributedString(attributedText)
+
+        if layoutManager.textContainers.isEmpty {
+            layoutManager.addTextContainer(textContainer)
+            textStorage.addLayoutManager(layoutManager)
+        }
+
+        textContainer.lineFragmentPadding = 0
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        textContainer.lineBreakMode = .byWordWrapping
+        let containerWidth = max(label.bounds.width, 1)
+        textContainer.size = CGSize(width: containerWidth, height: .greatestFiniteMagnitude)
+    }
+    
 }
 
 // MARK: Delegate
