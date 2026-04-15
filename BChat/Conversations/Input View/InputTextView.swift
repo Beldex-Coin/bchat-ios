@@ -8,6 +8,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private weak var snDelegate: InputTextViewDelegate?
     private let maxWidth: CGFloat
     private var bulletMarkerByLineStart: [Int: String] = [:]
+    public var lastBulletSymbol: String = "-"
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -161,26 +162,62 @@ public final class InputTextView : UITextView, UITextViewDelegate {
        // Handle ENTER (already done before)
        if text == "\n" {
            let nsText = textView.text as NSString
-           let lineRange = nsText.lineRange(for: range)
-           let cursorPosition = range.location - lineRange.location
+           let lineLength = nsText.lineRange(for: range)
+           let cursorPosition = range.location - lineLength.location
            guard cursorPosition >= 0 else {
                insertText("\n", textView: textView, range: range)
                return false
            }
-           let safePrefixLength = min(cursorPosition, max(0, nsText.length - lineRange.location))
-           let prefix = nsText.substring(with: NSRange(location: lineRange.location, length: safePrefixLength))
-           let lineText = nsText.substring(with: lineRange).trimmingCharacters(in: .newlines)
+           let safePrefixLength = min(cursorPosition, max(0, nsText.length - lineLength.location))
+           let prefix = nsText.substring(with: NSRange(location: lineLength.location, length: safePrefixLength))
+           let lineTextLength = nsText.substring(with: lineLength).trimmingCharacters(in: .newlines)
            
-           if prefix == "-  " || prefix == "*  " || lineText.hasPrefix("-  ") || lineText.hasPrefix("*  ") {
+           if prefix == "-  " || prefix == "*  " || lineTextLength.hasPrefix("-  ") || lineTextLength.hasPrefix("*  ") {
                insertText("\n", textView: textView, range: range)
                return false
            }
            
            handleListContinuation(textView, range: range)
+           
+           let cursorLocation = range.location
+           
+           let lineRange = nsText.lineRange(for: NSRange(location: cursorLocation, length: 0))
+           let lineText = nsText.substring(with: lineRange)
+           
+           let trimmed = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
+           
+           let bulletPrefixes = ["•", "-", "*"]
+           
+           // Check empty bullet line
+           let isOnlyBullet = bulletPrefixes.contains { prefix in
+               trimmed == prefix
+           }
+           
+           if isOnlyBullet {
+               // Remove bullet and STAY in same line
+               textView.text = nsText.replacingCharacters(in: lineRange, with: "")
+               // Keep cursor at same position
+               textView.selectedRange = NSRange(location: lineRange.location, length: 0)
+               return false
+           } else {
+               handleListContinuation(textView, range: range)
+           }
+           
+           // Continue bullet if valid text exists
+           for prefix in bulletPrefixes {
+               if trimmed.hasPrefix(prefix + " ") {
+                   let insertion = "\n\(prefix) "
+                   textView.text = nsText.replacingCharacters(in: range, with: insertion)
+                   textView.selectedRange = NSRange(location: range.location + insertion.count, length: 0)
+                   return false
+               }
+           }
+           
            return false
        }
        
        if text == " " {
+           lastBulletSymbol = textView.text
            if handleBulletStart(textView, range: range) {
                return false
            }
