@@ -71,6 +71,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
             // Notify layout system only when size changes
             if oldValue != contentSize {
                 invalidateIntrinsicContentSize()
+                setNeedsDisplay()
             }
         }
     }
@@ -83,6 +84,14 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
         drawBlockQuoteBars()
+    }
+    
+    public override var contentOffset: CGPoint {
+        didSet {
+            if oldValue != contentOffset {
+                setNeedsDisplay()
+            }
+        }
     }
     
     var numberOfVisibleLines: Int {
@@ -132,9 +141,12 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // Assign back to textView
         textView.attributedText = attributedString
+        let safeLocation = min(max(selectedRange.location, 0), attributedString.length)
+        let safeLength = min(max(selectedRange.length, 0), max(0, attributedString.length - safeLocation))
+        let safeRange = NSRange(location: safeLocation, length: safeLength)
         UIView.performWithoutAnimation {
-            textView.scrollRangeToVisible(selectedRange)
-            textView.selectedRange = selectedRange
+            textView.scrollRangeToVisible(safeRange)
+            textView.selectedRange = safeRange
         }
         
         // Force quote stripe redraw for the just-typed state (e.g. exactly "> ").
@@ -146,9 +158,27 @@ public final class InputTextView : UITextView, UITextViewDelegate {
    public func textView(_ textView: UITextView,
                   shouldChangeTextIn range: NSRange,
                         replacementText text: String) -> Bool {
+       
        // Handle ENTER (already done before)
        if text == "\n" {
            let nsText = textView.text as NSString
+           let lineLength = nsText.lineRange(for: range)
+           let cursorPosition = range.location - lineLength.location
+           guard cursorPosition >= 0 else {
+               insertText("\n", textView: textView, range: range)
+               return false
+           }
+           let safePrefixLength = min(cursorPosition, max(0, nsText.length - lineLength.location))
+           let prefix = nsText.substring(with: NSRange(location: lineLength.location, length: safePrefixLength))
+           let lineTextLength = nsText.substring(with: lineLength).trimmingCharacters(in: .newlines)
+           
+           if prefix == "-  " || prefix == "*  " || lineTextLength.hasPrefix("-  ") || lineTextLength.hasPrefix("*  ") {
+               insertText("\n", textView: textView, range: range)
+               return false
+           }
+           
+           handleListContinuation(textView, range: range)
+           
            let cursorLocation = range.location
            
            let lineRange = nsText.lineRange(for: NSRange(location: cursorLocation, length: 0))
@@ -191,6 +221,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
            if handleBulletStart(textView, range: range) {
                return false
            }
+           if revertSecondBulletSpace(textView, range: range) {
+               return false
+           }
        }
        
        if text.isEmpty {
@@ -207,6 +240,8 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         let lineRange = nsText.lineRange(for: range)
         
         let cursorPosition = range.location - lineRange.location
+        guard cursorPosition >= 0 else { return false }
+        guard lineRange.location + cursorPosition <= nsText.length else { return false }
         
         // Get text before cursor
         let prefix = nsText.substring(with: NSRange(location: lineRange.location, length: cursorPosition))
@@ -247,15 +282,48 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         return false
     }
     
+    private func revertSecondBulletSpace(_ textView: UITextView, range: NSRange) -> Bool {
+        guard range.length == 0 else { return false }
+        
+        let nsText = textView.text as NSString
+        let lineRange = nsText.lineRange(for: range)
+        guard lineRange.location + 2 <= nsText.length else { return false }
+        
+        let bulletPrefixRange = NSRange(location: lineRange.location, length: 2)
+        let bulletPrefix = nsText.substring(with: bulletPrefixRange)
+        guard bulletPrefix == "• " else { return false }
+        
+        guard range.location == lineRange.location + 2 else { return false }
+        
+        let lineText = nsText.substring(with: lineRange).trimmingCharacters(in: .newlines)
+        guard lineText == "• " else { return false }
+        
+        let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+        let replacement = "\(marker)  "
+        
+        if let replaceRange = Range(bulletPrefixRange, in: textView.text) {
+            textView.text.replaceSubrange(replaceRange, with: replacement)
+            textView.selectedRange = NSRange(location: lineRange.location + replacement.count, length: 0)
+            bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
+            textViewDidChange(textView)
+            return true
+        }
+        
+        return false
+    }
+    
     private func replaceCurrentLinePrefix(_ textView: UITextView,
                                           lineRange: NSRange,
                                           prefixLength: Int) {
         
         let nsText = textView.text as NSString
+        guard lineRange.location + lineRange.length <= nsText.length else { return }
         let lineText = nsText.substring(with: lineRange)
+        let lineNSString = lineText as NSString
+        guard lineNSString.length >= prefixLength else { return }
         
         // Remove "-"/"*"
-        let clean = (lineText as NSString).substring(from: prefixLength).trimmingCharacters(in: .whitespaces)
+        let clean = lineNSString.substring(from: prefixLength).trimmingCharacters(in: .whitespaces)
         
         let newLine = "• \(clean)"
         
@@ -327,19 +395,17 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private func drawBlockQuoteBars() {
         guard let attributed = attributedText, attributed.length > 0 else { return }
-        self.layoutManager.ensureLayout(for: self.textContainer)
         let fullRange = NSRange(location: 0, length: attributed.length)
-        layoutIfNeeded()
-        let heightOfText = contentSize.height
         
         attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
             guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
             
             let glyphRange = self.layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
-            self.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in
-                let barX = self.textContainerInset.left + self.textContainer.lineFragmentPadding - self.contentOffset.x + 2
-                let barY = usedRect.minY + self.textContainerInset.top - self.contentOffset.y + 1
-                let barHeight = max(heightOfText + 1, 5)
+            self.layoutManager.ensureLayout(forGlyphRange: glyphRange)
+            self.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { lineRect, _, _, _, _ in
+                let barX = self.textContainerInset.left + self.textContainer.lineFragmentPadding + 2
+                let barY = lineRect.minY + self.textContainerInset.top + 1
+                let barHeight = max(lineRect.height + 1, 5)
                 let barRect = CGRect(x: barX, y: barY, width: 3, height: barHeight)
                 let path = UIBezierPath(roundedRect: barRect, cornerRadius: 1.5)
                 UIColor.systemGray.setFill()

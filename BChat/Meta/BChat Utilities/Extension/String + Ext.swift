@@ -204,15 +204,15 @@ extension NSMutableAttributedString {
         }
         
         // MARK: - Bold, Italic, Strikethrough
-        applyPatternPreservingColor("\\*(\\S(?:[^\\n]*?\\S)?)\\*", clearText: clearText) { range in
+        applyPatternPreservingColor("\\*(\\S(?:[^\\n*]*\\S)?(?:\\*\\S(?:[^\\n*]*\\S)?)*)\\*", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
         }
         
-        applyPatternPreservingColor("_(\\S(?:[^\\n]*?\\S)?)_", clearText: clearText) { range in
+        applyPatternPreservingColor("_(\\S(?:[^\\n_]*\\S)?(?:_\\S(?:[^\\n_]*\\S)?)*)_", clearText: clearText) { range in
             self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
         }
         
-        applyPatternPreservingColor("~(\\S(?:[^\\n]*?\\S)?)~", clearText: clearText) { range in
+        applyPatternPreservingColor("~(\\S(?:[^\\n~]*\\S)?(?:~\\S(?:[^\\n~]*\\S)?)*)~", clearText: clearText) { range in
             self.addAttribute(.strikethroughStyle, value: 1, range: range)
         }
         
