@@ -221,7 +221,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
            if handleBulletStart(textView, range: range) {
                return false
            }
-           if handleBulletSecondSpaceUndo(textView, range: range) {
+           if revertSecondBulletSpace(textView, range: range) {
                return false
            }
        }
@@ -282,7 +282,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         return false
     }
     
-    private func handleBulletSecondSpaceUndo(_ textView: UITextView, range: NSRange) -> Bool {
+    private func revertSecondBulletSpace(_ textView: UITextView, range: NSRange) -> Bool {
         guard range.length == 0 else { return false }
         
         let nsText = textView.text as NSString

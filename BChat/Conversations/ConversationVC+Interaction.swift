@@ -710,9 +710,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                         snInputView.showMentionsUI(for: candidates, in: thread)
                     }
-                    let text = newText
-                    let pattern = #"[\*_~]@[\*_~]"#
-                    if let _ = text.range(of: pattern, options: .regularExpression) {
+                    let currentText = newText
+                    let formattedMentionPattern = #"[\*_~]@[\*_~]"#
+                    if let _ = currentText.range(of: formattedMentionPattern, options: .regularExpression) {
                         let candidates = MentionsManager.getMentionCandidates(for: "", in: thread.uniqueId!)
                         currentMentionStartIndex = lastCharacterIndex
                         snInputView.showMentionsUI(for: candidates, in: thread)
