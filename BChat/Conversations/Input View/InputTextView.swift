@@ -395,10 +395,15 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     
     private func drawBlockQuoteBars() {
         guard let attributed = attributedText, attributed.length > 0 else { return }
+        let nsText = attributed.string as NSString
         let fullRange = NSRange(location: 0, length: attributed.length)
         
         attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
             guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+            if range.location + 3 <= nsText.length {
+                let prefix = nsText.substring(with: NSRange(location: range.location, length: 3))
+                if prefix == ">  " { return }
+            }
             
             let glyphRange = self.layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
             self.layoutManager.ensureLayout(forGlyphRange: glyphRange)

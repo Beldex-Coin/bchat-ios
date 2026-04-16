@@ -422,7 +422,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         
         for (index, line) in lines.enumerated() {
             let lineLength = (line as NSString).length
-            if line.hasPrefix("> "), lineLength >= 2 {
+            if line.hasPrefix("> "), lineLength >= 2, !line.hasPrefix(">  ") {
                 let quotedText = String(line.dropFirst(2))
                 let replacement = "│ \(quotedText)"
                 let range = NSRange(location: offset, length: lineLength)

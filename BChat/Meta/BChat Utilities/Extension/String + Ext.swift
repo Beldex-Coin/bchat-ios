@@ -266,6 +266,7 @@ extension NSMutableAttributedString {
             }
             
             guard line.hasPrefix("> "), lineLength >= 3 else { continue }
+            guard !line.hasPrefix(">  ") else { continue }
             
             let lineRange = NSRange(location: offset, length: lineLength)
             let markerRange = NSRange(location: offset, length: 2)
