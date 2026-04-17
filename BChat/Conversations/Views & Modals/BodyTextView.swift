@@ -50,9 +50,14 @@ final class BodyTextView : UITextView {
     private func drawBlockQuoteBars() {
         guard let attributed = attributedText, attributed.length > 0 else { return }
         let fullRange = NSRange(location: 0, length: attributed.length)
+        let nsText = attributed.string as NSString
         
         attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
             guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+            if range.location + 3 <= nsText.length {
+                let prefix = nsText.substring(with: NSRange(location: range.location, length: 3))
+                if prefix == ">  " { return }
+            }
             
             let glyphRange = self.layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
             self.layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in

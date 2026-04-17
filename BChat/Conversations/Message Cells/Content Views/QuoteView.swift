@@ -443,25 +443,25 @@ final class QuoteView : UIView {
             let lineLength = (line as NSString).length
             var renderedLength = lineLength
             
-            if line.hasPrefix(">") {
-                let removeLength = line.hasPrefix("> ") ? 2 : 1
-                if removeLength <= lineLength {
-                    attributed.replaceCharacters(
-                        in: NSRange(location: offset, length: removeLength),
-                        with: ""
-                    )
-                    renderedLength = lineLength - removeLength
-                }
+            let isValidSingleSpaceQuote =
+                line.hasPrefix("> ") &&
+                !line.hasPrefix(">  ") &&
+                lineLength >= 3
+            
+            if isValidSingleSpaceQuote {
+                attributed.replaceCharacters(
+                    in: NSRange(location: offset, length: 2),
+                    with: ""
+                )
+                renderedLength = lineLength - 2
                 
-                if renderedLength > 0 {
-                    let quoteRange = NSRange(location: offset, length: renderedLength)
-                    attributed.addAttribute(.snBlockQuote, value: true, range: quoteRange)
-                    
-                    let paragraphStyle = NSMutableParagraphStyle()
-                    paragraphStyle.firstLineHeadIndent = 10
-                    paragraphStyle.headIndent = 10
-                    attributed.addAttribute(.paragraphStyle, value: paragraphStyle, range: quoteRange)
-                }
+                let quoteRange = NSRange(location: offset, length: renderedLength)
+                attributed.addAttribute(.snBlockQuote, value: true, range: quoteRange)
+                
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.firstLineHeadIndent = 10
+                paragraphStyle.headIndent = 10
+                attributed.addAttribute(.paragraphStyle, value: paragraphStyle, range: quoteRange)
             }
             
             offset += renderedLength
@@ -478,11 +478,15 @@ final class QuoteView : UIView {
         
         setupTextKit()
         layoutManager.ensureLayout(for: textContainer)
-
+        let nsText = attributed.string as NSString
         let fullRange = NSRange(location: 0, length: attributed.length)
 
         attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
             guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+            if range.location + 3 <= nsText.length {
+                let prefix = nsText.substring(with: NSRange(location: range.location, length: 3))
+                if prefix == ">  " { return }
+            }
 
             let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
 

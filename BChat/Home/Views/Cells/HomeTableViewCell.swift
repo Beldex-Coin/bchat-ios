@@ -438,9 +438,11 @@ class HomeTableViewCell: UITableViewCell {
         
         // Group message
         let font = threadViewModel.hasUnreadMessages ? Fonts.regularOpenSans(ofSize: Values.smallFontSize) : Fonts.regularOpenSans(ofSize: Values.smallFontSize)
-        if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
-            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
-        }
+        // Don't Remove Below Code
+        // For Group Thread No Need To Add User Name Before Message
+//        if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
+//            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
+//        }
         
         guard var lastMessageText = threadViewModel.lastMessageText else { return result }
         
@@ -481,7 +483,7 @@ class HomeTableViewCell: UITableViewCell {
         
         for (index, line) in lines.enumerated() {
             let lineLength = (line as NSString).length
-            if line.hasPrefix("> "), lineLength >= 2 {
+            if line.hasPrefix("> "), lineLength >= 2, !line.hasPrefix(">  ") {
                 let quotedText = String(line.dropFirst(2))
                 let replacement = "│ \(quotedText)"
                 let lineRange = NSRange(location: offset, length: lineLength)
