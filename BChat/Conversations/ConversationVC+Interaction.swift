@@ -779,14 +779,35 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
 
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView) {
-        guard let currentMentionStartIndex = currentMentionStartIndex else { return }
-        mentions.append(mention)
-        let oldText = snInputView.text
-        let newText = oldText.replacingCharacters(in: currentMentionStartIndex..., with: "@\(mention.displayName) ")
-        snInputView.text = newText
-        self.currentMentionStartIndex = nil
-        snInputView.hideMentionsUI()
-        self.oldText = newText
+        if let start = currentMentionStartIndex,
+           let cursor = snInputView.inputTextView.selectedTextRange {
+            
+            mentions.append(mention)
+            let oldText = snInputView.text
+
+            // Compute integer offsets in the UITextView's text from the UITextRange
+            let textView = snInputView.inputTextView
+            let location = textView.offset(from: textView.beginningOfDocument, to: cursor.start)
+
+            // Derive integer offset for the current mention start from String.Index
+            let startOffset = oldText.distance(from: oldText.startIndex, to: start)
+
+            // Clamp indices to valid bounds
+            let safeStart = max(0, min(startOffset, oldText.count))
+            let safeEnd = max(safeStart, min(location, oldText.count))
+
+            // Convert integer offsets to String.Index
+            let startIndex = oldText.index(oldText.startIndex, offsetBy: safeStart)
+            let endIndex = oldText.index(oldText.startIndex, offsetBy: safeEnd)
+            
+            let mentionName = safeStart == 0 ? "@\(mention.displayName) " : "\(mention.displayName)"
+            let newText = oldText.replacingCharacters(in: startIndex..<endIndex, with: mentionName)
+
+            snInputView.text = newText
+            self.currentMentionStartIndex = nil
+            snInputView.hideMentionsUI()
+            self.oldText = newText
+        }
     }
 
     // MARK: View Item Interaction
