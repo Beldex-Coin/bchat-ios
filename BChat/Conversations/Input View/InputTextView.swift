@@ -158,6 +158,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
    public func textView(_ textView: UITextView,
                   shouldChangeTextIn range: NSRange,
                         replacementText text: String) -> Bool {
+       if revertBulletIfTypingBefore(textView, range: range, replacementText: text) {
+           return false
+       }
        
        // Handle ENTER (already done before)
        if text == "\n" {
@@ -205,7 +208,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
            
            // Continue bullet if valid text exists
            for prefix in bulletPrefixes {
-               if trimmed.hasPrefix(prefix + " ") {
+               if lineText.hasPrefix(prefix + " ") && !lineText.hasPrefix(prefix + "  ") {
                    let insertion = "\n\(prefix) "
                    textView.text = nsText.replacingCharacters(in: range, with: insertion)
                    textView.selectedRange = NSRange(location: range.location + insertion.count, length: 0)
@@ -235,6 +238,41 @@ public final class InputTextView : UITextView, UITextViewDelegate {
        return true
    }
     
+    private func revertBulletIfTypingBefore(_ textView: UITextView, range: NSRange, replacementText text: String) -> Bool {
+        guard !text.isEmpty else { return false }
+
+        let nsText = textView.text as NSString
+        let lineRange = nsText.lineRange(for: range)
+
+        guard lineRange.location + 2 <= nsText.length else { return false }
+
+        let prefixRange = NSRange(location: lineRange.location, length: 2)
+        let prefix = nsText.substring(with: prefixRange)
+
+        // Only act if line starts with bullet
+        guard prefix == "• " else { return false }
+
+        // If user is typing BEFORE bullet
+        if range.location <= lineRange.location {
+            let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+            let newPrefix = "\(text)\(marker) "
+
+            if let replaceRange = Range(prefixRange, in: textView.text) {
+                textView.text.replaceSubrange(replaceRange, with: newPrefix)
+
+                // Adjust cursor position
+                let newCursor = range.location + (newPrefix.count - 2)
+                textView.selectedRange = NSRange(location: max(0, newCursor), length: 0)
+
+                bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
+                textViewDidChange(textView)
+                return true
+            }
+        }
+
+        return false
+    }
+    
     private func handleBulletStart(_ textView: UITextView, range: NSRange) -> Bool {
         let nsText = textView.text as NSString
         let lineRange = nsText.lineRange(for: range)
@@ -246,8 +284,15 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         // Get text before cursor
         let prefix = nsText.substring(with: NSRange(location: lineRange.location, length: cursorPosition))
         
-        if prefix == "*" || prefix == "-" {
-            if cursorPosition != 1 { return false }
+        if (prefix == "*" || prefix == "-") && cursorPosition == 1 {
+            // Ensure nothing exists before marker (no spaces)
+            if lineRange.location < nsText.length {
+                let fullLinePrefix = nsText.substring(with: NSRange(location: lineRange.location, length: cursorPosition))
+                if fullLinePrefix.hasPrefix(" ") {
+                    return false
+                }
+            }
+
             bulletMarkerByLineStart[lineRange.location] = prefix
             replaceCurrentLinePrefix(textView, lineRange: lineRange, prefixLength: 1)
             return true
@@ -343,9 +388,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         // Get current line
         let lineRange = nsText.lineRange(for: range)
         let currentLine = nsText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
-        
+        let numberedLineCheck = nsText.substring(with: lineRange)
         // MARK: Numbered List (1. 2. 3.)
-        if let match = currentLine.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
+        if let match = numberedLineCheck.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
             let numberString = String(currentLine[match]).replacingOccurrences(of: ". ", with: "")
             
             if let number = Int(numberString) {
@@ -357,15 +402,8 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         }
         
         // MARK: Bullet List (- * •)
-        if currentLine.hasPrefix("- ") || currentLine.hasPrefix("* ") || currentLine.hasPrefix("• ") {
-            let marker: String
-            if currentLine.hasPrefix("* ") {
-                marker = "*"
-            } else if currentLine.hasPrefix("- ") {
-                marker = "-"
-            } else {
-                marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
-            }
+        if currentLine.hasPrefix("• ") {
+            let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
             
             let newText = "\n• "
             insertText(newText, textView: textView, range: range)
