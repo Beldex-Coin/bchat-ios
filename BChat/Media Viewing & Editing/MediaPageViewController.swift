@@ -865,6 +865,11 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     // MARK: MediaDetailViewControllerDelegate
     
     @objc
+    public func showToolbar() {
+        self.shouldHideToolbars = true
+    }
+    
+    @objc
     public func mediaDetailViewControllerHidePopup(_ mediaDetailViewController: MediaDetailViewController) {
         hideMenuPopup(true)
     }
@@ -901,8 +906,6 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             Logger.verbose("ignoring stale delegate.")
             return
         }
-
-        self.shouldHideToolbars = isPlayingVideo
         self.updateFooterBarButtonItems(isPlayingVideo: isPlayingVideo)
     }
 

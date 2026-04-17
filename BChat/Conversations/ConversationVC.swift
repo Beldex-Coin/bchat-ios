@@ -16,12 +16,8 @@ var isAudioRecording = false
 
 final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversationSettingsViewDelegate, ConversationSearchControllerDelegate, UITableViewDataSource, UITableViewDelegate {
     func conversationSettingsDidRequestConversationSearch(_ conversationSettingsViewController: ChatSettingsVC) {
-        showSearchUI()
         popAllConversationSettingsViews {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Without this delay the search bar doesn't show
-                self.searchController.uiSearchController.searchBar.becomeFirstResponder()
-                self.searchController.uiSearchController.searchBar.showsCancelButton = true
-            }
+                self.showSearchUI()
         }
     }
     
@@ -578,7 +574,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         deleteAudioView.addSubViews(deleteAudioImageView, deleteAudioLabel)
         deleteAudioView.addSubview(deleteAudioButton)
         deleteAudioView.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 6).isActive = true
+        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 2).isActive = true
         deleteAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         NSLayoutConstraint.activate([
             deleteAudioImageView.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
@@ -651,6 +647,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             self.showToast(message: "Please check your internet connection", seconds: 1.0)
         }
 
+        updateNavBarButtons()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             CustomSlideView.isFromExpandAttachment = false
         }
@@ -673,12 +670,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if backAPI == true {
-            let vc = InitiatingTransactionVC()
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .crossDissolve
-            self.present(vc, animated: true, completion: nil)
-        }
         highlightFocusedMessageIfNeeded()
         didFinishInitialLayout = true
         markAllAsRead()
@@ -689,6 +680,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             }
             navigationController?.navigationBar.isHidden = false
             snInputView.isUserInteractionEnabled = true
+        }
+        
+        if #available(iOS 26.0, *) {
+            navigationController?.interactiveContentPopGestureRecognizer?.isEnabled = false
+        } else {
+            // Fallback on earlier versions
         }
     }
     
@@ -744,29 +741,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 self.scrollButton.alpha = self.getScrollButtonOpacity()
             }
         }
-        
-        var constraintValue: CGFloat = 4
-        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
-        if inputTextViewLines >= 2 {
-            constraintValue = inputTextViewLines == 3 ? 16 :
-                                inputTextViewLines >= 4 ? 28 : constraintValue
-        }
-        
-        if snInputView.quoteDraftInfo != nil {
-            let msg: VisibleMessage = VisibleMessage()
-            msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
-            if let quoteText = msg.quote?.text {
-                constraintValue += quoteText.count >= 100 ? 78 : 68
-            } else {
-                constraintValue += 68
-            }
-        }
-
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.25) {
-                bottomConstraintOfAttachmentButton = constraintValue
-            }
-        }
+        updateAttachmentButtonLayout()
     }
     
     override func appDidBecomeActive(_ notification: Notification) {
@@ -1004,6 +979,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc func openURLViewCopyButtonTapped() {
         hideOpenURLView()
         UIPasteboard.general.string = urlToOpen!.absoluteString
+        showToast(message: "Copied to clipboard", seconds: 1.0)
     }
     
     
@@ -1049,17 +1025,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return UITableView.automaticDimension
     }
     
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
-    
     // MARK: Updating
     
     func updateNavBarButtons() {
@@ -1073,12 +1038,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         if let contactThread: TSContactThread = (thread as? TSContactThread) {
             let publicKey = contactThread.contactBChatID()
             let button: UIButton = UIButton(type: .custom)
-            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.setImage(getProfilePicture(of: 42, for: publicKey), for: .normal)
-            button.frame = CGRectMake(0, 0, 42, 42)
-            button.layer.cornerRadius = 21
-            button.layer.masksToBounds = true            
+            button.widthAnchor.constraint(equalToConstant: 36).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 36).isActive = true
+            button.setImage(getProfilePicture(of: 36, for: publicKey), for: .normal)
+            button.frame = CGRectMake(0, 0, 36, 36)
+            button.layer.cornerRadius = 18
+            button.layer.masksToBounds = true
             button.layer.borderColor = Colors.bothGreenColor.cgColor
 
             lazy var verifiedImageView: UIImageView = {
@@ -1094,8 +1059,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let View = UIView()
                 View.translatesAutoresizingMaskIntoConstraints = false
                 View.backgroundColor = .clear
-                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
-                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                View.widthAnchor.constraint(equalToConstant: 36).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 36).isActive = true
                 return View
             }()
             outerView.addSubViews(button, verifiedImageView)
@@ -1123,12 +1088,12 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             iconImageView.set(.height, to: profilePictureViewSize)
             iconImageView.size = profilePictureViewSize
             iconImageView.layer.masksToBounds = true
-            iconImageView.layer.cornerRadius = 21
+            iconImageView.layer.cornerRadius = 18
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
-            button.widthAnchor.constraint(equalToConstant: 42).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 42).isActive = true
-            button.frame = CGRectMake(0, 0, 42, 42)
-            button.layer.cornerRadius = 21
+            button.widthAnchor.constraint(equalToConstant: 36).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 36).isActive = true
+            button.frame = CGRectMake(0, 0, 36, 36)
+            button.layer.cornerRadius = 18
             button.layer.masksToBounds = true
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
@@ -1142,8 +1107,8 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                 let View = UIView()
                 View.translatesAutoresizingMaskIntoConstraints = false
                 View.backgroundColor = .clear
-                View.widthAnchor.constraint(equalToConstant: 42).isActive = true
-                View.heightAnchor.constraint(equalToConstant: 42).isActive = true
+                View.widthAnchor.constraint(equalToConstant: 36).isActive = true
+                View.heightAnchor.constraint(equalToConstant: 36).isActive = true
                 return View
             }()
             
@@ -1204,12 +1169,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
                         rightBarButtonItems.append(disappearMessageButtonBarItem)
                     }
                 }
-                else {
-                    // Note: Adding 2 empty buttons because without it the title alignment is busted (Note: The size was
-                    // taken from the layout inspector for the back button in Xcode
-                    rightBarButtonItems.append(UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: Values.verySmallProfilePictureSize, height: 44))))
-                    rightBarButtonItems.append(UIBarButtonItem(customView: UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))))
-                }
             }
             else {
                 
@@ -1231,7 +1190,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         handleTitleViewTapped()
     }
     
-    private func highlightFocusedMessageIfNeeded() {
+    internal func highlightFocusedMessageIfNeeded() {
         if let indexPath = focusedMessageIndexPath, let cell = messagesTableView.cellForRow(at: indexPath) as? VisibleMessageCell {
             cell.highlight()
             focusedMessageIndexPath = nil
@@ -1239,84 +1198,45 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     @objc func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
-        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
         
-        // Calculate new positions (Need the ensure the 'messageRequestView' has been layed out as it's
-        // needed for proper calculations, so force an initial layout if it doesn't have a size)
-        var hasDoneLayout: Bool = true
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame =
+                userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
         
-        if messageRequestView.bounds.height <= CGFloat.leastNonzeroMagnitude {
-            hasDoneLayout = false
-            
-            UIView.performWithoutAnimation {
-                self.view.layoutIfNeeded()
-            }
-        }
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 7
+        let options = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
         
-        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
-        if keyboardTop <= 100 {
-            messageRequestView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -45).isActive = true
-            self.isKeyboardPresented = false
+        var keyboardHeight: CGFloat
+        if keyboardFrameInView.intersects(view.bounds) {
+            keyboardHeight = max(0, view.bounds.maxY - keyboardFrameInView.minY)
         } else {
-            self.isKeyboardPresented = true
-        }
-        let messageRequestsOffset: CGFloat = (messageRequestView.isHidden ? 0 : messageRequestView.bounds.height + 16)
-        let oldContentInset: UIEdgeInsets = messagesTableView.contentInset
-        let newContentInset: UIEdgeInsets = UIEdgeInsets(
-            top: 0,
-            leading: 0,
-            bottom: (Values.mediumSpacing + keyboardTop + messageRequestsOffset),
-            trailing: 0
-        )
-        let newContentOffsetY: CGFloat = (messagesTableView.contentOffset.y + (newContentInset.bottom - oldContentInset.bottom))
-        let changes = { [weak self] in
-            self?.scrollButtonBottomConstraint?.constant = -(keyboardTop + 16)
-            self?.messageRequestsViewBotomConstraint?.constant = -(keyboardTop + 16)
-            self?.messagesTableView.contentInset = newContentInset
-            self?.messagesTableView.contentOffset.y = newContentOffsetY
-            
-            let scrollButtonOpacity: CGFloat = (self?.getScrollButtonOpacity() ?? 0)
-            self?.scrollButton.alpha = scrollButtonOpacity
-            
-            self?.view.setNeedsLayout()
-            self?.view.layoutIfNeeded()
+            keyboardHeight = 0
         }
         
-        // Perform the changes (don't animate if the initial layout hasn't been completed)
-        guard hasDoneLayout else {
-            UIView.performWithoutAnimation {
-                changes()
-            }
-            return
-        }
+        self.isKeyboardPresented = keyboardHeight > 0
         
-        UIView.animate(
-            withDuration: duration,
-            delay: 0,
-            options: options,
-            animations: changes,
-            completion: nil
-        )
+        let safeBottom = view.safeAreaInsets.bottom
+        let insetBottom = max(70, keyboardHeight - safeBottom)
+        let offset = insetBottom > 0 ? insetBottom + Values.veryLargeSpacing : Values.mediumSpacing
+        
+        UIView.animate(withDuration: duration, delay: 0, options: options) {
+            self.messageRequestsViewBotomConstraint?.constant = -offset
+            self.scrollButtonBottomConstraint?.constant = -offset
+            self.messagesTableView.contentInset.bottom = offset + Values.mediumSpacing
+            
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc func handleKeyboardWillHideNotification(_ notification: Notification) {
-        // Please refer to https://github.com/mapbox/mapbox-navigation-ios/issues/1600
-        // and https://stackoverflow.com/a/25260930 to better understand what we are
-        // doing with the UIViewAnimationOptions
-        let userInfo: [AnyHashable: Any] = (notification.userInfo ?? [:])
-        let duration = ((userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval) ?? 0)
-        let curveValue: Int = ((userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int) ?? Int(UIView.AnimationOptions.curveEaseInOut.rawValue))
-        let options: UIView.AnimationOptions = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
         
-        let keyboardRect: CGRect = ((userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect) ?? CGRect.zero)
-        let keyboardTop = (UIScreen.main.bounds.height - keyboardRect.minY)
+        guard let userInfo = notification.userInfo else { return }
+        let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0.25
+        let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? Int ?? 7
+        let options = UIView.AnimationOptions(rawValue: UInt(curveValue << 16))
+        
         self.isKeyboardPresented = false
         
         UIView.animate(
@@ -1324,17 +1244,21 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             delay: 0,
             options: options,
             animations: { [weak self] in
-                self?.scrollButtonBottomConstraint?.constant = -(keyboardTop + 16)
-                self?.messageRequestsViewBotomConstraint?.constant = -(keyboardTop + 16)
+                guard let self else { return }
                 
-                let scrollButtonOpacity: CGFloat = (self?.getScrollButtonOpacity() ?? 0)
-                self?.scrollButton.alpha = scrollButtonOpacity
-                self?.unreadCountView.alpha = scrollButtonOpacity
+                // keyboard is hidden → height = 0
+                self.scrollButtonBottomConstraint?.constant = -Values.mediumSpacing
+                self.messageRequestsViewBotomConstraint?.constant = -Values.mediumSpacing
+                self.messagesTableView.contentInset.bottom = Values.mediumSpacing
                 
-                self?.view.setNeedsLayout()
-                self?.view.layoutIfNeeded()
+                let scrollButtonOpacity = self.getScrollButtonOpacity()
+                self.scrollButton.alpha = scrollButtonOpacity
+                self.unreadCountView.alpha = scrollButtonOpacity
+                
+                self.view.layoutIfNeeded()
             },
-            completion: nil         )
+            completion: nil
+        )
     }
     
     func conversationViewModelWillUpdate() {
@@ -1524,13 +1448,33 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         }
     }
     
-    func popAllConversationSettingsViews(completion completionBlock: (() -> Void)? = nil) {
+    func popAllConversationSettingsViews(completion: (() -> Void)? = nil) {
+
+        guard let nav = navigationController else {
+            completion?()
+            return
+        }
+
+        let performPop = {
+            nav.popToViewController(self, animated: true)
+
+            if let coordinator = nav.transitionCoordinator {
+                coordinator.animate(alongsideTransition: nil) { _ in
+                    completion?()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion?()
+                }
+            }
+        }
+
         if presentedViewController != nil {
             dismiss(animated: true) {
-                self.navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+                performPop()
             }
         } else {
-            navigationController!.popToViewController(self, animated: true, completion: completionBlock)
+            performPop()
         }
     }
     
@@ -1548,8 +1492,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         searchBarContainer.set(.width, to: UIScreen.main.bounds.width - 32)
         searchBarContainer.addSubview(searchBar)
         navigationItem.titleView = searchBarContainer
+        searchBar.showsCancelButton = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             searchBar.becomeFirstResponder()
         }
         
@@ -1569,8 +1514,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             searchBar.autoPinEdgesToSuperviewMargins()
         }
         
-        // Nav bar buttons
-        updateNavBarButtons()
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = nil
+        navigationItem.rightBarButtonItems = []
         
         if navigationController!.navigationBar as? OWSNavigationBar != nil{
             let navBar = navigationController!.navigationBar as! OWSNavigationBar

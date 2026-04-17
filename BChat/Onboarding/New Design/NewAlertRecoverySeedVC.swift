@@ -119,10 +119,9 @@ class NewAlertRecoverySeedVC: BaseVC {
     }
 
     @objc private func nextButtonTapped(_ sender: UIButton) {
-        let vc = NewPasswordVC()
-        vc.isGoingNewRecoverySeed = true
-        vc.isVerifyPassword = true
-        navigationController!.pushViewController(vc, animated: true)
+        let vc = PinViewController()
+        vc.flowStep = .verifyPin
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }

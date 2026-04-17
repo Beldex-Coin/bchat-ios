@@ -181,7 +181,7 @@ final class ContactView : UIView {
         if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
             return profilePicture
         } else {
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? contactName
+            let displayName = Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? contactName
             return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
         }
     }

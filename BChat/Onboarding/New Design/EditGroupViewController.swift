@@ -30,7 +30,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
-        
+        result.autocorrectionType = .no
         return result
     }()
     
@@ -230,6 +230,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         }
         self.name = name
         displayNameLabel.text = name
+        editIconImage.isHidden = false
         doneButton.isHidden = true
         commitChanges()
     }
@@ -247,7 +248,12 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         }
         let currentString: NSString = textField.text! as NSString
         let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
-        return newString.length <= 26
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
+        let typedCharacterSet = CharacterSet(charactersIn: newString as String)
+        
+        return newString.length <= 26 && allowedCharacterSet.isSuperset(of: typedCharacterSet)
     }
     
     @objc func nameTextfieldTapped(textField: UITextField) {
@@ -264,6 +270,15 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
             applyChangesButton.backgroundColor = Colors.bothGreenColor
             applyChangesButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
         }
+        
+        let text = textField.text ?? ""
+        let attributed = NSMutableAttributedString(string: text)
+        attributed.addAttribute(
+            .underlineStyle,
+            value: NSUnderlineStyle.thick.rawValue,
+            range: NSRange(location: 0, length: attributed.length)
+        )
+        textField.attributedText = attributed
     }
     
     @objc func addMemberAction() {
@@ -334,18 +349,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         }
         
         return cell
-    }
-    
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }    
+    } 
     
     private func commitChanges() {
         let popToConversationVC: (EditGroupViewController) -> Void = { editVC in

@@ -310,7 +310,7 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
 
     // MARK: - Video
 
-    private func playVideo() {
+    public func playVideo() {
         guard let videoPlayer = self.videoPlayer else {
             owsFailDebug("video player was unexpectedly nil")
             return
@@ -321,15 +321,17 @@ public class AttachmentPrepViewController: OWSViewController, PlayerProgressBarD
         }
         
         videoPlayer.play()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "playAction"), object: nil)
     }
 
-    private func pauseVideo() {
+    public func pauseVideo() {
         guard let videoPlayer = self.videoPlayer else {
             owsFailDebug("video player was unexpectedly nil")
             return
         }
 
         videoPlayer.pause()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "pauseAction"), object: nil)
         
         UIView.animate(withDuration: 0.1) { [weak self] in
             self?.playVideoButton.alpha = 1.0

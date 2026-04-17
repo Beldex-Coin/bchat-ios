@@ -13,8 +13,8 @@ public extension TSIncomingMessage {
         let quotedMessageFromReceiver = quotedMessage
         let quotedMessageFromVisibleMessage = TSQuotedMessage.from(visibleMessage.quote)
         
-        let countOfQuotedMessageFromReceiver = valueCount(for: quotedMessageFromReceiver)
-        let countOfQuotedMessageFromVisibleMessage = valueCount(for: quotedMessageFromVisibleMessage)
+        let countOfQuotedMessageFromReceiver = valueCountForTSQuotedMessage(for: quotedMessageFromReceiver)
+        let countOfQuotedMessageFromVisibleMessage = valueCountForTSQuotedMessage(for: quotedMessageFromVisibleMessage)
         
         let result = TSIncomingMessage(
             timestamp: visibleMessage.sentTimestamp!,
@@ -36,29 +36,5 @@ public extension TSIncomingMessage {
         )
         result.openGroupServerMessageID = openGroupServerMessageID
         return result
-    }
-    
-    static func valueCount(for message: TSQuotedMessage?) -> Int {
-        var count = 0
-        if let body = message?.body, !body.isEmpty {
-            count += 1
-        }
-        if let contentType = message?.contentType(), !contentType.isEmpty {
-            count += 1
-        }
-        if let sourceFilename = message?.sourceFilename(), !sourceFilename.isEmpty {
-            count += 1
-        }
-        if let thumbnailPointerId = message?.thumbnailAttachmentPointerId(), !thumbnailPointerId.isEmpty {
-            count += 1
-        }
-        if let thumbnailStreamId = message?.thumbnailAttachmentStreamId(), !thumbnailStreamId.isEmpty {
-            count += 1
-        }
-        let attachmentCount = message?.quotedAttachments.count
-        if attachmentCount ?? 0 > 0 {
-            count += attachmentCount ?? 0
-        }
-        return count
     }
 }

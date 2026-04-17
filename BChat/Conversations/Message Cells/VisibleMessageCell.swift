@@ -1111,7 +1111,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         
         let image: UIImage
         var tintColor: UIColor? = nil
-        var backgroundColor: UIColor? = nil
+        let backgroundColor: UIColor? = nil
         let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: message)
         
         switch status {

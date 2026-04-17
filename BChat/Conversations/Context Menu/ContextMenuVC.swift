@@ -215,6 +215,10 @@ final class ContextMenuVC : UIViewController {
             if thread.isBlocked() {
                 emojiBarView.isHidden = true
             }
+            guard let message = viewItem.interaction as? TSOutgoingMessage else { return }
+            if message.messageState == .sending || message.messageState == .failed {
+                emojiBarView.isHidden = true
+            }
         }
     }
 

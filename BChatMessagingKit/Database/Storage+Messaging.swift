@@ -29,7 +29,7 @@ extension Storage {
         let tsMessage: TSMessage
         if message.sender == getUserPublicKey() {
             if TSOutgoingMessage.find(withTimestamp: message.sentTimestamp!) != nil { return nil }
-            let tsOutgoingMessage = TSOutgoingMessage.from(message, associatedWith: thread, using: transaction)
+            let tsOutgoingMessage = TSOutgoingMessage.from(message, quotedMessage: quotedMessage, associatedWith: thread, using: transaction)
             var recipients: [String] = []
             if let syncTarget = message.syncTarget {
                 recipients.append(syncTarget)

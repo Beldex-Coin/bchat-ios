@@ -1127,17 +1127,6 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
                 debugPrint("Unknown audio route change.")
         }
     }
-
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
-    }
     
     @objc private func handleFullScreenVideoViewTapped() {
         let isHidden = callDurationLabel.alpha < 0.5

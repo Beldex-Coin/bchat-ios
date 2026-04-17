@@ -192,8 +192,10 @@ final class QuoteView : UIView {
             mainStackView.spacing = 0
         } else {
             let isAudio = MIMETypeUtil.isAudio(attachments.first!.contentType ?? "")
+            let isImage = MIMETypeUtil.isImage(attachments.first!.contentType ?? "")
+            let isVideo = MIMETypeUtil.isVideo(attachments.first!.contentType ?? "")
             if (body ?? "").isEmpty {
-                body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : "Document")
+                body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : (isImage ? "Image" : (isVideo ? "Video" : "Document")))
                 if thumbnailType?.lowercased().range(of:"video") != nil {
                     body = "Video"
                 }
@@ -320,7 +322,9 @@ final class QuoteView : UIView {
 
             
             let isAudio = MIMETypeUtil.isAudio(attachments.first!.contentType ?? "")
-            let fallbackImageName = isAudio ? "ic_reply_audio" : "ic_reply_document"
+            let isImage = MIMETypeUtil.isImage(attachments.first!.contentType ?? "")
+            let isVideo = MIMETypeUtil.isVideo(attachments.first!.contentType ?? "")
+            let fallbackImageName = isAudio ? "ic_reply_audio" : isImage ? "ic_imageAttachment" : isVideo ? "ic_videoImage" : "ic_reply_document"
             var tintColor: UIColor?
             if (isLightMode && direction == .incoming) {
                 tintColor = .black

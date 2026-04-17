@@ -24,7 +24,7 @@ public final class AttachmentUploadJob : NSObject, Job, NSCoding { // NSObject/N
     
     // MARK: Settings
     public class var collection: String { return "AttachmentUploadJobCollection" }
-    public static let maxFailureCount: UInt = 20
+    public static let maxFailureCount: UInt = 4
 
     // MARK: Initialization
     public init(attachmentID: String, threadID: String, message: Message, messageSendJobID: String) {

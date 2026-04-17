@@ -26,7 +26,7 @@ final class InfoMessageCell : MessageCell {
     
     // MARK: Settings
     private static let iconSize: CGFloat = 16
-    private static let inset = Values.mediumSpacing
+    private static let inset = Values.smallSpacing
     
     override class var identifier: String { "InfoMessageCell" }
     

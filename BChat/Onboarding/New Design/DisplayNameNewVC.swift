@@ -193,6 +193,17 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         }
     }
     
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // Allow backspace
+        if string.isEmpty { return true }
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
+        let typedCharacterSet = CharacterSet(charactersIn: string)
+        
+        return allowedCharacterSet.isSuperset(of: typedCharacterSet)
+    }
+    
     func performAction() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

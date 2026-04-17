@@ -35,11 +35,11 @@ public final class SnodeAPI : NSObject {
     public static var softfork = UserDefaults.standard[.softfork]
 
     // MARK: Settings
-    private static let maxRetryCount: UInt = 8
+    private static let maxRetryCount: UInt = 4
     private static let minSwarmSnodeCount = 3
     
     // Seed Node Pool
-    private static let seedNodePool: Set<String> = Features.isTestNet ? [ "http://149.102.156.174:19095" ] : [ "https://publicnode1.rpcnode.stream:443", "https://publicnode2.rpcnode.stream:443", "https://publicnode3.rpcnode.stream:443", "https://publicnode4.rpcnode.stream:443", "publicnode5.rpcnode.stream:29095"]
+    private static let seedNodePool: Set<String> = Features.isTestNet ? [ "http://209.126.86.93:29091" ] : [ "http://publicnode1.rpcnode.stream:29095", "http://publicnode2.rpcnode.stream:29095", "http://publicnode3.rpcnode.stream:29095", "http://publicnode4.rpcnode.stream:29095", "publicnode5.rpcnode.stream:29095"]
     
     private static let snodeFailureThreshold = 3
     private static let targetSwarmSnodeCount = 2

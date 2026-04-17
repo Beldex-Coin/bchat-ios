@@ -64,11 +64,8 @@ extension MyAccountBnsViewController: UITableViewDataSource, UITableViewDelegate
                 let vc = HopsViewController()
                 navigationController?.pushViewController(vc, animated: true)
             case .changePassword:
-                let vc = NewPasswordVC()
-                vc.isGoingBack = true
-                vc.isCreatePassword = true
-                vc.isChangePassword = true
-                vc.isFromAccountSettings = true
+                let vc = PinViewController()
+                vc.flowStep = .enterNewPin
                 navigationController?.pushViewController(vc, animated: true)
             case .blockedContacts:
                 let vc = NewBlockedContactVC()

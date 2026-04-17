@@ -41,7 +41,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let settingsVC = ChatSettingsVC()
         settingsVC.configure(with: thread, viewItems: viewItems, uiDatabaseConnection: OWSPrimaryStorage.shared().uiDatabaseConnection)
         settingsVC.conversationSettingsViewDelegate = self
-        navigationController!.pushViewController(settingsVC, animated: true, completion: nil)
+        navigationController!.pushViewController(settingsVC, animated: true) {
+            self.cancelVoiceMessageRecording()
+        }
     }
 
     func handleScrollToBottomButtonTapped() {
@@ -120,6 +122,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     },
                     completion: {
                         self.snInputView.isHidden = false
+                        self.showInputAccessoryView()
                         if let clearChatButtonStackView = self.view.viewWithTag(111) {
                             clearChatButtonStackView.removeFromSuperview()
                         }
@@ -272,6 +275,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func handleDocumentButtonTapped() {
+        snInputView.resignFirstResponder()
         // UIDocumentPickerModeImport copies to a temp file within our container.
         // It uses more memory than "open" but lets us avoid working with security scoped URLs.
         let documentPickerVC = UIDocumentPickerViewController(forOpeningContentTypes: [.item],
@@ -462,7 +466,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 // flags appropriately
                 let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
                 let linkPreviewDraft = snInputView.linkPreviewInfo?.draft
-                let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+                let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
                 
                 let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
                     for: self.thread,
@@ -563,7 +567,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // use it to determine if the user is creating a new thread and update the 'isApproved'
         // flags appropriately
         let oldThreadShouldBeVisible: Bool = thread.shouldBeVisible
-        let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+        let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
         
         let promise: Promise<Void> = self.approveMessageRequestIfNeeded(
             for: self.thread,
@@ -642,6 +646,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
         inputTextView.textColor = Colors.text
+        updateAttachmentButtonLayout()
         if !thread.isGroupThread() { return }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
@@ -761,7 +766,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         guard let message = viewItem.interaction as? TSMessage else { return }
         if let messageOutgoing = message as? TSOutgoingMessage {
             let status = MessageRecipientStatusUtils.recipientStatus(outgoingMessage: messageOutgoing)
-            if status == .sent || status == .delivered || status == .skipped {} else { return }
+            if status == .sent || status == .delivered || status == .skipped || status == .uploading || status == .sending {} else { return }
         }
         
         // Show the context menu if applicable
@@ -890,6 +895,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 if location.y < 65 || (viewItem.messageCellType == .mediaMessage && location.y < 80 && isTrusted) {
                     guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                     messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                    focusedMessageIndexPath = indexPath
+                    highlightFocusedMessageIfNeeded()
                     return
                 }
             }
@@ -915,6 +922,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         if (location.y < 125 && viewItem.mediaAlbumItems?.first?.attachment.contentType == "image/gif") || (location.y < 125 && message?.sharedContactMessage != nil) {
                             guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                             messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                            focusedMessageIndexPath = indexPath
+                            highlightFocusedMessageIfNeeded()
                             return
                         }
                     }
@@ -978,6 +987,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                         // Scroll to the source of the reply
                         guard let indexPath = viewModel.ensureLoadWindowContainsQuotedReply(reply) else { return }
                         messagesTableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.middle, animated: true)
+                        focusedMessageIndexPath = indexPath
+                        highlightFocusedMessageIfNeeded()
                     } else if let message = viewItem.interaction as? TSIncomingMessage, let name = message.openGroupInvitationName,
                         let url = message.openGroupInvitationURL {
                         hideInputAccessoryView()
@@ -1393,6 +1404,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         bottomConstraintOfAttachmentButton = 4
         resetAttachmentOptions()
         snInputView.quoteDraftInfo = nil
+        updateFrame(false)
         view.layoutIfNeeded()
     }
     
@@ -1426,6 +1438,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     func handleReplyButtonTapped(for viewItem: ConversationViewItem) {
         reply(viewItem)
+        updateFrame(true)
     }
     
     func resetAttachmentOptions() {
@@ -1437,6 +1450,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func showUserDetails(for bchatID: String) {
+        hideInputAccessoryView()
         let userDetailsSheet = UserDetailsSheet(for: bchatID)
         userDetailsSheet.modalPresentationStyle = .overFullScreen
         userDetailsSheet.modalTransitionStyle = .crossDissolve
@@ -2063,6 +2077,41 @@ extension ConversationVC {
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "\(name)"))
         // The attributed string
         return attributedString
+    }
+    
+    func updateAttachmentButtonLayout() {
+        var constraintValue: CGFloat = 4
+        let inputTextViewLines = snInputView.inputTextView.numberOfVisibleLines
+        if inputTextViewLines >= 2 {
+            constraintValue = inputTextViewLines == 3 ? 16 :
+            inputTextViewLines >= 4 ? 28 : constraintValue
+        }
+        
+        if snInputView.quoteDraftInfo != nil {
+            let msg: VisibleMessage = VisibleMessage()
+            msg.quote = VisibleMessage.Quote.from(snInputView.quoteDraftInfo?.model)
+            if let quoteText = msg.quote?.text {
+                constraintValue += quoteText.count >= 100 ? 78 : 68
+            } else {
+                constraintValue += 68
+            }
+        }
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.25) {
+                bottomConstraintOfAttachmentButton = constraintValue
+            }
+        }
+    }
+    
+    func updateFrame(_ isUpdate: Bool) {
+        if !isKeyboardPresented {
+            UIView.animate(withDuration: 0.25) {
+                self.messageRequestsViewBotomConstraint?.constant = isUpdate ? -170 : -105
+                self.scrollButtonBottomConstraint?.constant = isUpdate ? -170 : -105
+                self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
+            }
+        }
     }
 }
 

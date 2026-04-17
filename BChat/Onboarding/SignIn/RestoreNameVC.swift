@@ -216,7 +216,14 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return true
+        // Allow backspace
+        if string.isEmpty { return true }
+        
+        // Allow only alphanumeric
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
+        let typedCharacterSet = CharacterSet(charactersIn: string)
+        
+        return allowedCharacterSet.isSuperset(of: typedCharacterSet)
     }
     
     func textLimit(existingText: String?,
@@ -301,13 +308,12 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
             }
         }
         if displayNameTextField.text != "" {
-            SaveUserDefaultsData.WalletRestoreHeight = "0"
             SaveUserDefaultsData.NameForWallet = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             self.mnemonicSeedconnect()
-            let vc = NewPasswordVC()
-            vc.isGoingHome = true
-            vc.isCreatePassword = true
-            navigationController!.pushViewController(vc, animated: true)
+            let vc = PinViewController()
+            vc.flowStep = .createPin
+            vc.createPinDestination = .home
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

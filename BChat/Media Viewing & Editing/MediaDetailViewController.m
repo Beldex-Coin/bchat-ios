@@ -248,6 +248,8 @@ AVPlayerLayer *_playerLayer;
     // the root view so that interacting with the video player
     // progres bar doesn't trigger any of these gestures.
     [self addGestureRecognizersToView:self.mediaView];
+    [self addGestureRecognizersToView:self.scrollView];
+    [self addGestureRecognizersToView: self.playVideoButton];
 
     [scrollView addSubview:self.mediaView];
     self.mediaViewLeadingConstraint = [self.mediaView autoPinEdgeToSuperviewEdge:ALEdgeLeading];
@@ -455,6 +457,7 @@ AVPlayerLayer *_playerLayer;
 
     [self.delegate mediaDetailViewController:self isPlayingVideo:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"isFromPassAction" object:nil];
+    [self.delegate showToolbar];
 }
 
 

@@ -140,7 +140,7 @@ enum MockDataGenerator {
                         .joined()
                     
                     if isIncoming {
-                        let tsMessage: TSOutgoingMessage = TSOutgoingMessage.from(message, associatedWith: thread, using: transaction)
+                        let tsMessage: TSOutgoingMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread, using: transaction)
                         tsMessage.save(with: transaction)
                     }
                     else {
@@ -211,7 +211,7 @@ enum MockDataGenerator {
                         .joined()
                     
                     if message.sender != userSessionId {
-                        let tsMessage: TSOutgoingMessage = TSOutgoingMessage.from(message, associatedWith: thread, using: transaction)
+                        let tsMessage: TSOutgoingMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread, using: transaction)
                         tsMessage.save(with: transaction)
                     }
                     else {

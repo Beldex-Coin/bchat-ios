@@ -25,7 +25,7 @@ protocol OWSConversationSettingsViewDelegate: AnyObject {
 }
 
 
-class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
+class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     
     
     private lazy var profilePictureImageView = ProfilePictureView()
@@ -69,6 +69,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
         result.textAlignment = .center
+        result.delegate = self
         
         return result
     }()
@@ -165,7 +166,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     var filterDict: [String: String] = [:]
     var namesArray: [String] = []
     var isSearchEnable = false
-    
+    var shouldUnderline = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -279,6 +280,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         }
         
         nameTextField.addTarget(self, action: #selector(nameTextfieldTapped), for: UIControl.Event.touchDown)
+        nameTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         
         if let groupThread = self.thread as? TSGroupThread {
             if !groupThread.isCurrentUserMemberInGroup() {
@@ -334,6 +336,10 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         getAllDcouments()
+        guard let thread = self.thread as? TSContactThread else { return }
+        if thread.isBlocked() {
+            disappearingMessagesConfiguration?.isEnabled = false
+        }
         self.tableView.reloadData()
     }
     
@@ -400,7 +406,9 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
         var threadName = self.thread?.name()
         if self.thread is TSContactThread {
             let thread = self.thread as? TSContactThread
-            return Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            let bchatID = thread?.contactBChatID()
+            let contactName = Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+            return contactName == bchatID ? bchatID?.truncateMiddle(with: 4, suffixLength: 4) : contactName
         } else if threadName!.count == 0 && isGroupThread() {
             threadName = MessageStrings.newGroupDefaultTitle
         }
@@ -488,7 +496,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 message.openGroupInvitation = invitation
                 
                 let thread = TSContactThread.getOrCreateThread(contactBChatID: user)
-                let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+                let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
                 Storage.write { transaction in
                     tsMessage.save(with: transaction)
                 }
@@ -514,11 +522,36 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     @objc func nameTextfieldTapped(textField: UITextField) {
+        shouldUnderline = true
         self.doneButton.isHidden = false
         self.editIconImage.isHidden = true
-        // While edit name for clear text
-//        self.nameTextField.text = ""
     }
+    
+    @objc func textChanged(_ textField: UITextField) {
+        guard shouldUnderline else { return }
+        let text = textField.text ?? ""
+        let attributed = NSMutableAttributedString(string: text)
+        attributed.addAttribute(
+            .underlineStyle,
+            value: NSUnderlineStyle.thick.rawValue,
+            range: NSRange(location: 0, length: attributed.length)
+        )
+        textField.attributedText = attributed
+    }
+    
+    func textField(_ textField: UITextField,
+                       shouldChangeCharactersIn range: NSRange,
+                       replacementString string: String) -> Bool {
+            
+            // Allow backspace
+            if string.isEmpty { return true }
+            
+            // Allow only alphanumeric
+            let allowedCharacterSet = CharacterSet.alphanumerics.union(.whitespaces)
+            let typedCharacterSet = CharacterSet(charactersIn: string)
+            
+            return allowedCharacterSet.isSuperset(of: typedCharacterSet)
+        }
     
     @objc func notifyforMentionsOnlySwitchValueDidChange(_ sender: UISwitch) {
         let uiSwitch = sender
@@ -530,6 +563,12 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     }
     
     @objc func disAppearSwitchValueDidChange(_ sender: UISwitch) {
+        guard let thread = self.thread as? TSContactThread else { return }
+        if thread.isBlocked() {
+            showError(title: "This contact is blocked, If you want to change this, please unblock them.")
+            toggleDisappearingMessages(false)
+            return
+        }
         let disappearingMessagesSwitch = sender
         self.toggleDisappearingMessages(disappearingMessagesSwitch.isOn)
         self.tableView.reloadData()
@@ -710,6 +749,14 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     @objc private func doneButtonTapped(_ sender: UIButton) {
         self.saveName()
+        shouldUnderline = false
+        let text = nameTextField.text ?? ""
+        nameTextField.attributedText = NSAttributedString(string: text)
+        nameTextField.defaultTextAttributes = [
+            .font: Fonts.boldOpenSans(ofSize: 18),
+            .foregroundColor: Colors.titleColor
+        ]
+        nameTextField.textAlignment = .center
     }
     
     func saveName() {
@@ -735,6 +782,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
                 Storage.shared.setContact(contact, using: transaction)
             }
         }
+        profilePictureImageView.update(for: self.thread!)
         self.displayNameLabel.text = text.isEmpty ? contact?.name : text
         self.nameTextField.text = text.isEmpty ? contact?.name : text
         self.doneButton.isHidden = true
@@ -890,17 +938,6 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate {
     
     func getDisplayName(for publicKey: String) -> String {
         return Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
-    }
-   
-    func getProfilePicture(of size: CGFloat, for publicKey: String) -> UIImage? {
-        guard !publicKey.isEmpty else { return nil }
-        if let profilePicture = OWSProfileManager.shared().profileAvatar(forRecipientId: publicKey) {
-            return profilePicture
-        } else {
-            // TODO: Pass in context?
-            let displayName = Storage.shared.getContact(with: publicKey)?.name ?? publicKey
-            return Identicon.generatePlaceholderIcon(seed: publicKey, text: displayName, size: size)
-        }
     }
     
     func reloadTableView() {
@@ -1457,6 +1494,7 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                     let thread = self.thread as? TSContactThread
                     if thread!.isBlocked() {
                         cell.titleLabel.text = "UnBlock This User"
+                        self.disappearingMessagesConfiguration?.isEnabled = false
                     } else {
                         cell.titleLabel.text = "Block This User"
                     }
@@ -1466,14 +1504,12 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                 
                 if indexPath.row == 7 {
                     let thread = self.thread as? TSContactThread
-                    cell.titleLabel.text = "Report \(Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous")"
+                    let bchatID = thread?.contactBChatID()
+                    let contactName = Storage.shared.getContact(with: thread!.contactBChatID())?.displayName(for: Contact.Context.regular) ?? "Anonymous"
+                    let displayName = contactName == bchatID ? bchatID?.truncateMiddle(with: 4, suffixLength: 4) : contactName
+                    cell.titleLabel.text = "Report" + " \(displayName ?? "")"
                 }
-                
-                
-                
             }
-            
-            
             
             // Close Group
             if self.isClosedGroup() {

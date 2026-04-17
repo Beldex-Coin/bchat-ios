@@ -474,7 +474,7 @@ class NotificationActionHandler {
             let message = VisibleMessage()
             message.sentTimestamp = NSDate.millisecondTimestamp()
             message.text = replyText
-            let tsMessage = TSOutgoingMessage.from(message, associatedWith: thread)
+            let tsMessage = TSOutgoingMessage.from(message, quotedMessage: nil, associatedWith: thread)
             Storage.write { transaction in
                 tsMessage.save(with: transaction)
             }

@@ -207,7 +207,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     }
     
     func inputTextViewDidChangeContent(_ inputTextView: InputTextView) {
-        let hasText = !text.isEmpty
+        let hasText = !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         sendButton.isHidden = !hasText
         voiceMessageButtonContainer.isHidden = hasText
         autoGenerateLinkPreviewIfPossible()
@@ -418,7 +418,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         voiceMessageRecordingView.pin(to: self)
         self.voiceMessageRecordingView = voiceMessageRecordingView
         voiceMessageRecordingView.animate()
-        let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
+        let allOtherViews = [ attachmentsButton, sendButton, inputTextView ]
         UIView.animate(withDuration: 0.25) {
             allOtherViews.forEach { $0.alpha = 0 }
         }
