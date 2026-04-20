@@ -393,7 +393,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         if let match = numberedLineCheck.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
             let numberString = String(currentLine[match]).replacingOccurrences(of: ". ", with: "")
             
-            if let number = Int(numberString) {
+            if let number = Int(numberString), number < 99 {
                 let nextNumber = number + 1
                 let newText = "\n\(nextNumber). "
                 insertText(newText, textView: textView, range: range)
