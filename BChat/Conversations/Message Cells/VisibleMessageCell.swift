@@ -1214,7 +1214,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
         attributedText.addAttributes(highlightedAttributes, range: range)
         attributedText.addAttributesPreservingColor(clearText: true)
-        
+        applyListParagraphStyles(to: attributedText)
         result.attributedText = attributedText
         result.dataDetectorTypes = .link
         result.backgroundColor = .clear
@@ -1247,6 +1247,39 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             result.set(.width, to: size.width)
         }
         return result
+    }
+    
+    private static func applyListParagraphStyles(to attributedText: NSMutableAttributedString) {
+        let fullText = attributedText.string as NSString
+        let font = attributedText.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
+            ?? UIFont.systemFont(ofSize: 16)
+        
+        fullText.enumerateSubstrings(in: NSRange(location: 0, length: fullText.length), options: .byLines) { (_, lineRange, _, _) in
+            
+            let line = fullText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = .byCharWrapping
+            paragraphStyle.hyphenationFactor = 1.0
+            
+            // Bullet list
+            if line.hasPrefix("• ") {
+                let indent = ("• " as NSString).size(withAttributes: [.font: font]).width
+                paragraphStyle.firstLineHeadIndent = 0
+                paragraphStyle.headIndent = indent
+                
+                attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: lineRange)
+            }
+            
+            // Numbered list (e.g. 1. 2. 10.)
+            else if let _ = line.range(of: #"^\d+\.\s"#, options: .regularExpression) {
+                let indent = ("99. " as NSString).size(withAttributes: [.font: font]).width
+                paragraphStyle.firstLineHeadIndent = 0
+                paragraphStyle.headIndent = indent
+                
+                attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: lineRange)
+            }
+        }
     }
     
     func widthOfLastLine(in textView: UITextView) -> CGFloat {
