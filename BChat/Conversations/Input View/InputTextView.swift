@@ -165,28 +165,9 @@ public final class InputTextView : UITextView, UITextViewDelegate {
        // Handle ENTER (already done before)
        if text == "\n" {
            let nsText = textView.text as NSString
-           let lineLength = nsText.lineRange(for: range)
-           let cursorPosition = range.location - lineLength.location
-           guard cursorPosition >= 0 else {
-               insertText("\n", textView: textView, range: range)
-               return false
-           }
-           let safePrefixLength = min(cursorPosition, max(0, nsText.length - lineLength.location))
-           let prefix = nsText.substring(with: NSRange(location: lineLength.location, length: safePrefixLength))
-           let lineTextLength = nsText.substring(with: lineLength).trimmingCharacters(in: .newlines)
-           
-           if prefix == "-  " || prefix == "*  " || lineTextLength.hasPrefix("-  ") || lineTextLength.hasPrefix("*  ") {
-               insertText("\n", textView: textView, range: range)
-               return false
-           }
-           
-           handleListContinuation(textView, range: range)
-           
-           let cursorLocation = range.location
-           
+           let cursorLocation = range.location           
            let lineRange = nsText.lineRange(for: NSRange(location: cursorLocation, length: 0))
            let lineText = nsText.substring(with: lineRange)
-           
            let trimmed = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
            
            let bulletPrefixes = ["•", "-", "*"]
