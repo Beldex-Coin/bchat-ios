@@ -1250,6 +1250,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
     }
     
     private static func applyListParagraphStyles(to attributedText: NSMutableAttributedString) {
+        guard attributedText.length > 0 else { return }
         let fullText = attributedText.string as NSString
         let font = attributedText.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
             ?? UIFont.systemFont(ofSize: 16)
