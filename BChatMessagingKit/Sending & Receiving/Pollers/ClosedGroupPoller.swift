@@ -62,11 +62,11 @@ public final class ClosedGroupPoller : NSObject {
     private func setUpPolling(for groupPublicKey: String) {
         Threading.pollerQueue.async {
             let promises: [Promise<Void>] = {
-                if SnodeAPI.hardfork >= 18 && SnodeAPI.softfork >= 0 {
-                    return [ self.poll(groupPublicKey) ]
-                }
                 if SnodeAPI.hardfork >= 19 {
                     return [ self.poll(groupPublicKey, defaultInbox: true), self.poll(groupPublicKey) ]
+                }
+                if SnodeAPI.hardfork >= 18 && SnodeAPI.softfork >= 0 {
+                    return [ self.poll(groupPublicKey) ]
                 }
                 return [ self.poll(groupPublicKey, defaultInbox: true) ]
             }()
@@ -97,11 +97,11 @@ public final class ClosedGroupPoller : NSObject {
             timer.invalidate()
             Threading.pollerQueue.async {
                 let promises: [Promise<Void>] = {
-                    if SnodeAPI.hardfork >= 18 && SnodeAPI.softfork >= 0 {
-                        return [ self?.poll(groupPublicKey) ].compactMap{ $0 }
-                    }
                     if SnodeAPI.hardfork >= 19 {
                         return [ self?.poll(groupPublicKey, defaultInbox: true), self?.poll(groupPublicKey) ].compactMap{ $0 }
+                    }
+                    if SnodeAPI.hardfork >= 18 && SnodeAPI.softfork >= 0 {
+                        return [ self?.poll(groupPublicKey) ].compactMap{ $0 }
                     }
                     return [ self?.poll(groupPublicKey, defaultInbox: true) ].compactMap{ $0 }
                 }()
