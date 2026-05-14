@@ -368,18 +368,19 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // Get current line
         let lineRange = nsText.lineRange(for: range)
-        let currentLine = nsText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
-        let numberedLineCheck = nsText.substring(with: lineRange)
+        let lineText = nsText.substring(with: lineRange)
+        let currentLine = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
         // MARK: Numbered List (1. 2. 3.)
-        if let match = numberedLineCheck.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
-            let numberString = String(currentLine[match]).replacingOccurrences(of: ". ", with: "")
-            
-            if let number = Int(numberString), number < 99 {
-                let nextNumber = number + 1
-                let newText = "\n\(nextNumber). "
-                insertText(newText, textView: textView, range: range)
-                return
-            }
+        if let regex = try? NSRegularExpression(pattern: #"^(\d+)\.\s.+"#),
+           let match = regex.firstMatch(in: lineText, range: NSRange(location: 0, length: lineText.utf16.count)),
+           match.numberOfRanges > 1,
+           let numberRange = Range(match.range(at: 1), in: lineText),
+           let number = Int(String(lineText[numberRange])),
+           number < 99 {
+            let nextNumber = number + 1
+            let newText = "\n\(nextNumber). "
+            insertText(newText, textView: textView, range: range)
+            return
         }
         
         // MARK: Bullet List (- * •)
