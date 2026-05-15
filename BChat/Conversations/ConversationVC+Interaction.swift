@@ -705,7 +705,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                     snInputView.showMentionsUI(for: candidates, in: thread)
                 } else {
-                    if newText.hasPrefix("@") {
+                    if newText.hasPrefix("@") && lastCharacter.isWhitespace {
                         let query = newText.replacingOccurrences(of: "@", with: "", options: NSString.CompareOptions.literal, range: nil)
                         let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                         snInputView.showMentionsUI(for: candidates, in: thread)
@@ -800,7 +800,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let startIndex = oldText.index(oldText.startIndex, offsetBy: safeStart)
             let endIndex = oldText.index(oldText.startIndex, offsetBy: safeEnd)
             
-            let mentionName = safeStart == 0 ? "@\(mention.displayName) " : "\(mention.displayName)"
+            let mentionName = "@\(mention.displayName) "
             let newText = oldText.replacingCharacters(in: startIndex..<endIndex, with: mentionName)
 
             snInputView.text = newText
