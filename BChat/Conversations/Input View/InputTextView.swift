@@ -371,16 +371,27 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         let lineText = nsText.substring(with: lineRange)
         let currentLine = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
         // MARK: Numbered List (1. 2. 3.)
-        if let regex = try? NSRegularExpression(pattern: #"^(\d+)\.\s.+"#),
-           let match = regex.firstMatch(in: lineText, range: NSRange(location: 0, length: lineText.utf16.count)),
-           match.numberOfRanges > 1,
-           let numberRange = Range(match.range(at: 1), in: lineText),
-           let number = Int(String(lineText[numberRange])),
+        if let regex = try? NSRegularExpression(pattern: #"^(\d+)\.\s*(.*)$"#),
+           let match = regex.firstMatch(in: currentLine,
+                                        range: NSRange(location: 0, length: currentLine.utf16.count)),
+           match.numberOfRanges > 2,
+           let numberRange = Range(match.range(at: 1), in: currentLine),
+           let contentRange = Range(match.range(at: 2), in: currentLine),
+           let number = Int(String(currentLine[numberRange])),
            number < 99 {
-            let nextNumber = number + 1
-            let newText = "\n\(nextNumber). "
-            insertText(newText, textView: textView, range: range)
-            return
+            // Prevent Numbered List if space is available at start
+            if lineText.hasPrefix(" ") || lineText.hasPrefix("\t") {
+                insertText("\n", textView: textView, range: range)
+                return
+            }
+            // Prevent Numbered List if only space input entered after number and dot
+            let content = String(currentLine[contentRange]).trimmingCharacters(in: .whitespaces)
+            if !content.isEmpty {
+                let nextNumber = number + 1
+                let newText = "\n\(nextNumber). "
+                insertText(newText, textView: textView, range: range)
+                return
+            }
         }
         
         // MARK: Bullet List (- * •)
