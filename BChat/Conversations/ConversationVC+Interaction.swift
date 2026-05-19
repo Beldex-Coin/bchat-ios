@@ -265,6 +265,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     
+    func handleExpandingAttachmentButtonTapped() {
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.hideMentionsUI()
+        } else {
+            inputTextViewDidChangeContent(snInputView.inputTextView)
+        }
+    }
+    
     func didCancelGifPicker() {
         isInputViewShow = true
     }

@@ -312,7 +312,10 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
             if inputViewButton == gifButton { delegate?.handleGIFButtonTapped(); isExpanded = false }
             if inputViewButton == shareContactButton { delegate?.handleShareContactButtonTapped(); isExpanded = false }
         }
-        if inputViewButton == mainButton { isExpanded = !isExpanded }
+        if inputViewButton == mainButton {
+            isExpanded = !isExpanded
+            delegate?.handleExpandingAttachmentButtonTapped()
+        }
     }
     
     // MARK: - Convenience
@@ -335,4 +338,5 @@ protocol ExpandingAttachmentsButtonDelegate: AnyObject {
     func handleDocumentButtonTapped()
     func handleLibraryButtonTapped()
     func handleCameraButtonTapped()
+    func handleExpandingAttachmentButtonTapped()
 }
