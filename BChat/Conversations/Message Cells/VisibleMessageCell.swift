@@ -751,6 +751,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     stackView.addArrangedSubview(documentView)
                     // Body text view
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                        bubbleViewBottomConstraint.isActive = false
+                        bubbleViewBottomConstraint = body.count < 18 ? snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0) : snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                         let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 4, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                         self.bodyTextView = bodyTextView
                         stackView.addArrangedSubview(bodyTextView)
@@ -1230,6 +1232,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
+        // For GenericAttachment with text
+        if let genericAttachment = viewItem.attachmentStream ?? viewItem.attachmentPointer {
+            let genericAttachmentNameText = genericAttachment.sourceFilename ?? "File"
+            let bodyText = text
+            let font = Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))
+            let widthOfGenericAttachmentNameText = (genericAttachmentNameText as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: Values.smallFontSize, weight: .light)]).width
+            let widthOfBodyText = (bodyText as NSString).size(withAttributes: [.font: font]).width
+            result.set(.width, to: min(widthOfGenericAttachmentNameText + 40 > widthOfBodyText ? widthOfGenericAttachmentNameText + 40 : widthOfBodyText, availableWidth))
+            return result
+        }
         if viewItem.quotedReply != nil && attachments.isEmpty {
             let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
