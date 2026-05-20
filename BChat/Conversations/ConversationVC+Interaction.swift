@@ -663,6 +663,15 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
         updateAttachmentButtonLayout()
         if !thread.isGroupThread() { return }
+        if let pastedText = inputTextView.pendingPasteText {
+            inputTextView.pendingPasteText = nil
+            currentMentionStartIndex = nil
+            snInputView.hideMentionsUI()
+            syncPastedMentions(in: pastedText)
+            applyColorToMentionedUsers(text: newText)
+            oldText = newText
+            return
+        }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
     }
@@ -784,6 +793,22 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             result = result.replacingCharacters(in: range, with: "@\(mention.publicKey)")
         }
         return result
+    }
+
+    private func syncPastedMentions(in text: String) {
+        guard let threadID = thread.uniqueId else { return }
+
+        MentionsManager.populateUserPublicKeyCacheIfNeeded(for: threadID)
+
+        let existingPublicKeys = Set(mentions.map { $0.publicKey })
+        let candidates = MentionsManager.getMentionCandidates(for: "", in: threadID)
+            .sorted { $0.displayName.count > $1.displayName.count }
+
+        for candidate in candidates {
+            guard !existingPublicKeys.contains(candidate.publicKey) else { continue }
+            guard text.containsMentionToken(for: candidate.displayName) else { continue }
+            mentions.append(candidate)
+        }
     }
 
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView) {
@@ -1765,6 +1790,37 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 extension ConversationVC: UIDocumentInteractionControllerDelegate {
     func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
+    }
+}
+
+private extension String {
+    func containsMentionToken(for displayName: String) -> Bool {
+        let token = "@\(displayName)"
+        guard let range = range(of: token) else { return false }
+
+        if range.lowerBound > startIndex {
+            let before = self[index(before: range.lowerBound)]
+            if before.isMentionBoundary == false {
+                return false
+            }
+        }
+
+        if range.upperBound < endIndex {
+            let after = self[range.upperBound]
+            if after.isMentionBoundary == false {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
+private extension Character {
+    var isMentionBoundary: Bool {
+        unicodeScalars.allSatisfy { scalar in
+            CharacterSet.alphanumerics.contains(scalar) == false
+        }
     }
 }
 

@@ -755,7 +755,10 @@ NSString *NSStringForOWSMessageCellType(OWSMessageCellType cellType)
         case OWSMessageCellType_MediaMessage:
         case OWSMessageCellType_GenericAttachment: {
             OWSAssertDebug(self.displayableBodyText);
-            [UIPasteboard.generalPasteboard setString:self.displayableBodyText.fullText];
+            NSString *threadID = self.interaction.uniqueThreadId ?: @"";
+            NSString *copyText = [LKMentionUtilities copyableTextForString:self.displayableBodyText.fullText
+                                                                  threadID:threadID];
+            [UIPasteboard.generalPasteboard setString:copyText];
             break;
         }
         case OWSMessageCellType_Unknown: {

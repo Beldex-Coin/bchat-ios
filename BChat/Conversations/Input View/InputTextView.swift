@@ -9,6 +9,8 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private let maxWidth: CGFloat
     private var bulletMarkerByLineStart: [Int: String] = [:]
     public var lastBulletSymbol: String = "-"
+    public private(set) var isPastingText: Bool = false
+    public var pendingPasteText: String?
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -58,7 +60,12 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         if let image = UIPasteboard.general.image {
             snDelegate?.didPasteImageFromPasteboard(self, image: image)
         }
+        pendingPasteText = UIPasteboard.general.string
+        isPastingText = true
         super.paste(sender)
+        DispatchQueue.main.async { [weak self] in
+            self?.isPastingText = false
+        }
     }
     
     public override var intrinsicContentSize: CGSize {
