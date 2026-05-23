@@ -9,6 +9,8 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     private let maxWidth: CGFloat
     private var bulletMarkerByLineStart: [Int: String] = [:]
     public var lastBulletSymbol: String = "-"
+    public private(set) var isPastingText: Bool = false
+    public var pendingPasteText: String?
     
     public override var text: String! { didSet { handleTextChanged() } }
     
@@ -58,7 +60,12 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         if let image = UIPasteboard.general.image {
             snDelegate?.didPasteImageFromPasteboard(self, image: image)
         }
+        pendingPasteText = UIPasteboard.general.string
+        isPastingText = true
         super.paste(sender)
+        DispatchQueue.main.async { [weak self] in
+            self?.isPastingText = false
+        }
     }
     
     public override var intrinsicContentSize: CGSize {
@@ -368,13 +375,25 @@ public final class InputTextView : UITextView, UITextViewDelegate {
         
         // Get current line
         let lineRange = nsText.lineRange(for: range)
-        let currentLine = nsText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
-        let numberedLineCheck = nsText.substring(with: lineRange)
+        let lineText = nsText.substring(with: lineRange)
+        let currentLine = lineText.trimmingCharacters(in: .whitespacesAndNewlines)
         // MARK: Numbered List (1. 2. 3.)
-        if let match = numberedLineCheck.range(of: #"^(\d+)\.\s"#, options: .regularExpression) {
-            let numberString = String(currentLine[match]).replacingOccurrences(of: ". ", with: "")
-            
-            if let number = Int(numberString) {
+        if let regex = try? NSRegularExpression(pattern: #"^(\d+)\.\s*(.*)$"#),
+           let match = regex.firstMatch(in: currentLine,
+                                        range: NSRange(location: 0, length: currentLine.utf16.count)),
+           match.numberOfRanges > 2,
+           let numberRange = Range(match.range(at: 1), in: currentLine),
+           let contentRange = Range(match.range(at: 2), in: currentLine),
+           let number = Int(String(currentLine[numberRange])),
+           number < 99 {
+            // Prevent Numbered List if space is available at start
+            if lineText.hasPrefix(" ") || lineText.hasPrefix("\t") {
+                insertText("\n", textView: textView, range: range)
+                return
+            }
+            // Prevent Numbered List if only space input entered after number and dot
+            let content = String(currentLine[contentRange]).trimmingCharacters(in: .whitespaces)
+            if !content.isEmpty {
                 let nextNumber = number + 1
                 let newText = "\n\(nextNumber). "
                 insertText(newText, textView: textView, range: range)

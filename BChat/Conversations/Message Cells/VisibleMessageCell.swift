@@ -751,6 +751,8 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
                     stackView.addArrangedSubview(documentView)
                     // Body text view
                     if let message = viewItem.interaction as? TSMessage, let body = message.body, body.count > 0 {
+                        bubbleViewBottomConstraint.isActive = false
+                        bubbleViewBottomConstraint = body.count < 18 ? snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: 0) : snContentView.pin(.bottom, to: .bottom, of: bubbleView, withInset: -8)
                         let bodyTextView = VisibleMessageCell.getBodyTextView(for: viewItem, with: maxWidth - 4, textColor: bodyLabelTextColor, delegate: self, lastString: lastSearchedText)
                         self.bodyTextView = bodyTextView
                         stackView.addArrangedSubview(bodyTextView)
@@ -1214,7 +1216,7 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let highlightedAttributes: [NSAttributedString.Key: Any] = [NSAttributedString.Key.backgroundColor: highlightColor]
         attributedText.addAttributes(highlightedAttributes, range: range)
         attributedText.addAttributesPreservingColor(clearText: true)
-        
+        applyListParagraphStyles(to: attributedText)
         result.attributedText = attributedText
         result.dataDetectorTypes = .link
         result.backgroundColor = .clear
@@ -1230,6 +1232,16 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
         let size = result.sizeThatFits(availableSpace)
         result.set(.height, to: size.height)
         let attachments = (viewItem.interaction as? TSMessage)?.quotedMessage?.quotedAttachments ?? []
+        // For GenericAttachment with text
+        if let genericAttachment = viewItem.attachmentStream ?? viewItem.attachmentPointer {
+            let genericAttachmentNameText = genericAttachment.sourceFilename ?? "File"
+            let bodyText = text
+            let font = Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))
+            let widthOfGenericAttachmentNameText = (genericAttachmentNameText as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: Values.smallFontSize, weight: .light)]).width
+            let widthOfBodyText = (bodyText as NSString).size(withAttributes: [.font: font]).width
+            result.set(.width, to: min(widthOfGenericAttachmentNameText + 40 > widthOfBodyText ? widthOfGenericAttachmentNameText + 40 : widthOfBodyText, availableWidth))
+            return result
+        }
         if viewItem.quotedReply != nil && attachments.isEmpty {
             let width = viewItem.quotedReply?.body?.widthOfString(usingFont: Fonts.regularOpenSans(ofSize: getFontSize(for: viewItem))) ?? 0
             let maxWidth = VisibleMessageCell.getMaxWidth(for: viewItem) - 2 * 12 - 20
@@ -1247,6 +1259,40 @@ final class VisibleMessageCell : MessageCell, LinkPreviewViewDelegate {
             result.set(.width, to: size.width)
         }
         return result
+    }
+    
+    private static func applyListParagraphStyles(to attributedText: NSMutableAttributedString) {
+        guard attributedText.length > 0 else { return }
+        let fullText = attributedText.string as NSString
+        let font = attributedText.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
+            ?? UIFont.systemFont(ofSize: 16)
+        
+        fullText.enumerateSubstrings(in: NSRange(location: 0, length: fullText.length), options: .byLines) { (_, lineRange, _, _) in
+            
+            let line = fullText.substring(with: lineRange).trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineBreakMode = .byCharWrapping
+            paragraphStyle.hyphenationFactor = 1.0
+            
+            // Bullet list
+            if line.hasPrefix("• ") {
+                let indent = ("• " as NSString).size(withAttributes: [.font: font]).width
+                paragraphStyle.firstLineHeadIndent = 0
+                paragraphStyle.headIndent = indent
+                
+                attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: lineRange)
+            }
+            
+            // Numbered list (e.g. 1. 2. 10.)
+            else if let _ = line.range(of: #"^\d+\.\s"#, options: .regularExpression) {
+                let indent = ("99. " as NSString).size(withAttributes: [.font: font]).width
+                paragraphStyle.firstLineHeadIndent = 0
+                paragraphStyle.headIndent = indent
+                
+                attributedText.addAttribute(.paragraphStyle, value: paragraphStyle, range: lineRange)
+            }
+        }
     }
     
     func widthOfLastLine(in textView: UITextView) -> CGFloat {

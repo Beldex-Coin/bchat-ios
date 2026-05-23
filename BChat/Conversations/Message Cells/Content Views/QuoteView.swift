@@ -487,6 +487,21 @@ final class QuoteView : UIView {
                 let prefix = nsText.substring(with: NSRange(location: range.location, length: 3))
                 if prefix == ">  " { return }
             }
+            // If block quote start from third line then no need to show block quote
+            let glyphIndex = layoutManager.glyphIndexForCharacter(at: range.location)
+            var lineIndex = 0
+            var blockQuoteFoundLine: Int?
+            layoutManager.enumerateLineFragments(forGlyphRange: layoutManager.glyphRange(for: textContainer)) { _, _, _, glyphRange, stop in
+                if NSLocationInRange(glyphIndex, glyphRange) {
+                    blockQuoteFoundLine = lineIndex
+                    stop.pointee = true
+                }
+                lineIndex += 1
+            }
+            guard let blockQuoteStartLine = blockQuoteFoundLine else { return }
+            if blockQuoteStartLine >= 2 {
+                return
+            }
 
             let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
 
