@@ -1,0 +1,697 @@
+/* Title for the language selection screen. */
+"MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "选择语言";
+
+
+// Side Menu
+"SIDE_MENU_SETTINGS" = "设置";
+"SIDE_MENU_NOTIFICATION" = "通知";
+"SIDE_MENU_MESSAGE_REQUESTS" = "消息请求";
+"SIDE_MENU_RECOVERY_SEED" = "恢复助记词";
+"SIDE_MENU_LANGUAGE" = "Language";
+"SIDE_MENU_REPORT_ISSUE" = "报告问题";
+"SIDE_MENU_HELP" = "帮助";
+"SIDE_MENU_INVITE" = "邀请";
+"SIDE_MENU_ABOUT" = "关于";
+"SIDE_MENU_DARK_MODE" = "深色模式";
+
+
+// Welcome screen:
+"WELCOME_TO_BCHAT_LANDING_VC" = "欢迎来到";
+"HELLO" = "你好，";
+"WERE_THRILLED_TO_HAVE_YOU_ON_BOARD" = "我们非常高兴你加入我们！";
+"WELCOME_DESCRIPTION" = "欢迎来到 BChat，这里是你进行无缝沟通与连接的私人天地。";
+"CREATE_ACCOUNT" = "创建账户";
+"RESTORE_ACCOUNT" = "恢复账户";
+"TERMS_AND_CONDITIONS" = "条款与条件";
+
+
+// Display Name screen:
+"DISPLAY_NAME" = "显示名称";
+"SET_YOUR_DISPLAY_NAME" = "设置您的显示名称";
+"ENTER_NAME" = "输入名称";
+"DISPLAY_NAME_HINT" = "您可以随时更改 :)";
+"CONTINUE" = "继续";
+"PLEASE_PICK_DISPLAY_NAME" = "请选择一个显示名称";
+"PLEASE_ENTER_VALID_NAME" = "请输入有效名称";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "请选择更短的显示名称";
+"BCHAT_SETUP_IN_PROGRESS" = "太好了！您的 BChat 正在设置中！";
+
+
+// Register:
+"REGISTER_TITLE" = "嘿 %@，欢迎来到 BChat！";
+"BCHAT_ID" = "BChat ID";
+"BCHAT_ID_DESCRIPTION" = "您的 BChat ID 就像您的用户名。您可以将它分享给朋友以开始对话。";
+"BELDEX_ADDRESS" = "Beldex 地址";
+"BELDEX_ADDRESS_DESCRIPTION" = "您的 Beldex 地址与您的 BChat ID 关联。您可以使用该地址接收 BDX。";
+"CONTINUE" = "继续";
+"REGISTER" = "注册";
+
+
+// Create Password:
+"CREATE_PASSWORD" = "创建密码";
+"ENTER_PIN" = "输入您的 PIN";
+"RE_ENTER_PIN" = "重新输入您的 PIN";
+"NEXT" = "下一步";
+"PASSWORD_CREATED_SUCCESSFULLY" = "密码创建成功。";
+"OK" = "确定";
+"PASSWORD_DOES_NOT_MATCH" = "密码不匹配";
+
+
+// Recovery Seed:
+"RECOVERY_SEED" = "恢复种子";
+"COPY_RECOVERY_SEED_DESCRIPTION" = "复制您的恢复种子并妥善保存。";
+"COPY_SEED" = "复制助记词";
+"SAVE" = "保存";
+"COPY_AND_SAVE_SEED_TO_CONTINUE" = "复制并保存助记词后继续";
+"CONTINUE" = "继续";
+"COPIED_TO_CLIPBOARD" = "已复制到剪贴板";
+
+
+
+// Restore Seed:
+"RESTORE_SEED" = "从助记词恢复";
+"ENTER_SEED" = "输入您的助记词";
+"CLEAR" = "清除";
+"PASTE_SEED_TO_CONTINUE" = "粘贴助记词后继续";
+"CONTINUE" = "继续";
+"PLEASE_ENTER_VALID_SEED" = "请输入有效的助记词";
+"SOMETHING_WENT_WRONG_CHECK_MNEMONIC" = "出现错误。请检查您的助记词并重试";
+
+
+
+// Restore from Seed:
+"RESTORE_FROM_SEED" = "通过助记词恢复";
+"DISPLAY_NAME" = "显示名称";
+"ENTER_NAME" = "输入名称";
+"PICK_RESTORE_HEIGHT" = "选择恢复高度";
+"ENTER_BLOCKHEIGHT_TO_RESTORE" = "输入区块高度以恢复";
+"PICK_DATE" = "选择日期";
+"SELECT_DATE" = "选择日期";
+"RESTORE_FROM_DATE" = "按日期恢复";
+"RESTORE_FROM_HEIGHT" = "按区块高度恢复";
+"RESTORE" = "恢复";
+"SETUP_SUCCESS" = "太好了！您的 BChat 正在设置中！";
+"PLEASE_PICK_DISPLAY_NAME" = "请选择一个显示名称";
+"PLEASE_ENTER_VALID_NAME" = "请输入有效名称";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "请选择更短的显示名称";
+"ENTER_VALID_BLOCKHEIGHT" = "请输入有效的区块高度";
+"ENTER_BLOCKHEIGHT_LESS_THAN_CURRENT" = "请输入小于当前区块高度的区块高度";
+
+
+
+
+// Account Settings Screen:
+"EDIT" = "编辑";
+"DONE" = "完成";
+"BELDEX_ADDRESS" = "Beldex 地址";
+"BCHAT_ID" = "BChat ID";
+"SHOW_QR" = "显示二维码";
+"SCAN_QR_CODE" = "扫描二维码";
+"SHARE" = "分享";
+//"LINK_BNS" = "关联您的 BNS";
+"READ_MORE_BNS" = "了解更多关于 BNS";
+"HOPS" = "节点跳数";
+"APP_LOCK" = "应用锁";
+"CHAT_SETTINGS" = "聊天设置";
+"BLOCKED_CONTACTS" = "已屏蔽联系人";
+"CLEAR_DATA" = "清除数据";
+"FEEDBACK" = "反馈";
+"FAQ" = "常见问题";
+"CHANGELOG" = "更新日志";
+"PROFILE_PICTURE" = "头像";
+"UPLOAD" = "上传";
+"REMOVE_PICTURE" = "移除头像";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "请选择更短的显示名称";
+//"PLEASE_PICK_DISPLAY_NAME" = "请选择显示名称";
+"PLEASE_ENTER_VALID_NAME" = "请输入有效名称";
+
+
+// Link BNS Screen:
+"LINK_BNS" = "关联 BNS";
+"YOUR_BCHAT_ID" = "您的 BChat ID";
+"BNS_NAME" = "BNS 名称";
+"ENTER_BNS_NAME" = "输入 BNS 名称";
+"VERIFYING" = "验证中";
+"CANCEL" = "取消";
+"VERIFY" = "验证";
+"LINK" = "关联";
+"INVALID_BNS" = "无效的 BNS";
+"BNS_LINKED_SUCCESSFULLY" = "BNS 关联成功";
+"OK" = "确定";
+
+
+// Hops screen:
+"HOPS_SCREEN" = "路由节点界面";
+"BCHAT_MASKS_IP" = "BChat 通过在 Beldex 去中心化网络中的多个主节点之间路由消息来隐藏您的 IP 地址。您当前的连接通过以下主节点进行路由。";
+"YOU" = "您";
+"ENTRY_NODE" = "入口节点";
+"MASTER_NODE" = "主节点";
+"DESTINATION" = "目标";
+
+
+//App Lock Screen:
+"APP_LOCK_SCREEN" = "应用锁界面";
+"CHANGE_PASSWORD" = "更改密码";
+"SCREENLOCK_INACTIVITY_TIMEOUT" = "屏幕锁定不活动时间";
+
+// Change Password screen:
+"CHANGE_PASSWORD_SCREEN" = "更改密码界面";
+"ENTER_OLD_PIN" = "输入旧 PIN";
+"ENTER_NEW_PIN" = "输入新 PIN";
+"NEXT" = "下一步";
+"NEW_PASSWORD_NOT_SAME" = "新密码不能与旧密码相同";
+"INCORRECT_PASSWORD_ENTERED" = "输入的密码不正确";
+"PASSWORD_DOES_NOT_MATCH" = "密码不匹配";
+"PASSWORD_CHANGED_SUCCESSFULLY" = "密码修改成功";
+"OK" = "确定";
+
+
+
+// Screen Inactivity Timeout:
+"SCREEN_INACTIVITY_TIMEOUT" = "屏幕不活动超时";
+"NONE" = "无";
+"30_SECONDS" = "30 秒";
+"1_MINUTE" = "1 分钟";
+"2_MINUTES" = "2 分钟";
+"5_MINUTES" = "5 分钟";
+"15_MINUTES" = "15 分钟";
+"30_MINUTES" = "30 分钟";
+"OK" = "确定";
+
+// Chat Settings:
+"CHAT_SETTINGS" = "聊天";
+"ENTER_KEY_SENDS" = "按回车键发送";
+"MESSAGE_TRIMMING" = "消息裁剪";
+"DELETE_OLD_MESSAGES" = "删除旧消息";
+"CONVERSATION_LENGTH_LIMIT" = "会话长度限制";
+"CONFEDERATION_LENGTH_LIMIT" = "联合长度限制";
+"OK_CANCEL" = "确定 取消";
+"MESSAGES_PER_CONVERSATION" = "每个会话 500 条消息";
+"TRIM_ALL_CONVERSATION_NOW" = "立即裁剪所有会话";
+"DELETE_ALL_OLD_MESSAGES_NOW" = "现在删除所有旧消息？";
+"TRIM_CONFIRMATION" = "这将立即将所有会话裁剪为最近的 500 条消息";
+"DELETE" = "删除";
+"CANCEL" = "取消";
+
+// Blocked Contacts:
+"BLOCKED_CONTACTS" = "已屏蔽联系人";
+"NO_BLOCKED_CONTACT_YET" = "暂无已屏蔽联系人";
+"UNBLOCK" = "取消屏蔽";
+"UNBLOCK_SELECTED" = "取消屏蔽所选联系人";
+
+
+// Clear all data:
+"CLEAR_ALL_DATA" = "清除所有数据";
+"CLEAR_DATA_FROM_DEVICE" = "从设备中清除数据";
+"DELETE_DATA_ON_DEVICE" = "删除此设备上的数据";
+"DELETE_ENTIRE_ACCOUNT" = "删除整个账户";
+"DELETE_DATA_FROM_NETWORK" = "从网络中删除数据";
+"OK" = "确定";
+"CANCEL" = "取消";
+
+// Clear all data confirmation
+"CLEAR_ALL_DATA_CONFIRMATION" = "您确定要永久清除此设备上的所有数据吗？";
+"CLEAR" = "清除";
+"CANCEL" = "取消";
+
+// Delete entire account:
+"DELETE_ENTIRE_ACCOUNT_CONFIRMATION" = "您确定要永久清除 Beldex 网络上的所有数据吗？";
+"DELETE" = "删除";
+"CANCEL_LOWERCASE" = "取消";
+
+
+// Settings
+"SETTINGS" = "设置";
+"APP_ACCESS" = "应用访问权限";
+"INCOGNITO_KEYBOARD" = "隐身键盘";
+"REQUEST_KEYBOARD_DISABLE_PERSONALIZED_LEARNING" = "请求键盘以禁用个性化学习。";
+
+// Wallet
+"WALLET" = "钱包";
+"START_WALLET" = "启动钱包";
+"ENABLE_WALLET_DESCRIPTION" = "启用钱包后，您可以发送和接收 BDX。";
+"PAY_AS_YOU_CHAT" = "聊天即付";
+"PAY_AS_CHAT_DESCRIPTION" = "启用“聊天即付”后，您可以直接在聊天窗口中发送和接收 BDX。";
+
+// Communication
+"COMMUNICATION" = "通讯";
+"READ_RECEIPTS" = "已读回执";
+"READ_RECEIPTS_DESCRIPTION" = "如果已禁用已读回执，您将无法看到其他用户的已读回执。";
+"TYPING_INDICATORS" = "输入指示器";
+"TYPING_INDICATORS_DESCRIPTION" = "如果已禁用输入指示器，您将无法看到其他用户的输入指示器。";
+"SEND_LINK_PREVIEWS" = "发送链接预览";
+"LINK_PREVIEWS_DESCRIPTION" = "支持 Imgur、Instagram、Pinterest、Reddit 和 YouTube 链接的预览。";
+"VOICE_VIDEO_CALLS" = "语音和视频通话";
+"VOICE_VIDEO_CALLS_DESCRIPTION" = "允许访问以接收其他用户的语音和视频通话。";
+
+// Voice/video calls
+"VOICE_VIDEO_CALLS_WARNING" = "当前版本的语音通话会将您的 IP 地址暴露给 Beldex 服务器以及通话双方用户。";
+"ENABLE" = "启用";
+"CANCEL" = "取消";
+
+
+// Notifications
+"NOTIFICATIONS" = "通知";
+"MESSAGES" = "消息";
+"ALL_NOTIFICATIONS" = "所有通知";
+"PRIORITY" = "优先级";
+"NOTIFICATION_STRATEGY" = "通知策略";
+"USE_FAST_MODE" = "使用快速模式";
+"FAST_MODE_DESCRIPTION" = "通过 Google 的通知服务器，您将能够可靠且即时地收到新消息通知。";
+"NOTIFICATION_STYLE" = "通知样式";
+"SOUND" = "声音";
+"VIBRATE" = "振动";
+"IN_CHAT_SOUNDS" = "聊天内提示音";
+"NOTIFICATION_CONTENT" = "通知内容";
+"SHOW" = "显示";
+"NAME_AND_CONTENT" = "名称和内容";
+"NAME_ONLY" = "仅显示名称";
+"NO_NAME_OR_CONTENT" = "不显示名称或内容";
+"CANCEL" = "取消";
+
+// Message Requests
+"MESSAGE_REQUESTS" = "消息请求";
+"NO_PENDING_MESSAGE_REQUESTS" = "暂无待处理的消息请求！";
+"ACCEPT_REQUEST" = "接受请求？";
+"ACCEPT_REQUEST_CONFIRMATION" = "您确定要接受此请求吗？";
+"ACCEPT" = "接受";
+"CANCEL" = "取消";
+"BLOCK_REQUEST" = "屏蔽请求？";
+"BLOCK_REQUEST_CONFIRMATION" = "您确定要屏蔽此请求吗？";
+"BLOCK" = "屏蔽";
+"DELETE_REQUEST" = "删除请求？";
+"DELETE_REQUEST_CONFIRMATION" = "您确定要删除此请求吗？";
+"DELETE" = "删除";
+
+
+// Recovery Seed
+"RECOVERY_SEED" = "恢复助记词";
+"IMPORTANT" = "重要";
+"NEVER_SHARE_SEED" = "切勿与任何人分享您的助记词！";
+"SEED_WARNING" = "您的助记词可用于恢复您的账户。切勿与任何人分享，也不要保存其数字副本。除了 BChat 或 Beldex 官方钱包外，请不要在任何网站或应用中输入您的助记词。";
+"SURROUNDINGS_WARNING" = "请检查周围环境，确保没有人正在查看您的屏幕。您是否要继续？";
+"YES_IM_SAFE" = "是的，我很安全 :)";
+"COPY_RECOVERY_SEED" = "复制您的恢复助记词并妥善保存";
+"COPY" = "复制";
+
+// Verify PIN
+"VERIFY_PIN" = "验证 PIN";
+"ENTER_4_DIGIT_PIN" = "输入您的 4 位 BChat PIN";
+"INVALID_PASSWORD" = "密码无效";
+
+
+// Invite
+"INVITE" = "邀请";
+"SHARING_TEXT" = "分享文本";
+"CANCEL" = "取消";
+"INVITE_MESSAGE" = "嘿，我一直在使用 BChat 进行安全且私密的聊天。快来加入我吧！下载地址：";
+
+
+// New
+"NEW" = "新建";
+"SEARCH_PEOPLE_AND_GROUPS" = "搜索用户和群组";
+"NEW_CHAT" = "新聊天";
+"SECRET_GROUP" = "秘密群组";
+"SOCIAL_GROUP" = "社交群组";
+"NOTE_TO_SELF" = "给自己留言";
+"CONTACT_LIST" = "联系人列表";
+"INVITE_A_FRIEND" = "邀请好友";
+
+// New Chat
+"ENTER_CHAT_ID_OR_BNS_NAME" = "输入聊天 ID 或 BNS 名称";
+"CHECK_BCHAT_ID_OR_BNS" = "请检查 BChat ID 或 BNS 名称后重试";
+"VERIFYING" = "正在验证";
+"INVALID_QR_CODE" = "无法从上传的图片中识别有效代码";
+"CANCEL" = "取消";
+"LETS_BCHAT" = "开始 BChat";
+"SCAN_QR" = "扫描二维码";
+"UPLOAD_FROM_GALLERY" = "从相册上传";
+"SCAN_QR_DESCRIPTION" = "扫描用户的二维码以开始 BChat。二维码可以在账户设置中点击二维码图标找到。";
+
+// Secret Group
+"ENTER_SECRET_GROUP_NAME" = "输入秘密群组名称";
+"SEARCH_CONTACT" = "搜索联系人";
+"CREATE" = "创建";
+"ENTER_GROUP_NAME" = "请输入群组名称";
+"PICK_GROUP_MEMBER" = "请至少选择 1 位群成员";
+"SHORTER_GROUP_NAME" = "请输入更短的群组名称";
+
+
+// Social Group
+"SOCIAL_GROUP" = "社交群组";
+"JOIN_SOCIAL_GROUP" = "加入社交群组";
+"ENTER_SOCIAL_GROUP_URL" = "输入社交群组 URL";
+"NEXT" = "下一步";
+"OR_JOIN" = "或加入";
+"COULDNT_JOIN_GROUP" = "无法加入该群组";
+"INVALID_URL" = "无效的 URL";
+
+// Scan QR
+"SCAN_QR" = "扫描二维码";
+"UPLOAD_FROM_GALLERY" = "从相册上传";
+"SCAN_SOCIAL_GROUP_QR_DESCRIPTION" = "扫描社交群组的二维码以加入社交群组。二维码可以在社交群组的网站链接中找到。";
+
+// Home Screen
+"HOME_SCREEN" = "主界面";
+"CHATS" = "聊天";
+"SEARCH_PEOPLE_AND_GROUPS" = "搜索用户和群组";
+"EMPTY_STATE_MESSAGE" = "这里空空如也，真是太安静了。";
+"INVITE_FRIENDS_MESSAGE" = "快去邀请一些朋友来 BChat 吧！";
+"HOP_CONNECTION_ERROR" = "您未连接到节点。请检查您的网络连接或重新启动应用！";
+"ARCHIVED_CHATS" = "已归档聊天";
+"CHECK_INTERNET_CONNECTION" = "请检查您的网络连接";
+
+
+// Home Screen More Options
+"DETAILS" = "详情";
+"PIN" = "置顶";
+"UNPIN" = "取消置顶";
+"BLOCK" = "屏蔽";
+"UNBLOCK" = "取消屏蔽";
+"ARCHIVE_CHAT" = "归档聊天";
+"MUTE_NOTIFICATION" = "静音通知";
+"UNMUTE" = "取消静音";
+"DELETE" = "删除";
+"NOTIFICATION_SETTINGS" = "通知设置";
+"MARK_ALL_AS_READ" = "全部标记为已读";
+
+// Wallet Syncing
+"WALLET_SYNCING" = "钱包同步";
+"WALLET_SYNCING_WARNING" = "如果关闭钱包，同步将被暂停。您确定要退出钱包吗？";
+"EXIT" = "退出";
+"CANCEL" = "取消";
+
+// Details
+"ENTER_NICKNAME" = "输入昵称";
+"WRITE_MESSAGE" = "写一条消息";
+"ENTER_VALID_NICKNAME" = "请输入有效的昵称";
+"SPECIAL_CHARACTERS_NOT_ALLOWED" = "不允许使用特殊字符";
+
+// Mute Notification
+"MUTE_FOR_1_HOUR" = "静音 1 小时";
+"MUTE_FOR_2_HOURS" = "静音 2 小时";
+"MUTE_FOR_1_DAY" = "静音 1 天";
+"MUTE_FOR_7_DAYS" = "静音 7 天";
+"MUTE_FOREVER" = "永久静音";
+
+// Notification Settings
+"ALL" = "全部";
+"MENTIONS" = "提及";
+
+
+// Block Contact
+"BLOCK_CONTACT" = "屏蔽联系人";
+"BLOCK_CONTACT_CONFIRMATION" = "您确定要屏蔽此联系人吗？";
+"YES" = "是";
+"CANCEL" = "取消";
+
+// Unblock Contact
+"UNBLOCK_CONTACT" = "取消屏蔽联系人";
+"UNBLOCK_CONTACT_CONFIRMATION" = "您确定要取消屏蔽此联系人吗？";
+"UNBLOCK" = "取消屏蔽";
+
+// Delete Conversation - Group Delete
+"DELETE_CONVERSATION" = "删除会话";
+"DELETE_GROUP_CONFIRMATION" = "由于您是该群组的创建者，此操作将会为所有成员删除该群组，并且无法撤销。";
+"NO" = "否";
+
+// Delete Conversation - Leave Group
+"LEAVE_GROUP_CONFIRMATION" = "您确定要离开此群组吗？";
+
+// Delete Conversation - Delete Chat
+"DELETE_CONVERSATION_CONFIRMATION" = "您确定要删除此会话吗？";
+
+// Archived Chats
+"ARCHIVED_CHATS" = "已归档聊天";
+"AUTO_UNARCHIVE_MESSAGE" = "当收到新消息时，聊天将自动取消归档。";
+"UNARCHIVE_CHAT" = "取消归档聊天";
+"MUTE_NOTIFICATION" = "静音通知";
+"UNMUTE_NOTIFICATION" = "取消静音通知";
+
+
+
+// Chats Screen
+"MESSAGE_REQUEST" = "消息请求";
+"MESSAGE_REQUEST_INFO" = "向此用户发送消息将自动接受其消息请求，并显示您的 BChat ID";
+"ACCEPT" = "接受";
+"DECLINE" = "拒绝";
+
+// Permissions
+"ALLOW_PHOTOS_VIDEOS_ACCESS" = "允许 BChat Messenger 访问此设备上的照片和视频";
+"ALLOW_LIMITED_ACCESS" = "允许有限访问";
+"ALLOW_ALL" = "允许全部";
+"DONT_ALLOW" = "不允许";
+
+// Chat Actions
+"HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "按住以启用“边聊天边支付”";
+"BLOCKED_PERSON_UNBLOCK" = "您已屏蔽该用户，点击此处取消屏蔽";
+"WRITE_A_MESSAGE" = "输入消息…";
+"SLIDE_TO_CANCEL" = "滑动以取消";
+"SWIPE_TO_SEND_BDX" = "滑动以发送 BDX";
+"ADDED_TO_HOME_SCREEN" = "已添加到主屏幕";
+
+// Calls
+"VOICE_CALL" = "语音通话";
+"MISSED_CALL" = "未接来电";
+"CALL_MISSED" = "未接来电！";
+"CALL_MISSED_PERMISSION" = "来自“”的未接来电，因为您需要在隐私设置中启用“语音和视频通话”权限";
+"OK" = "确定";
+
+// Open URL
+"OPEN_URL" = "打开链接？";
+"OPEN_URL_CONFIRMATION" = "您确定要打开吗";
+"COPY" = "复制";
+"OPEN" = "打开";
+
+// Reactions
+"REACTIONS" = "表情反应";
+"TAP_TO_REMOVE" = "点击以移除";
+
+// Delete Messages
+"DELETE_SELECTED_MESSAGE" = "删除所选消息？";
+"DELETE_SELECTED_MESSAGE_INFO" = "这将永久删除所选消息";
+"DELETE" = "删除";
+"CANCEL" = "取消";
+
+"DELETE_MESSAGE" = "删除消息";
+"DELETE_JUST_FOR_ME" = "仅为我删除";
+"DELETE_FOR_ME_AND_USER" = "为我和“”删除";
+
+// Connection
+"NO_CONNECTION" = "无连接";
+"CONNECTED" = "已连接";
+
+
+// Chats Screen Three Dot Menu
+"ALL_MEDIA" = "所有媒体";
+"SEARCH" = "搜索";
+"ADD_TO_HOME_SCREEN" = "添加到主屏幕";
+"DISAPPEARING_MESSAGES" = "阅后即焚消息";
+"BLOCK" = "屏蔽";
+"MUTE_NOTIFICATION" = "静音通知";
+"MESSAGE_DETAILS" = "消息详情";
+"COPY_TEXT" = "复制文本";
+
+// Chats Screen More Option
+"SELECT" = "选择";
+"REPLY" = "回复";
+"COPY" = "复制";
+"DELETE" = "删除";
+
+// Warning
+"WARNING" = "警告";
+"RECOVERY_SEED_WARNING" = "这是您的恢复助记词。如果您将其发送给他人，他们将可以完全访问您的账户。";
+"SEND" = "发送";
+"CANCEL" = "取消";
+
+// Chats Screen Control Messages
+"ACCEPTED_MESSAGE_REQUEST" = "您已接受来自 的消息请求";
+"MESSAGE_REQUEST_ACCEPTED" = "您的消息请求已被接受";
+"SET_DISAPPEARING_MESSAGE_TIMER" = "您将阅后即焚消息计时器设置为 秒 / 分钟 / 小时";
+"DISABLED_DISAPPEARING_MESSAGE" = "您已关闭阅后即焚消息";
+"TOOK_SCREENSHOT" = "您截取了屏幕截图";
+"MEDIA_SAVED_BY" = "媒体已被 保存";
+
+
+// Chat Screen Emoji
+"SEARCH_EMOJI_PLACEHOLDER" = "搜索表情";
+"RECENTLY_USED" = "最近使用";
+"SMILEYS_AND_PEOPLE" = "笑脸与人物";
+"NO_RESULTS_FOUND" = "未找到结果";
+
+// Call Permission Required
+"CALL_PERMISSION_REQUIRED" = "需要通话权限";
+"ENABLE_VOICE_VIDEO_CALLS" = "您可以在隐私设置中启用“语音和视频通话”权限。";
+"SETTINGS" = "设置";
+"CANCEL" = "取消";
+
+// Record Permission Required
+"RECORD_PERMISSION_REQUIRED" = "需要录音权限";
+"ALLOW_RECORDER_ACCESS" = "允许录音器访问语音录音吗？";
+"ALLOW" = "允许";
+"DENY" = "拒绝";
+
+// Pay As You Chat
+"PAY_AS_YOU_CHAT" = "边聊天边支付";
+"ENABLE_PAY_AS_YOU_CHAT" = "请在 设置 → 钱包设置 → 边聊天边支付 中启用此功能后再使用。";
+"OK" = "确定";
+"CANCEL" = "取消";
+
+// Trust
+"TRUST" = "信任";
+"DOWNLOAD_MEDIA_CONFIRMATION" = "您确定要下载 发送的媒体吗？";
+"DOWNLOAD" = "下载";
+"CANCEL" = "取消";
+
+
+
+// Save to Storage
+"SAVE_TO_STORAGE" = "保存到存储";
+"SAVE_TO_STORAGE_WARNING" = "将此媒体保存到存储后，设备上的其他应用也可以访问该文件。";
+"YES" = "是";
+"NO" = "否";
+"PLEASE_WAIT_DOWNLOAD" = "请等待附件下载完成";
+"SAVING_ATTACHMENT" = "正在保存附件";
+"SAVING_ATTACHMENT_TO_STORAGE" = "正在将附件保存到存储";
+"MEDIA_SAVED" = "媒体已保存";
+
+// Clear Chat
+"CLEAR_CHAT" = "清空聊天";
+"CLEAR_CHAT_CONFIRMATION" = "您确定要清除此联系人的所有聊天记录吗？";
+"CLEAR" = "清空";
+"CANCEL" = "取消";
+
+// Message Details
+"MESSAGE_DETAILS" = "消息详情";
+"SENT" = "已发送";
+
+// All Media
+"ALL_MEDIA" = "所有媒体";
+"MEDIA" = "媒体";
+"DOCUMENT" = "文档";
+"NO_MEDIA_ITEMS" = "没有可显示的媒体项目";
+"NO_DOCUMENT_ITEMS" = "没有可显示的文档项目";
+
+// Search
+"SEARCH" = "搜索";
+"NO_MATCHES_FOUND" = "未找到匹配结果！";
+
+// Forward
+"FORWARD" = "转发";
+"SEARCH_CONTACT" = "搜索联系人";
+"SECRET_GROUPS" = "秘密群组";
+"SOCIAL_GROUPS" = "社交群组";
+"CONTACTS" = "联系人";
+"NO_CONTACTS_YET" = "暂无联系人";
+
+
+
+// Share Contacts
+"SHARE_CONTACTS" = "分享联系人";
+"SEARCH_CONTACT" = "搜索联系人";
+"NO_CONTACT_FOUND" = "未找到联系人";
+"SEND" = "发送";
+
+// Group Chat More Option
+"GROUP_CHAT_MORE_OPTION" = "群聊更多选项";
+"SELECT" = "选择";
+"REPLY" = "回复";
+"COPY" = "复制";
+"COPY_BCHAT_ID" = "复制 BChat ID";
+"DELETE" = "删除";
+"MESSAGE_DETAILS" = "消息详情";
+"COPY_TEXT" = "复制文本";
+
+// Group Info
+"GROUP_INFO" = "群组信息";
+"ALL_MEDIA" = "所有媒体";
+"DISAPPEARING_MESSAGES" = "阅后即焚消息";
+"DISAPPEARING_MESSAGES_INFO" = "启用后，您与群组之间的消息在被查看后将自动消失";
+"EDIT_GROUP" = "编辑群组";
+"NOTIFY_FOR_MENTION_ONLY" = "仅在被提及时通知";
+"MENTION_NOTIFICATION_INFO" = "启用后，只有当消息提及您时才会收到通知";
+"LEAVE_GROUP" = "离开群组";
+"MEMBERS" = "成员";
+"MESSAGE_TO" = "发送消息给";
+"SEARCH_MEMBERS" = "搜索成员";
+"ENTER_NAME" = "输入姓名";
+"NO_RECORDS_FOUND" = "未找到记录！";
+
+
+
+// Leave Group (Creator)
+"LEAVE_GROUP_CREATOR" = "离开群组";
+"LEAVE_GROUP_CREATOR_WARNING" = "由于您是该群组的创建者，此操作将为所有成员删除该群组，并且无法撤销。";
+"LEAVE" = "离开";
+"CANCEL" = "取消";
+
+// Leave Group
+"LEAVE_GROUP" = "离开群组";
+"LEAVE_GROUP_CONFIRMATION" = "您确定要离开此群组吗？";
+"LEAVE" = "离开";
+"CANCEL" = "取消";
+
+// Edit Group
+"EDIT_GROUP" = "编辑群组";
+"ENTER_NEW_GROUP_NAME" = "输入新的群组名称";
+"REMOVE_USER_FROM_GROUP" = "从群组中移除用户";
+"SELECT_CONTACTS" = "选择联系人";
+"SEARCH_CONTACT" = "搜索联系人";
+"NO_CONTACT_FOUND" = "未找到联系人";
+"ADD" = "添加";
+"GROUP_CANT_BE_EMPTY" = "群组不能为空";
+"ENTER_DIFFERENT_NAME" = "请输入不同的名称";
+
+// Group Chat
+"GROUP_CHAT" = "群聊";
+"YOU_CREATED_GROUP" = "您创建了一个新群组";
+"YOU_ADDED_TO_GROUP" = "您已将 “ ” 添加到群组";
+"YOU_REMOVED_FROM_GROUP" = "您已将 “ ” 从群组中移除";
+"USER_LEFT_GROUP" = "“ ” 已离开群组";
+"NO_LONGER_PARTICIPANT" = "由于您不再是该群组的成员，您无法向该群组发送消息";
+"YOU_LEFT_GROUP" = "您已离开该群组";
+
+
+
+// Social Group Chat
+"SOCIAL_GROUP_CHAT" = "社交群组聊天";
+"ALL_MEDIA" = "所有媒体";
+"SEARCH" = "搜索";
+"ADD_TO_HOME_SCREEN" = "添加到主屏幕";
+"NOTIFICATION_SETTINGS" = "通知设置";
+"ADD_MEMBERS" = "添加成员";
+"SEARCH_CONTACT" = "搜索联系人";
+"NO_CONTACTS_FOUND" = "未找到联系人";
+"COMMUNITY_GUIDELINES" = "社区指南";
+"READ" = "阅读";
+
+// Welcome to BChat
+"WELCOME_TO_BCHAT" = "欢迎来到 BChat";
+"BCHAT_DESCRIPTION" = "BChat 是一个保护您隐私的去中心化消息平台。当您使用 BChat 时，您拥有自己的对话和数据。它不会收集或存储您的任何个人信息。BChat 让您能够自由地进行交流。";
+
+"BCHAT_FEATURES" = "BChat 不仅仅是一个消息应用。您还可以直接在聊天窗口中发送和接收 BDX。";
+
+"BELDEX_NETWORK_INFO" = "BChat 构建在 Beldex 网络之上。Beldex 网络中的主节点负责在客户端之间存储并转发加密消息。Beldex 目前正在研究和开发的其他项目包括 BelNet（去中心化 VPN 服务）、Beldex 浏览器（无广告的 Web3 浏览器）以及 Beldex 隐私协议（用于匿名化其他资产）。";
+
+"KNOW_MORE" = "了解更多信息，请访问：\nhttps://www.beldex.io";
+"COLLAB_CONTACT" = "合作或市场推广，请联系：\nmarketing@beldex.io";
+"INVEST_CONTACT" = "投资相关咨询，请联系：\ninvest.bchat@beldex.io";
+
+"COMMUNITY_RULES" = "为了保护和维护这个社区，请遵守群组规则和指南。";
+"BE_CIVIL" = "请保持礼貌。您可以分享自己的观点和建设性的批评，但不允许骚扰他人。";
+"NO_PROMOTION" = "不要推广或宣传您的代币或项目。本群组仅用于 BChat 和 Beldex 生态系统相关讨论。";
+"SPAM_WARNING" = "垃圾信息发送者将被封禁。";
+"NO_NSFW" = "请不要分享 NSFW 内容或使用不当语言。";
+"SCAM_WARNING" = "请警惕诈骗者。管理员不会主动向您发送私信。";
+
+// Toast Message
+"COPIED_TO_CLIPBOARD" = "已复制到剪贴板";
+
+// Verify Password
+"VERIFY_PASSWORD" = "验证密码";
+"ENTER_BCHAT_PIN" = "输入您的 4 位 BChat PIN";
+"INVALID_PASSWORD" = "密码无效";
+
+
+
+

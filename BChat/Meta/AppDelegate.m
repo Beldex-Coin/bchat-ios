@@ -186,6 +186,7 @@ static NSTimeInterval launchStartedAt;
         }];
 
     [SNConfiguration performMainSetup];
+    [AppLocalization bootstrap];
 
     [SNAppearance switchToBChatAppearance];
     
@@ -651,6 +652,13 @@ static NSTimeInterval launchStartedAt;
     navigationController.navigationBarHidden = navigationBarHidden;
     self.window.rootViewController = navigationController;
     [UIViewController attemptRotationToDeviceOrientation];
+}
+
+- (void)reloadRootViewController
+{
+    OWSAssertIsOnMainThread();
+    self.hasInitialRootViewController = NO;
+    [self ensureRootViewController];
 }
 
 #pragma mark - Notifications

@@ -1,0 +1,694 @@
+/* Title for the language selection screen. */
+"MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "Выберите язык";
+
+
+// Side Menu
+"SIDE_MENU_SETTINGS" = "Настройки";
+"SIDE_MENU_NOTIFICATION" = "Уведомления";
+"SIDE_MENU_MESSAGE_REQUESTS" = "Запросы сообщений";
+"SIDE_MENU_RECOVERY_SEED" = "Восстановительная фраза";
+"SIDE_MENU_LANGUAGE" = "Language";
+"SIDE_MENU_REPORT_ISSUE" = "Сообщить о проблеме";
+"SIDE_MENU_HELP" = "Помощь";
+"SIDE_MENU_INVITE" = "Пригласить";
+"SIDE_MENU_ABOUT" = "О приложении";
+"SIDE_MENU_DARK_MODE" = "Тёмный режим";
+
+
+// Welcome screen:
+"WELCOME_TO_BCHAT_LANDING_VC" = "Добро пожаловать в";
+"HELLO" = "Здравствуйте,";
+"WERE_THRILLED_TO_HAVE_YOU_ON_BOARD" = "Мы рады приветствовать вас!";
+"WELCOME_DESCRIPTION" = "Добро пожаловать в BChat — ваше личное пространство для удобного общения и связи.";
+"CREATE_ACCOUNT" = "Создать аккаунт";
+"RESTORE_ACCOUNT" = "Восстановить аккаунт";
+"TERMS_AND_CONDITIONS" = "Условия и положения";
+
+
+// Display Name screen:
+"DISPLAY_NAME" = "Имя для отображения";
+"SET_YOUR_DISPLAY_NAME" = "Установите имя для отображения";
+"ENTER_NAME" = "Введите имя";
+"DISPLAY_NAME_HINT" = "Вы можете изменить его в любое время :)";
+"CONTINUE" = "Продолжить";
+"PLEASE_PICK_DISPLAY_NAME" = "Пожалуйста, выберите имя для отображения";
+"PLEASE_ENTER_VALID_NAME" = "Пожалуйста, введите корректное имя";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Пожалуйста, выберите более короткое имя для отображения";
+"BCHAT_SETUP_IN_PROGRESS" = "Ура! Ваш BChat настраивается!";
+
+// Register:
+"REGISTER_TITLE" = "Привет %@, добро пожаловать в BChat!";
+"BCHAT_ID" = "BChat ID";
+"BCHAT_ID_DESCRIPTION" = "Ваш BChat ID — это как ваше имя пользователя. Вы можете делиться им с друзьями, чтобы начать переписку.";
+"BELDEX_ADDRESS" = "Адрес Beldex";
+"BCHAT_ID_DESCRIPTION" = "Ваш адрес Beldex связан с вашим BChat ID. Вы можете использовать этот адрес для получения BDX.";
+"CONTINUE" = "Продолжить";
+"REGISTER" = "Регистрация";
+
+
+// Create Password:
+"CREATE_PASSWORD" = "Создание пароля (Create Password)";
+"ENTER_PIN" = "Введите ваш PIN";
+"RE_ENTER_PIN" = "Введите PIN ещё раз";
+"NEXT" = "Далее";
+"PASSWORD_CREATED_SUCCESSFULLY" = "Пароль успешно создан";
+"OK" = "Ок";
+"PASSWORD_DOES_NOT_MATCH" = "Пароли не совпадают";
+
+
+// Recovery Seed:
+"RECOVERY_SEED" = "Восстановительная фраза";
+"COPY_RECOVERY_SEED_DESCRIPTION" = "Скопируйте вашу восстановительную фразу и\nсохраните её в безопасности.";
+"COPY_SEED" = "Скопировать Seed";
+"SAVE" = "Сохранить";
+"COPY_AND_SAVE_SEED_TO_CONTINUE" = "Скопируйте и сохраните seed, чтобы продолжить";
+"CONTINUE" = "Продолжить";
+"COPIED_TO_CLIPBOARD" = "Скопировано в буфер обмена";
+
+
+// Restore Seed:
+"RESTORE_SEED" = "Восстановление по Seed (Restore Seed)";
+"ENTER_SEED" = "Введите ваш Seed";
+"CLEAR" = "Очистить";
+"PASTE_SEED_TO_CONTINUE" = "Вставьте seed, чтобы продолжить";
+"CONTINUE" = "Продолжить";
+"PLEASE_ENTER_VALID_SEED" = "Пожалуйста, введите корректный seed";
+"SOMETHING_WENT_WRONG_CHECK_MNEMONIC" = "Что-то пошло не так. Проверьте вашу мнемонику и попробуйте снова";
+
+
+
+// Restore from Seed:
+"RESTORE_FROM_SEED" = "Восстановление из Seed";
+"DISPLAY_NAME" = "Имя для отображения";
+"ENTER_NAME" = "Введите имя";
+"PICK_RESTORE_HEIGHT" = "Выберите высоту восстановления (Restore Height)";
+"ENTER_BLOCKHEIGHT_TO_RESTORE" = "Введите блокчейн высоту для восстановления";
+"PICK_DATE" = "Выберите дату";
+"SELECT_DATE" = "Выберите дату";
+"RESTORE_FROM_DATE" = "Восстановить по дате";
+"RESTORE_FROM_HEIGHT" = "Восстановить по высоте";
+"RESTORE" = "Восстановить";
+"SETUP_SUCCESS" = "Ура! Ваш BChat настраивается!";
+"PLEASE_PICK_DISPLAY_NAME" = "Пожалуйста, выберите имя для отображения";
+"PLEASE_ENTER_VALID_NAME" = "Пожалуйста, введите корректное имя";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Пожалуйста, выберите более короткое имя для отображения";
+"ENTER_VALID_BLOCKHEIGHT" = "Введите корректную высоту блока";
+"ENTER_BLOCKHEIGHT_LESS_THAN_CURRENT" = "Введите высоту блока меньше текущей высоты";
+
+
+
+// Account Settings Screen:
+"EDIT" = "Редактировать";
+"DONE" = "Готово";
+"BELDEX_ADDRESS" = "Адрес Beldex";
+"BCHAT_ID" = "BChat ID";
+"SHOW_QR" = "Показать QR";
+"SCAN_QR_CODE" = "Сканировать QR-код";
+"SHARE" = "Поделиться";
+//"LINK_BNS" = "Привязать ваш BNS";
+"READ_MORE_BNS" = "Подробнее о BNS";
+"HOPS" = "Хопы (Hops)";
+"APP_LOCK" = "Блокировка приложения (App Lock)";
+"CHAT_SETTINGS" = "Настройки чата";
+"BLOCKED_CONTACTS" = "Заблокированные контакты";
+"CLEAR_DATA" = "Очистить данные";
+"FEEDBACK" = "Обратная связь";
+"FAQ" = "FAQ";
+"CHANGELOG" = "Список изменений (Changelog)";
+"PROFILE_PICTURE" = "Фото профиля";
+"UPLOAD" = "Загрузить";
+"REMOVE_PICTURE" = "Удалить фото";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Пожалуйста, выберите более короткое имя для отображения";
+//"PLEASE_PICK_DISPLAY_NAME" = "Пожалуйста, выберите имя для отображения";
+"PLEASE_ENTER_VALID_NAME" = "Пожалуйста, введите корректное имя";
+
+
+// Link BNS Screen:
+"LINK_BNS" = "Привязать BNS";
+"YOUR_BCHAT_ID" = "Ваш BChat ID";
+"BNS_NAME" = "Имя BNS";
+"ENTER_BNS_NAME" = "Введите имя BNS";
+"VERIFYING" = "Проверка";
+"CANCEL" = "Отменить";
+"VERIFY" = "Проверить";
+"LINK" = "Привязать";
+"INVALID_BNS" = "Неверный BNS";
+"BNS_LINKED_SUCCESSFULLY" = "BNS успешно привязан";
+"OK" = "Ок";
+
+
+// Hops screen:
+"HOPS_SCREEN" = "Экран Хопов";
+"BCHAT_MASKS_IP" = "BChat скрывает ваш IP-адрес, маршрутизируя сообщения через несколько мастернодов в децентрализованной сети Beldex. В данный момент ваше соединение проходит через следующие мастерноды:";
+"YOU" = "Вы";
+"ENTRY_NODE" = "Входной узел";
+"MASTER_NODE" = "Мастернода";
+"DESTINATION" = "Назначение";
+
+
+//App Lock Screen:
+"APP_LOCK_SCREEN" = "Экран блокировки приложения";
+"CHANGE_PASSWORD" = "Изменить пароль";
+"SCREENLOCK_INACTIVITY_TIMEOUT" = "Тайм-аут блокировки экрана при бездействии";
+
+// Change Password screen:
+"CHANGE_PASSWORD_SCREEN" = "Экран изменения пароля";
+"ENTER_OLD_PIN" = "Введите старый PIN";
+"ENTER_NEW_PIN" = "Введите новый PIN";
+"NEXT" = "Далее";
+"NEW_PASSWORD_NOT_SAME" = "Новый пароль не должен совпадать со старым";
+"INCORRECT_PASSWORD_ENTERED" = "Введён неверный пароль";
+"PASSWORD_DOES_NOT_MATCH" = "Пароли не совпадают";
+"PASSWORD_CHANGED_SUCCESSFULLY" = "Пароль успешно изменён";
+"OK" = "Ок";
+
+
+// Screen Inactivity Timeout:
+"SCREEN_INACTIVITY_TIMEOUT" = "Тайм-аут бездействия экрана";
+"NONE" = "Нет";
+"30_SECONDS" = "30 секунд";
+"1_MINUTE" = "1 минута";
+"2_MINUTES" = "2 минуты";
+"5_MINUTES" = "5 минут";
+"15_MINUTES" = "15 минут";
+"30_MINUTES" = "30 минут";
+"OK" = "Ок";
+
+// Chat Settings:
+"CHAT_SETTINGS" = "Настройки чата";
+"ENTER_KEY_SENDS" = "Нажатие Enter отправляет";
+"MESSAGE_TRIMMING" = "Обрезка сообщений";
+"DELETE_OLD_MESSAGES" = "Удалять старые сообщения";
+"CONVERSATION_LENGTH_LIMIT" = "Ограничение длины переписки";
+"CONFEDERATION_LENGTH_LIMIT" = "Ограничение длины конфедерации";
+"OK_CANCEL" = "Ок Отмена";
+"MESSAGES_PER_CONVERSATION" = "500 сообщений на переписку";
+"TRIM_ALL_CONVERSATION_NOW" = "Обрезать все переписки сейчас";
+"DELETE_ALL_OLD_MESSAGES_NOW" = "Удалить все старые сообщения сейчас?";
+"TRIM_CONFIRMATION" = "Это немедленно обрежет все переписки до 500 последних сообщений";
+"DELETE" = "Удалить";
+"CANCEL" = "Отмена";
+
+// Blocked Contacts:
+"BLOCKED_CONTACTS" = "Заблокированные контакты";
+"NO_BLOCKED_CONTACT_YET" = "Пока нет заблокированных контактов";
+"UNBLOCK" = "Разблокировать";
+"UNBLOCK_SELECTED" = "Разблокировать выбранные";
+
+
+// Clear all data:
+"CLEAR_ALL_DATA" = "Очистка всех данных";
+"CLEAR_DATA_FROM_DEVICE" = "Очистить данные с устройства";
+"DELETE_DATA_ON_DEVICE" = "Удалить данные на этом устройстве";
+"DELETE_ENTIRE_ACCOUNT" = "Удалить весь аккаунт";
+"DELETE_DATA_FROM_NETWORK" = "Удалить данные из сети";
+"OK" = "Ок";
+"CANCEL" = "Отмена";
+
+// Clear all data confirmation
+"CLEAR_ALL_DATA_CONFIRMATION" = "Вы уверены, что хотите безвозвратно очистить все данные на этом устройстве?";
+"CLEAR" = "Очистить";
+"CANCEL" = "Отмена";
+
+// Delete entire account:
+"DELETE_ENTIRE_ACCOUNT_CONFIRMATION" = "Вы уверены, что хотите безвозвратно удалить все данные из сети Beldex?";
+"DELETE" = "Удалить";
+"CANCEL_LOWERCASE" = "Отмена";
+
+
+// Settings
+"SETTINGS" = "Настройки";
+"APP_ACCESS" = "Доступ к приложению";
+"INCOGNITO_KEYBOARD" = "Клавиатура инкогнито";
+"REQUEST_KEYBOARD_DISABLE_PERSONALIZED_LEARNING" = "Запросить клавиатуру, чтобы отключить персонализированное обучение.";
+
+// Wallet
+"WALLET" = "кошелек";
+"START_WALLET" = "Запустить кошелек";
+"ENABLE_WALLET_DESCRIPTION" = "Включение кошелька позволит вам отправлять и получать bdx";
+"PAY_AS_YOU_CHAT" = "Платите по мере общения";
+"PAY_AS_CHAT_DESCRIPTION" = "Включение «Pay As Chat» позволит вам отправлять И получайте BDX прямо из окна чата";
+
+// Communication
+"COMMUNICATION" = "Общение";
+"READ_RECEIPTS" = "Чтение квитанций";
+"READ_RECEIPTS_DESCRIPTION" = "Если уведомления о прочтении отключены, вы не сможете видеть уведомления о прочтении от других.";
+"TYPING_INDICATORS" = "Индикаторы набора текста";
+"TYPING_INDICATORS_DESCRIPTION" = "Если индикаторы ввода отключены, вы не сможете видеть индикаторы ввода от других.";
+"SEND_LINK_PREVIEWS" = "Отправить превью ссылок";
+"LINK_PREVIEWS_DESCRIPTION" = "Предварительный просмотр поддерживается для ссылок Imgur, Instagram, Pinterest, Reddit и YouTube.";
+"VOICE_VIDEO_CALLS" = "Голосовые и видеозвонки";
+"VOICE_VIDEO_CALLS_DESCRIPTION" = "Разрешить доступ для приема голосовых и видеозвонков от других пользователей";
+
+// Voice/video calls
+"VOICE_VIDEO_CALLS_WARNING" = "Текущая реализация голосовых звонков может раскрыть ваш IP-адрес серверам Beldex и другому участнику.";
+"ENABLE" = "Включить";
+"CANCEL" = "Отмена";
+
+// Notifications
+"NOTIFICATIONS" = "Уведомления";
+"MESSAGES" = "Сообщения";
+"ALL_NOTIFICATIONS" = "Все уведомления";
+"PRIORITY" = "Приоритет";
+"NOTIFICATION_STRATEGY" = "Стратегия уведомлений";
+"USE_FAST_MODE" = "Использовать быстрый режим";
+"FAST_MODE_DESCRIPTION" = "Вы будете получать уведомления о новых сообщениях надёжно и мгновенно через серверы Google.";
+"NOTIFICATION_STYLE" = "Стиль уведомлений";
+"SOUND" = "Звук";
+"VIBRATE" = "Вибрация";
+"IN_CHAT_SOUNDS" = "Звуки в чате";
+"NOTIFICATION_CONTENT" = "Содержимое уведомлений";
+"SHOW" = "Показать";
+"NAME_AND_CONTENT" = "Имя и содержимое";
+"NAME_ONLY" = "Только имя";
+"NO_NAME_OR_CONTENT" = "Без имени и содержимого";
+"CANCEL" = "Отмена";
+
+// Message Requests
+"MESSAGE_REQUESTS" = "Запросы сообщений";
+"NO_PENDING_MESSAGE_REQUESTS" = "Нет ожидающих запросов!";
+"ACCEPT_REQUEST" = "Принять запрос?";
+"ACCEPT_REQUEST_CONFIRMATION" = "Вы уверены, что хотите принять этот запрос?";
+"ACCEPT" = "Принять";
+"CANCEL" = "Отмена";
+"BLOCK_REQUEST" = "Заблокировать запрос?";
+"BLOCK_REQUEST_CONFIRMATION" = "Вы уверены, что хотите заблокировать этот запрос?";
+"BLOCK" = "Заблокировать";
+"DELETE_REQUEST" = "Удалить запрос?";
+"DELETE_REQUEST_CONFIRMATION" = "Вы уверены, что хотите удалить этот запрос?";
+"DELETE" = "Удалить";
+
+
+// Recovery Seed
+"RECOVERY_SEED" = "Восстановление через Seed";
+"IMPORTANT" = "Важно";
+"NEVER_SHARE_SEED" = "Никогда не делитесь своим seed с кем-либо!";
+"SEED_WARNING" = "Ваш seed используется для восстановления аккаунта. Не храните его в цифровом виде и не вводите его на других сайтах или приложениях, кроме BChat или официального кошелька Beldex.";
+"SURROUNDINGS_WARNING" = "Проверьте, что вокруг вас никто не наблюдает. Хотите продолжить?";
+"YES_IM_SAFE" = "Да, безопасно";
+"COPY_RECOVERY_SEED" = "Скопировать seed и сохранить его в безопасности";
+"COPY" = "Копировать";
+
+// Verify PIN
+"VERIFY_PIN" = "Проверка PIN";
+"ENTER_4_DIGIT_PIN" = "Введите ваш 4-значный PIN";
+"INVALID_PASSWORD" = "Неверный пароль";
+
+
+// Invite
+"INVITE" = "Пригласить";
+"SHARING_TEXT" = "Текст для обмена";
+"CANCEL" = "Отмена";
+"INVITE_MESSAGE" = "Привет, я использую BChat для безопасного и конфиденциального общения. Присоединяйся ко мне! Скачать можно по ссылке";
+
+
+
+// New
+"NEW" = "Новый";
+"SEARCH_PEOPLE_AND_GROUPS" = "Поиск людей и групп";
+"NEW_CHAT" = "Новый чат";
+"SECRET_GROUP" = "Секретная группа";
+"SOCIAL_GROUP" = "Социальная группа";
+"NOTE_TO_SELF" = "Заметка для себя";
+"CONTACT_LIST" = "Список контактов";
+"INVITE_A_FRIEND" = "Пригласить друга";
+
+// New Chat
+"ENTER_CHAT_ID_OR_BNS_NAME" = "Введите Chat ID или имя BNS";
+"CHECK_BCHAT_ID_OR_BNS" = "Пожалуйста, проверьте Chat ID или имя BNS и попробуйте снова";
+"VERIFYING" = "Проверка";
+"INVALID_QR_CODE" = "Не удалось распознать действительный код на загруженном изображении";
+"CANCEL" = "Отмена";
+"LETS_BCHAT" = "Давайте BChat";
+"SCAN_QR" = "Сканировать QR";
+"UPLOAD_FROM_GALLERY" = "Загрузить из галереи";
+"SCAN_QR_DESCRIPTION" = "Сканируйте QR-код пользователя, чтобы начать BChat. QR-коды можно найти, нажав на иконку QR-кода в настройках аккаунта.";
+
+// Secret Group
+"ENTER_SECRET_GROUP_NAME" = "Введите название секретной группы";
+"SEARCH_CONTACT" = "Поиск контакта";
+"CREATE" = "Создать";
+"ENTER_GROUP_NAME" = "Пожалуйста, введите название группы";
+"PICK_GROUP_MEMBER" = "Пожалуйста, выберите хотя бы 1 участника группы";
+"SHORTER_GROUP_NAME" = "Пожалуйста, введите более короткое название группы";
+
+
+// Social Group
+"SOCIAL_GROUP" = "Социальная группа";
+"JOIN_SOCIAL_GROUP" = "Присоединиться к социальной группе";
+"ENTER_SOCIAL_GROUP_URL" = "Введите URL социальной группы";
+"NEXT" = "Далее";
+"OR_JOIN" = "Или присоединиться";
+"COULDNT_JOIN_GROUP" = "Не удалось присоединиться к группе";
+"INVALID_URL" = "Неверный URL";
+
+// Scan QR
+"SCAN_QR" = "Сканирование QR-кода";
+"UPLOAD_FROM_GALLERY" = "Загрузка из галереи";
+"SCAN_SOCIAL_GROUP_QR_DESCRIPTION" = "Отсканируйте QR-код социальной группы, чтобы присоединиться к ней. QR-коды можно найти по ссылке на веб-сайте социальной группы.";
+
+// Home Screen
+"CHATS" = "Чаты";
+"SEARCH_PEOPLE_AND_GROUPS" = "Поиск людей и групп";
+"EMPTY_STATE_MESSAGE" = "Очень пусто. Вот это да!";
+"INVITE_FRIENDS_MESSAGE" = "Идите и найдите друзей для BChat!";
+"HOP_CONNECTION_ERROR" = "Вы не подключены к чату. Проверьте подключение к интернету или перезапустите приложение!";
+"ARCHIVED_CHATS" = "Архивированные чаты";
+"CHECK_INTERNET_CONNECTION" = "Пожалуйста, проверьте подключение к интернету";
+
+
+// Home Screen More Options
+"DETAILS" = "Подробности";
+"PIN" = "Закрепить";
+"UNPIN" = "Открепить";
+"BLOCK" = "Заблокировать";
+"UNBLOCK" = "Разблокировать";
+"ARCHIVE_CHAT" = "Архивировать чат";
+"MUTE_NOTIFICATION" = "Отключить уведомления";
+"UNMUTE" = "Включить уведомления";
+"DELETE" = "Удалить";
+"NOTIFICATION_SETTINGS" = "Настройки уведомлений";
+"MARK_ALL_AS_READ" = "Отметить все как прочитанные";
+
+// Wallet Syncing
+"WALLET_SYNCING" = "Синхронизация кошелька";
+"WALLET_SYNCING_WARNING" = "Если вы закроете кошелек, синхронизация будет приостановлена. Вы уверены, что хотите выйти из кошелька?";
+"EXIT" = "Выход";
+"CANCEL" = "Отмена";
+
+// Details
+"ENTER_NICKNAME" = "Введите никнейм";
+"WRITE_MESSAGE" = "Написать сообщение";
+"ENTER_VALID_NICKNAME" = "Введите допустимый никнейм";
+"SPECIAL_CHARACTERS_NOT_ALLOWED" = "Специальные символы не допускаются";
+
+// Mute Notification
+"MUTE_FOR_1_HOUR" = "Отключить на 1 час";
+"MUTE_FOR_2_HOURS" = "Отключить на 2 часа";
+"MUTE_FOR_1_DAY" = "Отключить на 1 день";
+"MUTE_FOR_7_DAYS" = "Отключить на 7 дней";
+"MUTE_FOREVER" = "Отключить навсегда";
+
+// Notification Settings
+"ALL" = "Все";
+"MENTIONS" = "Упоминания";
+
+
+// Block Contact
+"BLOCK_CONTACT" = "Заблокировать контакт";
+"BLOCK_CONTACT_CONFIRMATION" = "Вы уверены, что хотите заблокировать этот контакт?";
+"YES" = "Да";
+"CANCEL" = "Отмена";
+
+// Unblock Contact
+"UNBLOCK_CONTACT" = "Разблокировать контакт";
+"UNBLOCK_CONTACT_CONFIRMATION" = "Вы уверены, что хотите разблокировать этот контакт?";
+"UNBLOCK" = "Разблокировать";
+
+// Delete Conversation - Group Delete
+"DELETE_CONVERSATION" = "Удалить беседу";
+"DELETE_GROUP_CONFIRMATION" = "Поскольку вы являетесь создателем этой группы, она будет удалена для всех. Не подлежит отмене";
+"NO" = "Нет";
+
+// Delete Conversation - Leave Group
+"LEAVE_GROUP_CONFIRMATION" = "Вы уверены, что хотите покинуть эту группу?";
+
+// Delete Conversation - Delete Chat
+"DELETE_CONVERSATION_CONFIRMATION" = "Вы уверены, что хотите удалить эту переписку?";
+
+// Archived Chats
+"ARCHIVED_CHATS" = "Архив чатов";
+"AUTO_UNARCHIVE_MESSAGE" = "Чаты будут автоматически разархивированы при получении новых сообщений.";
+"UNARCHIVE_CHAT" = "Разархивировать чат";
+"MUTE_NOTIFICATION" = "Отключить уведомления";
+"UNMUTE_NOTIFICATION" = "Включить уведомления";
+
+
+
+// Chats Screen
+"MESSAGE_REQUEST" = "Запрос сообщения";
+"MESSAGE_REQUEST_INFO" = "Отправка сообщения этому пользователю автоматически примет его запрос и покажет ваш BChat ID.";
+"ACCEPT" = "Принять";
+"DECLINE" = "Отклонить";
+
+// Permissions
+"ALLOW_PHOTOS_VIDEOS_ACCESS" = "Разрешить Bchat Messenger доступ к фотографиям и видео на этом устройстве";
+"ALLOW_LIMITED_ACCESS" = "Разрешить ограниченный доступ";
+"ALLOW_ALL" = "Разрешить все";
+"DONT_ALLOW" = "Не разрешать";
+
+// Chat Actions
+"HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Удерживайте, чтобы включить оплату за чат";
+"BLOCKED_PERSON_UNBLOCK" = "Вы заблокировали человека, нажмите здесь, чтобы разблокировать";
+"WRITE_A_MESSAGE" = "Написать сообщение...";
+"SLIDE_TO_CANCEL" = "Сдвиньте, чтобы отменить";
+"SWIPE_TO_SEND_BDX" = "Проведите пальцем, чтобы отправить bdx";
+"ADDED_TO_HOME_SCREEN" = "Добавлено на главный экран";
+
+// Calls
+"VOICE_CALL" = "Голосовой вызов";
+"MISSED_CALL" = "Пропущенный вызов";
+"CALL_MISSED" = "Вызов пропущен!";
+"CALL_MISSED_PERMISSION" = "Вызов пропущен от \"\", потому что вам нужно было включить разрешение «голосовые и видеозвонки» в настройках конфиденциальности.";
+"OK" = "ок";
+
+// Open URL
+"OPEN_URL" = "Открыть URL?";
+"OPEN_URL_CONFIRMATION" = "Вы уверены, что хотите открыть?";
+"COPY" = "Копировать";
+"OPEN" = "Открыть";
+
+// Reactions
+"REACTIONS" = "Реакции";
+"TAP_TO_REMOVE" = "Нажмите, чтобы удалить";
+
+// Delete Messages
+"DELETE_SELECTED_MESSAGE" = "Удалить выбранное сообщение?";
+"DELETE_SELECTED_MESSAGE_INFO" = "Это навсегда удалит выбранное сообщение";
+"DELETE" = "Удалить";
+"CANCEL" = "Отмена";
+
+"DELETE_MESSAGE" = "Удалить сообщение";
+"DELETE_JUST_FOR_ME" = "Удалить только для меня";
+"DELETE_FOR_ME_AND_USER" = "Удалить для меня и «»";
+
+// Connection
+"NO_CONNECTION" = "Нет подключения";
+"CONNECTED" = "Подключено";
+
+
+// Chats Screen Three Dot Menu
+"ALL_MEDIA" = "Все медиафайлы";
+"SEARCH" = "Поиск";
+"ADD_TO_HOME_SCREEN" = "Добавить на главный экран";
+"DISAPPEARING_MESSAGES" = "Исчезающие сообщения";
+"BLOCK" = "Заблокировать";
+"MUTE_NOTIFICATION" = "Отключить уведомления";
+"MESSAGE_DETAILS" = "Подробности сообщения";
+"COPY_TEXT" = "Скопировать текст";
+
+// Chats Screen More Option
+"SELECT" = "Выбрать";
+"REPLY" = "Ответить";
+"COPY" = "Скопировать";
+"DELETE" = "Удалить";
+
+// Warning
+"WARNING" = "Предупреждение";
+"RECOVERY_SEED_WARNING" = "Это ваш сид восстановления. Если вы отправите это кому-то, у него будет полный доступ к вашему аккаунту.";
+"SEND" = "Отправить";
+"CANCEL" = "Отменить";
+
+// Chats Screen Control Messages
+"ACCEPTED_MESSAGE_REQUEST" = "Вы приняли запрос на сообщение от";
+"MESSAGE_REQUEST_ACCEPTED" = "Ваш запрос на сообщение принят";
+"SET_DISAPPEARING_MESSAGE_TIMER" = "Вы установили таймер исчезающих сообщений на секунды, минуты, часы";
+"DISABLED_DISAPPEARING_MESSAGE" = "Вы отключили исчезающие сообщения";
+"TOOK_SCREENSHOT" = "Вы сделали снимок экрана";
+"MEDIA_SAVED_BY" = "Сохраненные медиафайлы";
+
+
+
+// Chat Screen Emoji
+"SEARCH_EMOJI_PLACEHOLDER" = "Поиск эмодзи";
+"RECENTLY_USED" = "Недавно использованные";
+"SMILEYS_AND_PEOPLE" = "Смайлики и люди";
+"NO_RESULTS_FOUND" = "Результаты не найдены";
+
+// Call Permission Required
+"CALL_PERMISSION_REQUIRED" = "Требуется разрешение на звонки";
+"ENABLE_VOICE_VIDEO_CALLS" = "Вы можете включить разрешение на «голосовые и видеозвонки» в настройках конфиденциальности.";
+"SETTINGS" = "Настройки";
+"CANCEL" = "Отменить";
+
+// Record Permission Required
+"RECORD_PERMISSION_REQUIRED" = "Требуется разрешение на запись";
+"ALLOW_RECORDER_ACCESS" = "Разрешить диктофону доступ к записи голоса?";
+"ALLOW" = "Разрешить";
+"DENY" = "Запретить";
+
+// Pay As You Chat
+"PAY_AS_YOU_CHAT" = "Оплата по факту использования";
+"ENABLE_PAY_AS_YOU_CHAT" = "Включите оплату по факту использования в настройках → Настройки кошелька → Оплата по факту использования, чтобы использовать эту опцию";
+"OK" = "ОК";
+"CANCEL" = "Отмена";
+
+// Trust
+"TRUST" = "Доверие";
+"DOWNLOAD_MEDIA_CONFIRMATION" = "Вы уверены, что хотите загрузить медиафайлы, отправленные пользователем?";
+"DOWNLOAD" = "Загрузить";
+"CANCEL" = "Отмена";
+
+
+
+// Save to Storage
+"SAVE_TO_STORAGE" = "Сохранить в хранилище";
+"SAVE_TO_STORAGE_WARNING" = "Сохранение этих медиафайлов в хранилище позволит другим приложениям на вашем устройстве получить к ним доступ";
+"YES" = "Да";
+"NO" = "Нет";
+"PLEASE_WAIT_DOWNLOAD" = "Пожалуйста, подождите, пока завершится загрузка вложения";
+"SAVING_ATTACHMENT" = "Сохранение вложения";
+"SAVING_ATTACHMENT_TO_STORAGE" = "Сохранение вложения в хранилище";
+"MEDIA_SAVED" = "Медиафайлы сохранены";
+
+// Clear Chat
+"CLEAR_CHAT" = "Очистить чат";
+"CLEAR_CHAT_CONFIRMATION" = "Вы уверены, что хотите очистить весь чат этого контакта?";
+"CLEAR" = "Очистить";
+"CANCEL" = "Отмена";
+
+// Message Details
+"MESSAGE_DETAILS" = "Подробности сообщения";
+"SENT" = "Отправлено";
+
+// All Media
+"ALL_MEDIA" = "Все медиафайлы";
+"MEDIA" = "Медиафайлы";
+"DOCUMENT" = "Документ";
+"NO_MEDIA_ITEMS" = "Нет элементов медиафайлов для отображения";
+"NO_DOCUMENT_ITEMS" = "Нет элементов документа для отображения";
+
+// Search
+"SEARCH" = "Поиск";
+"NO_MATCHES_FOUND" = "Совпадений не найдено!";
+
+// Forward
+"FORWARD" = "Переслать";
+"SEARCH_CONTACT" = "Поиск контакта";
+"SECRET_GROUPS" = "Секретные группы";
+"SOCIAL_GROUPS" = "Социальные группы";
+"CONTACTS" = "Контакты";
+"NO_CONTACTS_YET" = "Пока нет контактов";
+
+
+// Share Contacts
+"SHARE_CONTACTS" = "Поделиться контактами";
+"SEARCH_CONTACT" = "Поиск контакта";
+"NO_CONTACT_FOUND" = "Контакт не найден";
+"SEND" = "Отправить";
+
+// Group Chat More Option
+"GROUP_CHAT_MORE_OPTION" = "Дополнительные параметры группового чата";
+"SELECT" = "Выбрать";
+"REPLY" = "Ответить";
+"COPY" = "Копировать";
+"COPY_BCHAT_ID" = "Скопировать ID BChat";
+"DELETE" = "Удалить";
+"MESSAGE_DETAILS" = "Подробности сообщения";
+"COPY_TEXT" = "Скопировать текст";
+
+// Group Info
+"GROUP_INFO" = "Информация о группе";
+"ALL_MEDIA" = "Все медиафайлы";
+"DISAPPEARING_MESSAGES" = "Исчезающие сообщения";
+"DISAPPEARING_MESSAGES_INFO" = "Если включено, сообщения между вами и группой будут исчезать после просмотра";
+"EDIT_GROUP" = "Редактировать группу";
+"NOTIFY_FOR_MENTION_ONLY" = "Уведомлять только о упоминании";
+"MENTION_NOTIFICATION_INFO" = "Если включено, вы будете получать уведомления только о сообщениях, в которых упоминается ваше имя";
+"LEAVE_GROUP" = "Покинуть группу";
+"MEMBERS" = "Участники";
+"MESSAGE_TO" = "Отправить сообщение";
+"SEARCH_MEMBERS" = "Поиск участников";
+"ENTER_NAME" = "Ввести имя";
+"NO_RECORDS_FOUND" = "Записи не найдены!";
+
+
+
+// Leave Group (Creator)
+"LEAVE_GROUP_CREATOR" = "Покинуть группу";
+"LEAVE_GROUP_CREATOR_WARNING" = "Поскольку вы являетесь создателем этой группы, она будет удалена для всех. Это действие нельзя отменить.";
+"LEAVE" = "Покинуть";
+"CANCEL" = "Отмена";
+
+// Leave Group
+"LEAVE_GROUP" = "Покинуть группу";
+"LEAVE_GROUP_CONFIRMATION" = "Вы уверены, что хотите покинуть эту группу?";
+"LEAVE" = "Покинуть";
+"CANCEL" = "Отмена";
+
+// Edit Group
+"EDIT_GROUP" = "Редактировать группу";
+"ENTER_NEW_GROUP_NAME" = "Введите новое название группы";
+"REMOVE_USER_FROM_GROUP" = "Удалить пользователя из группы";
+"SELECT_CONTACTS" = "Выбрать контакты";
+"SEARCH_CONTACT" = "Поиск контакта";
+"NO_CONTACT_FOUND" = "Контакты не найдены";
+"ADD" = "Добавить";
+"GROUP_CANT_BE_EMPTY" = "Группа не может быть пустой";
+"ENTER_DIFFERENT_NAME" = "Введите другое название";
+
+// Group Chat
+"GROUP_CHAT" = "Групповой чат";
+"YOU_CREATED_GROUP" = "Вы создали новую группу";
+"YOU_ADDED_TO_GROUP" = "Вы добавили « » в группу";
+"YOU_REMOVED_FROM_GROUP" = "Вы удалили « » из группы";
+"USER_LEFT_GROUP" = "« » покинул(а) группу";
+"NO_LONGER_PARTICIPANT" = "Вы не можете отправлять сообщения в эту группу, потому что вы больше не являетесь участником";
+"YOU_LEFT_GROUP" = "Вы покинули эту группу";
+
+
+
+
+// Social Group Chat
+"SOCIAL_GROUP_CHAT" = "Социальный групповой чат";
+"ALL_MEDIA" = "Все медиа";
+"SEARCH" = "Поиск";
+"ADD_TO_HOME_SCREEN" = "Добавить на главный экран";
+"NOTIFICATION_SETTINGS" = "Настройки уведомлений";
+"ADD_MEMBERS" = "Добавить участников";
+"SEARCH_CONTACT" = "Поиск контактов";
+"NO_CONTACTS_FOUND" = "Контакты не найдены";
+"COMMUNITY_GUIDELINES" = "Правила сообщества";
+"READ" = "Читать";
+
+// Welcome to BChat
+"WELCOME_TO_BCHAT" = "Добро пожаловать в BChat";
+"BCHAT_DESCRIPTION" = "BChat — это децентрализованная платформа обмена сообщениями, которая защищает вашу конфиденциальность. Используя BChat, вы владеете своими разговорами и данными. Он не собирает и не хранит вашу личную информацию. BChat — это место, где вы общаетесь свободно.";
+
+"BCHAT_FEATURES" = "BChat — это также больше, чем просто приложение для обмена сообщениями. Вы можете отправлять и получать BDX прямо из своего чата.";
+
+"BELDEX_NETWORK_INFO" = "BChat построен на основе сети Beldex. Мастерноды в сети Beldex хранят и передают зашифрованные сообщения между клиентами. Другие проекты, которые в настоящее время исследуются или разрабатываются Beldex, включают BelNet (децентрализованный VPN-сервис), Beldex Browser (браузер Web3 без рекламы) и протокол конфиденциальности Beldex (для анонимизации всех остальных активов).";
+
+"KNOW_MORE" = "Чтобы узнать больше, посетите: https://www.beldex.io";
+"COLLAB_CONTACT" = "Для сотрудничества или маркетинговых предложений обращайтесь по адресу marketing@beldex.io.";
+"INVEST_CONTACT" = "Для инвестиций обращайтесь по адресу invest.bchat@beldex.io";
+
+"COMMUNITY_RULES" = "Для защиты и сохранения этого сообщества, пожалуйста, соблюдайте правила и рекомендации группы.";
+"BE_CIVIL" = "Будьте вежливы. Вы можете делиться своим мнением и конструктивной критикой, но домогательства недопустимы.";
+"NO_PROMOTION" = "Не рекламируйте и не продвигайте свой токен/проект. Эта группа посвящена BChat и экосистеме Beldex.";
+"SPAM_WARNING" = "Спамеры будут забанены.";
+"NO_NSFW" = "Не делитесь контентом NSFW и не используйте нецензурную лексику.";
+"SCAM_WARNING" = "Остерегайтесь мошенников. Администраторы не будут писать вам в личные сообщения первыми.";
+
+// Toast Message
+"COPIED_TO_CLIPBOARD" = "Скопировано в буфер обмена";
+
+// Verify Password
+"VERIFY_PASSWORD" = "Проверка пароля";
+"ENTER_BCHAT_PIN" = "Введите ваш 4-значный PIN BChat";
+"INVALID_PASSWORD" = "Неверный пароль";
+
+
+
+
+

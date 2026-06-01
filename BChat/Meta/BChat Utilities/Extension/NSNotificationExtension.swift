@@ -22,4 +22,5 @@ extension Notification.Name {
     static var navigateToMyAccountNotification = Notification.Name(rawValue: Constants.navigateToMyAccount)
     static var dismissMiniView = Notification.Name(rawValue: Constants.dismissMiniView)
     static var joinedOpenGroup = Notification.Name(rawValue: Constants.joinedOpenGroup)
+    static let appLanguageDidChange = Notification.Name(rawValue: "appLanguageDidChange")
 }

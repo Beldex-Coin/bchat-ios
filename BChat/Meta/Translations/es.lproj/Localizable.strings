@@ -651,3 +651,710 @@
 "modal_call_permission_request_explanation" = "You can enable the 'Voice and video calls' permission in the Privacy Settings.";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_TITLE" = "Oops, an error occurred";
 "DEFAULT_OPEN_GROUP_LOAD_ERROR_SUBTITLE" = "Please try again later";
+
+// My Account language settings
+"MY_ACCOUNT_HOPS" = "Saltos";
+"MY_ACCOUNT_CHANGE_PASSWORD" = "Cambiar contraseña";
+"MY_ACCOUNT_BLOCKED_CONTACTS" = "Contactos bloqueados";
+"MY_ACCOUNT_CLEAR_DATA" = "Borrar datos";
+"MY_ACCOUNT_FEEDBACK" = "Comentarios";
+"MY_ACCOUNT_FAQ" = "Preguntas frecuentes";
+"MY_ACCOUNT_CHANGELOG" = "Registro de cambios";
+"MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "Seleccionar idioma";
+"MY_ACCOUNT_BNS_VERIFIED" = "BNS verificado";
+"MY_ACCOUNT_SHOW_QR" = "Mostrar QR";
+"MY_ACCOUNT_LINK_YOUR_BNS" = "Vincula tu BNS";
+"MY_ACCOUNT_READ_MORE_ABOUT_BNS" = "Más información sobre BNS";
+"MY_ACCOUNT_SCAN_QR_CODE" = "Escanear código QR";
+
+
+
+// Side Menu
+"SIDE_MENU_SETTINGS" = "Configuración";
+"SIDE_MENU_NOTIFICATION" = "Notificaciones";
+"SIDE_MENU_MESSAGE_REQUESTS" = "Solicitudes de Mensaje";
+"SIDE_MENU_RECOVERY_SEED" = "Semilla de Recuperación";
+"SIDE_MENU_LANGUAGE" = "Language";
+"SIDE_MENU_REPORT_ISSUE" = "Reportar Problema";
+"SIDE_MENU_HELP" = "Ayuda";
+"SIDE_MENU_INVITE" = "Invitar";
+"SIDE_MENU_ABOUT" = "Acerca de";
+"SIDE_MENU_DARK_MODE" = "Modo Oscuro";
+
+
+// Welcome screen:
+"WELCOME_TO_BCHAT_LANDING_VC" = "Bienvenido a";
+"HELLO" = "Hola,";
+"WERE_THRILLED_TO_HAVE_YOU_ON_BOARD" = "¡Estamos encantados de tenerte con nosotros!";
+"WELCOME_DESCRIPTION" = "Bienvenido a BChat, tu espacio privado para una comunicación y conexión sin interrupciones.";
+"CREATE_ACCOUNT" = "Crear cuenta";
+"RESTORE_ACCOUNT" = "Restaurar cuenta";
+"TERMS_AND_CONDITIONS" = "Términos y condiciones";
+
+
+
+// Display Name screen:
+"DISPLAY_NAME" = "Nombre para Mostrar";
+"SET_YOUR_DISPLAY_NAME" = "Establece tu Nombre para Mostrar";
+"ENTER_NAME" = "Ingresa un nombre";
+"DISPLAY_NAME_HINT" = "¡Puedes cambiarlo en cualquier momento! :)";
+"CONTINUE" = "Continuar";
+"PLEASE_PICK_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar";
+"PLEASE_ENTER_VALID_NAME" = "Por favor, ingresa un nombre válido";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar más corto";
+"BCHAT_SETUP_IN_PROGRESS" = "¡Yupi! ¡Tu BChat se está configurando!";
+
+// Register:
+"REGISTER_TITLE" = "¡Hola %@, bienvenido a BChat!";
+"BCHAT_ID" = "BChat ID";
+"BCHAT_ID_DESCRIPTION" = "Tu BChat ID es como tu nombre de usuario. Puedes compartirlo con tus amigos para iniciar una conversación.";
+"BELDEX_ADDRESS" = "Dirección Beldex";
+"BELDEX_ADDRESS_DESCRIPTION" = "Tu dirección Beldex está vinculada a tu BChat ID. Puedes usar esta dirección para recibir BDX.";
+"CONTINUE" = "Continuar";
+"REGISTER" = "Registrarse";
+
+
+// Create Password:
+"CREATE_PASSWORD" = "Crear Contraseña:";
+"ENTER_PIN" = "Ingresa tu PIN";
+"RE_ENTER_PIN" = "Vuelve a ingresar tu PIN";
+"NEXT" = "Siguiente";
+"PASSWORD_CREATED_SUCCESSFULLY" = "Contraseña creada con éxito.";
+"OK" = "Aceptar";
+"PASSWORD_DOES_NOT_MATCH" = "La contraseña no coincide";
+
+
+// Recovery Seed:
+"RECOVERY_SEED" = "Semilla de Recuperación";
+"COPY_RECOVERY_SEED_DESCRIPTION" = "Copia tu Semilla de Recuperación y\nguárdala de forma segura.";
+"COPY_SEED" = "Copiar Semilla";
+"SAVE" = "Guardar";
+"COPY_AND_SAVE_SEED_TO_CONTINUE" = "Copia y guarda la semilla para continuar";
+"CONTINUE" = "Continuar";
+"COPIED_TO_CLIPBOARD" = "Copiado al portapapeles";
+
+
+// Restore Seed:
+"RESTORE_SEED" = "Restaurar Semilla:";
+"ENTER_SEED" = "Ingresa tu Semilla";
+"CLEAR" = "Borrar";
+"PASTE_SEED_TO_CONTINUE" = "Pega la semilla para continuar";
+"CONTINUE" = "Continuar";
+"PLEASE_ENTER_VALID_SEED" = "Por favor ingresa una semilla válida";
+"SOMETHING_WENT_WRONG_CHECK_MNEMONIC" = "Algo salió mal. Por favor, revisa tu mnemónico e intenta nuevamente";
+
+
+// Restore from Seed:
+"RESTORE_FROM_SEED" = "Restaurar desde Semilla";
+"DISPLAY_NAME" = "Nombre para Mostrar";
+"ENTER_NAME" = "Ingresa Nombre";
+"PICK_RESTORE_HEIGHT" = "Elige una altura de restauración";
+"ENTER_BLOCKHEIGHT_TO_RESTORE" = "Ingresa la Altura de Bloque para Restaurar";
+"PICK_DATE" = "Elige una Fecha";
+"SELECT_DATE" = "Selecciona Fecha";
+"RESTORE_FROM_DATE" = "Restaurar desde fecha";
+"RESTORE_FROM_HEIGHT" = "Restaurar desde altura";
+"RESTORE" = "Restaurar";
+"SETUP_SUCCESS" = "¡Yupi! ¡Tu BChat se está configurando!";
+"PLEASE_PICK_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar";
+"PLEASE_ENTER_VALID_NAME" = "Por favor, ingresa un nombre válido";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar más corto";
+"ENTER_VALID_BLOCKHEIGHT" = "Ingresa una altura de bloque válida";
+"ENTER_BLOCKHEIGHT_LESS_THAN_CURRENT" = "Ingresa una altura de bloque menor a la altura de bloque actual";
+
+
+
+// Account Settings Screen:
+"EDIT" = "Editar";
+"DONE" = "Listo";
+"BELDEX_ADDRESS" = "Dirección Beldex";
+"BCHAT_ID" = "BChat ID";
+"SHOW_QR" = "Mostrar QR";
+"SCAN_QR_CODE" = "Escanear código QR";
+"SHARE" = "Compartir";
+//"LINK_BNS" = "Vincular tu BNS";
+"READ_MORE_BNS" = "Leer más sobre BNS";
+"HOPS" = "Saltos";
+"APP_LOCK" = "Bloqueo de la App";
+"CHAT_SETTINGS" = "Configuración del Chat";
+"BLOCKED_CONTACTS" = "Contactos Bloqueados";
+"CLEAR_DATA" = "Borrar Datos";
+"FEEDBACK" = "Comentarios";
+"FAQ" = "Preguntas Frecuentes (FAQ)";
+"CHANGELOG" = "Registro de Cambios";
+"PROFILE_PICTURE" = "Foto de Perfil";
+"UPLOAD" = "Subir";
+"REMOVE_PICTURE" = "Eliminar Foto";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar más corto";
+//"PLEASE_PICK_DISPLAY_NAME" = "Por favor, elige un nombre para mostrar";
+"PLEASE_ENTER_VALID_NAME" = "Por favor, ingresa un nombre válido";
+
+
+// Link BNS Screen:
+"LINK_BNS" = "Vincular BNS";
+"YOUR_BCHAT_ID" = "Tu BChat ID";
+"BNS_NAME" = "Nombre BNS";
+"ENTER_BNS_NAME" = "Ingresa el nombre BNS";
+"VERIFYING" = "Verificando";
+"CANCEL" = "Cancelar";
+"VERIFY" = "Verificar";
+"LINK" = "Vincular";
+"INVALID_BNS" = "BNS Inválido";
+"BNS_LINKED_SUCCESSFULLY" = "BNS Vinculado Exitosamente";
+"OK" = "Aceptar";
+
+
+// Hops screen:
+"HOPS_SCREEN" = "Pantalla de Hops";
+"BCHAT_MASKS_IP" = "BChat oculta tu dirección IP enrutando los mensajes a través de varios masternodos en la red descentralizada de Beldex. Tu conexión actualmente se enruta a través de los siguientes masternodos.";
+"YOU" = "Tú";
+"ENTRY_NODE" = "Nodo de Entrada";
+"MASTER_NODE" = "Nodo Maestro";
+"DESTINATION" = "Destino";
+
+
+//App Lock Screen:
+"APP_LOCK_SCREEN" = "Pantalla de Bloqueo de la App";
+"CHANGE_PASSWORD" = "Cambiar Contraseña";
+"SCREENLOCK_INACTIVITY_TIMEOUT" = "Tiempo de Inactividad para Bloqueo de Pantalla";
+
+// Change Password screen:
+"CHANGE_PASSWORD_SCREEN" = "Pantalla de Cambiar Contraseña";
+"ENTER_OLD_PIN" = "Introduce el PIN Antiguo";
+"ENTER_NEW_PIN" = "Introduce el Nuevo PIN";
+"NEXT" = "Siguiente";
+"NEW_PASSWORD_NOT_SAME" = "La nueva contraseña no debe ser igual a la antigua";
+"INCORRECT_PASSWORD_ENTERED" = "Contraseña Incorrecta";
+"PASSWORD_DOES_NOT_MATCH" = "La contraseña no coincide";
+"PASSWORD_CHANGED_SUCCESSFULLY" = "Contraseña cambiada con éxito";
+"OK" = "Ok";
+
+
+// Screen Inactivity Timeout:
+"SCREEN_INACTIVITY_TIMEOUT" = "Pantalla de Tiempo de Inactividad";
+"NONE" = "Ninguno";
+"30_SECONDS" = "30 Segundos";
+"1_MINUTE" = "1 Minuto";
+"2_MINUTES" = "2 Minutos";
+"5_MINUTES" = "5 Minutos";
+"15_MINUTES" = "15 Minutos";
+"30_MINUTES" = "30 Minutos";
+"OK" = "Ok";
+
+// Chat Settings:
+"CHAT_SETTINGS" = "Chat";
+"ENTER_KEY_SENDS" = "Enter envía";
+"MESSAGE_TRIMMING" = "Recorte de Mensajes";
+"DELETE_OLD_MESSAGES" = "Eliminar Mensajes Antiguos";
+"CONVERSATION_LENGTH_LIMIT" = "Límite de longitud de conversación";
+"CONFEDERATION_LENGTH_LIMIT" = "Límite de longitud de confederación";
+"OK_CANCEL" = "Ok Cancelar";
+"MESSAGES_PER_CONVERSATION" = "500 mensajes por conversación";
+"TRIM_ALL_CONVERSATION_NOW" = "Recortar todas las conversaciones ahora";
+"DELETE_ALL_OLD_MESSAGES_NOW" = "¿Eliminar todos los mensajes antiguos ahora?";
+"TRIM_CONFIRMATION" = "Esto recortará inmediatamente todas las conversaciones a los 500 mensajes más recientes";
+"DELETE" = "Eliminar";
+"CANCEL" = "Cancelar";
+
+// Blocked Contacts:
+"BLOCKED_CONTACTS" = "Contactos Bloqueados";
+"NO_BLOCKED_CONTACT_YET" = "No hay contactos bloqueados aún";
+"UNBLOCK" = "Desbloquear";
+"UNBLOCK_SELECTED" = "Desbloquear seleccionados";
+
+
+// Clear all data:
+"CLEAR_ALL_DATA" = "Borrar todos los datos";
+"CLEAR_DATA_FROM_DEVICE" = "Borrar datos del dispositivo";
+"DELETE_DATA_ON_DEVICE" = "Eliminar datos en este dispositivo";
+"DELETE_ENTIRE_ACCOUNT" = "Eliminar Cuenta Completa";
+"DELETE_DATA_FROM_NETWORK" = "Eliminar datos de la red";
+"OK" = "Ok";
+"CANCEL" = "Cancelar";
+
+// Clear all data confirmation
+"CLEAR_ALL_DATA_CONFIRMATION" = "¿Estás seguro de que deseas borrar permanentemente todos los datos de este dispositivo?";
+"CLEAR" = "Borrar";
+"CANCEL" = "Cancelar";
+
+// Delete entire account:
+"DELETE_ENTIRE_ACCOUNT_CONFIRMATION" = "¿Estás seguro de que deseas borrar permanentemente todos los datos de la Red de Beldex?";
+"DELETE" = "Eliminar";
+"CANCEL_LOWERCASE" = "Cancelar";
+
+
+// Settings
+"SETTINGS" = "Configuración";
+"APP_ACCESS" = "Acceso a la aplicación";
+"INCOGNITO_KEYBOARD" = "Teclado de incógnito";
+"REQUEST_KEYBOARD_DISABLE_PERSONALIZED_LEARNING" = "Solicitar al teclado desactivar el aprendizaje personalizado.";
+
+// Wallet
+"WALLET" = "Wallet";
+"START_WALLET" = "Iniciar Wallet";
+"ENABLE_WALLET_DESCRIPTION" = "Habilitar la wallet te permitirá enviar y recibir BDX.";
+"PAY_AS_YOU_CHAT" = "Paga mientras chateas";
+"PAY_AS_CHAT_DESCRIPTION" = "Habilitar “Paga mientras chateas” te permitirá enviar y recibir BDX directamente desde la ventana de chat.";
+
+// Communication
+"COMMUNICATION" = "Comunicación";
+"READ_RECEIPTS" = "Confirmaciones de lectura";
+"READ_RECEIPTS_DESCRIPTION" = "Si las confirmaciones de lectura están desactivadas, no podrás ver las confirmaciones de lectura de otros.";
+"TYPING_INDICATORS" = "Indicadores de escritura";
+"TYPING_INDICATORS_DESCRIPTION" = "Si los indicadores de escritura están desactivados, no podrás ver los indicadores de escritura de otros.";
+"SEND_LINK_PREVIEWS" = "Enviar vista previa de enlaces";
+"LINK_PREVIEWS_DESCRIPTION" = "Se admiten vistas previas para enlaces de Imgur, Instagram, Pinterest, Reddit y YouTube.";
+"VOICE_VIDEO_CALLS" = "Llamadas de voz y video";
+"VOICE_VIDEO_CALLS_DESCRIPTION" = "Permitir acceso para aceptar llamadas de voz y video de otros usuarios.";
+
+// Voice/video calls
+"VOICE_VIDEO_CALLS_WARNING" = "La implementación actual de llamadas de voz expondrá tu dirección IP a los servidores de Beldex y al usuario que llama/recibe la llamada.";
+"ENABLE" = "Habilitar";
+"CANCEL" = "Cancelar";
+
+
+// Notifications
+"NOTIFICATIONS" = "Notificaciones";
+"MESSAGES" = "Mensajes";
+"ALL_NOTIFICATIONS" = "Todas las notificaciones";
+"PRIORITY" = "Prioridad";
+"NOTIFICATION_STRATEGY" = "Estrategia de notificación";
+"USE_FAST_MODE" = "Usar modo rápido";
+"FAST_MODE_DESCRIPTION" = "Se te notificará de nuevos mensajes de manera confiable e inmediata usando los servidores de notificación de Google.";
+"NOTIFICATION_STYLE" = "Estilo de notificación";
+"SOUND" = "Sonido";
+"VIBRATE" = "Vibrar";
+"IN_CHAT_SOUNDS" = "Sonidos en chat";
+"NOTIFICATION_CONTENT" = "Contenido de notificación";
+"SHOW" = "Mostrar";
+"NAME_AND_CONTENT" = "Nombre y contenido";
+"NAME_ONLY" = "Solo nombre";
+"NO_NAME_OR_CONTENT" = "Sin nombre ni contenido";
+"CANCEL" = "Cancelar";
+
+// Message Requests
+"MESSAGE_REQUESTS" = "Solicitudes de Mensajes";
+"NO_PENDING_MESSAGE_REQUESTS" = "¡No hay solicitudes de mensajes pendientes!";
+"ACCEPT_REQUEST" = "¿Aceptar solicitud?";
+"ACCEPT_REQUEST_CONFIRMATION" = "¿Estás seguro de que deseas aceptar esta solicitud?";
+"ACCEPT" = "Aceptar";
+"CANCEL" = "Cancelar";
+"BLOCK_REQUEST" = "¿Bloquear solicitud?";
+"BLOCK_REQUEST_CONFIRMATION" = "¿Estás seguro de que deseas bloquear esta solicitud?";
+"BLOCK" = "Bloquear";
+"DELETE_REQUEST" = "¿Eliminar solicitud?";
+"DELETE_REQUEST_CONFIRMATION" = "¿Estás seguro de que deseas eliminar esta solicitud?";
+"DELETE" = "Eliminar";
+
+
+// Recovery Seed
+"RECOVERY_SEED" = "Semilla de Recuperación";
+"IMPORTANT" = "Importante";
+"NEVER_SHARE_SEED" = "¡Nunca compartas tu semilla con nadie!";
+"SEED_WARNING" = "Tu semilla puede usarse para restaurar tu cuenta. Nunca la compartas con nadie ni guardes una copia digital de la misma. Nunca ingreses tu semilla en ningún otro sitio web o aplicación que no sean BChat o la wallet oficial de Beldex.";
+"SURROUNDINGS_WARNING" = "Revisa tu entorno para asegurarte de que nadie esté observando. ¿Deseas continuar?";
+"YES_IM_SAFE" = "Sí, estoy seguro :)";
+"COPY_RECOVERY_SEED" = "Copia tu Semilla de Recuperación y guárdala de forma segura.";
+"COPY" = "Copiar";
+
+// Verify PIN
+"VERIFY_PIN" = "Verificar PIN";
+"ENTER_4_DIGIT_PIN" = "Ingresa tu PIN de 4 dígitos de BChat";
+"INVALID_PASSWORD" = "Contraseña inválida";
+
+
+// Invite
+"INVITE" = "Invitar";
+"SHARING_TEXT" = "Compartir texto";
+"CANCEL" = "Cancelar";
+"INVITE_MESSAGE" = "¡Hola! He estado usando BChat para chatear de manera segura y confidencial. ¡Únete a mí! Descárgalo en";
+
+
+// New
+"NEW" = "Nuevo";
+"SEARCH_PEOPLE_AND_GROUPS" = "Buscar personas y grupos";
+"NEW_CHAT" = "Nuevo Chat";
+"SECRET_GROUP" = "Grupo secreto";
+"SOCIAL_GROUP" = "Grupo social";
+"NOTE_TO_SELF" = "Nota para mí";
+"CONTACT_LIST" = "Lista de contactos";
+"INVITE_A_FRIEND" = "Invitar a un amigo";
+
+// New Chat
+"ENTER_CHAT_ID_OR_BNS_NAME" = "Ingrese Chat ID o Nombre BNS";
+"CHECK_BCHAT_ID_OR_BNS" = "Por favor, verifica el Chat ID o el nombre BNS e inténtalo de nuevo";
+"VERIFYING" = "Verificando";
+"INVALID_QR_CODE" = "No se pudo reconocer un código válido de la imagen cargada";
+"CANCEL" = "Cancelar";
+"LETS_BCHAT" = "¡Vamos a BChat!";
+"SCAN_QR" = "Escanear QR";
+"UPLOAD_FROM_GALLERY" = "Cargar desde la galería";
+"SCAN_QR_DESCRIPTION" = "Escanea el código QR de un usuario para iniciar un BChat. Los códigos QR se pueden encontrar tocando el ícono de código QR en la configuración de la cuenta.";
+
+// Secret Group
+"ENTER_SECRET_GROUP_NAME" = "Ingrese el nombre del grupo secreto";
+"SEARCH_CONTACT" = "Buscar contacto";
+"CREATE" = "Crear";
+"ENTER_GROUP_NAME" = "Por favor, ingrese un nombre de grupo";
+"PICK_GROUP_MEMBER" = "Por favor, seleccione al menos 1 miembro del grupo";
+"SHORTER_GROUP_NAME" = "Por favor, ingrese un nombre de grupo más corto";
+
+
+// Social Group
+"SOCIAL_GROUP" = "Grupo social";
+"JOIN_SOCIAL_GROUP" = "Unirse a un grupo social";
+"ENTER_SOCIAL_GROUP_URL" = "Ingrese una URL de grupo social";
+"NEXT" = "Siguiente";
+"OR_JOIN" = "O unirse";
+"COULDNT_JOIN_GROUP" = "No se pudo unir al grupo";
+"INVALID_URL" = "URL inválida";
+
+// Scan QR
+"SCAN_QR" = "Escanear QR";
+"UPLOAD_FROM_GALLERY" = "Cargar desde la galería";
+"SCAN_SOCIAL_GROUP_QR_DESCRIPTION" = "Escanea el código QR de un grupo social para unirte a un grupo social. Los códigos QR se pueden encontrar en el enlace del sitio web del grupo social.";
+
+// Home Screen
+"CHATS" = "Chats";
+"SEARCH_PEOPLE_AND_GROUPS" = "Buscar personas y grupos";
+"EMPTY_STATE_MESSAGE" = "Muy vacío. ¡Qué increíble!";
+"INVITE_FRIENDS_MESSAGE" = "¡Ve a invitar amigos a BChat!";
+"HOP_CONNECTION_ERROR" = "No estás conectado al hop. ¡Verifica tu conexión a internet o reinicia la app!";
+"ARCHIVED_CHATS" = "Chats archivados";
+"CHECK_INTERNET_CONNECTION" = "Por favor, verifica tu conexión a internet";
+
+
+// Home Screen More Options
+"DETAILS" = "Detalles";
+"PIN" = "Fijar";
+"UNPIN" = "Desfijar";
+"BLOCK" = "Bloquear";
+"UNBLOCK" = "Desbloquear";
+"ARCHIVE_CHAT" = "Archivar chat";
+"MUTE_NOTIFICATION" = "Silenciar notificación";
+"UNMUTE" = "Activar notificación";
+"DELETE" = "Eliminar";
+"NOTIFICATION_SETTINGS" = "Configuración de notificaciones";
+"MARK_ALL_AS_READ" = "Marcar todo como leído";
+
+// Wallet Syncing
+"WALLET_SYNCING" = "Sincronización de la billetera";
+"WALLET_SYNCING_WARNING" = "Si cierras la billetera, la sincronización se pausará. ¿Estás seguro de que quieres salir de la billetera?";
+"EXIT" = "Salir";
+"CANCEL" = "Cancelar";
+
+// Details
+"ENTER_NICKNAME" = "Ingrese un apodo";
+"WRITE_MESSAGE" = "Escribir un mensaje";
+"ENTER_VALID_NICKNAME" = "Ingrese un apodo válido";
+"SPECIAL_CHARACTERS_NOT_ALLOWED" = "No se permiten caracteres especiales";
+
+// Mute Notification
+"MUTE_FOR_1_HOUR" = "Silenciar por 1 hora";
+"MUTE_FOR_2_HOURS" = "Silenciar por 2 horas";
+"MUTE_FOR_1_DAY" = "Silenciar por 1 día";
+"MUTE_FOR_7_DAYS" = "Silenciar por 7 días";
+"MUTE_FOREVER" = "Silenciar para siempre";
+
+// Notification Settings
+"ALL" = "Todo";
+"MENTIONS" = "Menciones";
+
+
+// Block Contact
+"BLOCK_CONTACT" = "Bloquear contacto";
+"BLOCK_CONTACT_CONFIRMATION" = "¿Estás seguro de que deseas bloquear este contacto?";
+"YES" = "Sí";
+"CANCEL" = "Cancelar";
+
+// Unblock Contact
+"UNBLOCK_CONTACT" = "Desbloquear contacto";
+"UNBLOCK_CONTACT_CONFIRMATION" = "¿Estás seguro de que deseas desbloquear este contacto?";
+"UNBLOCK" = "Desbloquear";
+
+// Delete Conversation - Group Delete
+"DELETE_CONVERSATION" = "Eliminar conversación";
+"DELETE_GROUP_CONFIRMATION" = "Como eres el creador de este grupo, se eliminará para todos. Esto no se puede deshacer.";
+"NO" = "No";
+
+// Delete Conversation - Leave Group
+"LEAVE_GROUP_CONFIRMATION" = "¿Estás seguro de que deseas salir de este grupo?";
+
+// Delete Conversation - Delete Chat
+"DELETE_CONVERSATION_CONFIRMATION" = "¿Estás seguro de que deseas eliminar esta conversación?";
+
+// Archived Chats
+"ARCHIVED_CHATS" = "Chats archivados";
+"AUTO_UNARCHIVE_MESSAGE" = "Los chats se desarchivarán automáticamente cuando se reciba un nuevo mensaje.";
+"UNARCHIVE_CHAT" = "Desarchivar chat";
+"MUTE_NOTIFICATION" = "Silenciar notificación";
+"UNMUTE_NOTIFICATION" = "Activar notificación";
+
+
+
+// Chats Screen
+"MESSAGE_REQUEST" = "Solicitud de mensaje";
+"MESSAGE_REQUEST_INFO" = "Enviar un mensaje a este usuario aceptará automáticamente su solicitud de mensaje y revelará tu ID de BChat";
+"ACCEPT" = "Aceptar";
+"DECLINE" = "Rechazar";
+
+// Permissions
+"ALLOW_PHOTOS_VIDEOS_ACCESS" = "Permitir que BChat Messenger acceda a fotos y videos en este dispositivo";
+"ALLOW_LIMITED_ACCESS" = "Permitir acceso limitado";
+"ALLOW_ALL" = "Permitir todo";
+"DONT_ALLOW" = "No permitir";
+
+// Chat Actions
+"HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Mantén presionado para habilitar “pagar mientras chateas”";
+"BLOCKED_PERSON_UNBLOCK" = "Has bloqueado a esta persona, haz clic aquí para desbloquear";
+"WRITE_A_MESSAGE" = "Escribe un mensaje…";
+"SLIDE_TO_CANCEL" = "Desliza para cancelar";
+"SWIPE_TO_SEND_BDX" = "Desliza para enviar BDX";
+"ADDED_TO_HOME_SCREEN" = "Añadido a la pantalla de inicio";
+
+// Calls
+"VOICE_CALL" = "Llamada de voz";
+"MISSED_CALL" = "Llamada perdida";
+"CALL_MISSED" = "¡Llamada perdida!";
+"CALL_MISSED_PERMISSION" = "Llamada perdida de “” porque necesitabas habilitar el permiso de “llamadas de voz y video” en la configuración de privacidad";
+"OK" = "ok";
+
+// Open URL
+"OPEN_URL" = "¿Abrir URL?";
+"OPEN_URL_CONFIRMATION" = "¿Estás seguro de que quieres abrir";
+"COPY" = "Copiar";
+"OPEN" = "Abrir";
+
+// Reactions
+"REACTIONS" = "Reacciones";
+"TAP_TO_REMOVE" = "Toca para quitar";
+
+// Delete Messages
+"DELETE_SELECTED_MESSAGE" = "¿Eliminar mensaje seleccionado?";
+"DELETE_SELECTED_MESSAGE_INFO" = "Esto eliminará permanentemente el mensaje seleccionado";
+"DELETE" = "Eliminar";
+"CANCEL" = "Cancelar";
+
+"DELETE_MESSAGE" = "Eliminar mensaje";
+"DELETE_JUST_FOR_ME" = "Eliminar solo para mí";
+"DELETE_FOR_ME_AND_USER" = "Eliminar para mí y “”";
+
+// Connection
+"NO_CONNECTION" = "Sin conexión";
+"CONNECTED" = "Conectado";
+
+
+
+// Chats Screen Three Dot Menu
+"ALL_MEDIA" = "Todos los medios";
+"SEARCH" = "Buscar";
+"ADD_TO_HOME_SCREEN" = "Añadir a la pantalla de inicio";
+"DISAPPEARING_MESSAGES" = "Mensajes que desaparecen";
+"BLOCK" = "Bloquear";
+"MUTE_NOTIFICATION" = "Silenciar notificación";
+"MESSAGE_DETAILS" = "Detalles del mensaje";
+"COPY_TEXT" = "Copiar texto";
+
+// Chats Screen More Option
+"SELECT" = "Seleccionar";
+"REPLY" = "Responder";
+"COPY" = "Copiar";
+"DELETE" = "Eliminar";
+
+// Warning
+"WARNING" = "Advertencia";
+"RECOVERY_SEED_WARNING" = "Esta es tu semilla de recuperación. Si la envías a alguien, tendrá acceso completo a tu cuenta";
+"SEND" = "Enviar";
+"CANCEL" = "Cancelar";
+
+// Chats Screen Control Messages
+"ACCEPTED_MESSAGE_REQUEST" = "Has aceptado la solicitud de mensaje de";
+"MESSAGE_REQUEST_ACCEPTED" = "Tu solicitud de mensaje ha sido aceptada";
+"SET_DISAPPEARING_MESSAGE_TIMER" = "Has configurado el temporizador de mensajes que desaparecen a segundos, minutos, horas";
+"DISABLED_DISAPPEARING_MESSAGE" = "Has desactivado el mensaje que desaparece";
+"TOOK_SCREENSHOT" = "Has tomado una captura de pantalla";
+"MEDIA_SAVED_BY" = "Medios guardados por";
+
+
+// Chat Screen Emoji
+"SEARCH_EMOJI_PLACEHOLDER" = "Buscar emoji";
+"RECENTLY_USED" = "Usados recientemente";
+"SMILEYS_AND_PEOPLE" = "Caritas y Personas";
+"NO_RESULTS_FOUND" = "No se encontraron resultados";
+
+// Call Permission Required
+"CALL_PERMISSION_REQUIRED" = "Permiso de llamada requerido";
+"ENABLE_VOICE_VIDEO_CALLS" = "Puedes habilitar los permisos de “llamadas de voz y video” en la configuración de privacidad.";
+"SETTINGS" = "Configuración";
+"CANCEL" = "Cancelar";
+
+// Record Permission Required
+"RECORD_PERMISSION_REQUIRED" = "Permiso de grabación requerido";
+"ALLOW_RECORDER_ACCESS" = "¿Permitir que el grabador acceda a la grabación de voz?";
+"ALLOW" = "Permitir";
+"DENY" = "Denegar";
+
+// Pay As You Chat
+"PAY_AS_YOU_CHAT" = "Pagar mientras chateas";
+"ENABLE_PAY_AS_YOU_CHAT" = "Habilita “Pagar mientras chateas” desde Configuración → Configuración de Wallet → Pagar mientras chateas para usar esta opción";
+"OK" = "Ok";
+"CANCEL" = "Cancelar";
+
+// Trust
+"TRUST" = "Confianza";
+"DOWNLOAD_MEDIA_CONFIRMATION" = "¿Estás seguro de que quieres descargar los medios enviados por";
+"DOWNLOAD" = "Descargar";
+"CANCEL" = "Cancelar";
+
+
+
+// Save to Storage
+"SAVE_TO_STORAGE" = "Guardar en almacenamiento";
+"SAVE_TO_STORAGE_WARNING" = "Guardar este medio en el almacenamiento permitirá que cualquier otra aplicación en tu dispositivo pueda acceder a él";
+"YES" = "Sí";
+"NO" = "No";
+"PLEASE_WAIT_DOWNLOAD" = "Por favor espera hasta que el archivo adjunto haya terminado de descargarse";
+"SAVING_ATTACHMENT" = "Guardando archivo adjunto";
+"SAVING_ATTACHMENT_TO_STORAGE" = "Guardando archivo adjunto en el almacenamiento";
+"MEDIA_SAVED" = "Medio guardado";
+
+// Clear Chat
+"CLEAR_CHAT" = "Limpiar chat";
+"CLEAR_CHAT_CONFIRMATION" = "¿Estás seguro de que quieres borrar todo el chat de este contacto?";
+"CLEAR" = "Limpiar";
+"CANCEL" = "Cancelar";
+
+// Message Details
+"MESSAGE_DETAILS" = "Detalles del mensaje";
+"SENT" = "Enviado";
+
+// All Media
+"ALL_MEDIA" = "Todos los medios";
+"MEDIA" = "Medios";
+"DOCUMENT" = "Documento";
+"NO_MEDIA_ITEMS" = "No hay elementos multimedia para mostrar";
+"NO_DOCUMENT_ITEMS" = "No hay documentos para mostrar";
+
+// Search
+"SEARCH" = "Buscar";
+"NO_MATCHES_FOUND" = "¡No se encontraron coincidencias!";
+
+// Forward
+"FORWARD" = "Reenviar";
+"SEARCH_CONTACT" = "Buscar contacto";
+"SECRET_GROUPS" = "Grupos secretos";
+"SOCIAL_GROUPS" = "Grupos sociales";
+"CONTACTS" = "Contactos";
+"NO_CONTACTS_YET" = "¡Aún no hay contactos!";
+
+
+
+// Share Contacts
+"SHARE_CONTACTS" = "Compartir contactos";
+"SEARCH_CONTACT" = "Buscar contacto";
+"NO_CONTACT_FOUND" = "No se encontró contacto";
+"SEND" = "Enviar";
+
+// Group Chat More Option
+"GROUP_CHAT_MORE_OPTION" = "Más opciones de chat grupal";
+"SELECT" = "Seleccionar";
+"REPLY" = "Responder";
+"COPY" = "Copiar";
+"COPY_BCHAT_ID" = "Copiar ID de BChat";
+"DELETE" = "Eliminar";
+"MESSAGE_DETAILS" = "Detalles del mensaje";
+"COPY_TEXT" = "Copiar texto";
+
+// Group Info
+"GROUP_INFO" = "Información del grupo";
+"ALL_MEDIA" = "Todos los medios";
+"DISAPPEARING_MESSAGES" = "Mensajes que desaparecen";
+"DISAPPEARING_MESSAGES_INFO" = "Cuando está habilitado, los mensajes entre tú y el grupo desaparecerán después de haber sido vistos";
+"EDIT_GROUP" = "Editar grupo";
+"NOTIFY_FOR_MENTION_ONLY" = "Notificar solo por mención";
+"MENTION_NOTIFICATION_INFO" = "Cuando está habilitado, solo recibirás notificaciones de mensajes que te mencionen";
+"LEAVE_GROUP" = "Salir del grupo";
+"MEMBERS" = "Miembros";
+"MESSAGE_TO" = "Mensaje a";
+"SEARCH_MEMBERS" = "Buscar miembros";
+"ENTER_NAME" = "Ingresar nombre";
+"NO_RECORDS_FOUND" = "¡No se encontraron registros!";
+
+
+
+// Leave Group (Creator)
+"LEAVE_GROUP_CREATOR" = "Salir del grupo";
+"LEAVE_GROUP_CREATOR_WARNING" = "Como eres el creador de este grupo, será eliminado por todos. Esto no se puede deshacer";
+"LEAVE" = "Salir";
+"CANCEL" = "Cancelar";
+
+// Leave Group
+"LEAVE_GROUP" = "Salir del grupo";
+"LEAVE_GROUP_CONFIRMATION" = "¿Estás seguro de que quieres salir de este grupo?";
+"LEAVE" = "Salir";
+"CANCEL" = "Cancelar";
+
+// Edit Group
+"EDIT_GROUP" = "Editar grupo";
+"ENTER_NEW_GROUP_NAME" = "Ingresar un nuevo nombre de grupo";
+"REMOVE_USER_FROM_GROUP" = "Eliminar usuario del grupo";
+"SELECT_CONTACTS" = "Seleccionar contactos";
+"SEARCH_CONTACT" = "Buscar contacto";
+"NO_CONTACT_FOUND" = "No se encontró contacto";
+"ADD" = "Agregar";
+"GROUP_CANT_BE_EMPTY" = "El grupo no puede estar vacío";
+"ENTER_DIFFERENT_NAME" = "Ingresar un nombre diferente";
+
+// Group Chat
+"GROUP_CHAT" = "Chat grupal";
+"YOU_CREATED_GROUP" = "Has creado un nuevo grupo";
+"YOU_ADDED_TO_GROUP" = "Has agregado a “ ” al grupo";
+"YOU_REMOVED_FROM_GROUP" = "Has eliminado a “ ” del grupo";
+"USER_LEFT_GROUP" = "“ ” ha salido del grupo";
+"NO_LONGER_PARTICIPANT" = "No puedes enviar mensajes a este grupo porque ya no eres participante";
+"YOU_LEFT_GROUP" = "Has salido de este grupo";
+
+
+
+
+// Social Group Chat
+"SOCIAL_GROUP_CHAT" = "Chat de grupo social";
+"ALL_MEDIA" = "Todos los medios";
+"SEARCH" = "Buscar";
+"ADD_TO_HOME_SCREEN" = "Agregar a la pantalla de inicio";
+"NOTIFICATION_SETTINGS" = "Configuración de notificaciones";
+"ADD_MEMBERS" = "Agregar miembros";
+"SEARCH_CONTACT" = "Buscar contacto";
+"NO_CONTACTS_FOUND" = "No se encontraron contactos";
+"COMMUNITY_GUIDELINES" = "Directrices de la comunidad";
+"READ" = "Leer";
+
+// Welcome to BChat
+"WELCOME_TO_BCHAT" = "Bienvenido a BChat";
+"BCHAT_DESCRIPTION" = "BChat es una plataforma de mensajería descentralizada que protege tu privacidad. Cuando usas BChat, eres dueño de tus conversaciones y datos. No recopila ni almacena ninguna de tu información personal. BChat es el lugar donde chateas con libertad.";
+
+"BCHAT_FEATURES" = "BChat es más que una aplicación de mensajería. Puedes enviar y recibir BDX directamente desde tu cuadro de chat.";
+
+"BELDEX_NETWORK_INFO" = "BChat está construido sobre la red Beldex. Los masternodes en la red Beldex almacenan y retransmiten mensajes cifrados entre los clientes. Otros proyectos que actualmente están siendo investigados o desarrollados por Beldex incluyen BelNet (un servicio VPN descentralizado), Beldex Browser (un navegador Web3 sin publicidad) y el Protocolo de Privacidad Beldex (para anonimizar otros activos).";
+
+"KNOW_MORE" = "Para saber más, visita: https://www.beldex.io";
+"COLLAB_CONTACT" = "Para colaboraciones o propuestas de marketing, contacta a marketing@beldex.io.";
+"INVEST_CONTACT" = "Para inversiones, contacta a invest.bchat@beldex.io.";
+
+"COMMUNITY_RULES" = "Para proteger y preservar esta comunidad, sigue amablemente las reglas y directrices del grupo.";
+"BE_CIVIL" = "Sé civilizado. Puedes compartir tus opiniones y críticas constructivas, pero no se permite el acoso.";
+"NO_PROMOTION" = "No promociones ni publicites tu token/proyecto. Este grupo está dedicado a BChat y al ecosistema Beldex.";
+"SPAM_WARNING" = "Los spammers serán expulsados.";
+"NO_NSFW" = "No compartas contenido NSFW ni uses lenguaje ofensivo.";
+"SCAM_WARNING" = "Cuidado con los estafadores. Los administradores no te enviarán mensajes directos primero.";
+
+// Toast Message
+"COPIED_TO_CLIPBOARD" = "Copiado al portapapeles";
+
+// Verify Password
+"VERIFY_PASSWORD" = "Verificar contraseña";
+"ENTER_BCHAT_PIN" = "Ingresa tu PIN de 4 dígitos de BChat";
+"INVALID_PASSWORD" = "Contraseña inválida";
+
+
+

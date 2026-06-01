@@ -12,5 +12,6 @@ extern NSString *const AppDelegateStoryboardMain;
 - (void)stopPoller;
 - (void)startOpenGroupPollersIfNeeded;
 - (void)stopOpenGroupPollers;
+- (void)reloadRootViewController;
 
 @end

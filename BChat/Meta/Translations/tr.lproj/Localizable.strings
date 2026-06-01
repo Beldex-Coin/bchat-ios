@@ -1,0 +1,696 @@
+/* Title for the language selection screen. */
+"MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "Dil seçin";
+
+
+// Side Menu
+"SIDE_MENU_SETTINGS" = "Ayarlar";
+"SIDE_MENU_NOTIFICATION" = "Bildirimler";
+"SIDE_MENU_MESSAGE_REQUESTS" = "Mesaj İstekleri";
+"SIDE_MENU_RECOVERY_SEED" = "Kurtarma Tohumu";
+"SIDE_MENU_LANGUAGE" = "Language";
+"SIDE_MENU_REPORT_ISSUE" = "Sorun Bildir";
+"SIDE_MENU_HELP" = "Yardım";
+"SIDE_MENU_INVITE" = "Davet Et";
+"SIDE_MENU_ABOUT" = "Hakkında";
+"SIDE_MENU_DARK_MODE" = "Karanlık Mod";
+
+
+// Welcome screen:
+"WELCOME_TO_BCHAT_LANDING_VC" = "Hoş Geldiniz";
+"HELLO" = "Merhaba,";
+"WERE_THRILLED_TO_HAVE_YOU_ON_BOARD" = "Aramıza katıldığınız için çok mutluyuz!";
+"WELCOME_DESCRIPTION" = "Sorunsuz iletişim ve bağlantı için özel alanınız olan BChat’e hoş geldiniz.";
+"CREATE_ACCOUNT" = "Hesap Oluştur";
+"RESTORE_ACCOUNT" = "Hesabı Geri Yükle";
+"TERMS_AND_CONDITIONS" = "Şartlar ve Koşullar";
+
+
+// Display Name screen:
+"DISPLAY_NAME" = "Görünen Ad";
+"SET_YOUR_DISPLAY_NAME" = "Görünen adınızı ayarlayın";
+"ENTER_NAME" = "Ad girin";
+"DISPLAY_NAME_HINT" = "Bunu istediğiniz zaman değiştirebilirsiniz :)";
+"CONTINUE" = "Devam Et";
+"PLEASE_PICK_DISPLAY_NAME" = "Lütfen bir görünen ad seçin";
+"PLEASE_ENTER_VALID_NAME" = "Lütfen geçerli bir ad girin";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Lütfen daha kısa bir görünen ad seçin";
+"BCHAT_SETUP_IN_PROGRESS" = "Yaşasın! BChat’iniz kuruluyor!";
+
+
+// Register:
+"REGISTER_TITLE" = "Merhaba %@, BChat’e hoş geldiniz!";
+"BCHAT_ID" = "BChat ID";
+"BCHAT_ID_DESCRIPTION" = "BChat ID’niz, kullanıcı adınız gibidir. Sohbete başlamak için bunu arkadaşlarınızla paylaşabilirsiniz.";
+"BELDEX_ADDRESS" = "Beldex Adresi";
+"BELDEX_ADDRESS_DESCRIPTION" = "Beldex adresiniz, BChat ID’nize bağlıdır. Bu adresi BDX almak için kullanabilirsiniz.";
+"CONTINUE" = "Devam Et";
+"REGISTER" = "Kayıt";
+
+
+// Create Password:
+"CREATE_PASSWORD" = "Şifre Oluştur (Create Password)";
+"ENTER_PIN" = "PIN’inizi girin";
+"RE_ENTER_PIN" = "PIN’inizi tekrar girin";
+"NEXT" = "İleri (Next)";
+"PASSWORD_CREATED_SUCCESSFULLY" = "Şifre başarıyla oluşturuldu.";
+"OK" = "Tamam (OK)";
+"PASSWORD_DOES_NOT_MATCH" = "Şifreler eşleşmiyor";
+
+
+// Recovery Seed:
+"RECOVERY_SEED" = "Kurtarma Tohumu";
+"COPY_RECOVERY_SEED_DESCRIPTION" = "Kurtarma tohumunuzu kopyalayın ve\ngüvenli bir yerde saklayın.";
+"COPY_SEED" = "Tohumu Kopyala";
+"SAVE" = "Kaydet";
+"COPY_AND_SAVE_SEED_TO_CONTINUE" = "Devam etmek için tohumu kopyalayıp kaydedin";
+"CONTINUE" = "Devam Et";
+"COPIED_TO_CLIPBOARD" = "Panoya kopyalandı";
+
+
+// Restore Seed:
+"RESTORE_SEED" = "Tohumdan Geri Yükle (Restore Seed)";
+"ENTER_SEED" = "Tohumunuzu girin";
+"CLEAR" = "Temizle";
+"PASTE_SEED_TO_CONTINUE" = "Devam etmek için tohumu yapıştırın";
+"CONTINUE" = "Devam Et";
+"PLEASE_ENTER_VALID_SEED" = "Lütfen geçerli bir tohum girin";
+"SOMETHING_WENT_WRONG_CHECK_MNEMONIC" = "Bir şeyler ters gitti. Lütfen mnemonic ifadenizi kontrol edip tekrar deneyin.";
+
+
+
+// Restore from Seed:
+"RESTORE_FROM_SEED" = "Tohumdan Geri Yükleme";
+"DISPLAY_NAME" = "Görünen Ad (Display Name)";
+"ENTER_NAME" = "Ad girin";
+"PICK_RESTORE_HEIGHT" = "Geri yükleme yüksekliğini seçin (Pick a restore height)";
+"ENTER_BLOCKHEIGHT_TO_RESTORE" = "Geri yüklemek için blok yüksekliğini girin";
+"PICK_DATE" = "Tarih seçin (Pick a Date)";
+"SELECT_DATE" = "Tarih seç";
+"RESTORE_FROM_DATE" = "Tarihe göre geri yükle (Restore from date)";
+"RESTORE_FROM_HEIGHT" = "Blok yüksekliğine göre geri yükle (Restore from height)";
+"RESTORE" = "Geri Yükle (Restore)";
+"SETUP_SUCCESS" = "Yaşasın! BChat’iniz kuruluyor!";
+"PLEASE_PICK_DISPLAY_NAME" = "Lütfen bir görünen ad seçin";
+"PLEASE_ENTER_VALID_NAME" = "Lütfen geçerli bir ad girin";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Lütfen daha kısa bir görünen ad seçin";
+"ENTER_VALID_BLOCKHEIGHT" = "Geçerli bir blok yüksekliği girin";
+"ENTER_BLOCKHEIGHT_LESS_THAN_CURRENT" = "Mevcut blok yüksekliğinden daha küçük bir blok yüksekliği girin";
+
+
+
+// Account Settings Screen:
+"EDIT" = "Düzenle";
+"DONE" = "Bitti";
+"BELDEX_ADDRESS" = "Beldex Adresi";
+"BCHAT_ID" = "BChat ID";
+"SHOW_QR" = "QR Göster";
+"SCAN_QR_CODE" = "QR kodu tara";
+"SHARE" = "Paylaş";
+//"LINK_BNS" = "BNS’yi Bağla";
+"READ_MORE_BNS" = "BNS hakkında daha fazla bilgi edinin";
+"HOPS" = "Hops";
+"APP_LOCK" = "Uygulama Kilidi";
+"CHAT_SETTINGS" = "Sohbet Ayarları";
+"BLOCKED_CONTACTS" = "Engellenen Kişiler";
+"CLEAR_DATA" = "Verileri Temizle";
+"FEEDBACK" = "Geri Bildirim";
+"FAQ" = "SSS (FAQ)";
+"CHANGELOG" = "Değişiklik Günlüğü (Changelog)";
+"PROFILE_PICTURE" = "Profil Resmi";
+"UPLOAD" = "Yükle";
+"REMOVE_PICTURE" = "Resmi Kaldır";
+"PLEASE_PICK_SHORTER_DISPLAY_NAME" = "Lütfen daha kısa bir görünen ad seçin";
+//"PLEASE_PICK_DISPLAY_NAME" = "Lütfen bir görünen ad seçin";
+"PLEASE_ENTER_VALID_NAME" = "Lütfen geçerli bir ad girin";
+
+
+// Link BNS Screen:
+"LINK_BNS" = "BNS Bağla";
+"YOUR_BCHAT_ID" = "BChat ID’niz";
+"BNS_NAME" = "BNS Adı";
+"ENTER_BNS_NAME" = "BNS adını girin";
+"VERIFYING" = "Doğrulanıyor";
+"CANCEL" = "İptal";
+"VERIFY" = "Doğrula";
+"LINK" = "Bağla";
+"INVALID_BNS" = "Geçersiz BNS";
+"BNS_LINKED_SUCCESSFULLY" = "BNS başarıyla bağlandı";
+"OK" = "Tamam";
+
+
+// Hops screen:
+"HOPS_SCREEN" = "Hops Ekranı";
+"BCHAT_MASKS_IP" = "BChat, mesajları Beldex merkeziyetsiz ağı üzerindeki birkaç masternode üzerinden yönlendirerek IP adresinizi gizler. Bağlantınız şu anda aşağıdaki masternodelar üzerinden yönlendirilmektedir.";
+"YOU" = "Siz";
+"ENTRY_NODE" = "Giriş Düğümü";
+"MASTER_NODE" = "Masternode";
+"DESTINATION" = "Hedef";
+
+
+//App Lock Screen:
+"APP_LOCK_SCREEN" = "Uygulama Kilidi Ekranı";
+"CHANGE_PASSWORD" = "Şifreyi Değiştir";
+"SCREENLOCK_INACTIVITY_TIMEOUT" = "Ekran Kilidi Hareketsizlik Zaman Aşımı";
+
+// Change Password screen:
+"CHANGE_PASSWORD_SCREEN" = "Şifre Değiştir Ekranı";
+"ENTER_OLD_PIN" = "Eski PIN’i girin";
+"ENTER_NEW_PIN" = "Yeni PIN’i girin";
+"NEXT" = "İleri";
+"NEW_PASSWORD_NOT_SAME" = "Yeni şifre eski şifre ile aynı olmamalıdır";
+"INCORRECT_PASSWORD_ENTERED" = "Yanlış şifre girildi";
+"PASSWORD_DOES_NOT_MATCH" = "Şifreler eşleşmiyor";
+"PASSWORD_CHANGED_SUCCESSFULLY" = "Şifre başarıyla değiştirildi";
+"OK" = "Tamam";
+
+
+// Screen Inactivity Timeout:
+"SCREEN_INACTIVITY_TIMEOUT" = "Ekran Hareketsizlik Zaman Aşımı";
+"NONE" = "Yok";
+"30_SECONDS" = "30 Saniye";
+"1_MINUTE" = "1 Dakika";
+"2_MINUTES" = "2 Dakika";
+"5_MINUTES" = "5 Dakika";
+"15_MINUTES" = "15 Dakika";
+"30_MINUTES" = "30 Dakika";
+"OK" = "Tamam";
+
+// Chat Settings:
+"CHAT_SETTINGS" = "Sohbet";
+"ENTER_KEY_SENDS" = "Enter tuşu gönderir";
+"MESSAGE_TRIMMING" = "Mesaj Kırpma";
+"DELETE_OLD_MESSAGES" = "Eski Mesajları Sil";
+"CONVERSATION_LENGTH_LIMIT" = "Konuşma uzunluğu limiti";
+"CONFEDERATION_LENGTH_LIMIT" = "Federasyon uzunluğu limiti";
+"OK_CANCEL" = "Tamam İptal";
+"MESSAGES_PER_CONVERSATION" = "Her konuşma için 500 mesaj";
+"TRIM_ALL_CONVERSATION_NOW" = "Tüm konuşmaları şimdi kırp";
+"DELETE_ALL_OLD_MESSAGES_NOW" = "Tüm eski mesajlar şimdi silinsin mi?";
+"TRIM_CONFIRMATION" = "Bu işlem, tüm konuşmaları hemen en son 500 mesaja düşürecektir.";
+"DELETE" = "Sil";
+"CANCEL" = "İptal";
+
+// Blocked Contacts:
+"BLOCKED_CONTACTS" = "Engellenen Kişiler";
+"NO_BLOCKED_CONTACT_YET" = "Henüz engellenmiş kişi yok";
+"UNBLOCK" = "Engeli Kaldır";
+"UNBLOCK_SELECTED" = "Seçilenlerin engelini kaldır";
+
+
+// Clear all data:
+"CLEAR_ALL_DATA" = "Tüm Verileri Temizle";
+"CLEAR_DATA_FROM_DEVICE" = "Cihazdaki Verileri Temizle";
+"DELETE_DATA_ON_DEVICE" = "Bu cihazdaki verileri sil";
+"DELETE_ENTIRE_ACCOUNT" = "Tüm Hesabı Sil";
+"DELETE_DATA_FROM_NETWORK" = "Ağ üzerindeki verileri sil";
+"OK" = "Tamam";
+"CANCEL" = "İptal";
+
+// Clear all data confirmation
+"CLEAR_ALL_DATA_CONFIRMATION" = "Bu cihazdaki tüm verileri kalıcı olarak silmek istediğinizden emin misiniz?";
+"CLEAR" = "Temizle";
+"CANCEL" = "İptal";
+
+// Delete entire account:
+"DELETE_ENTIRE_ACCOUNT_CONFIRMATION" = "Beldex Ağı üzerindeki tüm verileri kalıcı olarak silmek istediğinizden emin misiniz?";
+"DELETE" = "Sil";
+"CANCEL_LOWERCASE" = "İptal";
+
+
+// Settings
+"SETTINGS" = "Ayarlar";
+"APP_ACCESS" = "Uygulama Erişimi";
+"INCOGNITO_KEYBOARD" = "Gizli Klavye";
+"REQUEST_KEYBOARD_DISABLE_PERSONALIZED_LEARNING" = "Klavye için kişiselleştirilmiş öğrenmenin devre dışı bırakılmasını talep edin.";
+
+// Wallet
+"WALLET" = "Cüzdan (Wallet)";
+"START_WALLET" = "Cüzdanı Başlat";
+"ENABLE_WALLET_DESCRIPTION" = "Cüzdanı etkinleştirmek BDX göndermenize ve almanıza olanak tanır.";
+"PAY_AS_YOU_CHAT" = "Sohbet Ederken Öde";
+"PAY_AS_CHAT_DESCRIPTION" = "“Sohbet ederken öde” özelliğini etkinleştirmek, sohbet penceresinden doğrudan BDX göndermenize ve almanıza olanak tanır.";
+
+// Communication
+"COMMUNICATION" = "İletişim";
+"READ_RECEIPTS" = "Okundu Bilgisi";
+"READ_RECEIPTS_DESCRIPTION" = "Okundu bilgisi devre dışı bırakılırsa, başkalarının okundu bilgilerini göremezsiniz.";
+"TYPING_INDICATORS" = "Yazıyor Göstergeleri";
+"TYPING_INDICATORS_DESCRIPTION" = "Yazıyor göstergeleri devre dışı bırakılırsa, başkalarının yazıyor göstergelerini göremezsiniz.";
+"SEND_LINK_PREVIEWS" = "Bağlantı Önizlemelerini Gönder";
+"LINK_PREVIEWS_DESCRIPTION" = "Önizlemeler Imgur, Instagram, Pinterest, Reddit ve YouTube bağlantıları için desteklenmektedir.";
+"VOICE_VIDEO_CALLS" = "Sesli ve Görüntülü Aramalar";
+"VOICE_VIDEO_CALLS_DESCRIPTION" = "Diğer kullanıcılardan gelen sesli ve görüntülü arama isteklerini kabul etmek için erişime izin verin.";
+
+// Voice/video calls
+"VOICE_VIDEO_CALLS_WARNING" = "Sesli aramaların mevcut uygulaması, IP adresinizin Beldex sunucularına ve aramayı yapan / aranan kullanıcıya görünmesine neden olabilir.";
+"ENABLE" = "Etkinleştir";
+"CANCEL" = "İptal";
+
+
+// Notifications
+"NOTIFICATIONS" = "Bildirimler";
+"MESSAGES" = "Mesajlar";
+"ALL_NOTIFICATIONS" = "Tüm Bildirimler";
+"PRIORITY" = "Öncelik";
+"NOTIFICATION_STRATEGY" = "Bildirim Stratejisi";
+"USE_FAST_MODE" = "Hızlı Modu Kullan";
+"FAST_MODE_DESCRIPTION" = "Google’ın bildirim sunucuları kullanılarak yeni mesajlar hakkında güvenilir ve anında bildirim alırsınız.";
+"NOTIFICATION_STYLE" = "Bildirim Stili";
+"SOUND" = "Ses";
+"VIBRATE" = "Titreşim";
+"IN_CHAT_SOUNDS" = "Sohbet içi sesler";
+"NOTIFICATION_CONTENT" = "Bildirim İçeriği";
+"SHOW" = "Göster";
+"NAME_AND_CONTENT" = "Ad ve İçerik";
+"NAME_ONLY" = "Yalnızca Ad";
+"NO_NAME_OR_CONTENT" = "Ad veya İçerik Gösterme";
+"CANCEL" = "İptal";
+
+// Message Requests
+"MESSAGE_REQUESTS" = "Mesaj İstekleri";
+"NO_PENDING_MESSAGE_REQUESTS" = "Bekleyen mesaj isteği yok!";
+"ACCEPT_REQUEST" = "İstek kabul edilsin mi?";
+"ACCEPT_REQUEST_CONFIRMATION" = "Bu isteği kabul etmek istediğinizden emin misiniz?";
+"ACCEPT" = "Kabul Et";
+"CANCEL" = "İptal";
+"BLOCK_REQUEST" = "İstek engellensin mi?";
+"BLOCK_REQUEST_CONFIRMATION" = "Bu isteği engellemek istediğinizden emin misiniz?";
+"BLOCK" = "Engelle";
+"DELETE_REQUEST" = "İstek silinsin mi?";
+"DELETE_REQUEST_CONFIRMATION" = "Bu isteği silmek istediğinizden emin misiniz?";
+"DELETE" = "Sil";
+
+
+// Recovery Seed
+"RECOVERY_SEED" = "Kurtarma Tohumu";
+"IMPORTANT" = "Önemli";
+"NEVER_SHARE_SEED" = "Seed ifadenizi asla kimseyle paylaşmayın!";
+"SEED_WARNING" = "Seed ifadeniz hesabınızı geri yüklemek için kullanılabilir. Bunu asla kimseyle paylaşmayın veya dijital bir kopyasını saklamayın. Seed ifadenizi BChat veya resmi Beldex cüzdanı dışında hiçbir web sitesine veya uygulamaya girmeyin.";
+"SURROUNDINGS_WARNING" = "Çevrenizi kontrol ederek kimsenin sizi izlemediğinden emin olun. Devam etmek istiyor musunuz?";
+"YES_IM_SAFE" = "Evet, güvendeyim :)";
+"COPY_RECOVERY_SEED" = "Kurtarma seed’inizi kopyalayın ve güvenli bir yerde saklayın.";
+"COPY" = "Kopyala";
+
+// Verify PIN
+"VERIFY_PIN" = "PIN Doğrulama";
+"ENTER_4_DIGIT_PIN" = "4 haneli BChat PIN’inizi girin";
+"INVALID_PASSWORD" = "Geçersiz şifre";
+
+
+
+// Invite
+"INVITE" = "Invite";
+"SHARING_TEXT" = "Sharing text";
+"CANCEL" = "Cancel";
+"INVITE_MESSAGE" = "Hey, I’ve been using BChat to chat securely and confidentially. Come join me! Download it at";
+
+
+
+// New
+"NEW" = "Yeni";
+"SEARCH_PEOPLE_AND_GROUPS" = "Kişileri ve grupları ara";
+"NEW_CHAT" = "Yeni sohbet";
+"SECRET_GROUP" = "Gizli grup";
+"SOCIAL_GROUP" = "Sosyal grup";
+"NOTE_TO_SELF" = "Kendime not";
+"CONTACT_LIST" = "Kişi listesi";
+"INVITE_A_FRIEND" = "Bir arkadaşını davet et";
+
+// New Chat
+"ENTER_CHAT_ID_OR_BNS_NAME" = "Sohbet ID veya BNS adı girin";
+"CHECK_BCHAT_ID_OR_BNS" = "Lütfen BChat ID veya BNS adını kontrol edip tekrar deneyin";
+"VERIFYING" = "Doğrulanıyor";
+"INVALID_QR_CODE" = "Yüklenen görüntüden geçerli bir kod tanınamadı";
+"CANCEL" = "İptal";
+"LETS_BCHAT" = "Haydi BChat";
+"SCAN_QR" = "QR tara";
+"UPLOAD_FROM_GALLERY" = "Galeriden yükle";
+"SCAN_QR_DESCRIPTION" = "Bir kullanıcıyla sohbet başlatmak için QR kodunu tarayın. QR kodları hesap ayarlarında QR kod simgesine dokunarak bulunabilir.";
+
+// Secret Group
+"ENTER_SECRET_GROUP_NAME" = "Gizli grup adı girin";
+"SEARCH_CONTACT" = "Kişi ara";
+"CREATE" = "Oluştur";
+"ENTER_GROUP_NAME" = "Lütfen bir grup adı girin";
+"PICK_GROUP_MEMBER" = "Lütfen en az 1 grup üyesi seçin";
+"SHORTER_GROUP_NAME" = "Lütfen daha kısa bir grup adı girin";
+
+
+
+// Social Group
+"SOCIAL_GROUP" = "Sosyal grup";
+"JOIN_SOCIAL_GROUP" = "Bir sosyal gruba katıl";
+"ENTER_SOCIAL_GROUP_URL" = "Sosyal grup URL’si girin";
+"NEXT" = "İleri";
+"OR_JOIN" = "Veya katıl";
+"COULDNT_JOIN_GROUP" = "Gruba katılamadı";
+"INVALID_URL" = "Geçersiz URL";
+
+// Scan QR
+"SCAN_QR" = "Scan QR";
+"UPLOAD_FROM_GALLERY" = "Upload from gallery";
+"SCAN_SOCIAL_GROUP_QR_DESCRIPTION" = "Scan a social group’s QR code for joining a social group. QR Codes can be found on the social group website link";
+
+// Home Screen
+"HOME_SCREEN" = "Ana ekran";
+"CHATS" = "Sohbetler";
+"SEARCH_PEOPLE_AND_GROUPS" = "Kişileri ve grupları ara";
+"EMPTY_STATE_MESSAGE" = "Çok boş. Çok wow.";
+"INVITE_FRIENDS_MESSAGE" = "Git birkaç arkadaş bul ve BChat yap";
+"HOP_CONNECTION_ERROR" = "Hop’a bağlı değilsiniz. İnternet bağlantınızı kontrol edin veya uygulamayı yeniden başlatın";
+"ARCHIVED_CHATS" = "Arşivlenmiş sohbetler";
+"CHECK_INTERNET_CONNECTION" = "Lütfen internet bağlantınızı kontrol edin";
+
+
+// Home Screen More Options
+"DETAILS" = "Detaylar";
+"PIN" = "Sabitle";
+"UNPIN" = "Sabitlemeyi kaldır";
+"BLOCK" = "Engelle";
+"UNBLOCK" = "Engeli kaldır";
+"ARCHIVE_CHAT" = "Sohbeti arşivle";
+"MUTE_NOTIFICATION" = "Bildirimleri sessize al";
+"UNMUTE" = "Sessizi kaldır";
+"DELETE" = "Sil";
+"NOTIFICATION_SETTINGS" = "Bildirim ayarları";
+"MARK_ALL_AS_READ" = "Tümünü okundu olarak işaretle";
+
+// Wallet Syncing
+"WALLET_SYNCING" = "Cüzdan senkronizasyonu";
+"WALLET_SYNCING_WARNING" = "Cüzdanı kapatırsanız senkronizasyon duraklatılır. Cüzdandan çıkmak istediğinizden emin misiniz";
+"EXIT" = "Çık";
+"CANCEL" = "İptal";
+
+// Details
+"ENTER_NICKNAME" = "Bir takma ad girin";
+"WRITE_MESSAGE" = "Bir mesaj yazın";
+"ENTER_VALID_NICKNAME" = "Geçerli bir takma ad girin";
+"SPECIAL_CHARACTERS_NOT_ALLOWED" = "Özel karakterlere izin verilmez";
+
+// Mute Notification
+"MUTE_FOR_1_HOUR" = "1 saat sessize al";
+"MUTE_FOR_2_HOURS" = "2 saat sessize al";
+"MUTE_FOR_1_DAY" = "1 gün sessize al";
+"MUTE_FOR_7_DAYS" = "7 gün sessize al";
+"MUTE_FOREVER" = "Süresiz sessize al";
+
+// Notification Settings
+"ALL" = "Tümü";
+"MENTIONS" = "Bahsetmeler";
+
+
+// Block Contact
+"BLOCK_CONTACT" = "Kişiyi engelle";
+"BLOCK_CONTACT_CONFIRMATION" = "Bu kişiyi engellemek istediğinizden emin misiniz";
+"YES" = "Evet";
+"CANCEL" = "İptal";
+
+// Unblock Contact
+"UNBLOCK_CONTACT" = "Kişinin engelini kaldır";
+"UNBLOCK_CONTACT_CONFIRMATION" = "Bu kişinin engelini kaldırmak istediğinizden emin misiniz";
+"UNBLOCK" = "Engeli kaldır";
+
+// Delete Conversation - Group Delete
+"DELETE_CONVERSATION" = "Sohbeti sil";
+"DELETE_GROUP_CONFIRMATION" = "Bu grubun oluşturucusu olduğunuz için grup herkes için silinecektir. Bu işlem geri alınamaz";
+"NO" = "Hayır";
+
+// Delete Conversation - Leave Group
+"LEAVE_GROUP_CONFIRMATION" = "Bu gruptan ayrılmak istediğinizden emin misiniz";
+
+// Delete Conversation - Delete Chat
+"DELETE_CONVERSATION_CONFIRMATION" = "Bu sohbeti silmek istediğinizden emin misiniz";
+
+// Archived Chats
+"ARCHIVED_CHATS" = "Arşivlenmiş sohbetler";
+"AUTO_UNARCHIVE_MESSAGE" = "Yeni mesaj alındığında sohbetler otomatik olarak arşivden çıkarılır";
+"UNARCHIVE_CHAT" = "Sohbeti arşivden çıkar";
+"MUTE_NOTIFICATION" = "Bildirimleri sessize al";
+"UNMUTE_NOTIFICATION" = "Bildirim sessizliğini kaldır";
+
+
+
+// Chats Screen
+"MESSAGE_REQUEST" = "Mesaj isteği";
+"MESSAGE_REQUEST_INFO" = "Bu kullanıcıya mesaj gönderirseniz mesaj isteği otomatik olarak kabul edilir ve BChat ID’niz görünür";
+"ACCEPT" = "Kabul et";
+"DECLINE" = "Reddet";
+
+// Permissions
+"ALLOW_PHOTOS_VIDEOS_ACCESS" = "Bchat Messenger’ın bu cihazdaki fotoğraflara ve videolara erişmesine izin ver";
+"ALLOW_LIMITED_ACCESS" = "Sınırlı erişime izin ver";
+"ALLOW_ALL" = "Tümüne izin ver";
+"DONT_ALLOW" = "İzin verme";
+
+// Chat Actions
+"HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Sohbet ederken öde özelliğini etkinleştirmek için basılı tutun";
+"BLOCKED_PERSON_UNBLOCK" = "Bu kişiyi engellediniz. Engeli kaldırmak için buraya tıklayın";
+"WRITE_A_MESSAGE" = "Mesaj yaz";
+"SLIDE_TO_CANCEL" = "İptal etmek için kaydır";
+"SWIPE_TO_SEND_BDX" = "BDX göndermek için kaydır";
+"ADDED_TO_HOME_SCREEN" = "Ana ekrana eklendi";
+
+// Calls
+"VOICE_CALL" = "Sesli arama";
+"MISSED_CALL" = "Cevapsız arama";
+"CALL_MISSED" = "Cevapsız arama";
+"CALL_MISSED_PERMISSION" = "Sesli ve görüntülü arama iznini gizlilik ayarlarında etkinleştirmeniz gerektiği için şu kişiden gelen aramayı kaçırdınız";
+"OK" = "Tamam";
+
+// Open URL
+"OPEN_URL" = "URL açılsın mı";
+"OPEN_URL_CONFIRMATION" = "Açmak istediğinizden emin misiniz";
+"COPY" = "Kopyala";
+"OPEN" = "Aç";
+
+// Reactions
+"REACTIONS" = "Tepkiler";
+"TAP_TO_REMOVE" = "Kaldırmak için dokun";
+
+// Delete Messages
+"DELETE_SELECTED_MESSAGE" = "Seçili mesaj silinsin mi";
+"DELETE_SELECTED_MESSAGE_INFO" = "Bu işlem seçili mesajı kalıcı olarak silecektir";
+"DELETE" = "Sil";
+"CANCEL" = "İptal";
+
+"DELETE_MESSAGE" = "Mesajı sil";
+"DELETE_JUST_FOR_ME" = "Sadece benim için sil";
+"DELETE_FOR_ME_AND_USER" = "Benim için ve \"\" için sil";
+
+// Connection
+"NO_CONNECTION" = "Bağlantı yok";
+"CONNECTED" = "Bağlandı";
+
+
+// Chats Screen Three Dot Menu
+"ALL_MEDIA" = "Tüm medya";
+"SEARCH" = "Ara";
+"ADD_TO_HOME_SCREEN" = "Ana ekrana ekle";
+"DISAPPEARING_MESSAGES" = "Kaybolan mesajlar";
+"BLOCK" = "Engelle";
+"MUTE_NOTIFICATION" = "Bildirimleri sessize al";
+"MESSAGE_DETAILS" = "Mesaj detayları";
+"COPY_TEXT" = "Metni kopyala";
+
+// Chats Screen More Option
+"SELECT" = "Seç";
+"REPLY" = "Yanıtla";
+"COPY" = "Kopyala";
+"DELETE" = "Sil";
+
+// Warning
+"WARNING" = "Uyarı";
+"RECOVERY_SEED_WARNING" = "Bu sizin kurtarma seed’inizdir. Bunu birine gönderirseniz hesabınıza tam erişim sağlar";
+"SEND" = "Gönder";
+"CANCEL" = "İptal";
+
+// Chats Screen Control Messages
+"ACCEPTED_MESSAGE_REQUEST" = "Şu kişiden gelen mesaj isteğini kabul ettiniz";
+"MESSAGE_REQUEST_ACCEPTED" = "Mesaj isteğiniz kabul edildi";
+"SET_DISAPPEARING_MESSAGE_TIMER" = "Kaybolan mesaj zamanlayıcısını saniye, dakika, saat olarak ayarladınız";
+"DISABLED_DISAPPEARING_MESSAGE" = "Kaybolan mesajları devre dışı bıraktınız";
+"TOOK_SCREENSHOT" = "Ekran görüntüsü aldınız";
+"MEDIA_SAVED_BY" = "Medya şu kişi tarafından kaydedildi";
+
+
+// Chat Screen Emoji
+"SEARCH_EMOJI_PLACEHOLDER" = "Emoji ara";
+"RECENTLY_USED" = "Son kullanılan";
+"SMILEYS_AND_PEOPLE" = "Gülümsemeler ve kişiler";
+"NO_RESULTS_FOUND" = "Sonuç bulunamadı";
+
+// Call Permission Required
+"CALL_PERMISSION_REQUIRED" = "Arama izni gerekli";
+"ENABLE_VOICE_VIDEO_CALLS" = "Sesli ve görüntülü arama iznini gizlilik ayarlarından etkinleştirebilirsiniz";
+"SETTINGS" = "Ayarlar";
+"CANCEL" = "İptal";
+
+// Record Permission Required
+"RECORD_PERMISSION_REQUIRED" = "Kayıt izni gerekli";
+"ALLOW_RECORDER_ACCESS" = "Kaydedicinin ses kaydına erişmesine izin verilsin mi";
+"ALLOW" = "İzin ver";
+"DENY" = "Reddet";
+
+// Pay As You Chat
+"PAY_AS_YOU_CHAT" = "Sohbet ederken öde";
+"ENABLE_PAY_AS_YOU_CHAT" = "Bu özelliği kullanmak için ayarlar → cüzdan ayarları → sohbet ederken öde seçeneğini etkinleştirin";
+"OK" = "Tamam";
+"CANCEL" = "İptal";
+
+// Trust
+"TRUST" = "Güven";
+"DOWNLOAD_MEDIA_CONFIRMATION" = "Şu kişi tarafından gönderilen medyayı indirmek istediğinizden emin misiniz";
+"DOWNLOAD" = "İndir";
+"CANCEL" = "İptal";
+
+
+
+// Save to Storage
+"SAVE_TO_STORAGE" = "Depolamaya kaydet";
+"SAVE_TO_STORAGE_WARNING" = "Bu medyayı depolamaya kaydetmek cihazınızdaki diğer uygulamaların da erişmesine izin verir";
+"YES" = "Evet";
+"NO" = "Hayır";
+"PLEASE_WAIT_DOWNLOAD" = "Ek indirimi tamamlanana kadar lütfen bekleyin";
+"SAVING_ATTACHMENT" = "Ek kaydediliyor";
+"SAVING_ATTACHMENT_TO_STORAGE" = "Ek depolamaya kaydediliyor";
+"MEDIA_SAVED" = "Medya kaydedildi";
+
+// Clear Chat
+"CLEAR_CHAT" = "Sohbeti temizle";
+"CLEAR_CHAT_CONFIRMATION" = "Bu kişiyle olan tüm sohbeti temizlemek istediğinizden emin misiniz";
+"CLEAR" = "Temizle";
+"CANCEL" = "İptal";
+
+// Message Details
+"MESSAGE_DETAILS" = "Mesaj detayları";
+"SENT" = "Gönderildi";
+
+// All Media
+"ALL_MEDIA" = "Tüm medya";
+"MEDIA" = "Medya";
+"DOCUMENT" = "Belge";
+"NO_MEDIA_ITEMS" = "Gösterilecek medya yok";
+"NO_DOCUMENT_ITEMS" = "Gösterilecek belge yok";
+
+// Search
+"SEARCH" = "Ara";
+"NO_MATCHES_FOUND" = "Eşleşme bulunamadı";
+
+// Forward
+"FORWARD" = "İlet";
+"SEARCH_CONTACT" = "Kişi ara";
+"SECRET_GROUPS" = "Gizli gruplar";
+"SOCIAL_GROUPS" = "Sosyal gruplar";
+"CONTACTS" = "Kişiler";
+"NO_CONTACTS_YET" = "Henüz kişi yok";
+
+
+
+// Share Contacts
+"SHARE_CONTACTS" = "Kişileri paylaş";
+"SEARCH_CONTACT" = "Kişi ara";
+"NO_CONTACT_FOUND" = "Kişi bulunamadı";
+"SEND" = "Gönder";
+
+// Group Chat More Option
+"GROUP_CHAT_MORE_OPTION" = "Grup sohbeti daha fazla seçenek";
+"SELECT" = "Seç";
+"REPLY" = "Yanıtla";
+"COPY" = "Kopyala";
+"COPY_BCHAT_ID" = "BChat ID kopyala";
+"DELETE" = "Sil";
+"MESSAGE_DETAILS" = "Mesaj detayları";
+"COPY_TEXT" = "Metni kopyala";
+
+// Group Info
+"GROUP_INFO" = "Grup bilgisi";
+"ALL_MEDIA" = "Tüm medya";
+"DISAPPEARING_MESSAGES" = "Kaybolan mesajlar";
+"DISAPPEARING_MESSAGES_INFO" = "Etkinleştirildiğinde sizin ve grubun arasındaki mesajlar görüldükten sonra kaybolur";
+"EDIT_GROUP" = "Grubu düzenle";
+"NOTIFY_FOR_MENTION_ONLY" = "Sadece bahsetmeler için bildirim al";
+"MENTION_NOTIFICATION_INFO" = "Etkinleştirildiğinde yalnızca sizden bahsedilen mesajlar için bildirim alırsınız";
+"LEAVE_GROUP" = "Gruptan ayrıl";
+"MEMBERS" = "Üyeler";
+"MESSAGE_TO" = "Mesaj gönder";
+"SEARCH_MEMBERS" = "Üyeleri ara";
+"ENTER_NAME" = "Ad girin";
+"NO_RECORDS_FOUND" = "Kayıt bulunamadı";
+
+
+
+// Leave Group (Creator)
+"LEAVE_GROUP_CREATOR" = "Gruptan ayrıl";
+"LEAVE_GROUP_CREATOR_WARNING" = "Bu grubun oluşturucusu olduğunuz için grup herkes için silinecektir. Bu işlem geri alınamaz";
+"LEAVE" = "Ayrıl";
+"CANCEL" = "İptal";
+
+// Leave Group
+"LEAVE_GROUP" = "Gruptan ayrıl";
+"LEAVE_GROUP_CONFIRMATION" = "Bu gruptan ayrılmak istediğinizden emin misiniz";
+"LEAVE" = "Ayrıl";
+"CANCEL" = "İptal";
+
+// Edit Group
+"EDIT_GROUP" = "Grubu düzenle";
+"ENTER_NEW_GROUP_NAME" = "Yeni bir grup adı girin";
+"REMOVE_USER_FROM_GROUP" = "Kullanıcıyı gruptan kaldır";
+"SELECT_CONTACTS" = "Kişileri seç";
+"SEARCH_CONTACT" = "Kişi ara";
+"NO_CONTACT_FOUND" = "Kişi bulunamadı";
+"ADD" = "Ekle";
+"GROUP_CANT_BE_EMPTY" = "Grup boş olamaz";
+"ENTER_DIFFERENT_NAME" = "Farklı bir ad girin";
+
+// Group Chat
+"GROUP_CHAT" = "Grup sohbeti";
+"YOU_CREATED_GROUP" = "Yeni bir grup oluşturdunuz";
+"YOU_ADDED_TO_GROUP" = "“ ” kişisini gruba eklediniz";
+"YOU_REMOVED_FROM_GROUP" = "“ ” kişisini gruptan kaldırdınız";
+"USER_LEFT_GROUP" = "“ ” gruptan ayrıldı";
+"NO_LONGER_PARTICIPANT" = "Artık bu grubun katılımcısı olmadığınız için bu gruba mesaj gönderemezsiniz";
+"YOU_LEFT_GROUP" = "Bu gruptan ayrıldınız";
+
+
+
+// Social Group Chat
+"SOCIAL_GROUP_CHAT" = "Sosyal grup sohbeti";
+"ALL_MEDIA" = "Tüm medya";
+"SEARCH" = "Ara";
+"ADD_TO_HOME_SCREEN" = "Ana ekrana ekle";
+"NOTIFICATION_SETTINGS" = "Bildirim ayarları";
+"ADD_MEMBERS" = "Üye ekle";
+"SEARCH_CONTACT" = "Kişi ara";
+"NO_CONTACTS_FOUND" = "Kişi bulunamadı";
+"COMMUNITY_GUIDELINES" = "Topluluk kuralları";
+"READ" = "Oku";
+
+// Welcome to BChat
+"WELCOME_TO_BCHAT" = "BChat’e hoş geldiniz";
+"BCHAT_DESCRIPTION" = "BChat gizliliğinizi koruyan merkeziyetsiz bir mesajlaşma platformudur. BChat kullanırken sohbetlerinizin ve verilerinizin sahibi sizsiniz. BChat kişisel bilgilerinizi toplamaz veya saklamaz. BChat özgürce sohbet edebileceğiniz bir yerdir.";
+
+"BCHAT_FEATURES" = "BChat aynı zamanda sadece bir mesajlaşma uygulaması değildir. Sohbet kutunuzdan doğrudan BDX gönderip alabilirsiniz.";
+
+"BELDEX_NETWORK_INFO" = "BChat Beldex ağı üzerinde çalışır. Beldex ağındaki masternode’lar istemciler arasında şifrelenmiş mesajları saklar ve iletir. Beldex tarafından araştırılan veya geliştirilen diğer projeler arasında BelNet merkeziyetsiz VPN hizmeti, Beldex Browser reklamsız Web3 tarayıcısı ve Beldex Gizlilik Protokolü bulunmaktadır.";
+
+"KNOW_MORE" = "Daha fazla bilgi için ziyaret edin\nhttps://www.beldex.io";
+"COLLAB_CONTACT" = "İş birlikleri veya pazarlama teklifleri için marketing@beldex.io adresiyle iletişime geçin.";
+"INVEST_CONTACT" = "Yatırım için invest.bchat@beldex.io adresiyle iletişime geçin.";
+
+"COMMUNITY_RULES" = "Bu topluluğu korumak ve sürdürmek için lütfen grup kurallarına ve yönergelerine uyun.";
+"BE_CIVIL" = "Saygılı olun. Görüşlerinizi ve yapıcı eleştirilerinizi paylaşabilirsiniz ancak tacize izin verilmez.";
+"NO_PROMOTION" = "Token veya proje tanıtımı yapmayın. Bu grup BChat ve Beldex ekosistemine adanmıştır.";
+"SPAM_WARNING" = "Spam yapanlar yasaklanacaktır.";
+"NO_NSFW" = "Uygunsuz içerik paylaşmayın veya küfürlü dil kullanmayın.";
+"SCAM_WARNING" = "Dolandırıcılara dikkat edin. Yöneticiler size ilk olarak özel mesaj göndermez.";
+
+// Toast Message
+"COPIED_TO_CLIPBOARD" = "Panoya kopyalandı";
+
+// Verify Password
+"VERIFY_PASSWORD" = "Şifre doğrulama";
+"ENTER_BCHAT_PIN" = "4 haneli BChat PIN’inizi girin";
+"INVALID_PASSWORD" = "Geçersiz şifre";
+
+
+

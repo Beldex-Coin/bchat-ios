@@ -333,6 +333,7 @@
 		84BC25F92F6A9A0800DCD530 /* ArchiveChatsSettingTableviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BC25F82F6A99F200DCD530 /* ArchiveChatsSettingTableviewCell.swift */; };
 		84C2ED4B2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */; };
 		84C831DC2F7BA5AC00947954 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84C831DB2F7BA5AC00947954 /* OpenSans-Italic.ttf */; };
+		84F4A91B2FC0647400B25E3C /* LanguageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F4A91A2FC0646D00B25E3C /* LanguageTableViewCell.swift */; };
 		8A406DD52C0F060900E3ED4C /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */; };
 		8A406DD62C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */; };
 		8A406DD82C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */; };
@@ -403,6 +404,7 @@
 		8AF3E7192E09845800A24C21 /* bchatlogo_animation.gif in Resources */ = {isa = PBXBuildFile; fileRef = 6007B5D328ABC7540004BD61 /* bchatlogo_animation.gif */; };
 		8AF3E71F2E0C229400A24C21 /* CallVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF3E71E2E0C229400A24C21 /* CallVC.swift */; };
 		8AFF66DF2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */; };
+		9F0A1B2C3D4E5F60718293A1 /* LanguageSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0A1B2C3D4E5F60718293A2 /* LanguageSelectionViewController.swift */; };
 		A11CD70D17FA230600A2D1B1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */; };
 		A163E8AB16F3F6AA0094D68B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A163E8AA16F3F6A90094D68B /* Security.framework */; };
 		A1C32D5017A06538000A904E /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1C32D4F17A06537000A904E /* AddressBookUI.framework */; };
@@ -1468,6 +1470,7 @@
 		84BC25F82F6A99F200DCD530 /* ArchiveChatsSettingTableviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveChatsSettingTableviewCell.swift; sourceTree = "<group>"; };
 		84C2ED4A2D634C1C00E1CFE6 /* CustomNewChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNewChatTableViewCell.swift; sourceTree = "<group>"; };
 		84C831DB2F7BA5AC00947954 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		84F4A91A2FC0646D00B25E3C /* LanguageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuProfileTableViewCell.swift; sourceTree = "<group>"; };
 		8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -1532,6 +1535,7 @@
 		8AFF66DE2C1D58B400F9CFEC /* MessageRequestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRequestCollectionViewCell.swift; sourceTree = "<group>"; };
 		9B5E79E7DACDB47C3594738D /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatMessagingKit.app store release.xcconfig"; sourceTree = "<group>"; };
 		9C82A51971C58FC0BFE461C1 /* Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; path = "Target Support Files/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit/Pods-GlobalDependencies-FrameworkAndExtensionDependencies-ExtendedDependencies-BChatUtilitiesKit.app store release.xcconfig"; sourceTree = "<group>"; };
+		9F0A1B2C3D4E5F60718293A2 /* LanguageSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSelectionViewController.swift; sourceTree = "<group>"; };
 		A11CD70C17FA230600A2D1B1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A163E8AA16F3F6A90094D68B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A1C32D4D17A0652C000A904E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -2071,6 +2075,16 @@
 		C3ECBF7A257056B700EA7FCE /* Threading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Threading.swift; sourceTree = "<group>"; };
 		C3F0A52F255C80BC007BE2A3 /* NoopNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoopNotificationsManager.swift; sourceTree = "<group>"; };
 		C3F0A5B2255C915C007BE2A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A4 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A6 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A7 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2A9 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2AA /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2AB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2AC /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3F0A5B2255C915C007BE2AD /* vi-VN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "vi-VN"; path = "vi-VN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C3F0A5EB255C970D007BE2A3 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		C3F0A5FD255C988A007BE2A3 /* Storage+Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Shared.swift"; sourceTree = "<group>"; };
 		C3F0A607255C98A6007BE2A3 /* Storage+SnodeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+SnodeAPI.swift"; sourceTree = "<group>"; };
@@ -2814,6 +2828,7 @@
 				8A406DD22C0F05EF00E3ED4C /* Cells */,
 				81179E582BDA0A8E00B5C820 /* SideMenuViewController.swift */,
 				8A406DD72C0F061A00E3ED4C /* SideMenuViewControllerExtension.swift */,
+				9F0A1B2C3D4E5F60718293A2 /* LanguageSelectionViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2823,6 +2838,7 @@
 			children = (
 				8A406DD42C0F060900E3ED4C /* SideMenuProfileTableViewCell.swift */,
 				8A406DD32C0F060900E3ED4C /* SideMenuTableViewCell.swift */,
+				84F4A91A2FC0646D00B25E3C /* LanguageTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4806,6 +4822,16 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
+				"vi-VN",
+				de,
+				pt,
+				ru,
+				tr,
+				"zh-Hans",
+				ko,
+				ja,
+				ar,
 			);
 			mainGroup = D221A07E169C9E5E00537ABF;
 			productRefGroup = D221A08A169C9E5E00537ABF /* Products */;
@@ -5101,9 +5127,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GlobalDependencies-BChat/Pods-GlobalDependencies-BChat-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5738,9 +5768,11 @@
 				45A6DAD61EBBF85500893231 /* ReminderView.swift in Sources */,
 				B8214A2B25D63EB9009C0F2A /* MessagesTableView.swift in Sources */,
 				B835246E25C38ABF0089A44F /* ConversationVC.swift in Sources */,
+				84F4A91B2FC0647400B25E3C /* LanguageTableViewCell.swift in Sources */,
 				B8AF4BB426A5204600583500 /* SendSeedModal.swift in Sources */,
 				6007B5B828A4D77D0004BD61 /* Wallet.swift in Sources */,
 				601CE18B2BFDB55F0075ADD6 /* MyAccountBnsViewController.swift in Sources */,
+				9F0A1B2C3D4E5F60718293A1 /* LanguageSelectionViewController.swift in Sources */,
 				B821494625D4D6FF009C0F2A /* URLModal.swift in Sources */,
 				7BA6890D27325CCC00EFC32F /* BChatCallManager+CXCallController.swift in Sources */,
 				C374EEEB25DA3CA70073A857 /* ConversationTitleView.swift in Sources */,
@@ -6011,6 +6043,16 @@
 			isa = PBXVariantGroup;
 			children = (
 				C3F0A5B2255C915C007BE2A3 /* en */,
+				C3F0A5B2255C915C007BE2A4 /* es */,
+				C3F0A5B2255C915C007BE2A5 /* de */,
+				C3F0A5B2255C915C007BE2A6 /* ja */,
+				C3F0A5B2255C915C007BE2A7 /* ar */,
+				C3F0A5B2255C915C007BE2A8 /* pt */,
+				C3F0A5B2255C915C007BE2A9 /* ru */,
+				C3F0A5B2255C915C007BE2AA /* tr */,
+				C3F0A5B2255C915C007BE2AB /* zh-Hans */,
+				C3F0A5B2255C915C007BE2AC /* ko */,
+				C3F0A5B2255C915C007BE2AD /* vi-VN */,
 			);
 			name = Localizable.strings;
 			path = Meta/Translations;
