@@ -1,3 +1,6 @@
+
+"MEDIA_GALLERY_MORE_ITEMS_FORMAT" = "+%@";
+
 // My Account language settings
 "MY_ACCOUNT_HOPS" = "Hops";
 "MY_ACCOUNT_CHANGE_PASSWORD" = "Passwort ändern";
@@ -81,7 +84,7 @@
 
 
 // Restore Seed:
-"RESTORE_SEED" = "Seed wiederherstellen:";
+"RESTORE_SEED" = "Seed wiederherstellen";
 "ENTER_SEED" = "Seed eingeben";
 "CLEAR" = "Löschen";
 "PASTE_SEED_TO_CONTINUE" = "Füge den Seed ein, um fortzufahren";
@@ -460,7 +463,8 @@
 "VOICE_CALL" = "Sprachanruf";
 "MISSED_CALL" = "Verpasster Anruf";
 "CALL_MISSED" = "Anruf verpasst!";
-"CALL_MISSED_PERMISSION" = "Anruf von “” verpasst, weil du die Berechtigung „Sprach- und Videoanrufe“ in den Datenschutzeinstellungen aktivieren musstest";
+//"CALL_MISSED_PERMISSION" = "Anruf von “” verpasst, weil du die Berechtigung „Sprach- und Videoanrufe“ in den Datenschutzeinstellungen aktivieren musstest";
+"CALL_MISSED_PERMISSION" = "Anruf von “%@” verpasst, weil du die Berechtigung „Sprach- und Videoanrufe“ in den Datenschutzeinstellungen aktivieren musstest";
 "OK" = "Ok";
 
 // Open URL
@@ -481,7 +485,7 @@
 
 "DELETE_MESSAGE" = "Nachricht löschen";
 "DELETE_JUST_FOR_ME" = "Nur für mich löschen";
-"DELETE_FOR_ME_AND_USER" = "Für mich und “” löschen";
+"DELETE_FOR_ME_AND_USER" = "Für mich und %@ löschen";
 
 // Connection
 "NO_CONNECTION" = "Keine Verbindung";
@@ -700,4 +704,5 @@
 
 
 
-
+"ABOUT_TITLE" = "Über";
+"ABOUT_CONTENT" = "BChat ist eine dezentrale Peer-to-Peer-Messaging-App, die auf der Beldex-Blockchain aufgebaut ist. BChat schützt deine Privatsphäre, da keine persönlichen Daten wie Name, Alter, E-Mail, Telefonnummer, Benutzername, Standort, Kontakte oder IP-Adresse gesammelt oder gespeichert werden. Alles, was du zur Erstellung eines BChat-Kontos brauchst, ist Internetzugang.\n\nBeim Erstellen eines Kontos auf BChat wird eine einzigartige BChat-ID und ein Wiederherstellungscode (Seed Phrase) generiert. Die BChat-ID ist dein öffentlicher Schlüssel, mit dem du mit anderen BChat-Nutzern chatten kannst. Deine BChat-ID ist außerdem mit einer Wallet-Adresse verknüpft, die bei jedem neuen Konto erzeugt wird.\n\nDer Wiederherstellungsschlüssel (Seed Phrase) ist dein privater Schlüssel, mit dem du dein Konto auf jedem Gerät wiederherstellen kannst. Er ist vergleichbar mit einem Passwort – teile ihn niemals und speichere keine digitale Kopie. Schreibe ihn auf Papier und bewahre ihn sicher auf. Gehst du diesen Schlüssel verloren, verlierst du den Zugriff auf dein Konto.\n\nAuf BChat werden Nachrichten über die Knoten des Beldex-Netzwerks geleitet und nur lokal auf deinem Gerät gespeichert. Nachrichten und zugehörige Metadaten werden nirgends auf der Beldex-Blockchain oder den Masternode-Speicherservern gespeichert.\n\nDu besitzt deine Daten und kannst sie jederzeit mit einem Klick löschen. Um deine Daten zu löschen, klicke auf das Profil-Symbol oben rechts, wähle „Mein Konto“ > „Daten löschen“ > „Löschen“ > „Ok“.\n\nBChat wird von der Beldex Foundation entwickelt und gewartet. Die App ist Open-Source und zensurfrei. Jeder kann zur Entwicklung beitragen. Die Beldex Foundation entwickelt vertrauliche Anwendungen für das dezentrale Web, darunter BChat, BelNet (dezentrales VPN), Beldex Browser (dezentrale werbefreie Browser) und das Beldex-Protokoll (zur Anonymisierung von Blockchain-Transaktionen).\n\nBChat ist das Flaggschiffprodukt von Beldex. Die erste Version ermöglicht anonyme Nachrichten, das Erstellen von Secret- und Social-Gruppen. Secret-Gruppen erlauben bis zu 100 Teilnehmer; Social-Gruppen haben keine Obergrenze. Secret-Gruppen können nur mit BChat-Kontakten erstellt werden. Social-Gruppen benötigen einen eigenen Server, der vom Ersteller gewartet wird. Zukünftige Versionen könnten Voice- und Videoanrufe integrieren und den Versand von BDX, der nativen Kryptowährung des Beldex-Netzwerks, ermöglichen. Die „Pay as you chat“-Funktion erlaubt es, BDX direkt über den Chat zu senden.\n\nDie Beldex Research Labs erforschen die Implementierung von zk-SNARKs (als Alternative zu Ring-Signaturen) zur Erweiterung der Anonymität und Sharding zur Verbesserung der Skalierbarkeit im Beldex-Netzwerk. Dies könnte BChat deutlich schneller machen als aktuelle dezentrale Anwendungen und die globale Einführung fördern.\n\nCredits:\nDas Beldex-Netzwerk und BChat nutzen mehrere Protokolle, die von den Open-Source-Projekten Monero, Signal und Session entwickelt wurden.";

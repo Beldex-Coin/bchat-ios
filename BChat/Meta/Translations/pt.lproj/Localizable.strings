@@ -1,3 +1,8 @@
+
+
+"MEDIA_GALLERY_MORE_ITEMS_FORMAT" = "+%@";
+
+
 /* Title for the language selection screen. */
 "MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "Selecionar idioma";
 
@@ -69,7 +74,7 @@
 
 
 // Restore Seed:
-"RESTORE_SEED" = "Restaurar Seed:";
+"RESTORE_SEED" = "Restaurar Seed";
 "ENTER_SEED" = "Digite sua seed";
 "CLEAR" = "Limpar";
 "PASTE_SEED_TO_CONTINUE" = "Cole a seed para continuar";
@@ -443,7 +448,7 @@
 // Chat Actions
 "HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Segure para ativar pagar enquanto conversa";
 "BLOCKED_PERSON_UNBLOCK" = "Você bloqueou esta pessoa, clique aqui para desbloquear";
-"WRITE_A_MESSAGE" = "Escreva uma mensagem..";
+"WRITE_A_MESSAGE" = "Escreva uma mensagem...";
 "SLIDE_TO_CANCEL" = "Deslize para cancelar";
 "SWIPE_TO_SEND_BDX" = "Deslize para enviar BDX";
 "ADDED_TO_HOME_SCREEN" = "Adicionado à tela inicial";
@@ -452,7 +457,8 @@
 "VOICE_CALL" = "Chamada de voz";
 "MISSED_CALL" = "Chamada perdida";
 "CALL_MISSED" = "Chamada perdida!";
-"CALL_MISSED_PERMISSION" = "Chamada perdida de “” porque você precisa ativar a permissão de chamadas de voz e vídeo nas configurações de privacidade";
+//"CALL_MISSED_PERMISSION" = "Chamada perdida de “” porque você precisa ativar a permissão de chamadas de voz e vídeo nas configurações de privacidade";
+"CALL_MISSED_PERMISSION" = "Chamada perdida de “%@” porque você precisa ativar a permissão de chamadas de voz e vídeo nas configurações de privacidade";
 "OK" = "Ok";
 
 // Open URL
@@ -473,7 +479,7 @@
 
 "DELETE_MESSAGE" = "Excluir mensagem";
 "DELETE_JUST_FOR_ME" = "Excluir apenas para mim";
-"DELETE_FOR_ME_AND_USER" = "Excluir para mim e para “ ”";
+"DELETE_FOR_ME_AND_USER" = "Excluir para mim e para %@";
 
 // Connection
 "NO_CONNECTION" = "Sem conexão";
@@ -688,6 +694,12 @@
 "VERIFY_PASSWORD" = "Verificar senha";
 "ENTER_BCHAT_PIN" = "Digite seu PIN do BChat de 4 dígitos";
 "INVALID_PASSWORD" = "Senha inválida";
+
+
+
+"ABOUT_TITLE" = "Sobre";
+"ABOUT_CONTENT" = "O BChat é um aplicativo de mensagens peer-to-peer descentralizado construído sobre a blockchain Beldex. O BChat preserva sua confidencialidade, pois não coleta nem armazena suas informações pessoais, como nome, idade, e-mail, número de telefone, nome de usuário, localização, contatos, endereço IP, etc. Tudo o que você precisa para criar uma conta no BChat é acesso à internet.\n\nQuando você cria uma conta no BChat, são gerados um BChat ID exclusivo e uma frase de recuperação (seed key). O BChat ID é sua chave pública, que você pode usar para conversar com outras pessoas no BChat. Seu BChat ID também está conectado a um endereço de carteira, que é gerado sempre que você cria uma nova conta.\n\nA chave de recuperação (seed key) é sua chave privada, que pode ser usada para restaurar sua conta em qualquer dispositivo. Sua chave de recuperação é semelhante à sua senha. Não a compartilhe com ninguém. Não armazene uma cópia digital dela. Escreva-a em papel e mantenha-a em um local seguro. Se você perder sua chave de recuperação, perderá o acesso à sua conta.\n\nNo BChat, suas mensagens são roteadas através dos nós da rede Beldex e são armazenadas apenas localmente no seu dispositivo. Suas mensagens e seus metadados associados não são armazenados em nenhum lugar da blockchain Beldex, incluindo os servidores de armazenamento dos masternodes.\n\nVocê é o dono dos seus dados. Pode escolher excluir seus dados a qualquer momento com apenas um clique. Para limpar seus dados, clique no ícone de perfil no canto superior direito, selecione “Minha Conta” > Limpar Dados > Excluir > OK, e eles serão removidos.\n\nO BChat é desenvolvido e mantido pela Beldex Foundation. Ele é open source e livre de censura. Qualquer pessoa pode contribuir para seu desenvolvimento. A Beldex Foundation é uma organização que constrói aplicações confidenciais para a web descentralizada. Os produtos que estão sendo pesquisados e desenvolvidos atualmente incluem BChat, BelNet (um serviço VPN descentralizado), Beldex Browser (um navegador descentralizado sem anúncios) e o protocolo Beldex (um protocolo para anonimizar as transações de outros ativos de blockchain).\n\nO BChat é o produto principal da Beldex. A versão inicial do BChat é um mensageiro que permite enviar mensagens verdadeiramente anônimas. Você pode criar grupos secretos e grupos sociais. Grupos secretos permitem até 100 participantes, enquanto grupos sociais não têm limite máximo. Qualquer pessoa pode criar um grupo secreto, mas você só pode adicionar contatos do seu BChat a ele. Grupos sociais exigem um servidor dedicado, que precisa ser mantido pelo criador. Versões futuras do BChat podem incorporar chamadas de voz e vídeo, além de permitir que os usuários enviem e recebam BDX, a criptomoeda nativa da rede Beldex. O recurso “pay as you chat” permitirá que qualquer pessoa transfira BDX para seus contatos diretamente pela janela de chat.\n\nO Beldex Research Labs, braço de pesquisa da Beldex Foundation, está estudando a possibilidade de implementar zk-SNARKs (como alternativa às ring signatures) para aumentar o conjunto de anonimato e utilizar data sharding para melhorar a escalabilidade da rede Beldex. Isso pode tornar o BChat várias vezes mais rápido do que os aplicativos descentralizados atuais e colocá-lo no caminho para adoção global.\n\nCréditos:\nA rede Beldex e o BChat utilizam vários protocolos desenvolvidos por projetos open source, como Monero, Signal e Session.";
+
 
 
 

@@ -179,7 +179,7 @@
 /* The day before today. */
 "DATE_YESTERDAY" = "Yesterday";
 /* table cell label in conversation settings */
-"DISAPPEARING_MESSAGES" = "Disappearing Messages";
+//"DISAPPEARING_MESSAGES" = "Disappearing Messages";
 /* Info Message when added to a group which has enabled disappearing messages. Embeds {{time amount}} before messages disappear, see the *_TIME_AMOUNT strings for context. */
 "DISAPPEARING_MESSAGES_CONFIGURATION_GROUP_EXISTING_FORMAT" = "Messages in this conversation will disappear after %@.";
 /* table cell label in conversation settings */
@@ -201,7 +201,7 @@
 /* Indicates that an error occurred while searching. */
 "GIF_VIEW_SEARCH_ERROR" = "Error. Tap to Retry.";
 /* No results found */
-"NO_RESULTS_FOUND" = "No Results Found";
+//"NO_RESULTS_FOUND" = "No Results Found";
 /* Indicates that the user's search had no results. */
 "GIF_VIEW_SEARCH_NO_RESULTS" = "No Results.";
 /* No comment provided by engineer. */
@@ -277,7 +277,7 @@
 /* notification title. Embeds {{author name}} and {{group name}} */
 "NEW_GROUP_MESSAGE_NOTIFICATION_TITLE" = "%@ to %@";
 /* Label for 1:1 conversation with yourself. */
-"NOTE_TO_SELF" = "Note to Self";
+//"NOTE_TO_SELF" = "Note to Self";
 /* Lock screen notification text presented after user powers on their device without unlocking. Embeds {{device model}} (either 'iPad' or 'iPhone') */
 "NOTIFICATION_BODY_PHONE_LOCKED_FORMAT" = "You may have received messages while your %@ was restarting.";
 /* No comment provided by engineer. */
@@ -459,7 +459,7 @@
 // MARK: - BChat
 "continue_2" = "Continue";
 "copy" = "Copy";
-"invalid_url" = "Invalid URL";
+//"invalid_url" = "Invalid URL";
 "next" = "Next";
 "share" = "Share";
 "invalid_bchat_id" = "Invalid BChat ID";
@@ -758,7 +758,7 @@
 "PLEASE_PICK_RESTOREHEIGHT" = "Please pick a restore height or restore from date";
 
 /* ScanNewVC */
-"UPLOAD_FROM_GALLERY" = "Upload from gallery";
+//"UPLOAD_FROM_GALLERY" = "Upload from gallery";
 "SCAN_SUB_TITLE" = "Scan a receiver’s QR Code to send BDX. QR Codes can be found by clicking on receiver button in\n Wallet Dashboard.";
 "COULDN_NOT_JOIN" = "Couldn't Join";
 "INVALID_QR_CODE" = "invalid QR Code";
@@ -809,9 +809,9 @@
 
 
 // Clear Data
-"CLEAR_ALL_DATA" = "Clear all data";
-"CLEAR_DATA_FROM_DEVICE" = "Clear Data From Device";
-"CLEAR_ALL_DATA_CONFIRMATION_TEXT" = "Are you sure you want to Permanently clear all data from this device?";
+//"CLEAR_ALL_DATA" = "Clear all data";
+//"CLEAR_DATA_FROM_DEVICE" = "Clear Data From Device";
+//"CLEAR_ALL_DATA_CONFIRMATION_TEXT" = "Are you sure you want to Permanently clear all data from this device?";
 
 // Alert Recovery Seed
 "NEVER_SHARE_YOUR_SEED_WITH_ANYONE" = "Never share your seed with anyone!";
@@ -847,6 +847,9 @@
 "EMOJI_CATEGORY_SYMBOLS_NAME" = "Symbols";
 /* The name for the emoji category 'Flags' */
 "EMOJI_CATEGORY_FLAGS_NAME" = "Flags";
+
+"MEDIA_GALLERY_MORE_ITEMS_FORMAT" = "+%@";
+
 
 // My Account language settings
 "MY_ACCOUNT_HOPS" = "Hops";
@@ -933,7 +936,7 @@
 
 
 // Restore Seed: // NewRestoreSeedVC
-"RESTORE_SEED" = "Restore Seed:";
+"RESTORE_SEED" = "Restore Seed";
 "ENTER_SEED" = "Enter your Seed";
 "CLEAR" = "Clear";
 "PASTE_SEED_TO_CONTINUE" = "Paste the seed to Continue";
@@ -1054,14 +1057,14 @@
 "DELETE" = "Delete";
 "CANCEL" = "Cancel";
 
-// Blocked Contacts:
+// Blocked Contacts: // NewBlockedContactVC
 "BLOCKED_CONTACTS" = "Blocked Contacts";
 "NO_BLOCKED_CONTACT_YET" = "No Blocked contact yet";
 "UNBLOCK" = "Unblock";
 "UNBLOCK_SELECTED" = "Unblock selected";
 
 
-// Clear all data
+// Clear all data // NewClearDataVC
 "CLEAR_ALL_DATA" = "Clear all data";
 "CLEAR_DATA_FROM_DEVICE" = "Clear Data From Device";
 "DELETE_DATA_ON_DEVICE" = "Delete data on this device";
@@ -1070,12 +1073,12 @@
 "OK" = "Ok";
 "CANCEL" = "Cancel";
 
-// Clear all data confirmation
+// Clear all data confirmation // NewClearDataVC
 "CLEAR_ALL_DATA_CONFIRMATION" = "Are you sure you want to permanently clear all data from this device?";
 "CLEAR" = "Clear";
 "CANCEL" = "Cancel";
 
-// Delete entire account
+// Delete entire account // NewClearDataVC
 "DELETE_ENTIRE_ACCOUNT_CONFIRMATION" = "Are you sure you want to permanently clear all data from the Beldex Network?";
 "DELETE" = "Delete";
 "CANCEL_LOWERCASE" = "cancel";
@@ -1109,7 +1112,7 @@
 "ENABLE" = "Enable";
 "CANCEL" = "Cancel";
 
-// Notifications
+// Notifications //
 "NOTIFICATIONS" = "Notifications";
 "MESSAGES" = "Messages";
 "ALL_NOTIFICATIONS" = "All Notifications";
@@ -1128,7 +1131,7 @@
 "NO_NAME_OR_CONTENT" = "No Name or Content";
 "CANCEL" = "Cancel";
 
-// Message Requests
+// Message Requests // NewMessageRequestVC
 "MESSAGE_REQUESTS" = "Message Requests";
 "NO_PENDING_MESSAGE_REQUESTS" = "No pending message Requests!";
 "ACCEPT_REQUEST" = "Accept Request?";
@@ -1143,7 +1146,7 @@
 "DELETE" = "Delete";
 
 
-// Recovery Seed
+// Recovery Seed // NewAlertRecoverySeedVC
 "RECOVERY_SEED" = "Recovery Seed";
 "IMPORTANT" = "Important";
 "NEVER_SHARE_SEED" = "Never Share your seed with anyone!";
@@ -1166,7 +1169,7 @@
 "INVITE_MESSAGE" = "Hey, I’ve been using BChat to chat securely and confidentially. Come join me! Download it at";
 
 
-// New
+// New //
 "NEW" = "New";
 "SEARCH_PEOPLE_AND_GROUPS" = "Search people and groups";
 "NEW_CHAT" = "New Chat";
@@ -1176,7 +1179,7 @@
 "CONTACT_LIST" = "Contact List";
 "INVITE_A_FRIEND" = "Invite a Friend";
 
-// New Chat
+// New Chat //
 "ENTER_CHAT_ID_OR_BNS_NAME" = "Enter Chat ID or BNS Name";
 "CHECK_BCHAT_ID_OR_BNS" = "Please check the BChat ID or BNS name and try again";
 "VERIFYING" = "Verifying";
@@ -1187,7 +1190,7 @@
 "UPLOAD_FROM_GALLERY" = "Upload from gallery";
 "SCAN_QR_DESCRIPTION" = "Scan a user’s QR code to start a BChat. QR Codes can be found by tapping the QR Code icon in account Settings.";
 
-// Secret Group
+// Secret Group //
 "ENTER_SECRET_GROUP_NAME" = "Enter secret group name";
 "SEARCH_CONTACT" = "Search Contact";
 "CREATE" = "Create";
@@ -1196,7 +1199,7 @@
 "SHORTER_GROUP_NAME" = "Please enter a shorter group name";
 
 
-// Social Group
+// Social Group //
 "SOCIAL_GROUP" = "Social group";
 "JOIN_SOCIAL_GROUP" = "Join a Social Group";
 "ENTER_SOCIAL_GROUP_URL" = "Enter a social group URL";
@@ -1205,7 +1208,7 @@
 "COULDNT_JOIN_GROUP" = "Couldn’t join the group";
 "INVALID_URL" = "Invalid URL";
 
-// Scan QR
+// Scan QR //
 "SCAN_QR" = "Scan QR";
 "UPLOAD_FROM_GALLERY" = "Upload from gallery";
 "SCAN_SOCIAL_GROUP_QR_DESCRIPTION" = "Scan a social group’s QR code for joining a social group. QR Codes can be found on the social group website link";
@@ -1310,7 +1313,7 @@
 // Chat Actions
 "HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Hold to Enable pay as you chat";
 "BLOCKED_PERSON_UNBLOCK" = "You Blocked person click here to unblock";
-"WRITE_A_MESSAGE" = "Write a message..";
+"WRITE_A_MESSAGE" = "Write a message...";
 "SLIDE_TO_CANCEL" = "Slide to cancel";
 "SWIPE_TO_SEND_BDX" = "Swipe to send bdx";
 "ADDED_TO_HOME_SCREEN" = "Added to home screen";
@@ -1319,7 +1322,8 @@
 "VOICE_CALL" = "Voice call";
 "MISSED_CALL" = "Missed call";
 "CALL_MISSED" = "Call Missed!";
-"CALL_MISSED_PERMISSION" = "Call missed from “” because you needed to enable the ‘voice and video calls’ permission in the privacy settings";
+//"CALL_MISSED_PERMISSION" = "Call missed from “” because you needed to enable the ‘voice and video calls’ permission in the privacy settings";
+"CALL_MISSED_PERMISSION" = "Call missed from “%@” because you needed to enable the ‘voice and video calls’ permission in the privacy settings";
 "OK" = "ok";
 
 // Open URL
@@ -1340,7 +1344,7 @@
 
 "DELETE_MESSAGE" = "Delete Message";
 "DELETE_JUST_FOR_ME" = "Delete just for me";
-"DELETE_FOR_ME_AND_USER" = "Delete for me and “”";
+"DELETE_FOR_ME_AND_USER" = "Delete for me and %@";
 
 // Connection
 "NO_CONNECTION" = "No connection";
@@ -1451,13 +1455,13 @@
 
 
 
-// Share Contacts
+// Share Contacts //
 "SHARE_CONTACTS" = "Share Contacts";
 "SEARCH_CONTACT" = "Search contact";
 "NO_CONTACT_FOUND" = "No Contact found";
 "SEND" = "Send";
 
-// Group Chat More Option
+// Group Chat More Option //
 "GROUP_CHAT_MORE_OPTION" = "Group chat more option";
 "SELECT" = "Select";
 "REPLY" = "Reply";
@@ -1495,7 +1499,7 @@
 "LEAVE" = "Leave";
 "CANCEL" = "Cancel";
 
-// Edit Group
+// Edit Group //
 "EDIT_GROUP" = "Edit Group";
 "ENTER_NEW_GROUP_NAME" = "Enter a new group name";
 "REMOVE_USER_FROM_GROUP" = "Remove user from group";
@@ -1555,3 +1559,7 @@
 "VERIFY_PASSWORD" = "Verify Password";
 "ENTER_BCHAT_PIN" = "Enter your 4 digit BChat PIN";
 "INVALID_PASSWORD" = "Invalid Password";
+
+
+"ABOUT_TITLE" = "About";
+"ABOUT_CONTENT" = "BChat is a decentralized peer to peer messaging application built on top of the Beldex blockchain. BChat preserves your confidentiality as it doesn't collect or store your personal information such as your name, age, email ID, phone number, username, location, contacts, IP address, etc. All you need to create a BChat account is the internet.\n\nWhen you create an account on BChat, a unique BChat ID and recovery phrase (seed key) are generated. The BChat ID is your public key which you can use to chat with other people on BChat. Your BChat ID is also connected to a wallet address which is generated each time you create a new account.\n\nThe recovery key (seed key) is your private key which you can use to restore your account on any device. Your recovery key is similar to your password. Do not share it with anyone. Do not store a digital copy of it. Write it down on paper and keep it safe. If you lose your recovery key, you will lose access to your account.\n\nOn BChat, your messages are routed through the nodes on the Beldex network and are only stored locally on your device. Your messages and their associated metadata are not stored anywhere on the Beldex blockchain including the masternode storage servers.\n\nYou own your data. You can choose to delete your data at any time with a single click of a button. To clear your data, click the profile icon at the top right corner, select ‘My Account’ > Clear Data > Delete > Ok’ and it’s gone.\n\nBChat is built and maintained by the Beldex foundation. It is open-source and censorship-free. Anybody can contribute to its development. The Beldex foundation is an organization building confidential applications for the decentralized web. The products that are currently being researched and developed include BChat, BelNet (a decentralized VPN service), Beldex Browser (a decentralized ad-free browser), and the Beldex protocol (a protocol to anonymize the transactions of other blockchain assets)\n\nBChat is Beldex’s flagship product. The initial version of BChat will be a messenger that lets you send truly anonymous messages. You can create secret and social groups. Secret groups allow a maximum of 100 participants, while social groups do not have an upper limit. Anyone can create a secret group but you can only add your BChat contacts to it. Social groups require a dedicated server that needs to be maintained by its creator. Future versions of BChat may incorporate voice and video calls, and let users send and receive BDX, the native cryptocurrency of the Beldex network. The “pay as you chat” feature will allow anyone to transfer BDX to their contacts right from their chatbox.\n\nThe Beldex Research Labs, the research wing of the Beldex foundation is researching the possibility of implementing zk-SNARKs (as an alternative to ring signatures) to increase the anonymity set and data sharding to improve scalability on the Beldex network, which may render BChat several times faster than current decentralized applications and put it on track for global adoption.\n\nCredits:\nThe Beldex network and BChat uses several protocols that were designed by the open-source projects Monero, Signal, and Session.";

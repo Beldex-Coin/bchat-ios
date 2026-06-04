@@ -1,3 +1,9 @@
+
+
+"MEDIA_GALLERY_MORE_ITEMS_FORMAT" = "+%@";
+
+
+
 /* Title for the language selection screen. */
 "MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "Dil seçin";
 
@@ -68,7 +74,7 @@
 
 
 // Restore Seed:
-"RESTORE_SEED" = "Tohumdan Geri Yükle (Restore Seed)";
+"RESTORE_SEED" = "Tohumdan Geri Yükle";
 "ENTER_SEED" = "Tohumunuzu girin";
 "CLEAR" = "Temizle";
 "PASTE_SEED_TO_CONTINUE" = "Devam etmek için tohumu yapıştırın";
@@ -445,7 +451,7 @@
 // Chat Actions
 "HOLD_TO_ENABLE_PAY_AS_YOU_CHAT" = "Sohbet ederken öde özelliğini etkinleştirmek için basılı tutun";
 "BLOCKED_PERSON_UNBLOCK" = "Bu kişiyi engellediniz. Engeli kaldırmak için buraya tıklayın";
-"WRITE_A_MESSAGE" = "Mesaj yaz";
+"WRITE_A_MESSAGE" = "Mesaj yaz...";
 "SLIDE_TO_CANCEL" = "İptal etmek için kaydır";
 "SWIPE_TO_SEND_BDX" = "BDX göndermek için kaydır";
 "ADDED_TO_HOME_SCREEN" = "Ana ekrana eklendi";
@@ -454,7 +460,8 @@
 "VOICE_CALL" = "Sesli arama";
 "MISSED_CALL" = "Cevapsız arama";
 "CALL_MISSED" = "Cevapsız arama";
-"CALL_MISSED_PERMISSION" = "Sesli ve görüntülü arama iznini gizlilik ayarlarında etkinleştirmeniz gerektiği için şu kişiden gelen aramayı kaçırdınız";
+//"CALL_MISSED_PERMISSION" = "Sesli ve görüntülü arama iznini gizlilik ayarlarında etkinleştirmeniz gerektiği için şu kişiden gelen aramayı kaçırdınız";
+"CALL_MISSED_PERMISSION" = "Sesli ve görüntülü arama iznini gizlilik ayarlarında etkinleştirmeniz gerektiği için %@ kişisinden gelen aramayı kaçırdınız";
 "OK" = "Tamam";
 
 // Open URL
@@ -475,7 +482,7 @@
 
 "DELETE_MESSAGE" = "Mesajı sil";
 "DELETE_JUST_FOR_ME" = "Sadece benim için sil";
-"DELETE_FOR_ME_AND_USER" = "Benim için ve \"\" için sil";
+"DELETE_FOR_ME_AND_USER" = "Benim için ve %@ için sil";
 
 // Connection
 "NO_CONNECTION" = "Bağlantı yok";
@@ -691,6 +698,11 @@
 "VERIFY_PASSWORD" = "Şifre doğrulama";
 "ENTER_BCHAT_PIN" = "4 haneli BChat PIN’inizi girin";
 "INVALID_PASSWORD" = "Geçersiz şifre";
+
+
+
+"ABOUT_TITLE" = "Hakkında";
+"ABOUT_CONTENT" = "BChat Beldex blok zinciri üzerinde çalışan merkeziyetsiz eşler arası bir mesajlaşma uygulamasıdır. BChat gizliliğinizi korur çünkü adınız, yaşınız, e-posta adresiniz, telefon numaranız, kullanıcı adınız, konumunuz, kişileriniz veya IP adresiniz gibi kişisel bilgileri toplamaz veya saklamaz. BChat hesabı oluşturmak için yalnızca internet gerekir.\n\nBChat’te hesap oluşturduğunuzda benzersiz bir BChat ID ve kurtarma ifadesi oluşturulur. BChat ID genel anahtarınızdır ve BChat’te diğer kişilerle sohbet etmek için kullanılır. BChat ID ayrıca her yeni hesap oluşturduğunuzda oluşturulan bir cüzdan adresine bağlıdır.\n\nKurtarma anahtarı özel anahtarınızdır ve hesabınızı herhangi bir cihazda geri yüklemek için kullanılabilir. Kurtarma anahtarı şifreniz gibidir. Kimseyle paylaşmayın. Dijital kopyasını saklamayın. Kağıda yazın ve güvenli bir yerde saklayın. Kurtarma anahtarınızı kaybederseniz hesabınıza erişiminizi kaybedersiniz.\n\nBChat’te mesajlarınız Beldex ağındaki node’lar üzerinden yönlendirilir ve yalnızca cihazınızda saklanır. Mesajlarınız ve bunlara ait meta veriler Beldex blok zincirinde veya masternode depolama sunucularında saklanmaz.\n\nVerilerinizin sahibi sizsiniz. İstediğiniz zaman verilerinizi silebilirsiniz. Verilerinizi temizlemek için sağ üst köşedeki profil simgesine tıklayın ve Hesabım > Verileri temizle > Sil > Tamam yolunu izleyin.\n\nBChat Beldex Vakfı tarafından geliştirilmekte ve sürdürülmektedir. Açık kaynaklıdır ve sansürsüzdür. Herkes geliştirilmesine katkıda bulunabilir. Beldex Vakfı merkeziyetsiz web için gizlilik odaklı uygulamalar geliştiren bir organizasyondur. Araştırılan ve geliştirilen ürünler arasında BChat, BelNet, Beldex Browser ve Beldex protokolü bulunmaktadır.\n\nBChat Beldex’in amiral gemisi ürünüdür. İlk sürüm gerçekten anonim mesajlar göndermenizi sağlayan bir mesajlaşma uygulaması olacaktır. Gizli ve sosyal gruplar oluşturabilirsiniz. Gizli gruplar en fazla 100 katılımcıya izin verirken sosyal grupların üst sınırı yoktur. Gizli grupları herkes oluşturabilir ancak yalnızca BChat kişileriniz eklenebilir. Sosyal gruplar oluşturucu tarafından yönetilen özel bir sunucu gerektirir.\n\nGelecek sürümlerde sesli ve görüntülü aramalar ile BDX gönderme ve alma özellikleri eklenebilir. Sohbet ederken öde özelliği kullanıcıların sohbet penceresinden doğrudan BDX transferi yapmasına olanak tanıyacaktır.\n\nBeldex Araştırma Laboratuvarları anonimliği artırmak için zk-SNARKs ve ölçeklenebilirliği artırmak için veri parçalama teknolojileri üzerinde çalışmaktadır. Bu gelişmeler BChat’i mevcut merkeziyetsiz uygulamalardan çok daha hızlı hale getirebilir ve küresel benimsenmeye katkı sağlayabilir.\n\nKatkılar\nBeldex ağı ve BChat Monero, Signal ve Session gibi açık kaynak projeleri tarafından geliştirilen çeşitli protokolleri kullanır.";
 
 
 

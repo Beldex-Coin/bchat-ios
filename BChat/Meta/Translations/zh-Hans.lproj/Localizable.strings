@@ -1,3 +1,7 @@
+
+"MEDIA_GALLERY_MORE_ITEMS_FORMAT" = "+%@";
+
+
 /* Title for the language selection screen. */
 "MY_ACCOUNT_SELECT_LANGUAGE_TITLE" = "选择语言";
 
@@ -454,7 +458,8 @@
 "VOICE_CALL" = "语音通话";
 "MISSED_CALL" = "未接来电";
 "CALL_MISSED" = "未接来电！";
-"CALL_MISSED_PERMISSION" = "来自“”的未接来电，因为您需要在隐私设置中启用“语音和视频通话”权限";
+//"CALL_MISSED_PERMISSION" = "来自“”的未接来电，因为您需要在隐私设置中启用“语音和视频通话”权限";
+"CALL_MISSED_PERMISSION" = "来自“%@”的未接来电，因为您需要在隐私设置中启用“语音和视频通话”权限";
 "OK" = "确定";
 
 // Open URL
@@ -475,7 +480,7 @@
 
 "DELETE_MESSAGE" = "删除消息";
 "DELETE_JUST_FOR_ME" = "仅为我删除";
-"DELETE_FOR_ME_AND_USER" = "为我和“”删除";
+"DELETE_FOR_ME_AND_USER" = "为我和%@删除";
 
 // Connection
 "NO_CONNECTION" = "无连接";
@@ -691,6 +696,12 @@
 "VERIFY_PASSWORD" = "验证密码";
 "ENTER_BCHAT_PIN" = "输入您的 4 位 BChat PIN";
 "INVALID_PASSWORD" = "密码无效";
+
+
+
+
+"ABOUT_TITLE" = "关于";
+"ABOUT_CONTENT" = "BChat 是一款基于 Beldex 区块链构建的去中心化点对点消息应用。BChat 保护您的隐私，因为它不会收集或存储您的个人信息，例如姓名、年龄、电子邮件地址、电话号码、用户名、位置、联系人、IP 地址等。创建 BChat 账户只需要互联网连接。\n\n当您在 BChat 上创建账户时，会生成一个唯一的 BChat ID 和恢复短语（助记词）。BChat ID 是您的公钥，您可以使用它与其他 BChat 用户聊天。您的 BChat ID 同时连接到一个钱包地址，该地址会在每次创建新账户时生成。\n\n恢复密钥（助记词）是您的私钥，您可以使用它在任何设备上恢复您的账户。恢复密钥类似于您的密码。请不要与任何人分享，也不要保存其电子副本。请将其写在纸上并妥善保存。如果您丢失恢复密钥，将无法再访问您的账户。\n\n在 BChat 上，您的消息会通过 Beldex 网络中的节点进行路由，并且仅存储在您的设备本地。您的消息及其相关元数据不会存储在 Beldex 区块链上的任何地方，包括主节点存储服务器。\n\n您拥有自己的数据。您可以随时通过点击一个按钮删除您的数据。要清除数据，请点击右上角的个人资料图标，选择“我的账户” > “清除数据” > “删除” > “确定”，数据即会被清除。\n\nBChat 由 Beldex 基金会开发和维护。它是开源且无审查的，任何人都可以参与其开发。Beldex 基金会致力于为去中心化网络构建保密应用。目前正在研究和开发的产品包括 BChat、BelNet（去中心化 VPN 服务）、Beldex 浏览器（去中心化无广告浏览器）以及 Beldex 协议（用于匿名化其他区块链资产交易的协议）。\n\nBChat 是 Beldex 的旗舰产品。BChat 的初始版本是一款允许发送真正匿名消息的通讯应用。您可以创建秘密群组和社交群组。秘密群组最多允许 100 名参与者，而社交群组没有人数上限。任何人都可以创建秘密群组，但只能添加自己的 BChat 联系人。社交群组需要一个由创建者维护的专用服务器。未来版本的 BChat 可能会加入语音和视频通话功能，并允许用户发送和接收 BDX（Beldex 网络的原生加密货币）。“边聊天边支付”功能将允许用户直接在聊天窗口中向联系人转账 BDX。\n\nBeldex 研究实验室（Beldex 基金会的研究部门）正在研究使用 zk-SNARKs（作为环签名的替代方案）以扩大匿名集，并通过数据分片提高 Beldex 网络的可扩展性。这可能使 BChat 比当前的去中心化应用快数倍，并推动其实现全球采用。\n\n致谢：\nBeldex 网络和 BChat 使用了多个由开源项目 Monero、Signal 和 Session 设计的协议。";
 
 
 
