@@ -285,14 +285,61 @@ static NSTimeInterval launchStartedAt;
 }
 
 - (void)openAppStore {
-    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
-    NSURL *appStoreURL = [NSURL URLWithString:[NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", bundleIdentifier]];
-    
-    if ([[UIApplication sharedApplication] canOpenURL:appStoreURL]) {
-        [[UIApplication sharedApplication] openURL:appStoreURL options:@{} completionHandler:nil];
-    } else {
-        NSLog(@"Unable to open App Store URL");
-    }
+    NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+
+    NSString *lookupURLString =
+        [NSString stringWithFormat:@"https://itunes.apple.com/lookup?bundleId=%@",
+                                   bundleID];
+
+    NSURL *lookupURL = [NSURL URLWithString:lookupURLString];
+
+    NSURLSessionDataTask *task =
+    [[NSURLSession sharedSession] dataTaskWithURL:lookupURL
+                                completionHandler:^(NSData *data,
+                                                    NSURLResponse *response,
+                                                    NSError *error) {
+
+        if (error || !data) {
+            NSLog(@"Lookup failed: %@", error.localizedDescription);
+            return;
+        }
+
+        NSError *jsonError;
+        NSDictionary *json =
+            [NSJSONSerialization JSONObjectWithData:data
+                                            options:0
+                                              error:&jsonError];
+
+        if (jsonError) {
+            NSLog(@"JSON Error: %@", jsonError.localizedDescription);
+            return;
+        }
+
+        NSArray *results = json[@"results"];
+
+        if (results.count == 0) {
+            NSLog(@"No App Store app found for bundle id %@", bundleID);
+            return;
+        }
+
+        NSNumber *trackId = results.firstObject[@"trackId"];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSString *appStoreURLString =
+                [NSString stringWithFormat:@"itms-apps://apps.apple.com/app/id%@",
+                                           trackId];
+
+            NSURL *appStoreURL = [NSURL URLWithString:appStoreURLString];
+
+            [[UIApplication sharedApplication] openURL:appStoreURL
+                                               options:@{}
+                                     completionHandler:^(BOOL success) {
+                NSLog(@"App Store opened: %@", success ? @"YES" : @"NO");
+            }];
+        });
+    }];
+
+    [task resume];
 }
 
 
