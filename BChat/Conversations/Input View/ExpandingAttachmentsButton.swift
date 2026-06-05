@@ -62,7 +62,7 @@ final class ExpandingAttachmentsButton : UIView, InputViewButtonDelegate {
         result.set(.width, to: 36)
         result.set(.height, to: 36)
         result.layer.cornerRadius = 18
-        result.accessibilityLabel = NSLocalizedString("accessibility_document_button", comment: "")
+        result.accessibilityLabel = NSLocalizedString("DOCUMENT", comment: "")
         return result
     }()
     lazy var documentButtonContainer = container(for: documentButton)

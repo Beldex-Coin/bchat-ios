@@ -48,7 +48,7 @@ class AllMediaViewController: BaseVC {
         result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "No Media items to show!"
+        result.text = NSLocalizedString("NO_MEDIA_ITEMS", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
@@ -60,12 +60,15 @@ class AllMediaViewController: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "All Media"
+        self.title = NSLocalizedString("ALL_MEDIA", comment: "")
         view.backgroundColor = Colors.mainBackGroundColor
         
         view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
                 
-        containerViewForMediaAndDocument.items = ["Media", "Documents"]
+        containerViewForMediaAndDocument.items = [
+            NSLocalizedString("MEDIA", comment: ""),
+            NSLocalizedString("DOCUMENT", comment: "")
+        ]
         containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
         containerViewForMediaAndDocument.selectedIndex = 0
         containerViewForMediaAndDocument.padding = 4
@@ -177,4 +180,3 @@ extension AllMediaViewController: UICollectionViewDelegate, UICollectionViewData
         return CGSize(width: size, height: size)
     }
 }
-

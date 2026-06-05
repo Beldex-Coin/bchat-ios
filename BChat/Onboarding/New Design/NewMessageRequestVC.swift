@@ -35,7 +35,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "No Pending message Requests!"
+        result.text = NSLocalizedString("NO_PENDING_MESSAGE_REQUESTS", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
@@ -68,7 +68,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = Colors.mainBackGroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Message Requests"
+        self.title = NSLocalizedString("MESSAGE_REQUESTS", comment: "")
         setUpTopCornerRadius()
         
         view.addSubview(tableView)
@@ -178,14 +178,14 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     }
     
     func showConfirmationModal(_ modalType: ConfirmationModalType) {
-        let actionType = modalType == .acceptMsgRequest ? "accept" :
-                        modalType == .deleteMsgRequest ? "delete" : "block"
+        let actionType = modalType == .acceptMsgRequest ? NSLocalizedString("ACCEPT_REQUEST_CONFIRMATION", comment: "") :
+                        modalType == .deleteMsgRequest ? NSLocalizedString("DELETE_REQUEST_CONFIRMATION", comment: "") : NSLocalizedString("BLOCK_REQUEST_CONFIRMATION", comment: "")
         // show confirmation modal
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
                 modalType: modalType,
-                title: "Message Request",
-                body: .text("Are you sure you want to \(actionType) this request?"),
+                title: NSLocalizedString("MESSAGE_REQUEST", comment: ""),
+                body: .text(actionType),
                 showCondition: .disabled,
                 confirmTitle: actionType.capitalized,
                 onConfirm: { _ in
@@ -217,7 +217,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         // Show an error indicating that approving the thread failed
         promise.catch(on: DispatchQueue.main) { [weak self] _ in
             let alert = UIAlertController(title: "BChat", message: NSLocalizedString("MESSAGE_REQUESTS_APPROVAL_ERROR_MESSAGE", comment: ""), preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }
         promise.retainUntilComplete()
@@ -403,7 +403,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         var needsSync: Bool = false
         
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_CLEAR_ALL_CONFIRMATION_TITLE", comment: ""), message: nil, preferredStyle: .actionSheet)
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("MESSAGE_REQUESTS_CLEAR_ALL_CONFIRMATION_ACTON", comment: ""), style: .destructive) { _ in
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("CLEAR", comment: ""), style: .destructive) { _ in
             // Clear the requests
             Storage.write(
                 with: { [weak self] transaction in
@@ -436,7 +436,7 @@ class NewMessageRequestVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 }
             )
         })
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
     

@@ -56,7 +56,7 @@ final class ScanQRCodeWrapperVC : BaseVC {
         explanationLabel.autoPinWidthToSuperview(withMargin: 32)
         explanationLabel.autoPinHeightToSuperview(withMargin: 32)
         // Title
-        title = NSLocalizedString("Scan QR Code", comment: "")
+        title = NSLocalizedString("SCAN_QR_CODE", comment: "")
     }
     
     override func viewDidAppear(_ animated: Bool) {

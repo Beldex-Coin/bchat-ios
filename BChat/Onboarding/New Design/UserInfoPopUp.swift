@@ -27,7 +27,7 @@ class UserInfoPopUp: BaseVC {
     
     private lazy var messageButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Message to ", for: .normal)
+        button.setTitle(NSLocalizedString("MESSAGE_TO", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
@@ -40,7 +40,7 @@ class UserInfoPopUp: BaseVC {
     
     private lazy var copyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Copy BChat ID", for: .normal)
+        button.setTitle(NSLocalizedString("COPY_BCHAT_ID", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .clear
@@ -92,7 +92,7 @@ class UserInfoPopUp: BaseVC {
             
         ])
         
-        messageButton.setTitle("Message to \(name ?? "")", for: .normal)
+        messageButton.setTitle(NSLocalizedString("MESSAGE_TO", comment: "") + " " + "\(name ?? "")" , for: .normal)
         
     }
     

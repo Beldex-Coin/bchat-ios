@@ -34,7 +34,7 @@ final class NukeDataModal : Modal {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.regularOpenSans(ofSize: 14)
-        result.text = NSLocalizedString("CLEAR_ALL_DATA_CONFIRMATION_TEXT", comment: "")
+        result.text = NSLocalizedString("CLEAR_ALL_DATA_CONFIRMATION", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
@@ -48,7 +48,7 @@ final class NukeDataModal : Modal {
         result.backgroundColor = Colors.bothRedColor
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        result.setTitle("Clear", for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("CLEAR", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()
@@ -72,7 +72,7 @@ final class NukeDataModal : Modal {
         }
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: .normal)
-        result.setTitle(NSLocalizedString("No", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("NO", comment: ""), for: .normal)
         result.addTarget(self, action: #selector(clearDeviceOnly), for: .touchUpInside)
         return result
     }()
@@ -87,7 +87,7 @@ final class NukeDataModal : Modal {
         result.backgroundColor = Colors.destructive
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: .normal)
-        result.setTitle(NSLocalizedString("Yes", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("YES", comment: ""), for: .normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()

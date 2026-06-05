@@ -395,11 +395,11 @@ NSString *const OWSPreferencesKeySystemCallLogEnabled = @"OWSPreferencesKeySyste
 {
     switch (notificationType) {
         case NotificationNamePreview:
-            return NSLocalizedString(@"NOTIFICATIONS_SENDER_AND_MESSAGE", nil);
+            return NSLocalizedString(@"NAME_AND_CONTENT", nil);
         case NotificationNameNoPreview:
-            return NSLocalizedString(@"NOTIFICATIONS_SENDER_ONLY", nil);
+            return NSLocalizedString(@"NAME_ONLY", nil);
         case NotificationNoNameNoPreview:
-            return NSLocalizedString(@"NOTIFICATIONS_NONE", nil);
+            return NSLocalizedString(@"NO_NAME_OR_CONTENT", nil);
         default:
             return @"";
     }

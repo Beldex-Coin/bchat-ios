@@ -200,7 +200,7 @@ class GifPickerViewController: OWSViewController, UISearchBarDelegate, UICollect
         logoImageView.autoPinHeightToSuperview(withMargin: 3)
         logoImageView.autoHCenterInSuperview()
 
-        let noResultsView = createErrorLabel(text: NSLocalizedString("GIF_VIEW_SEARCH_NO_RESULTS",
+        let noResultsView = createErrorLabel(text: NSLocalizedString("NO_RESULTS_FOUND",
                                                                     comment: "Indicates that the user's search had no results."))
         self.noResultsView = noResultsView
         self.view.addSubview(noResultsView)

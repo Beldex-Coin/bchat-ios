@@ -167,7 +167,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         result.textColor = Colors.noDataLabelColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "No Media items to show!"
+        result.text = NSLocalizedString("NO_MEDIA_ITEMS", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
@@ -179,7 +179,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         
         // NavigationBar Title
-        self.title = "All Media"
+        self.title = NSLocalizedString("ALL_MEDIA", comment: "")
         
         // Remove Back Button Title
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -195,7 +195,10 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         view.addSubViews(containerViewForMediaAndDocument, mediaLineView, documentLineView)
         
-        containerViewForMediaAndDocument.items = ["Media", "Documents"]
+        containerViewForMediaAndDocument.items = [
+            NSLocalizedString("MEDIA", comment: ""),
+            NSLocalizedString("DOCUMENT", comment: "")
+        ]
         containerViewForMediaAndDocument.font = Fonts.boldOpenSans(ofSize: 16)
         containerViewForMediaAndDocument.padding = 4
         containerViewForMediaAndDocument.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
@@ -290,7 +293,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             
             self.noDataView.isHidden = true
             self.noDataImageView.image = UIImage(named: "no_media_image")
-            self.noDataMessageLabel.text = "No Media items to show!"
+            self.noDataMessageLabel.text = NSLocalizedString("NO_MEDIA_ITEMS", comment: "")
         } else {
             mediaType = .document
             documentLineView.backgroundColor = Colors.bothGreenColor
@@ -298,7 +301,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             
             self.noDataView.isHidden = false
             self.noDataImageView.image = UIImage(named: "no_document_image")
-            self.noDataMessageLabel.text = "No Document items to show!"
+            self.noDataMessageLabel.text = NSLocalizedString("NO_DOCUMENT_ITEMS", comment: "")
         }
         
         endSelectMode()
@@ -605,7 +608,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
 //                sectionHeader.configure(title: title)
                 self.noDataView.isHidden = false
                 self.noDataImageView.image = UIImage(named: "no_media_image")
-                self.noDataMessageLabel.text = "No Media items to show!"
+                self.noDataMessageLabel.text = NSLocalizedString("NO_MEDIA_ITEMS", comment: "")
                 return sectionHeader
             }
             
@@ -848,7 +851,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(didCancelSelect))
         } else {
             if mediaType == .media && galleryDates.count > 0 {
-                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("BUTTON_SELECT", comment: "Button text to enable batch selection mode"),
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: NSLocalizedString("SELECT", comment: "Button text to enable batch selection mode"),
                                                                          style: .plain,
                                                                          target: self,
                                                                          action: #selector(didTapSelect))
@@ -949,7 +952,7 @@ public class MediaTileViewController: UIViewController, MediaGalleryDataSourceDe
         
         let confirmationTitle: String = {
             if indexPaths.count == 1 {
-                return NSLocalizedString("MEDIA_GALLERY_DELETE_SINGLE_MESSAGE", comment: "Confirmation button text to delete selected media message from the gallery")
+                return NSLocalizedString("DELETE_MESSAGE", comment: "Confirmation button text to delete selected media message from the gallery")
             } else {
                 let format = NSLocalizedString("MEDIA_GALLERY_DELETE_MULTIPLE_MESSAGES_FORMAT", comment: "Confirmation button text to delete selected media from the gallery, embeds {{number of messages}}")
                 return String(format: format, indexPaths.count)

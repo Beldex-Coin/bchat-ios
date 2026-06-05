@@ -7,6 +7,17 @@ enum SettingsSection: String, CaseIterable {
     case communication = "Communication"
 }
 
+extension SettingsSection {
+    var title: String {
+        switch self {
+        case .appAccess:
+            return NSLocalizedString("APP_ACCESS", comment: "")
+        case .communication:
+            return NSLocalizedString("COMMUNICATION", comment: "")
+        }
+    }
+}
+
 struct SettingItem {
     let title: String
     let subtitle: String?
@@ -50,17 +61,17 @@ enum SettingInfo {
         case .screenSecurity:
             title = "Screen Security"
         case .incognitoKeyboard:
-            title = "Incognito Keyboard"
+            title = NSLocalizedString("INCOGNITO_KEYBOARD", comment: "")
         case .readReceipts:
-            title = "Read receipts"
+            title = NSLocalizedString("READ_RECEIPTS", comment: "")
         case .typeIndicators:
-            title = "Type indicators"
+            title = NSLocalizedString("TYPING_INDICATORS", comment: "")
         case .sendLinkPreviews:
-            title = "Send link previews"
+            title = NSLocalizedString("SEND_LINK_PREVIEWS", comment: "")
         case .voiceAndVideoCalls:
-            title = "Voice and video calls"
+            title = NSLocalizedString("VOICE_VIDEO_CALLS", comment: "")
         case .clearConversationHistory:
-            title = "Clear conversation History"
+            title = NSLocalizedString("SETTINGS_CLEAR_HISTORY", comment: "")
         }
         return title
     }
@@ -72,15 +83,15 @@ enum SettingInfo {
         case .screenSecurity:
             subTitle = "Block Screenshots in the recents list and inside the app"
         case .incognitoKeyboard:
-            subTitle = "Request keyboard to disable personalized learning"
+            subTitle = NSLocalizedString("REQUEST_KEYBOARD_DISABLE_PERSONALIZED_LEARNING", comment: "")
         case .readReceipts:
-            subTitle = "If read receipts are disabled, you won’t be able to see read receipts from others"
+            subTitle = NSLocalizedString("READ_RECEIPTS_DESCRIPTION", comment: "")
         case .typeIndicators:
-            subTitle = "If typing indicators are disabled, you won’t be able to see typing indicators from others"
+            subTitle = NSLocalizedString("TYPING_INDICATORS_DESCRIPTION", comment: "")
         case .sendLinkPreviews:
-            subTitle = "Previews are supported for Imgur, Instagram, Pinterest, Reddit, and YouTube links"
+            subTitle = NSLocalizedString("LINK_PREVIEWS_DESCRIPTION", comment: "")
         case .voiceAndVideoCalls:
-            subTitle = "Allow access to accept voice and video calls from other users"
+            subTitle = NSLocalizedString("VOICE_VIDEO_CALLS_DESCRIPTION", comment: "")
         case .clearConversationHistory:
             subTitle = ""
         }

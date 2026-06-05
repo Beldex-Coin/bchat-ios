@@ -32,7 +32,7 @@ final class InfoBanner : UIView {
         let titleLabel1 = UILabel()
         titleLabel1.textColor = UIColor.white
         titleLabel1.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
-        titleLabel1.text = " Unblock  "
+        titleLabel1.text = " " + NSLocalizedString("UNBLOCK", comment: "") + "  "
         titleLabel1.textAlignment = .center
         titleLabel1.numberOfLines = 0
         titleLabel1.backgroundColor = Colors.destructive

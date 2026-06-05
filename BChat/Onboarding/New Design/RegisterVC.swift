@@ -20,7 +20,7 @@ class RegisterVC: BaseVC {
     
     private lazy var continueButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Continue", for: .normal)
+        button.setTitle(NSLocalizedString("CONTINUE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -39,7 +39,7 @@ class RegisterVC: BaseVC {
     
     private lazy var bChatLabel: UILabel = {
         let result = UILabel()
-        result.text = "BChat ID"
+        result.text = NSLocalizedString("BCHAT_ID", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
@@ -60,7 +60,7 @@ class RegisterVC: BaseVC {
     
     private lazy var bChatInfoLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("BCHAT_INFO_TITLE_LABEL", comment: "")
+        result.text = NSLocalizedString("BCHAT_ID_DESCRIPTION", comment: "")
         result.textColor = Colors.titleColor5
         result.font = Fonts.lightOpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -79,7 +79,7 @@ class RegisterVC: BaseVC {
     
     private lazy var beldexLabel: UILabel = {
         let result = UILabel()
-        result.text = "Beldex Address"
+        result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
         result.textColor = Colors.bothBlueColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
@@ -100,7 +100,7 @@ class RegisterVC: BaseVC {
     
     private lazy var beldexInfoLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("BELDEX_INFO_TITLE_LABEL", comment: "")
+        result.text = NSLocalizedString("BELDEX_ADDRESS_DESCRIPTION", comment: "")
         result.textColor = Colors.titleColor5
         result.font = Fonts.lightOpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -115,8 +115,8 @@ class RegisterVC: BaseVC {
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
-        self.title = "Register"
-        self.titleLabel.text = "Hey \(userNameString!), Welcome to BChat"
+        self.title = NSLocalizedString("REGISTER", comment: "")
+        self.titleLabel.text = String(format: NSLocalizedString("REGISTER_TITLE", comment: ""), userNameString)
         self.bChatIdLabel.text = bchatIDString
         self.beldexIdLabel.text = beldexAddressIDString
         

@@ -65,7 +65,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     private lazy var sendButton: InputViewButton = {
         let result = InputViewButton(icon: #imageLiteral(resourceName: "ic_sendMessage_new"), isSendButton: true, delegate: self)
         result.isHidden = true
-        result.accessibilityLabel = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "")
+        result.accessibilityLabel = NSLocalizedString("SEND", comment: "")
         return result
     }()
     private lazy var voiceMessageButtonContainer = container(for: voiceMessageButton)

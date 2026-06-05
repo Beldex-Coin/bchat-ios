@@ -54,7 +54,7 @@ class CallPermissionPopUp: BaseVC {
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice/Video Calls"
+        result.text = NSLocalizedString("VOICE_VIDEO_CALLS", comment: "")
         return result
     }()
     
@@ -64,14 +64,14 @@ class CallPermissionPopUp: BaseVC {
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .center
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "The current implementation of Voice/Video calls will expose your IP Address to the Beldex Foundation serves and the Calling/Called User."
+        result.text = NSLocalizedString("VOICE_VIDEO_CALLS_WARNING", comment: "")
         result.numberOfLines = 0
         return result
     }()
     
     private lazy var okButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Enable", for: .normal)
+        button.setTitle(NSLocalizedString("ENABLE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -83,7 +83,7 @@ class CallPermissionPopUp: BaseVC {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 0.5
@@ -121,7 +121,7 @@ class CallPermissionPopUp: BaseVC {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(okButton)
         
-        discriptionLabel.attributedText = "The current implementation of Voice/Video calls will expose your IP Address to the Beldex Foundation serves and the Calling/Called User.".withBoldText(text: "Voice/Video calls")
+//        discriptionLabel.attributedText = "The current implementation of Voice/Video calls will expose your IP Address to the Beldex Foundation serves and the Calling/Called User.".withBoldText(text: "Voice/Video calls")
         
         NSLayoutConstraint.activate([
             backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -165,4 +165,3 @@ class CallPermissionPopUp: BaseVC {
         self.dismiss(animated: true)
     }
 }
-

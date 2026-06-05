@@ -57,7 +57,7 @@ class NewChatPopUpVC: BaseVC {
     
     private lazy var letsBChatButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Let’s Bchat", for: .normal)
+        button.setTitle(NSLocalizedString("LETS_BCHAT", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -68,7 +68,7 @@ class NewChatPopUpVC: BaseVC {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 0.5
@@ -97,7 +97,7 @@ class NewChatPopUpVC: BaseVC {
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(letsBChatButton)
         
-        titleLabel.text = "New Chat"
+        titleLabel.text = NSLocalizedString("NEW_CHAT", comment: "")
         
         mainBackgroundViewCenterYConstraint = mainBackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         NSLayoutConstraint.activate([
@@ -182,8 +182,8 @@ class NewChatPopUpVC: BaseVC {
                         self?.letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
                         BNSBool.bnsName = ""
                         BNSBool.isFromBNS = false
-                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
-                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        let message = messageOrNil ?? NSLocalizedString(Alert.Alert_BChat_Invalid_Id_or_BNS_Name, comment: "")
+                        _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_Error, comment: ""), message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                         })
                     }
                 }

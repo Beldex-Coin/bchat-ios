@@ -169,7 +169,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
     
     private lazy var bchatLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("BCHAT_ID_NEW", comment: "")
+        result.text = NSLocalizedString("BCHAT_ID", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.semiOpenSans(ofSize: 14) : Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .left
@@ -645,7 +645,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
             UIAlertAction in
             self.openCamera(UIImagePickerController.SourceType.photoLibrary)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: UIAlertAction.Style.cancel) {
             UIAlertAction in
         }
         // Add the actions
@@ -687,7 +687,7 @@ class MyAccountViewController: BaseVC, UITextFieldDelegate, UIImagePickerControl
         nameTextField.becomeFirstResponder()
         nameIdLabel.font = Fonts.boldOpenSans(ofSize: 18)
         doneButton.backgroundColor = Colors.bothGreenColor
-        doneButton.setTitle("Done", for: .normal)
+        doneButton.setTitle(NSLocalizedString("DONE", comment: ""), for: .normal)
         doneButton.titleLabel?.font = Fonts.semiOpenSans(ofSize: 14)
         isEditingDisplayName = true
         nameTextField.isHidden = false

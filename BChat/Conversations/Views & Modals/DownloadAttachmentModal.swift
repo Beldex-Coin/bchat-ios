@@ -24,13 +24,13 @@ final class DownloadAttachmentModal : Modal {
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
         titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        titleLabel.text = String(format: NSLocalizedString("modal_download_attachment_title", comment: ""), name)
+        titleLabel.text = String(format: NSLocalizedString("TRUST", comment: "") + " " + name)
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
         messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
-        let message = String(format: NSLocalizedString("modal_download_attachment_explanation", comment: ""), name)
+        let message = String(format: NSLocalizedString("DOWNLOAD_MEDIA_CONFIRMATION", comment: "") + " " + name)
         let attributedMessage = NSMutableAttributedString(string: message)
         attributedMessage.addAttributes([ .font : Fonts.boldOpenSans(ofSize: Values.smallFontSize) ], range: (message as NSString).range(of: name))
         messageLabel.attributedText = attributedMessage
@@ -43,7 +43,7 @@ final class DownloadAttachmentModal : Modal {
         downloadButton.layer.cornerRadius = 17//Modal.buttonCornerRadius
         downloadButton.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         downloadButton.setTitleColor(Colors.text, for: .normal)
-        downloadButton.setTitle(NSLocalizedString("modal_download_button_title", comment: ""), for: .normal)
+        downloadButton.setTitle(NSLocalizedString("DOWNLOAD", comment: ""), for: .normal)
         if isDarkMode {
             downloadButton.backgroundColor = Colors.buttonBackground
         }else {

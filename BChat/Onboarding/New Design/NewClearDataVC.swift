@@ -37,7 +37,7 @@ class NewClearDataVC: BaseVC {
         result.textColor = Colors.smallTitleColor
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Delete data on this device"
+        result.text = NSLocalizedString("DELETE_DATA_ON_DEVICE", comment: "")
         return result
     }()
     
@@ -46,7 +46,7 @@ class NewClearDataVC: BaseVC {
         result.textColor = Colors.titleColor2
         result.font = Fonts.regularOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Delete Entire Account"
+        result.text = NSLocalizedString("DELETE_ENTIRE_ACCOUNT", comment: "")
         return result
     }()
     
@@ -55,7 +55,7 @@ class NewClearDataVC: BaseVC {
         result.textColor = Colors.smallTitleColor
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Delete data from the network"
+        result.text = NSLocalizedString("DELETE_DATA_FROM_NETWORK", comment: "")
         return result
     }()
     
@@ -83,7 +83,7 @@ class NewClearDataVC: BaseVC {
     
     private lazy var okButton: UIButton = {
         let button = UIButton()
-        button.setTitle("OK", for: .normal)
+        button.setTitle(NSLocalizedString("OK", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -95,7 +95,7 @@ class NewClearDataVC: BaseVC {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 0.5

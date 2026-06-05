@@ -35,7 +35,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
 
     private lazy var addMembersButton: Button = {
         let result = Button(style: .prominentFilled, size: .large)
-        result.setTitle("Add Members", for: .normal)
+        result.setTitle(NSLocalizedString("ADD_MEMBERS", comment: ""), for: .normal)
         result.addTarget(self, action: #selector(addMembers), for: .touchUpInside)
         result.contentEdgeInsets = UIEdgeInsets(top: 0, leading: Values.mediumSpacing, bottom: 0, trailing: Values.mediumSpacing)
         return result
@@ -71,7 +71,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         setUpGradientBackground()
         setUpNavBarStyle()
-        setNavBarTitle("Edit Group")
+        setNavBarTitle(NSLocalizedString("EDIT_GROUP", comment: ""))
         groupNameTextField.delegate = self
         let backButton = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
         backButton.tintColor = Colors.text
@@ -110,7 +110,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
         let membersLabel = UILabel()
         membersLabel.textColor = Colors.text
         membersLabel.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
-        membersLabel.text = "Members"
+        membersLabel.text = NSLocalizedString("MEMBERS", comment: "")
         // Add members button
         let hasContactsToAdd = !Set(ContactUtilities.getAllContacts()).subtracting(self.membersAndZombies).isEmpty
         if (!hasContactsToAdd) {
@@ -240,10 +240,10 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
     private func updateGroupName() {
         let name = groupNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         guard !name.isEmpty else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_missing_error", comment: ""))
+            return showError(title: NSLocalizedString("ENTER_GROUP_NAME", comment: ""))
         }
         guard name.count < 64 else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_too_long_error", comment: ""))
+            return showError(title: NSLocalizedString("SHORTER_GROUP_NAME", comment: ""))
         }
         isEditingGroupName = false
         self.name = name
@@ -251,7 +251,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
     }
 
     @objc private func addMembers() {
-        let title = "Add Members"
+        let title = NSLocalizedString("ADD_MEMBERS", comment: "")
         let userSelectionVC = UserSelectionVC(with: title, excluding: Set(membersAndZombies)) { [weak self] selectedUsers in
             guard let self = self else { return }
             var members = self.membersAndZombies
@@ -318,7 +318,7 @@ final class EditSecretGroupVC : BaseVC, UITableViewDataSource, UITableViewDelega
     // MARK: Convenience
     private func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
 }

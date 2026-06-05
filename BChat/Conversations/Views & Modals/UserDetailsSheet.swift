@@ -49,7 +49,7 @@ final class UserDetailsSheet : Sheet {
         bchatIDLabelContainer.layer.borderColor = isLightMode ? UIColor.black.cgColor : UIColor.white.cgColor
         // Copy button
         let copyButton = Button(style: .prominentOutline, size: .medium)
-        copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: .normal)
+        copyButton.setTitle(NSLocalizedString("COPY", comment: ""), for: .normal)
         copyButton.addTarget(self, action: #selector(copyBChatID), for: .touchUpInside)
         copyButton.set(.width, to: 160)
         // Stack view
@@ -64,7 +64,7 @@ final class UserDetailsSheet : Sheet {
     
     @objc private func copyBChatID() {
         UIPasteboard.general.string = bchatID
-        showToast(message: "Copied to clipboard", seconds: 1.0)
+        showToast(message: NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), seconds: 1.0)
         presentingViewController?.dismiss(animated: true) {
             NotificationCenter.default.post(name: .showInputViewNotification, object: nil)
         }

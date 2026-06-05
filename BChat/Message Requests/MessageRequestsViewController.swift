@@ -290,7 +290,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
     
    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
-        let delete = UIContextualAction(style: .destructive, title: "TXT_DELETE_TITLE", handler: { (action, view, success) in
+        let delete = UIContextualAction(style: .destructive, title: "DELETE", handler: { (action, view, success) in
           self.delete(thread)
          })
         delete.backgroundColor = Colors.destructive
@@ -365,7 +365,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                 }
             )
         })
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
     
@@ -373,7 +373,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
         guard let uniqueId: String = thread.uniqueId else { return }
         
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: ""), style: .destructive) { _ in
             Storage.write(
                 with: { [weak self] transaction in
                     Storage.shared.cancelPendingMessageSendJobs(for: uniqueId, using: transaction)
@@ -395,7 +395,7 @@ class MessageRequestsViewController: BaseVC, UITableViewDelegate, UITableViewDat
                 }
             )
         })
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
     

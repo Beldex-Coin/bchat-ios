@@ -31,22 +31,22 @@ extension ContextMenuVC {
         // MARK: - Actions
 
         static func reply(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("context_menu_reply", comment: "")
+            let title = NSLocalizedString("REPLY", comment: "")
             return Action(icon: UIImage(named: "reply"), title: title) { delegate?.reply(viewItem) }
         }
 
         static func copy(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("copy", comment: "")
+            let title = NSLocalizedString("COPY", comment: "")
             return Action(icon: UIImage(named: "copy 1"), title: title) { delegate?.copy(viewItem) }
         }
 
         static func copyBChatID(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("vc_conversation_settings_copy_bchat_id_button_title", comment: "")
+            let title = NSLocalizedString("COPY_BCHAT_ID", comment: "")
             return Action(icon: UIImage(named: "copy 1"), title: title) { delegate?.copyBChatID(viewItem) }
         }
 
         static func delete(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("Delete", comment: "")
+            let title = NSLocalizedString("DELETE", comment: "")
             return Action(icon: UIImage(named: "delete"), title: title) { delegate?.delete(viewItem) }
         }
         
@@ -56,7 +56,7 @@ extension ContextMenuVC {
             }
 
         static func save(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("context_menu_save", comment: "")
+            let title = NSLocalizedString("SAVE", comment: "")
             return Action(icon: UIImage(named: "ic_download"), title: title) { delegate?.save(viewItem) }
         }
 
@@ -71,7 +71,7 @@ extension ContextMenuVC {
         }
         
         static func messageDetail(_ viewItem: ConversationViewItem, _ delegate: ContextMenuActionDelegate?) -> Action {
-            let title = NSLocalizedString("context_menu_message_detail", comment: "")
+            let title = NSLocalizedString("MESSAGE_DETAILS", comment: "")
             return Action(icon: UIImage(named: "ic_message_detail"), title: title) { delegate?.messageDetail(viewItem) }
         }
     }

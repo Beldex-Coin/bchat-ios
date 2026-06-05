@@ -70,7 +70,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     
     private lazy var doneButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Done", for: .normal)
+        button.setTitle(NSLocalizedString("DONE", comment: ""), for: .normal)
         button.layer.cornerRadius = 13
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -112,7 +112,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
-        self.title = "Edit Group"
+        self.title = NSLocalizedString("EDIT_GROUP", comment: "")
         
         view.addSubViews(profilePictureImageView, displayNameLabel, tableView, nameTextField, editIconImage, bottomButtonView, doneButton)
         bottomButtonView.addSubview(applyChangesButton)
@@ -223,10 +223,10 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     private func updateGroupName() {
         let name = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         guard !name.isEmpty else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_missing_error", comment: ""))
+            return showError(title: NSLocalizedString("ENTER_GROUP_NAME", comment: ""))
         }
         guard name.count < 64 else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_too_long_error", comment: ""))
+            return showError(title: NSLocalizedString("SHORTER_GROUP_NAME", comment: ""))
         }
         self.name = name
         displayNameLabel.text = name
@@ -282,7 +282,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     }
     
     @objc func addMemberAction() {
-        let title = "Add Members"
+        let title = NSLocalizedString("ADD_MEMBERS", comment: "")
         let userSelectionVC = AddMembersViewController(with: title, excluding: Set(membersAndZombies)) { [weak self] selectedUsers in
             guard let self = self else { return }
             var members = self.membersAndZombies
@@ -398,7 +398,7 @@ class EditGroupViewController: BaseVC, UITableViewDelegate, UITableViewDataSourc
     // MARK: Convenience
     private func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     

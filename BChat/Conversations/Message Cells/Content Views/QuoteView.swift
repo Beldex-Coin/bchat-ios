@@ -212,7 +212,7 @@ final class QuoteView : UIView {
             let isImage = MIMETypeUtil.isImage(attachments.first!.contentType ?? "")
             let isVideo = MIMETypeUtil.isVideo(attachments.first!.contentType ?? "")
             if (body ?? "").isEmpty {
-                body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : (isImage ? "Image" : (isVideo ? "Video" : "Document")))
+                body = (thumbnail != nil) ? "Image" : (isAudio ? "Audio" : (isImage ? "Image" : (isVideo ? "Video" : NSLocalizedString("DOCUMENT", comment: ""))))
                 if thumbnailType?.lowercased().range(of:"video") != nil {
                     body = "Video"
                 }
@@ -295,7 +295,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = groupThread.isOpenGroup ? .openGroup : .regular
-            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? NSLocalizedString("YOU", comment: "") : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)
@@ -313,7 +313,7 @@ final class QuoteView : UIView {
             let authorLabel = UILabel()
             authorLabel.lineBreakMode = .byTruncatingTail
             let context: Contact.Context = .regular
-            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? "You" : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
+            authorLabel.text = authorID == getUserHexEncodedPublicKey() ? NSLocalizedString("YOU", comment: "") : Storage.shared.getContact(with: authorID)?.displayName(for: context)?.capitalized ?? authorID
             authorLabel.textColor = textColor
             authorLabel.font = Fonts.semiOpenSans(ofSize: 12)
             let authorLabelSize = authorLabel.systemLayoutSizeFitting(availableSpace)

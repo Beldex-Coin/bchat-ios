@@ -297,7 +297,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         var notificationBody: String?
         
         if callInfoMessage.callState == .permissionDenied {
-            notificationBody = String(format: "modal_call_missed_tips_explanation".localized(), thread.name(with: transaction))
+            notificationBody = String(format: "CALL_MISSED_PERMISSION".localized(), thread.name(with: transaction))
         }
         
         DispatchQueue.main.async {

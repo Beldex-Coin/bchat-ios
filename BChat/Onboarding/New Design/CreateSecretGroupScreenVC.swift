@@ -16,7 +16,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(12)
         result.attributedPlaceholder = NSAttributedString(
-            string: "Enter Group name",
+            string: NSLocalizedString("ENTER_SECRET_GROUP_NAME", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         return result
@@ -32,7 +32,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(
-            string: "Search Contact",
+            string: NSLocalizedString("SEARCH_CONTACT", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         result.font = Fonts.regularOpenSans(ofSize: 14)
@@ -100,7 +100,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     
     private lazy var createButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Create", for: .normal)
+        button.setTitle(NSLocalizedString("CREATE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
@@ -124,7 +124,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         
         view.backgroundColor = Colors.viewBackgroundColorSocialGroup//Colors.mainBackGroundColor4
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Secret Group"
+        self.title = NSLocalizedString("SECRET_GROUP", comment: "")
         
         view.addSubViews(groupNameTextField, separatorView, searchTextField, bottomButtonView, searchImageView)
         bottomButtonView.addSubview(createButton)
@@ -406,17 +406,17 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
     @objc private func createButtonTapped() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             presentAlert(alert)
         }
         guard let name = groupNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines), name.count > 0 else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_missing_error", comment: ""))
+            return showError(title: NSLocalizedString("ENTER_GROUP_NAME", comment: ""))
         }
         guard name.count < 64 else {
-            return showError(title: NSLocalizedString("vc_create_closed_group_group_name_too_long_error", comment: ""))
+            return showError(title: NSLocalizedString("SHORTER_GROUP_NAME", comment: ""))
         }
         guard selectedContacts.count >= 1 else {
-            return showError(title: "Please pick at least 1 group member")
+            return showError(title: "PICK_GROUP_MEMBER")
         }
         guard selectedContacts.count < 100 else { // Minus one because we're going to include self later
             return showError(title: NSLocalizedString("vc_create_closed_group_too_many_group_members_error", comment: ""))
@@ -438,7 +438,7 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
                     let title = "Couldn't Create Group"
                     let message = "Please check your internet connection and try again."
                     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                     self?.presentAlert(alert)
                 }
             })

@@ -153,7 +153,7 @@ NSString *const kOWSSoundsStorageGlobalNotificationKey = @"kOWSSoundsStorageGlob
 
         // Other
         case OWSSound_None:
-            return NSLocalizedString(@"SOUNDS_NONE",
+            return NSLocalizedString(@"NONE",
                 @"Label for the 'no sound' option that allows users to disable sounds for notifications, "
                 @"etc.");
     }

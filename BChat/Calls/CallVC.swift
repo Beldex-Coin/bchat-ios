@@ -137,7 +137,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 24)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice Call"
+        result.text = NSLocalizedString("VOICE_CALL", comment: "")
         return result
     }()
     
@@ -746,7 +746,7 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
         self.bChatCall.hasConnectedDidChange = {
             DispatchQueue.main.async {
                 CallRingTonePlayer.shared.stopPlayingRingTone()
-                self.callDurationLabel.text = "Connected"
+                self.callDurationLabel.text = NSLocalizedString("CONNECTED", comment: "")
                 self.updateTimer()
                 self.incomingCallLabel.isHidden = true
                 self.callDurationLabel.isHidden = false
@@ -813,7 +813,9 @@ final class CallVC: BaseVC, VideoPreviewDelegate, RTCVideoViewDelegate {
             self.hangUpButtonSecond.isHidden = false
             self.bottomView.isHidden = false
             self.backButton.isHidden = false
-            self.voiceCallLabel.text = self.bChatCall.isVideoEnabled ? "Video Call" : "Voice Call"
+            self.voiceCallLabel.text = self.bChatCall.isVideoEnabled
+                ? "Video Call"
+                : NSLocalizedString("VOICE_CALL", comment: "")
                 
             NotificationCenter.default.post(name: .connectingCallShowViewNotification, object: nil)
         }

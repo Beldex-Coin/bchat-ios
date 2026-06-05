@@ -53,7 +53,7 @@ class PinViewController: BaseVC {
     
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Next", for: .normal)
+        button.setTitle(NSLocalizedString("NEXT", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -207,18 +207,18 @@ class PinViewController: BaseVC {
         switch flowStep {
         case .createPin:
             flowStep = .createPin
-            title = "Create Password"
-            pinLabel.text = "Enter your PIN"
+            title = NSLocalizedString("CREATE_PASSWORD", comment: "")
+            pinLabel.text = NSLocalizedString("ENTER_PIN", comment: "")
             
         case .enterNewPin:
             flowStep = .enterOldPin
-            title = "Change Password"
-            pinLabel.text = "Enter Old PIN"
+            title = NSLocalizedString("CHANGE_PASSWORD", comment: "")
+            pinLabel.text = NSLocalizedString("ENTER_OLD_PIN", comment: "")
             
         case .verifyPin:
             flowStep = .verifyPin
-            title = "Verify PIN"
-            pinLabel.text = "Enter your 4 digit PIN"
+            title = NSLocalizedString("VERIFY_PIN", comment: "")
+            pinLabel.text = NSLocalizedString("ENTER_4_DIGIT_PIN", comment: "")
             
         case .enterOldPin, .confirmNewPin, .confirmCreatePin:
             break
@@ -283,7 +283,7 @@ class PinViewController: BaseVC {
         case .enterNewPin:
             firstPinEntry = currentPin
             flowStep = .confirmNewPin
-            pinLabel.text = "Re-enter your PIN"
+            pinLabel.text = NSLocalizedString("RE_ENTER_PIN", comment: "")
             resetPinUI()
             
         case .confirmNewPin:
@@ -292,7 +292,7 @@ class PinViewController: BaseVC {
         case .createPin:
             firstPinEntry = currentPin
             flowStep = .confirmCreatePin
-            pinLabel.text = "Re-enter your PIN"
+            pinLabel.text = NSLocalizedString("RE_ENTER_PIN", comment: "")
             resetPinUI()
             
         case .confirmCreatePin:
@@ -315,7 +315,7 @@ class PinViewController: BaseVC {
         if currentPin == SaveUserDefaultsData.BChatPassword {
             gotoSeedView()
         } else {
-            showErrorMessage(Alert.Alert_BChat_Enter_Pin_Message2)
+            showErrorMessage(NSLocalizedString(Alert.Alert_BChat_Enter_Pin_Message2, comment: ""))
             resetPinUI()
         }
     }
@@ -324,10 +324,10 @@ class PinViewController: BaseVC {
     private func validateOldPin() {
         if currentPin == SaveUserDefaultsData.BChatPassword {
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            pinLabel.text = NSLocalizedString("ENTER_NEW_PIN", comment: "")
             resetPinUI()
         } else {
-            showErrorMessage(Alert.Alert_BChat_Enter_Pin_Message2)
+            showErrorMessage(NSLocalizedString(Alert.Alert_BChat_Enter_Pin_Message2, comment: ""))
             resetPinUI()
         }
     }
@@ -337,20 +337,20 @@ class PinViewController: BaseVC {
         guard let firstPin = firstPinEntry else { return }
 
         if currentPin == SaveUserDefaultsData.BChatPassword {
-            showErrorMessage("New password should not be same as old password.")
+            showErrorMessage(NSLocalizedString("NEW_PASSWORD_NOT_SAME", comment: ""))
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            pinLabel.text = NSLocalizedString("ENTER_NEW_PIN", comment: "")
             resetPinUI()
             return
         }
 
         if currentPin == firstPin {
             SaveUserDefaultsData.BChatPassword = currentPin
-            showConfirmationModal("Your password has been changed successfully!")
+            showConfirmationModal(NSLocalizedString("PASSWORD_CHANGED_SUCCESSFULLY", comment: ""))
         } else {
-            showErrorMessage("PIN do not match.")
+            showErrorMessage(NSLocalizedString("PASSWORD_DOES_NOT_MATCH", comment: ""))//"PIN do not match."
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            pinLabel.text = NSLocalizedString("ENTER_NEW_PIN", comment: "")
             resetPinUI()
         }
     }
@@ -370,9 +370,9 @@ class PinViewController: BaseVC {
                 gotoHome()
             }
         } else {
-            showErrorMessage("PIN do not match.")
+            showErrorMessage(NSLocalizedString("PASSWORD_DOES_NOT_MATCH", comment: ""))//"PIN do not match."
             flowStep = .createPin
-            pinLabel.text = "Enter your PIN"
+            pinLabel.text = NSLocalizedString("ENTER_NEW_PIN", comment: "")
             resetPinUI()
         }
     }
@@ -409,7 +409,7 @@ class PinViewController: BaseVC {
     
     // Show error msg
     private func showErrorMessage(_ message: String) {
-        _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: { })
+        _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_title, comment: ""), message: String(format: message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: { })
     }
     
     // Show confirmation modal
@@ -421,7 +421,7 @@ class PinViewController: BaseVC {
                 body: .text(""),
                 showCondition: .disabled,
                 confirmEnabled: false,
-                cancelTitle: "OK",
+                cancelTitle: NSLocalizedString("OK", comment: ""),
                 cancelEnabled: true,
                 onConfirm: { _ in
                 }, dismissHandler: {

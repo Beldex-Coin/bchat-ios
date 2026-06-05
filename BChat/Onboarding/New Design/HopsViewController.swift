@@ -15,7 +15,7 @@ class HopsViewController: BaseVC {
         result.lineBreakMode = .byWordWrapping
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.22
-        result.attributedText = NSMutableAttributedString(string: "BChat masks your IP address by routing your messages through several masternodes in the Beldex decentralized network. your connection is currently routed through the following masternodes", attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        result.attributedText = NSMutableAttributedString(string: NSLocalizedString("BCHAT_MASKS_IP", comment: ""), attributes: [NSAttributedString.Key.paragraphStyle: paragraphStyle])
         return result
     }()
     
@@ -32,7 +32,7 @@ class HopsViewController: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "You"
+        result.text = NSLocalizedString("YOU", comment: "")
         return result
     }()
     
@@ -69,7 +69,7 @@ class HopsViewController: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Entry Node"
+        result.text = NSLocalizedString("ENTRY_NODE", comment: "")
         return result
     }()
     
@@ -105,7 +105,7 @@ class HopsViewController: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Masternode"
+        result.text = NSLocalizedString("MASTER_NODE", comment: "")
         return result
     }()
     
@@ -144,7 +144,7 @@ class HopsViewController: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Masternode"
+        result.text = NSLocalizedString("MASTER_NODE", comment: "")
         return result
     }()
     
@@ -180,7 +180,7 @@ class HopsViewController: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Destination"
+        result.text = NSLocalizedString("DESTINATION", comment: "")
         return result
     }()
     
@@ -194,7 +194,7 @@ class HopsViewController: BaseVC {
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
-        self.title = "Hops"
+        self.title = NSLocalizedString("HOPS", comment: "")
         
         view.addSubViews(infoLabel, youLabel, filledDotView1, lineView1, borderDotView1, entryNodeLabel, entryNodeInfoLabel, lineView2, filledDotView2, masterNodeLabel1, masterNodeInfoLabel1, lineView3, borderDotView2, masterNodeLabel2, masterNodeInfoLabel2, lineView4, filledDotView3, destinationLabel)
         
@@ -266,7 +266,7 @@ class HopsViewController: BaseVC {
             destinationLabel.leadingAnchor.constraint(equalTo: youLabel.leadingAnchor, constant: 0),
         ])
         if !NetworkReachabilityStatus.isConnectedToNetworkSignal() {
-            showToast(message: "Please check your internet connection", seconds: 1.0)
+            showToast(message: NSLocalizedString("CHECK_INTERNET_CONNECTION", comment: ""), seconds: 1.0)
         }
         update()
         registerObservers()
@@ -309,7 +309,7 @@ class HopsViewController: BaseVC {
 
     private func getPathRow(snode: Snode, location: LineView2.Location, dotAnimationStartDelay: Double, dotAnimationRepeatInterval: Double, isGuardSnode: Bool) {
         let country = IP2Country.isInitialized ? (IP2Country.shared.countryNamesCache[snode.ip] ?? "Resolving...") : "Resolving..."
-        let title = isGuardSnode ? NSLocalizedString("vc_path_guard_node_row_title", comment: "") : NSLocalizedString("Master Node", comment: "")
+        let title = isGuardSnode ? NSLocalizedString("ENTRY_NODE", comment: "") : NSLocalizedString("MASTER_NODE", comment: "")
         
         
         count += 1

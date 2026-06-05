@@ -64,7 +64,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
             NSAttributedString.Key.foregroundColor: Colors.titleColor,
             NSAttributedString.Key.font: Fonts.regularOpenSans(ofSize: 18)
         ]
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Display name", comment: ""), attributes: attributes)
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("DISPLAY_NAME", comment: ""), attributes: attributes)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
@@ -84,7 +84,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     
     private lazy var doneButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Done", for: .normal)
+        button.setTitle(NSLocalizedString("DONE", comment: ""), for: .normal)
         button.layer.cornerRadius = 13
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -804,7 +804,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     
     func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
@@ -1789,10 +1789,10 @@ extension ChatSettingsVC: UITableViewDelegate, UITableViewDataSource {
                             let alert = UIAlertController(title: fullDisplayName, message: NSLocalizedString("This user will be reported to BChat Team.", comment: ""), preferredStyle: .alert)
                             
                             // Add Buttons
-                            let yesButton = UIAlertAction(title: NSLocalizedString("Ok", comment: ""), style: .default) { _ in
+                            let yesButton = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
                                 // Handle your 'Ok' button action here
                             }
-                            let noButton = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
+                            let noButton = UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default) { _ in
                                 // Handle 'Cancel' button action here
                             }
                             

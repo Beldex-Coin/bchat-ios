@@ -13,7 +13,7 @@ final class LanguageSelectionViewController: BaseVC {
         result.backgroundColor = Colors.mainBackGroundColor2
         result.separatorStyle = .none
         result.register(LanguageTableViewCell.self, forCellReuseIdentifier: LanguageTableViewCell.identifier)
-        result.showsVerticalScrollIndicator = false
+        result.showsVerticalScrollIndicator = true
         result.dataSource = self
         result.delegate = self
         return result

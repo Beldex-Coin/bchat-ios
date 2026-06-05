@@ -254,10 +254,10 @@ CGFloat kIconViewLength = 24;
     if ([self.thread isKindOfClass:[TSContactThread class]]) {
         title = @"Contact Info";//NSLocalizedString(@"Settings", @"");
     } else {
-        title = @"Group Info";//NSLocalizedString(@"Group Settings", @"");
+        title = NSLocalizedString(@"GROUP_INFO", @"");
     }
     if (self.thread.isNoteToSelf) {
-        title = @"Note to self";
+        title = NSLocalizedString(@"NOTE_TO_SELF", @"");
     }
     
     [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:title customBackButton:YES];

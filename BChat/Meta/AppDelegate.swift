@@ -77,17 +77,17 @@ extension AppDelegate {
         let userDefaults = UserDefaults.standard
         guard !userDefaults[.hasSeenCallMissedTips] else { return }
         guard let presentingVC = CurrentAppContext().frontmostViewController() else { preconditionFailure() }
-        let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
+        let message = String(format: NSLocalizedString("CALL_MISSED_PERMISSION", comment: ""), caller)
         
         // show confirmation modal
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
                 modalType: .missedCall,
-                title: "Call Missed!",
+                title: NSLocalizedString("CALL_MISSED", comment: ""),
                 body: .text(message),
                 showCondition: .disabled,
                 confirmEnabled: false,
-                cancelTitle: "OK",
+                    cancelTitle: NSLocalizedString("OK", comment: ""),
                 cancelEnabled: true,
                 onConfirm: { _ in
                 }, dismissHandler: {

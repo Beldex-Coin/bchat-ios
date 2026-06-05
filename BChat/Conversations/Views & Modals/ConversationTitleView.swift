@@ -80,7 +80,7 @@ final class ConversationTitleView : UIView {
             return thread.groupModel.groupName!
         }
         else if thread.isNoteToSelf() {
-            return "Note to Self"
+            return NSLocalizedString("NOTE_TO_SELF", comment: "")
         }
         else {
             let bchatID = (thread as! TSContactThread).contactBChatID()
@@ -140,7 +140,7 @@ final class ConversationTitleView : UIView {
                 default: break
                 }
                 if let userCount = userCount {
-                    return NSAttributedString(string: "\(userCount) members")
+                    return NSAttributedString(string: "\(userCount) " + NSLocalizedString("MEMBERS", comment: ""))
                 }
             }
         }

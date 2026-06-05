@@ -84,7 +84,7 @@ final class JoinOpenGroupModal : Modal {
     @objc private func joinOpenGroup() {
         guard let (room, server, publicKey) = OpenGroupManagerV2.parseV2OpenGroup(from: url) else {
             let alert = UIAlertController(title: "Couldn't Join", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             return presentingViewController!.presentAlert(alert)
         }
         presentingViewController!.dismiss(animated: true, completion: nil)
@@ -96,7 +96,7 @@ final class JoinOpenGroupModal : Modal {
             }
             .catch(on: DispatchQueue.main) { error in
                 let alert = UIAlertController(title: "Couldn't Join", message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 presentingViewController.presentAlert(alert)
             }
         }

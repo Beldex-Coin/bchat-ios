@@ -37,7 +37,7 @@ public extension UISearchBar {
         if UIScreen.main.traitCollection.userInterfaceStyle == .dark && isLightMode {
             searchTextField.textColor = Colors.darkThemeTextBoxColor
         }
-        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Search", comment: ""), attributes: [ .foregroundColor : Colors.searchBarPlaceholder ])
+        searchTextField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("SEARCH", comment: ""), attributes: [ .foregroundColor : Colors.searchBarPlaceholder ])
         searchTextField.becomeFirstResponder()
         setPositionAdjustment(UIOffset(horizontal: 4, vertical: 0), for: UISearchBar.Icon.search)
         searchTextPositionAdjustment = UIOffset(horizontal: 2, vertical: 0)

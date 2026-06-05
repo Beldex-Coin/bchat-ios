@@ -38,10 +38,10 @@ extension ContextMenuVC {
             let titleLabel = UILabel()
             titleLabel.text = action.title
             titleLabel.textColor =  isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
-            if action.title == "Delete" {
+            if action.title == NSLocalizedString("DELETE", comment: "") {
                 titleLabel.textColor = Colors.bothRedColor
             }
-            if action.title == "Save" {
+            if action.title == NSLocalizedString("SAVE", comment: "") {
                 iconImageView.tintColor = isLightMode ? UIColor(hex: 0x2C2C3B) : UIColor(hex: 0xF8F8F8)
             }
             titleLabel.font = Fonts.regularOpenSans(ofSize: 12)

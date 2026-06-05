@@ -6,7 +6,7 @@ final class SendSeedModal : Modal {
         let result = UILabel()
         result.textColor = Colors.text
         result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        result.text = NSLocalizedString("modal_send_seed_title", comment: "")
+        result.text = NSLocalizedString("WARNING", comment: "")
         result.textAlignment = .center
         return result
     }()
@@ -15,7 +15,7 @@ final class SendSeedModal : Modal {
         let result = UILabel()
         result.textColor = Colors.text
         result.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
-        result.text = NSLocalizedString("modal_send_seed_explanation", comment: "")
+        result.text = NSLocalizedString("RECOVERY_SEED_WARNING", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -31,7 +31,7 @@ final class SendSeedModal : Modal {
         }
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? Colors.destructive : Colors.text, for: UIControl.State.normal)
-        result.setTitle(NSLocalizedString("modal_send_seed_send_button_title", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("SEND", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(sendSeed), for: .touchUpInside)
         return result
     }()

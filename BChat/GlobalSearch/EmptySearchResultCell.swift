@@ -10,7 +10,7 @@ class EmptySearchResultCell: UITableViewCell {
         result.textAlignment = .center
         result.numberOfLines = 3
         result.textColor = Colors.text
-        result.text = NSLocalizedString("CONVERSATION_SEARCH_NO_RESULTS", comment: "")
+        result.text = NSLocalizedString("NO_MATCHES_FOUND", comment: "")
         return result
     }()
     

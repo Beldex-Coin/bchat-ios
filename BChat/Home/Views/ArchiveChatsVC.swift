@@ -44,7 +44,7 @@ class ArchiveChatsVC: BaseVC {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
-        self.title = "Archived Chats"
+        self.title = NSLocalizedString("ARCHIVED_CHATS", comment: "")
         setUpTopCornerRadius()
         view.addSubview(infoLabel)
         NSLayoutConstraint.activate([

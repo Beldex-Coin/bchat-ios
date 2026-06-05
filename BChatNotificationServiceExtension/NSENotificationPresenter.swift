@@ -148,7 +148,7 @@ public class NSENotificationPresenter: NSObject, NotificationsProtocol {
         notificationContent.title = callInfoMessage.previewText(with: transaction)
         notificationContent.body = ""
         if callInfoMessage.callState == .permissionDenied {
-            notificationContent.body = String(format: "modal_call_missed_tips_explanation".localized(), thread.name(with: transaction))
+            notificationContent.body = String(format: "CALL_MISSED_PERMISSION".localized(), thread.name(with: transaction))
         }
         
         addNotifcationRequest(identifier: UUID().uuidString, notificationContent: notificationContent, trigger: nil)

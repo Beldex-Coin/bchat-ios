@@ -19,13 +19,27 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    let sectionNames = ["App Access", "Communication"]
+    let sectionNames = [NSLocalizedString("APP_ACCESS", comment: ""), NSLocalizedString("COMMUNICATION", comment: "")]
     
     var appAccessTitleArray = ["Screen Lock","Disable Preview in app switcher"]
     var appAccessDescArray = ["Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications.","Prevent BChat previews from appearing in the app switcher."]
     
-    var communicationTitleArray = ["Read receipts","Type indicators","Send link previews","Voice and video calls","Keep chats archived","Clear conversation History"]
-    var communicationDescArray = ["if read receipts are disabled, you won’t be able to see read receipts from others","if typing indicators are disabled, you won’t be able to see typing indicators from others.","Previews are supported for imgur, instagram, pinterest, Reddit, and Youtube links.","Allow access to accept voice and video calls from other users.","Archived chats will remain archived when you receive a new message", ""]
+    var communicationTitleArray = [
+        NSLocalizedString("READ_RECEIPTS", comment: ""),
+        NSLocalizedString("TYPING_INDICATORS", comment: ""),
+        NSLocalizedString("SEND_LINK_PREVIEWS", comment: ""),
+        NSLocalizedString("VOICE_VIDEO_CALLS", comment: ""),
+        "Keep chats archived",
+        "Clear conversation History"
+    ]
+    var communicationDescArray = [
+        NSLocalizedString("READ_RECEIPTS_DESCRIPTION", comment: ""),
+        NSLocalizedString("TYPING_INDICATORS_DESCRIPTION", comment: ""),
+        NSLocalizedString("LINK_PREVIEWS_DESCRIPTION", comment: ""),
+        NSLocalizedString("VOICE_VIDEO_CALLS_DESCRIPTION", comment: ""),
+        "Archived chats will remain archived when you receive a new message",
+        ""
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +48,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Settings"
+        self.title = NSLocalizedString("SETTINGS", comment: "")
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleCallPermissionCancelTapped), name: .reloadSettingScreenTableNotification, object: nil)
         
@@ -247,7 +261,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                     }
                     alert.addAction(action)
                 }
-                let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button title"),
+                let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: "Cancel button title"),
                                                  style: .cancel,
                                                  handler: nil)
                 alert.addAction(cancelAction)

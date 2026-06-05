@@ -53,7 +53,7 @@ class ArchiveViewCell: UITableViewCell {
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Archived Chats"
+        result.text = NSLocalizedString("ARCHIVED_CHATS", comment: "")
         return result
     }()
     

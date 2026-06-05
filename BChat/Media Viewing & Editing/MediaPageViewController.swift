@@ -128,7 +128,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     /// All Media Button
     private lazy var allMediaButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("All media", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("ALL_MEDIA", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(Colors.titleColor, for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
         result.addTarget(self, action: #selector(didPressAllMediaButton), for: .touchUpInside)
@@ -143,7 +143,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
     /// Delete Button
     private lazy var deleteButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("Delete", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("DELETE", comment: ""), for: UIControl.State.normal)
         result.setTitleColor(.red, for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: isIPhone5OrSmaller ? 12 : 12)
         result.addTarget(self, action: #selector(didPressDelete), for: .touchUpInside)
@@ -443,7 +443,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             DispatchQueue.main.async {
                 // Optionally, show a success message to the user
                 let alert = UIAlertController(title: "Downloaded successfully", message: "", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
         }
@@ -519,7 +519,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
                 DispatchQueue.main.async {
                     // Optionally, show a success message to the user
                     let alert = UIAlertController(title: "Download Complete", message: "The file has been downloaded and saved to your documents.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
             } catch {
@@ -614,7 +614,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
         }
 
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: NSLocalizedString("delete_message_for_me", comment: ""),
+        let deleteAction = UIAlertAction(title: NSLocalizedString("DELETE_JUST_FOR_ME", comment: ""),
                                          style: .destructive) { _ in
                                             let deletedItem = currentViewController.galleryItem
                                             mediaGalleryDataSource.delete(items: [deletedItem], initiatedBy: self)
@@ -918,7 +918,7 @@ class MediaPageViewController: UIPageViewController, UIPageViewControllerDataSou
             let context = Contact.context(for: incomingMessage.thread)
             return Storage.shared.getContact(with: publicKey)?.displayName(for: context) ?? publicKey
         case is TSOutgoingMessage:
-            return NSLocalizedString("MEDIA_GALLERY_SENDER_NAME_YOU", comment: "Short sender label for media sent by you")
+            return NSLocalizedString("YOU", comment: "Short sender label for media sent by you")
         default:
             owsFailDebug("Unknown message type: \(type(of: message))")
             return ""

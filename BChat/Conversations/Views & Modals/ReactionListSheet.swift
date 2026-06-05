@@ -75,7 +75,7 @@ final class ReactionListSheet : BaseVC {
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Reactions"
+        result.text = NSLocalizedString("REACTIONS", comment: "")
         return result
     }()
     

@@ -30,7 +30,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         result.textColor = Colors.titleColor3
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Important"
+        result.text = NSLocalizedString("IMPORTANT", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
@@ -40,7 +40,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("NEVER_SHARE_YOUR_SEED_WITH_ANYONE", comment: "")
+        result.text = NSLocalizedString("NEVER_SHARE_SEED", comment: "")
         result.adjustsFontSizeToFitWidth = true
         return result
     }()
@@ -50,7 +50,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         result.textColor = Colors.cancelButtonTitleColor
         result.font = Fonts.regularOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION", comment: "")
+        result.text = NSLocalizedString("SEED_WARNING", comment: "")
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -63,7 +63,7 @@ class NewAlertRecoverySeedVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("RECOVERY_SEED_DISCRIPTION2", comment: "")
+        result.text = NSLocalizedString("SURROUNDINGS_WARNING", comment: "")
         result.adjustsFontSizeToFitWidth = true
         result.lineBreakMode = .byWordWrapping
         result.numberOfLines = 0
@@ -73,7 +73,7 @@ class NewAlertRecoverySeedVC: BaseVC {
     
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Yes, I’m Safe :)", for: .normal)
+        button.setTitle(NSLocalizedString("YES_IM_SAFE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -89,7 +89,7 @@ class NewAlertRecoverySeedVC: BaseVC {
 
         view.backgroundColor = Colors.cancelButtonBackgroundColor
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Recovery Seed"
+        self.title = NSLocalizedString("RECOVERY_SEED", comment: "")
         
         view.addSubview(backGroundView)
         backGroundView.addSubViews(iconImageView, importantLabel, label1, label2, label3, nextButton)

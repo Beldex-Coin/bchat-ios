@@ -37,14 +37,14 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         let result = UILabel()
         result.textColor = Colors.text
         result.font = Fonts.semiOpenSans(ofSize: 14)
-        result.text = NSLocalizedString("DISPLAY_NAME_NEW", comment: "")
+        result.text = NSLocalizedString("DISPLAY_NAME", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         return result
     }()
     private lazy var displayNameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.layer.borderColor = Colors.text.cgColor
         result.backgroundColor = UIColor(hex: 0x1C1C26)
@@ -58,7 +58,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
-        result.setTitle(NSLocalizedString("RESTORE_NEW", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("RESTORE", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
@@ -72,7 +72,7 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "Restore from seed"
+        self.title = NSLocalizedString("RESTORE_FROM_SEED", comment: "")
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
         view.backgroundColor = UIColor(hex: 0x11111A)
@@ -248,15 +248,15 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
         }
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             presentAlert(alert)
         }
         let displayName = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         guard !displayName.isEmpty else {
-            return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+            return showError(title: NSLocalizedString("PLEASE_PICK_DISPLAY_NAME", comment: ""))
         }
         guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-            return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+            return showError(title: NSLocalizedString("PLEASE_PICK_SHORTER_DISPLAY_NAME", comment: ""))
         }
         OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: { }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result
     }
@@ -292,19 +292,19 @@ class RestoreNameVC: BaseVC,UITextFieldDelegate {
     @objc private func restoreButtonAction() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             presentAlert(alert)
         }
         if displayNameTextField.text!.isEmpty {
             let displayName = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_DISPLAY_NAME", comment: ""))
             }
         }
         if displayNameTextField.text!.count >= 26 {
             let displayName = displayNameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_SHORTER_DISPLAY_NAME", comment: ""))
             }
         }
         if displayNameTextField.text != "" {

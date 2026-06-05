@@ -63,6 +63,8 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                     menuItem = .messageRequests
                 case .recoverySeed:
                     menuItem = .recoverySeed
+                case .language:
+                    menuItem = .language
                 case .reportIssue:
                     menuItem = .reportIssue
                 case .help:
@@ -100,6 +102,9 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                 case .recoverySeed:
                     let viewController = NewAlertRecoverySeedVC()
                     navigationController?.pushViewController(viewController, animated: true)
+                case .language:
+                    let vc = LanguageSelectionViewController()
+                    navigationController?.pushViewController(vc, animated: true)
                 case .reportIssue:
                     let thread = TSContactThread.getOrCreateThread(contactBChatID: "\(bchat_report_IssueID)")
                     SignalApp.shared().presentConversation(for: thread, action: .compose, animated: true)
@@ -108,7 +113,7 @@ extension SideMenuViewController: UITableViewDelegate, UITableViewDataSource {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
                     }
                 case .invite:
-                    let invitation = "\(bchat_Invite_Message)" + "\(getUserHexEncodedPublicKey()) !"
+                    let invitation = NSLocalizedString("INVITE_MESSAGE", comment: "") + " https://apps.apple.com/kg/app/bchat-messenger/id1626066143" + " My Chat ID is " + "\(getUserHexEncodedPublicKey()) !"
                     let shareVC = UIActivityViewController(activityItems: [ invitation ], applicationActivities: nil)
                     navigationController?.present(shareVC, animated: true, completion: nil)
                 case .about:

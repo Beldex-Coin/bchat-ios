@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
     [self updateTableContents];
     [self updateNavigationItems];
     
-    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"Sound", @"") customBackButton:NO];
+    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"SOUND", @"") customBackButton:NO];
     self.tableView.backgroundColor = UIColor.clearColor;
 }
 
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
 
     OWSTableSection *soundsSection = [OWSTableSection new];
     soundsSection.headerTitle = NSLocalizedString(
-        @"NOTIFICATIONS_SECTION_SOUNDS", @"Label for settings UI that allows user to change the notification sound.");
+        @"SOUND", @"Label for settings UI that allows user to change the notification sound.");// Sounds
 
     NSArray<NSNumber *> *allSounds = [OWSSounds allNotificationSounds];
     for (NSNumber *nsValue in allSounds) {

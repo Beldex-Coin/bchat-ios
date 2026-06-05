@@ -88,7 +88,7 @@ final class OutgoingCallTableViewCell: UITableViewCell {
         result.textColor = Colors.callCellTitle
         result.font = Fonts.boldOpenSans(ofSize: 11)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice call"
+        result.text = NSLocalizedString("VOICE_CALL", comment: "")
         return result
     }()
     

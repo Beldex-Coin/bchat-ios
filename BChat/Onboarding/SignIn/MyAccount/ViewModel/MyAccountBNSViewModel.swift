@@ -46,19 +46,19 @@ enum MyAccountBNSItem {
         let aKey: String
         switch self {
             case .hops:
-                aKey = "Hops"
+                aKey = NSLocalizedString("MY_ACCOUNT_HOPS", comment: "")
             case .changePassword:
-                aKey = "Change Password"
+                aKey = NSLocalizedString("MY_ACCOUNT_CHANGE_PASSWORD", comment: "")
             case .blockedContacts:
-                aKey = "Blocked Contacts"
+                aKey = NSLocalizedString("MY_ACCOUNT_BLOCKED_CONTACTS", comment: "")
             case .clearData:
-                aKey = "Clear Data"
+                aKey = NSLocalizedString("MY_ACCOUNT_CLEAR_DATA", comment: "")
             case .feedback:
-                aKey = "Feedback"
+                aKey = NSLocalizedString("MY_ACCOUNT_FEEDBACK", comment: "")
             case .faq:
-                aKey = "FAQ"
+                aKey = NSLocalizedString("MY_ACCOUNT_FAQ", comment: "")
             case .changelog:
-                aKey = "Changelog"
+                aKey = NSLocalizedString("MY_ACCOUNT_CHANGELOG", comment: "")
         }
         return aKey
     }

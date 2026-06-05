@@ -76,7 +76,7 @@ class MessageDetailsVC: BaseVC {
     
     private lazy var sentLabel: UILabel = {
         let result = UILabel()
-        result.text = "Sent"
+        result.text = NSLocalizedString("SENT", comment: "")
         result.textColor = Colors.titleColor3
         result.font = Fonts.semiOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
@@ -111,7 +111,7 @@ class MessageDetailsVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Message Detail"
+        self.title = NSLocalizedString("MESSAGE_DETAILS", comment: "")
         view.backgroundColor = Colors.mainBackGroundColor2
         
         view.addSubViews(failedView, successView)

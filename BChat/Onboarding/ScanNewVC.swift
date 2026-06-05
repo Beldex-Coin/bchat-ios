@@ -88,14 +88,14 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         ])
         
         if newChatScanflag == true{
-            descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_QR_DESCRIPTION", comment: "")
         }
         if newChatScanflag == false{
-            descriptionLabel.text = NSLocalizedString("SCAN_SUB_TITLE_FOR_NEWCHAT", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_QR_DESCRIPTION", comment: "")
         }
         
         if isFromSocialGroup {
-            descriptionLabel.text = NSLocalizedString("SCAN_SOCIAL_GROUP_MESSAGE", comment: "")
+            descriptionLabel.text = NSLocalizedString("SCAN_SOCIAL_GROUP_QR_DESCRIPTION", comment: "")
         }
     }
     
@@ -145,8 +145,8 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
                                 default: break
                             }
                         }
-                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
-                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        let message = messageOrNil ?? NSLocalizedString(Alert.Alert_BChat_Invalid_ID, comment: "")
+                        _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_Error, comment: ""), message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                             self?.startScannerIfPermitted()
                         })
                     }
@@ -168,7 +168,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
         if let (room, server, publicKey) = OpenGroupManagerV2.parseV2OpenGroup(from: string) {
             joinV2OpenGroup(room: room, server: server, publicKey: publicKey)
         } else {
-            let title = NSLocalizedString("invalid_url", comment: "")
+            let title = NSLocalizedString("INVALID_URL", comment: "")
             let message = NSLocalizedString("VALID_URL_CHECKING", comment: "")
             showError(title: title, message: message) { [weak self] in
                 self?.startScannerIfPermitted()
@@ -189,7 +189,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
                 }
                 .catch(on: DispatchQueue.main) { [weak self] error in
                     self?.dismiss(animated: true, completion: nil) // Dismiss the loader
-                    let title = NSLocalizedString("COULDN_NOT_JOIN", comment: "")
+                    let title = NSLocalizedString("COULDNT_JOIN_GROUP", comment: "")
                     let message = error.localizedDescription
                     self?.isJoining = false
                     self?.showError(title: title, message: message)
@@ -199,7 +199,7 @@ class ScanNewVC: BaseVC, AVCaptureMetadataOutputObjectsDelegate, UIImagePickerCo
     // MARK: Convenience
     private func showError(title: String, message: String = "", onOk: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default) { _ in
+        let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
             onOk?()
         }
         alert.addAction(okAction)

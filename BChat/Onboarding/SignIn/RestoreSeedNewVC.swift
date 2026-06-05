@@ -32,7 +32,7 @@ class RestoreSeedNewVC: BaseVC {
         result.translatesAutoresizingMaskIntoConstraints = false
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.font = Fonts.regularOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("0/25", comment: "")
+        result.text = "0/25"
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .right
@@ -54,7 +54,7 @@ class RestoreSeedNewVC: BaseVC {
     private lazy var clearButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(hex: 0x1C1C26)
-        button.setTitle(NSLocalizedString("CLEAR_BUTTON", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("CLEAR", comment: ""), for: .normal)
         let image = UIImage(named: "ic_EraseNew")?.scaled(to: CGSize(width: 15.0, height: 15.0))
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: 0xA7A7BA) // Set the tint color to white
@@ -70,7 +70,7 @@ class RestoreSeedNewVC: BaseVC {
     private lazy var restoreButton: UIButton = {
         let result = UIButton(type: .custom)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.setTitle(NSLocalizedString("continue_2", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("CONTINUE", comment: ""), for: UIControl.State.normal)
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreActionTapped), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
@@ -85,7 +85,7 @@ class RestoreSeedNewVC: BaseVC {
         result.textColor = UIColor(hex: 0xA7A7BA)
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.regularOpenSans(ofSize: 14)
-        result.text = NSLocalizedString("PASTE_THE_SEED_NEW", comment: "")
+        result.text = NSLocalizedString("PASTE_SEED_TO_CONTINUE", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -106,7 +106,7 @@ class RestoreSeedNewVC: BaseVC {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "Restore seed"
+        self.title = NSLocalizedString("RESTORE_SEED", comment: "")
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setUpTopCornerRadius()
         view.backgroundColor = UIColor(hex: 0x11111A)
@@ -177,7 +177,7 @@ class RestoreSeedNewVC: BaseVC {
         mnemonicTextView.textAlignment = .left
         mnemonicTextView.delegate = self
         placeholderLabel = UILabel()
-        placeholderLabel.text = NSLocalizedString("ENTER_YOUR_SEED_NEW", comment: "")
+        placeholderLabel.text = NSLocalizedString("ENTER_SEED", comment: "")
         placeholderLabel.numberOfLines = 0
         placeholderLabel.font = Fonts.regularOpenSans(ofSize: (mnemonicTextView.font?.pointSize)!)
         placeholderLabel.sizeToFit()
@@ -189,7 +189,7 @@ class RestoreSeedNewVC: BaseVC {
     
     func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
@@ -227,7 +227,7 @@ class RestoreSeedNewVC: BaseVC {
     /// Restore Action Tapped
     @objc func restoreActionTapped(_ sender: UIButton){
         if seedFlag == false {
-            showToast(message: NSLocalizedString("WRONG_SEED_ERROR_NEW", comment: ""), seconds: 1.0)
+            showToast(message: NSLocalizedString("SOMETHING_WENT_WRONG_CHECK_MNEMONIC", comment: ""), seconds: 1.0)
         } else {
             self.restoreButton.isUserInteractionEnabled = false
             let strings : String! = mnemonicTextView.text.lowercased()

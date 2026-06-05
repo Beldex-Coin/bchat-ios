@@ -26,7 +26,7 @@ final class NewConversationButtonSet : UIView {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = UIFont.systemFont(ofSize: Values.verySmallFontSize22, weight: .bold)
-        result.text = NSLocalizedString("SECRET GROUP", comment: "").uppercased()
+        result.text = NSLocalizedString("SECRET_GROUP", comment: "").uppercased()
         result.textColor = Colors.grey
         result.textAlignment = .center
         
@@ -37,7 +37,7 @@ final class NewConversationButtonSet : UIView {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = UIFont.systemFont(ofSize: Values.verySmallFontSize22, weight: .bold)
-        result.text = NSLocalizedString("SOCIAL GROUP", comment: "").uppercased()
+        result.text = NSLocalizedString("SOCIAL_GROUP", comment: "").uppercased()
         result.textColor = Colors.grey
         result.textAlignment = .center
         
@@ -48,7 +48,7 @@ final class NewConversationButtonSet : UIView {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = UIFont.systemFont(ofSize: Values.verySmallFontSize22, weight: .bold)
-        result.text = NSLocalizedString("NEW CHAT", comment: "").uppercased()
+        result.text = NSLocalizedString("NEW_CHAT", comment: "").uppercased()
         result.textColor = Colors.grey
         result.textAlignment = .center
         

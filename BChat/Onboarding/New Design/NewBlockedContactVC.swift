@@ -21,7 +21,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     private lazy var unblockButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Unblock selected", for: .normal)
+        button.setTitle(NSLocalizedString("UNBLOCK_SELECTED", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor//UIColor(hex: 0x282836)
@@ -33,7 +33,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     private lazy var noContactsTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = "No blocked contact found"
+        result.text = NSLocalizedString("NO_BLOCKED_CONTACT_YET", comment: "")
         result.textColor = Colors.titleColor
         result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .center
@@ -54,7 +54,7 @@ class NewBlockedContactVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Blocked contacts"
+        self.title = NSLocalizedString("BLOCKED_CONTACTS", comment: "")
         setUpTopCornerRadius()
         
         view.addSubview(tableView)

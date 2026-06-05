@@ -71,10 +71,10 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
             case 0:
                 let hide = UIContextualAction(style: .destructive, title: "Hide", handler: { (action, view, success) in
                     let alert = UIAlertController(title: "Hide Message request?", message: "Once they are hidden,you can access them from Settings > Message Requests.", preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "No", style: .default, handler: { action in
+                    let ok = UIAlertAction(title: NSLocalizedString("NO", comment: ""), style: .default, handler: { action in
                     })
                     alert.addAction(ok)
-                    let cancel = UIAlertAction(title: "Yes", style: .default, handler: { action in
+                    let cancel = UIAlertAction(title: NSLocalizedString("YES", comment: ""), style: .default, handler: { action in
                         CurrentAppContext().appUserDefaults()[.hasHiddenMessageRequests] = true
                         // Animate the row removal
                         self.updateTableViewCell(indexPath)
@@ -89,17 +89,17 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 return UISwipeActionsConfiguration(actions: [])
             default:
                 guard let thread = self.thread(at: indexPath.row) else { return UISwipeActionsConfiguration(actions: []) }
-                let delete = UIContextualAction(style: .destructive, title: "Delete", handler: { (action, view, success) in
+                let delete = UIContextualAction(style: .destructive, title: NSLocalizedString("DELETE", comment: ""), handler: { (action, view, success) in
                     var message = NSLocalizedString("This cannot be undone.", comment: "")
                     if let thread = thread as? TSGroupThread, thread.isClosedGroup, thread.groupModel.groupAdminIds.contains(getUserHexEncodedPublicKey()) {
                         message = NSLocalizedString("admin_group_leave_warning", comment: "")
                     }
                     let alert = UIAlertController(title: NSLocalizedString("Delete Conversation?", comment: ""), message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { [weak self] _ in
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: ""), style: .destructive) { [weak self] _ in
                         guard let strongSelf = self else { return }
                         strongSelf.deleteThread(thread)
                     })
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { _ in
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default) { _ in
                         tableView.reloadData()
                     })
                     self.presentAlert(alert)
@@ -107,7 +107,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 delete.backgroundColor = Colors.mainBackGroundColor2
                 delete.image = UIImage(named: "ic_delete_new")
                 let isPinned = thread.isPinned
-                let pin = UIContextualAction(style: .destructive, title: "Pin", handler: { (action, view, success) in
+                let pin = UIContextualAction(style: .destructive, title: NSLocalizedString("PIN", comment: ""), handler: { (action, view, success) in
                     thread.isPinned = true
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
@@ -119,7 +119,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 pin.backgroundColor = Colors.mainBackGroundColor2
                 pin.image = UIImage(named: "ic_pinNew_Home")
                 //UnPin Option
-                let unpin = UIContextualAction(style: .destructive, title: "Unpin", handler: { (action, view, success) in
+                let unpin = UIContextualAction(style: .destructive, title: NSLocalizedString("UNPIN", comment: ""), handler: { (action, view, success) in
                     thread.isPinned = false
                     thread.save()
                     self.threadViewModelCache.removeValue(forKey: thread.uniqueId!)
@@ -146,7 +146,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                 if let thread = thread as? TSContactThread, !thread.isNoteToSelf() {
                     let publicKey = thread.contactBChatID()
                     
-                    let block = UIContextualAction(style: .destructive, title: "Block", handler: { (action, view, success) in
+                    let block = UIContextualAction(style: .destructive, title: NSLocalizedString("BLOCK", comment: ""), handler: { (action, view, success) in
                         Storage.shared.write(
                             with: { transaction in
                                 guard  let transaction = transaction as? YapDatabaseReadWriteTransaction, let contact: Contact = Storage.shared.getContact(with: publicKey, using: transaction) else {
@@ -166,7 +166,7 @@ extension HomeVC: UITableViewDataSource, UITableViewDelegate {
                     block.backgroundColor = Colors.mainBackGroundColor2
                     block.image = UIImage(named: "ic_blockNew_Home")
                     
-                    let unblock = UIContextualAction(style: .destructive, title: "Unblock", handler: { (action, view, success) in
+                    let unblock = UIContextualAction(style: .destructive, title: NSLocalizedString("UNBLOCK", comment: ""), handler: { (action, view, success) in
                         
                         Storage.shared.write(
                             with: { transaction in

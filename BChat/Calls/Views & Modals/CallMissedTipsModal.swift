@@ -30,19 +30,19 @@ final class CallMissedTipsModal : Modal {
         let titleLabel = UILabel()
         titleLabel.textColor = Colors.text
         titleLabel.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        titleLabel.text = NSLocalizedString("modal_call_missed_tips_title", comment: "")
+        titleLabel.text = NSLocalizedString("CALL_MISSED", comment: "")
         titleLabel.textAlignment = .center
         // Message
         let messageLabel = UILabel()
         messageLabel.textColor = Colors.text
         messageLabel.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
-        let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
+        let message = String(format: NSLocalizedString("CALL_MISSED_PERMISSION", comment: ""), caller)
         messageLabel.text = message
         messageLabel.numberOfLines = 0
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.textAlignment = .natural
         // Cancel Button
-        cancelButton.setTitle(NSLocalizedString("  OK  ", comment: ""), for: .normal)
+        cancelButton.setTitle(NSLocalizedString("OK", comment: ""), for: .normal)
         cancelButton.setTitleColor(Colors.bothGreenColor, for: .normal)
         cancelButton.backgroundColor = UIColor.lightGray
         // Main stack view

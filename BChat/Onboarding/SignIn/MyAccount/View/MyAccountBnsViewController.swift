@@ -94,7 +94,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
         let result = UILabel()
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = "BNS Verified"
+        result.text = NSLocalizedString("MY_ACCOUNT_BNS_VERIFIED", comment: "")
         result.textAlignment = .center
         result.numberOfLines = 0
         result.lineBreakMode = .byCharWrapping
@@ -222,7 +222,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Beldex Address NameLabel
     private lazy var beldexAddressNameLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Beldex Address", comment: "")
+        result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
@@ -233,7 +233,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Bchat Name Label
     private lazy var bchatNameLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("BChat ID", comment: "")
+        result.text = NSLocalizedString("BCHAT_ID", comment: "")
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
@@ -244,7 +244,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Show Qr Code Label
     private lazy var showQrCodeLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Show QR", comment: "")
+        result.text = NSLocalizedString("MY_ACCOUNT_SHOW_QR", comment: "")
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 11)
         result.textAlignment = .center
@@ -314,7 +314,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Link Your BNS Name Label
     private lazy var linkYourBNSNameLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Link Your BNS", comment: "")
+        result.text = NSLocalizedString("MY_ACCOUNT_LINK_YOUR_BNS", comment: "")
         result.textColor = .white
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .center
@@ -334,7 +334,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Read More About BNS Name Label
     private lazy var readMoreAboutBNSNameLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Read more about BNS", comment: "")
+        result.text = NSLocalizedString("MY_ACCOUNT_READ_MORE_ABOUT_BNS", comment: "")
         result.textColor = Colors.textFieldPlaceHolderColor
         result.font = Fonts.regularOpenSans(ofSize: 12)
         result.textAlignment = .center
@@ -393,7 +393,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Beldex Address Name Title Label
     private lazy var beldexAddressNameTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Beldex Address", comment: "")
+        result.text = NSLocalizedString("BELDEX_ADDRESS", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.textAlignment = .center
@@ -416,7 +416,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Bchat ID Title Label
     private lazy var bchatIDTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("BChat ID", comment: "")
+        result.text = NSLocalizedString("BCHAT_ID", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.textAlignment = .center
@@ -439,7 +439,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Scan QR Title Label
     private lazy var scanQRTitleLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Scan QR Code", comment: "")
+        result.text = NSLocalizedString("MY_ACCOUNT_SCAN_QR_CODE", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 12)
         result.textAlignment = .center
@@ -468,7 +468,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     /// Share Button
     private lazy var shareButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("SHARE_OPTION_NEW", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("SHARE", comment: ""), for: .normal)
         button.layer.cornerRadius = 24
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -507,7 +507,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var editButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Edit", for: .normal)
+        button.setTitle(NSLocalizedString("EDIT", comment: ""), for: .normal)
         button.layer.cornerRadius = 12
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
@@ -519,7 +519,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var doneButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Done", for: .normal)
+        button.setTitle(NSLocalizedString("DONE", comment: ""), for: .normal)
         button.layer.cornerRadius = 13
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -586,7 +586,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var profilePictureLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("PROFILE_PICTURE_NEW", comment: "")
+        result.text = NSLocalizedString("PROFILE_PICTURE", comment: "")
         result.textColor = Colors.bothGreenColor
         result.font = UIDevice.current.isIPad ? Fonts.boldOpenSans(ofSize: 20) : Fonts.boldOpenSans(ofSize: 18)
         result.textAlignment = .left
@@ -617,7 +617,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var removePictureButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE_ACTION_NEW", comment: ""), comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString(NSLocalizedString("REMOVE_PICTURE", comment: ""), comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(removePictureButtonAction), for: .touchUpInside)
         result.layer.borderWidth = 0.5
@@ -630,7 +630,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var saveButton: UIButton = {
         let result = UIButton()
-        result.setTitle(NSLocalizedString(NSLocalizedString("SAVA_OPTION_NEW", comment: ""), comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString(NSLocalizedString("SAVE", comment: ""), comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.addTarget(self, action: #selector(saveButtonAction), for: .touchUpInside)
         result.layer.cornerRadius = Values.buttonRadius
@@ -658,7 +658,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
     
     private lazy var nameTextField: UITextField = {
         let result = UITextField()
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("NAME_TITLE_NEW", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("DISPLAY_NAME", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: UIColor(hex: 0xA7A7BA)])
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
         result.backgroundColor = .clear
@@ -1206,7 +1206,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             UIAlertAction in
             self.openCamera(UIImagePickerController.SourceType.photoLibrary)
         }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+        let cancelAction = UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: UIAlertAction.Style.cancel) {
             UIAlertAction in
         }
         // Add the actions
@@ -1326,7 +1326,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
                             message = localizedMessage.isEmpty ? fallbackMessage : localizedMessage
                         }
                         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                         self?.present(alert, animated: true, completion: nil)
                     }
                 }
@@ -1354,7 +1354,7 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
             updateProfile(isUpdatingDisplayName: false, isUpdatingProfilePicture: true)
         } else {
             let alert = UIAlertController(title: "Please pick a profile picture", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -1499,15 +1499,15 @@ class MyAccountBnsViewController: BaseVC, UITextFieldDelegate, UIImagePickerCont
                 lineView.isHidden = false
                 nameIdLabelTapped()
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 presentAlert(alert)
             }
             let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("vc_settings_display_name_missing_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_DISPLAY_NAME", comment: ""))
             }
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("vc_settings_display_name_too_long_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_SHORTER_DISPLAY_NAME", comment: ""))
             }
             isEditingDisplayName = false
             displayNameToBeUploaded = displayName

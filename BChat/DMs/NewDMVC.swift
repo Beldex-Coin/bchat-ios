@@ -11,7 +11,7 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
                 guard let self = self else { return }
                 self.pageVC.setViewControllers([ self.pages[0] ], direction: .forward, animated: false, completion: nil)
             },
-            TabBar.Tab(title: NSLocalizedString("vc_create_private_chat_scan_qr_code_tab_title", comment: "")) { [weak self] in
+            TabBar.Tab(title: NSLocalizedString("MY_ACCOUNT_SCAN_QR_CODE", comment: "")) { [weak self] in
                 guard let self = self else { return }
                 self.pageVC.setViewControllers([ self.pages[1] ], direction: .forward, animated: false, completion: nil)
             }
@@ -32,7 +32,7 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
     }()
     
     private lazy var scanQRCodeWrapperVC: ScanQRCodeWrapperVC = {
-        let message = NSLocalizedString("vc_create_private_chat_scan_qr_code_explanation", comment: "")
+        let message = NSLocalizedString("SCAN_QR_DESCRIPTION", comment: "")
         let result = ScanQRCodeWrapperVC(message: message)
         result.delegate = self
         return result
@@ -156,8 +156,8 @@ final class NewDMVC : BaseVC, UIPageViewControllerDataSource, UIPageViewControll
                             default: break
                             }
                         }
-                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_ID
-                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        let message = messageOrNil ?? NSLocalizedString(Alert.Alert_BChat_Invalid_ID, comment: "")
+                        _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_Error, comment: ""), message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                         })
                     }
                 }
@@ -187,7 +187,7 @@ private final class EnterPublicKeyVC : UIViewController {
     
     private lazy var copyButton: Button = {
         let result = Button(style: .unimportant, size: .medium)
-        result.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("COPY", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(copyPublicKey), for: .touchUpInside)
         return result
     }()
@@ -207,7 +207,7 @@ private final class EnterPublicKeyVC : UIViewController {
     private lazy var spacer2 = UIView.spacer(withHeight: Values.largeSpacing)
     private lazy var spacer3 = UIView.spacer(withHeight: Values.largeSpacing)
     
-    private lazy var separator = Separator(title: NSLocalizedString("your_bchat_id", comment: ""))
+    private lazy var separator = Separator(title: NSLocalizedString("YOUR_BCHAT_ID", comment: ""))
     
     private lazy var buttonContainer: UIStackView = {
         let result = UIStackView()
@@ -237,14 +237,14 @@ private final class EnterPublicKeyVC : UIViewController {
         explanationLabel.lineBreakMode = .byWordWrapping
         // Share button
         let shareButton = Button(style: .unimportant, size: .medium)
-        shareButton.setTitle(NSLocalizedString("share", comment: ""), for: UIControl.State.normal)
+        shareButton.setTitle(NSLocalizedString("SHARE", comment: ""), for: UIControl.State.normal)
         shareButton.addTarget(self, action: #selector(sharePublicKey), for: .touchUpInside)
         // Button container
         buttonContainer.addArrangedSubview(copyButton)
         buttonContainer.addArrangedSubview(shareButton)
         // Next button
         let nextButton = Button(style: .prominentOutline, size: .large)
-        nextButton.setTitle(NSLocalizedString("next", comment: ""), for: UIControl.State.normal)
+        nextButton.setTitle(NSLocalizedString("NEXT", comment: ""), for: UIControl.State.normal)
         nextButton.addTarget(self, action: #selector(startNewDMIfPossible), for: .touchUpInside)
         let nextButtonContainer = UIView(wrapping: nextButton, withInsets: UIEdgeInsets(top: 0, leading: 80, bottom: 0, trailing: 80), shouldAdaptForIPadWithWidth: Values.iPadButtonWidth)
         // Main stack view
@@ -289,7 +289,7 @@ private final class EnterPublicKeyVC : UIViewController {
     @objc private func enableCopyButton() {
         copyButton.isUserInteractionEnabled = true
         UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.copyButton.setTitle(NSLocalizedString("copy", comment: ""), for: UIControl.State.normal)
+            self.copyButton.setTitle(NSLocalizedString("COPY", comment: ""), for: UIControl.State.normal)
         }, completion: nil)
     }
     
@@ -326,7 +326,7 @@ private final class EnterPublicKeyVC : UIViewController {
         UIPasteboard.general.string = getUserHexEncodedPublicKey()
         copyButton.isUserInteractionEnabled = false
         UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.copyButton.setTitle(NSLocalizedString("copied", comment: ""), for: UIControl.State.normal)
+            self.copyButton.setTitle(NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), for: UIControl.State.normal)
         }, completion: nil)
         Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(enableCopyButton), userInfo: nil, repeats: false)
     }

@@ -9,14 +9,14 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         result.textColor = Colors.titleColor3
         result.font = Fonts.semiOpenSans(ofSize: 20)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "New"
+        result.text = NSLocalizedString("NEW", comment: "")
         return result
     }()
     
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(
-            string: "Search people and groups",
+            string: NSLocalizedString("SEARCH_PEOPLE_AND_GROUPS", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         result.font = Fonts.regularOpenSans(ofSize: 14)
@@ -105,7 +105,14 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         tableView.reloadData()
     }
     
-    var titleArray = ["New Chat", "Secret Group", "Social Group", "Note to Self", "Contact list", "Invite a friend"]
+    var titleArray = [
+        NSLocalizedString("NEW_CHAT", comment: ""),
+        NSLocalizedString("SECRET_GROUP", comment: ""),
+        NSLocalizedString("SOCIAL_GROUP", comment: ""),
+        NSLocalizedString("NOTE_TO_SELF", comment: ""),
+        NSLocalizedString("CONTACT_LIST", comment: ""),
+        NSLocalizedString("INVITE_A_FRIEND", comment: "")
+    ]
     var imageArray = ["new_chat", "scrt_grp", "social_grp", "ic_newNote", "", "ic_inviteFriend"]
     
     
@@ -115,7 +122,7 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         view.backgroundColor = Colors.mainBackGroundColor2
         
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "New"
+        self.title = NSLocalizedString("NEW", comment: "")
         
         view.addSubviews([ searchTextField])
         

@@ -92,7 +92,7 @@ final class CallTableViewCell: UITableViewCell {
         result.textColor = Colors.callCellTitle
         result.font = Fonts.boldOpenSans(ofSize: 11)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Voice call"
+        result.text = NSLocalizedString("VOICE_CALL", comment: "")
         return result
     }()
     
@@ -275,7 +275,7 @@ final class CallTableViewCell: UITableViewCell {
         timeLabel.textColor = UIColor(hex: 0xA7A7BA)
         titleLabel.textColor = Colors.titleColor
         
-        self.titleLabel.text = "Missed call"
+        self.titleLabel.text = NSLocalizedString("MISSED_CALL", comment: "")
     }
     
     

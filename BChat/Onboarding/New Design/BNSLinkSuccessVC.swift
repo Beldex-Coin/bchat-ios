@@ -30,13 +30,13 @@ class BNSLinkSuccessVC: BaseVC {
         result.textColor = Colors.bothGreenColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "BNS Linked Successfully!"
+        result.text = NSLocalizedString("BNS_LINKED_SUCCESSFULLY", comment: "")
         return result
     }()
     
     private lazy var okButton: UIButton = {
         let button = UIButton()
-        button.setTitle("OK", for: .normal)
+        button.setTitle(NSLocalizedString("OK", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor

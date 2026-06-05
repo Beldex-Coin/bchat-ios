@@ -55,7 +55,7 @@ public class LongTextViewController: OWSViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        ViewControllerUtilities.setUpDefaultBChatStyle(for: self, title: NSLocalizedString("LONG_TEXT_VIEW_TITLE", comment: ""), hasCustomBackButton: false)
+        ViewControllerUtilities.setUpDefaultBChatStyle(for: self, title: NSLocalizedString("MESSAGE", comment: ""), hasCustomBackButton: false)
         
         createViews()
 

@@ -27,7 +27,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     
     private lazy var continueButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Continue", for: .normal)
+        button.setTitle(NSLocalizedString("CONTINUE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
@@ -43,7 +43,7 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         result.font = Fonts.regularOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("Enter name", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_NAME", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.noDataLabelColor])
         result.backgroundColor = Colors.cellGroundColor2
         result.layer.cornerRadius = 16
         result.setLeftPaddingPoints(20)
@@ -61,9 +61,10 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
         super.viewDidLoad()
         
         view.backgroundColor = Colors.mainBackGroundColor2
-        self.title = "Display Name"
-        self.titleLabel.text = "Set your Display Name"
-        self.subTitleLabel.text = "You can change it anytime :)"
+        self.title = NSLocalizedString("DISPLAY_NAME", comment: "")
+        self.titleLabel.text = NSLocalizedString("SET_YOUR_DISPLAY_NAME", comment: "")
+        self.subTitleLabel.text = NSLocalizedString("DISPLAY_NAME_HINT", comment: "")
+        nameTextField.placeholder = NSLocalizedString("ENTER_NAME", comment: "")
         
         view.addSubViews(titleLabel)
         view.addSubViews(subTitleLabel)
@@ -207,19 +208,19 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
     func performAction() {
         func showError(title: String, message: String = "") {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             presentAlert(alert)
         }
         if nameTextField.text!.isEmpty {
             let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_DISPLAY_NAME", comment: ""))
             }
         }
         if nameTextField.text!.count >= 26 {
             let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_SHORTER_DISPLAY_NAME", comment: ""))
             }
         }
         else {
@@ -252,15 +253,15 @@ class DisplayNameNewVC: BaseVC, UITextFieldDelegate {
             Onboarding.Flow.register.preregister(with: seed, ed25519KeyPair: ed25519KeyPair, x25519KeyPair: x25519KeyPair)
             func showError(title: String, message: String = "") {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 presentAlert(alert)
             }
             let displayName = nameTextField.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             guard !displayName.isEmpty else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_missing_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_DISPLAY_NAME", comment: ""))
             }
             guard !OWSProfileManager.shared().isProfileNameTooLong(displayName) else {
-                return showError(title: NSLocalizedString("vc_display_name_display_name_too_long_error", comment: ""))
+                return showError(title: NSLocalizedString("PLEASE_PICK_SHORTER_DISPLAY_NAME", comment: ""))
             }
             OWSProfileManager.shared().updateLocalProfileName(displayName, avatarImage: nil, success: {
             }, failure: { _ in }, requiresSync: false) // Try to save the user name but ignore the result

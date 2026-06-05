@@ -18,7 +18,7 @@ class ProfileDetailVC: BaseVC {
     
     private lazy var messageButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Write a message..", for: .normal)
+        button.setTitle(NSLocalizedString("WRITE_A_MESSAGE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor

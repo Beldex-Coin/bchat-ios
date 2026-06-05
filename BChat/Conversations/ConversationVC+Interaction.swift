@@ -237,7 +237,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }
                 self.showInputAccessoryView()
             } else {
-                self.showToast(message: "Please check your internet connection", seconds: 1.0)
+                self.showToast(message: NSLocalizedString("CHECK_INTERNET_CONNECTION", comment: ""), seconds: 1.0)
             }
         } else {
             // show confirmation modal
@@ -247,7 +247,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     title: "Search GIF's",
                     body: .text("You will not have full metadata protection when sending GIF's"),
                     showCondition: .disabled,
-                    confirmTitle: "OK",
+                    confirmTitle: NSLocalizedString("OK", comment: ""),
                     onConfirm: { _ in
                         self.isInputViewShow = true
                         SSKPreferences.isGifPermissionEnabled = true
@@ -298,7 +298,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             urlResourceValues = try url.resourceValues(forKeys: [ .typeIdentifierKey, .isDirectoryKey, .nameKey ])
         } catch {
             let alert = UIAlertController(title: "BChat", message: "An error occurred.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             return presentAlert(alert)
         }
         let type = urlResourceValues.typeIdentifier ?? UTType.data.identifier
@@ -378,10 +378,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let confirmationModal: ConfirmationModal = ConfirmationModal(
                 info: ConfirmationModal.Info(
                     modalType: .ownSeedWarning,
-                    title: "Warning",
-                    body: .text("This is your recovery phrase. If you send it to someone they will have full access to your account."),
+                    title: NSLocalizedString("WARNING", comment: ""),
+                    body: .text(NSLocalizedString("RECOVERY_SEED_WARNING", comment: "")),
                     showCondition: .disabled,
-                    confirmTitle: "Send",
+                    confirmTitle: NSLocalizedString("SEND", comment: ""),
                     onConfirm: { _ in
                         self.isInputViewShow = true
                         self.showInputAccessoryView()
@@ -506,7 +506,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 // Show an error indicating that approving the thread failed
                 promise.catch(on: DispatchQueue.main) { [weak self] _ in
                     let alert = UIAlertController(title: "BChat", message: "An error occurred when trying to accept this message request", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                     self?.present(alert, animated: true, completion: nil)
                 }
                 
@@ -600,7 +600,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // Show an error indicating that approving the thread failed
         promise.catch(on: DispatchQueue.main) { [weak self] _ in
             let alert = UIAlertController(title: "BChat", message: "An error occurred when trying to accept this message request", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }
         
@@ -874,10 +874,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let confirmationModal: ConfirmationModal = ConfirmationModal(
             info: ConfirmationModal.Info(
                 modalType: .mediaDownload,
-                title: "Trust \(name)?",
+                title: NSLocalizedString("TRUST", comment: "") + " \(name)?",
                 body: .attributedText(mediaDownloadDescription(name)),
                 showCondition: .disabled,
-                confirmTitle: "Download",
+                confirmTitle: NSLocalizedString("DOWNLOAD", comment: ""),
                 onConfirm: { _ in
                     self.isInputViewShow = true
                     self.showInputAccessoryView()
@@ -912,17 +912,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         
         if let message = viewItem.interaction as? TSInfoMessage, message.messageType == .call {
             let caller = (thread as! TSContactThread).name()
-            let message = String(format: NSLocalizedString("modal_call_missed_tips_explanation", comment: ""), caller)
+            let message = String(format: NSLocalizedString("CALL_MISSED_PERMISSION", comment: ""), caller)
             
             // show confirmation modal
             let confirmationModal: ConfirmationModal = ConfirmationModal(
                 info: ConfirmationModal.Info(
                     modalType: .missedCall,
-                    title: "Call Missed!",
+                    title: NSLocalizedString("CALL_MISSED", comment: ""),
                     body: .text(message),
                     showCondition: .disabled,
                     confirmEnabled: false,
-                    cancelTitle: "OK",
+                    cancelTitle: NSLocalizedString("OK", comment: ""),
                     cancelEnabled: true,
                     onConfirm: { _ in
                     }, dismissHandler: {
@@ -1137,8 +1137,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let thread = self.thread
         let error = tsMessage.mostRecentFailureText
         let sheet = UIAlertController(title: error, message: nil, preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        sheet.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+        sheet.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel, handler: nil))
+        sheet.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: ""), style: .destructive, handler: { _ in
             Storage.write { transaction in
                 tsMessage.remove(with: transaction)
                 Storage.shared.cancelPendingMessageSendJobIfNeeded(for: tsMessage.timestamp, using: transaction)
@@ -1222,7 +1222,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             viewItem.copyTextAction()
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-            self.showToast(message: "Copied to clipboard", seconds: 1.0)
+            self.showToast(message: NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), seconds: 1.0)
         }
     }
     
@@ -1241,7 +1241,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         // Handle 1-1 and closed group messages with unsend request
         if viewItem.interaction.interactionType() == .outgoingMessage, message.serverHash != nil  {
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
-            let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("delete_message_for_me", comment: ""), style: .destructive) { _ in
+            let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("DELETE_JUST_FOR_ME", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
                 if !self.thread.isBlocked() {
                     self.showInputAccessoryView()
@@ -1251,7 +1251,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             
             var title = NSLocalizedString("delete_message_for_everyone", comment: "")
             if !viewItem.isGroupThread {
-                title = String(format: NSLocalizedString("delete_message_for_me_and_recipient", comment: ""), viewItem.interaction.thread.name())
+                title = String(format: NSLocalizedString("DELETE_FOR_ME_AND_USER", comment: ""), viewItem.interaction.thread.name())
             }
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
                 self.deleteForEveryone(viewItem)
@@ -1263,7 +1263,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 alertVC.addAction(deleteRemotelyAction)
             }
             
-            let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
+            let cancelAction = UIAlertAction.init(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel) {_ in
                 if !self.thread.isBlocked() {
                     self.showInputAccessoryView()
                 }
@@ -1274,7 +1274,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             self.presentAlert(alertVC)
         } else {
             let alertVC = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
-            let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
+            let deleteLocallyAction = UIAlertAction.init(title: NSLocalizedString("DELETE", comment: ""), style: .destructive) { _ in
                 self.deleteLocally(viewItem)
                 if !self.thread.isBlocked() {
                     self.showInputAccessoryView()
@@ -1288,9 +1288,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
             let deleteRemotelyAction = UIAlertAction.init(title: title, style: .destructive) { _ in
                 let uiAlert = UIAlertController(title: "Report & Delete", message: "This message will be forwarded to the BChat Team & will be deleted.", preferredStyle: UIAlertController.Style.alert)
                 self.present(uiAlert, animated: true, completion: nil)
-                uiAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                uiAlert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: { action in
                 }))
-                uiAlert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
+                uiAlert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: { action in
                     self.deleteLocally(viewItem)
                     if !self.thread.isBlocked() {
                         self.showInputAccessoryView()
@@ -1298,7 +1298,7 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 }))
             }
             alertVC.addAction(deleteRemotelyAction)
-            let cancelAction = UIAlertAction.init(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel) {_ in
+            let cancelAction = UIAlertAction.init(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel) {_ in
                 if !self.thread.isBlocked() {
                     self.showInputAccessoryView()
                 }
@@ -1312,9 +1312,9 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func report(_ viewItem: ConversationViewItem) {
         let alert = UIAlertController(title: "Report", message: "This message will be Reported to the BChat Team.", preferredStyle: UIAlertController.Style.alert)
         self.present(alert, animated: true, completion: nil)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: { action in
         }))
-        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { action in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: { action in
         }))
     }
     
@@ -1367,8 +1367,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 title: "Save to Gallery?",
                 body: .text("Saving this media to your gallery will allow any other apps on your device to access it."),
                 showCondition: .disabled,
-                confirmTitle: "Yes",
-                cancelTitle: "No",
+                confirmTitle: NSLocalizedString("YES", comment: ""),
+                cancelTitle: NSLocalizedString("NO", comment: ""),
                 onConfirm: { _ in
                     self.isInputViewShow = true
                     self.showInputAccessoryView()
@@ -1397,12 +1397,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let explanation = "This will ban the selected user from this room. It won't ban them from other rooms."
         let alert = UIAlertController(title: "BChat", message: explanation, preferredStyle: .alert)
         let threadID = thread.uniqueId!
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { _ in
             let publicKey = message.authorId
             guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
             OpenGroupAPIV2.ban(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
@@ -1411,12 +1411,12 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         let explanation = "This will ban the selected user from this room and delete all messages sent by them. It won't ban them from other rooms or delete the messages they sent there."
         let alert = UIAlertController(title: "BChat", message: explanation, preferredStyle: .alert)
         let threadID = thread.uniqueId!
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { _ in
             let publicKey = message.authorId
             guard let openGroupV2 = Storage.shared.getV2OpenGroup(for: threadID) else { return }
             OpenGroupAPIV2.banAndDeleteAllMessages(publicKey, from: openGroupV2.room, on: openGroupV2.server).retainUntilComplete()
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
@@ -1438,10 +1438,10 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func showBanAlertController(message: String, completion: @escaping (Bool) -> ()) {
         let alert = UIAlertController(title: "BChat", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: { _ in
             completion(true)
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     
@@ -1691,8 +1691,8 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func showAlertForAudioRecordingIsOn() {
-        let alert = UIAlertController(title: Alert.Alert_BChat_title, message: Alert.Alert_Recording_On, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Alert.Alert_BChat_Ok, style: .default, handler: nil))
+        let alert = UIAlertController(title: NSLocalizedString(Alert.Alert_BChat_title, comment: ""), message: NSLocalizedString(Alert.Alert_Recording_On, comment: ""), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString(Alert.Alert_BChat_Ok, comment: ""), style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
@@ -1871,11 +1871,11 @@ extension ConversationVC {
     }
 
     @objc func acceptMessageRequest() {
-        let alert = UIAlertController(title: "", message: "Are you sure you want to accept this request?", preferredStyle: .alert)
-        let Cancel = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        let alert = UIAlertController(title: "", message: NSLocalizedString("ACCEPT_REQUEST_CONFIRMATION", comment: ""), preferredStyle: .alert)
+        let Cancel = UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: { action in
         })
         alert.addAction(Cancel)
-        let Accept = UIAlertAction(title: "Accept", style: .default, handler: { action in
+        let Accept = UIAlertAction(title: NSLocalizedString("ACCEPT", comment: ""), style: .default, handler: { action in
             
             let promise: Promise<Void> = self.approveMessageRequestIfNeeded (
                 for: self.thread,
@@ -1886,7 +1886,7 @@ extension ConversationVC {
             // Show an error indicating that approving the thread failed
             promise.catch(on: DispatchQueue.main) { [weak self] _ in
                 let alert = UIAlertController(title: "BChat", message: NSLocalizedString("MESSAGE_REQUESTS_APPROVAL_ERROR_MESSAGE", comment: ""), preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 self?.present(alert, animated: true, completion: nil)
             }
             promise.retainUntilComplete()
@@ -1903,10 +1903,10 @@ extension ConversationVC {
     @objc func deleteMessageRequest() {
         guard let uniqueId: String = thread.uniqueId else { return }
         let alert = UIAlertController(title: "", message: "Declining this request will permanently block this user, are you sure?", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        let ok = UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .default, handler: { action in
         })
         alert.addAction(ok)
-        let cancel = UIAlertAction(title: "Decline", style: .default, handler: { action in
+        let cancel = UIAlertAction(title: NSLocalizedString("DECLINE", comment: ""), style: .default, handler: { action in
             // Delete the request
             Storage.write(
                 with: { [weak self] transaction in
@@ -2111,7 +2111,7 @@ extension ConversationVC {
     }
     
     func mediaDownloadDescription(_ name: String) -> NSAttributedString {
-        let string = "Are you sure you want to download media sent by \(name)?"
+        let string = LocalizedString(key: "DOWNLOAD_MEDIA_CONFIRMATION", comment: "") + " \(name)?"
         let attributedString = NSMutableAttributedString(string: string)
         // Apply bold font to "Name" for Media download
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]

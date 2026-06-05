@@ -66,7 +66,7 @@ class SideMenuViewController: BaseVC {
         result.font = Fonts.semiOpenSans(ofSize: 12)
         result.textAlignment = .right
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Dark Mode"
+        result.text = NSLocalizedString("SIDE_MENU_DARK_MODE", comment: "")
         return result
     }()
     

@@ -37,7 +37,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         result.tintColor = Colors.text
         result.delegate = self
         result.showsCancelButton = true
-        result.placeholder = "Search people and groups"
+        result.placeholder = NSLocalizedString("SEARCH_PEOPLE_AND_GROUPS", comment: "")
         return result
     }()
     
@@ -64,7 +64,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         super.viewDidLoad()
         view.backgroundColor = Colors.mainBackGroundColor2
 
-        self.title = "Search"
+        self.title = NSLocalizedString("SEARCH", comment: "")
         navigationItem.hidesBackButton = false
         setupNavigationBar()
     }
@@ -112,7 +112,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
         if UIDevice.current.isIPad {
             let ipadCancelButton = UIButton()
-            ipadCancelButton.setTitle("Cancel", for: .normal)
+            ipadCancelButton.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
             ipadCancelButton.addTarget(self, action: #selector(cancel(_:)), for: .touchUpInside)
             ipadCancelButton.setTitleColor(Colors.text, for: .normal)
             searchBarContainer.addSubview(ipadCancelButton)
@@ -307,7 +307,7 @@ extension GlobalSearchViewController {
         
         if searchSection == .recent {
             let clearButton = UIButton()
-            clearButton.setTitle("Clear", for: .normal)
+            clearButton.setTitle(NSLocalizedString("CLEAR", comment: ""), for: .normal)
             clearButton.setTitleColor(Colors.text, for: UIControl.State.normal)
             clearButton.titleLabel!.font = Fonts.boldOpenSans(ofSize: Values.smallFontSize)
             clearButton.addTarget(self, action: #selector(clearRecentSearchResults), for: .touchUpInside)
@@ -333,7 +333,7 @@ extension GlobalSearchViewController {
                 }
             case .messages:
                 if searchResultSet.messages.count > 0 {
-                    return NSLocalizedString("SEARCH_SECTION_MESSAGES", comment: "")
+                    return NSLocalizedString("MESSAGES", comment: "")
                 } else {
                     return nil
                 }

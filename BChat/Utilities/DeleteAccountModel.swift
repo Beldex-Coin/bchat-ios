@@ -9,7 +9,7 @@ final class DeleteAccountModel : Modal {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.boldOpenSans(ofSize: 16)
-        result.text = "Delete entire account"
+        result.text = NSLocalizedString("DELETE_ENTIRE_ACCOUNT", comment: "")
         result.numberOfLines = 0
         result.lineBreakMode = .byWordWrapping
         result.textAlignment = .center
@@ -31,7 +31,7 @@ final class DeleteAccountModel : Modal {
         let result = UILabel()
         result.textColor = Colors.titleColor2
         result.font = Fonts.regularOpenSans(ofSize: 14)
-        result.text = "Are you sure you want to Permanently clear all data from the Beldex Network?"
+        result.text = NSLocalizedString("DELETE_ENTIRE_ACCOUNT_CONFIRMATION", comment: "")
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
@@ -45,7 +45,7 @@ final class DeleteAccountModel : Modal {
         result.backgroundColor = Colors.bothRedColor
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        result.setTitle("Delete", for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("DELETE", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()
@@ -70,7 +70,7 @@ final class DeleteAccountModel : Modal {
         }
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(Colors.text, for: UIControl.State.normal)
-        result.setTitle(NSLocalizedString("No", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("NO", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearDeviceOnly), for: .touchUpInside)
         return result
     }()
@@ -86,7 +86,7 @@ final class DeleteAccountModel : Modal {
         result.backgroundColor = Colors.destructive
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         result.setTitleColor(isLightMode ? UIColor.white : UIColor.white, for: UIControl.State.normal)
-        result.setTitle(NSLocalizedString("Yes", comment: ""), for: UIControl.State.normal)
+        result.setTitle(NSLocalizedString("YES", comment: ""), for: UIControl.State.normal)
         result.addTarget(self, action: #selector(clearEntireAccount), for: .touchUpInside)
         return result
     }()
@@ -159,13 +159,13 @@ final class DeleteAccountModel : Modal {
                         message = String(format: NSLocalizedString("dialog_clear_all_data_deletion_failed_2", comment: ""), String(potentiallyMaliciousSnodes.count), potentiallyMaliciousSnodes.joined(separator: ", "))
                     }
                     let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                     self?.presentAlert(alert)
                 }
             }.catch(on: DispatchQueue.main) { error in
                 self?.dismiss(animated: true, completion: nil) // Dismiss the loader
                 let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
                 self?.presentAlert(alert)
             }
                         

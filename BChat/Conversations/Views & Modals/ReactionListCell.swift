@@ -85,7 +85,9 @@ final class ReactionListCell : UITableViewCell {
     func update() {
         profilePictureView.publicKey = publicKey
         profilePictureView.update()
-        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey() ? "You \nTap to remove" : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
+        displayNameLabel.text = publicKey == getUserHexEncodedPublicKey()
+            ? "\(NSLocalizedString("YOU", comment: "")) \n\(NSLocalizedString("TAP_TO_REMOVE", comment: ""))"
+            : Storage.shared.getContact(with: publicKey)?.displayName(for: .regular) ?? publicKey
         emojiLabel.text = emoji
     }
 }

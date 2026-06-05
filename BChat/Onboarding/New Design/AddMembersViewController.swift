@@ -7,7 +7,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
     private lazy var searchTextField: UITextField = {
         let result = UITextField()
         result.attributedPlaceholder = NSAttributedString(
-            string: "Search Contact",
+            string: NSLocalizedString("SEARCH_CONTACT", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         result.font = Fonts.regularOpenSans(ofSize: 14)
@@ -66,7 +66,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
     
     private lazy var addButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Add", for: .normal)
+        button.setTitle(NSLocalizedString("ADD", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.unlockButtonBackgroundColor
@@ -78,7 +78,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
     
     let noResultLabel: UILabel = {
         let label = UILabel()
-        label.text = "No result found"
+        label.text = NSLocalizedString("NO_RESULTS_FOUND", comment: "")
         label.textAlignment = .center
         label.textColor = UIColor(hex: 0x6E6E7C)
         label.font = Fonts.regularOpenSans(ofSize: 14)
@@ -121,7 +121,7 @@ class AddMembersViewController: BaseVC, UITextFieldDelegate, UITableViewDelegate
 
         view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Add members"
+        self.title = NSLocalizedString("ADD_MEMBERS", comment: "")
         
         view.addSubViews(searchTextField, bottomButtonView)
         bottomButtonView.addSubview(addButton)

@@ -21,7 +21,7 @@
 
     [self updateTableContents];
 
-    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"vc_notification_settings_title", @"") customBackButton:YES];
+    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"NOTIFICATIONS", @"") customBackButton:YES];
     self.tableView.backgroundColor = UIColor.clearColor;
 }
 
@@ -43,8 +43,8 @@
     OWSPreferences *prefs = Environment.shared.preferences;
 
     OWSTableSection *strategySection = [OWSTableSection new];
-    strategySection.headerTitle = NSLocalizedString(@"preferences_notifications_strategy_category_title", @"");
-    [strategySection addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"vc_notification_settings_notification_mode_title", @"")
+    strategySection.headerTitle = NSLocalizedString(@"NOTIFICATION_STRATEGY", @"");
+    [strategySection addItem:[OWSTableItem switchItemWithText:NSLocalizedString(@"USE_FAST_MODE", @"")
                               accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, @"push_notification_strategy")
                               isOnBlock:^{
                                   return [NSUserDefaults.standardUserDefaults boolForKey:@"isUsingFullAPNs"];
@@ -54,7 +54,7 @@
                               }
                               target:weakSelf
                               selector:@selector(didToggleAPNsSwitch:)]];
-    strategySection.footerTitle = @"You’ll be notified of new messages reliably and immediately using Apple’s notification servers.";
+    strategySection.footerTitle = NSLocalizedString(@"FAST_MODE_DESCRIPTION", @"");//@"You’ll be notified of new messages reliably and immediately using Apple’s notification servers."
     [contents addSection:strategySection];
     
     
@@ -65,7 +65,7 @@
 
     OWSTableSection *soundsSection = [OWSTableSection new];
     soundsSection.headerTitle
-        = NSLocalizedString(@"SETTINGS_SECTION_SOUNDS", @"Header Label for the sounds section of settings views.");
+        = NSLocalizedString(@"SOUND", @"Header Label for the sounds section of settings views.");
     [soundsSection
         addItem:[OWSTableItem disclosureItemWithText:
                                   NSLocalizedString(@"SETTINGS_ITEM_NOTIFICATION_SOUND",
@@ -93,10 +93,10 @@
     [contents addSection:soundsSection];
 
     OWSTableSection *backgroundSection = [OWSTableSection new];
-    backgroundSection.headerTitle = NSLocalizedString(@"SETTINGS_NOTIFICATION_CONTENT_TITLE", @"table section header");
+    backgroundSection.headerTitle = NSLocalizedString(@"NOTIFICATION_CONTENT", @"table section header");
     [backgroundSection
         addItem:[OWSTableItem
-                     disclosureItemWithText:NSLocalizedString(@"NOTIFICATIONS_SHOW", nil)
+                     disclosureItemWithText:NSLocalizedString(@"SHOW", nil)
                                  detailText:[prefs nameForNotificationPreviewType:[prefs notificationPreviewType]]
                     accessibilityIdentifier:ACCESSIBILITY_IDENTIFIER_WITH_NAME(self, @"options")
                                 actionBlock:^{

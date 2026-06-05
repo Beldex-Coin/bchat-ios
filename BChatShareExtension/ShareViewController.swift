@@ -235,7 +235,7 @@ final class ShareViewController : UINavigationController, ShareViewDelegate, App
     
     func shareViewFailed(error: Error) {
         let alert = UIAlertController(title: "BChat", message: error.localizedDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "BUTTON_OK".localized(), style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "OK".localized(), style: .default, handler: { _ in
             self.extensionContext!.cancelRequest(withError: error)
         }))
         presentAlert(alert)

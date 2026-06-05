@@ -52,7 +52,7 @@ public class ConfirmationModal: ModalView {
     
     private lazy var cancelButton: UIButton = {
         let result: UIButton = UIButton()
-        result.setTitle("Cancel", for: .normal)
+        result.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
         result.layer.cornerRadius = Values.buttonRadius
         result.layer.borderColor = Colors.bothGreenColor.cgColor
         result.backgroundColor = Colors.bothGreenWithAlpha10
@@ -68,7 +68,7 @@ public class ConfirmationModal: ModalView {
     
     private lazy var confirmButton: UIButton = {
         let result: UIButton = UIButton()
-        result.setTitle("Ok", for: .normal)
+        result.setTitle(NSLocalizedString("OK", comment: ""), for: .normal)
         result.layer.cornerRadius = Values.buttonRadius
         result.backgroundColor = Colors.bothGreenColor
         result.titleLabel!.font = Fonts.regularOpenSans(ofSize: 14)
@@ -283,7 +283,7 @@ public extension ConfirmationModal {
             showCondition: ShowCondition = .none,
             confirmTitle: String? = nil,
             confirmEnabled: ButtonValidator = true,
-            cancelTitle: String = "Cancel",
+            cancelTitle: String = NSLocalizedString("CANCEL", comment: ""),
             cancelEnabled: ButtonValidator = true,
             hasCloseButton: Bool = false,
             dismissOnConfirm: Bool = true,

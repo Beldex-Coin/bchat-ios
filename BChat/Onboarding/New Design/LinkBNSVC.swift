@@ -25,7 +25,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Link BNS"
+        result.text = NSLocalizedString("LINK_BNS", comment: "")
         return result
     }()
     
@@ -35,7 +35,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Your BChat ID"
+        result.text = NSLocalizedString("YOUR_BCHAT_ID", comment: "")
         return result
     }()
     
@@ -60,7 +60,7 @@ class LinkBNSVC: BaseVC {
         result.textColor = Colors.titleColor
         result.font = Fonts.semiOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "BNS Name"
+        result.text = NSLocalizedString("BNS_NAME", comment: "")
         return result
     }()
     
@@ -70,7 +70,7 @@ class LinkBNSVC: BaseVC {
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.placeholder = "Enter BNS name"
+        result.placeholder = NSLocalizedString("ENTER_BNS_NAME", comment: "")
         result.backgroundColor = Colors.cancelButtonBackgroundColor2
         result.layer.cornerRadius = Values.buttonRadius
         result.setLeftPaddingPoints(17)
@@ -79,7 +79,7 @@ class LinkBNSVC: BaseVC {
     
     private lazy var cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.borderWidth = 0.5
@@ -93,7 +93,7 @@ class LinkBNSVC: BaseVC {
     
     private lazy var verifyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Verify", for: .normal)
+        button.setTitle(NSLocalizedString("VERIFY", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
@@ -105,7 +105,7 @@ class LinkBNSVC: BaseVC {
     
     private lazy var linkButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Link", for: .normal)
+        button.setTitle(NSLocalizedString("LINK", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cancelButtonBackgroundColor2
@@ -250,7 +250,7 @@ class LinkBNSVC: BaseVC {
             self.bnsNameTextField.layer.borderColor = Colors.bothRedColor.cgColor
             
             let alert = UIAlertController(title: "Couldn’t decrypt bns name", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
             self.presentAlert(alert)
             
 //            self.verifyButtonUpdate(false)
@@ -282,7 +282,7 @@ class LinkBNSVC: BaseVC {
             verifyButton.layer.borderWidth = 1
             verifyButton.layer.borderColor = Colors.bothGreenColor.cgColor
             verifyButton.setTitleColor(Colors.titleColor6, for: .normal)
-            verifyButton.setTitle("Verify", for: .normal)
+            verifyButton.setTitle(NSLocalizedString("VERIFY", comment: ""), for: .normal)
             
             // Verify Button Image & Green Title
             verifyButton.setTitleColor(Colors.bothGreenColor, for: .normal)

@@ -18,6 +18,9 @@ enum SideMenuItem {
     /// Indicated Side menu - Recovery Seed
     case recoverySeed
     
+    /// Indicated MyAccount BNS - Language
+    case language
+    
     /// Indicated Side menu - Report Issue
     case reportIssue
     
@@ -40,21 +43,23 @@ enum SideMenuItem {
         let aKey: String
         switch self {
             case .settings:
-                aKey = "Settings"
+                aKey = NSLocalizedString("SIDE_MENU_SETTINGS", comment: "")
             case .notification:
-                aKey = "Notification"
+                aKey = NSLocalizedString("SIDE_MENU_NOTIFICATION", comment: "")
             case .messageRequests:
-                aKey = "Message Requests"
+                aKey = NSLocalizedString("SIDE_MENU_MESSAGE_REQUESTS", comment: "")
             case .recoverySeed:
-                aKey = "Recovery Seed"
+                aKey = NSLocalizedString("SIDE_MENU_RECOVERY_SEED", comment: "")
             case .reportIssue:
-                aKey = "Report Issue"
+                aKey = NSLocalizedString("SIDE_MENU_REPORT_ISSUE", comment: "")
+            case .language:
+                aKey = NSLocalizedString("SIDE_MENU_LANGUAGE", comment: "")
             case .help:
-                aKey = "Help"
+                aKey = NSLocalizedString("SIDE_MENU_HELP", comment: "")
             case .invite:
-                aKey = "Invite"
+                aKey = NSLocalizedString("SIDE_MENU_INVITE", comment: "")
             case .about:
-                aKey = "About"
+                aKey = NSLocalizedString("SIDE_MENU_ABOUT", comment: "")
         }
         return aKey
     }
@@ -71,6 +76,8 @@ enum SideMenuItem {
                 aKey = "ic_menu_msg_rqst"
             case .recoverySeed:
                 aKey = "ic_menu_recovery_seed_settings"
+            case .language:
+                aKey = "ic_menu_language"
             case .reportIssue:
                 aKey = "ic_menu_report_issue"
             case .help:
@@ -89,7 +96,7 @@ enum SideMenuItem {
 final class SideMenuViewModel: NSObject {
     
     /// menuTitles
-    var menuTitles: [SideMenuItem] = [.settings, .notification, .messageRequests, .recoverySeed, .reportIssue, .help, .invite, .about]
+    var menuTitles: [SideMenuItem] = [.settings, .notification, .messageRequests, .recoverySeed, .language, .reportIssue, .help, .invite, .about]
     
     /// hasTappableProfilePictureOSideMenuV
     var hasTappableProfilePicture: Bool = false

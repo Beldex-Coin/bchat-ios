@@ -31,7 +31,7 @@ static NSString *const kSealedSenderInfoURL = @"https://signal.org/blog/sealed-s
 
     [self updateTableContents];
     
-    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"vc_privacy_settings_title", @"") customBackButton:NO];
+    [LKViewControllerUtilities setUpDefaultBChatStyleForVC:self withTitle:NSLocalizedString(@"SETTINGS", @"") customBackButton:NO];
     self.tableView.backgroundColor = UIColor.clearColor;
     
     if (self.shouldShowCloseButton) {

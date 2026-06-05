@@ -79,7 +79,7 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
         super.viewDidLoad()
         
         // NavigationBar Title
-        title = "Search Members"
+        title = NSLocalizedString("SEARCH_MEMBERS", comment: "")
         
         // Remove Back Button Title
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)

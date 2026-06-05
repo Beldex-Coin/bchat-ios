@@ -78,7 +78,7 @@ public class MessageRecipientStatusUtils: NSObject {
             if let readTimestamp = recipientState.readTimestamp {
                 let timestampString = DateUtil.formatPastTimestampRelativeToNow(readTimestamp.uint64Value)
                 let shortStatusMessage = timestampString
-                let longStatusMessage = NSLocalizedString("MESSAGE_STATUS_READ", comment: "status message for read messages").rtlSafeAppend(" ")
+                let longStatusMessage = NSLocalizedString("READ", comment: "status message for read messages").rtlSafeAppend(" ")
                     .rtlSafeAppend(timestampString)
                 return (status:.read, shortStatusMessage:shortStatusMessage, longStatusMessage:longStatusMessage)
             }
@@ -91,7 +91,7 @@ public class MessageRecipientStatusUtils: NSObject {
                 return (status:.delivered, shortStatusMessage:shortStatusMessage, longStatusMessage:longStatusMessage)
             }
             let statusMessage =
-                NSLocalizedString("MESSAGE_STATUS_SENT",
+                NSLocalizedString("SENT",
                                   comment: "status message for sent messages")
             return (status:.sent, shortStatusMessage:statusMessage, longStatusMessage:statusMessage)
         case .skipped:
@@ -118,17 +118,17 @@ public class MessageRecipientStatusUtils: NSObject {
             }
         case .sent:
             if outgoingMessage.readRecipientIds().count > 0 {
-                return (.read, NSLocalizedString("MESSAGE_STATUS_READ", comment: "status message for read messages"))
+                return (.read, NSLocalizedString("READ", comment: "status message for read messages"))
             }
             if outgoingMessage.wasDeliveredToAnyRecipient {
                 return (.delivered, NSLocalizedString("MESSAGE_STATUS_DELIVERED",
                                          comment: "message status for message delivered to their recipient."))
             }
-            return (.sent, NSLocalizedString("MESSAGE_STATUS_SENT",
+            return (.sent, NSLocalizedString("SENT",
                                      comment: "status message for sent messages"))
         default:
             owsFailDebug("Message has unexpected status: \(outgoingMessage.messageState).")
-            return (.sent, NSLocalizedString("MESSAGE_STATUS_SENT",
+            return (.sent, NSLocalizedString("SENT",
                                      comment: "status message for sent messages"))
         }
     }

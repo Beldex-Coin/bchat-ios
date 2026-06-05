@@ -306,9 +306,9 @@ class BaseVC : UIViewController {
     }
     
     func showBlockedNUnblockedPopup(_ isBlocked: Bool) {
-        let title = isBlocked ? "Unblock Contact" : "Block Contact"
-        let message = isBlocked ? "Are you sure you want to Unblock this contact?" : "Are you sure you want to Block this contact?"
-        let buttonTitle = isBlocked ? "Unblock" : "Block"
+        let title = isBlocked ? NSLocalizedString("UNBLOCK_CONTACT", comment: "") : NSLocalizedString("BLOCK_CONTACT", comment: "")
+        let message = isBlocked ? NSLocalizedString("UNBLOCK_CONTACT_CONFIRMATION", comment: "") : NSLocalizedString("BLOCK_CONTACT_CONFIRMATION", comment: "")
+        let buttonTitle = isBlocked ? NSLocalizedString("UNBLOCK", comment: "") : NSLocalizedString("BLOCK", comment: "")
         let modalType: ConfirmationModalType = isBlocked ? .unblockContact : .blockContact
         // show confirmation modal
         let confirmationModal: ConfirmationModal = ConfirmationModal(
@@ -378,7 +378,7 @@ extension BaseVC {
                 title: title,
                 body: .attributedText(description),
                 showCondition: .disabled,
-                confirmTitle: "Settings",
+                confirmTitle: NSLocalizedString("SETTINGS", comment: ""),
                 onConfirm: { _ in
                     onConfirmed?()
                 }, dismissHandler: {
@@ -398,11 +398,11 @@ extension BaseVC {
     }
     
     func callPermisionDescription() -> NSAttributedString {
-        let string = "You can enable the ‘Voice and video calls’ permission in the Privacy Settings."
+        let string = NSLocalizedString("ENABLE_VOICE_VIDEO_CALLS", comment: "")
         let attributedString = NSMutableAttributedString(string: string)
-        // Apply bold font to "Voice and video calls"
+        // Apply bold font to the call permission label
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
-        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Voice and video calls"))
+        attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: NSLocalizedString("VOICE_VIDEO_CALLS", comment: "")))
         // Apply bold font to "Privacy Settings"
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: "Privacy Settings"))
         // The attributed string

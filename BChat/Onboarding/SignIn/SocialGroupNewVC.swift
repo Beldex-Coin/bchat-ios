@@ -33,7 +33,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         result.setLeftPaddingPoints(8)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString(NSLocalizedString("Enter_Group_Url_New", comment: ""), comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor])
+        result.attributedPlaceholder = NSAttributedString(string:NSLocalizedString("ENTER_SOCIAL_GROUP_URL", comment: ""), attributes:[NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor])
         result.backgroundColor = .clear
         result.layer.cornerRadius = Values.buttonRadius
         return result
@@ -60,7 +60,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     
     private lazy var nextButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("Next_Button_New", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("NEXT", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
@@ -90,9 +90,9 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Social group"
-        self.titleLabel.text = "Join Social Group"
-        self.subTitleLabel.text = "Or Join"
+        self.title = NSLocalizedString("SOCIAL_GROUP", comment: "")
+        self.titleLabel.text = NSLocalizedString("JOIN_SOCIAL_GROUP", comment: "")
+        self.subTitleLabel.text = NSLocalizedString("OR_JOIN", comment: "")
         groupUrlTextField.delegate = self
         
         view.addSubViews(topView)
@@ -237,7 +237,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         if let (room, server, publicKey) = OpenGroupManagerV2.parseV2OpenGroup(from: string) {
             joinV2OpenGroup(room: room, server: server, publicKey: publicKey)
         } else {
-            let title = NSLocalizedString("invalid_url", comment: "")
+            let title = NSLocalizedString("INVALID_URL", comment: "")
             let message = "Please check the URL you entered and try again."
             showError(title: title, message: message)
         }
@@ -257,7 +257,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
                 .catch(on: DispatchQueue.main) { [weak self] error in
                     self?.dismiss(animated: true, completion: nil) // Dismiss the loader
                     self?.isJoining = false
-                    self?.showError(title: "BChat", message: "Couldn't join social group.")
+                    self?.showError(title: "BChat", message: NSLocalizedString("COULDNT_JOIN_GROUP", comment: ""))
                 }
         }
     }
@@ -265,7 +265,7 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
     // MARK: Convenience
     private func showError(title: String, message: String = "") {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("BUTTON_OK", comment: ""), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: nil))
         presentAlert(alert)
     }
     

@@ -12,13 +12,13 @@ import Foundation
     @objc
     static public let dismissButton = NSLocalizedString("DISMISS_BUTTON_TEXT", comment: "Short text to dismiss current modal / actionsheet / screen")
     @objc
-    static public let cancelButton = NSLocalizedString("TXT_CANCEL_TITLE", comment: "Label for the cancel button in an alert or action sheet.")
+    static public let cancelButton = NSLocalizedString("CANCEL", comment: "Label for the cancel button in an alert or action sheet.")
     @objc
-    static public let doneButton = NSLocalizedString("BUTTON_DONE", comment: "Label for generic done button.")
+    static public let doneButton = NSLocalizedString("DONE", comment: "Label for generic done button.")
     @objc
     static public let retryButton = NSLocalizedString("RETRY_BUTTON_TEXT", comment: "Generic text for button that retries whatever the last action was.")
     @objc
-    static public let openSettingsButton = NSLocalizedString("OPEN_SETTINGS_BUTTON", comment: "Button text which opens the settings app")
+    static public let openSettingsButton = NSLocalizedString("SETTINGS", comment: "Button text which opens the settings app")
     @objc
     static public let errorAlertTitle = NSLocalizedString("ALERT_ERROR_TITLE", comment: "")
 }
@@ -28,7 +28,7 @@ import Foundation
     static public let newGroupDefaultTitle = NSLocalizedString("NEW_GROUP_DEFAULT_TITLE", comment: "Used in place of the group name when a group has not yet been named.")
 
     @objc
-    static public let replyNotificationAction = NSLocalizedString("PUSH_MANAGER_REPLY", comment: "Notification action button title")
+    static public let replyNotificationAction = NSLocalizedString("REPLY", comment: "Notification action button title")
 
     @objc
     static public let markAsReadNotificationAction = NSLocalizedString("PUSH_MANAGER_MARKREAD", comment: "Notification action button title")
@@ -88,7 +88,7 @@ public class NotificationStrings: NSObject {
 
 @objc public class MediaStrings: NSObject {
     @objc
-    static public let allMedia = NSLocalizedString("MEDIA_DETAIL_VIEW_ALL_MEDIA_BUTTON", comment: "nav bar button item")
+    static public let allMedia = NSLocalizedString("ALL_MEDIA", comment: "nav bar button item")
 }
 
 @objc public class SafetyNumberStrings: NSObject {

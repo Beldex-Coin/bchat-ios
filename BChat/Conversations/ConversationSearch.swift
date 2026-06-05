@@ -297,7 +297,7 @@ public final class SearchResultsBar : UIView {
 
         switch resultSet.messages.count {
         case 0:
-            label.text = NSLocalizedString("CONVERSATION_SEARCH_NO_RESULTS", comment: "keyboard toolbar label when no messages match the search string")
+            label.text = NSLocalizedString("NO_MATCHES_FOUND", comment: "keyboard toolbar label when no messages match the search string")
         case 1:
             label.text = NSLocalizedString("CONVERSATION_SEARCH_ONE_RESULT", comment: "keyboard toolbar label when exactly 1 message matches the search string")
         default:

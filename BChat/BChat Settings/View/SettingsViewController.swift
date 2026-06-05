@@ -22,7 +22,7 @@ final class SettingsViewController: BaseVC {
     }
     
     private func setupUI() {
-        title = "Settings"
+        title = NSLocalizedString("SETTINGS", comment: "")
         view.backgroundColor = Colors.viewBackgroundColorNew
         
         tableView.dataSource = self
@@ -112,7 +112,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.text = SettingsSection.allCases[section].rawValue
+        titleLabel.text = SettingsSection.allCases[section].title
         titleLabel.font = Fonts.semiOpenSans(ofSize: 16)
         titleLabel.textColor = Colors.bothGreenColor
         

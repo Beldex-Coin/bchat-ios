@@ -21,7 +21,7 @@ class RecoverySeedViewController: BaseVC {
         result.textColor = Colors.yellowColor
         result.font = Fonts.semiOpenSans(ofSize: 18)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Copy your Recovery Seed and\nkeep it safe."
+        result.text = NSLocalizedString("COPY_RECOVERY_SEED_DESCRIPTION", comment: "")
         result.adjustsFontSizeToFitWidth = true
         result.numberOfLines = 0
         result.textAlignment = .center
@@ -53,7 +53,7 @@ class RecoverySeedViewController: BaseVC {
     
     private lazy var copyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Copy", for: .normal)
+        button.setTitle(NSLocalizedString("COPY", comment: ""), for: .normal)
         let image = UIImage(named: "ic_copy_recovery")?.scaled(to: CGSize(width: 18.0, height: 18.0))
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 4, left: 12, bottom: 0, right: 0)
@@ -93,7 +93,7 @@ class RecoverySeedViewController: BaseVC {
 
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Recovery Seed"
+        self.title = NSLocalizedString("RECOVERY_SEED", comment: "")
         setUpTopCornerRadius()
         let image = UIImage(named: "NavBarBack")?.withRenderingMode(.alwaysTemplate)
         let leftBarItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(backToHomeScreen))
@@ -175,7 +175,7 @@ class RecoverySeedViewController: BaseVC {
         UIPasteboard.general.string = mnemonic
         copyButton.isUserInteractionEnabled = false
         UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.copyButton.setTitle(NSLocalizedString("Copied", comment: ""), for: UIControl.State.normal)
+            self.copyButton.setTitle(NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), for: UIControl.State.normal)
         }, completion: nil)
         Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(enableCopyButton), userInfo: nil, repeats: false)
     }
@@ -183,7 +183,7 @@ class RecoverySeedViewController: BaseVC {
     @objc private func enableCopyButton() {
         copyButton.isUserInteractionEnabled = true
         UIView.transition(with: copyButton, duration: 0.25, options: .transitionCrossDissolve, animations: {
-            self.copyButton.setTitle(NSLocalizedString("Copy", comment: ""), for: UIControl.State.normal)
+            self.copyButton.setTitle(NSLocalizedString("COPY", comment: ""), for: UIControl.State.normal)
         }, completion: nil)
     }
     

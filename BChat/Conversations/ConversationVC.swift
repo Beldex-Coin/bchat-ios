@@ -196,7 +196,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 18)
-        result.text = NSLocalizedString("Message request", comment: "")
+        result.text = NSLocalizedString("MESSAGE_REQUEST", comment: "")
         result.textColor = Colors.titleColor
         result.textAlignment = .center
         return result
@@ -206,7 +206,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.regularOpenSans(ofSize: 14)
-        result.text = NSLocalizedString("Sending a message to this user will automatically accept their message request and reveal your BChat ID.", comment: "")
+        result.text = NSLocalizedString("MESSAGE_REQUEST_INFO", comment: "")
         result.textColor = Colors.titleColor
         result.textAlignment = .center
         result.numberOfLines = 3
@@ -218,7 +218,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
         result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        result.setTitle(NSLocalizedString("TXT_DELETE_ACCEPT", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("ACCEPT", comment: ""), for: .normal)
         result.setTitleColor(Colors.bchatHeading, for: .normal)
         result.layer.cornerRadius = 26
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
@@ -232,7 +232,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.translatesAutoresizingMaskIntoConstraints = false
         result.clipsToBounds = true
         result.titleLabel?.font = Fonts.boldOpenSans(ofSize: 16)
-        result.setTitle(NSLocalizedString("Decline", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("DECLINE", comment: ""), for: .normal)
         result.setTitleColor(Colors.destructive, for: .normal)
         result.layer.cornerRadius = 26
         result.setTitleColor(Colors.bothRedColor, for: .normal)
@@ -312,7 +312,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     private lazy var unblockButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Unblock", for: .normal)
+        button.setTitle(NSLocalizedString("UNBLOCK", comment: ""), for: .normal)
         button.setTitleColor(Colors.bothWhiteColor, for: .normal)
         button.layer.cornerRadius = 23.5
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -387,7 +387,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.textColor = Colors.titleColor3
         result.font = Fonts.extraBoldOpenSans(ofSize: 16)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = NSLocalizedString("modal_open_url_title", comment: "")
+        result.text = NSLocalizedString("OPEN_URL", comment: "")
         return result
     }()
     
@@ -396,7 +396,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         result.textColor = Colors.titleColor
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""))
+        result.text = String(format: NSLocalizedString("OPEN_URL_CONFIRMATION", comment: ""))
         result.numberOfLines = 0
         result.textAlignment = .center
         result.lineBreakMode = .byWordWrapping
@@ -405,7 +405,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     lazy var openURLViewOpenButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Open", for: .normal)
+        button.setTitle(NSLocalizedString("OPEN", comment: ""), for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -420,7 +420,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     
     lazy var openURLViewCopyButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Copy", for: .normal)
+        button.setTitle(NSLocalizedString("COPY", comment: ""), for: .normal)
         button.layer.cornerRadius = 26
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.homeScreenFloatingbackgroundColor
@@ -871,7 +871,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         openURLViewStackView.addArrangedSubview(openURLViewCopyButton)
         openURLViewStackView.addArrangedSubview(openURLViewOpenButton)
         
-        let string = String(format: NSLocalizedString("modal_open_url_explanation", comment: ""), urlToOpen!.absoluteString)
+        let string = String(format: NSLocalizedString("OPEN_URL_CONFIRMATION", comment: "")) + "\n" + urlToOpen!.absoluteString
         let attributedString = NSMutableAttributedString(string: string)
         let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: Fonts.boldOpenSans(ofSize: 14)]
         attributedString.addAttributes(boldFontAttribute, range: (string as NSString).range(of: urlToOpen!.absoluteString))
@@ -929,7 +929,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     @objc func openURLViewCopyButtonTapped() {
         hideOpenURLView()
         UIPasteboard.general.string = urlToOpen!.absoluteString
-        showToast(message: "Copied to clipboard", seconds: 1.0)
+        showToast(message: NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), seconds: 1.0)
     }
     
     
@@ -1456,7 +1456,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         // See more https://developer.apple.com/documentation/uikit/uisearchbar/1624283-showscancelbutton?language=objc
         if UIDevice.current.isIPad {
             let ipadCancelButton = UIButton()
-            ipadCancelButton.setTitle("Cancel", for: .normal)
+            ipadCancelButton.setTitle(NSLocalizedString("CANCEL", comment: ""), for: .normal)
             ipadCancelButton.addTarget(self, action: #selector(hideSearchUI(_ :)), for: .touchUpInside)
             ipadCancelButton.setTitleColor(Colors.text, for: .normal)
             searchBarContainer.addSubview(ipadCancelButton)

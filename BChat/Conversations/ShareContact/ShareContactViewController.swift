@@ -76,7 +76,9 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
 
     private func setupNavigation() {
         setUpNavBarStyle()
-        navigationItem.title = state == .fromAttachment ? "Share Contacts" : "View Contacts"
+        navigationItem.title = state == .fromAttachment
+            ? NSLocalizedString("SHARE_CONTACTS", comment: "")
+            : "View Contacts"
         if state == .fromAttachment {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
                                                                     target: self,
@@ -90,7 +92,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         searchTextField.isHidden = state == .fromChat
         
         searchTextField.attributedPlaceholder = NSAttributedString(
-            string: "Search Contact",
+            string: NSLocalizedString("SEARCH_CONTACT", comment: ""),
             attributes: [NSAttributedString.Key.foregroundColor: Colors.textFieldPlaceHolderColor]
         )
         searchTextField.font = Fonts.regularOpenSans(ofSize: 14)
@@ -164,7 +166,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
     }
 
     private func setupSendButton() {
-        sendButton.setTitle("Send", for: .normal)
+        sendButton.setTitle(NSLocalizedString("SEND", comment: ""), for: .normal)
         sendButton.backgroundColor = Colors.bothGreenColor
         sendButton.setTitleColor(.white, for: .normal)
         sendButton.layer.cornerRadius = 12
@@ -189,7 +191,7 @@ final class ShareContactViewController: BaseVC, UITableViewDataSource, UITableVi
         
         // No Contact Label
         let noContactLabel = UILabel()
-        noContactLabel.text = "No Contact Found!"
+        noContactLabel.text = NSLocalizedString("NO_CONTACT_FOUND", comment: "")
         noContactLabel.textColor = Colors.noDataLabelColor
         noContactLabel.font = Fonts.semiOpenSans(ofSize: 16)
         noContactLabel.textAlignment = .center

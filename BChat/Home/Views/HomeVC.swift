@@ -82,14 +82,14 @@ final class HomeVC : BaseVC {
         explanationLabel.numberOfLines = 0
         explanationLabel.lineBreakMode = .byWordWrapping
         explanationLabel.textAlignment = .center
-        explanationLabel.text = NSLocalizedString("Much empty.Such wow.", comment: "")
+        explanationLabel.text = NSLocalizedString("EMPTY_STATE_MESSAGE", comment: "")
         let explanationLabel2 = UILabel()
         explanationLabel2.textColor = Colors.bchatPlaceholderColor
         explanationLabel2.font = Fonts.regularOpenSans(ofSize: Values.smallFontSize)
         explanationLabel2.numberOfLines = 0
         explanationLabel2.lineBreakMode = .byWordWrapping
         explanationLabel2.textAlignment = .center
-        explanationLabel2.text = NSLocalizedString("Go get some friends to BChat!", comment: "")
+        explanationLabel2.text = NSLocalizedString("INVITE_FRIENDS_MESSAGE", comment: "")
         let createNewPrivateChatButton = Button(style: .prominentFilled2, size: .large)
         createNewPrivateChatButton.setTitle(NSLocalizedString("Start a Chat", comment: ""), for: .normal)
         createNewPrivateChatButton.addTarget(self, action: #selector(createNewDM), for: .touchUpInside)
@@ -149,7 +149,7 @@ final class HomeVC : BaseVC {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("NEW_CHAT_PLUS", comment: "")
+        result.text = NSLocalizedString("NEW_CHAT", comment: "")
         result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
@@ -159,7 +159,7 @@ final class HomeVC : BaseVC {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("SECRET_GROUP_TITLE", comment: "")
+        result.text = NSLocalizedString("SECRET_GROUP", comment: "")
         result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
@@ -169,7 +169,7 @@ final class HomeVC : BaseVC {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.boldOpenSans(ofSize: 12)
-        result.text = NSLocalizedString("SOCIAL_GROUP_TITLE", comment: "")
+        result.text = NSLocalizedString("SOCIAL_GROUP", comment: "")
         result.textColor = Colors.bothGreenColor
         result.textAlignment = .right
         return result
@@ -250,7 +250,7 @@ final class HomeVC : BaseVC {
         result.font = Fonts.boldOpenSans(ofSize: 16)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Message Request"
+        result.text = NSLocalizedString("MESSAGE_REQUEST", comment: "")
         return result
     }()
     
@@ -304,7 +304,7 @@ final class HomeVC : BaseVC {
         let result: UILabel = UILabel()
         result.translatesAutoresizingMaskIntoConstraints = false
         result.font = Fonts.regularOpenSans(ofSize: 10)
-        result.text = "You are not connected to the Hop. Check your internet connection or Restart the app!"
+        result.text = NSLocalizedString("HOP_CONNECTION_ERROR", comment: "")
         result.textColor = Colors.noInternetTitleColor
         result.textAlignment = .left
         result.numberOfLines = 0
@@ -632,7 +632,7 @@ final class HomeVC : BaseVC {
     func deleteForMessageRequest(_ thread: TSThread) {
         guard let uniqueId: String = thread.uniqueId else { return }
         let alertVC: UIAlertController = UIAlertController(title: NSLocalizedString("MESSAGE_REQUESTS_DELETE_CONFIRMATION_ACTON", comment: ""), message: nil, preferredStyle: .actionSheet)
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_DELETE_TITLE", comment: ""), style: .destructive) { _ in
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("DELETE", comment: ""), style: .destructive) { _ in
             Storage.write(
                 with: { [weak self] transaction in
                     guard let strongSelf = self else { return }
@@ -658,7 +658,7 @@ final class HomeVC : BaseVC {
                 }
             )
         })
-        alertVC.addAction(UIAlertAction(title: NSLocalizedString("TXT_CANCEL_TITLE", comment: ""), style: .cancel, handler: nil))
+        alertVC.addAction(UIAlertAction(title: NSLocalizedString("CANCEL", comment: ""), style: .cancel, handler: nil))
         self.present(alertVC, animated: true, completion: nil)
     }
     

@@ -69,7 +69,7 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
 
         textView.delegate = self
 
-        let sendTitle = NSLocalizedString("ATTACHMENT_APPROVAL_SEND_BUTTON", comment: "Label for 'send' button in the 'attachment approval' dialog.")
+        let sendTitle = NSLocalizedString("SEND", comment: "Label for 'send' button in the 'attachment approval' dialog.")
         sendButton.setTitle(sendTitle, for: .normal)
         sendButton.addTarget(self, action: #selector(didTapSend), for: .touchUpInside)
 

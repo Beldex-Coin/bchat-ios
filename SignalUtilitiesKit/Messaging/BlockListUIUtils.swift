@@ -27,7 +27,7 @@ import BChatMessagingKit
             preferredStyle: .actionSheet
         )
         actionSheet.addAction(UIAlertAction(
-            title: "BLOCK_LIST_BLOCK_BUTTON".localized(),
+            title: "BLOCK".localized(),
             accessibilityIdentifier: "\(type(of: self).self).block",
             style: .destructive,
             handler: { _ in
@@ -80,7 +80,7 @@ import BChatMessagingKit
             preferredStyle: .actionSheet
         )
         actionSheet.addAction(UIAlertAction(
-            title: "BLOCK_LIST_UNBLOCK_BUTTON".localized(),
+            title: "UNBLOCK".localized(),
             accessibilityIdentifier: "\(type(of: self).self).unblock",
             style: .destructive,
             handler: { _ in
@@ -117,7 +117,7 @@ import BChatMessagingKit
     @objc public static func showOkAlert(title: String, message: String?, from viewController: UIViewController, completionBlock: @escaping (UIAlertAction) -> ()) {
         let alertController: UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(
-            title: "BUTTON_OK".localized(),
+            title: "OK".localized(),
             accessibilityIdentifier: "\(type(of: self).self).ok",
             style: .default,
             handler: completionBlock

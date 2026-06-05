@@ -14,7 +14,7 @@ class LandingNewVC: BaseVC {
         result.backgroundColor = Colors.bothGreenColor
         result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
-        result.setTitle(NSLocalizedString("CREATE_ACCOUNT_NEW", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("CREATE_ACCOUNT", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(createButtonActionTapped), for: .touchUpInside)
         result.setTitleColor(Colors.bothWhiteColor, for: .normal)
@@ -28,7 +28,7 @@ class LandingNewVC: BaseVC {
         result.backgroundColor = Colors.cellGroundColor3
         result.layer.cornerRadius = Values.buttonRadius
         result.clipsToBounds = true
-        result.setTitle(NSLocalizedString("RESTORE_ACCOUNT_NEW", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("RESTORE_ACCOUNT", comment: ""), for: .normal)
         result.titleLabel!.font = Fonts.semiOpenSans(ofSize: 16)
         result.addTarget(self, action: #selector(restoreButtonActionTapped), for: .touchUpInside)
         result.setTitleColor(Colors.titleColor3, for: .normal)
@@ -41,7 +41,7 @@ class LandingNewVC: BaseVC {
     private lazy var termsAndConditionsButton: UIButton = {
         let result = UIButton()
         result.translatesAutoresizingMaskIntoConstraints = false
-        result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS_NEW", comment: ""), for: .normal)
+        result.setTitle(NSLocalizedString("TERMS_AND_CONDITIONS", comment: ""), for: .normal)
         result.setTitleColor(Colors.textFieldPlaceHolderColor, for: .normal)
         result.contentHorizontalAlignment = .center
         result.titleLabel?.font = Fonts.regularOpenSans(ofSize: 14)
@@ -116,7 +116,7 @@ class LandingNewVC: BaseVC {
         titleLabel0.textColor = Colors.titleColor4
         titleLabel0.font = Fonts.extraBoldOpenSans(ofSize: 28)
         titleLabel0.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel0.text = NSLocalizedString("WELCOME_TO_NEW", comment: "")
+        titleLabel0.text = NSLocalizedString("WELCOME_TO_BCHAT_LANDING_VC", comment: "")
         
         // Set up Bchat logo
         let imageLogo = UIImageView()
@@ -130,29 +130,29 @@ class LandingNewVC: BaseVC {
         hellotitleLabel.translatesAutoresizingMaskIntoConstraints = false
         hellotitleLabel.textColor = Colors.titleColor4
         hellotitleLabel.font = Fonts.extraBoldOpenSans(ofSize: 28)
-        hellotitleLabel.text = NSLocalizedString("HELLO_NEW", comment: "")
+        hellotitleLabel.text = NSLocalizedString("HELLO", comment: "")
         
         let titleLabel2 = UILabel()
         titleLabel2.translatesAutoresizingMaskIntoConstraints = false
         titleLabel2.textColor = Colors.titleColor4
         titleLabel2.font = Fonts.extraBoldOpenSans(ofSize: 28)
-        titleLabel2.text = NSLocalizedString("HELLO_SUBTITLE_NEW1", comment: "")
+        titleLabel2.text = NSLocalizedString("WERE_THRILLED_TO_HAVE_YOU_ON_BOARD", comment: "")
         titleLabel2.numberOfLines = 0
         titleLabel2.lineBreakMode = .byWordWrapping
         
-        let titleLabel3 = UILabel()
-        titleLabel3.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel3.textColor = Colors.titleColor4
-        titleLabel3.font = Fonts.extraBoldOpenSans(ofSize: 28)
-        titleLabel3.text = NSLocalizedString("HELLO_SUBTITLE_NEW2", comment: "")
-        titleLabel3.numberOfLines = 0
+//        let titleLabel3 = UILabel()
+//        titleLabel3.translatesAutoresizingMaskIntoConstraints = false
+//        titleLabel3.textColor = Colors.titleColor4
+//        titleLabel3.font = Fonts.extraBoldOpenSans(ofSize: 28)
+//        titleLabel3.text = NSLocalizedString("HELLO_SUBTITLE_NEW2", comment: "")
+//        titleLabel3.numberOfLines = 0
         
         // Set up explanation label
         let explanationLabel = UILabel()
         explanationLabel.translatesAutoresizingMaskIntoConstraints = false
         explanationLabel.textColor = Colors.titleColor4
         explanationLabel.font = Fonts.lightOpenSans(ofSize: 14)
-        explanationLabel.text = NSLocalizedString("HELLO_SUBTITLE_DECSC_NEW", comment: "")
+        explanationLabel.text = NSLocalizedString("WELCOME_DESCRIPTION", comment: "")
         explanationLabel.numberOfLines = 0
         explanationLabel.textAlignment = .left
         
@@ -161,7 +161,7 @@ class LandingNewVC: BaseVC {
         view.addSubViews(backgroundImage)
         view.addSubViews(hellotitleLabel)
         view.addSubViews(titleLabel2)
-        view.addSubViews(titleLabel3)
+//        view.addSubViews(titleLabel3)
         view.addSubViews(explanationLabel)
         view.addSubViews(createButton)
         view.addSubViews(restoreButton)
@@ -184,11 +184,12 @@ class LandingNewVC: BaseVC {
             hellotitleLabel.heightAnchor.constraint(equalToConstant: 36),
             titleLabel2.topAnchor.constraint(equalTo: hellotitleLabel.bottomAnchor, constant: 5),
             titleLabel2.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
-            titleLabel2.heightAnchor.constraint(equalToConstant: 36),
-            titleLabel3.topAnchor.constraint(equalTo: titleLabel2.bottomAnchor, constant: -10),
-            titleLabel3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
-            titleLabel3.heightAnchor.constraint(equalToConstant: 36),
-            explanationLabel.topAnchor.constraint(equalTo: titleLabel3.bottomAnchor, constant: 16),
+            titleLabel2.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
+//            titleLabel2.heightAnchor.constraint(equalToConstant: 36),
+//            titleLabel3.topAnchor.constraint(equalTo: titleLabel2.bottomAnchor, constant: -10),
+//            titleLabel3.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
+//            titleLabel3.heightAnchor.constraint(equalToConstant: 36),
+            explanationLabel.topAnchor.constraint(equalTo: titleLabel2.bottomAnchor, constant: 16),
             explanationLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 33),
             explanationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -33),
             explanationLabel.heightAnchor.constraint(equalToConstant: 56),
@@ -274,7 +275,7 @@ class LandingNewVC: BaseVC {
             let vc = DisplayNameNewVC()
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
-            _ = CustomAlertController.alert(title: Alert.Alert_BChat_title, message: String(format: Alert.Alert_BChat_Terms_Condition_Message) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+            _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_title, comment: ""), message: NSLocalizedString(Alert.Alert_BChat_Terms_Condition_Message, comment: ""), acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: ""), acceptBlock: {
             })
         }
     }

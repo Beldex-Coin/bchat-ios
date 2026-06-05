@@ -48,7 +48,7 @@ class MessageRequestsCell: UITableViewCell {
         result.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         result.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         result.font = Fonts.boldOpenSans(ofSize: Values.mediumFontSize)
-        result.text = NSLocalizedString("MESSAGE_REQUESTS_TITLE", comment: "")
+        result.text = NSLocalizedString("MESSAGE_REQUESTS", comment: "")
         result.textColor = Colors.bchatLabelNameColor
         result.lineBreakMode = .byTruncatingTail
         

@@ -15,7 +15,7 @@ public final class InputTextView : UITextView, UITextViewDelegate {
     // MARK: UI Components
     private lazy var placeholderLabel: UILabel = {
         let result = UILabel()
-        result.text = NSLocalizedString("Write a message...", comment: "")
+        result.text = NSLocalizedString("WRITE_A_MESSAGE", comment: "")
         result.font = Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
         result.textColor = Colors.text.withAlphaComponent(Values.mediumOpacity)
         return result

@@ -78,7 +78,7 @@ class ChatNewVC: BaseVC  {
     /// Chat Id Details Button
     private lazy var chatIdDetailsButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("YOUR_CHAT_ID_NEW", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("YOUR_BCHAT_ID", comment: ""), for: .normal)
         let logoImage = isLightMode ? "ic_yourChatid_details" : "ic_NewID"
         let image = UIImage(named: logoImage)?.scaled(to: CGSize(width: 16, height: 13))
         button.setImage(image, for: .normal)
@@ -109,7 +109,7 @@ class ChatNewVC: BaseVC  {
     /// Lets BChat Button
     private lazy var letsBChatButton: UIButton = {
         let button = UIButton()
-        button.setTitle(NSLocalizedString("LETS_BCHAT_NEW", comment: ""), for: .normal)
+        button.setTitle(NSLocalizedString("LETS_BCHAT", comment: ""), for: .normal)
         button.layer.cornerRadius = 16
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.backgroundViewColor
@@ -130,8 +130,8 @@ class ChatNewVC: BaseVC  {
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorSocialGroup
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "New Chat"
-        self.titleLabel.text = NSLocalizedString("NEW_CHAT_NEW", comment: "")
+        self.title = NSLocalizedString("NEW_CHAT", comment: "")
+        self.titleLabel.text = NSLocalizedString("NEW_CHAT", comment: "")
         
         view.addSubViews(titleLabel)
         view.addSubViews(topBackgroundView)
@@ -254,8 +254,8 @@ class ChatNewVC: BaseVC  {
                         }
                         BNSBool.bnsName = ""
                         BNSBool.isFromBNS = false
-                        let message = messageOrNil ?? Alert.Alert_BChat_Invalid_Id_or_BNS_Name
-                        _ = CustomAlertController.alert(title: Alert.Alert_BChat_Error, message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
+                        let message = messageOrNil ?? NSLocalizedString(Alert.Alert_BChat_Invalid_Id_or_BNS_Name, comment: "")
+                        _ = CustomAlertController.alert(title: NSLocalizedString(Alert.Alert_BChat_Error, comment: ""), message: String(format: message ) , acceptMessage:NSLocalizedString(Alert.Alert_BChat_Ok, comment: "") , acceptBlock: {
                         })
                     }
                 }
@@ -318,4 +318,3 @@ extension ChatNewVC: UITextViewDelegate {
         return true
     }
 }
-

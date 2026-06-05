@@ -20,14 +20,14 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         return result
     }()
     
-    let sectionNames = ["Notification Strategy", "Notification Sounds", "Notification Content"]
+    let sectionNames = [NSLocalizedString("NOTIFICATION_STRATEGY", comment: ""), "Notification Sounds", NSLocalizedString("NOTIFICATION_CONTENT", comment: "")]
     
-    var notificationStrategyTitleArray = ["Use Fast Mode"]
-    var notificationStrategyDescArray = ["You will be notified for messaged reliably  and immediately using googles notification servers."]
+    var notificationStrategyTitleArray = [NSLocalizedString("USE_FAST_MODE", comment: "")]
+    var notificationStrategyDescArray = [NSLocalizedString("FAST_MODE_DESCRIPTION", comment: "")]
     
     var notificationSoundsTitleArray = ["Message Sound","Play while App is open"]
     
-    var notificationContentTitleArray = ["Show"]
+    var notificationContentTitleArray = [NSLocalizedString("SHOW", comment: "")]
     var notificationContentDescArray = ["The information shown in notifications when your phone is locked."]
     
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class NotificationsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         // Do any additional setup after loading the view.
         view.backgroundColor = Colors.viewBackgroundColorNew
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Notifications"
+        self.title = NSLocalizedString("NOTIFICATIONS", comment: "")
         setUpTopCornerRadius()
         
         view.addSubview(tableView)

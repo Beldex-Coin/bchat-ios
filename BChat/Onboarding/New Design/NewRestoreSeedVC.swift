@@ -60,7 +60,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     private lazy var saveButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
+        button.setTitle(NSLocalizedString("SAVE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.bothGreenColor
@@ -71,7 +71,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     private lazy var copySeedButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Copy Seed", for: .normal)
+        button.setTitle(NSLocalizedString("COPY_SEED", comment: ""), for: .normal)
         let image = UIImage(named: "ic_copySeed")?.scaled(to: CGSize(width: 12.0, height: 12.0))
         button.setImage(image, for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
@@ -97,7 +97,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     
     private lazy var continueButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Continue", for: .normal)
+        button.setTitle(NSLocalizedString("CONTINUE", comment: ""), for: .normal)
         button.layer.cornerRadius = Values.buttonRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor2
@@ -151,11 +151,11 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
         
         view.backgroundColor = Colors.mainBackGroundColor2
         navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        self.title = "Recovery Seed"
+        self.title = NSLocalizedString("RECOVERY_SEED", comment: "")
         setUpTopCornerRadius()
         
-        self.seedInfoLabel.text = "Copy your Recovery Seed and\nkeep it safe."
-        self.infoLabel.text = "Copy and save the seed to continue"
+        self.seedInfoLabel.text = NSLocalizedString("COPY_RECOVERY_SEED_DESCRIPTION", comment: "")
+        self.infoLabel.text = NSLocalizedString("COPY_AND_SAVE_SEED_TO_CONTINUE", comment: "")
         self.seedLabel.text = "\(mnemonic)"
         
         view.addSubViews(seedInfoLabel, iconView, seedView)
@@ -221,7 +221,7 @@ class NewRestoreSeedVC: BaseVC, UITextFieldDelegate, OptionViewDelegate {
     @objc private func copyButtonTapped() {
         continueButton.backgroundColor = Colors.bothGreenColor
         continueButton.setTitleColor(Colors.bothWhiteColor, for: .normal)
-        self.showToast(message: "Copied", seconds: 1.0)
+        self.showToast(message: NSLocalizedString("COPIED_TO_CLIPBOARD", comment: ""), seconds: 1.0)
         UIPasteboard.general.string = mnemonic
         seedcopy = true
         self.infoLabel.isHidden = true
