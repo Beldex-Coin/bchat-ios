@@ -1365,3 +1365,43 @@
 
 "ABOUT_TITLE" = "Giới thiệu";
 "ABOUT_CONTENT" = "BChat là một ứng dụng nhắn tin ngang hàng phi tập trung được xây dựng trên blockchain Beldex. BChat bảo vệ quyền riêng tư của bạn vì ứng dụng không thu thập hoặc lưu trữ thông tin cá nhân của bạn như tên, tuổi, email, số điện thoại, tên người dùng, vị trí, danh bạ, địa chỉ IP, v.v. Tất cả những gì bạn cần để tạo tài khoản BChat là kết nối internet.\n\nKhi bạn tạo tài khoản trên BChat, một BChat ID duy nhất và cụm từ khôi phục (seed key) sẽ được tạo ra. BChat ID là khóa công khai của bạn mà bạn có thể dùng để trò chuyện với những người khác trên BChat. BChat ID của bạn cũng được liên kết với một địa chỉ ví, địa chỉ này sẽ được tạo mỗi khi bạn tạo một tài khoản mới.\n\nKhóa khôi phục (seed key) là khóa riêng tư của bạn, dùng để khôi phục tài khoản trên bất kỳ thiết bị nào. Khóa khôi phục giống như mật khẩu của bạn. Không chia sẻ khóa này với bất kỳ ai. Không lưu trữ bản sao kỹ thuật số của nó. Hãy viết nó ra giấy và giữ ở nơi an toàn. Nếu bạn làm mất khóa khôi phục, bạn sẽ mất quyền truy cập vào tài khoản của mình.\n\nTrên BChat, tin nhắn của bạn được định tuyến thông qua các node trên mạng Beldex và chỉ được lưu trữ cục bộ trên thiết bị của bạn. Tin nhắn của bạn và siêu dữ liệu liên quan không được lưu trữ ở bất kỳ đâu trên blockchain Beldex, bao gồm cả các máy chủ lưu trữ masternode.\n\nBạn sở hữu dữ liệu của mình. Bạn có thể chọn xóa dữ liệu bất kỳ lúc nào chỉ với một lần nhấn nút. Để xóa dữ liệu, hãy nhấn vào biểu tượng hồ sơ ở góc trên bên phải, chọn “Tài khoản của tôi” > “Xóa dữ liệu” > “Xóa” > “OK”, và dữ liệu sẽ được xóa.\n\nBChat được xây dựng và duy trì bởi Beldex Foundation. Đây là một dự án mã nguồn mở và không bị kiểm duyệt. Bất kỳ ai cũng có thể đóng góp vào quá trình phát triển. Beldex Foundation là một tổ chức xây dựng các ứng dụng bảo mật cho web phi tập trung. Các sản phẩm hiện đang được nghiên cứu và phát triển bao gồm BChat, BelNet (dịch vụ VPN phi tập trung), Beldex Browser (trình duyệt Web3 không quảng cáo), và Beldex Protocol (giao thức giúp ẩn danh các giao dịch của các tài sản blockchain khác).\n\nBChat là sản phẩm chủ lực của Beldex. Phiên bản đầu tiên của BChat sẽ là một ứng dụng nhắn tin cho phép bạn gửi các tin nhắn hoàn toàn ẩn danh. Bạn có thể tạo nhóm bí mật và nhóm xã hội. Nhóm bí mật cho phép tối đa 100 thành viên, trong khi nhóm xã hội không có giới hạn số lượng thành viên. Bất kỳ ai cũng có thể tạo nhóm bí mật nhưng bạn chỉ có thể thêm các liên hệ trong danh bạ BChat của mình vào nhóm. Nhóm xã hội yêu cầu một máy chủ riêng do người tạo nhóm duy trì.\n\nTrong các phiên bản tương lai, BChat có thể tích hợp cuộc gọi thoại và video, đồng thời cho phép người dùng gửi và nhận BDX, đồng tiền điện tử gốc của mạng Beldex. Tính năng “thanh toán khi trò chuyện” sẽ cho phép người dùng chuyển BDX cho các liên hệ của họ ngay từ cửa sổ trò chuyện.\n\nBeldex Research Labs, bộ phận nghiên cứu của Beldex Foundation, đang nghiên cứu khả năng triển khai zk-SNARKs (như một giải pháp thay thế cho chữ ký vòng – ring signatures) nhằm tăng tập hợp ẩn danh và sử dụng data sharding để cải thiện khả năng mở rộng của mạng Beldex. Điều này có thể giúp BChat nhanh hơn nhiều lần so với các ứng dụng phi tập trung hiện tại và đưa nó tiến gần hơn đến việc được chấp nhận trên toàn cầu.\n\nGhi công:\nMạng Beldex và BChat sử dụng một số giao thức được thiết kế bởi các dự án mã nguồn mở như Monero, Signal, và Session.";
+
+
+
+"SETTINGS_SCREEN_LOCK_TITLE" = "Khóa màn hình";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "Yêu cầu Touch ID, Face ID hoặc mật khẩu thiết bị để mở khóa màn hình BChat. Bạn vẫn có thể nhận thông báo khi bật khóa màn hình. Sử dụng cài đặt thông báo của BChat để tùy chỉnh thông tin hiển thị trong thông báo.";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "Tắt xem trước trong trình chuyển ứng dụng";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "Ngăn không cho hiển thị bản xem trước BChat trong trình chuyển ứng dụng.";
+
+"CLEAR_CONVERSATION_HISTORY" = "Xóa lịch sử cuộc trò chuyện";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "Bạn có chắc chắn không? Thao tác này không thể hoàn tác.";
+"DELETE_EVERYTHING" = "Xóa tất cả";
+"CANCEL" = "Hủy";
+
+"NOTIFICATION_SOUNDS" = "Âm thanh thông báo";
+"MESSAGE_SOUND" = "Âm thanh tin nhắn";
+"PLAY_WHILE_OPEN" = "Phát khi ứng dụng đang mở";
+
+"CONTACT_INFO" = "Thông tin liên hệ";
+"DISPLAY_NAME" = "Tên hiển thị";
+"DONE" = "Xong";
+"ALL_MEDIA" = "Tất cả phương tiện";
+"SEARCH_CONVERSATION" = "Tìm kiếm cuộc trò chuyện";
+
+"DISAPPEARING_MESSAGES" = "Tin nhắn tự hủy";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "Khi bật, tin nhắn giữa bạn và nhóm sẽ tự động biến mất sau khi đã được xem";
+
+"MUTE" = "Tắt tiếng";
+
+"BLOCK_THIS_USER" = "Chặn người dùng này";
+"BLOCK_CONTACT" = "Chặn liên hệ";
+"BLOCK_CONTACT_CONFIRMATION" = "Bạn có chắc chắn muốn chặn liên hệ này không?";
+"BLOCK" = "Chặn";
+
+"REPORT" = "Báo cáo";
+"REPORT_USER_DESCRIPTION" = "Người dùng này sẽ được báo cáo tới đội ngũ BChat";
+"OK" = "OK";
+
+
+

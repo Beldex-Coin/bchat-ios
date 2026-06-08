@@ -709,3 +709,40 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "画面ロック";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "BChatの画面を解除するには、Touch ID、Face ID、またはデバイスのパスコードが必要です。画面ロックが有効になっている場合でも通知を受け取ることができます。通知に表示される情報は、BChatの通知設定でカスタマイズできます。";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "アプリスイッチャーでのプレビューを無効化";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "アプリスイッチャーにBChatのプレビューが表示されないようにします。";
+
+"CLEAR_CONVERSATION_HISTORY" = "会話履歴を削除";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "本当によろしいですか？この操作は元に戻せません。";
+"DELETE_EVERYTHING" = "すべて削除";
+"CANCEL" = "キャンセル";
+
+"NOTIFICATION_SOUNDS" = "通知音";
+"MESSAGE_SOUND" = "メッセージ通知音";
+"PLAY_WHILE_OPEN" = "アプリを開いている間も再生";
+
+"CONTACT_INFO" = "連絡先情報";
+"DISPLAY_NAME" = "表示名";
+"DONE" = "完了";
+"ALL_MEDIA" = "すべてのメディア";
+"SEARCH_CONVERSATION" = "会話を検索";
+
+"DISAPPEARING_MESSAGES" = "消えるメッセージ";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "有効にすると、あなたとグループ間のメッセージは閲覧後に消去されます";
+
+"MUTE" = "ミュート";
+
+"BLOCK_THIS_USER" = "このユーザーをブロック";
+"BLOCK_CONTACT" = "連絡先をブロック";
+"BLOCK_CONTACT_CONFIRMATION" = "この連絡先をブロックしてもよろしいですか？";
+"BLOCK" = "ブロック";
+
+"REPORT" = "報告";
+"REPORT_USER_DESCRIPTION" = "このユーザーはBChatチームに報告されます";
+"OK" = "OK";
+
+
+

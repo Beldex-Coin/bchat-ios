@@ -703,3 +703,40 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "Bloqueio de Ecrã";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "Exige Touch ID, Face ID ou o código de acesso do seu dispositivo para desbloquear o ecrã do BChat. Ainda pode receber notificações quando o bloqueio de ecrã estiver ativado. Utilize as definições de notificações do BChat para personalizar as informações apresentadas nas notificações.";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "Desativar pré-visualização no seletor de aplicações";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "Impede que as pré-visualizações do BChat apareçam no seletor de aplicações.";
+
+"CLEAR_CONVERSATION_HISTORY" = "Limpar histórico de conversas";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "Tem a certeza? Esta ação não pode ser anulada.";
+"DELETE_EVERYTHING" = "Eliminar Tudo";
+"CANCEL" = "Cancelar";
+
+"NOTIFICATION_SOUNDS" = "Sons de Notificação";
+"MESSAGE_SOUND" = "Som da Mensagem";
+"PLAY_WHILE_OPEN" = "Reproduzir enquanto está aberto";
+
+"CONTACT_INFO" = "Informações de Contacto";
+"DISPLAY_NAME" = "Nome de Exibição";
+"DONE" = "Concluído";
+"ALL_MEDIA" = "Todos os Media";
+"SEARCH_CONVERSATION" = "Pesquisar Conversa";
+
+"DISAPPEARING_MESSAGES" = "Mensagens Temporárias";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "Quando ativado, as mensagens entre si e o grupo desaparecerão depois de serem vistas";
+
+"MUTE" = "Silenciar";
+
+"BLOCK_THIS_USER" = "Bloquear este utilizador";
+"BLOCK_CONTACT" = "Bloquear contacto";
+"BLOCK_CONTACT_CONFIRMATION" = "Tem a certeza de que deseja bloquear este contacto";
+"BLOCK" = "Bloquear";
+
+"REPORT" = "Reportar";
+"REPORT_USER_DESCRIPTION" = "Este utilizador será reportado à equipa do BChat";
+"OK" = "OK";
+
+
+

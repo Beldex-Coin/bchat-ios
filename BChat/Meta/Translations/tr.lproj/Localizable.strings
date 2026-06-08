@@ -706,3 +706,40 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "Ekran Kilidi";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "BChat ekranının kilidini açmak için Touch ID, Face ID veya cihazınızın şifresi gereklidir. Ekran kilidi etkinleştirildiğinde de bildirim almaya devam edebilirsiniz. Bildirimlerde gösterilen bilgileri özelleştirmek için BChat'in bildirim ayarlarını kullanın.";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "Uygulama değiştiricide önizlemeyi devre dışı bırak";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "BChat önizlemelerinin uygulama değiştiricide görünmesini engeller.";
+
+"CLEAR_CONVERSATION_HISTORY" = "Sohbet geçmişini temizle";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "Emin misiniz? Bu işlem geri alınamaz.";
+"DELETE_EVERYTHING" = "Her Şeyi Sil";
+"CANCEL" = "İptal Et";
+
+"NOTIFICATION_SOUNDS" = "Bildirim Sesleri";
+"MESSAGE_SOUND" = "Mesaj Sesi";
+"PLAY_WHILE_OPEN" = "Uygulama açıkken çal";
+
+"CONTACT_INFO" = "Kişi Bilgileri";
+"DISPLAY_NAME" = "Görünen Ad";
+"DONE" = "Tamam";
+"ALL_MEDIA" = "Tüm Medyalar";
+"SEARCH_CONVERSATION" = "Sohbeti Ara";
+
+"DISAPPEARING_MESSAGES" = "Kaybolan Mesajlar";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "Etkinleştirildiğinde, sizinle grup arasındaki mesajlar görüldükten sonra kaybolacaktır.";
+
+"MUTE" = "Sessize Al";
+
+"BLOCK_THIS_USER" = "Bu Kullanıcıyı Engelle";
+"BLOCK_CONTACT" = "Kişiyi Engelle";
+"BLOCK_CONTACT_CONFIRMATION" = "Bu kişiyi engellemek istediğinizden emin misiniz?";
+"BLOCK" = "Engelle";
+
+"REPORT" = "Bildir";
+"REPORT_USER_DESCRIPTION" = "Bu kullanıcı BChat Ekibine bildirilecektir.";
+"OK" = "Tamam";
+
+
+

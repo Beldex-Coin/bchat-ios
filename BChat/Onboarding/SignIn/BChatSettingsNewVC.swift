@@ -21,8 +21,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     
     let sectionNames = [NSLocalizedString("APP_ACCESS", comment: ""), NSLocalizedString("COMMUNICATION", comment: "")]
     
-    var appAccessTitleArray = ["Screen Lock","Disable Preview in app switcher"]
-    var appAccessDescArray = ["Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications.","Prevent BChat previews from appearing in the app switcher."]
+    var appAccessTitleArray = [NSLocalizedString("SETTINGS_SCREEN_LOCK_TITLE", comment: ""), NSLocalizedString("SETTINGS_DISABLE_PREVIEW_APP_SWITCHER", comment: "")]
+    var appAccessDescArray = [NSLocalizedString("SETTINGS_SCREEN_LOCK_DESCRIPTION", comment: ""), NSLocalizedString("SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION", comment: "")]
     
     var communicationTitleArray = [
         NSLocalizedString("READ_RECEIPTS", comment: ""),
@@ -30,7 +30,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
         NSLocalizedString("SEND_LINK_PREVIEWS", comment: ""),
         NSLocalizedString("VOICE_VIDEO_CALLS", comment: ""),
         "Keep chats archived",
-        "Clear conversation History"
+        NSLocalizedString("CLEAR_CONVERSATION_HISTORY", comment: "")
     ]
     var communicationDescArray = [
         NSLocalizedString("READ_RECEIPTS_DESCRIPTION", comment: ""),
@@ -99,8 +99,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
                 cell.resultTitleLabel.isHidden = true
-                cell.titleLabel.text = "Screen Lock"
-                cell.titleDescriptionLabel.text = "Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications."
+                cell.titleLabel.text = NSLocalizedString("SETTINGS_SCREEN_LOCK_TITLE", comment: "")
+                cell.titleDescriptionLabel.text = NSLocalizedString("SETTINGS_SCREEN_LOCK_DESCRIPTION", comment: "")
                 let logoImage = isLightMode ? "ic_screenLock_dark" : "ic_Screen_securityNew"
                 cell.logoImage.image = UIImage(named: logoImage)
                 //screen Lock
@@ -132,8 +132,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.backgroundColor = .clear
                 cell.selectionStyle = .none
                 cell.resultTitleLabel.isHidden = true
-                cell.titleLabel.text = "Disable Preview in app switcher"
-                cell.titleDescriptionLabel.text = "Prevent BChat previews from appearing in the app switcher."
+                cell.titleLabel.text = NSLocalizedString("SETTINGS_DISABLE_PREVIEW_APP_SWITCHER", comment: "")
+                cell.titleDescriptionLabel.text = NSLocalizedString("SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION", comment: "")
                 let logoImage = isLightMode ? "ic_Disable_preview_dark" : "ic_Disable_preview_white"
                 cell.logoImage.image = UIImage(named: logoImage)
                 //disable Preview in App Switcher
@@ -650,6 +650,7 @@ class BChatSettingsTableCell2: UITableViewCell {
         result.font = Fonts.regularOpenSans(ofSize: 14)
         result.textAlignment = .left
         result.translatesAutoresizingMaskIntoConstraints = false
+        result.numberOfLines = 0
         return result
     }()
     lazy var resultTitleLabel: UILabel = {
@@ -719,7 +720,7 @@ class BChatSettingsTableCell2: UITableViewCell {
             resultTitleLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -20),
             resultTitleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: logoImage.trailingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: toggleSwitch.leadingAnchor, constant: -20),
+            titleLabel.trailingAnchor.constraint(equalTo: backGroundView.trailingAnchor, constant: -28 - toggleSwitch.width()),
             titleLabel.centerYAnchor.constraint(equalTo: logoImage.centerYAnchor),
             titleDescriptionLabel.leadingAnchor.constraint(equalTo: logoImage.leadingAnchor),
             titleDescriptionLabel.trailingAnchor.constraint(equalTo: toggleSwitch.trailingAnchor),

@@ -704,3 +704,39 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "Блокировка экрана";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "Для разблокировки экрана BChat требуется Touch ID, Face ID или пароль вашего устройства. Вы по-прежнему сможете получать уведомления, когда блокировка экрана включена. Используйте настройки уведомлений BChat, чтобы настроить информацию, отображаемую в уведомлениях.";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "Отключить предпросмотр в переключателе приложений";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "Предотвращает отображение предпросмотра BChat в переключателе приложений.";
+
+"CLEAR_CONVERSATION_HISTORY" = "Очистить историю переписки";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "Вы уверены? Это действие нельзя отменить.";
+"DELETE_EVERYTHING" = "Удалить всё";
+"CANCEL" = "Отмена";
+
+"NOTIFICATION_SOUNDS" = "Звуки уведомлений";
+"MESSAGE_SOUND" = "Звук сообщения";
+"PLAY_WHILE_OPEN" = "Воспроизводить, когда приложение открыто";
+
+"CONTACT_INFO" = "Информация о контакте";
+"DISPLAY_NAME" = "Отображаемое имя";
+"DONE" = "Готово";
+"ALL_MEDIA" = "Все медиафайлы";
+"SEARCH_CONVERSATION" = "Поиск в переписке";
+
+"DISAPPEARING_MESSAGES" = "Исчезающие сообщения";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "Если функция включена, сообщения между вами и группой будут исчезать после просмотра.";
+
+"MUTE" = "Без звука";
+
+"BLOCK_THIS_USER" = "Заблокировать этого пользователя";
+"BLOCK_CONTACT" = "Заблокировать контакт";
+"BLOCK_CONTACT_CONFIRMATION" = "Вы уверены, что хотите заблокировать этот контакт?";
+"BLOCK" = "Заблокировать";
+
+"REPORT" = "Пожаловаться";
+"REPORT_USER_DESCRIPTION" = "Этот пользователь будет отправлен на рассмотрение команде BChat";
+"OK" = "ОК";
+
+

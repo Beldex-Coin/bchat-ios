@@ -705,4 +705,40 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "屏幕锁定";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "需要使用 Touch ID、Face ID 或设备密码来解锁 BChat 界面。启用屏幕锁定后，你仍然可以接收通知。可通过 BChat 的通知设置自定义通知中显示的信息。";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "在应用切换器中禁用预览";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "防止 BChat 预览内容出现在应用切换界面中。";
+
+"CLEAR_CONVERSATION_HISTORY" = "清除聊天记录";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "你确定吗？此操作无法撤销。";
+"DELETE_EVERYTHING" = "删除全部";
+"CANCEL" = "取消";
+
+"NOTIFICATION_SOUNDS" = "通知声音";
+"MESSAGE_SOUND" = "消息声音";
+"PLAY_WHILE_OPEN" = "在应用打开时播放";
+
+"CONTACT_INFO" = "联系人信息";
+"DISPLAY_NAME" = "显示名称";
+"DONE" = "完成";
+"ALL_MEDIA" = "所有媒体";
+"SEARCH_CONVERSATION" = "搜索对话";
+
+"DISAPPEARING_MESSAGES" = "消失消息";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "启用后，你与该群组之间的消息在被查看后将自动消失";
+
+"MUTE" = "静音";
+
+"BLOCK_THIS_USER" = "屏蔽此用户";
+"BLOCK_CONTACT" = "屏蔽联系人";
+"BLOCK_CONTACT_CONFIRMATION" = "你确定要屏蔽此联系人吗";
+"BLOCK" = "屏蔽";
+
+"REPORT" = "举报";
+"REPORT_USER_DESCRIPTION" = "该用户将被报告给 BChat 团队";
+"OK" = "确定";
+
+
 

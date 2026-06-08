@@ -703,3 +703,40 @@
 
 
 
+"SETTINGS_SCREEN_LOCK_TITLE" = "화면 잠금";
+"SETTINGS_SCREEN_LOCK_DESCRIPTION" = "Touch ID, Face ID 또는 기기 비밀번호를 사용하여 BChat 화면을 잠금 해제해야 합니다. 화면 잠금이 활성화되어 있어도 알림은 계속 받을 수 있습니다. 표시되는 알림 정보는 BChat 알림 설정에서 사용자 지정할 수 있습니다.";
+
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER" = "앱 전환기에서 미리보기 비활성화";
+"SETTINGS_DISABLE_PREVIEW_APP_SWITCHER_DESCRIPTION" = "앱 전환 화면에서 BChat 미리보기가 표시되지 않도록 합니다.";
+
+"CLEAR_CONVERSATION_HISTORY" = "대화 기록 삭제";
+"CLEAR_CONVERSATION_HISTORY_CONFIRMATION" = "정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.";
+"DELETE_EVERYTHING" = "전체 삭제";
+"CANCEL" = "취소";
+
+"NOTIFICATION_SOUNDS" = "알림 소리";
+"MESSAGE_SOUND" = "메시지 소리";
+"PLAY_WHILE_OPEN" = "앱이 열려 있는 동안 재생";
+
+"CONTACT_INFO" = "연락처 정보";
+"DISPLAY_NAME" = "표시 이름";
+"DONE" = "완료";
+"ALL_MEDIA" = "모든 미디어";
+"SEARCH_CONVERSATION" = "대화 검색";
+
+"DISAPPEARING_MESSAGES" = "사라지는 메시지";
+"DISAPPEARING_MESSAGES_DESCRIPTION" = "활성화되면, 당신과 그룹 간의 메시지는 읽힌 후 자동으로 사라집니다";
+
+"MUTE" = "무음";
+
+"BLOCK_THIS_USER" = "이 사용자 차단";
+"BLOCK_CONTACT" = "연락처 차단";
+"BLOCK_CONTACT_CONFIRMATION" = "이 연락처를 차단하시겠습니까?";
+"BLOCK" = "차단";
+
+"REPORT" = "신고";
+"REPORT_USER_DESCRIPTION" = "이 사용자는 BChat 팀에 신고됩니다";
+"OK" = "확인";
+
+
+
