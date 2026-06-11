@@ -63,10 +63,33 @@ class PinViewController: BaseVC {
         return button
     }()
     
+    
+    private lazy var togglePinLengthButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.layer.cornerRadius = 20.1
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = Colors.cellGroundColor3
+        button.titleLabel!.font = Fonts.mediumOpenSans(ofSize: 14)
+        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.addTarget(self, action: #selector(togglePinLengthTapped), for: .touchUpInside)
+        let image = UIImage(named: "ic_right_arrow_white")?.scaled(to: CGSize(width: 10.66, height: 8))
+        button.setImage(image, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.contentEdgeInsets = UIEdgeInsets(
+            top: 0,
+            left: 22,
+            bottom: 0,
+            right: 22
+        )
+        return button
+    }()
+    
     // MARK: - Properties
     
     private var pinLabels: [UILabel] = []
-    private let pinLength = 4
+    private var pinLength: Int = SaveUserDefaultsData.BChatPinLength
     
     private var currentPin = ""
     private var firstPinEntry: String?
@@ -92,6 +115,7 @@ class PinViewController: BaseVC {
         
         view.addSubview(iconView)
         view.addSubview(pinLabel)
+        view.addSubview(togglePinLengthButton)
         view.addSubview(keypadView)
         view.addSubview(nextButton)
         
@@ -103,12 +127,16 @@ class PinViewController: BaseVC {
             
             pinLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             pinLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            pinLabel.bottomAnchor.constraint(equalTo: keypadView.topAnchor, constant: -26),
+            pinLabel.bottomAnchor.constraint(equalTo: togglePinLengthButton.topAnchor, constant: -16),
+            
+            togglePinLengthButton.heightAnchor.constraint(equalToConstant: 41),
+            togglePinLengthButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            togglePinLengthButton.bottomAnchor.constraint(equalTo: keypadView.topAnchor, constant: -16),
             
             keypadView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             keypadView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             keypadView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-            keypadView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.57),
+            keypadView.heightAnchor.constraint(equalToConstant: view.frame.height * 0.52),
             
             nextButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 21),
             nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -21),
@@ -122,20 +150,21 @@ class PinViewController: BaseVC {
     private func setupPinFields() {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 18
+        stackView.spacing = 8
         stackView.distribution = .fillEqually
 
-        for _ in 0..<pinLength {
+        for _ in 0..<6 {
             let label = UILabel()
             label.textAlignment = .center
-            label.font = Fonts.boldOpenSans(ofSize: 26)
+            label.font = Fonts.boldOpenSans(ofSize: 24)
             label.textColor = Colors.titleNewColor
             label.backgroundColor = .clear
             label.layer.borderWidth = 1
             label.layer.borderColor = Colors.borderColorNew.cgColor
             label.layer.cornerRadius = Values.buttonRadius
             label.clipsToBounds = true
-            label.heightAnchor.constraint(equalToConstant: 56).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 46).isActive = true
+            label.widthAnchor.constraint(equalToConstant: 46).isActive = true
             pinLabels.append(label)
             stackView.addArrangedSubview(label)
         }
@@ -146,8 +175,9 @@ class PinViewController: BaseVC {
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: pinLabel.topAnchor, constant: -16),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.widthAnchor.constraint(equalToConstant: 260)
         ])
+
+        updatePinFieldVisibility()
     }
 
     // MARK: - Setup Keypad
@@ -204,25 +234,11 @@ class PinViewController: BaseVC {
     // MARK: - Configure pin flow
     
     private func configureFlow() {
-        switch flowStep {
-        case .createPin:
-            flowStep = .createPin
-            title = "Create Password"
-            pinLabel.text = "Enter your PIN"
-            
-        case .enterNewPin:
+        if flowStep == .enterNewPin {
             flowStep = .enterOldPin
-            title = "Change Password"
-            pinLabel.text = "Enter Old PIN"
-            
-        case .verifyPin:
-            flowStep = .verifyPin
-            title = "Verify PIN"
-            pinLabel.text = "Enter your 4 digit PIN"
-            
-        case .enterOldPin, .confirmNewPin, .confirmCreatePin:
-            break
         }
+
+        updateFlowUI()
     }
 
     // MARK: - Actions
@@ -241,6 +257,14 @@ class PinViewController: BaseVC {
     // Next button action
     @objc private func nextButtonTapped() {
         handlePinCompletion()
+    }
+
+    @objc private func togglePinLengthTapped() {
+        pinLength = pinLength == 4 ? 6 : 4
+        firstPinEntry = nil
+        resetPinUI()
+        updatePinFieldVisibility()
+        updateFlowUI()
     }
     
     // MARK: - Private methods
@@ -283,6 +307,7 @@ class PinViewController: BaseVC {
         case .enterNewPin:
             firstPinEntry = currentPin
             flowStep = .confirmNewPin
+            updateToggleButton()
             pinLabel.text = "Re-enter your PIN"
             resetPinUI()
             
@@ -292,6 +317,7 @@ class PinViewController: BaseVC {
         case .createPin:
             firstPinEntry = currentPin
             flowStep = .confirmCreatePin
+            updateToggleButton()
             pinLabel.text = "Re-enter your PIN"
             resetPinUI()
             
@@ -309,6 +335,50 @@ class PinViewController: BaseVC {
         }
         enableNextButton(false)
     }
+
+    private func updatePinFieldVisibility() {
+        for (index, label) in pinLabels.enumerated() {
+            let isVisible = index < pinLength
+            label.isHidden = !isVisible
+            if !isVisible {
+                label.text = ""
+                label.layer.borderColor = Colors.borderColorNew.cgColor
+            }
+        }
+    }
+
+    private func updateToggleButton() {
+        let isToggleAllowed = flowStep == .createPin || flowStep == .enterNewPin
+        togglePinLengthButton.isHidden = !isToggleAllowed
+        togglePinLengthButton.setTitle(pinLength == 4 ? "Use 6-digit PIN" : "Use 4-digit PIN", for: .normal)
+        togglePinLengthButton.layer.borderWidth = 1.0
+        togglePinLengthButton.layer.borderColor = pinLength == 4 ? Colors.bothBlueColor.cgColor : Colors.bothGreenColor.cgColor
+    }
+
+    private func updateFlowUI() {
+        updateToggleButton()
+
+        switch flowStep {
+        case .createPin:
+            title = "Create Password"
+            pinLabel.text = "Enter your \(pinLength) digit PIN"
+
+        case .enterOldPin:
+            title = "Change Password"
+            pinLabel.text = "Enter Old PIN"
+
+        case .enterNewPin:
+            title = "Change Password"
+            pinLabel.text = "Enter New PIN"
+
+        case .verifyPin:
+            title = "Verify PIN"
+            pinLabel.text = "Enter your \(pinLength)-digit PIN"
+
+        case .confirmNewPin, .confirmCreatePin:
+            break
+        }
+    }
     
     // Validate existing pin
     private func validateExistingPin() {
@@ -324,7 +394,7 @@ class PinViewController: BaseVC {
     private func validateOldPin() {
         if currentPin == SaveUserDefaultsData.BChatPassword {
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            updateFlowUI()
             resetPinUI()
         } else {
             showErrorMessage(Alert.Alert_BChat_Enter_Pin_Message2)
@@ -339,18 +409,19 @@ class PinViewController: BaseVC {
         if currentPin == SaveUserDefaultsData.BChatPassword {
             showErrorMessage("New password should not be same as old password.")
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            updateFlowUI()
             resetPinUI()
             return
         }
 
         if currentPin == firstPin {
             SaveUserDefaultsData.BChatPassword = currentPin
+            SaveUserDefaultsData.BChatPinLength = pinLength
             showConfirmationModal("Your password has been changed successfully!")
         } else {
             showErrorMessage("PIN do not match.")
             flowStep = .enterNewPin
-            pinLabel.text = "Enter New PIN"
+            updateFlowUI()
             resetPinUI()
         }
     }
@@ -361,6 +432,7 @@ class PinViewController: BaseVC {
 
         if currentPin == firstPin {
             SaveUserDefaultsData.BChatPassword = currentPin
+            SaveUserDefaultsData.BChatPinLength = pinLength
             showConfirmationModal("Your password has been set up successfully!")
 
             switch createPinDestination {
@@ -372,7 +444,7 @@ class PinViewController: BaseVC {
         } else {
             showErrorMessage("PIN do not match.")
             flowStep = .createPin
-            pinLabel.text = "Enter your PIN"
+            updateFlowUI()
             resetPinUI()
         }
     }

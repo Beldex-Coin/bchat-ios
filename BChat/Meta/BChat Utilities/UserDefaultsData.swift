@@ -35,6 +35,10 @@ struct SaveUserDefaultsData {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.BChatPassword) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.BChatPassword) as? String ?? "" }
     }
+    static var BChatPinLength : Int {
+        set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.BChatPinLength) }
+        get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.BChatPinLength) as? Int ?? 4 }
+    }
     static var WalletRestoreHeight : String {
         set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKeys.WalletRestoreHeight) }
         get { return UserDefaults.standard.value(forKey: UserDefaultsKeys.WalletRestoreHeight) as? String ?? "" }
@@ -101,6 +105,7 @@ struct UserDefaultsKeys {
     static let WalletSeed = "BeldexSeed"
     static let WalletRecoverSeed = "WalletRecoverSeed"
     static let BChatPassword = "pwd"
+    static let BChatPinLength = "pinLength"
     static let lastname = "lastname"
     static let isSignedIn = "isSignedIn"
     static let viewtype = "viewtype"
