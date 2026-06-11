@@ -393,10 +393,12 @@ BOOL IsNoteToSelfEnabled(void)
         [self saveWithTransaction:transaction];
     } else {
         if ([lastMessage isKindOfClass:[TSIncomingMessage class]]) {
-            if (self.isArchived) {
-                self.isArchived = NO;
-                [self saveWithTransaction:transaction];
-                return;
+            if (![SSKPreferences keepChatArchive]) {
+                if (self.isArchived) {
+                    self.isArchived = NO;
+                    [self saveWithTransaction:transaction];
+                    return;
+                }
             }
         }
         [self touchWithTransaction:transaction];

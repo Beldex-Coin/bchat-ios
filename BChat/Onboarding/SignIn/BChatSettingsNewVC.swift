@@ -24,8 +24,8 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
     var appAccessTitleArray = ["Screen Lock","Disable Preview in app switcher"]
     var appAccessDescArray = ["Require Touch ID, Face ID or your device passcode to unlock BChat’s screen. You can still receive notifications when Screen Lock is enabled. Use BChat’s notification settings to customise the information displayed in notifications.","Prevent BChat previews from appearing in the app switcher."]
     
-    var communicationTitleArray = ["Read receipts","Type indicators","Send link previews","Voice and video calls","Clear conversation History"]
-    var communicationDescArray = ["if read receipts are disabled, you won’t be able to see read receipts from others","if typing indicators are disabled, you won’t be able to see typing indicators from others.","Previews are supported for imgur, instagram, pinterest, Reddit, and Youtube links.","Allow access to accept voice and video calls from other users.",""]
+    var communicationTitleArray = ["Read receipts","Type indicators","Send link previews","Voice and video calls","Keep chats archived","Clear conversation History"]
+    var communicationDescArray = ["if read receipts are disabled, you won’t be able to see read receipts from others","if typing indicators are disabled, you won’t be able to see typing indicators from others.","Previews are supported for imgur, instagram, pinterest, Reddit, and Youtube links.","Allow access to accept voice and video calls from other users.","Archived chats will remain archived when you receive a new message", ""]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -205,6 +205,21 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
                 cell.toggleSwitch.addTarget(self, action: #selector(voiceAndVideoCallsSwitchValueChanged(_:)), for: .valueChanged)
             }
             if indexPath.row == 4 {
+                let logoImage = "ic_archive"
+                cell.logoImage.image = UIImage(named: logoImage)
+                // Keep Chats Archived
+                let keepChatArchive = SSKPreferences.keepChatArchive
+                if keepChatArchive {
+                    cell.toggleSwitch.isOn = true
+                    cell.toggleSwitch.thumbTintColor = Colors.bothGreenColor
+                } else {
+                    cell.toggleSwitch.isOn = false
+                    cell.toggleSwitch.thumbTintColor = Colors.switchOffBackgroundColor
+                }
+                cell.toggleSwitch.tag = indexPath.row
+                cell.toggleSwitch.addTarget(self, action: #selector(keepChatsArchivedSwitchValueChanged(_:)), for: .valueChanged)
+            }
+            if indexPath.row == 5 {
                 let logoImage = isLightMode ? "ic_clear_convo_dark" : "ic_clear_imgaes"
                 cell.logoImage.image = UIImage(named: logoImage)
                 cell.backGroundView.layer.cornerRadius = 16
@@ -242,7 +257,7 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             }
         }
         if indexPath.section == 1 {
-            if indexPath.row == 4 { // Clear Conversation History
+            if indexPath.row == 5 { // Clear Conversation History
                 let alert = UIAlertController(
                     title: nil,
                     message: NSLocalizedString("Are you sure? This cannot be undone.", comment: "Alert message before user confirms clearing history"),
@@ -369,6 +384,13 @@ class BChatSettingsNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate {
             print("toggled to: \(isSwitchOn ? "true" : "false")")
             SSKPreferences.areCallsEnabled = isSwitchOn
         }
+    }
+    
+    // Keep Chats Archived
+    @objc func keepChatsArchivedSwitchValueChanged(_ sender: UISwitch) {
+        let isSwitchOn = sender.isOn
+        sender.thumbTintColor = isSwitchOn ? Colors.bothGreenColor : Colors.switchOffBackgroundColor
+        SSKPreferences.keepChatArchive = isSwitchOn
     }
     
     // Clear Conversation History

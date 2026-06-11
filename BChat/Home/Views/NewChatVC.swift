@@ -160,6 +160,12 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
         reload()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        searchTextField.text = ""
+        searchText = ""
+        tableView.reloadData()
+    }
+    
     @objc func show(_ thread: TSThread, with action: ConversationViewAction, highlightedMessageID: String?, animated: Bool) {
         DispatchMainThreadSafe {
             if let presentedVC = self.presentedViewController {
@@ -262,6 +268,11 @@ class NewChatVC: BaseVC, UITextFieldDelegate {
                 self.updateSearchText()
             }
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     
@@ -391,6 +402,9 @@ extension NewChatVC: UITableViewDataSource, UITableViewDelegate {
                 vc.modalPresentationStyle = .overFullScreen
                 vc.modalTransitionStyle = .crossDissolve
                 self.present(vc, animated: true, completion: nil)
+                searchTextField.text = ""
+                searchText = ""
+                tableView.reloadData()
             }
             if indexPath.row == 1 {
                 let vc = CreateSecretGroupScreenVC()

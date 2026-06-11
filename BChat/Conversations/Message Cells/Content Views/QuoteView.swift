@@ -141,6 +141,23 @@ final class QuoteView : UIView {
         preconditionFailure("Use init(for:maxMessageWidth:) instead.")
     }
 
+    
+    private let textStorage = NSTextStorage()
+    private let layoutManager = NSLayoutManager()
+    private let textContainer = NSTextContainer(size: .zero)
+    private weak var bodyLabelRef: UILabel?
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        drawBlockQuoteBars()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupTextKit()
+        setNeedsDisplay()
+    }
+    
     private func setUpViewHierarchy() {
         // There's quite a bit of calculation going on here. It's a bit complex so don't make changes
         // if you don't need to. If you do then test:
@@ -257,7 +274,18 @@ final class QuoteView : UIView {
             fullString.append(NSAttributedString(string: text))
             bodyLabel.attributedText = fullString
         } else {
-            bodyLabel.attributedText = given(text) { MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: [:]) } ?? given(attachments.first?.contentType) { NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document") } ?? NSAttributedString(string: "Document")
+            let baseAttributes: [NSAttributedString.Key: Any] = [ .font: bodyLabel.font as Any ]
+            let attributedText = NSMutableAttributedString(
+                attributedString: given(text) {
+                    MentionUtilities.highlightMentions(in: $0, isOutgoingMessage: isOutgoing, threadID: thread.uniqueId!, attributes: baseAttributes)
+                } ?? given(attachments.first?.contentType) {
+                    NSAttributedString(string: MIMETypeUtil.isAudio($0) ? "Audio" : "Document", attributes: baseAttributes)
+                } ?? NSAttributedString(string: "Document", attributes: baseAttributes)
+            )
+            attributedText.addAttributesPreservingColor(clearText: true)
+            applyBlockQuoteStyling(attributedText)
+            bodyLabel.attributedText = attributedText
+            self.bodyLabelRef = bodyLabel
         }
         bodyLabel.textColor = bodyColor
         let bodyLabelSize = bodyLabel.systemLayoutSizeFitting(availableSpace)
@@ -403,6 +431,114 @@ final class QuoteView : UIView {
     @objc private func cancel() {
         delegate?.handleQuoteViewCancelButtonTapped()
     }
+    
+    private func applyBlockQuoteStyling(_ attributed: NSMutableAttributedString) {
+        let fullRange = NSRange(location: 0, length: attributed.length)
+        attributed.removeAttribute(.snBlockQuote, range: fullRange)
+        
+        let lines = attributed.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            var renderedLength = lineLength
+            
+            let isValidSingleSpaceQuote =
+                line.hasPrefix("> ") &&
+                !line.hasPrefix(">  ") &&
+                lineLength >= 3
+            
+            if isValidSingleSpaceQuote {
+                attributed.replaceCharacters(
+                    in: NSRange(location: offset, length: 2),
+                    with: ""
+                )
+                renderedLength = lineLength - 2
+                
+                let quoteRange = NSRange(location: offset, length: renderedLength)
+                attributed.addAttribute(.snBlockQuote, value: true, range: quoteRange)
+                
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.firstLineHeadIndent = 10
+                paragraphStyle.headIndent = 10
+                attributed.addAttribute(.paragraphStyle, value: paragraphStyle, range: quoteRange)
+            }
+            
+            offset += renderedLength
+            if index < lines.count - 1 {
+                offset += 1
+            }
+        }
+    }
+    
+    private func drawBlockQuoteBars() {
+        guard let label = bodyLabelRef,
+              let attributed = label.attributedText,
+              attributed.length > 0 else { return }
+        
+        setupTextKit()
+        layoutManager.ensureLayout(for: textContainer)
+        let nsText = attributed.string as NSString
+        let fullRange = NSRange(location: 0, length: attributed.length)
+
+        attributed.enumerateAttribute(.snBlockQuote, in: fullRange, options: []) { value, range, _ in
+            guard let isQuote = value as? Bool, isQuote, range.length > 0 else { return }
+            if range.location + 3 <= nsText.length {
+                let prefix = nsText.substring(with: NSRange(location: range.location, length: 3))
+                if prefix == ">  " { return }
+            }
+            // If block quote start from third line then no need to show block quote
+            let glyphIndex = layoutManager.glyphIndexForCharacter(at: range.location)
+            var lineIndex = 0
+            var blockQuoteFoundLine: Int?
+            layoutManager.enumerateLineFragments(forGlyphRange: layoutManager.glyphRange(for: textContainer)) { _, _, _, glyphRange, stop in
+                if NSLocationInRange(glyphIndex, glyphRange) {
+                    blockQuoteFoundLine = lineIndex
+                    stop.pointee = true
+                }
+                lineIndex += 1
+            }
+            guard let blockQuoteStartLine = blockQuoteFoundLine else { return }
+            if blockQuoteStartLine >= 2 {
+                return
+            }
+
+            let glyphRange = layoutManager.glyphRange(forCharacterRange: range, actualCharacterRange: nil)
+
+            layoutManager.enumerateLineFragments(forGlyphRange: glyphRange) { _, usedRect, _, _, _ in
+
+                let barX = label.frame.minX + 2
+                let barY = label.frame.minY + usedRect.minY + 1
+
+                let barHeight = max(usedRect.height + 1, 5)
+
+                let barRect = CGRect(x: barX + 10, y: barY, width: 3, height: barHeight)
+
+                let path = UIBezierPath(roundedRect: barRect, cornerRadius: 1.5)
+                UIColor.systemGray.setFill()
+                path.fill()
+            }
+        }
+    }
+    
+    private func setupTextKit() {
+        guard let label = bodyLabelRef,
+              let attributedText = label.attributedText else { return }
+
+        textStorage.setAttributedString(attributedText)
+
+        if layoutManager.textContainers.isEmpty {
+            layoutManager.addTextContainer(textContainer)
+            textStorage.addLayoutManager(layoutManager)
+        }
+
+        textContainer.lineFragmentPadding = 0
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        textContainer.lineBreakMode = .byWordWrapping
+        let containerWidth = max(label.bounds.width, 1)
+        textContainer.size = CGSize(width: containerWidth, height: .greatestFiniteMagnitude)
+    }
+    
 }
 
 // MARK: Delegate

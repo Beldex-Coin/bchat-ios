@@ -6,6 +6,7 @@ import BChatSnodeKit
 import NVActivityIndicatorView
 
 class LinkBNSVC: BaseVC {
+    private var backGroundViewCenterYConstraint: NSLayoutConstraint?
     
     /// <#Description#>
     private lazy var backGroundView: UIView = {
@@ -155,8 +156,9 @@ class LinkBNSVC: BaseVC {
         bchatIdLabel.text = "\(getUserHexEncodedPublicKey())"
         bnsNameTextField.delegate = self
         
+        backGroundViewCenterYConstraint = backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         NSLayoutConstraint.activate([
-            backGroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            backGroundViewCenterYConstraint!,
             backGroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
             backGroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             
@@ -199,6 +201,10 @@ class LinkBNSVC: BaseVC {
         showLoader(false)
         
         verifyButtonUpdate(false)
+
+        if let centerConstraint = backGroundViewCenterYConstraint {
+            startKeyboardAvoidingForCenteredView(backGroundView, centerYConstraint: centerConstraint, minimumBottomPadding: 12)
+        }
     }
     
     /// <#Description#>

@@ -563,8 +563,7 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     }
     
     @objc func disAppearSwitchValueDidChange(_ sender: UISwitch) {
-        guard let thread = self.thread as? TSContactThread else { return }
-        if thread.isBlocked() {
+        if let thread = self.thread as? TSContactThread, thread.isBlocked() {
             showError(title: "This contact is blocked, If you want to change this, please unblock them.")
             toggleDisappearingMessages(false)
             return
@@ -583,15 +582,16 @@ class ChatSettingsVC: BaseVC, SheetViewControllerDelegate, UITextFieldDelegate {
     @objc func handleMuteSwitchToggled(_ sender: UISwitch) {
         let uiSwitch = sender
         if uiSwitch.isOn {
+            uiSwitch.thumbTintColor = Colors.bothGreenColor
             Storage.write() { [self] transaction in
                 thread!.updateWithMuted(until: Date.distantFuture, transaction: transaction)
             }
         } else {
+            uiSwitch.thumbTintColor = Colors.switchOffBackgroundColor
             Storage.write() { [self] transaction in
                 thread!.updateWithMuted(until: nil, transaction: transaction)
             }
         }
-        self.tableView.reloadData()
     }
         
     func editGroup() {

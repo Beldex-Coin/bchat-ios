@@ -4,6 +4,10 @@
 
 import UIKit
 
+extension NSAttributedString.Key {
+    static let snBlockQuote = NSAttributedString.Key("snBlockQuote")
+}
+
 // MARK: - String <-> Decimal
 
 extension String {
@@ -176,3 +180,208 @@ extension String {
     }
 }
 
+extension NSMutableAttributedString {
+    
+    func addAttributesPreservingColor(clearText: Bool) {
+        
+        // MARK: - Monospace
+        applyPatternPreservingColor("(?<!\\w)```([^\\s][\\s\\S]*[^\\s])```(?!\\w)", clearText: clearText) { range in
+            let mono = UIFont.monospacedSystemFont(
+                ofSize: font(at: range.location).pointSize,
+                weight: .regular
+            )
+            self.addAttribute(.font, value: mono, range: range)
+        }
+        
+        // MARK: - Inline code
+        applyPatternPreservingColor("(?<![`\\w])`([^\\s`\\n](?:[^`\\n]*[^\\s`\\n])?)`(?![`\\w])", clearText: clearText) { range in
+            let mono = UIFont.monospacedSystemFont(
+                ofSize: font(at: range.location).pointSize,
+                weight: .regular
+            )
+            self.addAttribute(.font, value: mono, range: range)
+            self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
+        }
+        
+        // MARK: - Bold, Italic, Strikethrough
+        applyPatternPreservingColor("(?<![\\p{L}\\p{N}])\\*(?!\\s)([^\\n]*?)(?<!\\s)\\*(?![\\p{L}\\p{N}])", clearText: clearText) { range in
+            self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
+        }
+        
+        applyPatternPreservingColor("(?<![\\p{L}\\p{N}])_(?!\\s)([^\\n]*?)(?<!\\s)_(?![\\p{L}\\p{N}])", clearText: clearText) { range in
+            self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
+        }
+        
+        applyPatternPreservingColor("(?<![\\p{L}\\p{N}])~(?!\\s)([^\\n]*?)(?<!\\s)~(?![\\p{L}\\p{N}])", clearText: clearText) { range in
+            self.addAttribute(.strikethroughStyle, value: 1, range: range)
+        }
+        
+        // MARK: - Quotes
+        applyQuotes(clearText: clearText)
+    }
+    
+    // MARK: - Pattern Processor (Preserves Color + Attributes)
+    private func applyPatternPreservingColor(_ pattern: String, clearText: Bool,
+                                             apply: (NSRange) -> Void) {
+        let regex = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
+        
+        let matches = regex.matches(in: self.string,
+                                    range: NSRange(location: 0, length: self.length))
+        
+        for match in matches.reversed() {
+            let _ = match.range(at: 0)   // with markers
+            let inner = match.range(at: 1)  // inside markers
+            
+            // Apply attributes BEFORE removing markers
+            apply(inner)
+            
+            if clearText {
+                // Remove right marker(s)
+                let trailingCount = pattern.contains("```") ? 3 : 1
+                self.deleteCharacters(in: NSRange(location: inner.location + inner.length, length: trailingCount))
+                
+                // Remove left marker(s)
+                let leadingCount = pattern.contains("```") ? 3 : 1
+                self.deleteCharacters(in: NSRange(location: inner.location - leadingCount, length: leadingCount))
+            }
+        }
+    }
+    
+    // MARK: - Quotes (> text)
+    private func applyQuotes(clearText: Bool) {
+        _ = clearText
+        
+        let fullRange = NSRange(location: 0, length: self.length)
+        self.removeAttribute(.snBlockQuote, range: fullRange)
+        
+        let ns = self.string as NSString
+        let lines = ns.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            defer {
+                offset += lineLength
+                if index < lines.count - 1 { offset += 1 }
+            }
+            
+            guard line.hasPrefix("> "), lineLength >= 3 else { continue }
+            guard !line.hasPrefix(">  ") else { continue }
+            
+            let lineRange = NSRange(location: offset, length: lineLength)
+            let markerRange = NSRange(location: offset, length: 2)
+            let contentRange = NSRange(location: offset + 2, length: max(0, lineLength - 2))
+            
+            self.addAttribute(.foregroundColor, value: UIColor.clear, range: markerRange)
+            self.addAttribute(.snBlockQuote, value: true, range: lineRange)
+            
+            // Quote text color.
+            if contentRange.length > 0 {
+                self.addAttribute(.foregroundColor, value: UIColor.lightGray, range: contentRange)
+            }
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.firstLineHeadIndent = 0
+            paragraph.headIndent = 12
+            self.addAttribute(.paragraphStyle, value: paragraph, range: lineRange)
+        }
+    }
+    
+    // MARK: - Extract Current Font Safely
+    private func font(at location: Int) -> UIFont {
+        let attrs = attributes(at: location, effectiveRange: nil)
+        return attrs[.font] as? UIFont ?? UIFont.systemFont(ofSize: 17)
+    }
+    
+    private func addFontTraitPreservingExistingTraits(_ trait: UIFontDescriptor.SymbolicTraits, in range: NSRange) {
+        enumerateAttributes(in: range, options: []) { attrs, subrange, _ in
+            let currentFont = attrs[.font] as? UIFont ?? self.font(at: subrange.location)
+            
+            var wantsBold = self.isBoldFont(currentFont)
+            var wantsItalic = self.isItalicFont(currentFont, attributes: attrs)
+            
+            if trait == .traitBold {
+                wantsBold = true
+            } else if trait == .traitItalic {
+                wantsItalic = true
+            }
+            
+            let resolved = self.resolvedFont(from: currentFont, wantsBold: wantsBold, wantsItalic: wantsItalic)
+            self.addAttribute(.font, value: resolved.font, range: subrange)
+            
+            if let obliqueness = resolved.syntheticObliqueness {
+                self.addAttribute(.obliqueness, value: obliqueness, range: subrange)
+            } else {
+                self.removeAttribute(.obliqueness, range: subrange)
+            }
+        }
+    }
+    
+    private func isBoldFont(_ font: UIFont) -> Bool {
+        let name = font.fontName.lowercased()
+        return font.fontDescriptor.symbolicTraits.contains(.traitBold)
+            || name.contains("bold")
+            || name.contains("semibold")
+            || name.contains("heavy")
+            || name.contains("black")
+    }
+    
+    private func isItalicFont(_ font: UIFont, attributes: [NSAttributedString.Key: Any]) -> Bool {
+        let name = font.fontName.lowercased()
+        let hasObliqueness = (attributes[.obliqueness] as? NSNumber)?.doubleValue ?? 0 > 0
+        return font.fontDescriptor.symbolicTraits.contains(.traitItalic)
+            || name.contains("italic")
+            || name.contains("oblique")
+            || hasObliqueness
+    }
+    
+    private func resolvedFont(from currentFont: UIFont, wantsBold: Bool, wantsItalic: Bool) -> (font: UIFont, syntheticObliqueness: CGFloat?) {
+        let size = currentFont.pointSize
+        let isOpenSans = currentFont.fontName.lowercased().contains("opensans")
+        
+        if isOpenSans {
+            if wantsBold && wantsItalic {
+                if let boldItalic = UIFont(name: "OpenSans-BoldItalic", size: size) {
+                    return (boldItalic, nil)
+                }
+                if let descriptor = UIFont.systemFont(ofSize: size, weight: .bold).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) {
+                    return (UIFont(descriptor: descriptor, size: size), nil)
+                }
+                return (UIFont.boldSystemFont(ofSize: size), 0.2)
+            }
+            if wantsBold {
+                return (Fonts.boldOpenSans(ofSize: size), nil)
+            }
+            if wantsItalic {
+                return (UIFont(name: "OpenSans-Italic", size: size) ?? currentFont, nil)
+            }
+            return (currentFont, nil)
+        }
+        
+        var traits: UIFontDescriptor.SymbolicTraits = []
+        if wantsBold { traits.insert(.traitBold) }
+        if wantsItalic { traits.insert(.traitItalic) }
+        
+        if let descriptor = currentFont.fontDescriptor.withSymbolicTraits(traits) {
+            return (UIFont(descriptor: descriptor, size: size), nil)
+        }
+        
+        if wantsBold && wantsItalic {
+            if let descriptor = UIFont.systemFont(ofSize: size, weight: .bold).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) {
+                return (UIFont(descriptor: descriptor, size: size), nil)
+            }
+            return (UIFont.boldSystemFont(ofSize: size), 0.2)
+        }
+        if wantsBold {
+            return (UIFont.boldSystemFont(ofSize: size), nil)
+        }
+        if wantsItalic {
+            if let descriptor = UIFont.systemFont(ofSize: size).fontDescriptor.withSymbolicTraits(.traitItalic) {
+                return (UIFont(descriptor: descriptor, size: size), nil)
+            }
+            return (UIFont.italicSystemFont(ofSize: size), nil)
+        }
+        
+        return (currentFont, nil)
+    }
+}

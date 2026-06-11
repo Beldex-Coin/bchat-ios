@@ -4,6 +4,7 @@ import UIKit
 
 class NewChatPopUpVC: BaseVC {
     
+    private var mainBackgroundViewCenterYConstraint: NSLayoutConstraint?
     
     private lazy var titleLabel: UILabel = {
         let result = UILabel()
@@ -98,8 +99,9 @@ class NewChatPopUpVC: BaseVC {
         
         titleLabel.text = "New Chat"
         
+        mainBackgroundViewCenterYConstraint = mainBackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         NSLayoutConstraint.activate([
-            mainBackgroundView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            mainBackgroundViewCenterYConstraint!,
             mainBackgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             mainBackgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             
@@ -131,6 +133,10 @@ class NewChatPopUpVC: BaseVC {
         letsBChatButton.isUserInteractionEnabled = false
         letsBChatButton.backgroundColor = Colors.backgroundViewColor
         letsBChatButton.setTitleColor(Colors.buttonTextColor, for: .normal)
+
+        if let centerConstraint = mainBackgroundViewCenterYConstraint {
+            startKeyboardAvoidingForCenteredView(mainBackgroundView, centerYConstraint: centerConstraint, minimumBottomPadding: 12)
+        }
     }
     
     

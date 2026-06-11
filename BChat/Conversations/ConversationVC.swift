@@ -364,44 +364,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         return stackView
     }()
     
-    
-    lazy var deleteAudioView: UIView = {
-        let stackView = UIView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.backgroundColor = Colors.incomingMessageColor
-        stackView.layer.cornerRadius = 18
-        return stackView
-    }()
-    
-    lazy var deleteAudioImageView: UIImageView = {
-        let result = UIImageView()
-        result.image = UIImage(named: "ic_delete_record")
-        result.set(.width, to: 14)
-        result.set(.height, to: 14)
-        result.layer.masksToBounds = true
-        result.contentMode = .scaleAspectFit
-        return result
-    }()
-    
-    lazy var deleteAudioLabel: UILabel = {
-        let result = UILabel()
-        result.textColor = Colors.titleColor3
-        result.font = Fonts.semiOpenSans(ofSize: 11)
-        result.translatesAutoresizingMaskIntoConstraints = false
-        result.text = "Delete"
-        result.adjustsFontSizeToFitWidth = true
-        return result
-    }()
-    
-    lazy var deleteAudioButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .clear
-        button.addTarget(self, action: #selector(deleteAudioButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
     lazy var callView: CallView = {
         let result = CallView()
         result.backgroundColor = Colors.bothGreenColor
@@ -568,23 +530,6 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         unreadCountView.centerYAnchor.constraint(equalTo: scrollButton.topAnchor).isActive = true
         unreadCountView.center(.horizontal, in: scrollButton)
         updateUnreadCountView()
-        
-        
-        view.addSubview(deleteAudioView)
-        deleteAudioView.addSubViews(deleteAudioImageView, deleteAudioLabel)
-        deleteAudioView.addSubview(deleteAudioButton)
-        deleteAudioView.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        deleteAudioView.bottomAnchor.constraint(equalTo: scrollButton.bottomAnchor, constant: 2).isActive = true
-        deleteAudioView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        NSLayoutConstraint.activate([
-            deleteAudioImageView.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
-            deleteAudioImageView.leadingAnchor.constraint(equalTo: deleteAudioView.leadingAnchor, constant: 14),
-            deleteAudioLabel.centerYAnchor.constraint(equalTo: deleteAudioView.centerYAnchor),
-            deleteAudioLabel.leadingAnchor.constraint(equalTo: deleteAudioImageView.trailingAnchor, constant: 5),
-            deleteAudioLabel.trailingAnchor.constraint(equalTo: deleteAudioView.trailingAnchor, constant: -15)
-        ])
-        deleteAudioButton.pin(to: deleteAudioView)
-        deleteAudioView.isHidden = true
                 
         // Notifications
         let notificationCenter = NotificationCenter.default
@@ -702,6 +647,11 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
         view.layoutIfNeeded()
         hideOpenURLView()
         NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+        
+        // end voice recording
+        if isAudioRecording {
+            endVoiceMessageRecording()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -1082,13 +1032,14 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             button.addTarget(self, action: #selector(handleProfileTap), for: .touchUpInside)
         } else {
             let iconImageView = ProfilePictureView()
-            iconImageView.update(for: self.thread)
-            let profilePictureViewSize = CGFloat(42)
+            let profilePictureViewSize = CGFloat(36)
             iconImageView.set(.width, to: profilePictureViewSize)
             iconImageView.set(.height, to: profilePictureViewSize)
             iconImageView.size = profilePictureViewSize
             iconImageView.layer.masksToBounds = true
             iconImageView.layer.cornerRadius = 18
+            iconImageView.update(for: self.thread)
+            
             let button: UIButton = UIButton(type: UIButton.ButtonType.custom)
             button.widthAnchor.constraint(equalToConstant: 36).isActive = true
             button.heightAnchor.constraint(equalToConstant: 36).isActive = true
@@ -1098,6 +1049,7 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
             if let thread = thread as? TSGroupThread {
                 if thread.groupModel.groupType == .closedGroup {
                     button.addSubview(iconImageView)
+                    iconImageView.pin(to: button)
                 } else {
                     button.setImage(iconImageView.getProfilePicture(), for: .normal)
                 }
@@ -1387,8 +1339,10 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     func recoverInputView() {
         // This is a workaround for an issue where the textview is not scrollable
         // after the app goes into background and goes back in foreground.
-        DispatchQueue.main.async {
-            self.snInputView.text = self.snInputView.text
+        if !isAudioRecording {
+            DispatchQueue.main.async {
+                self.snInputView.text = self.snInputView.text
+            }
         }
     }
     
@@ -1525,6 +1479,9 @@ final class ConversationVC : BaseVC, ConversationViewModelDelegate, OWSConversat
     }
     
     @objc func hideSearchUI(_ sender: Any? = nil) {
+        if searchController.uiSearchController.isActive {
+            searchController.uiSearchController.isActive = false
+        }
         isShowingSearchUI = false
         searchController.uiSearchController.searchBar.searchTextField.text = ""
         navigationItem.titleView = titleView

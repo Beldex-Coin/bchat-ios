@@ -337,6 +337,10 @@ class CreateSecretGroupScreenVC: BaseVC, UITableViewDataSource, UITableViewDeleg
         }
     }
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = groupNameTextField.text!
         if str.count == 0 {

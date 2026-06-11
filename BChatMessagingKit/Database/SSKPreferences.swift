@@ -78,7 +78,20 @@ public class SSKPreferences: NSObject {
             setBool(newValue, key: hasSavedThreadKey)
         }
     }
+    
+    // Keep Chat Archive:-
+    private static let keepChatArchiveKey = "keepChatArchive"
 
+    @objc
+    public static var keepChatArchive: Bool {
+        get {
+            return getBool(key: keepChatArchiveKey, defaultValue: false)
+        }
+        set {
+            setBool(newValue, key: keepChatArchiveKey)
+        }
+    }
+    
     @objc
     public class func setHasSavedThread(value: Bool, transaction: YapDatabaseReadWriteTransaction) {
         transaction.setBool(value,

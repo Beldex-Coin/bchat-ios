@@ -159,6 +159,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
 
     public func notifyUser(for incomingMessage: TSIncomingMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard let threadId = thread.uniqueId else { return }
         let isMessageRequest = thread.isMessageRequest(using: transaction)
@@ -259,6 +260,15 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
             notificationBody = MentionUtilities.highlightMentions(in: notificationBody!, threadID: thread.uniqueId!)
             let sound = self.requestSound(thread: thread)
             
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+                .foregroundColor: Colors.text
+            ]
+            let attributedString = NSMutableAttributedString(string: notificationBody!, attributes: attributes)
+            attributedString.addAttributesPreservingColor(clearText: true)
+            self.applyQuoteFallbackForNotificationBody(attributedString)
+            notificationBody = attributedString.string
+            
             self.adaptee.notify(
                 category: category,
                 title: notificationTitle,
@@ -271,6 +281,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
     
     public func notifyUser(forIncomingCall callInfoMessage: TSInfoMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard !thread.isGroupThread() else { return } // Calls shouldn't happen in groups
         guard let threadId = thread.uniqueId else { return }
@@ -304,6 +315,7 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
     }
     
     public func notifyUser(forReaction reactMessage: ReactMessage, in thread: TSThread, transaction: YapDatabaseReadTransaction) {
+        guard !thread.isArchived else { return }
         guard !thread.isMuted else { return }
         guard !thread.isGroupThread() else { return } // We do NOT notify emoji reacts in groups
         guard !thread.isMessageRequest(using: transaction) else { return }
@@ -402,6 +414,26 @@ public class NotificationPresenter: NSObject, NotificationsProtocol {
         }
 
         return OWSSounds.notificationSound(for: thread)
+    }
+    
+    private func applyQuoteFallbackForNotificationBody(_ attributedString: NSMutableAttributedString) {
+        let lines = attributedString.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            if line.hasPrefix("> "), lineLength >= 2, !line.hasPrefix(">  ") {
+                let quotedText = String(line.dropFirst(2))
+                let replacement = "│ \(quotedText)"
+                let range = NSRange(location: offset, length: lineLength)
+                attributedString.replaceCharacters(in: range, with: replacement)
+                offset += (replacement as NSString).length
+            } else {
+                offset += lineLength
+            }
+            
+            if index < lines.count - 1 { offset += 1 }
+        }
     }
 
     private func checkIfShouldPlaySound() -> Bool {

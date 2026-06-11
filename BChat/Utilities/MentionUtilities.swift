@@ -4,6 +4,11 @@ public final class MentionUtilities : NSObject {
 
     override private init() { }
 
+    @objc(copyableTextForString:threadID:)
+    public static func copyableText(for string: String, threadID: String) -> String {
+        return highlightMentions(in: string, threadID: threadID)
+    }
+
     @objc public static func highlightMentions(in string: String, threadID: String) -> String {
         return highlightMentions(in: string, isOutgoingMessage: false, threadID: threadID, attributes: [:]).string // isOutgoingMessage and attributes are irrelevant
     }

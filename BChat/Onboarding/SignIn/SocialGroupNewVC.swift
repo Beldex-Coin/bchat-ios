@@ -189,6 +189,11 @@ class SocialGroupNewVC: BaseVC,UITextFieldDelegate, UICollectionViewDataSource, 
         groupUrlTextField.resignFirstResponder()
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         let str = textField.text!
         if str == "\n" {

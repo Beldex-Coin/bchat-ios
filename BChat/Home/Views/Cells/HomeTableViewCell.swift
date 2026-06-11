@@ -361,7 +361,16 @@ class HomeTableViewCell: UITableViewCell {
         if SSKEnvironment.shared.typingIndicators.typingRecipientId(forThread: thread) != nil {
             lastMessageLabel.text = ""
         } else {
-            lastMessageLabel.attributedText = getSnippet()
+            let snippet = getSnippet()
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+                .foregroundColor: Colors.text
+            ]
+            let attributedString = NSMutableAttributedString(attributedString: snippet)
+            attributedString.addAttributes(attributes, range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttributesPreservingColor(clearText: true)
+            applyQuoteFallbackForPreview(attributedString)
+            lastMessageLabel.attributedText = attributedString
         }
     }
     
@@ -418,6 +427,11 @@ class HomeTableViewCell: UITableViewCell {
             muteImageView.isHidden = false
         }
         
+        // Mute icon hide for archived
+        if threadViewModel.isArchived {
+            muteImageView.isHidden = true
+        }
+        
         // Mentioned message
         if threadViewModel.isOnlyNotifyingForMentions {
             notifyMentionImageView.isHidden = false
@@ -425,41 +439,86 @@ class HomeTableViewCell: UITableViewCell {
         
         // Group message
         let font = threadViewModel.hasUnreadMessages ? Fonts.regularOpenSans(ofSize: Values.smallFontSize) : Fonts.regularOpenSans(ofSize: Values.smallFontSize)
-        if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
-            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
-        }
+        // Don't Remove Below Code
+        // For Group Thread No Need To Add User Name Before Message
+//        if threadViewModel.isGroupThread, let message = threadViewModel.lastMessageForInbox as? TSMessage, let name = getMessageAuthorName(message: message) {
+//            result.append(NSAttributedString(string: "\(name): ", attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
+//        }
         
         guard var lastMessageText = threadViewModel.lastMessageText else { return result }
         
+        if let sharedContactSnippet = sharedContactSnippet(for: lastMessageText, font: font) {
+            result.append(sharedContactSnippet)
+            return result
+        }
+
         // Text message
         let snippet = MentionUtilities.highlightMentions(in: lastMessageText, threadID: threadViewModel.threadRecord.uniqueId!)
         result.append(NSAttributedString(string: snippet, attributes: [ .font : font, .foregroundColor : Colors.textFieldPlaceHolderColor ]))
         
-        // Adding image for Shared Contact last message text
-        if lastMessageText.contains("👤") {
-            let attachment = NSTextAttachment()
-            attachment.image = UIImage(named: "ic_contact")
-            attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
-            let imageAttrString = NSAttributedString(attachment: attachment)
-            
-            var textAttrString = NSAttributedString(string: lastMessageText.replacingOccurrences(of: "👤", with: "").capitalized)
-            
-            let namesArray = textAttrString.string.toStringArrayFromJSON()
-            let other = namesArray?.count == 2 ? "other" : "others"
-            if namesArray?.count ?? 0 <= 1 {
-                textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "")
+        return result
+    }
+
+    private func sharedContactSnippet(for rawText: String, font: UIFont) -> NSAttributedString? {
+        let contactToken: String
+        if rawText.contains("ic_contact") {
+            contactToken = "ic_contact"
+        } else if rawText.contains("👤") {
+            contactToken = "👤"
+        } else {
+            return nil
+        }
+
+        let attachment = NSTextAttachment()
+        attachment.image = UIImage(named: "ic_contact")
+        attachment.bounds = CGRect(x: 0, y: -3, width: 14, height: 14)
+        let imageAttrString = NSAttributedString(attachment: attachment)
+
+        let processedText = rawText
+            .replacingOccurrences(of: contactToken, with: "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .capitalized
+
+        var textAttrString = NSAttributedString(string: processedText, attributes: [.font: font, .foregroundColor: Colors.textFieldPlaceHolderColor])
+        let namesArray = textAttrString.string.toStringArrayFromJSON()
+        let other = namesArray?.count == 2 ? "other" : "others"
+        if namesArray?.count ?? 0 <= 1 {
+            textAttrString = NSAttributedString(string: convertJSONStringToCommaSeparatedString(textAttrString.string) ?? "", attributes: [.font: font, .foregroundColor: Colors.textFieldPlaceHolderColor])
+        } else {
+            textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) \(other)", attributes: [.font: font, .foregroundColor: Colors.textFieldPlaceHolderColor])
+        }
+
+        let finalString = NSMutableAttributedString()
+        finalString.append(imageAttrString)
+        finalString.append(NSAttributedString(string: " ", attributes: [.font: font, .foregroundColor: Colors.textFieldPlaceHolderColor]))
+        finalString.append(textAttrString)
+        return finalString
+    }
+    
+    private func applyQuoteFallbackForPreview(_ attributedString: NSMutableAttributedString) {
+        let lines = attributedString.string.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            if line.hasPrefix("> "), lineLength >= 2, !line.hasPrefix(">  ") {
+                let quotedText = String(line.dropFirst(2))
+                let replacement = "│ \(quotedText)"
+                let lineRange = NSRange(location: offset, length: lineLength)
+                attributedString.replaceCharacters(in: lineRange, with: replacement)
+                let newRange = NSRange(location: offset, length: (replacement as NSString).length)
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: Colors.textFieldPlaceHolderColor,
+                    range: newRange
+                )
+                offset += (replacement as NSString).length
             } else {
-                textAttrString = NSAttributedString(string: "\(namesArray?.first ?? "") and \((namesArray?.count ?? 0) - 1) \(other)")
+                offset += lineLength
             }
             
-            let finalString = NSMutableAttributedString()
-            finalString.append(imageAttrString)
-            finalString.append(NSAttributedString(string: " "))
-            finalString.append(textAttrString)
-            return finalString
+            if index < lines.count - 1 { offset += 1 }
         }
-        
-        return result
     }
 
 }

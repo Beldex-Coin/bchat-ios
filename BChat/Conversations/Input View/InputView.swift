@@ -32,7 +32,10 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     var text: String {
         get { inputTextView.text }
-        set { inputTextView.text = newValue }
+        set {
+            inputTextView.text = newValue
+            inputTextView.textViewDidChange(inputTextView)
+        }
     }
     
     var enabledMessageTypes: MessageTypes = .all {
@@ -43,11 +46,13 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     
     override var intrinsicContentSize: CGSize { CGSize.zero }
     var lastSearchedText: String? { nil }
+    private lazy var quoteViewRightConstraint = additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -52.5)
     
     // MARK: UI Components
     
     private var bottomStackView: UIStackView?
     private var finalBottomStack: UIStackView?
+    private var mainStackView: UIStackView?
     lazy var attachmentsButton = ExpandingAttachmentsButton(delegate: delegate)
     
     private lazy var voiceMessageButton: InputViewButton = {
@@ -177,6 +182,7 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         mainStackView.pin(.top, to: .bottom, of: separator)
         mainStackView.pin([ UIView.HorizontalEdge.leading, UIView.HorizontalEdge.trailing ], to: self)
         mainStackView.pin(.bottom, to: .bottom, of: self)
+        self.mainStackView = mainStackView
         
         addSubview(disabledInputLabel)
         
@@ -247,7 +253,12 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         
         additionalContentContainerOuterView.pin(.left, to: .left, of: additionalContentContainer, withInset: 0.5)
         additionalContentContainerOuterView.pin(.top, to: .top, of: additionalContentContainer, withInset: 12)
-        additionalContentContainerOuterView.pin(.right, to: .right, of: additionalContentContainer, withInset: -52.5)
+        quoteViewRightConstraint.isActive = true
+        if isAudioRecording {
+            quoteViewRightConstraint.constant = -0.5
+        } else {
+            quoteViewRightConstraint.constant = -52.5
+        }
         additionalContentContainerOuterView.pin(.bottom, to: .bottom, of: additionalContentContainer, withInset: 20)
     }
     
@@ -377,6 +388,9 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
         }
         delegate?.startVoiceMessageRecording()
         showVoiceMessageUI()
+        if quoteDraftInfo != nil {
+            quoteViewRightConstraint.constant = -45.5
+        }
     }
     
     func handleInputViewButtonLongPressMoved(_ inputViewButton: InputViewButton, with touch: UITouch) {
@@ -411,29 +425,66 @@ final class InputView : UIView, InputViewButtonDelegate, InputTextViewDelegate, 
     @objc private func showVoiceMessageUI() {
         isAudioRecording = true
         voiceMessageRecordingView?.removeFromSuperview()
+        removeVoiceMessageRecordingViewIfNeeded()
         let voiceMessageButtonFrame = voiceMessageButton.superview!.convert(voiceMessageButton.frame, to: self)
-        let voiceMessageRecordingView = VoiceMessageRecordingView(voiceMessageButtonFrame: voiceMessageButtonFrame, delegate: delegate)
+        let voiceMessageRecordingView = VoiceMessageRecordingView(
+            voiceMessageButtonFrame: voiceMessageButtonFrame,
+            delegate: delegate,
+            onLocked: { [weak self] in
+                guard let self = self else { return }
+                guard self.quoteDraftInfo != nil else { return }
+                guard self.additionalContentContainerOuterView.isDescendant(of: self) else { return }
+                self.quoteViewRightConstraint.constant = -0.5
+                self.layoutIfNeeded()
+            }
+        )
         voiceMessageRecordingView.alpha = 0
-        addSubview(voiceMessageRecordingView)
-        voiceMessageRecordingView.pin(to: self)
+        if let mainStackView = mainStackView {
+            let insertIndex = min(1, mainStackView.arrangedSubviews.count)
+            mainStackView.insertArrangedSubview(voiceMessageRecordingView, at: insertIndex)
+        } else {
+            addSubview(voiceMessageRecordingView)
+            voiceMessageRecordingView.pin(to: self)
+        }
         self.voiceMessageRecordingView = voiceMessageRecordingView
+        finalBottomStack?.isHidden = true
         voiceMessageRecordingView.animate()
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView ]
         UIView.animate(withDuration: 0.25) {
             allOtherViews.forEach { $0.alpha = 0 }
+            self.voiceMessageButtonContainer.isHidden = true
+        }
+        layoutIfNeeded()
+        let buttonFrameInRecordingView = self.convert(voiceMessageButtonFrame, to: voiceMessageRecordingView)
+        voiceMessageRecordingView.updateVoiceMessageButtonFrame(buttonFrameInRecordingView)
+        UIView.animate(withDuration: 0.2) {
+            voiceMessageRecordingView.alpha = 1
         }
     }
     
     func hideVoiceMessageUI() {
+        if quoteDraftInfo != nil {
+            quoteViewRightConstraint.constant = -52.5
+        }
         isAudioRecording = false
+        finalBottomStack?.isHidden = false
         let allOtherViews = [ attachmentsButton, sendButton, inputTextView, additionalContentContainer ]
         UIView.animate(withDuration: 0.25, animations: {
-            allOtherViews.forEach { $0.alpha = 1 }
+            self.voiceMessageButtonContainer.isHidden = false
             self.voiceMessageRecordingView?.alpha = 0
+            self.removeVoiceMessageRecordingViewIfNeeded()
         }, completion: { _ in
-            self.voiceMessageRecordingView?.removeFromSuperview()
-            self.voiceMessageRecordingView = nil
+            allOtherViews.forEach { $0.alpha = 1 }
         })
+    }
+    
+    private func removeVoiceMessageRecordingViewIfNeeded() {
+        guard let voiceMessageRecordingView = voiceMessageRecordingView else { return }
+        if let mainStackView = mainStackView {
+            mainStackView.removeArrangedSubview(voiceMessageRecordingView)
+        }
+        voiceMessageRecordingView.removeFromSuperview()
+        self.voiceMessageRecordingView = nil
     }
     
     func hideMentionsUI() {

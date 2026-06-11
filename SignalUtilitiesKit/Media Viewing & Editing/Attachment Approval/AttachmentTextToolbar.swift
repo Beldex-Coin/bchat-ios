@@ -21,12 +21,15 @@ protocol AttachmentTextToolbarDelegate: class {
 class AttachmentTextToolbar: UIView, UITextViewDelegate {
 
     weak var attachmentTextToolbarDelegate: AttachmentTextToolbarDelegate?
+    private var isApplyingFormatting = false
+    private var bulletMarkerByLineStart: [Int: String] = [:]
 
     var messageText: String? {
         get { return textView.text }
 
         set {
             textView.text = newValue
+            applyTextFormatting(in: textView, preserveSelection: false)
             updatePlaceholderTextViewVisibility()
         }
     }
@@ -221,6 +224,8 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
     // MARK: - UITextViewDelegate
 
     public func textViewDidChange(_ textView: UITextView) {
+        guard !isApplyingFormatting else { return }
+        applyTextFormatting(in: textView)
         updateHeight(textView: textView)
         attachmentTextToolbarDelegate?.attachmentTextToolbarDidChange(self)
     }
@@ -268,6 +273,18 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
                     textView.text = (existingText as NSString).replacingCharacters(in: range, with: acceptableNewText)
                 }
 
+                return false
+            }
+        }
+        
+        if text == " " {
+            if handleBulletStart(textView, range: range) {
+                return false
+            }
+        }
+        
+        if text.isEmpty {
+            if handleBulletSpaceRemoval(textView, range: range) {
                 return false
             }
         }
@@ -330,5 +347,259 @@ class AttachmentTextToolbar: UIView, UITextViewDelegate {
     private func clampedTextViewHeight(fixedWidth: CGFloat) -> CGFloat {
         let contentSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         return CGFloatClamp(contentSize.height, AttachmentTextToolbar.kMinTextViewHeight, maxTextViewHeight)
+    }
+    
+    private func handleBulletStart(_ textView: UITextView, range: NSRange) -> Bool {
+        let nsText = textView.text as NSString? ?? ""
+        let lineRange = nsText.lineRange(for: range)
+        let cursorPosition = range.location - lineRange.location
+        
+        let prefix = nsText.substring(with: NSRange(location: lineRange.location, length: cursorPosition))
+        guard (prefix == "*" || prefix == "-"), cursorPosition == 1 else { return false }
+        
+        bulletMarkerByLineStart[lineRange.location] = prefix
+        replaceCurrentLinePrefix(textView, lineRange: lineRange, prefixLength: 1)
+        applyTextFormatting(in: textView)
+        updateHeight(textView: textView)
+        attachmentTextToolbarDelegate?.attachmentTextToolbarDidChange(self)
+        return true
+    }
+    
+    private func handleBulletSpaceRemoval(_ textView: UITextView, range: NSRange) -> Bool {
+        guard range.length == 1 else { return false }
+        
+        let nsText = textView.text as NSString? ?? ""
+        let lineRange = nsText.lineRange(for: range)
+        guard lineRange.location + 1 < nsText.length else { return false }
+        
+        let bulletPrefixRange = NSRange(location: lineRange.location, length: 2)
+        let bulletPrefix = nsText.substring(with: bulletPrefixRange)
+        guard bulletPrefix == "• " else { return false }
+        guard range.location == lineRange.location + 1 else { return false }
+        
+        let marker = bulletMarkerByLineStart[lineRange.location] ?? "-"
+        if let replaceRange = Range(bulletPrefixRange, in: textView.text) {
+            textView.text.replaceSubrange(replaceRange, with: marker)
+            textView.selectedRange = NSRange(location: lineRange.location + marker.count, length: 0)
+            bulletMarkerByLineStart.removeValue(forKey: lineRange.location)
+            applyTextFormatting(in: textView)
+            updateHeight(textView: textView)
+            attachmentTextToolbarDelegate?.attachmentTextToolbarDidChange(self)
+            return true
+        }
+        
+        return false
+    }
+    
+    private func replaceCurrentLinePrefix(_ textView: UITextView, lineRange: NSRange, prefixLength: Int) {
+        let nsText = textView.text as NSString? ?? ""
+        let lineText = nsText.substring(with: lineRange)
+        let clean = (lineText as NSString).substring(from: prefixLength).trimmingCharacters(in: .whitespaces)
+        let newLine = "• \(clean)"
+        
+        if let textRange = Range(lineRange, in: textView.text) {
+            textView.text.replaceSubrange(textRange, with: newLine)
+            textView.selectedRange = NSRange(location: lineRange.location + 2, length: 0)
+        }
+    }
+    
+    private func applyTextFormatting(in textView: UITextView, preserveSelection: Bool = true) {
+        isApplyingFormatting = true
+        defer { isApplyingFormatting = false }
+        
+        let selectedRange = textView.selectedRange
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
+            .foregroundColor: Colors.text
+        ]
+        let attributedString = NSMutableAttributedString(string: textView.text ?? "", attributes: attributes)
+        attributedString.applyAttachmentToolbarFormatting()
+        textView.attributedText = attributedString
+        
+        if preserveSelection {
+            let safeLocation = min(selectedRange.location, attributedString.length)
+            let safeLength = min(selectedRange.length, max(0, attributedString.length - safeLocation))
+            textView.selectedRange = NSRange(location: safeLocation, length: safeLength)
+        }
+        
+        textView.layoutManager.ensureLayout(for: textView.textContainer)
+        textView.setNeedsDisplay()
+    }
+}
+
+private extension NSMutableAttributedString {
+    func applyAttachmentToolbarFormatting() {
+        applyPatternPreservingColor("_(\\S(?:[^\\n]*?\\S)?)_") { range in
+            self.addFontTraitPreservingExistingTraits(.traitItalic, in: range)
+        }
+        
+        applyPatternPreservingColor("\\*(\\S(?:[^\\n]*?\\S)?)\\*") { range in
+            self.addFontTraitPreservingExistingTraits(.traitBold, in: range)
+        }
+        
+        applyPatternPreservingColor("~(\\S(?:[^\\n]*?\\S)?)~") { range in
+            self.addAttribute(.strikethroughStyle, value: 1, range: range)
+        }
+        
+        applyPatternPreservingColor("(?<!\\w)```([^\\s][\\s\\S]*[^\\s])```(?!\\w)") { range in
+            let monoFont = UIFont.monospacedSystemFont(ofSize: self.font(at: range.location).pointSize, weight: .regular)
+            self.addAttribute(.font, value: monoFont, range: range)
+        }
+        
+        applyQuotes()
+        
+        applyPatternPreservingColor("(?<![`\\w])`([^\\s`\\n](?:[^`\\n]*[^\\s`\\n])?)`(?![`\\w])") { range in
+            let monoFont = UIFont.monospacedSystemFont(ofSize: self.font(at: range.location).pointSize, weight: .regular)
+            self.addAttribute(.font, value: monoFont, range: range)
+            self.addAttribute(.backgroundColor, value: UIColor.systemGray, range: range)
+        }
+    }
+    
+    private func applyPatternPreservingColor(_ pattern: String, apply: (NSRange) -> Void) {
+        let regex = try! NSRegularExpression(pattern: pattern, options: [.dotMatchesLineSeparators])
+        let matches = regex.matches(in: self.string, range: NSRange(location: 0, length: self.length))
+        
+        for match in matches.reversed() {
+            let inner = match.range(at: 1)
+            guard inner.location != NSNotFound else { continue }
+            guard NSMaxRange(inner) <= self.length else { continue }
+            apply(inner)
+        }
+    }
+    
+    private func applyQuotes() {
+        let fullRange = NSRange(location: 0, length: self.length)
+        self.removeAttribute(.attachmentBlockQuote, range: fullRange)
+        
+        let ns = self.string as NSString
+        let lines = ns.components(separatedBy: "\n")
+        var offset = 0
+        
+        for (index, line) in lines.enumerated() {
+            let lineLength = (line as NSString).length
+            defer {
+                offset += lineLength
+                if index < lines.count - 1 { offset += 1 }
+            }
+            
+            guard line.hasPrefix("> "), lineLength >= 3 else { continue }
+            
+            let lineRange = NSRange(location: offset, length: lineLength)
+            let markerRange = NSRange(location: offset, length: 2)
+            let contentRange = NSRange(location: offset + 2, length: max(0, lineLength - 2))
+            
+            self.addAttribute(.foregroundColor, value: UIColor.clear, range: markerRange)
+            self.addAttribute(.attachmentBlockQuote, value: true, range: lineRange)
+            if contentRange.length > 0 {
+                self.addAttribute(.foregroundColor, value: UIColor.systemGray3, range: contentRange)
+            }
+            
+            let paragraph = NSMutableParagraphStyle()
+            paragraph.firstLineHeadIndent = 0
+            paragraph.headIndent = 12
+            self.addAttribute(.paragraphStyle, value: paragraph, range: lineRange)
+        }
+    }
+    
+    private func font(at location: Int) -> UIFont {
+        guard self.length > 0 else {
+            return Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
+        }
+        
+        let safeIndex = min(max(location, 0), self.length - 1)
+        let attrs = self.attributes(at: safeIndex, effectiveRange: nil)
+        return attrs[.font] as? UIFont ?? Fonts.regularOpenSans(ofSize: Values.mediumFontSize)
+    }
+    
+    private func addFontTraitPreservingExistingTraits(_ trait: UIFontDescriptor.SymbolicTraits, in range: NSRange) {
+        self.enumerateAttributes(in: range, options: []) { attrs, subrange, _ in
+            let currentFont = attrs[.font] as? UIFont ?? self.font(at: subrange.location)
+            
+            var wantsBold = self.isBoldFont(currentFont)
+            var wantsItalic = self.isItalicFont(currentFont, attributes: attrs)
+            
+            if trait == .traitBold {
+                wantsBold = true
+            } else if trait == .traitItalic {
+                wantsItalic = true
+            }
+            
+            let resolved = self.resolvedFont(from: currentFont, wantsBold: wantsBold, wantsItalic: wantsItalic)
+            self.addAttribute(.font, value: resolved.font, range: subrange)
+            
+            if let obliqueness = resolved.syntheticObliqueness {
+                self.addAttribute(.obliqueness, value: obliqueness, range: subrange)
+            } else {
+                self.removeAttribute(.obliqueness, range: subrange)
+            }
+        }
+    }
+    
+    private func isBoldFont(_ font: UIFont) -> Bool {
+        let name = font.fontName.lowercased()
+        return font.fontDescriptor.symbolicTraits.contains(.traitBold)
+            || name.contains("bold")
+            || name.contains("semibold")
+            || name.contains("heavy")
+            || name.contains("black")
+    }
+    
+    private func isItalicFont(_ font: UIFont, attributes: [NSAttributedString.Key: Any]) -> Bool {
+        let name = font.fontName.lowercased()
+        let hasObliqueness = (attributes[.obliqueness] as? NSNumber)?.doubleValue ?? 0 > 0
+        return font.fontDescriptor.symbolicTraits.contains(.traitItalic)
+            || name.contains("italic")
+            || name.contains("oblique")
+            || hasObliqueness
+    }
+    
+    private func resolvedFont(from currentFont: UIFont, wantsBold: Bool, wantsItalic: Bool) -> (font: UIFont, syntheticObliqueness: CGFloat?) {
+        let size = currentFont.pointSize
+        let isOpenSans = currentFont.fontName.lowercased().contains("opensans")
+        
+        if isOpenSans {
+            if wantsBold && wantsItalic {
+                if let boldItalic = UIFont(name: "OpenSans-BoldItalic", size: size) {
+                    return (boldItalic, nil)
+                }
+                if let descriptor = UIFont.systemFont(ofSize: size, weight: .bold).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) {
+                    return (UIFont(descriptor: descriptor, size: size), nil)
+                }
+                return (UIFont.boldSystemFont(ofSize: size), 0.2)
+            }
+            if wantsBold {
+                return (Fonts.boldOpenSans(ofSize: size), nil)
+            }
+            if wantsItalic {
+                return (UIFont(name: "OpenSans-Italic", size: size) ?? currentFont, nil)
+            }
+            return (currentFont, nil)
+        }
+        
+        var traits: UIFontDescriptor.SymbolicTraits = []
+        if wantsBold { traits.insert(.traitBold) }
+        if wantsItalic { traits.insert(.traitItalic) }
+        
+        if let descriptor = currentFont.fontDescriptor.withSymbolicTraits(traits) {
+            return (UIFont(descriptor: descriptor, size: size), nil)
+        }
+        
+        if wantsBold && wantsItalic {
+            if let descriptor = UIFont.systemFont(ofSize: size, weight: .bold).fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic]) {
+                return (UIFont(descriptor: descriptor, size: size), nil)
+            }
+            return (UIFont.boldSystemFont(ofSize: size), 0.2)
+        }
+        if wantsBold {
+            return (UIFont.boldSystemFont(ofSize: size), nil)
+        }
+        if wantsItalic {
+            if let descriptor = UIFont.systemFont(ofSize: size).fontDescriptor.withSymbolicTraits(.traitItalic) {
+                return (UIFont(descriptor: descriptor, size: size), nil)
+            }
+            return (UIFont.italicSystemFont(ofSize: size), nil)
+        }
+        
+        return (currentFont, nil)
     }
 }

@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Before encrypting and submitting we NULL pad the name data to this length.
 const NSUInteger kOWSProfileManager_NameDataLength = 26;
 const NSUInteger kOWSProfileManager_MaxAvatarDiameter = 640;
+static const NSInteger kOWSProfileManager_AvatarUploadMaxRetries = 2;
+static const NSTimeInterval kOWSProfileManager_AvatarUploadRetryDelay = 0.75;
 
 typedef void (^ProfileManagerFailureBlock)(NSError *error);
 
@@ -237,6 +239,43 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
     return data;
 }
 
+// Attempts to upload the encrypted avatar data with simple retries for transient failures.
+- (void)uploadEncryptedAvatarData:(NSData *)encryptedAvatarData
+                attemptsRemaining:(NSInteger)attemptsRemaining
+                          success:(void (^)(id fileID))successBlock
+                          failure:(ProfileManagerFailureBlock)failureBlock
+{
+    AnyPromise *promise = [SNFileServerAPIV2 upload:encryptedAvatarData];
+    
+    [promise.thenOn(dispatch_get_main_queue(), ^(id fileID) {
+        successBlock(fileID);
+    })
+        .catchOn(dispatch_get_main_queue(), ^(id result) {
+            // There appears to be a bug in PromiseKit that sometimes causes catchOn
+            // to be invoked with the fulfilled promise's value as the error. The below
+            // is a quick and dirty workaround.
+            if ([result isKindOfClass:NSString.class] || [result isKindOfClass:NSNumber.class]) {
+                successBlock(result);
+                return;
+            }
+            
+            if (attemptsRemaining > 0) {
+                NSTimeInterval delay = kOWSProfileManager_AvatarUploadRetryDelay
+                * (kOWSProfileManager_AvatarUploadMaxRetries - attemptsRemaining + 1);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)),
+                               dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    [self uploadEncryptedAvatarData:encryptedAvatarData
+                                  attemptsRemaining:attemptsRemaining - 1
+                                            success:successBlock
+                                            failure:failureBlock];
+                });
+                return;
+            }
+            
+            failureBlock(result);
+        }) retainUntilComplete];
+}
+
 // If avatarData is nil, we are clearing the avatar.
 - (void)uploadAvatarToService:(NSData *_Nullable)avatarData
                       success:(void (^)(NSString *_Nullable avatarUrlPath))successBlock
@@ -253,10 +292,10 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
         if (avatarData) {
             NSData *encryptedAvatarData = [self encryptProfileData:avatarData profileKey:newProfileKey];
             OWSAssertDebug(encryptedAvatarData.length > 0);
-            
-            AnyPromise *promise = [SNFileServerAPIV2 upload:encryptedAvatarData];
-            
-            [promise.thenOn(dispatch_get_main_queue(), ^(NSString *fileID) {
+
+            [self uploadEncryptedAvatarData:encryptedAvatarData
+                          attemptsRemaining:kOWSProfileManager_AvatarUploadMaxRetries
+                                    success:^(id fileID) {
                 NSString *downloadURL = [NSString stringWithFormat:@"%@/files/%@", SNFileServerAPIV2.server, fileID];
                 [NSUserDefaults.standardUserDefaults setObject:[NSDate new] forKey:@"lastProfilePictureUpload"];
                 
@@ -267,23 +306,10 @@ typedef void (^ProfileManagerFailureBlock)(NSError *error);
                 } completion:^{
                     successBlock(downloadURL);
                 }];
-            })
-            .catchOn(dispatch_get_main_queue(), ^(id result) {
-                // There appears to be a bug in PromiseKit that sometimes causes catchOn
-                // to be invoked with the fulfilled promise's value as the error. The below
-                // is a quick and dirty workaround.
-                if ([result isKindOfClass:NSString.class]) {
-                    SNContact *user = [LKStorage.shared getUser];
-                    user.profileEncryptionKey = newProfileKey;
-                    [LKStorage writeWithBlock:^(YapDatabaseReadWriteTransaction *transaction) {
-                        [LKStorage.shared setContact:user usingTransaction:transaction];
-                    } completion:^{
-                        successBlock(result);
-                    }];
-                } else {
-                    failureBlock(result);
-                }
-            }) retainUntilComplete];
+            }
+                                    failure:^(NSError *error) {
+                failureBlock(error);
+            }];
         } else {
             // Update our profile key and set the url to nil if avatar data is nil
             SNContact *user = [LKStorage.shared getUser];

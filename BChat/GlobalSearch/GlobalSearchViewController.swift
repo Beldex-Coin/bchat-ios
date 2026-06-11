@@ -76,6 +76,7 @@ class GlobalSearchViewController: BaseVC, UITableViewDelegate, UITableViewDataSo
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        searchBar.text = ""
         searchBar.resignFirstResponder()
     }
     
@@ -209,14 +210,17 @@ extension GlobalSearchViewController: UISearchBarDelegate {
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-           DispatchQueue.main.async {
-               if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
-                   cancelButton.isEnabled = true
-               }
-           }
-           return true
-       }
-
+        DispatchQueue.main.async {
+            if let cancelButton = searchBar.value(forKey: "cancelButton") as? UIButton {
+                cancelButton.isEnabled = true
+            }
+        }
+        return true
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
     
 }
 

@@ -265,6 +265,14 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         }
     }
     
+    func handleExpandingAttachmentButtonTapped() {
+        if snInputView.attachmentsButton.isExpanded {
+            snInputView.hideMentionsUI()
+        } else {
+            inputTextViewDidChangeContent(snInputView.inputTextView)
+        }
+    }
+    
     func didCancelGifPicker() {
         isInputViewShow = true
     }
@@ -366,10 +374,11 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     
     func sendMessage(hasPermissionToSendSeed: Bool = false, address: [String]? = nil, name: [String]? = nil) {
         guard !showBlockedModalIfNeeded() else { return }
-        let text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
+        var text = replaceMentions(in: snInputView.text.trimmingCharacters(in: .whitespacesAndNewlines))
         let thread = self.thread
         guard !text.isEmpty || address != nil else { return }
-        
+        text = getSanitizedMessage(from: text)
+
         if text.contains(mnemonic) && !thread.isNoteToSelf() && !hasPermissionToSendSeed {
             // Warn the user if they're about to send their seed to someone
             hideInputAccessoryView()
@@ -625,6 +634,13 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                 ),
                 message: nil
             )
+            
+            if !SSKPreferences.keepChatArchive {
+                if thread.isArchived {
+                    thread.isArchived = false
+                    thread.save()
+                }
+            }
         }
         
         self.markAllAsRead()
@@ -645,9 +661,17 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         if !newText.isEmpty {
             SSKEnvironment.shared.typingIndicators.didStartTypingOutgoingInput(inThread: thread)
         }
-        inputTextView.textColor = Colors.text
         updateAttachmentButtonLayout()
         if !thread.isGroupThread() { return }
+        if let pastedText = inputTextView.pendingPasteText {
+            inputTextView.pendingPasteText = nil
+            currentMentionStartIndex = nil
+            snInputView.hideMentionsUI()
+            syncPastedMentions(in: pastedText)
+            applyColorToMentionedUsers(text: newText)
+            oldText = newText
+            return
+        }
         updateMentions(for: newText)
         applyColorToMentionedUsers(text: newText)
     }
@@ -698,9 +722,16 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
                     let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
                     snInputView.showMentionsUI(for: candidates, in: thread)
                 } else {
-                    if newText.hasPrefix("@") {
+                    if newText.hasPrefix("@") && lastCharacter.isWhitespace {
                         let query = newText.replacingOccurrences(of: "@", with: "", options: NSString.CompareOptions.literal, range: nil)
                         let candidates = MentionsManager.getMentionCandidates(for: query, in: thread.uniqueId!)
+                        snInputView.showMentionsUI(for: candidates, in: thread)
+                    }
+                    let currentText = newText
+                    let formattedMentionPattern = #"[\*_~]@[\*_~]"#
+                    if let _ = currentText.range(of: formattedMentionPattern, options: .regularExpression) {
+                        let candidates = MentionsManager.getMentionCandidates(for: "", in: thread.uniqueId!)
+                        currentMentionStartIndex = lastCharacterIndex
                         snInputView.showMentionsUI(for: candidates, in: thread)
                     }
                 }
@@ -710,33 +741,49 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func applyColorToMentionedUsers(text : String) {
+        guard !text.isEmpty else { return }
+        guard text.contains("@") || !mentions.isEmpty else { return }
+        
         let attributes: [NSAttributedString.Key: Any] = [
             .font: Fonts.regularOpenSans(ofSize: Values.mediumFontSize),
             .foregroundColor: Colors.text
         ]
         let attributedString = NSMutableAttributedString(string: text, attributes: attributes)
-        let words = text.split(separator: " ")
+        attributedString.addAttributesPreservingColor(clearText: false)
+        
         let mentionColor = Colors.bothGreenColor
-        for word in words {
-            if word.hasPrefix("@") {
-                if let range = text.range(of: String(word)) {
-                    let nsRange = NSRange(range, in: text)
-                    attributedString.addAttribute(.foregroundColor, value: mentionColor, range: nsRange)
-                }
-                
-                UIView.performWithoutAnimation {
-                    let selectedRange = snInputView.inputTextView.selectedRange
-                    snInputView.inputTextView.attributedText = attributedString
-                    snInputView.inputTextView.selectedRange = selectedRange
-                }
+        let fullRange = NSRange(location: 0, length: (text as NSString).length)
+        
+        for mention in mentions {
+            let token = "@\(mention.displayName)"
+            let escaped = NSRegularExpression.escapedPattern(for: token)
+            let regex = try? NSRegularExpression(pattern: escaped, options: [])
+            regex?.enumerateMatches(in: text, options: [], range: fullRange) { match, _, _ in
+                guard let range = match?.range, range.location != NSNotFound else { return }
+                attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
             }
         }
+      // Don't Remove this lines
+        /*if let typingRegex = try? NSRegularExpression(pattern: "(?<!\\S)@[^\\s]+", options: []) {
+            typingRegex.enumerateMatches(in: text, options: [], range: fullRange) { match, _, _ in
+                guard let range = match?.range, range.location != NSNotFound else { return }
+                attributedString.addAttribute(.foregroundColor, value: mentionColor, range: range)
+            }
+        }*/
+        
+        UIView.performWithoutAnimation {
+            let selectedRange = snInputView.inputTextView.selectedRange
+            snInputView.inputTextView.attributedText = attributedString
+            snInputView.inputTextView.selectedRange = selectedRange
+        }
+        snInputView.inputTextView.setNeedsDisplay()
     }
 
     func resetMentions() {
         oldText = ""
         currentMentionStartIndex = nil
         mentions = []
+        snInputView.hideMentionsUI()
     }
 
     func replaceMentions(in text: String) -> String {
@@ -748,20 +795,56 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         return result
     }
 
+    private func syncPastedMentions(in text: String) {
+        guard let threadID = thread.uniqueId else { return }
+
+        MentionsManager.populateUserPublicKeyCacheIfNeeded(for: threadID)
+
+        let existingPublicKeys = Set(mentions.map { $0.publicKey })
+        let candidates = MentionsManager.getMentionCandidates(for: "", in: threadID)
+            .sorted { $0.displayName.count > $1.displayName.count }
+
+        for candidate in candidates {
+            guard !existingPublicKeys.contains(candidate.publicKey) else { continue }
+            guard text.containsMentionToken(for: candidate.displayName) else { continue }
+            mentions.append(candidate)
+        }
+    }
+
     func handleMentionSelected(_ mention: Mention, from view: MentionSelectionView) {
-        guard let currentMentionStartIndex = currentMentionStartIndex else { return }
-        mentions.append(mention)
-        let oldText = snInputView.text
-        let newText = oldText.replacingCharacters(in: currentMentionStartIndex..., with: "@\(mention.displayName) ")
-        snInputView.text = newText
-        self.currentMentionStartIndex = nil
-        snInputView.hideMentionsUI()
-        self.oldText = newText
+        if let start = currentMentionStartIndex,
+           let cursor = snInputView.inputTextView.selectedTextRange {
+            
+            mentions.append(mention)
+            let oldText = snInputView.text
+
+            // Compute integer offsets in the UITextView's text from the UITextRange
+            let textView = snInputView.inputTextView
+            let location = textView.offset(from: textView.beginningOfDocument, to: cursor.start)
+
+            // Derive integer offset for the current mention start from String.Index
+            let startOffset = oldText.distance(from: oldText.startIndex, to: start)
+
+            // Clamp indices to valid bounds
+            let safeStart = max(0, min(startOffset, oldText.count))
+            let safeEnd = max(safeStart, min(location, oldText.count))
+
+            // Convert integer offsets to String.Index
+            let startIndex = oldText.index(oldText.startIndex, offsetBy: safeStart)
+            let endIndex = oldText.index(oldText.startIndex, offsetBy: safeEnd)
+            
+            let mentionName = "@\(mention.displayName) "
+            let newText = oldText.replacingCharacters(in: startIndex..<endIndex, with: mentionName)
+
+            snInputView.text = newText
+            self.currentMentionStartIndex = nil
+            snInputView.hideMentionsUI()
+            self.oldText = newText
+        }
     }
 
     // MARK: View Item Interaction
     func handleViewItemLongPressed(_ viewItem: ConversationViewItem) {
-        hideSearchUI()
         // if message is not sent then no need long press
         guard let message = viewItem.interaction as? TSMessage else { return }
         if let messageOutgoing = message as? TSOutgoingMessage {
@@ -1135,7 +1218,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     }
     
     func reply(_ viewItem: ConversationViewItem) {
-        if isAudioRecording { return }
         
         if isShowingSearchUI {
             hideSearchUI()
@@ -1623,23 +1705,22 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
         stopVoiceMessageRecording()
         audioRecorder = nil
         audioPlayer = nil
-        deleteAudioView.isHidden = true
         hideAttachmentExpandedButtons()
         isAudioRecording = false
     }
     
     func pauseRecording() {
-        deleteAudioView.isHidden = false
         audioRecorder?.stop()
-    }
-    
-    func showDeleteAudioView() {
-        deleteAudioView.isHidden = false
     }
     
     func resumeAudioRecording() {
         // For Resume Audio Don't Delete
 //        audioRecorder?.record()
+    }
+    
+    func deleteRecording() {
+        isAudioRecording = false
+        cancelVoiceMessageRecording()
     }
     
     func showAlertForAudioRecordingIsOn() {
@@ -1666,13 +1747,6 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
     func stopVoiceMessageRecording() {
         audioRecorder?.stop()
         audioSession.endAudioActivity(recordVoiceMessageActivity)
-        deleteAudioView.isHidden = true
-    }
-    
-    @objc func deleteAudioButtonTapped() {
-        isAudioRecording = false
-        deleteAudioView.isHidden = true
-        cancelVoiceMessageRecording()
     }
     
     // MARK: - Data Extraction Notifications
@@ -1716,6 +1790,37 @@ extension ConversationVC : InputViewDelegate, MessageCellDelegate, ContextMenuAc
 extension ConversationVC: UIDocumentInteractionControllerDelegate {
     func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
+    }
+}
+
+private extension String {
+    func containsMentionToken(for displayName: String) -> Bool {
+        let token = "@\(displayName)"
+        guard let range = range(of: token) else { return false }
+
+        if range.lowerBound > startIndex {
+            let before = self[index(before: range.lowerBound)]
+            if before.isMentionBoundary == false {
+                return false
+            }
+        }
+
+        if range.upperBound < endIndex {
+            let after = self[range.upperBound]
+            if after.isMentionBoundary == false {
+                return false
+            }
+        }
+
+        return true
+    }
+}
+
+private extension Character {
+    var isMentionBoundary: Bool {
+        unicodeScalars.allSatisfy { scalar in
+            CharacterSet.alphanumerics.contains(scalar) == false
+        }
     }
 }
 
@@ -2112,6 +2217,42 @@ extension ConversationVC {
                 self.messagesTableView.contentInset.bottom = isUpdate ? 170 : 121
             }
         }
+    }
+    
+    // MARK: - Sanitized Message
+    
+    func getSanitizedMessage(from text: String) -> String {
+        let lines = text.components(separatedBy: "\n")
+        
+        let cleanedLines = lines.compactMap { line -> String? in
+            let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            // Case 1: Bullet (•)
+            if trimmed == "•" {
+                // Convert back to original trigger ("-" or "*")
+                return snInputView.inputTextView.lastBulletSymbol
+            }
+            
+            if trimmed.hasPrefix("•") {
+                let content = trimmed.dropFirst().trimmingCharacters(in: .whitespaces)
+                
+                // Empty bullet → convert to "-" or "*"
+                if content.isEmpty {
+                    return snInputView.inputTextView.lastBulletSymbol
+                }
+                
+                return "• \(content)"
+            }
+            
+            // Case 2: Raw symbols (* or -) without formatting
+            if trimmed == "*" || trimmed == "-" {
+                return trimmed
+            }
+            
+            return line
+        }
+        
+        return cleanedLines.joined(separator: "\n")
     }
 }
 

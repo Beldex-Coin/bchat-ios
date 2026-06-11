@@ -161,7 +161,11 @@ class SearchGroupMemberVC: BaseVC, UITextFieldDelegate {
                 self.isFilterSearchContact()
             }
         }
-        
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     @objc func closeIconTapped() {
