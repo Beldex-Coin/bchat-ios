@@ -18,7 +18,7 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
         return result
     }()
     
-    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5", "1.5.0", "1.6.0", "1.6.1", "1.6.2", "1.7.0", "1.7.1", "1.7.2", "1.7.3", "1.7.4", "1.7.5", "1.7.6", "1.7.7"]
+    var versionArray = ["1.0.0", "1.1.0", "1.2.0", "1.2.1", "1.3.0", "1.3.1", "1.3.2", "1.3.3", "1.4.0", "1.4.1", "1.4.2", "1.4.4", "1.4.5", "1.5.0", "1.6.0", "1.6.1", "1.6.2", "1.7.0", "1.7.1", "1.7.2", "1.7.3", "1.7.4", "1.7.5", "1.7.6", "1.7.7", "1.7.8"]
     var descArray = ["\u{2022} Initial release\n\u{2022} Added changelog",
                      "\u{2022} Message request implementation\n\u{2022} Link Preview will be turn on by default\n\u{2022} Add the images for SwipeActionsConfiguration",
                      "\u{2022} Call Feature Added\n\u{2022} Blocked Contact list added\n\u{2022} Minor Bug Fixes",
@@ -43,7 +43,8 @@ class ChangeLogNewVC: BaseVC, UITableViewDataSource, UITableViewDelegate{
                      "\u{2022} Minor bug fixes",
                      "\u{2022} Introduced Text formatting feature \n\u{2022} Minor bug fixes",
                      "\u{2022} Crash and ANR fixes \n\u{2022} Text-formatting bug fixes \n\u{2022} Minor bug fixes",
-                     "\u{2022} Minor bug fixes"]
+                     "\u{2022} Minor bug fixes",
+                     "\u{2022} Added 6 digits PIN support \n\u{2022} Minor bug fixes"]
     var expandedRowArray = [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
     
     

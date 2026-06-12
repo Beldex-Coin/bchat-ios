@@ -7235,7 +7235,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7282,7 +7282,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.7.7;
+				MARKETING_VERSION = 1.7.8;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -7324,7 +7324,7 @@
 				CODE_SIGN_ENTITLEMENTS = BChat/Meta/Signal.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 3X33AB44S7;
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7371,7 +7371,7 @@
 					"$(PROJECT_DIR)/BChat/BeldexWallet/WalletLibs/External/libs",
 				);
 				LLVM_LTO = NO;
-				MARKETING_VERSION = 1.7.7;
+				MARKETING_VERSION = 1.7.8;
 				NEW_SETTING = "";
 				NEW_SETTING1 = "";
 				ONLY_ACTIVE_ARCH = NO;

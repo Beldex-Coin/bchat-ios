@@ -89,6 +89,7 @@ class PinViewController: BaseVC {
     // MARK: - Properties
     
     private var pinLabels: [UILabel] = []
+    private var pinSeparator: UILabel?
     private var pinLength: Int = SaveUserDefaultsData.BChatPinLength
     
     private var currentPin = ""
@@ -151,9 +152,9 @@ class PinViewController: BaseVC {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.spacing = 8
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
 
-        for _ in 0..<6 {
+        for index in 0..<6 {
             let label = UILabel()
             label.textAlignment = .center
             label.font = Fonts.boldOpenSans(ofSize: 24)
@@ -167,6 +168,19 @@ class PinViewController: BaseVC {
             label.widthAnchor.constraint(equalToConstant: 46).isActive = true
             pinLabels.append(label)
             stackView.addArrangedSubview(label)
+
+            if index == 2 {
+                let separator = UILabel()
+                separator.text = "-"
+                separator.textAlignment = .center
+                separator.font = Fonts.boldOpenSans(ofSize: 24)
+                separator.textColor = Colors.titleNewColor
+                separator.backgroundColor = .clear
+                separator.translatesAutoresizingMaskIntoConstraints = false
+                separator.widthAnchor.constraint(equalToConstant: 10).isActive = true
+                pinSeparator = separator
+                stackView.addArrangedSubview(separator)
+            }
         }
 
         view.addSubview(stackView)
@@ -345,6 +359,8 @@ class PinViewController: BaseVC {
                 label.layer.borderColor = Colors.borderColorNew.cgColor
             }
         }
+
+        pinSeparator?.isHidden = pinLength != 6
     }
 
     private func updateToggleButton() {
