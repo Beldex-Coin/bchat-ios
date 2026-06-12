@@ -12,6 +12,11 @@
             UISwitch.appearance().onTintColor = Colors.bothGreenColor
             UINavigationBar.appearance().titleTextAttributes = [ NSAttributedString.Key.foregroundColor : Colors.text ]
         }
+        applyCurrentLanguageLayoutDirection()
+    }
+
+    @objc static func applyCurrentLanguageLayoutDirection() {
+        AppLanguage.manager.applyCurrentLanguageDirection()
     }
 
     @objc static func switchToImagePickerAppearance() {

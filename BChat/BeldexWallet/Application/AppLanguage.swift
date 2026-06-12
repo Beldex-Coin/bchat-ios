@@ -73,6 +73,10 @@ final class AppLanguage: NSObject {
             rawValue
         }
 
+        var isRightToLeft: Bool {
+            self == .arabic
+        }
+
         static func language(for identifier: String) -> Lang? {
             let normalized = identifier.lowercased()
 
@@ -103,6 +107,7 @@ final class AppLanguage: NSObject {
             guard newValue != current else { return }
             lang.value = newValue
             UserDefaults.standard.set(newValue.bundleIdentifier, forKey: AppLanguage.PreferredLanguageKey)
+            applyCurrentLanguageDirection()
             NotificationCenter.default.post(name: .appLanguageDidChange, object: nil)
         }
     }
@@ -114,6 +119,51 @@ final class AppLanguage: NSObject {
     lazy var lang = {
         Observable<Lang>(current)
     }()
+
+    var isRTL: Bool {
+        current.isRightToLeft
+    }
+
+    @objc class func isCurrentLanguageRTL() -> Bool {
+        manager.isRTL
+    }
+
+    @objc
+    func applyCurrentLanguageDirection() {
+        let semanticContentAttribute: UISemanticContentAttribute = isRTL ? .forceRightToLeft : .forceLeftToRight
+
+        let applyToCurrentWindows = {
+            UIView.appearance().semanticContentAttribute = semanticContentAttribute
+            UINavigationBar.appearance().semanticContentAttribute = semanticContentAttribute
+            UIToolbar.appearance().semanticContentAttribute = semanticContentAttribute
+            UISearchBar.appearance().semanticContentAttribute = semanticContentAttribute
+            UISegmentedControl.appearance().semanticContentAttribute = semanticContentAttribute
+            UITableView.appearance().semanticContentAttribute = semanticContentAttribute
+            UICollectionView.appearance().semanticContentAttribute = semanticContentAttribute
+            UIScrollView.appearance().semanticContentAttribute = semanticContentAttribute
+            UIStackView.appearance().semanticContentAttribute = semanticContentAttribute
+            UIControl.appearance().semanticContentAttribute = semanticContentAttribute
+            UILabel.appearance().semanticContentAttribute = semanticContentAttribute
+            UITextField.appearance().semanticContentAttribute = semanticContentAttribute
+            UITextView.appearance().semanticContentAttribute = semanticContentAttribute
+
+            let windows: [UIWindow]
+            if #available(iOS 13.0, *) {
+                windows = UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }
+            } else {
+                windows = UIApplication.shared.windows
+            }
+            windows.forEach { $0.semanticContentAttribute = semanticContentAttribute }
+        }
+
+        if Thread.isMainThread {
+            applyToCurrentWindows()
+        } else {
+            DispatchQueue.main.async(execute: applyToCurrentWindows)
+        }
+    }
 
     func bundle(for language: Lang) -> Bundle? {
         guard let path = LocalizationPath.path(for: language.bundleIdentifier) else {

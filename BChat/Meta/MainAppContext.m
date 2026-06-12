@@ -167,14 +167,7 @@ NSString *const ReportedApplicationStateDidChangeNotification = @"ReportedApplic
 
 - (BOOL)isRTL
 {
-    // FIXME: We should try to remove this as we've had to add a hack to ensure the first call to this runs on the main thread
-    static BOOL isRTL = NO;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        isRTL = [[UIApplication sharedApplication] userInterfaceLayoutDirection]
-            == UIUserInterfaceLayoutDirectionRightToLeft;
-    });
-    return isRTL;
+    return [AppLanguage isCurrentLanguageRTL];
 }
 
 - (void)setStatusBarHidden:(BOOL)isHidden animated:(BOOL)isAnimated
