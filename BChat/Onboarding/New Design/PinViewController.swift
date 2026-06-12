@@ -71,7 +71,7 @@ class PinViewController: BaseVC {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = Colors.cellGroundColor3
         button.titleLabel!.font = Fonts.mediumOpenSans(ofSize: 14)
-        button.setTitleColor(Colors.bothWhiteColor, for: .normal)
+        button.setTitleColor(Colors.titleColor3, for: .normal)
         button.addTarget(self, action: #selector(togglePinLengthTapped), for: .touchUpInside)
         let image = UIImage(named: "ic_right_arrow_white")?.scaled(to: CGSize(width: 10.66, height: 8))
         button.setImage(image, for: .normal)
